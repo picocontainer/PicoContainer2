@@ -1,0 +1,8 @@
+<project default="jar:install">
+
+    <postGoal name="java:compile">
+        <rmic classname="org.nanocontainer.remoting.rmi.RemoteInterceptorImpl" base="${basedir}/target/classes"/>
+        <rmic classname="org.nanocontainer.remoting.rmi.NanoNamingImpl" base="${basedir}/target/classes"/>
+    </postGoal>
+
+</project>

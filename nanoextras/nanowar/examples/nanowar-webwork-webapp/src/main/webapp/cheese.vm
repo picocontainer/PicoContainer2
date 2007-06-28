@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<h1>Cheese!</h1>
+<br>
+<form action="cheese.action!save">
+  <table style="text-align: left; width: 50%;" border="1"
+ cellspacing="2" cellpadding="2">
+    <tbody>
+      <tr>
+        <td style="vertical-align: top;"><br>
+        <input value="Gouda" name="'cheese/name'"></td>
+        <td style="vertical-align: top;"><br>
+        <input value="Holland" name="'cheese/country'"></td>
+        <td style="vertical-align: top;"><br>
+        </td>
+      </tr>
+      <tr>
+        <td style="vertical-align: top;"><br>
+        </td>
+        <td style="vertical-align: top;"><br>
+        </td>
+        <td style="vertical-align: top;"><br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <input type="submit"></form>
+<br>
+<br>
+</body>
+</html>

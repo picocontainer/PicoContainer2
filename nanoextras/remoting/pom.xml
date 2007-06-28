@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.nanocontainer</groupId>
+		<artifactId>nanocontainer-parent</artifactId>
+		<version>2.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>nanocontainer-remoting-parent</artifactId>
+	<name>NanoContainer Remoting Parent</name>
+	<version>2.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<url>http://www.nanocontainer.org/remoting</url>
+	
+	<modules>
+		<module>remoting</module>
+	</modules>
+	
+	<description><![CDATA[Please refer to the <a href="http://nanocontainer.org/remoting">main website</a> for documentation.]]></description>
+	
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.codehaus.org/browse/NANOREMOTING</url>
+	</issueManagement>
+	
+	<scm>
+		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/nanocontainer-remoting/trunk</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/scm/picocontainer/java/nanocontainer-remoting/trunk</developerConnection>
+		<url>https://svn.codehaus.org/picocontainer/java/nanocontainer-remoting/trunk</url>
+	</scm>
+	
+	<repositories>
+		<repository>
+			<id>codehaus-repository</id>
+			<name>Codehaus Repository</name>
+			<url>http://repository.codehaus.org</url>
+		</repository>
+		<repository>
+			<id>codehaus-snapshots-repository</id>
+			<name>Codehaus Snapshots Repository</name>
+			<url>http://snapshots.repository.codehaus.org</url>
+		</repository>
+	</repositories>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.picocontainer</groupId>
+				<artifactId>picocontainer</artifactId>
+				<version>2.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.picocontainer</groupId>
+				<artifactId>picocontainer-gems</artifactId>
+				<version>2.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.nanocontainer</groupId>
+				<artifactId>nanocontainer</artifactId>
+				<version>2.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.picocontainer</groupId>
+				<artifactId>picocontainer-tck</artifactId>
+				<version>2.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>groovy</groupId>
+				<artifactId>groovy-all</artifactId>
+				<type>jar</type>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>mx4j</groupId>
+				<artifactId>mx4j-jmx</artifactId>
+				<version>2.1.1</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>mx4j</groupId>
+				<artifactId>mx4j-impl</artifactId>
+				<version>2.1.1</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-j2ee_1.4_spec</artifactId>
+				<version>1.0</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>proxytoys</groupId>
+				<artifactId>proxytoys</artifactId>
+				<version>0.2.1</version>
+			</dependency>
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib-nodep</artifactId>
+				<version>2.1_3</version>
+			</dependency>			
+			<!-- Test scoped depedencies -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>3.8.1</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>jmock</groupId>
+				<artifactId>jmock</artifactId>
+				<version>1.0.1</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>jmock</groupId>
+				<artifactId>jmock-cglib</artifactId>
+				<version>1.0.1</version>
+				<scope>compile</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	<dependencies>
+		<!-- Test scoped depedencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>jmock</groupId>
+			<artifactId>jmock</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>jmock</groupId>
+			<artifactId>jmock-cglib</artifactId>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+
+</project>

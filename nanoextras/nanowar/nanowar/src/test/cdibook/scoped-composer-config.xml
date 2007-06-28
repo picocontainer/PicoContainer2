@@ -1,0 +1,10 @@
+<!-- START SNIPPET: xml -->
+<container>
+    <component-implementation class='org.nanocontainer.nanowar.ScopedComposerConfigurator'>
+        <parameter><string>org.nanocontainer.script.xml.XMLContainerBuilder</string></parameter>
+        <parameter><string>nanowar-application.xml,nanowar/application-2.xml</string></parameter> 
+        <parameter><string>nanowar-session.xml,nanowar/session-2.xml</string></parameter>        
+        <parameter><string>nanowar-request.xml,nanowar/request-2.xml</string></parameter>
+    </component-implementation>
+</container>
+<!-- END SNIPPET: xml -->

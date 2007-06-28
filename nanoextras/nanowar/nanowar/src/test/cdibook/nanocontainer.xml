@@ -1,0 +1,24 @@
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+
+<!-- START SNIPPET: xml -->
+   <context-param>
+        <param-name>nanocontainer.groovy</param-name>
+        <param-value><![CDATA[
+            pico = new org.picocontainer.DefaultPicoContainer(parent)
+                    if(assemblyScope instanceof javax.servlet.ServletContext) {
+                        println("**** Webapp-level pico components registered by Groovy")
+                        pico.addComponent(org.nanocontainer.sample.nanowar.service.defaults.DefaultCheeseService)
+                    } else if(assemblyScope instanceof javax.servlet.http.HttpSession) {
+                        println("**** Session-level pico components registered by Groovy")
+                    } else if(assemblyScope instanceof javax.servlet.ServletRequest) {
+                        println("**** Request-level pico components registered by Groovy")
+                    }
+                ]]></param-value>
+    </context-param>
+<!-- END SNIPPET: xml -->
+
+</web-app>
+
+

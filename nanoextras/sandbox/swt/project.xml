@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <id>nanocontainer-swt</id>
+    <name>Nanocontainer SWT</name>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-swing</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+        
+        <dependency>
+        	<groupId>swt</groupId>
+            <artifactId>swt-linux-gtk</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
+        <dependency>
+        	<groupId>swt</groupId>
+            <artifactId>swt-linux-gtk-pi</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
+        <dependency>
+        	<groupId>swt</groupId>
+            <artifactId>osgi</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
+        <dependency>
+        	<groupId>swt</groupId>
+            <artifactId>jface</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
+        <dependency>
+        	<groupId>swt</groupId>
+            <artifactId>runtime</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

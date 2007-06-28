@@ -1,0 +1,46 @@
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+    <display-name>NanoWar WebWork 2 Demo</display-name>
+
+    <context-param>
+        <param-name>org.nanocontainer.integrationkit.ContainerComposer</param-name>
+        <param-value>org.nanocontainer.nanowar.ScopedContainerComposer</param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>picoObjectFactory</filter-name>
+        <filter-class>org.nanocontainer.nanowar.webwork2.PicoObjectFactoryFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>picoObjectFactory</filter-name>
+        <url-pattern>*.action</url-pattern>
+    </filter-mapping>
+
+    <listener>
+        <listener-class>org.nanocontainer.nanowar.ServletContainerListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>action</servlet-name>
+        <servlet-class>org.nanocontainer.nanowar.webwork2.PicoWebWork2ServletDispatcher</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>action</servlet-name>
+        <url-pattern>*.action</url-pattern>
+    </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <taglib>
+        <taglib-uri>webwork</taglib-uri>
+        <taglib-location>/WEB-INF/webwork.tld</taglib-location>
+    </taglib>
+
+</web-app>
+
+

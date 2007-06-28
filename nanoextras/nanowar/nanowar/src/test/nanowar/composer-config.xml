@@ -1,0 +1,8 @@
+<container>
+    <component-implementation class='org.nanocontainer.nanowar.ScopedComposerConfigurator'>
+        <parameter><string>org.nanocontainer.script.xml.XMLContainerBuilder</string></parameter>
+        <parameter><string>nanowar-application.xml,nanowar/application.xml</string></parameter> 
+        <parameter><string>nanowar-session.xml,nanowar/session.xml</string></parameter>        
+        <parameter><string>nanowar-request.xml,nanowar/request.xml</string></parameter>
+    </component-implementation>
+</container>

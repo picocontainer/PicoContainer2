@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <id>nanocontainer-piccolo</id>
+    <name>Nanocontainer Piccolo</name>
+
+    <dependencies>
+        <dependency>
+            <id>piccolo</id>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <id>piccolox</id>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-swing</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

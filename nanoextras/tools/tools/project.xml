@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <id>nanocontainer-tools</id>
+    <name>Nanocontainer Tools</name>
+
+    <dependencies>
+        <dependency>
+            <id>ant</id>
+            <version>1.6.5</version>
+            <url>http://ant.apache.org/</url>
+        </dependency>
+
+    </dependencies>
+
+</project>

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4" relativePaths="true" type="JAVA_MODULE">
+  <component name="ModuleRootManager" />
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/classes" />
+    <exclude-output />
+    <output-test url="file://$MODULE_DIR$/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/examples/nanowar-jsf-webapp/src/main/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/examples/nanowar-nanoweb-webapp/src/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/examples/nanowar-sample/src/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/examples/nanowar-struts-webapp/src/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/examples/nanowar-struts-webapp/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/examples/nanowar-webwork-webapp/src/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/examples/nanowar-webwork-webapp/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar-axis/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar-axis/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar-jsf/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar-jsf/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar-nanoweb/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar-nanoweb/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar-sample/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar-sample/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar-struts/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar-struts/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar-webwork/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar-webwork/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar-webwork2/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar-webwork2/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/nanowar/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/server/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/server/src/test" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/examples/nanowar-jsf-webapp/target" />
+      <excludeFolder url="file://$MODULE_DIR$/examples/nanowar-nanoweb-webapp/target" />
+      <excludeFolder url="file://$MODULE_DIR$/examples/nanowar-sample/target" />
+      <excludeFolder url="file://$MODULE_DIR$/examples/nanowar-struts-webapp/target" />
+      <excludeFolder url="file://$MODULE_DIR$/examples/nanowar-webwork-webapp/target" />
+      <excludeFolder url="file://$MODULE_DIR$/nanowar-axis/target" />
+      <excludeFolder url="file://$MODULE_DIR$/nanowar-jsf/target" />
+      <excludeFolder url="file://$MODULE_DIR$/nanowar-nanoweb/target" />
+      <excludeFolder url="file://$MODULE_DIR$/nanowar-sample/target" />
+      <excludeFolder url="file://$MODULE_DIR$/nanowar-struts/target" />
+      <excludeFolder url="file://$MODULE_DIR$/nanowar-webwork/target" />
+      <excludeFolder url="file://$MODULE_DIR$/nanowar-webwork2/target" />
+      <excludeFolder url="file://$MODULE_DIR$/nanowar/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="NanoContainer" />
+    <orderEntry type="module" module-name="PicoContainer" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/jmock/jmock/1.0.1/jmock-1.0.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/jmock/jmock-cglib/1.0.1/jmock-cglib-1.0.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/groovy/groovy-all/1.0/groovy-all-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/opensymphony/xwork/1.0.5/xwork-1.0.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/opensymphony/webwork/2.1.7/webwork-2.1.7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/velocity/velocity/1.4/velocity-1.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/velocity-tools/velocity-tools-view/1.0/velocity-tools-view-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/ognl/ognl/2.6.7/ognl-2.6.7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/axis/axis/1.2.1/axis-1.2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/struts/struts/1.1/struts-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/velocity-tools/velocity-tools-view/1.1/velocity-tools-view-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/fixme/webwork1/1.4/webwork1-1.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/httpunit/httpunit/1.6/httpunit-1.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/org/mortbay/jetty/jetty/6.0.0rc0/jetty-6.0.0rc0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../../../jetty/modules/jetty/src/main/java" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/org/mortbay/jetty/jetty-util/6.0.0rc0/jetty-util-6.0.0rc0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../../../jetty/modules/util/src/main/java" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/org/apache/geronimo/specs/geronimo-j2ee_1.4_spec/1.0/geronimo-j2ee_1.4_spec-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/com/thoughtworks/xstream/xstream/1.2.1/xstream-1.2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntryProperties />
+  </component>
+  <component name="copyright">
+    <Base>
+      <setting name="state" value="2" />
+    </Base>
+  </component>
+</module>
+

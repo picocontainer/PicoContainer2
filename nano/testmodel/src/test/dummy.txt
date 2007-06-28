@@ -1,0 +1,1 @@
+this file is only here to keep the directory alive and stop maven from failing during tests

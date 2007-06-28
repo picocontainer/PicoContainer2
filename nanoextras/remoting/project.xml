@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project xmlns:j="jelly:core">
+
+    <pomVersion>3</pomVersion>
+    <currentVersion>${remoting.version}</currentVersion>
+    <name>NanoContainer Remoting</name>
+    <groupId>nanocontainer</groupId>
+    <id>nanocontainer-remoting</id>
+    <url>http://www.nanocontainer.org/remoting</url>
+    <organization>
+        <name>Codehaus</name>
+        <url>http://codehaus.org/</url>
+        <logo>http://codehaus.org/codehaus-small.gif</logo>
+    </organization>
+    <inceptionYear>2003</inceptionYear>
+    <package>org.nanocontainer.remoting</package>
+    <description>
+        Please refer to the &lt;a href="http://nanocontainer.org/remoting"&gt;main website&lt;/a&gt; for documentation.    
+    </description>
+    <shortDescription>NanoContainer</shortDescription>
+
+    <issueTrackingUrl>http://jira.codehaus.org/browse/NANO</issueTrackingUrl>
+
+    <siteAddress>beaver.codehaus.org</siteAddress>
+    <siteDirectory>/home/projects/nanocontainer/public_html/${pom.groupId}/${pom.currentVersion}/${pom.artifactId}</siteDirectory>
+
+    <distributionSite>beaver.codehaus.org</distributionSite>
+    <distributionDirectory>/dist</distributionDirectory>
+
+    <repository>
+        <connection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/:java/nanocontainer-remoting</connection>
+        <developerConnection>scm:svn:https://svn.picocontainer.codehaus.org/picocontainer/:java/nanocontainer-remoting</developerConnection>
+        <url>https://svn.picocontainer.codehaus.org/picocontainer/java/nanocontainer-remoting</url>
+    </repository>
+
+    <!--
+     ! Common dependencies.
+     ! Please place sub project-specific dependencies in the sub project's
+     ! project.xml
+    -->
+    <dependencies>
+
+        <!-- Maven plugins -->
+        <!--  1.5.2. is latest stable release compatible with maven 1.0.2 -->
+        <dependency>
+            <groupId>maven</groupId>
+            <artifactId>maven-artifact-plugin</artifactId>
+            <version>1.5.2</version>
+            <type>plugin</type>
+        </dependency>	
+
+        <!-- required for JDK 1.5 -->
+		<dependency>
+            <groupId>maven</groupId>
+            <artifactId>maven-clover-plugin</artifactId>
+            <version>1.10</version>
+            <type>plugin</type>
+        </dependency>		
+
+        <!-- Build/Test time only -->
+        <dependency>
+            <id>junit</id>
+            <version>3.8.1</version>
+            <url>http://junit.org</url>
+        		<properties>
+        			<scope>test</scope>
+        		</properties>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+    		<defaultGoal>multiproject:install</defaultGoal>
+        <sourceDirectory>${basedir}/src/java</sourceDirectory>       
+        <!-- Resources tat are packaged up inside the JAR file -->
+        <resources>
+            <resource>
+                <directory>${basedir}/src/java</directory>
+                <includes>
+                    <include>**/*.dtd</include>
+                    <include>**/*.xsd</include>
+                    <include>**/*.xhtml</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.png</include>
+                    <include>**/*.jpg</include>
+                    <include>**/*.gif</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+        <unitTest>
+            <includes>
+                <include>**/*Test.*</include>
+                <include>**/*TestCase.*</include>
+            </includes>
+            <excludes>
+                <exclude>**/Abstract*.*</exclude>
+            </excludes>
+            <resources>
+                <resource>
+                    <directory>${basedir}/src/test</directory>
+                    <includes>
+                        <include>**/*</include>
+                    </includes>
+                </resource>
+            </resources>
+        </unitTest>
+    </build>
+
+    <reports>
+        <report>maven-license-plugin</report>
+        <report>maven-simian-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-clover-plugin</report>
+        <report>maven-junit-report-plugin</report>        
+    </reports>
+
+</project>
+

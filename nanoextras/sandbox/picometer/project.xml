@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <id>nanocontainer-picometer</id>
+    <name>Nanocontainer Picometer</name>
+
+    <dependencies>
+        <dependency>
+            <id>asm</id>
+            <version>2.1</version>
+        </dependency>
+    </dependencies>
+
+</project>

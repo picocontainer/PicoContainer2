@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <id>nanocontainer-nanning</id>
+    <name>Nanocontainer Nanning</name>
+
+    <dependencies>
+        <dependency>
+            <id>nanning</id>
+            <version>0.9</version>
+            <url>http://nanning.codehaus.org/</url>
+        </dependency>
+    </dependencies>
+
+</project>

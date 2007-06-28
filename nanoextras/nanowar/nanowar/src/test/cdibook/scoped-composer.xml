@@ -1,0 +1,19 @@
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+
+<!-- START SNIPPET: xml -->
+    <context-param>
+        <param-name>org.nanocontainer.integrationkit.ContainerComposer</param-name>
+        <param-value>org.nanocontainer.nanowar.ScopedContainerComposer</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>org.nanocontainer.integrationkit.ContainerComposer.configuration</param-name>
+        <param-value>scoped-composer-config.xml</param-value>
+    </context-param>
+<!-- END SNIPPET: xml -->
+
+</web-app>
+
+

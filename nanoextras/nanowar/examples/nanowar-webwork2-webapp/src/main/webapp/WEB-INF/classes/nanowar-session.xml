@@ -1,0 +1,5 @@
+<container>
+	<component-implementation key='cheeseService'
+			class='org.nanocontainer.nanowar.sample.service.defaults.DefaultCheeseService'>
+	</component-implementation>
+</container>

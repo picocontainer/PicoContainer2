@@ -1,0 +1,20 @@
+<project>
+    <extend>${basedir}/../project.xml</extend>
+    <id>nanocontainer-idea</id>
+    <name>Nanocontainer IDEA</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>nanocontainer</groupId>
+            <artifactId>nanocontainer-swing</artifactId>
+            <version>${pom.currentVersion}</version>
+        </dependency>
+
+        <dependency>
+            <id>openapi</id>
+            <version></version>
+            <url>http://www.intellij.net/</url>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<h1>Introduction</h1>
+NanoContainer is collection of bespoke containers that deliver extra
+value to <a href="http://picocontainer.codehaus.org/">PicoContainer</a>.
+<br>
+<h2>StringRegistrationNanoContainer <br>
+</h2>
+This container takes strings (class names) instead of class definitions
+as PicoContainer does.&nbsp; This basically means that components can
+be
+soft configured one by one.<br>
+<br>
+Implementations -<br>
+<ul>
+  <li>StringRegistrationNanoContainerImpl&nbsp; - takes a parent
+container<br>
+  </li>
+  <li>StringRegistrationNanoContainerImpl.Default - no args</li>
+</ul>
+<pre>&nbsp;&nbsp;&nbsp; StringRegistrationNanoContainer nc = new StringRegistrationNanoContainerImpl.Default();</pre>
+<pre>&nbsp;&nbsp;&nbsp; nc.registerComponent("org.org.nanocontainer.testmodel.DefaultWebServerConfig");</pre>
+<pre>&nbsp;&nbsp;&nbsp; nc.registerComponent("org.org.nanocontainer.testmodel.WebServer", "org.org.nanocontainer.testmodel.WebServerImpl");</pre>
+<pre>&nbsp;&nbsp;&nbsp; nc.start();</pre>
+<h2>InputSourceRegistrationNanoContainer </h2>
+This container takes a single InputSource (from the SAX API) .&nbsp;
+This basically
+means that components can be
+soft configured in a single document.&nbsp; The single implementation
+takes
+a DOM document. That document mabe inlined or external to the class
+that uses the container. External could be on file system, in jar, on
+URL, in fact anything.<br>
+<br>
+Implementations -<br>
+<ul>
+  <li>DomRegistrationNanoContainer - document builder (DOM) and parent
+container</li>
+  <li>DomRegistrationNanoContainer.Default - no args</li>
+  <li>DomRegistrationNanoContainer.WithParentContainer - parent
+container</li>
+  <li>DomRegistrationNanoContainer.WithDocumentBuilder - document
+builder</li>
+</ul>
+<pre>&nbsp;&nbsp;&nbsp; InputSourceRegistrationNanoContainer nc = new DomRegistrationNanoContainer.Default();</pre>
+<pre>&nbsp;&nbsp;&nbsp; nc.registerComponents(new InputSource(new StringReader(</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "&lt;components&gt;" +</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;component class=\"org.org.nanocontainer.testmodel.DefaultWebServerConfig\"/&gt;" +</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;component type=\"org.org.nanocontainer.testmodel.WebServer\" class=\"org.org.nanocontainer.testmodel.WebServerImpl\"/&gt;" +</pre>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "&lt;/components&gt;")));</pre>
+<pre>&nbsp;&nbsp;&nbsp; nc.start();</pre>
+<h2>AggregatingNanoContainer<br>
+</h2>
+This container takes many components and aggregates them together to
+become a single component that offers all of the methods that each
+would individually offer.<br>
+<br>
+Implementations -<br>
+<ul>
+  <li>AggregatingNanoContainer - object array of components, invocation
+handler<br>
+  </li>
+  <li>AggregatingNanoContainer.ComponentsFromContainer - container ro
+aggregate components for, invocation handler</li>
+  <li>AggregatingNanoContainer.Default - container ro
+aggregate components for</li>
+</ul>
+<pre>    PicoContainer pc = // some Picocontainer with components in it.</pre>
+<pre>    AggregatedContainersContainer acc = new AggregatedContainersContainer(pc,getComponents());</pre>
+NanningComponentFactory
+The nanning component factory basically adds aspect orientated
+programming (AOP) capability to arbitary components with a normal
+PicoContainer.<br>
+<br>
+<br>
+</body>
+</html>
