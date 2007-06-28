@@ -8,7 +8,7 @@ import org.picocontainer.injectors.MethodAnnotationInjectionFactory;
 
 public class Injectors {
 
-    public static InjectionFactory anyDI() {
+    public static InjectionFactory adaptiveDI() {
         return new AdaptiveInjectionFactory();
     }
 
@@ -20,11 +20,11 @@ public class Injectors {
         return new ConstructorInjectionFactory();
     }
 
-    public static InjectionFactory MADI() {
+    public static InjectionFactory methodAnnotationDI() {
         return new MethodAnnotationInjectionFactory();
     }
 
-    public static InjectionFactory FADI() {
+    public static InjectionFactory fieldAnnotationDI() {
         return new FieldAnnotationInjectionFactory();
     }
 

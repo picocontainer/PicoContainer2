@@ -17,12 +17,10 @@ import org.picocontainer.ParameterName;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.PropertyApplyingBehavior;
 import org.picocontainer.behaviors.CachingBehavior;
-import org.picocontainer.injectors.AbstractInjector;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Member;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -69,28 +67,6 @@ public class SetterInjector extends AbstractInjector {
      */
     public SetterInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
-    }
-
-
-    /**
-     * Constructs a SetterInjectionComponentAdapter with a {@link org.picocontainer.monitors.DelegatingComponentMonitor} as default.
-     *
-     * @param componentKey            the search key for this implementation
-     * @param componentImplementation the concrete implementation
-     * @param parameters              the parameters to use for the initialization
-     * @throws NotConcreteRegistrationException
-     *                              if the implementation is not a concrete class.
-     * @throws NullPointerException if one of the parameters is <code>null</code>
-     */
-    public SetterInjector(final Serializable componentKey, final Class componentImplementation, Parameter... parameters) throws NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters);
-    }
-
-
-    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
-        final Constructor constructor = getConstructor();
-        getMatchingParameterListForSetters(container);
-        return constructor;
     }
 
     private Constructor getConstructor()  {
@@ -153,9 +129,7 @@ public class SetterInjector extends AbstractInjector {
         return matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
     }
 
-    public Object getComponentInstance(final PicoContainer container) throws
-                                                                      PicoCompositionException
-    {
+    public Object getComponentInstance(final PicoContainer container) throws PicoCompositionException {
         final Constructor constructor = getConstructor();
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
@@ -177,18 +151,9 @@ public class SetterInjector extends AbstractInjector {
                         }
                         throw new PicoCompositionException(e.getTargetException());
                     } catch (InstantiationException e) {
-                        // can't get here because checkConcrete() will catch it earlier, but see PICO-191
-                        ///CLOVER:OFF
-                        componentMonitor.instantiationFailed(container, SetterInjector.this, constructorToUse, e);
-                        throw new PicoCompositionException("Should never get here");
-                        ///CLOVER:ON
+                        return caughtInstantiationException(componentMonitor, constructor, e, container);
                     } catch (IllegalAccessException e) {
-                        // can't get here because either filtered or access mode set
-                        ///CLOVER:OFF
-                        componentMonitor.instantiationFailed(container, SetterInjector.this, constructorToUse, e);
-                        throw new PicoCompositionException(e);
-                        ///CLOVER:ON
-                    }
+                        return caughtIllegalAccessException(componentMonitor, constructor, e, container);                    }
                     Member member = null;
                     Object injected[] = new Object[injectionMembers.size()];
                     try {
@@ -208,16 +173,9 @@ public class SetterInjector extends AbstractInjector {
                                                       constructorToUse, componentInstance, injected, System.currentTimeMillis() - startTime);
                         return componentInstance;
                     } catch (InvocationTargetException e) {
-                        componentMonitor.invocationFailed(member, componentInstance, e);
-                        if (e.getTargetException() instanceof RuntimeException) {
-                            throw (RuntimeException) e.getTargetException();
-                        } else if (e.getTargetException() instanceof Error) {
-                            throw (Error) e.getTargetException();
-                        }
-                        throw new PicoCompositionException(e.getTargetException());
+                        return caughtInvocationTargetException(componentMonitor, member, componentInstance, e);
                     } catch (IllegalAccessException e) {
-                        componentMonitor.invocationFailed(member, componentInstance, e);
-                        throw new PicoCompositionException(e);
+                        return caughtIllegalAccessException(componentMonitor, member, componentInstance, e);
                     }
 
                 }

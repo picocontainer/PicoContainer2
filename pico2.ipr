@@ -345,34 +345,34 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/nanoextras2/tools/NanoContainer-Tools.iml" filepath="$PROJECT_DIR$/nanoextras2/tools/NanoContainer-Tools.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/nanowar-axis/axis.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/nanowar-axis/axis.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nanoextras2/persistence/persistence-hibernate-annotations/hibernate-annotations.iml" filepath="$PROJECT_DIR$/nanoextras2/persistence/persistence-hibernate-annotations/hibernate-annotations.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nanoextras2/persistence/persistence-hibernate2/hibernate2.iml" filepath="$PROJECT_DIR$/nanoextras2/persistence/persistence-hibernate2/hibernate2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nanoextras2/persistence/persistence-hibernate3/hibernate3.iml" filepath="$PROJECT_DIR$/nanoextras2/persistence/persistence-hibernate3/hibernate3.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/nanowar-jsf/jsf.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/nanowar-jsf/jsf.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nano2/container-aop/nano-aop.iml" filepath="$PROJECT_DIR$/nano2/container-aop/nano-aop.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nano2/booter/nano-booter.iml" filepath="$PROJECT_DIR$/nano2/booter/nano-booter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nano2/container-bsh/nano-bsh.iml" filepath="$PROJECT_DIR$/nano2/container-bsh/nano-bsh.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nano2/deployer/nano-deployer.iml" filepath="$PROJECT_DIR$/nano2/deployer/nano-deployer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nano2/container-groovy/nano-groovy.iml" filepath="$PROJECT_DIR$/nano2/container-groovy/nano-groovy.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nano2/container-jruby/nano-jruby.iml" filepath="$PROJECT_DIR$/nano2/container-jruby/nano-jruby.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nano2/container-jython/nano-jython.iml" filepath="$PROJECT_DIR$/nano2/container-jython/nano-jython.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nanoextras2/remoting/remoting/nano-remoting.iml" filepath="$PROJECT_DIR$/nanoextras2/remoting/remoting/nano-remoting.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nano2/container-rhino/nano-rhino.iml" filepath="$PROJECT_DIR$/nano2/container-rhino/nano-rhino.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nano2/container-tck/nano-tck.iml" filepath="$PROJECT_DIR$/nano2/container-tck/nano-tck.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nano2/testmodel/nano-testmodel.iml" filepath="$PROJECT_DIR$/nano2/testmodel/nano-testmodel.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nano2/webcontainer/nano-webcontainer.iml" filepath="$PROJECT_DIR$/nano2/webcontainer/nano-webcontainer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nano2/container/nanocontainer.iml" filepath="$PROJECT_DIR$/nano2/container/nanocontainer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/nanowar/nanowar.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/nanowar/nanowar.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/nanowar-nanoweb/nanoweb.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/nanowar-nanoweb/nanoweb.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nanoextras2/persistence/persistence/persistence.iml" filepath="$PROJECT_DIR$/nanoextras2/persistence/persistence/persistence.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pico2/container/picocontainer.iml" filepath="$PROJECT_DIR$/pico2/container/picocontainer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pico2/gems/picocontainer-gems.iml" filepath="$PROJECT_DIR$/pico2/gems/picocontainer-gems.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pico2/tck/picocontainer-tck.iml" filepath="$PROJECT_DIR$/pico2/tck/picocontainer-tck.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/nanowar-struts/struts.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/nanowar-struts/struts.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/nanowar-webwork/webwork.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/nanowar-webwork/webwork.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nanoextras2/nanowar/nanowar-webwork2/webwork2.iml" filepath="$PROJECT_DIR$/nanoextras2/nanowar/nanowar-webwork2/webwork2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras/tools/NanoContainer-Tools.iml" filepath="$PROJECT_DIR$/nanoextras/tools/NanoContainer-Tools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras/nanowar/nanowar-axis/axis.iml" filepath="$PROJECT_DIR$/nanoextras/nanowar/nanowar-axis/axis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras/persistence/persistence-hibernate-annotations/hibernate-annotations.iml" filepath="$PROJECT_DIR$/nanoextras/persistence/persistence-hibernate-annotations/hibernate-annotations.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras/persistence/persistence-hibernate2/hibernate2.iml" filepath="$PROJECT_DIR$/nanoextras/persistence/persistence-hibernate2/hibernate2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras/persistence/persistence-hibernate3/hibernate3.iml" filepath="$PROJECT_DIR$/nanoextras/persistence/persistence-hibernate3/hibernate3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras/nanowar/nanowar-jsf/jsf.iml" filepath="$PROJECT_DIR$/nanoextras/nanowar/nanowar-jsf/jsf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nano/container-aop/nano-aop.iml" filepath="$PROJECT_DIR$/nano/container-aop/nano-aop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nano/booter/nano-booter.iml" filepath="$PROJECT_DIR$/nano/booter/nano-booter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nano/container-bsh/nano-bsh.iml" filepath="$PROJECT_DIR$/nano/container-bsh/nano-bsh.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nano/deployer/nano-deployer.iml" filepath="$PROJECT_DIR$/nano/deployer/nano-deployer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nano/container-groovy/nano-groovy.iml" filepath="$PROJECT_DIR$/nano/container-groovy/nano-groovy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nano/container-jruby/nano-jruby.iml" filepath="$PROJECT_DIR$/nano/container-jruby/nano-jruby.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nano/container-jython/nano-jython.iml" filepath="$PROJECT_DIR$/nano/container-jython/nano-jython.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras/remoting/remoting/nano-remoting.iml" filepath="$PROJECT_DIR$/nanoextras/remoting/remoting/nano-remoting.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nano/container-rhino/nano-rhino.iml" filepath="$PROJECT_DIR$/nano/container-rhino/nano-rhino.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nano/container-tck/nano-tck.iml" filepath="$PROJECT_DIR$/nano/container-tck/nano-tck.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nano/testmodel/nano-testmodel.iml" filepath="$PROJECT_DIR$/nano/testmodel/nano-testmodel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nano/webcontainer/nano-webcontainer.iml" filepath="$PROJECT_DIR$/nano/webcontainer/nano-webcontainer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nano/container/nanocontainer.iml" filepath="$PROJECT_DIR$/nano/container/nanocontainer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras/nanowar/nanowar/nanowar.iml" filepath="$PROJECT_DIR$/nanoextras/nanowar/nanowar/nanowar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras/nanowar/nanowar-nanoweb/nanoweb.iml" filepath="$PROJECT_DIR$/nanoextras/nanowar/nanowar-nanoweb/nanoweb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras/persistence/persistence/persistence.iml" filepath="$PROJECT_DIR$/nanoextras/persistence/persistence/persistence.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pico/container/picocontainer.iml" filepath="$PROJECT_DIR$/pico/container/picocontainer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pico/gems/picocontainer-gems.iml" filepath="$PROJECT_DIR$/pico/gems/picocontainer-gems.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pico/tck/picocontainer-tck.iml" filepath="$PROJECT_DIR$/pico/tck/picocontainer-tck.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras/nanowar/nanowar-struts/struts.iml" filepath="$PROJECT_DIR$/nanoextras/nanowar/nanowar-struts/struts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras/nanowar/nanowar-webwork/webwork.iml" filepath="$PROJECT_DIR$/nanoextras/nanowar/nanowar-webwork/webwork.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras/nanowar/nanowar-webwork2/webwork2.iml" filepath="$PROJECT_DIR$/nanoextras/nanowar/nanowar-webwork2/webwork2.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK" />

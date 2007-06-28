@@ -7,9 +7,9 @@ import org.picocontainer.behaviors.SynchronizedBehaviorFactory;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
 import static org.picocontainer.injectors.Injectors.CDI;
-import static org.picocontainer.injectors.Injectors.MADI;
+import static org.picocontainer.injectors.Injectors.methodAnnotationDI;
 import static org.picocontainer.injectors.Injectors.SDI;
-import static org.picocontainer.injectors.Injectors.anyDI;
+import static org.picocontainer.injectors.Injectors.adaptiveDI;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
@@ -37,7 +37,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder(PicoContainer parentContainer) {
-        this(parentContainer, anyDI());
+        this(parentContainer, adaptiveDI());
     }
 
     public PicoBuilder(InjectionFactory injectionType) {
@@ -45,7 +45,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder() {
-        this(new EmptyPicoContainer(), anyDI());
+        this(new EmptyPicoContainer(), adaptiveDI());
     }
 
     private final Stack<Object> componentFactories = new Stack<Object>();
@@ -131,7 +131,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withAnnotationInjection() {
-        injectionType = MADI();
+        injectionType = methodAnnotationDI();
         return this;
     }
 

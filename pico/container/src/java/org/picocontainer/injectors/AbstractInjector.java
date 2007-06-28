@@ -25,6 +25,7 @@ import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Member;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Arrays;
@@ -167,18 +168,40 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
         return constructor.newInstance(parameters);
     }
 
-    /**
-     * Find and return the greediest satisfiable constructor.
-     * 
-     * @param container the PicoContainer to resolve dependencies.
-     * @return the found constructor.
-     * @throws PicoCompositionException
-     * @throws UnsatisfiableDependenciesException
-     * @throws NotConcreteRegistrationException
-     */
-    protected abstract Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws
-                                                                                               PicoCompositionException;
+    protected Object caughtInstantiationException(ComponentMonitor componentMonitor,
+                                                Constructor constructor,
+                                                InstantiationException e, PicoContainer container) {
+        // can't get here because checkConcrete() will catch it earlier, but see PICO-191
+        componentMonitor.instantiationFailed(container, this, constructor, e);
+        throw new PicoCompositionException("Should never get here");
+    }
 
+    protected Object caughtIllegalAccessException(ComponentMonitor componentMonitor,
+                                                Constructor constructor,
+                                                IllegalAccessException e, PicoContainer container) {
+        // can't get here because either filtered or access mode set
+        componentMonitor.instantiationFailed(container, this, constructor, e);
+        throw new PicoCompositionException(e);
+    }
+
+    protected Object caughtInvocationTargetException(ComponentMonitor componentMonitor,
+                                                   Member member,
+                                                   Object componentInstance, InvocationTargetException e) {
+        componentMonitor.invocationFailed(member, componentInstance, e);
+        if (e.getTargetException() instanceof RuntimeException) {
+            throw (RuntimeException) e.getTargetException();
+        } else if (e.getTargetException() instanceof Error) {
+            throw (Error) e.getTargetException();
+        }
+        throw new PicoCompositionException(e.getTargetException());
+    }
+
+    protected Object caughtIllegalAccessException(ComponentMonitor componentMonitor,
+                                                Member member,
+                                                Object componentInstance, IllegalAccessException e) {
+        componentMonitor.invocationFailed(member, componentInstance, e);
+        throw new PicoCompositionException(e);
+    }
 
     /**
      * Abstract utility class to detect recursion cycles.

@@ -15,7 +15,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ParameterName;
-import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.CachingBehavior;
 
@@ -214,17 +213,10 @@ public class ConstructorInjector extends AbstractInjector {
                         }
                         throw new PicoCompositionException(e.getTargetException());
                     } catch (InstantiationException e) {
-                        // can't get here because checkConcrete() will catch it earlier, but see PICO-191
-                        ///CLOVER:OFF
-                        componentMonitor.instantiationFailed(container, ConstructorInjector.this, constructor, e);
-                        throw new PicoCompositionException("Should never get here");
-                        ///CLOVER:ON
+                        return caughtInstantiationException(componentMonitor, constructor, e, container);
                     } catch (IllegalAccessException e) {
-                        // can't get here because either filtered or access mode set
-                        ///CLOVER:OFF
-                        componentMonitor.instantiationFailed(container, ConstructorInjector.this, constructor, e);
-                        throw new PicoCompositionException(e);
-                        ///CLOVER:ON
+                        return caughtIllegalAccessException(componentMonitor, constructor, e, container);
+
                     }
                 }
             };
