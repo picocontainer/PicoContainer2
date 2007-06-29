@@ -186,24 +186,5 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
         return delegate instanceof LifecycleStrategy && ((LifecycleStrategy) delegate).hasLifecycle(type);
     }
     
-    public String toString() {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("[");
-        buffer.append(getPrintableClassName());
-        buffer.append(" delegate=");
-        buffer.append(delegate);
-        buffer.append("]");
-        return buffer.toString();
-    }
-    
-    private String getPrintableClassName() {
-        String name = getClass().getName();
-        name = name.substring(name.lastIndexOf('.')+1);
-        if (name.endsWith("ComponentAdapter")) {
-            name = name.substring(0, name.length() - "ComponentAdapter".length()) + "CA";
-        }
-        return name;
-    }
-
 }
 

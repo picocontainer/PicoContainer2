@@ -35,8 +35,7 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
     }
 
     public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
-                                     Constructor constructor
-    ) {
+                                     Constructor constructor) {
         return delegate.instantiating(container, componentAdapter, constructor);
     }
 

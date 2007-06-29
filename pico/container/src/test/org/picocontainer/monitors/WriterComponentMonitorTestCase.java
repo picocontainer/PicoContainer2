@@ -79,21 +79,29 @@ public class WriterComponentMonitorTestCase extends TestCase {
                                                    AbstractComponentMonitor.toString(method), this, "doh") +NL,  out.toString());
     }
 
-        public void testShouldTraceLifecycleInvocationFailed() {
+    public void testShouldTraceLifecycleInvocationFailed() {
         try {
-            componentMonitor.lifecycleInvocationFailed(new TransientPicoContainer(), new AbstractAdapter(Map.class, HashMap.class){
-                public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
-                    return "x";
-                }
-                public void verify(PicoContainer container) throws PicoCompositionException {
-                }
-            }, method, "fooooo", new RuntimeException("doh"));
+            componentMonitor.lifecycleInvocationFailed(new TransientPicoContainer(),
+                                                       new AbstractAdapter(Map.class, HashMap.class) {
+                                                           public Object getComponentInstance(PicoContainer container)
+                                                               throws PicoCompositionException {
+                                                               return "x";
+                                                           }
+
+                                                           public void verify(PicoContainer container)
+                                                               throws PicoCompositionException{
+                                                           }
+                                                       },
+                                                       method,
+                                                       "fooooo",
+                                                       new RuntimeException("doh"));
             fail("should have barfed");
         } catch (PicoLifecycleException e) {
             //expected
         }
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.LIFECYCLE_INVOCATION_FAILED,
-                                                   AbstractComponentMonitor.toString(method), "fooooo", "doh") +NL,  out.toString());
+                                                   AbstractComponentMonitor.toString(method), "fooooo", "doh") + NL,
+                     out.toString());
     }
 
     public void testNoComponent() {
