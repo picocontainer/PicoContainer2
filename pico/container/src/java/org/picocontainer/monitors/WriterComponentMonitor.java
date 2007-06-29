@@ -35,8 +35,7 @@ public class WriterComponentMonitor extends AbstractComponentMonitor {
     private final ComponentMonitor delegate;
 
     public WriterComponentMonitor(Writer out) {
-        this.out = new PrintWriter(out);
-        delegate = NullComponentMonitor.getInstance();
+        this(out, NullComponentMonitor.getInstance());
     }
 
     public WriterComponentMonitor(Writer out, ComponentMonitor delegate) {

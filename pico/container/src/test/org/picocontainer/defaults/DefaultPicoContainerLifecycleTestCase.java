@@ -26,6 +26,7 @@ import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.monitors.LifecycleComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.LifecycleComponentMonitor.LifecycleFailuresException;
 import org.picocontainer.testmodel.RecordingLifecycle.FiveTriesToBeMalicious;
 import org.picocontainer.testmodel.RecordingLifecycle.Four;
@@ -421,7 +422,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         s2.expects(once()).method("start");
         s2.expects(once()).method("stop");
 
-        LifecycleComponentMonitor lifecycleComponentMonitor = new LifecycleComponentMonitor();
+        LifecycleComponentMonitor lifecycleComponentMonitor = new LifecycleComponentMonitor(NullComponentMonitor.getInstance());
 
         DefaultPicoContainer dpc = new DefaultPicoContainer(lifecycleComponentMonitor);
         dpc.addComponent("foo", s1.proxy());

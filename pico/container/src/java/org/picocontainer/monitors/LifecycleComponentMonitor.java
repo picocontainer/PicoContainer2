@@ -31,7 +31,7 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
     }
 
     public LifecycleComponentMonitor() {
-        delegate = new NullComponentMonitor();
+        this(new NullComponentMonitor());
     }
 
     public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,

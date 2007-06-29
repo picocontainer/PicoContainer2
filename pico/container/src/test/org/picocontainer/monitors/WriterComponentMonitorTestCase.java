@@ -4,10 +4,20 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoLifecycleException;
+import org.picocontainer.adapters.AbstractAdapter;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.containers.TransientPicoContainer;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -68,5 +78,30 @@ public class WriterComponentMonitorTestCase extends TestCase {
         assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.INVOCATION_FAILED,
                                                    AbstractComponentMonitor.toString(method), this, "doh") +NL,  out.toString());
     }
+
+        public void testShouldTraceLifecycleInvocationFailed() {
+        try {
+            componentMonitor.lifecycleInvocationFailed(new TransientPicoContainer(), new AbstractAdapter(Map.class, HashMap.class){
+                public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
+                    return "x";
+                }
+                public void verify(PicoContainer container) throws PicoCompositionException {
+                }
+            }, method, "fooooo", new RuntimeException("doh"));
+            fail("should have barfed");
+        } catch (PicoLifecycleException e) {
+            //expected
+        }
+        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.LIFECYCLE_INVOCATION_FAILED,
+                                                   AbstractComponentMonitor.toString(method), "fooooo", "doh") +NL,  out.toString());
+    }
+
+    public void testNoComponent() {
+        
+        componentMonitor.noComponent(new TransientPicoContainer(), "foo");
+        assertEquals(WriterComponentMonitor.format(WriterComponentMonitor.NO_COMPONENT,
+                                                   "foo") +NL,  out.toString());
+    }
+
 
 }

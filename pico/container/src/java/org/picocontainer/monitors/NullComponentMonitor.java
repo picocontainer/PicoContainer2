@@ -33,8 +33,7 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
     private static NullComponentMonitor instance;
 
     public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
-                                     Constructor constructor
-    ) {
+                                     Constructor constructor) {
         return constructor;
     }
 
