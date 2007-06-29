@@ -24,26 +24,26 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  * @author Stephen Molitor
  * @version $Revision$
  */
-public class AspectsComponentAdapterFactory extends AbstractBehaviorFactory {
+public class AspectsBehaviorFactory extends AbstractBehaviorFactory {
 
     private final AspectsApplicator aspectsApplicator;
 
     /**
-     * Creates a new <code>AspectsComponentAdapterFactory</code>. The factory
-     * will produce <code>AspectsComponentAdapter</code> objects that will use
+     * Creates a new <code>AspectsBehaviorFactory</code>. The factory
+     * will produce <code>AspectsBehavior</code> objects that will use
      * <code>aspectsApplicator</code> to apply aspects to components produced
      * by <code>delegate</code>.
      *
      * @param aspectsApplicator used to apply the aspects.
      */
-    public AspectsComponentAdapterFactory(AspectsApplicator aspectsApplicator) {
+    public AspectsBehaviorFactory(AspectsApplicator aspectsApplicator) {
         this.aspectsApplicator = aspectsApplicator;
     }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation,
                                                    Parameter[] parameters) throws PicoCompositionException
     {
-        return new AspectsComponentAdapter(aspectsApplicator, super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+        return new AspectsBehavior(aspectsApplicator, super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                                            componentCharacteristics, componentKey,
                 componentImplementation, parameters));
     }

@@ -11,6 +11,7 @@
 package org.picocontainer.behaviors;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -57,9 +58,7 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
         return delegate.getComponentImplementation();
     }
 
-    public Object getComponentInstance(PicoContainer container) throws
-                                                                PicoCompositionException
-    {
+    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
         return delegate.getComponentInstance(container);
     }
 
@@ -137,6 +136,7 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
      * {@inheritDoc}
      */
     public boolean hasLifecycle() {
+        //throw new RuntimeException();
         if ( delegate instanceof LifecycleManager ){
             return ((LifecycleManager)delegate).hasLifecycle();
         }

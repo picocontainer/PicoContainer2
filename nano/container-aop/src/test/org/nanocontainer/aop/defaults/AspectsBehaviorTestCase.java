@@ -19,7 +19,7 @@ import org.picocontainer.DefaultPicoContainer;
 /**
  * @author Stephen Molitor
  */
-public final class AspectsComponentAdapterTestCase extends MockObjectTestCase {
+public final class AspectsBehaviorTestCase extends MockObjectTestCase {
 
     private final Mock mockApplicator = mock(AspectsApplicator.class);
     private final Mock mockComponentAdapterDelegate = mock(ComponentAdapter.class);
@@ -32,7 +32,7 @@ public final class AspectsComponentAdapterTestCase extends MockObjectTestCase {
         mockApplicator.expects(once()).method("applyAspects").with(same("componentKey"), same("addComponent"),
                 same(container)).will(returnValue("wrappedComponent"));
 
-        ComponentAdapter adapter = new AspectsComponentAdapter((AspectsApplicator) mockApplicator.proxy(),
+        ComponentAdapter adapter = new AspectsBehavior((AspectsApplicator) mockApplicator.proxy(),
                 (ComponentAdapter) mockComponentAdapterDelegate.proxy());
         Object component = adapter.getComponentInstance(container);
         assertEquals("wrappedComponent", component);

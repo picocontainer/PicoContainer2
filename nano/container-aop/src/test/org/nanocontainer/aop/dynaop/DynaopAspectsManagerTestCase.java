@@ -16,7 +16,7 @@ import org.nanocontainer.aop.ComponentPointcut;
 import org.nanocontainer.aop.LoggingInterceptor;
 import org.nanocontainer.aop.MethodPointcut;
 import org.nanocontainer.aop.PointcutsFactory;
-import org.nanocontainer.aop.defaults.AspectsComponentAdapterFactory;
+import org.nanocontainer.aop.defaults.AspectsBehaviorFactory;
 import org.nanocontainer.testmodel.AnotherInterface;
 import org.nanocontainer.testmodel.Dao;
 import org.nanocontainer.testmodel.DaoImpl;
@@ -40,7 +40,7 @@ import java.lang.reflect.Method;
 public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
 
     private final AspectsManager aspects = new DynaopAspectsManager();
-    private final ComponentFactory componentFactory = new CachingBehaviorFactory().forThis(new AspectsComponentAdapterFactory(aspects).forThis(new ConstructorInjectionFactory()));
+    private final ComponentFactory componentFactory = new CachingBehaviorFactory().forThis(new AspectsBehaviorFactory(aspects).forThis(new ConstructorInjectionFactory()));
     private final MutablePicoContainer pico = new DefaultPicoContainer(componentFactory);
     private final PointcutsFactory cuts = aspects.getPointcutsFactory();
 
