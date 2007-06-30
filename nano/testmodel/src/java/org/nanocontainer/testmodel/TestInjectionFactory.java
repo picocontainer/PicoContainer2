@@ -12,17 +12,16 @@ import org.picocontainer.injectors.AdaptiveInjectionFactory;
  * @author Paul Hammant
  * @version $Revision$
  */
-public final class TestComponentAdapterFactory extends AdaptiveInjectionFactory {
+public final class TestInjectionFactory extends AdaptiveInjectionFactory {
 
     public final StringBuffer sb;
 
-    public TestComponentAdapterFactory(StringBuffer sb) {
+    public TestInjectionFactory(StringBuffer sb) {
         this.sb = sb;
     }
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter[] parameters) throws
-                                                                                                                                                                                                                                                        PicoCompositionException
-    {
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
+                    ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoCompositionException {
         sb.append("called");
         return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                             componentCharacteristics, componentKey, componentImplementation, parameters);

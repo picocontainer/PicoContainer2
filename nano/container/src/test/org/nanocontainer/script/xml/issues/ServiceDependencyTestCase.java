@@ -10,16 +10,16 @@ import org.picocontainer.injectors.SetterInjectionFactory;
 
 public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderTestCase {
 
-    public static class MySetterInjectionComponentAdapterFactory extends SetterInjectionFactory {
-        public MySetterInjectionComponentAdapterFactory() {
+    public static class MySetterInjectionFactory extends SetterInjectionFactory {
+        public MySetterInjectionFactory() {
         }
     }
 
     //TODO - make sure that this container builder can supply a LifecycleStrategy.
-    //       meaning MySetterInjectionComponentAdapterFactory can be swapped for SetterInjectionComponentAdapterFactory
+    //       meaning MySetterInjectionFactory can be swapped for SetterInjectionComponentAdapterFactory
     public void testCanInstantiateProcessWithSDIDependencies() {
         Reader script = new StringReader("" +
-                "<container component-adapter-factory='"+ MySetterInjectionComponentAdapterFactory.class.getName()+"'>"+
+                "<container component-adapter-factory='"+ MySetterInjectionFactory.class.getName()+"'>"+
                 "  <component-implementation class='"+Service1Impl.class.getName()+"'/>"+
                 "  <component-implementation class='"+ServiceAImpl.class.getName()+"'/>"+
                 "  <component-implementation class='"+Service2Impl.class.getName()+"'/>"+

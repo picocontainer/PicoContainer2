@@ -27,9 +27,7 @@ public class AspectsBehavior extends AbstractBehavior {
         this.aspectsApplicator = aspectsApplicator;
     }
 
-    public Object getComponentInstance(PicoContainer pico) throws
-                                                           PicoCompositionException
-    {
+    public Object getComponentInstance(PicoContainer pico) throws PicoCompositionException {
         Object component = super.getComponentInstance(pico);
         return aspectsApplicator.applyAspects(getComponentKey(), component, pico);
     }
