@@ -49,7 +49,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  * <p>
  * If you want to cache the EJB with a {@link CachingBehavior}, you have to use a
  * {@link org.picocontainer.gems.adapters.ThreadLocalReference}, since you may not use an instance of the EJB in
- * different threads. Use an {@link EJBClientComponentAdapterFactory} for such a completely transparent
+ * different threads. Use an {@link EJBClientBehaviorFactory} for such a completely transparent
  * {@link ThreadLocal} support.
  * </p>
  * @author J&ouml;rg Schaible

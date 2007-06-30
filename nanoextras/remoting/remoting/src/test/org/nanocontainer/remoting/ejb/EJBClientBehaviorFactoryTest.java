@@ -30,10 +30,10 @@ import org.jmock.cglib.MockObjectTestCase;
 
 
 /**
- * Unit test for EJBClientComponentAdapterFactory.
+ * Unit test for EJBClientBehaviorFactory.
  * @author J&ouml;rg Schaible
  */
-public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
+public class EJBClientBehaviorFactoryTest extends MockObjectTestCase {
 
     private Mock m_initialContextMock;
     private Properties m_systemProperties;
@@ -63,7 +63,7 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
      */
     public final void testSystemInitialContext() {
         System.setProperty(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
-        final ComponentFactory componentFactory = new EJBClientComponentAdapterFactory();
+        final ComponentFactory componentFactory = new EJBClientBehaviorFactory();
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Hello", Hello.class, null);
         assertNotNull(componentAdapter);
         final Object hello1 = componentAdapter.getComponentInstance(null);
@@ -80,7 +80,7 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
     public final void testPreparedInitialContext() {
         final Hashtable env = new Hashtable();
         env.put(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
-        final ComponentFactory componentFactory = new EJBClientComponentAdapterFactory(env);
+        final ComponentFactory componentFactory = new EJBClientBehaviorFactory(env);
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Hello", Hello.class, null);
         assertNotNull(componentAdapter);
         final Object hello1 = componentAdapter.getComponentInstance(null);
@@ -97,7 +97,7 @@ public class EJBClientComponentAdapterFactoryTest extends MockObjectTestCase {
     public void testClassNotFoundIsConverted() {
         final Hashtable env = new Hashtable();
         env.put(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
-        final ComponentFactory componentFactory = new EJBClientComponentAdapterFactory(env, true);
+        final ComponentFactory componentFactory = new EJBClientBehaviorFactory(env, true);
         try {
             componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Foo", Test.class, null);
             fail("Should have thrown a PicoCompositionException");

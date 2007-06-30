@@ -22,7 +22,7 @@ import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.gems.adapters.ThreadLocalComponentAdapter;
+import org.picocontainer.gems.adapters.ThreadLocalBehavior;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
@@ -32,34 +32,34 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
  * {@link ComponentFactory}for EJB components. The instantiated components are cached for each {@link Thread}.
  * @author J&ouml;rg Schaible
  */
-public class EJBClientComponentAdapterFactory implements ComponentFactory {
+public class EJBClientBehaviorFactory implements ComponentFactory {
 
     private final Hashtable environment;
     private final boolean earlyBinding;
     private transient ProxyFactory proxyFactory;
 
     /**
-     * Construct an EJBClientComponentAdapterFactory using the default {@link InitialContext} and late binding.
+     * Construct an EJBClientBehaviorFactory using the default {@link InitialContext} and late binding.
      */
-    public EJBClientComponentAdapterFactory() {
+    public EJBClientBehaviorFactory() {
         this(null);
     }
 
     /**
-     * Construct an EJBClientComponentAdapterFactory using an {@link InitialContext} with a special environment.
+     * Construct an EJBClientBehaviorFactory using an {@link InitialContext} with a special environment.
      * @param environment the environment and late binding
      */
-    public EJBClientComponentAdapterFactory(final Hashtable environment) {
+    public EJBClientBehaviorFactory(final Hashtable environment) {
         this(environment, false);
     }
 
     /**
-     * Construct an EJBClientComponentAdapterFactory using an {@link InitialContext} with a special environment and
+     * Construct an EJBClientBehaviorFactory using an {@link InitialContext} with a special environment and
      * binding.
      * @param environment the environment.
      * @param earlyBinding <code>true</code> for early binding of the {@link EJBClientAdapter}.
      */
-    public EJBClientComponentAdapterFactory(final Hashtable environment, final boolean earlyBinding) {
+    public EJBClientBehaviorFactory(final Hashtable environment, final boolean earlyBinding) {
         super();
         this.environment = environment;
         this.earlyBinding = earlyBinding;
@@ -85,7 +85,7 @@ public class EJBClientComponentAdapterFactory implements ComponentFactory {
             throws PicoCompositionException
     {
         try {
-            return new ThreadLocalComponentAdapter(new EJBClientAdapter(
+            return new ThreadLocalBehavior(new EJBClientAdapter(
                 componentKey, componentImplementation, environment, earlyBinding), proxyFactory);
         } catch (final ClassNotFoundException e) {
             throw new PicoCompositionException("Home interface not found", e);
