@@ -76,6 +76,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         foo = foo.replaceAll("</","");
         foo = foo.replaceAll("<","");
         foo = foo.replaceAll(">","");
+        foo = foo.replaceAll("\n  startedComponentAdapters","");
         foo = foo.replaceAll("\n  childrenStarted","");
         foo = foo.replaceAll("\n  componentAdapters","");
         foo = foo.replaceAll("\n  orderedComponentAdapters","");
@@ -96,7 +97,6 @@ public class PicoGemsBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n  componentMonitor\n","\n");
         foo = foo.replaceAll("\n  lifecycleManager","");
         foo = foo.replaceAll("class=\"org.picocontainer.DefaultPicoContainer_1\"","");
-        foo = foo.replaceAll("class=\"org.picocontainer.DefaultPicoContainer_OrderedComponentAdapterLifecycleManager\"","");
         foo = foo.replaceAll("class=","=");
         foo = foo.replaceAll("\"","");
         foo = foo.replaceAll(" \n","\n");

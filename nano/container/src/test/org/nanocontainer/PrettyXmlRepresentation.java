@@ -24,8 +24,7 @@ public class PrettyXmlRepresentation {
         xs = new XStream();
         xs.registerConverter(new Converter() {
             public boolean canConvert(Class aClass) {
-                return aClass.getName().equals("org.picocontainer.DefaultPicoContainer$OrderedComponentAdapterLifecycleManager") ||
-                       aClass.getName().equals("org.picocontainer.DefaultPicoContainer$1") ||
+                return aClass.getName().equals("org.picocontainer.DefaultPicoContainer$1") ||
                        aClass.getName().equals("org.picocontainer.ComponentCharacteristics") ||
                        aClass == Boolean.class ||
                        aClass == HashSet.class ||
@@ -73,7 +72,6 @@ public class PrettyXmlRepresentation {
         foo = foo.replaceAll("</","");
         foo = foo.replaceAll("<","");
         foo = foo.replaceAll(">","");
-        foo = foo.replaceAll("class=\"org.picocontainer.DefaultPicoContainer_OrderedComponentAdapterLifecycleManager\"","");
         foo = foo.replaceAll(" class=","=");
         foo = foo.replaceAll("\"","");
 

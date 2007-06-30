@@ -80,7 +80,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     // Keeps track of child containers started status
     private final Set<Integer> childrenStarted = new HashSet<Integer>();
 
-    private final OrderedComponentAdapterLifecycleManager lifecycleManager = new OrderedComponentAdapterLifecycleManager();
     private LifecycleStrategy lifecycleStrategy;
     private final ComponentCharacteristics componentCharacteristics = new ComponentCharacteristics();
     private ComponentMonitor componentMonitor;
@@ -480,7 +479,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (disposed) throw new IllegalStateException("Already disposed");
         if (started) throw new IllegalStateException("Already started");
         started = true;
-        this.lifecycleManager.start();
+        startAdapters();
         childrenStarted.clear();
         for (PicoContainer child : children) {
             childrenStarted.add(child.hashCode());
@@ -515,7 +514,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                 }
             }
         }
-        this.lifecycleManager.stop();
+        stopAdapters();
         started = false;
     }
 
@@ -551,7 +550,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                 ((Disposable)child).dispose();
             }
         }
-        this.lifecycleManager.dispose();
+        disposeAdapters();
         disposed = true;
     }
 
@@ -644,7 +643,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @author Mauro Talevi
      * @since 1.2
      */
-    private final class OrderedComponentAdapterLifecycleManager implements Serializable {
 
         /** List collecting the CAs which have been successfully started */
         private final List<ComponentAdapter> startedComponentAdapters = new ArrayList<ComponentAdapter>();
@@ -654,7 +652,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
          * Loops over all component adapters and invokes
          * start(PicoContainer) method on the ones which are LifecycleManagers
          */
-        public void start() {
+        public void startAdapters() {
             Collection<ComponentAdapter<?>> adapters = getComponentAdapters();
             for (ComponentAdapter adapter : adapters) {
                 if (adapter instanceof LifecycleManager) {
@@ -683,7 +681,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
          * Loops over started component adapters (in inverse order) and invokes
          * stop(PicoContainer) method on the ones which are LifecycleManagers
          */
-        public void stop() {
+        public void stopAdapters() {
             List<ComponentAdapter> adapters = startedComponentAdapters;
             for (int i = adapters.size() - 1; 0 <= i; i--) {
                 ComponentAdapter adapter = adapters.get(i);
@@ -699,7 +697,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
          * Loops over all component adapters (in inverse order) and invokes
          * dispose(PicoContainer) method on the ones which are LifecycleManagers
          */
-        public void dispose() {
+        public void disposeAdapters() {
             List<ComponentAdapter<?>> adapters = orderedComponentAdapters;
             for (int i = adapters.size() - 1; 0 <= i; i--) {
                 ComponentAdapter adapter = adapters.get(i);
@@ -710,7 +708,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             }
         }
 
-    }
 
     private class TemporaryCharacterizedPicoContainer extends AbstractDelegatingMutablePicoContainer {
         private final ComponentCharacteristics[] characteristics;

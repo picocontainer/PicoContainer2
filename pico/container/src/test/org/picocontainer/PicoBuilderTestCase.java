@@ -30,8 +30,7 @@ public class PicoBuilderTestCase extends TestCase {
         xs.alias("PICO", DefaultPicoContainer.class);
         xs.registerConverter(new Converter() {
             public boolean canConvert(Class aClass) {
-                return aClass.getName().equals("org.picocontainer.DefaultPicoContainer$OrderedComponentAdapterLifecycleManager") ||
-                       aClass.getName().equals("org.picocontainer.DefaultPicoContainer$1") ||
+                return aClass.getName().equals("org.picocontainer.DefaultPicoContainer$1") ||
                        aClass.getName().equals("org.picocontainer.ComponentCharacteristics") ||
                        aClass == Boolean.class ||
                        aClass == HashSet.class ||
@@ -344,6 +343,7 @@ public class PicoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("</","");
         foo = foo.replaceAll("<","");
         foo = foo.replaceAll(">","");
+        foo = foo.replaceAll("\n  startedComponentAdapters","");
         foo = foo.replaceAll("\n  childrenStarted","");
         foo = foo.replaceAll("\n  componentAdapters","");
         foo = foo.replaceAll("\n  orderedComponentAdapters","");
@@ -365,7 +365,6 @@ public class PicoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n  componentFactory\n","\n");
         foo = foo.replaceAll("\n  lifecycleManager","");
         foo = foo.replaceAll("class=\"org.picocontainer.DefaultPicoContainer_1\"","");
-        foo = foo.replaceAll("class=\"org.picocontainer.DefaultPicoContainer_OrderedComponentAdapterLifecycleManager\"","");
         foo = foo.replaceAll("class=","=");
         foo = foo.replaceAll("\"","");
         foo = foo.replaceAll(" \n","\n");
