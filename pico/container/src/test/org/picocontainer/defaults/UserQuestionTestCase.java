@@ -25,16 +25,12 @@ public final class UserQuestionTestCase extends TestCase {
     public static final class CheeseAdapter extends AbstractAdapter {
         private final Map bla;
 
-        public CheeseAdapter(Object componentKey, Class componentImplementation, Map cheeseMap) throws
-                                                                                                PicoCompositionException
-        {
+        public CheeseAdapter(Object componentKey, Class componentImplementation, Map cheeseMap) throws PicoCompositionException {
             super(componentKey, componentImplementation);
             this.bla = cheeseMap;
         }
 
-        public Object getComponentInstance(PicoContainer pico) throws
-                                                               PicoCompositionException
-        {
+        public Object getComponentInstance(PicoContainer pico) throws PicoCompositionException {
             return bla.get("cheese");
         }
 

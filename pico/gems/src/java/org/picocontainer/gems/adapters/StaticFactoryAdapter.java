@@ -53,9 +53,7 @@ public final class StaticFactoryAdapter extends AbstractAdapter {
      * @return Returns the component created by the static factory.
      * @see org.picocontainer.ComponentAdapter#getComponentInstance(org.picocontainer.PicoContainer)
      */
-    public Object getComponentInstance(PicoContainer container) throws
-                                                                PicoCompositionException
-    {
+    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
         return staticFactory.get();
     }
 

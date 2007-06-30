@@ -15,7 +15,7 @@ import org.picocontainer.injectors.SetterInjectionFactory;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
+import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.RecordingLifecycle;
@@ -25,7 +25,7 @@ import org.picocontainer.testmodel.RecordingLifecycle.One;
  * @author J&ouml;rg Schaible</a>
  * @version $Revision$
  */
-public class SetterInjectionFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+public class SetterInjectionFactoryTestCase extends AbstractComponentFactoryTestCase {
     protected void setUp() throws Exception {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
     }

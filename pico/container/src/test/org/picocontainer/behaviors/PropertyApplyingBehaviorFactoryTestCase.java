@@ -30,7 +30,7 @@ import org.picocontainer.behaviors.PropertyApplyingBehaviorFactory;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
+import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -39,7 +39,7 @@ import org.picocontainer.testmodel.Touchable;
  * @author Mirko Novakovic
  * @version $Revision$
  */
-public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFactoryTestCase {
 
     public static class Foo {
         public String message;

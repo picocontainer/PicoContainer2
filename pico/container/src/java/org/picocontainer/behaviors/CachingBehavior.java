@@ -16,7 +16,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.io.Serializable;
 
@@ -55,9 +54,7 @@ public final class CachingBehavior extends AbstractBehavior implements Lifecycle
                 && ((LifecycleStrategy) delegate).hasLifecycle(delegate.getComponentImplementation());
     }
 
-    public Object getComponentInstance(PicoContainer container)
-            throws PicoCompositionException
-    {
+    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
         Object instance = instanceReference.get();
         if (instance == null) {
             instance = super.getComponentInstance(container);

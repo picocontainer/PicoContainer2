@@ -37,9 +37,7 @@ public class ComponentAdapterTestCase
         TestAdapter(Object componentKey, Class componentImplementation) {
             super(componentKey, componentImplementation);
         }
-        public Object getComponentInstance(PicoContainer container) throws
-                                                                    PicoCompositionException
-        {
+        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
             return null;
         }
         public void verify(PicoContainer container) throws PicoVerificationException {
@@ -51,9 +49,7 @@ public class ComponentAdapterTestCase
         TestMonitoringComponentAdapter(ComponentMonitor componentMonitor) {
             super(null, null, componentMonitor);
         }
-        public Object getComponentInstance(PicoContainer container) throws
-                                                                    PicoCompositionException
-        {
+        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
             return null;
         }
         public void verify(PicoContainer container) throws PicoVerificationException {
@@ -72,18 +68,14 @@ public class ComponentAdapterTestCase
         TestInstantiatingAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
             super(componentKey, componentImplementation, parameters, NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance());
         }
-        protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws
-                                                                                          PicoCompositionException
-        {
+        protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
             return null;
         }
 
         public void verify(PicoContainer container) throws PicoCompositionException {
         }
 
-        public Object getComponentInstance(PicoContainer container) throws
-                                                                    PicoCompositionException
-        {
+        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
             return null;
         }
     }

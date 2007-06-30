@@ -25,9 +25,7 @@ public class SynchronizedBehavior extends AbstractBehavior {
         super(delegate);
     }
 
-    public synchronized Object getComponentInstance(PicoContainer container) throws
-                                                                             PicoCompositionException
-    {
+    public synchronized Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
         return super.getComponentInstance(container);
     }
 }

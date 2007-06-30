@@ -13,7 +13,7 @@ import org.picocontainer.gems.behaviors.ImplementationHidingBehavior;
 import org.picocontainer.gems.adapters.ElephantProxy;
 import org.picocontainer.gems.adapters.ElephantImpl;
 import org.picocontainer.gems.adapters.Elephant;
-import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
+import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 
-public final class ImplementationHidingBehaviorFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+public final class ImplementationHidingBehaviorFactoryTestCase extends AbstractComponentFactoryTestCase {
 
     private final ComponentFactory implementationHidingComponentAdapterFactory = new ImplementationHidingBehaviorFactory().forThis(new AdaptiveInjectionFactory());
     private final ComponentFactory cachingBehaviorFactory = new CachingBehaviorFactory().forThis(implementationHidingComponentAdapterFactory);

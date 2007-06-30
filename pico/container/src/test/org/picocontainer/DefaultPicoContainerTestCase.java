@@ -306,9 +306,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         public ComponentFactoryWithNoMonitor(ComponentAdapter adapter){
             this.adapter = adapter;
         }
-        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter... parameters) throws
-                                                                                                                                                                                                                                                             PicoCompositionException
-        {
+        public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
             return adapter;
         }        
     }
@@ -324,9 +322,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         public Class getComponentImplementation() {
             return instance.getClass();
         }
-        public Object getComponentInstance(PicoContainer container) throws
-                                                                    PicoCompositionException
-        {
+        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
             return instance;
         }
         public void verify(PicoContainer container) throws PicoCompositionException {

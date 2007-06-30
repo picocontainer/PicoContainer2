@@ -15,7 +15,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.gems.behaviors.AssimilatingBehaviorFactory;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
-import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
+import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.CompatibleTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -27,10 +27,10 @@ import java.util.List;
 /**
  * @author J&ouml;rg Schaible
  */
-public class AssimilatingBehaviorFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+public class AssimilatingBehaviorFactoryTestCase extends AbstractComponentFactoryTestCase {
 
     /**
-     * @see org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase#createComponentFactory()
+     * @see org.picocontainer.tck.AbstractComponentFactoryTestCase#createComponentFactory()
      */
     protected ComponentFactory createComponentFactory() {
         return new AssimilatingBehaviorFactory(Touchable.class).forThis(new ConstructorInjectionFactory());

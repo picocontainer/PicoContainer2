@@ -37,8 +37,7 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
                                                    ComponentCharacteristics componentCharacteristics,
                                                    Object componentKey,
                                                    Class componentImplementation,
-                                                   Parameter... parameters) throws
-                                                                            PicoCompositionException {
+                                                   Parameter... parameters) throws PicoCompositionException {
         ComponentAdapter componentAdapter = null;
         componentAdapter = makeIfFieldAnnotationInjection(componentImplementation,
                                componentMonitor,

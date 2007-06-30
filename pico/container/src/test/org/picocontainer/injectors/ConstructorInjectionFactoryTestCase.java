@@ -14,7 +14,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
+import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.RecordingLifecycle;
@@ -24,7 +24,7 @@ import org.picocontainer.testmodel.RecordingLifecycle.One;
  * @author Mauro Talevi
  * @version $Revision:  $
  */
-public class ConstructorInjectionFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+public class ConstructorInjectionFactoryTestCase extends AbstractComponentFactoryTestCase {
     protected void setUp() throws Exception {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
     }

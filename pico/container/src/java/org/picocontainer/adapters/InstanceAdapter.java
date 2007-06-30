@@ -36,9 +36,7 @@ public final class InstanceAdapter extends AbstractAdapter implements LifecycleM
     private final Object componentInstance;
     private final LifecycleStrategy lifecycleStrategy;
 
-    public InstanceAdapter(Object componentKey, Object componentInstance, LifecycleStrategy lifecycleStrategy, ComponentMonitor componentMonitor) throws
-                                                                                                                                                  PicoCompositionException
-    {
+    public InstanceAdapter(Object componentKey, Object componentInstance, LifecycleStrategy lifecycleStrategy, ComponentMonitor componentMonitor) throws PicoCompositionException {
         super(componentKey, getInstanceClass(componentInstance), componentMonitor);
         this.componentInstance = componentInstance;
         this.lifecycleStrategy = lifecycleStrategy;

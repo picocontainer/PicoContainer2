@@ -181,9 +181,7 @@ public class ConstructorInjector extends AbstractInjector {
 
 
 
-    public Object getComponentInstance(final PicoContainer container) throws
-                                                                       PicoCompositionException
-    {
+    public Object getComponentInstance(final PicoContainer container) throws PicoCompositionException {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {

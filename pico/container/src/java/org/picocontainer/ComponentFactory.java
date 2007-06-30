@@ -59,8 +59,7 @@ public interface ComponentFactory {
                                             ComponentCharacteristics componentCharacteristics,
                                             Object componentKey,
                                             Class componentImplementation,
-                                            Parameter... parameters) throws
-                                                                     PicoCompositionException;
+                                            Parameter... parameters) throws PicoCompositionException;
 
 
 }

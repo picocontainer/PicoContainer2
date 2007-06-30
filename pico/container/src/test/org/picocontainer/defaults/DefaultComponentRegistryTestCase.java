@@ -40,9 +40,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));
     }
 
-    public void testCannotInstantiateAnUnregisteredComponent() throws
-                                                               PicoCompositionException
-    {
+    public void testCannotInstantiateAnUnregisteredComponent() throws PicoCompositionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();
@@ -71,9 +69,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         assertNull(picoContainer.getComponent(Touchable.class));
     }
 
-    public void testReplacedInstantiatedComponentHasCorrectClass() throws
-                                                                   PicoCompositionException
-    {
+    public void testReplacedInstantiatedComponentHasCorrectClass() throws PicoCompositionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();

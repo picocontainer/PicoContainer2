@@ -30,9 +30,7 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
     }
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey,
                                                    Class componentImplementation,
-                                                   Parameter... parameters) throws
-                                                                            PicoCompositionException
-    {
+                                                   Parameter... parameters) throws PicoCompositionException {
         return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                componentCharacteristics, componentKey, componentImplementation, parameters);
     }

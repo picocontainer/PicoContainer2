@@ -312,9 +312,7 @@ public class PicoBuilderTestCase extends TestCase {
                                                        ComponentCharacteristics componentCharacteristics,
                                                        Object componentKey,
                                                        Class componentImplementation,
-                                                       Parameter... parameters) throws
-                                                                                PicoCompositionException
-        {
+                                                       Parameter... parameters) throws PicoCompositionException {
             return null;
         }
     }

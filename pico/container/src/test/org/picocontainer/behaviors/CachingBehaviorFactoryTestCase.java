@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
+import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
@@ -25,7 +25,7 @@ import java.util.HashMap;
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  * @version $Revision$
  */
-public class CachingBehaviorFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+public class CachingBehaviorFactoryTestCase extends AbstractComponentFactoryTestCase {
     protected void setUp() throws Exception {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
     }

@@ -27,7 +27,7 @@ import org.picocontainer.injectors.MethodAnnotationInjectorTestCase;
 import org.picocontainer.injectors.MethodAnnotationInjector;
 import org.picocontainer.injectors.FieldAnnotationInjector;
 import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.tck.AbstractComponentAdapterFactoryTestCase;
+import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -41,7 +41,7 @@ import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 
-public class AdaptiveInjectionFactoryTestCase extends AbstractComponentAdapterFactoryTestCase {
+public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTestCase {
 
     XStream xs;
 

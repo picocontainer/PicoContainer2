@@ -24,7 +24,7 @@ import org.picocontainer.testmodel.Touchable;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public abstract class AbstractComponentAdapterFactoryTestCase extends TestCase {
+public abstract class AbstractComponentFactoryTestCase extends TestCase {
 
     protected DefaultPicoContainer picoContainer;
 

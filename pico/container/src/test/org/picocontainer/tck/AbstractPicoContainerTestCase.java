@@ -61,18 +61,14 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
 
     protected abstract MutablePicoContainer createPicoContainer(PicoContainer parent);
 
-    protected final MutablePicoContainer createPicoContainerWithDependsOnTouchableOnly() throws
-                                                                                         PicoCompositionException
-    {
+    protected final MutablePicoContainer createPicoContainerWithDependsOnTouchableOnly() throws PicoCompositionException {
         MutablePicoContainer pico = createPicoContainer(null);
         pico.addComponent(DependsOnTouchable.class);
         return pico;
 
     }
 
-    protected final MutablePicoContainer createPicoContainerWithTouchableAndDependsOnTouchable() throws
-                                                                                                 PicoCompositionException
-    {
+    protected final MutablePicoContainer createPicoContainerWithTouchableAndDependsOnTouchable() throws PicoCompositionException {
         MutablePicoContainer pico = createPicoContainerWithDependsOnTouchableOnly();
         pico.as(Characterizations.CACHE).addComponent(Touchable.class, SimpleTouchable.class);
         return pico;
@@ -189,16 +185,12 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         }
     }
 
-    public void testLookupWithUnregisteredKeyReturnsNull() throws
-                                                           PicoCompositionException
-    {
+    public void testLookupWithUnregisteredKeyReturnsNull() throws PicoCompositionException {
         MutablePicoContainer pico = createPicoContainer(null);
         assertNull(pico.getComponent(String.class));
     }
 
-    public void testLookupWithUnregisteredTypeReturnsNull() throws
-                                                            PicoCompositionException
-    {
+    public void testLookupWithUnregisteredTypeReturnsNull() throws PicoCompositionException {
         MutablePicoContainer pico = createPicoContainer(null);
         assertNull(pico.getComponent(String.class));
     }
