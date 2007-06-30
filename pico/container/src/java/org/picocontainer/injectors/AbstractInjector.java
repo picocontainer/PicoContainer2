@@ -101,7 +101,7 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    protected AbstractInjector(Object componentKey, Class componentImplementation, Parameter[] parameters) {
+    protected AbstractInjector(Object componentKey, Class componentImplementation, Parameter... parameters) {
         this(componentKey, componentImplementation, parameters, new DelegatingComponentMonitor());
     }
     

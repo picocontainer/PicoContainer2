@@ -41,7 +41,7 @@ public class AspectsBehaviorFactory extends AbstractBehaviorFactory {
     }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation,
-                                                   Parameter[] parameters) throws PicoCompositionException
+                                                   Parameter... parameters) throws PicoCompositionException
     {
         return new AspectsBehavior(aspectsApplicator, super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                                            componentCharacteristics, componentKey,

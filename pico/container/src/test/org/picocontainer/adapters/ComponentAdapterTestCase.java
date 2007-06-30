@@ -65,7 +65,7 @@ public class ComponentAdapterTestCase
     }
     
     private static class TestInstantiatingAdapter extends AbstractInjector {
-        TestInstantiatingAdapter(Object componentKey, Class componentImplementation, Parameter[] parameters) {
+        TestInstantiatingAdapter(Object componentKey, Class componentImplementation, Parameter... parameters) {
             super(componentKey, componentImplementation, parameters, NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance());
         }
         protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {

@@ -63,7 +63,7 @@ public class BeanShellAdapter extends AbstractAdapter {
         this.classLoader = classLoader;
     }
 
-    public BeanShellAdapter(final Object componentKey, final Class componentImplementation, final Parameter[] parameters) {
+    public BeanShellAdapter(final Object componentKey, final Class componentImplementation, final Parameter... parameters) {
         this(componentKey, componentImplementation, parameters, BeanShellAdapter.class.getClassLoader());
     }
 

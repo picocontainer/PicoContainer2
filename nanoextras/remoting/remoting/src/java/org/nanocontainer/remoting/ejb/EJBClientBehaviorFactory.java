@@ -67,7 +67,7 @@ public class EJBClientBehaviorFactory implements ComponentFactory {
     }
 
     public ComponentAdapter createComponentAdapter(
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, final Object componentKey, final Class componentImplementation, final Parameter[] parameters)
+            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
             throws PicoCompositionException
     {
         return createComponentAdapter(componentKey.toString(), componentImplementation);

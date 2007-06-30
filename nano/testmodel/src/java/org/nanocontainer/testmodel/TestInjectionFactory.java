@@ -21,7 +21,7 @@ public final class TestInjectionFactory extends AdaptiveInjectionFactory {
     }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
-                    ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter[] parameters) throws PicoCompositionException {
+                    ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
         sb.append("called");
         return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                             componentCharacteristics, componentKey, componentImplementation, parameters);
