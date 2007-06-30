@@ -84,6 +84,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private final ComponentCharacteristics componentCharacteristics = new ComponentCharacteristics();
     private ComponentMonitor componentMonitor;
 
+    /** List collecting the CAs which have been successfully started */
+    private final List<ComponentAdapter> startedComponentAdapters = new ArrayList<ComponentAdapter>();
+
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
      * <p/>
@@ -633,80 +636,65 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * <p>
-     * Implementation of lifecycle manager which delegates to the container's component adapters.
-     * The component adapters will be ordered by dependency as registered in the container.
-     * This LifecycleManager will delegate calls on the lifecycle methods to the component adapters
-     * if these are themselves LifecycleManagers.
-     * </p>
-     *
-     * @author Mauro Talevi
-     * @since 1.2
+     * {@inheritDoc}
+     * Loops over all component adapters and invokes
+     * start(PicoContainer) method on the ones which are LifecycleManagers
      */
-
-        /** List collecting the CAs which have been successfully started */
-        private final List<ComponentAdapter> startedComponentAdapters = new ArrayList<ComponentAdapter>();
-
-        /**
-         * {@inheritDoc}
-         * Loops over all component adapters and invokes
-         * start(PicoContainer) method on the ones which are LifecycleManagers
-         */
-        public void startAdapters() {
-            Collection<ComponentAdapter<?>> adapters = getComponentAdapters();
-            for (ComponentAdapter adapter : adapters) {
-                if (adapter instanceof LifecycleManager) {
-                    LifecycleManager lifecycleManagerAdapter = (LifecycleManager)adapter;
-                    if (lifecycleManagerAdapter.hasLifecycle()) {
-                        // create an instance, it will be added to the ordered CA list
-                        adapter.getComponentInstance(DefaultPicoContainer.this);
-                        addOrderedComponentAdapter(adapter);
-                    }
-                }
-            }
-            adapters = orderedComponentAdapters;
-            // clear list of started CAs
-            startedComponentAdapters.clear();
-            for (final ComponentAdapter adapter : adapters) {
-                if (adapter instanceof LifecycleManager) {
-                    LifecycleManager manager = (LifecycleManager)adapter;
-                    manager.start(DefaultPicoContainer.this);
-                    startedComponentAdapters.add(adapter);
+    private void startAdapters() {
+        Collection<ComponentAdapter<?>> adapters = getComponentAdapters();
+        for (ComponentAdapter adapter : adapters) {
+            if (adapter instanceof LifecycleManager) {
+                LifecycleManager lifecycleManagerAdapter = (LifecycleManager)adapter;
+                if (lifecycleManagerAdapter.hasLifecycle()) {
+                    // create an instance, it will be added to the ordered CA list
+                    adapter.getComponentInstance(DefaultPicoContainer.this);
+                    addOrderedComponentAdapter(adapter);
                 }
             }
         }
-
-        /**
-         * {@inheritDoc}
-         * Loops over started component adapters (in inverse order) and invokes
-         * stop(PicoContainer) method on the ones which are LifecycleManagers
-         */
-        public void stopAdapters() {
-            List<ComponentAdapter> adapters = startedComponentAdapters;
-            for (int i = adapters.size() - 1; 0 <= i; i--) {
-                ComponentAdapter adapter = adapters.get(i);
-                if (adapter instanceof LifecycleManager) {
-                    LifecycleManager manager = (LifecycleManager)adapter;
-                    manager.stop(DefaultPicoContainer.this);
-                }
+        adapters = orderedComponentAdapters;
+        // clear list of started CAs
+        startedComponentAdapters.clear();
+        for (final ComponentAdapter adapter : adapters) {
+            if (adapter instanceof LifecycleManager) {
+                LifecycleManager manager = (LifecycleManager)adapter;
+                manager.start(DefaultPicoContainer.this);
+                startedComponentAdapters.add(adapter);
             }
         }
+    }
 
-        /**
-         * {@inheritDoc}
-         * Loops over all component adapters (in inverse order) and invokes
-         * dispose(PicoContainer) method on the ones which are LifecycleManagers
-         */
-        public void disposeAdapters() {
-            List<ComponentAdapter<?>> adapters = orderedComponentAdapters;
-            for (int i = adapters.size() - 1; 0 <= i; i--) {
-                ComponentAdapter adapter = adapters.get(i);
-                if (adapter instanceof LifecycleManager) {
-                    LifecycleManager manager = (LifecycleManager)adapter;
-                    manager.dispose(DefaultPicoContainer.this);
-                }
+    /**
+     * {@inheritDoc}
+     * Loops over started component adapters (in inverse order) and invokes
+     * stop(PicoContainer) method on the ones which are LifecycleManagers
+     */
+    private void stopAdapters() {
+        List<ComponentAdapter> adapters = startedComponentAdapters;
+        for (int i = adapters.size() - 1; 0 <= i; i--) {
+            ComponentAdapter adapter = adapters.get(i);
+            if (adapter instanceof LifecycleManager) {
+                LifecycleManager manager = (LifecycleManager)adapter;
+                manager.stop(DefaultPicoContainer.this);
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     * Loops over all component adapters (in inverse order) and invokes
+     * dispose(PicoContainer) method on the ones which are LifecycleManagers
+     */
+    private void disposeAdapters() {
+        List<ComponentAdapter<?>> adapters = orderedComponentAdapters;
+        for (int i = adapters.size() - 1; 0 <= i; i--) {
+            ComponentAdapter adapter = adapters.get(i);
+            if (adapter instanceof LifecycleManager) {
+                LifecycleManager manager = (LifecycleManager)adapter;
+                manager.dispose(DefaultPicoContainer.this);
+            }
+        }
+    }
 
 
     private class TemporaryCharacterizedPicoContainer extends AbstractDelegatingMutablePicoContainer {
