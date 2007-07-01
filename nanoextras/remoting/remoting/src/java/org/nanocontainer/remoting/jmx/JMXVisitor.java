@@ -30,7 +30,6 @@ import org.picocontainer.visitors.TraversalCheckingVisitor;
  * @author Michael Ward
  * @author J&ouml;rg Schaible
  * @version $Revision$
- * @since 1.0
  */
 public class JMXVisitor extends TraversalCheckingVisitor {
     private final DynamicMBeanProvider[] mBeanProviders;

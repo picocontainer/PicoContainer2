@@ -25,7 +25,6 @@ import org.picocontainer.PicoContainer;
  * A DynamicMBeanProvider, that creates DynamicMBeans for registered Pico components on the fly.
  * @author Michael Ward
  * @author J&ouml;rg Schaible
- * @since 1.0
  */
 public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider {
 

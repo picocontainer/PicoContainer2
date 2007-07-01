@@ -27,7 +27,6 @@ import java.util.Map;
  * @see org.picocontainer.Startable
  * @see org.picocontainer.Disposable
  * @see org.picocontainer.lifecycle.StartableLifecycleStrategy
- * @since 1.2
  */
 public final class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
 

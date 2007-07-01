@@ -13,7 +13,6 @@ package org.nanocontainer.remoting.jmx;
 /**
  * An abstract ObjectNameFactory that offers functionality to handle the domain part of the object name.
  * @author J&ouml;rg Schaible
- * @since 1.0
  */
 public abstract class AbstractObjectNameFactory implements ObjectNameFactory {
 

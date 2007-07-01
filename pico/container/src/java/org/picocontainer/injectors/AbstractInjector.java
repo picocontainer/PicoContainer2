@@ -42,7 +42,6 @@ import java.util.Set;
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
  * @version $Revision$
- * @since 1.0
  */
 public abstract class AbstractInjector extends AbstractAdapter implements LifecycleStrategy {
     /** The cycle guard for the verification. */ 
@@ -211,7 +210,6 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
      * used as long as it is initialized with  <code>Boolean.FALSE</code>.
      *
      * @author J&ouml;rg Schaible
-     * @since 1.1
      */
     static abstract class ThreadLocalCyclicDependencyGuard extends ThreadLocal {
 
@@ -265,7 +263,6 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
         private final List<Class> stack;
 
         /**
-         * @since 1.1
          * @param element
          */
         public CyclicDependencyException(Class element) {
@@ -275,7 +272,6 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
         }
 
         /**
-         * @since 1.1
          * @param element
          */
         public void push(Class element) {
@@ -299,7 +295,6 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
      * @author Paul Hammant
      * @author Aslak Helles&oslash;y
      * @author Jon Tirs&eacute;n
-     * @since 1.0
      */
     public static final class AmbiguousComponentResolutionException extends PicoCompositionException {
         private Class component;

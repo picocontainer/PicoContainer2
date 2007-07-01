@@ -17,7 +17,6 @@ import java.io.Serializable;
  * Abstract base class for lifecycle strategy implementation supporting a {@link ComponentMonitor}.
  * 
  * @author J&ouml;rg Schaible
- * @since 1.2
  */
 public abstract class AbstractMonitoringLifecycleStrategy implements LifecycleStrategy, ComponentMonitorStrategy, Serializable {
 

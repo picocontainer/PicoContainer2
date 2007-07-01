@@ -24,7 +24,6 @@ import java.util.List;
  * @version $Revision$
  * @see <a href="package-summary.html#package_description">See package description for basic overview how to use
  *      PicoContainer.</a>
- * @since 1.0
  */
 public interface PicoContainer {
 
@@ -105,7 +104,6 @@ public interface PicoContainer {
      * @param componentType the searched type.
      * @return a List of components.
      * @throws PicoException if the instantiation of a component fails
-     * @since 1.1
      */
     <T> List<T> getComponents(Class<T> componentType);
 
@@ -113,7 +111,6 @@ public interface PicoContainer {
      * Accepts a visitor that should visit the child containers, component adapters and component instances.
      *
      * @param visitor the visitor
-     * @since 1.1
      */
     void accept(PicoVisitor visitor);
 }

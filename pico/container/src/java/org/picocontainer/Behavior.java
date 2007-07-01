@@ -18,7 +18,6 @@ package org.picocontainer;
  * @author Mauro Talevi
  * @version $Revision$
  * @see LifecycleStrategy
- * @since 1.2
  */
 public interface Behavior extends ComponentAdapter {
 

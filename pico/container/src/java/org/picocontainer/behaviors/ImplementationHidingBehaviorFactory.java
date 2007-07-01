@@ -21,7 +21,6 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 /**
  * @author Aslak Helles&oslash;y
  * @see org.picocontainer.gems.adapters.HotSwappingComponentAdapterFactory for a more feature-rich version of the class
- * @since 1.2, moved from package {@link org.picocontainer.alternatives}
  */
 public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory {
 

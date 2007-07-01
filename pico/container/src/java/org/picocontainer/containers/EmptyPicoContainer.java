@@ -24,7 +24,6 @@ import java.util.List;
  * is null or not
  *
  * @author Konstantin Pribluda
- * @since 1.1
  */
 public class EmptyPicoContainer implements PicoContainer, Serializable {
 

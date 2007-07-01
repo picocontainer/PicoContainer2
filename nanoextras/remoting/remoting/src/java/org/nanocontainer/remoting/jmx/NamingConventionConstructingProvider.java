@@ -21,7 +21,6 @@ import javax.management.MBeanInfo;
  * {@link MBeanInfo} for the component's MBean. If a {@link MBeanInfo} was found, the MBean's type is used from the
  * MBeanInfo otherwise the type is the implementation class of the component.
  * @author J&ouml;rg Schaible
- * @since 1.0
  */
 public class NamingConventionConstructingProvider extends AbstractConstructingProvider {
 

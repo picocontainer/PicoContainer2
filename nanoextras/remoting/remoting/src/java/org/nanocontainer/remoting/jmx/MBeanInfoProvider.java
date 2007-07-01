@@ -19,7 +19,6 @@ import org.picocontainer.PicoContainer;
 /**
  * Provide a MBeanInfo for a component. Several strategies exist and can be used as plugin.
  * @author J&ouml;rg Schaible
- * @since 1.0
  */
 public interface MBeanInfoProvider {
 

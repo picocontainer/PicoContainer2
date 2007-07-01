@@ -25,7 +25,6 @@ import org.picocontainer.behaviors.PropertyApplyingBehavior;
  * 
  * @author Aslak Helles&oslash;y
  * @version $Revision$
- * @since 1.0
  */
 public final class PropertyApplyingBehaviorFactory extends AbstractBehaviorFactory {
 

@@ -18,7 +18,6 @@ import javax.management.StandardMBean;
 /**
  * StandardMBean with a provided MBeanInfo.
  * @author J&ouml;rg Schaible
- * @since 1.0
  */
 public final class StandardNanoMBean extends StandardMBean {
     private final MBeanInfo mBeanInfo;

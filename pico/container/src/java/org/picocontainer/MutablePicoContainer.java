@@ -18,7 +18,6 @@ package org.picocontainer;
  * @author Jon Tirs&eacute;n
  * @version $Revision$
  * @see <a href="package-summary.html#package_description">See package description for basic overview how to use PicoContainer.</a>
- * @since 1.0
  */
 public interface MutablePicoContainer extends PicoContainer, Startable, Disposable {
 
@@ -114,7 +113,6 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *
      * @return the new child container.
      *
-     * @since 1.1
      */
     MutablePicoContainer makeChildContainer();
 
@@ -128,7 +126,6 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *
      * @return the same instance of MutablePicoContainer
      *
-     * @since 1.1
      */
     MutablePicoContainer addChildContainer(PicoContainer child);
 
@@ -140,7 +137,6 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *
      * @return <code>true</code> if the child container has been removed.
      *
-     * @since 1.1
      */
     boolean removeChildContainer(PicoContainer child);
 

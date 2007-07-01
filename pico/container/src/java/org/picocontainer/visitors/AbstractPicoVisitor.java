@@ -23,7 +23,6 @@ import java.security.PrivilegedAction;
  * if currently no traversal is running.
  * 
  * @author J&ouml;rg Schaible
- * @since 1.1
  */
 public abstract class AbstractPicoVisitor implements PicoVisitor {
     private boolean traversal;
@@ -77,7 +76,6 @@ public abstract class AbstractPicoVisitor implements PicoVisitor {
      * If the traversal is not initiated with a call of {@link PicoVisitor#traverse}
      *
      * @author joehni
-     * @since 1.1
      */
     public static class PicoVisitorTraversalException
             extends PicoException {

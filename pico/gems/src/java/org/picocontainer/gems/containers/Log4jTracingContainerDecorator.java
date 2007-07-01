@@ -55,7 +55,6 @@ import org.apache.log4j.Logger;
  * </pre>
  *
  * @author Michael Rimov
- * @since Version 1.3
  */
 public class Log4jTracingContainerDecorator implements MutablePicoContainer, Serializable {
 

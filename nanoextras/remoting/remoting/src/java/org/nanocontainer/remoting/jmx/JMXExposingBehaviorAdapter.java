@@ -29,7 +29,6 @@ import javax.management.InstanceNotFoundException;
 /**
  * {@link ComponentAdapter} that is exposing a component as MBean in a MBeanServer.
  * @author J&ouml;rg Schaible
- * @since 1.0
  */
 public class JMXExposingBehaviorAdapter extends AbstractBehavior {
 
@@ -45,7 +44,6 @@ public class JMXExposingBehaviorAdapter extends AbstractBehavior {
      *            {@link javax.management.DynamicMBean}.
      * @throws NullPointerException Thrown if the {@link MBeanServer} or the array with the {@link DynamicMBeanProvider}
      *             instances is null.
-     * @since 1.0
      */
     public JMXExposingBehaviorAdapter(
             final ComponentAdapter delegate, final MBeanServer mBeanServer, final DynamicMBeanProvider[] providers)
@@ -66,7 +64,6 @@ public class JMXExposingBehaviorAdapter extends AbstractBehavior {
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.
      * @throws NullPointerException Thrown if the {@link MBeanServer} or the array with the {@link DynamicMBeanProvider}
      *             instances is null.
-     * @since 1.0
      */
     public JMXExposingBehaviorAdapter(final ComponentAdapter delegate, final MBeanServer mBeanServer)
             throws NullPointerException {

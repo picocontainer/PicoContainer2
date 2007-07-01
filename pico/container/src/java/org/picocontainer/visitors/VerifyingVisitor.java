@@ -24,7 +24,6 @@ import java.util.Set;
  * Visitor to verify {@link PicoContainer} instances. The visitor walks down the logical container hierarchy.
  * 
  * @author J&ouml;rg Schaible
- * @since 1.1
  */
 public class VerifyingVisitor extends TraversalCheckingVisitor {
 

@@ -72,7 +72,6 @@ public class ComponentParameter
      * Resolve the parameter even if no compoennt is of the array's component type.
      * 
      * @param emptyCollection <code>true</code> allows an Array to be empty
-     * @since 1.1
      */
     public ComponentParameter(boolean emptyCollection) {
         this(null, emptyCollection ? CollectionComponentParameter.ARRAY_ALLOW_EMPTY : CollectionComponentParameter.ARRAY);
@@ -85,7 +84,6 @@ public class ComponentParameter
      * 
      * @param componentValueType the component's type (ignored for an Array)
      * @param emptyCollection <code>true</code> allows the collection to be empty
-     * @since 1.1
      */
     public ComponentParameter(Class componentValueType, boolean emptyCollection) {
         this(null, new CollectionComponentParameter(componentValueType, emptyCollection));
@@ -100,7 +98,6 @@ public class ComponentParameter
      * @param componentKeyType the component adapter's key type
      * @param componentValueType the component's type (ignored for an Array)
      * @param emptyCollection <code>true</code> allows the collection to be empty
-     * @since 1.1
      */
     public ComponentParameter(Class componentKeyType, Class componentValueType, boolean emptyCollection) {
         this(null, new CollectionComponentParameter(componentKeyType, componentValueType, emptyCollection));

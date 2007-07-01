@@ -20,7 +20,6 @@ import org.picocontainer.PicoContainer;
  * A MBeanInfoProvider that searches for a MBeanInfo instance in the PicoContainer. The key of the MBeanInfo is
  * calculated from the component type following naming conventions.
  * @author J&ouml;rg Schaible
- * @since 1.0
  */
 public class ComponentTypeConventionMBeanInfoProvider extends AbstractNamingConventionMBeanInfoProvider {
 

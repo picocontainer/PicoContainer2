@@ -16,7 +16,6 @@ import java.io.Serializable;
  * Typically its used to merk a parent container.
  *
  * @author Konstantin Pribluda
- * @since 1.1
  */
 public class ImmutablePicoContainer implements PicoContainer, Serializable {
 

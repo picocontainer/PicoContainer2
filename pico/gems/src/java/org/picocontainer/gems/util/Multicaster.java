@@ -24,7 +24,6 @@ import java.util.List;
  * @author Aslak Helles&oslash;y
  * @author Chris Stevenson
  * @author Paul Hammant
- * @since 1.2
  */
 public class Multicaster {
     /**
@@ -34,7 +33,6 @@ public class Multicaster {
      * @param callInInstantiationOrder <code>true</code> if the components will be called in instantiation order
      * @param proxyFactory the ProxyFactory to use
      * @return the Multicasting proxy
-     * @since 1.2
      */
     public static Object object(PicoContainer pico, boolean callInInstantiationOrder, ProxyFactory proxyFactory) {
         List copy = new ArrayList(pico.getComponents());

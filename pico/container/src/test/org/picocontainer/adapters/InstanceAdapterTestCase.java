@@ -30,7 +30,6 @@ import java.util.Map;
  * Test the InstanceAdapter.
  * 
  * @author J&ouml;rg Schaible
- * @since 1.1
  */
 public final class InstanceAdapterTestCase
     extends AbstractComponentAdapterTestCase {

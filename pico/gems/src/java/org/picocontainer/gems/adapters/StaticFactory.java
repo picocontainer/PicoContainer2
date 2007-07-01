@@ -14,7 +14,6 @@ package org.picocontainer.gems.adapters;
  * 
  * @author J&ouml;rg Schaible
  * @author Leo Simmons
- * @since 1.1
  */
 public interface StaticFactory {
     /**

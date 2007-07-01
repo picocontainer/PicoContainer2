@@ -34,7 +34,6 @@ import org.picocontainer.visitors.AbstractPicoVisitor;
  * </pre>
  *
  * @author Micheal Rimov
- * @since 1.2
  */
 public class TraversalCheckingVisitor
         extends AbstractPicoVisitor {

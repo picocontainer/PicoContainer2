@@ -30,7 +30,6 @@ import org.picocontainer.behaviors.AbstractBehavior;
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @see org.picocontainer.gems.adapters.HotSwappingComponentAdapter for a more feature-rich version of this class.
- * @since 1.2, moved from package {@link org.picocontainer.alternatives}
  */
 public class ImplementationHidingBehavior extends AbstractBehavior {
 

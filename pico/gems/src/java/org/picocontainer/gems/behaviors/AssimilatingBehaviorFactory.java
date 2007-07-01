@@ -28,7 +28,6 @@ import org.picocontainer.ComponentFactory;
  * {@link ComponentAdapter} instances created by the delegate. This will assimilate every component for a specific type.
  * 
  * @author J&ouml;rg Schaible
- * @since 1.2
  */
 public class AssimilatingBehaviorFactory extends AbstractBehaviorFactory {
 

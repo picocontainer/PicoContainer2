@@ -20,7 +20,6 @@ import java.io.PrintWriter;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @version $Revision$
- * @since 1.0
  */
 public abstract class PicoException extends RuntimeException {
 

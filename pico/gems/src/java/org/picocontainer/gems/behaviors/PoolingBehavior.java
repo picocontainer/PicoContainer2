@@ -67,7 +67,6 @@ import com.thoughtworks.proxy.toys.pool.Pool;
  * 
  * @author J&ouml;rg Schaible
  * @author Aslak Helles&oslash;y
- * @since 1.2
  */
 public final class PoolingBehavior extends AbstractBehavior implements Behavior {
 
@@ -77,7 +76,6 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
      * Context of the PoolingBehavior used to initialize it.
      * 
      * @author J&ouml;rg Schaible
-     * @since 1.2
      */
     public static interface Context {
         /**
@@ -85,7 +83,6 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
          * {@link PoolingBehavior#UNLIMITED_SIZE} for <em>unlimited</em> growth.
          * 
          * @return the maximum pool size
-         * @since 1.2
          */
         int getMaxSize();
 
@@ -95,7 +92,6 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
          * {@link PoolingBehavior#FAIL_ON_WAIT}.
          * 
          * @return the maximum number of milliseconds to wait
-         * @since 1.2
          */
         int getMaxWaitInMilliseconds();
 
@@ -104,7 +100,6 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
          * exhausted.
          * 
          * @return <code>true</code> for an internal call to {@link System#gc()}
-         * @since 1.2
          */
         boolean autostartGC();
 
@@ -112,7 +107,6 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
          * Retrieve the ProxyFactory to use to create the pooling proxies.
          * 
          * @return the {@link ProxyFactory}
-         * @since 1.2
          */
         ProxyFactory getProxyFactory();
 
@@ -120,7 +114,6 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
          * Retrieve the {@link Resetter} of the objects returning to the pool.
          * 
          * @return the Resetter instance
-         * @since 1.2
          */
         Resetter getResetter();
 
@@ -133,7 +126,6 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
          * </ul>
          * 
          * @return the serialization mode
-         * @since 1.2
          */
         int getSerializationMode();
     }
@@ -142,7 +134,6 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
      * The default context for a PoolingBehavior.
      * 
      * @author J&ouml;rg Schaible
-     * @since 1.2
      */
     public static class DefaultContext implements Context {
 
@@ -233,7 +224,6 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
      * @param context the {@link Context} of the pool
      * @throws IllegalArgumentException if the maximum pool size or the serialization mode is
      *             invalid
-     * @since 1.2
      */
     public PoolingBehavior(ComponentAdapter delegate, Context context) {
         super(delegate);
@@ -261,7 +251,6 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
     /**
      * Construct an empty ComponentAdapter, used for serialization with reflection only.
      * 
-     * @since 1.2
      */
     protected PoolingBehavior() {
         // @todo super class should support standard ctor
@@ -333,7 +322,6 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
      * components.
      * 
      * @return the number of components.
-     * @since 1.2
      */
     public int size() {
         return pool.size();
@@ -451,7 +439,6 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
      * Exception thrown from the PoolingBehavior. Only thrown if the interaction with the internal pool fails.
      *
      * @author J&ouml;rg Schaible
-     * @since 1.2
      */
     public static class PoolException extends PicoCompositionException {
 
@@ -462,7 +449,6 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
          *
          * @param message the explaining message
          * @param cause the originating cause
-         * @since 1.2
          */
         public PoolException(String message, Throwable cause) {
             super(message, cause);
@@ -472,7 +458,6 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
          * Construct a PoolException with an explaining message.
          *
          * @param message the explaining message
-         * @since 1.2
          */
         public PoolException(String message) {
             super(message);

@@ -54,7 +54,6 @@ import java.util.Set;
  * Test suite for a ComponentAdapter implementation.
  * 
  * @author J&ouml;rg Schaible
- * @since 1.1
  */
 public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCase {
 

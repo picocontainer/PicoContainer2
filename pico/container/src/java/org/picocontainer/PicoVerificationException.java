@@ -22,7 +22,6 @@ import java.util.List;
  * {@link org.picocontainer.visitors.VerifyingVisitor}, that will throw this exception.
  * 
  * @version $Revision$
- * @since 1.0
  */
 public class PicoVerificationException
         extends PicoException {

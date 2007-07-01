@@ -19,7 +19,6 @@ import javax.management.MBeanInfo;
  * implementation or external dependency.
  * @author Michael Ward
  * @author J&ouml;rg Schaible
- * @since 1.0
  */
 public interface DynamicMBeanFactory {
 

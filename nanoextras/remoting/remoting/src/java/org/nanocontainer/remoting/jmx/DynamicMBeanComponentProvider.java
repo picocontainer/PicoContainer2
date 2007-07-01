@@ -21,7 +21,6 @@ import org.picocontainer.PicoContainer;
 /**
  * DynamicMBeanProvider, that will provide a component directly if it is already a {@link DynamicMBean}.
  * @author J&ouml;rg Schaible
- * @since 1.0
  */
 public class DynamicMBeanComponentProvider implements DynamicMBeanProvider {
 

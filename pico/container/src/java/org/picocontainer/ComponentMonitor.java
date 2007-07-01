@@ -24,7 +24,6 @@ import java.lang.reflect.Member;
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
  * @version $Revision$
- * @since 1.2
  */
 public interface ComponentMonitor {
 
@@ -48,7 +47,7 @@ public interface ComponentMonitor {
      * @param constructor the Constructor used to instantiate the addComponent
      * @param instantiated the component that was instantiated by PicoContainer
      * @param injected the components during instantiation.
-     * @param duration the duration in millis of the instantiation @since 1.3
+     * @param duration the duration in millis of the instantiation
      */
 
     void instantiated(PicoContainer container, ComponentAdapter componentAdapter,

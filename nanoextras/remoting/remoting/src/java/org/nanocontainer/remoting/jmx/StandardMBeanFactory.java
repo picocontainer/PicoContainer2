@@ -98,7 +98,6 @@ public class StandardMBeanFactory implements DynamicMBeanFactory {
      * @param mBeanInfo The {@link MBeanInfo} for the MBean. May be <code>null</code>.
      * @return Returns the default management interface.
      * @throws ClassNotFoundException If the management interface cannot be found.
-     * @since 1.0
      */
     public Class getDefaultManagementInterface(final Class type, final MBeanInfo mBeanInfo)
             throws ClassNotFoundException {

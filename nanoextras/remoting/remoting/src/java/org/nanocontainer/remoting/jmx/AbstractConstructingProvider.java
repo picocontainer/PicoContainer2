@@ -23,7 +23,6 @@ import javax.management.ObjectName;
  * A DynamicMBeanProvider that constructs StandardMBean instances that as long as an ObjectName and a MBeanInfo can be
  * generated for the component.
  * @author J&ouml;rg Schaible
- * @since 1.0
  */
 public abstract class AbstractConstructingProvider implements DynamicMBeanProvider {
 

@@ -23,7 +23,6 @@ import java.util.List;
  * 
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
- * @since 1.2
  */
 public class MethodCallingVisitor extends TraversalCheckingVisitor implements Serializable {
 
@@ -42,7 +41,6 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
      * @param visitInInstantiationOrder <code>true</code> if components are visited in instantiation order
      * @param arguments the arguments for the method invocation (may be <code>null</code>)
      * @throws NullPointerException if <tt>method</tt>, or <tt>ofType</tt> is <code>null</code>
-     * @since 1.2
      */
     public MethodCallingVisitor(Method method, Class ofType, Object[] arguments, boolean visitInInstantiationOrder) {
         if (method == null) {
@@ -62,7 +60,6 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
      * @param ofType the type of the components, that will be invoked
      * @param arguments the arguments for the method invocation (may be <code>null</code>)
      * @throws NullPointerException if <tt>method</tt>, or <tt>ofType</tt> is <code>null</code>
-     * @since 1.2
      */
     public MethodCallingVisitor(Method method, Class ofType, Object[] arguments) {
         this(method, ofType, arguments, true);

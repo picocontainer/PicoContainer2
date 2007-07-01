@@ -25,7 +25,6 @@ import org.picocontainer.parameters.ComponentParameter;
  *      used for resolving the parameter.
  * @see org.picocontainer.parameters.ConstantParameter an implementation of this interface that allows you to specify a constant
  *      that will be used for resolving the parameter.
- * @since 1.0
  */
 public interface Parameter {
 
@@ -43,7 +42,6 @@ public interface Parameter {
      * @return the instance or <code>null</code> if no suitable instance can be found.
      *
      * @throws PicoCompositionException if a referenced component could not be instantiated.
-     * @since 1.1
      */
     Object resolveInstance(PicoContainer container,
                            ComponentAdapter adapter,
@@ -60,7 +58,6 @@ public interface Parameter {
      *
      * @return <code>true</code> if the component parameter can be resolved.
      *
-     * @since 1.1
      */
     boolean isResolvable(PicoContainer container,
                          ComponentAdapter adapter,
@@ -76,7 +73,6 @@ public interface Parameter {
      * @param expectedParameterName Expected parameter name
      *
      * @throws PicoCompositionException if parameter and its dependencies cannot be resolved
-     * @since 1.1
      */
     void verify(PicoContainer container,
                 ComponentAdapter adapter,
@@ -89,7 +85,6 @@ public interface Parameter {
      *
      * @param visitor the visitor.
      *
-     * @since 1.1
      */
     void accept(PicoVisitor visitor);
 }

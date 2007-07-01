@@ -19,7 +19,6 @@ import org.picocontainer.PicoContainer;
  * Abstract base class for MBeanInfoProvider that search MBeanInfo in the PicoContainer registered with a key that
  * follows naming conventions.
  * @author J&ouml;rg Schaible
- * @since 1.0
  */
 public abstract class AbstractNamingConventionMBeanInfoProvider implements MBeanInfoProvider {
 

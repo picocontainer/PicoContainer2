@@ -35,7 +35,6 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * 
  * @author Mauro Talevi
  * @version $Revision: $
- * @since 1.2
  */
 public class DelegatingComponentMonitor implements ComponentMonitor, ComponentMonitorStrategy, Serializable {
 

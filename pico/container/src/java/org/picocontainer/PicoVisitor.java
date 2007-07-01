@@ -15,7 +15,6 @@ package org.picocontainer;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @version $Revision$
- * @since 1.1
  */
 public interface PicoVisitor {
     /**
@@ -26,7 +25,6 @@ public interface PicoVisitor {
      * @param node the start node of the traversal.
      * @return a visitor-specific value.
      * @throws IllegalArgumentException in case of an argument of invalid type. 
-     * @since 1.1
      */
     Object traverse(Object node);
 
@@ -34,7 +32,6 @@ public interface PicoVisitor {
      * Visit a {@link PicoContainer} that has to accept the visitor.
      * 
      * @param pico the visited container.
-     * @since 1.1
      */
 
     void visitContainer(PicoContainer pico);
@@ -42,7 +39,6 @@ public interface PicoVisitor {
      * Visit a {@link ComponentAdapter} that has to accept the visitor.
      * 
      * @param componentAdapter the visited ComponentAdapter.
-     * @since 1.1
      */
 
     void visitComponentAdapter(ComponentAdapter componentAdapter);
@@ -50,7 +46,6 @@ public interface PicoVisitor {
      * Visit a {@link Parameter} that has to accept the visitor.
      * 
      * @param parameter the visited Parameter.
-     * @since 1.1
      */
     void visitParameter(Parameter parameter);
 }

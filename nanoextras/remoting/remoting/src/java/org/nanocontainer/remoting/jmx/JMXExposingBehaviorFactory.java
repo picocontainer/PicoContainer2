@@ -25,7 +25,6 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 /**
  * {@link org.picocontainer.ComponentFactory} that instantiates {@link JMXExposingBehaviorAdapter} instances.
  * @author J&ouml;rg Schaible
- * @since 1.0
  */
 public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
 
@@ -39,7 +38,6 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
      *            {@link javax.management.DynamicMBean}.
      * @throws NullPointerException Thrown if the {@link MBeanServer} or the array with the {@link DynamicMBeanProvider}
      *             instances is null.
-     * @since 1.0
      */
     public JMXExposingBehaviorFactory(
             final MBeanServer mBeanServer,
@@ -58,7 +56,6 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.
      * @throws NullPointerException Thrown if the {@link MBeanServer} or the array with the {@link DynamicMBeanProvider}
      *             instances is null.
-     * @since 1.0
      */
     public JMXExposingBehaviorFactory(final MBeanServer mBeanServer)
             throws NullPointerException {

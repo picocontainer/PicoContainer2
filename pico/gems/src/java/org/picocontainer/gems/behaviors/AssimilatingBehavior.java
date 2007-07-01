@@ -51,7 +51,6 @@ import java.lang.reflect.Method;
  * 
  * @author J&ouml;rg Schaible
  * @author Michael Ward
- * @since 1.2
  */
 public final class AssimilatingBehavior extends AbstractBehavior {
 

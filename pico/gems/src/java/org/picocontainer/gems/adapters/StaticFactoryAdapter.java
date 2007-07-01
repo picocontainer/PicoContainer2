@@ -20,7 +20,6 @@ import org.picocontainer.adapters.AbstractAdapter;
  *
  * @author J&ouml;rg Schaible
  * @author Leo Simmons
- * @since 1.1
  */
 public final class StaticFactoryAdapter extends AbstractAdapter {
     private final StaticFactory staticFactory;

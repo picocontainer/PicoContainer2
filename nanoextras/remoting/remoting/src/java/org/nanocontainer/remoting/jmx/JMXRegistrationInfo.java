@@ -17,7 +17,6 @@ import javax.management.ObjectName;
 /**
  * Helper class to associate a MBean with an ObjectName.
  * @author J&ouml;rg Schaible
- * @since 1.0
  */
 public class JMXRegistrationInfo {
 

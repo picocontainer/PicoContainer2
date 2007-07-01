@@ -23,7 +23,6 @@ package org.picocontainer;
  * @see org.picocontainer.Disposable the Disposable interface if you need to <code>dispose()</code> semantics.
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
- * @since 1.0
  */
 public interface Startable {
     /**

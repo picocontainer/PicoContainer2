@@ -21,7 +21,6 @@ import org.picocontainer.behaviors.CachingBehavior;
  * @version $Revision$
  * @see MutablePicoContainer an extension of the PicoContainer interface which allows you to modify the contents of the
  *      container.
- * @since 1.0
  */
 public interface ComponentAdapter<T> {
     /**
@@ -68,7 +67,6 @@ public interface ComponentAdapter<T> {
      * cascades the visitor also down to all its ComponentAdapter instances.
      *
      * @param visitor the visitor.
-     * @since 1.1
      */
     void accept(PicoVisitor visitor);
 }

@@ -18,7 +18,6 @@ import javax.management.ObjectName;
 /**
  * Core interface for generating ObjectName instances for a DynamicMBean.
  * @author J&ouml;rg Schaible
- * @since 1.0
  */
 public interface ObjectNameFactory {
 
