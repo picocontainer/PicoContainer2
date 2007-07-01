@@ -1,12 +1,13 @@
 /*****************************************************************************
- * Copyright (C) Centerline Computers, Inc. All rights reserved.             *
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
  * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the          *
- * Centerline Binary Code License Agreement,  a copy of which has been       *
- * included with this distribution in the LICENSE.txt file.                  *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by Centerline Computers                                     *
+ * Original Code By Centerline Computers, Inc.                               *
  *****************************************************************************/
+
 package org.picocontainer.gems.containers;
 
 import java.io.ByteArrayInputStream;
@@ -43,8 +44,7 @@ import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.parameters.ConstantParameter;
 
 /**
- * @author Michael Rimov
- * @owner Centerline Computers, Inc.
+ * @author Michael Rimov 
  */
 public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectTestCase {
 	private Logger log4jLogger;
