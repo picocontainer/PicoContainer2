@@ -645,7 +645,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         for (ComponentAdapter adapter : adapters) {
             if (adapter instanceof LifecycleManager) {
                 LifecycleManager lifecycleManagerAdapter = (LifecycleManager)adapter;
-                if (lifecycleManagerAdapter.hasLifecycle()) {
+                if (lifecycleManagerAdapter.componentHasLifecycle()) {
                     // create an instance, it will be added to the ordered CA list
                     adapter.getComponentInstance(DefaultPicoContainer.this);
                     addOrderedComponentAdapter(adapter);

@@ -115,7 +115,7 @@ public final class CachingBehavior extends AbstractBehavior implements Lifecycle
         }
     }
 
-    public boolean hasLifecycle() {
+    public boolean componentHasLifecycle() {
         return delegateHasLifecylce;
     }
 

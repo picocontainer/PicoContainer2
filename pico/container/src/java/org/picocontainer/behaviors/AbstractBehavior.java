@@ -11,7 +11,6 @@
 package org.picocontainer.behaviors;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -135,10 +134,10 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
      * Invokes delegate hasLifecylce method if the delegate is a LifecycleManager
      * {@inheritDoc}
      */
-    public boolean hasLifecycle() {
+    public boolean componentHasLifecycle() {
         //throw new RuntimeException();
         if ( delegate instanceof LifecycleManager ){
-            return ((LifecycleManager)delegate).hasLifecycle();
+            return ((LifecycleManager)delegate).componentHasLifecycle();
         }
         if ( delegate instanceof LifecycleStrategy ){
             return ((LifecycleStrategy)delegate).hasLifecycle(delegate.getComponentImplementation());

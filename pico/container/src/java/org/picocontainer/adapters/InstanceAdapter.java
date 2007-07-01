@@ -70,7 +70,7 @@ public final class InstanceAdapter extends AbstractAdapter implements LifecycleM
         dispose(componentInstance);
     }
 
-    public boolean hasLifecycle() {
+    public boolean componentHasLifecycle() {
         return hasLifecycle(componentInstance.getClass());
     }
 

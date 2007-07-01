@@ -48,5 +48,5 @@ public interface LifecycleManager {
      * Test if a container's component has a lifecycle.
      * @return <code>true</code> if the component has a lifecycle
      */
-    boolean hasLifecycle();
+    boolean componentHasLifecycle();
 }

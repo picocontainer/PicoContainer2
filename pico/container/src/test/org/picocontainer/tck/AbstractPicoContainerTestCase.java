@@ -593,7 +593,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         public void dispose(PicoContainer node) {
         }
 
-        public boolean hasLifecycle() {
+        public boolean componentHasLifecycle() {
             return true;
         }
     }
