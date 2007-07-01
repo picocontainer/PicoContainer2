@@ -131,7 +131,7 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
     }
 
     /**
-     * Invokes delegate hasLifecylce method if the delegate is a Behavior
+     * Invokes delegate hasLifecycle method if the delegate is a Behavior
      * {@inheritDoc}
      */
     public boolean componentHasLifecycle() {
@@ -174,7 +174,7 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
     }
 
     /**
-     * Invokes delegate hasLifecylce(Class) method if the delegate is a LifecycleStrategy
+     * Invokes delegate hasLifecycle(Class) method if the delegate is a LifecycleStrategy
      * {@inheritDoc}
      */
     public boolean hasLifecycle(Class type) {
