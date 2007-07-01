@@ -106,10 +106,10 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
         final ComponentAdapter componentAdapter = prepDEF_verifyDoesNotInstantiate(picoContainer);
         assertSame(getComponentAdapterType(), componentAdapter.getClass());
-        final ComponentAdapter notInstantiatablecomponentAdapter = new NotInstantiatableComponentAdapter(
+        final ComponentAdapter notInstantiatablecomponentAdapter = new NotInstantiatableBehavior(
                 componentAdapter);
         final PicoContainer wrappedPicoContainer = wrapComponentInstances(
-                NotInstantiatableComponentAdapter.class, picoContainer, null);
+                NotInstantiatableBehavior.class, picoContainer, null);
         notInstantiatablecomponentAdapter.verify(wrappedPicoContainer);
     }
 
@@ -431,7 +431,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));
             final PicoContainer wrappedPicoContainer = wrapComponentInstances(
-                    CollectingComponentAdapter.class, picoContainer, wrapperDependencies);
+                    CollectingBehavior.class, picoContainer, wrapperDependencies);
             final Object instance = componentAdapter.getComponentInstance(wrappedPicoContainer);
             assertNotNull(instance);
             assertTrue(dependencies.size() > 0);
@@ -461,7 +461,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             assertTrue(picoContainer.getComponentAdapters().contains(componentAdapter));
             final PicoContainer wrappedPicoContainer = wrapComponentInstances(
-                    CycleDetectorComponentAdapter.class, picoContainer, wrapperDependencies);
+                    CycleDetectorBehavior.class, picoContainer, wrapperDependencies);
             try {
                 componentAdapter.verify(wrappedPicoContainer);
                 fail("Thrown PicoVerificationException excpected");
@@ -495,7 +495,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             assertTrue(picoContainer.getComponentAdapters().contains(componentAdapter));
             final PicoContainer wrappedPicoContainer = wrapComponentInstances(
-                    CycleDetectorComponentAdapter.class, picoContainer, wrapperDependencies);
+                    CycleDetectorBehavior.class, picoContainer, wrapperDependencies);
             try {
                 componentAdapter.getComponentInstance(wrappedPicoContainer);
                 fail("Thrown CyclicDependencyException excpected");
@@ -530,8 +530,8 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         }
     }
 
-    static public class NotInstantiatableComponentAdapter extends AbstractBehavior {
-        public NotInstantiatableComponentAdapter(final ComponentAdapter delegate) {
+    static public class NotInstantiatableBehavior extends AbstractBehavior {
+        public NotInstantiatableBehavior(final ComponentAdapter delegate) {
             super(delegate);
         }
 
@@ -541,10 +541,10 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         }
     }
 
-    static public class CollectingComponentAdapter extends AbstractBehavior {
+    static public class CollectingBehavior extends AbstractBehavior {
         final List list;
 
-        public CollectingComponentAdapter(final ComponentAdapter delegate, final List list) {
+        public CollectingBehavior(final ComponentAdapter delegate, final List list) {
             super(delegate);
             this.list = list;
         }
@@ -556,11 +556,11 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         }
     }
 
-    static public class CycleDetectorComponentAdapter extends AbstractBehavior {
+    static public class CycleDetectorBehavior extends AbstractBehavior {
         private final Set set;
         private final ObjectReference reference;
 
-        public CycleDetectorComponentAdapter(
+        public CycleDetectorBehavior(
                 final ComponentAdapter delegate, final Set set, final ObjectReference reference) {
             super(delegate);
             this.set = set;
