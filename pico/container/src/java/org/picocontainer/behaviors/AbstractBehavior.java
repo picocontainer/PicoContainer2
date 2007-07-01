@@ -135,12 +135,8 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
      * {@inheritDoc}
      */
     public boolean componentHasLifecycle() {
-        //throw new RuntimeException();
-        if ( delegate instanceof Behavior){
+        if (delegate instanceof Behavior){
             return ((Behavior)delegate).componentHasLifecycle();
-        }
-        if ( delegate instanceof LifecycleStrategy ){
-            return ((LifecycleStrategy)delegate).hasLifecycle(delegate.getComponentImplementation());
         }
         return false;
     }
