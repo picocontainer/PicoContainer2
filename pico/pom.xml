@@ -33,9 +33,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/tags/picocontainer-1_3</connection>
-        <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/picocontainer/tags/picocontainer-1_3</developerConnection>
-        <url>https://svn.codehaus.org/picocontainer/java/picocontainer/tags/picocontainer-1_3</url>
+        <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</developerConnection>
+        <url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</url>
     </scm>
     <repositories>
         <repository>
@@ -107,7 +107,7 @@
             <dependency>
                 <groupId>com.thoughtworks.paranamer</groupId>
                 <artifactId>paranamer</artifactId>
-                <version>1.0-RC-3-SNAPSHOT</version>
+                <version>1.0</version>
             </dependency>
             <!-- For proxy -->
             <dependency>
