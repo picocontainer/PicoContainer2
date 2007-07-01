@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.adapters;
 
-import org.picocontainer.LifecycleManager;
+import org.picocontainer.Behavior;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentMonitor;
@@ -21,7 +21,7 @@ import org.picocontainer.adapters.AbstractAdapter;
  * Component adapter which wraps a component instance.
  * </p>
  * <p>
- * This component adapter supports both a {@link LifecycleManager LifecycleManager} and a
+ * This component adapter supports both a {@link Behavior Behavior} and a
  * {@link org.picocontainer.LifecycleStrategy LifecycleStrategy} to control the lifecycle of the component.
  * The lifecycle manager methods simply delegate to the lifecycle strategy methods 
  * on the component instance.
@@ -32,7 +32,7 @@ import org.picocontainer.adapters.AbstractAdapter;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public final class InstanceAdapter extends AbstractAdapter implements LifecycleManager, LifecycleStrategy {
+public final class InstanceAdapter extends AbstractAdapter implements Behavior, LifecycleStrategy {
     private final Object componentInstance;
     private final LifecycleStrategy lifecycleStrategy;
 

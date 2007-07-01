@@ -11,7 +11,7 @@ package org.picocontainer.tck;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Disposable;
-import org.picocontainer.LifecycleManager;
+import org.picocontainer.Behavior;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -22,6 +22,7 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Characterizations;
+import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -574,14 +575,19 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         } catch (IllegalStateException e) {
             assertEquals("child already started", "Already started", e.getMessage());
         }
-        //TODO - The LifecycleManager reference in child containers is not used. Thus is is almost pointless
+        //TODO - The Behavior reference in child containers is not used. Thus is is almost pointless
         // The reason is because DefaultPicoContainer's accept() method visits child containers' on its own.
         // This may be file for visiting components in a tree for general cases, but for lifecycle, we
-        // should hand to each LifecycleManager's start(..) at each appropriate node. See mail-list discussion.
+        // should hand to each Behavior's start(..) at each appropriate node. See mail-list discussion.
     }
 
-    public static final class TestLifecycleManager implements LifecycleManager {
+    public static final class TestBehavior extends AbstractBehavior implements Behavior {
+
         public final ArrayList<PicoContainer> started = new ArrayList<PicoContainer>();
+
+        public TestBehavior(ComponentAdapter delegate) {
+            super(delegate);
+        }
 
         public void start(PicoContainer node) {
             started.add(node);

@@ -4,7 +4,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleManager;
+import org.picocontainer.Behavior;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
@@ -92,7 +92,7 @@ public class BehaviorAdapterTestCase extends MockObjectTestCase {
         return (ComponentAdapter)mock.proxy();
     }
 
-    static interface ComponentAdapterThatCanManageLifecycle extends ComponentAdapter, LifecycleManager, LifecycleStrategy {
+    static interface ComponentAdapterThatCanManageLifecycle extends ComponentAdapter, Behavior, LifecycleStrategy {
     }
 
     static class FooAbstractBehavior extends AbstractBehavior {

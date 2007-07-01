@@ -11,7 +11,7 @@
 package org.picocontainer.behaviors;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.LifecycleManager;
+import org.picocontainer.Behavior;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.LifecycleStrategy;
@@ -24,7 +24,7 @@ import java.io.Serializable;
  * {@link ComponentAdapter} implementation that caches the component instance.
  * </p>
  * <p>
- * This adapter supports components with a lifecycle, as it is a {@link LifecycleManager lifecycle manager}
+ * This adapter supports components with a lifecycle, as it is a {@link Behavior lifecycle manager}
  * which will apply the delegate's {@link org.picocontainer.LifecycleStrategy lifecycle strategy} to the cached component instance.
  * The lifecycle state is maintained so that the component instance behaves in the expected way:
  * it can't be started if already started, it can't be started or stopped if disposed, it can't
@@ -34,7 +34,7 @@ import java.io.Serializable;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public final class CachingBehavior extends AbstractBehavior implements LifecycleManager {
+public final class CachingBehavior extends AbstractBehavior implements Behavior {
 
     private final ObjectReference instanceReference;
     private boolean disposed;

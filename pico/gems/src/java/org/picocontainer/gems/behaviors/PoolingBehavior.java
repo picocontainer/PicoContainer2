@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.LifecycleManager;
+import org.picocontainer.Behavior;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.LifecycleStrategy;
@@ -69,7 +69,7 @@ import com.thoughtworks.proxy.toys.pool.Pool;
  * @author Aslak Helles&oslash;y
  * @since 1.2
  */
-public final class PoolingBehavior extends AbstractBehavior implements LifecycleManager {
+public final class PoolingBehavior extends AbstractBehavior implements Behavior {
 
     private static final long serialVersionUID = 1L;
 

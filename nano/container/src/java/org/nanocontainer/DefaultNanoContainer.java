@@ -206,7 +206,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
 
     /**
      * Makes a child container with the same basic characteristics of <tt>this</tt>
-     * object (ComponentFactory, PicoContainer type, LifecycleManager, etc)
+     * object (ComponentFactory, PicoContainer type, Behavior, etc)
      *
      * @param name the name of the child container
      *

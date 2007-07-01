@@ -11,11 +11,7 @@
 package org.picocontainer;
 
 /**
- * A manager for the lifecycle of a container's components.  
- * The lifecycle manager is implemented by the component adapters
- * which will resolve the dependencies of the component instance and
- * delegate the implementation of the lifecycle control to the 
- * {@link LifecycleStrategy lifecycle strategy}.
+ * Behaviors modify the components created by a Injector with additional behaviors
  * 
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
@@ -24,28 +20,28 @@ package org.picocontainer;
  * @see LifecycleStrategy
  * @since 1.2
  */
-public interface LifecycleManager {
+public interface Behavior extends ComponentAdapter {
 
     /**
-     * Invoke the "start" method on the container's components. 
-     * @param container the container to "start" its components' lifecycle
+     * Invoke the "start" method on the component.
+     * @param container the container to "start" the component
      */
     void start(PicoContainer container);
 
     /**
-     * Invoke the "stop" method on the container's components. 
-     * @param container the container to "stop" its components' lifecycle
+     * Invoke the "stop" method on the component.
+     * @param container the container to "stop" the component
      */
     void stop(PicoContainer container);
 
     /**
-     * Invoke the "dispose" method on the container's components. 
-     * @param container the container to "dispose" its components' lifecycle
+     * Invoke the "dispose" method on the component.
+     * @param container the container to "dispose" the component
      */
     void dispose(PicoContainer container);
 
     /**
-     * Test if a container's component has a lifecycle.
+     * Test if a component honors a lifecycle.
      * @return <code>true</code> if the component has a lifecycle
      */
     boolean componentHasLifecycle();

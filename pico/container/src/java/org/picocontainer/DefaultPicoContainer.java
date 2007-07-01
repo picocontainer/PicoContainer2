@@ -468,11 +468,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * container start successfully.  The child container for which start is attempted
      * is tracked so that upon stop, only those need to be stopped.
      * The lifecycle operation is delegated to the component adapter,
-     * if it is an instance of {@link LifecycleManager lifecycle manager}.
+     * if it is an instance of {@link Behavior lifecycle manager}.
      * The actual {@link LifecycleStrategy lifecycle strategy} supported
      * depends on the concrete implementation of the adapter.
      *
-     * @see LifecycleManager
+     * @see Behavior
      * @see LifecycleStrategy
      * @see #makeChildContainer()
      * @see #addChildContainer(PicoContainer)
@@ -497,11 +497,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * The stopping of the child containers is only attempted for those that have been
      * started, possibly not successfully.
      * The lifecycle operation is delegated to the component adapter,
-     * if it is an instance of {@link LifecycleManager lifecycle manager}.
+     * if it is an instance of {@link Behavior lifecycle manager}.
      * The actual {@link LifecycleStrategy lifecycle strategy} supported
      * depends on the concrete implementation of the adapter.
      *
-     * @see LifecycleManager
+     * @see Behavior
      * @see LifecycleStrategy
      * @see #makeChildContainer()
      * @see #addChildContainer(PicoContainer)
@@ -536,11 +536,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     /**
      * Dispose the components of this PicoContainer and all its logical child containers.
      * The lifecycle operation is delegated to the component adapter,
-     * if it is an instance of {@link LifecycleManager lifecycle manager}.
+     * if it is an instance of {@link Behavior lifecycle manager}.
      * The actual {@link LifecycleStrategy lifecycle strategy} supported
      * depends on the concrete implementation of the adapter.
      *
-     * @see LifecycleManager
+     * @see Behavior
      * @see LifecycleStrategy
      * @see #makeChildContainer()
      * @see #addChildContainer(PicoContainer)
@@ -643,9 +643,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private void startAdapters() {
         Collection<ComponentAdapter<?>> adapters = getComponentAdapters();
         for (ComponentAdapter adapter : adapters) {
-            if (adapter instanceof LifecycleManager) {
-                LifecycleManager lifecycleManagerAdapter = (LifecycleManager)adapter;
-                if (lifecycleManagerAdapter.componentHasLifecycle()) {
+            if (adapter instanceof Behavior) {
+                Behavior behaviorAdapter = (Behavior)adapter;
+                if (behaviorAdapter.componentHasLifecycle()) {
                     // create an instance, it will be added to the ordered CA list
                     adapter.getComponentInstance(DefaultPicoContainer.this);
                     addOrderedComponentAdapter(adapter);
@@ -656,8 +656,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         // clear list of started CAs
         startedComponentAdapters.clear();
         for (final ComponentAdapter adapter : adapters) {
-            if (adapter instanceof LifecycleManager) {
-                LifecycleManager manager = (LifecycleManager)adapter;
+            if (adapter instanceof Behavior) {
+                Behavior manager = (Behavior)adapter;
                 manager.start(DefaultPicoContainer.this);
                 startedComponentAdapters.add(adapter);
             }
@@ -673,8 +673,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         List<ComponentAdapter> adapters = startedComponentAdapters;
         for (int i = adapters.size() - 1; 0 <= i; i--) {
             ComponentAdapter adapter = adapters.get(i);
-            if (adapter instanceof LifecycleManager) {
-                LifecycleManager manager = (LifecycleManager)adapter;
+            if (adapter instanceof Behavior) {
+                Behavior manager = (Behavior)adapter;
                 manager.stop(DefaultPicoContainer.this);
             }
         }
@@ -689,8 +689,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         List<ComponentAdapter<?>> adapters = orderedComponentAdapters;
         for (int i = adapters.size() - 1; 0 <= i; i--) {
             ComponentAdapter adapter = adapters.get(i);
-            if (adapter instanceof LifecycleManager) {
-                LifecycleManager manager = (LifecycleManager)adapter;
+            if (adapter instanceof Behavior) {
+                Behavior manager = (Behavior)adapter;
                 manager.dispose(DefaultPicoContainer.this);
             }
         }

@@ -5,7 +5,7 @@
 package org.picocontainer.gems.behaviors;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.LifecycleManager;
+import org.picocontainer.Behavior;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.gems.behaviors.PoolingBehavior;
@@ -275,7 +275,7 @@ public final class PoolingBehaviorTestCase extends AbstractComponentAdapterTestC
     public void testDEF_lifecycleManagerSupport() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final Class type = getComponentAdapterType();
-            if (LifecycleManager.class.isAssignableFrom(type)) {
+            if (Behavior.class.isAssignableFrom(type)) {
                 final StringBuffer buffer = new StringBuffer();
                 final MutablePicoContainer picoContainer = new DefaultPicoContainer(
                         createDefaultComponentAdapterFactory());
@@ -311,7 +311,7 @@ public final class PoolingBehaviorTestCase extends AbstractComponentAdapterTestC
     public void testRES_lifecycleManagerHonorsInstantiationSequence() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final Class type = getComponentAdapterType();
-            if (LifecycleManager.class.isAssignableFrom(type)) {
+            if (Behavior.class.isAssignableFrom(type)) {
                 final StringBuffer buffer = new StringBuffer();
                 final MutablePicoContainer picoContainer = new DefaultPicoContainer(
                         createDefaultComponentAdapterFactory());

@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleManager;
+import org.picocontainer.Behavior;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVisitor;
@@ -31,7 +31,7 @@ import org.picocontainer.LifecycleStrategy;
  * support the monitor strategy.
  * </p>
  * <p>
- * This adapter also supports a {@link LifecycleManager lifecycle manager} and a
+ * This adapter also supports a {@link Behavior lifecycle manager} and a
  * {@link org.picocontainer.LifecycleStrategy lifecycle strategy} if the delegate does.
  * </p>
  * 
@@ -41,7 +41,7 @@ import org.picocontainer.LifecycleStrategy;
  * @version $Revision$
  */
 public abstract class AbstractBehavior implements ComponentAdapter, ComponentMonitorStrategy,
-                                                    LifecycleManager, LifecycleStrategy, Serializable {
+                                                  Behavior, LifecycleStrategy, Serializable {
 
     private final ComponentAdapter delegate;
 
@@ -101,43 +101,43 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
     // ~~~~~~~~ LifecylceManager ~~~~~~~~
    
     /**
-     * Invokes delegate start method if the delegate is a LifecycleManager
+     * Invokes delegate start method if the delegate is a Behavior
      * {@inheritDoc}
      */
     public void start(PicoContainer container) {
-        if ( delegate instanceof LifecycleManager ){
-            ((LifecycleManager)delegate).start(container);
+        if ( delegate instanceof Behavior){
+            ((Behavior)delegate).start(container);
         }
     }
 
     /**
-     * Invokes delegate stop method if the delegate is a LifecycleManager
+     * Invokes delegate stop method if the delegate is a Behavior
      * {@inheritDoc}
      */
     public void stop(PicoContainer container) {
-        if ( delegate instanceof LifecycleManager ){
-            ((LifecycleManager)delegate).stop(container);
+        if ( delegate instanceof Behavior){
+            ((Behavior)delegate).stop(container);
         }
     }
     
     /**
-     * Invokes delegate dispose method if the delegate is a LifecycleManager
+     * Invokes delegate dispose method if the delegate is a Behavior
      * {@inheritDoc}
      */
     public void dispose(PicoContainer container) {
-        if ( delegate instanceof LifecycleManager ){
-            ((LifecycleManager)delegate).dispose(container);
+        if ( delegate instanceof Behavior){
+            ((Behavior)delegate).dispose(container);
         }
     }
 
     /**
-     * Invokes delegate hasLifecylce method if the delegate is a LifecycleManager
+     * Invokes delegate hasLifecylce method if the delegate is a Behavior
      * {@inheritDoc}
      */
     public boolean componentHasLifecycle() {
         //throw new RuntimeException();
-        if ( delegate instanceof LifecycleManager ){
-            return ((LifecycleManager)delegate).componentHasLifecycle();
+        if ( delegate instanceof Behavior){
+            return ((Behavior)delegate).componentHasLifecycle();
         }
         if ( delegate instanceof LifecycleStrategy ){
             return ((LifecycleStrategy)delegate).hasLifecycle(delegate.getComponentImplementation());
