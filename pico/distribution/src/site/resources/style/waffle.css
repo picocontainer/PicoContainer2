@@ -1,0 +1,168 @@
+
+
+#banner {
+  border-bottom: 1px solid #fff;
+}
+
+#banner img {
+  padding: 4px 0px 4px 20px;
+}
+
+#breadcrumbs {
+  border: 1px solid;
+  background-color: #e6e6db;
+}
+
+#leftColumn {
+  margin: 10px 0 0 5px;
+  border: 1px solid #fff;
+  background-color: #fff;
+  float: left;
+}
+
+#navColumn h1 {
+  font-size: 10pt;
+  border-bottom: 1px solid #aaaaaa;
+  padding-top: 12px;
+  color: #66665c;
+}
+
+#footer {
+  width: 100%;
+  background-color: #e6e6db;
+  border: 1px solid;
+  padding: 5px 0 5px 0;
+  margin-top: 50px;
+  font-size: 0.8em;
+  position: fixed;
+  bottom: 0px;
+}
+
+#uads {
+  position: absolute;
+  right: 40px;
+  top: 100px;
+}
+
+#header {
+  margin: 0 auto 0 auto;
+  margin-left: 30px;
+  margin-bottom: 40px;
+}
+
+#content {
+  margin: 0 auto 0 auto;
+  margin-left: 30px;
+  text-align: left;
+}
+
+#left {
+  position: absolute;
+  z-index: 2;
+  left: 8px;
+  width: 184px;
+  top: 125px;
+  bottom: 8px;
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  margin: 0;
+  font-family: "Trebuchet MS", Arial, Verdana;
+  font-size: 0.84em;
+  color: #555555;
+  background-color: #FFFFFF;
+  text-align: left;
+  padding: 0 0 10px 0;
+  border-left: 1px dashed #800E06;
+  border-right: 1px dashed #800E06;
+}
+
+body,td,select,input,li {
+  font-family: Verdana, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:link {
+  color: #666699;
+}
+
+a:visited {
+  color: #666699;
+}
+
+a:active,a:hover {
+  color: #66665c;
+}
+
+table.bodyTable th {
+  color: white;
+  background-color: #bbb;
+  text-align: left;
+  font-weight: bold;
+}
+
+table.bodyTable th,table.bodyTable td {
+  font-size: 1em;
+}
+
+table.bodyTable tr.a {
+  background-color: #ddd;
+}
+
+table.bodyTable tr.b {
+  background-color: #eee;
+}
+
+code {
+  font-family: Courier, monospace;
+  font-size: 13px;
+}
+
+.source {
+  border: 1px solid #999;
+  background-color: #eee;
+}
+
+.code-content {
+  border: 1px solid #4D87CE;
+  font-size: 1.2em;
+  padding: 10px;
+}
+
+.code-comment {
+  color: #777;
+  font-style: italic;
+}
+
+.code-quote {
+  color: #070;
+}
+
+.code-keyword {
+  color: #700;
+}
+
+.logo {
+  float: right;
+  margin-right: 30px;
+}
+
+.clear {
+  clear: both;
+}
+
+.left {
+  text-align: left;
+  margin-left: 10px;
+}
+
+.right {
+  text-align: right;
+  margin-right: 10px;
+}

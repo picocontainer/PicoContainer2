@@ -1,0 +1,8 @@
+<sitemap>
+ <section>
+ <name>About</name>
+   <page>index.html</page>
+   <link title="JavaDoc">javadoc/index.html</link>
+   <link title="Download">http://repository.codehaus.org/org/picocontainer</link>
+ </section>
+</sitemap>
