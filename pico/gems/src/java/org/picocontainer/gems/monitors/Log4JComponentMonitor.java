@@ -10,6 +10,8 @@
 
 package org.picocontainer.gems.monitors;
 
+import static org.picocontainer.monitors.ComponentMonitorHelper.format;
+
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
@@ -18,7 +20,7 @@ import java.lang.reflect.Method;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
-import org.picocontainer.monitors.AbstractComponentMonitor;
+import org.picocontainer.monitors.ComponentMonitorHelper;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentAdapter;
@@ -35,7 +37,7 @@ import org.picocontainer.PicoContainer;
  * @author Mauro Talevi
  * @version $Revision: $
  */
-public class Log4JComponentMonitor extends AbstractComponentMonitor implements Serializable {
+public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
 
     private Logger logger;
     private final ComponentMonitor delegate;
@@ -121,7 +123,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     ) {
         Logger logger = getLogger(constructor);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(INSTANTIATING, toString(constructor)));
+            logger.debug(format(ComponentMonitorHelper.INSTANTIATING, ComponentMonitorHelper.toString(constructor)));
         }
         return delegate.instantiating(container, componentAdapter, constructor);
     }
@@ -133,7 +135,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
                              long duration) {
         Logger logger = getLogger(constructor);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(INSTANTIATED2, toString(constructor), duration, instantiated.getClass().getName(), toString(parameters)));
+            logger.debug(format(ComponentMonitorHelper.INSTANTIATED, ComponentMonitorHelper.toString(constructor), duration, instantiated.getClass().getName(), ComponentMonitorHelper.toString(parameters)));
         }
         delegate.instantiated(container, componentAdapter, constructor, instantiated, parameters, duration);
     }
@@ -144,7 +146,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
                                     Exception cause) {
         Logger logger = getLogger(constructor);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(INSTANTIATION_FAILED, toString(constructor), cause.getMessage()), cause);
+            logger.warn(format(ComponentMonitorHelper.INSTANTIATION_FAILED, ComponentMonitorHelper.toString(constructor), cause.getMessage()), cause);
         }
         delegate.instantiationFailed(container, componentAdapter, constructor, cause);
     }
@@ -155,7 +157,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
                          Object instance) {
         Logger logger = getLogger(member);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(INVOKING, toString(member), instance));
+            logger.debug(format(ComponentMonitorHelper.INVOKING, ComponentMonitorHelper.toString(member), instance));
         }
         delegate.invoking(container, componentAdapter, member, instance);
     }
@@ -167,7 +169,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
                         long duration) {
         Logger logger = getLogger(method);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(INVOKED, toString(method), instance, duration));
+            logger.debug(format(ComponentMonitorHelper.INVOKED, ComponentMonitorHelper.toString(method), instance, duration));
         }
         delegate.invoked(container, componentAdapter, method, instance, duration);
     }
@@ -175,7 +177,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     public void invocationFailed(Member member, Object instance, Exception cause) {
         Logger logger = getLogger(member);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(INVOCATION_FAILED, toString(member), instance, cause.getMessage()), cause);
+            logger.warn(format(ComponentMonitorHelper.INVOCATION_FAILED, ComponentMonitorHelper.toString(member), instance, cause.getMessage()), cause);
         }
         delegate.invocationFailed(member, instance, cause);
     }
@@ -186,7 +188,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
                                           RuntimeException cause) {
         Logger logger = getLogger(method);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(LIFECYCLE_INVOCATION_FAILED, toString(method), instance, cause.getMessage()), cause);
+            logger.warn(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, ComponentMonitorHelper.toString(method), instance, cause.getMessage()), cause);
         }
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
@@ -194,7 +196,7 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
     public Object noComponent(MutablePicoContainer container, Object componentKey) {
         Logger logger = this.logger != null ? this.logger : LogManager.getLogger(ComponentMonitor.class);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(NO_COMPONENT, componentKey));
+            logger.warn(format(ComponentMonitorHelper.NO_COMPONENT, componentKey));
         }
         return delegate.noComponent(container, componentKey);
 

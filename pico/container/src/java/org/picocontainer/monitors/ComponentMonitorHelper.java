@@ -14,7 +14,6 @@ import java.text.MessageFormat;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Field;
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Member;
 
 import org.picocontainer.ComponentMonitor;
@@ -25,11 +24,10 @@ import org.picocontainer.ComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision: $
  */
-public abstract class AbstractComponentMonitor implements ComponentMonitor {
+public final class ComponentMonitorHelper  {
 
     public final static String INSTANTIATING = "PicoContainer: instantiating {0}";
-    public final static String INSTANTIATED = "PicoContainer: instantiated {0} [{1} ms]";
-    public final static String INSTANTIATED2 = "PicoContainer: instantiated {0} [{1} ms], component {2}, injected [{3}]";
+    public final static String INSTANTIATED = "PicoContainer: instantiated {0} [{1} ms], component {2}, injected [{3}]";
     public final static String INSTANTIATION_FAILED = "PicoContainer: instantiation failed: {0}, reason: {1}";
     public final static String INVOKING = "PicoContainer: invoking {0} on {1}";
     public final static String INVOKED = "PicoContainer: invoked {0} on {1} [{2} ms]";

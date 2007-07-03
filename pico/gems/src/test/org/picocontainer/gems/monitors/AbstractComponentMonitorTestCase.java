@@ -19,7 +19,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.monitors.AbstractComponentMonitor;
+import org.picocontainer.monitors.ComponentMonitorHelper;
 
 /**
  * @author Paul Hammant
@@ -53,41 +53,41 @@ public abstract class AbstractComponentMonitorTestCase extends TestCase {
 
     public void testShouldTraceInstantiating() throws IOException {
         componentMonitor.instantiating(null, null, constructor);
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATING, AbstractComponentMonitor.toString(constructor)));
+        assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATING, ComponentMonitorHelper.toString(constructor)));
     }
 
     public void testShouldTraceInstantiatedWithInjected() throws IOException {
         Object[] injected = new Object[0];
         Object instantiated = new Object();
         componentMonitor.instantiated(null, null, constructor, instantiated, injected, 543);
-        String s = AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATED2, AbstractComponentMonitor.toString(constructor), (long) 543, instantiated.getClass().getName(), AbstractComponentMonitor.toString(injected));
+        String s = ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATED, ComponentMonitorHelper.toString(constructor), (long) 543, instantiated.getClass().getName(), ComponentMonitorHelper.toString(injected));
         assertFileContent(getLogPrefix() + s);
     }
 
 
     public void testShouldTraceInstantiationFailed() throws IOException {
         componentMonitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INSTANTIATION_FAILED, AbstractComponentMonitor.toString(constructor), "doh"));
+        assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATION_FAILED, ComponentMonitorHelper.toString(constructor), "doh"));
     }
 
     public void testShouldTraceInvoking() throws IOException {
         componentMonitor.invoking(null, null, method, this);
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INVOKING, AbstractComponentMonitor.toString(method), this));
+        assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKING, ComponentMonitorHelper.toString(method), this));
     }
 
     public void testShouldTraceInvoked() throws IOException {
         componentMonitor.invoked(null, null, method, this, 543);
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INVOKED, AbstractComponentMonitor.toString(method), this, (long) 543));
+        assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, ComponentMonitorHelper.toString(method), this, (long) 543));
     }
 
     public void testShouldTraceInvocatiationFailed() throws IOException {
         componentMonitor.invocationFailed(method, this, new RuntimeException("doh"));
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.INVOCATION_FAILED, AbstractComponentMonitor.toString(method), this, "doh"));
+        assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INVOCATION_FAILED, ComponentMonitorHelper.toString(method), this, "doh"));
     }
 
     public void testShouldTraceNoComponent() throws IOException {
         componentMonitor.noComponent(null, "doh");
-        assertFileContent(getLogPrefix() + AbstractComponentMonitor.format(AbstractComponentMonitor.NO_COMPONENT, "doh"));
+        assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.NO_COMPONENT, "doh"));
     }
 
 

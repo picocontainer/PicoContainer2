@@ -21,7 +21,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.monitors.AbstractComponentMonitor;
+import org.picocontainer.monitors.ComponentMonitorHelper;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 
@@ -34,7 +34,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision: $
  */
-public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor implements Serializable {
+public class CommonsLoggingComponentMonitor implements ComponentMonitor, Serializable {
 
     private Log log;
     private final ComponentMonitor delegate;
@@ -117,7 +117,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     ) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
-            log.debug(format(INSTANTIATING, toString(constructor)));
+            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATING, ComponentMonitorHelper.toString(constructor)));
         }
         return delegate.instantiating(container, componentAdapter, constructor);
     }
@@ -129,7 +129,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
                              long duration) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
-            log.debug(format(INSTANTIATED2, toString(constructor), duration, instantiated.getClass().getName(), toString(parameters)));
+            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATED, ComponentMonitorHelper.toString(constructor), duration, instantiated.getClass().getName(), ComponentMonitorHelper.toString(parameters)));
         }
         delegate.instantiated(container, componentAdapter, constructor, instantiated, parameters, duration);
     }
@@ -140,7 +140,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
                                     Exception cause) {
         Log log = getLog(constructor);
         if (log.isWarnEnabled()) {
-            log.warn(format(INSTANTIATION_FAILED, toString(constructor), cause.getMessage()), cause);
+            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATION_FAILED, ComponentMonitorHelper.toString(constructor), cause.getMessage()), cause);
         }
         delegate.instantiationFailed(container, componentAdapter, constructor, cause);
     }
@@ -151,7 +151,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
                          Object instance) {
         Log log = getLog(member);
         if (log.isDebugEnabled()) {
-            log.debug(format(INVOKING, toString(member), instance));
+            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKING, ComponentMonitorHelper.toString(member), instance));
         }
         delegate.invoking(container, componentAdapter, member, instance);
     }
@@ -163,7 +163,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
                         long duration) {
         Log log = getLog(method);
         if (log.isDebugEnabled()) {
-            log.debug(format(INVOKED, toString(method), instance, duration));
+            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, ComponentMonitorHelper.toString(method), instance, duration));
         }
         delegate.invoked(container, componentAdapter, method, instance,  duration);
     }
@@ -171,7 +171,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public void invocationFailed(Member member, Object instance, Exception cause) {
         Log log = getLog(member);
         if (log.isWarnEnabled()) {
-            log.warn(format(INVOCATION_FAILED, toString(member), instance, cause.getMessage()), cause);
+            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOCATION_FAILED, ComponentMonitorHelper.toString(member), instance, cause.getMessage()), cause);
         }
         delegate.invocationFailed(member, instance, cause);
     }
@@ -182,7 +182,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
                                           RuntimeException cause) {
         Log log = getLog(method);
         if (log.isWarnEnabled()) {
-            log.warn(format(LIFECYCLE_INVOCATION_FAILED, toString(method), instance, cause.getMessage()), cause);
+            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, ComponentMonitorHelper.toString(method), instance, cause.getMessage()), cause);
         }
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
@@ -190,7 +190,7 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
     public Object noComponent(MutablePicoContainer container, Object componentKey) {
         Log log = this.log != null ? this.log : LogFactory.getLog(ComponentMonitor.class);
         if (log.isWarnEnabled()) {
-            log.warn(format(NO_COMPONENT, componentKey));
+            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.NO_COMPONENT, componentKey));
         }
         return delegate.noComponent(container, componentKey);
     }

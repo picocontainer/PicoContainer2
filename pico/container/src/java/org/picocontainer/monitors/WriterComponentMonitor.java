@@ -10,6 +10,8 @@
 
 package org.picocontainer.monitors;
 
+import static org.picocontainer.monitors.ComponentMonitorHelper.format;
+
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
@@ -29,7 +31,7 @@ import org.picocontainer.PicoContainer;
  * @author Mauro Talevi
  * @version $Revision: 1882 $
  */
-public class WriterComponentMonitor extends AbstractComponentMonitor {
+public class WriterComponentMonitor implements ComponentMonitor {
 
     private final PrintWriter out;
     private final ComponentMonitor delegate;
@@ -45,7 +47,7 @@ public class WriterComponentMonitor extends AbstractComponentMonitor {
 
     public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
                                      Constructor constructor) {
-        out.println(format(INSTANTIATING, toString(constructor)));
+        out.println(format(ComponentMonitorHelper.INSTANTIATING, ComponentMonitorHelper.toString(constructor)));
         return delegate.instantiating(container, componentAdapter, constructor);
     }
 
@@ -54,7 +56,7 @@ public class WriterComponentMonitor extends AbstractComponentMonitor {
                              Object instantiated,
                              Object[] injected,
                              long duration) {
-        out.println(format(INSTANTIATED2, toString(constructor), duration, instantiated.getClass().getName(), toString(injected)));
+        out.println(format(ComponentMonitorHelper.INSTANTIATED, ComponentMonitorHelper.toString(constructor), duration, instantiated.getClass().getName(), ComponentMonitorHelper.toString(injected)));
         delegate.instantiated(container, componentAdapter, constructor, instantiated, injected, duration);
     }
 
@@ -62,7 +64,7 @@ public class WriterComponentMonitor extends AbstractComponentMonitor {
                                     ComponentAdapter componentAdapter,
                                     Constructor constructor,
                                     Exception cause) {
-        out.println(format(INSTANTIATION_FAILED, toString(constructor), cause.getMessage()));
+        out.println(format(ComponentMonitorHelper.INSTANTIATION_FAILED, ComponentMonitorHelper.toString(constructor), cause.getMessage()));
         delegate.instantiationFailed(container, null, constructor, cause);
     }
 
@@ -70,7 +72,7 @@ public class WriterComponentMonitor extends AbstractComponentMonitor {
                          ComponentAdapter componentAdapter,
                          Member member,
                          Object instance) {
-        out.println(format(INVOKING, toString(member), instance));
+        out.println(format(ComponentMonitorHelper.INVOKING, ComponentMonitorHelper.toString(member), instance));
         delegate.invoking(container, componentAdapter, member, instance);
     }
 
@@ -79,12 +81,12 @@ public class WriterComponentMonitor extends AbstractComponentMonitor {
                         Method method,
                         Object instance,
                         long duration) {
-        out.println(format(INVOKED, toString(method), instance, duration));
+        out.println(format(ComponentMonitorHelper.INVOKED, ComponentMonitorHelper.toString(method), instance, duration));
         delegate.invoked(container, componentAdapter, method, instance, duration);
     }
 
     public void invocationFailed(Member member, Object instance, Exception cause) {
-        out.println(format(INVOCATION_FAILED, toString(member), instance, cause.getMessage()));
+        out.println(format(ComponentMonitorHelper.INVOCATION_FAILED, ComponentMonitorHelper.toString(member), instance, cause.getMessage()));
         delegate.invocationFailed(member, instance, cause);
     }
 
@@ -92,12 +94,12 @@ public class WriterComponentMonitor extends AbstractComponentMonitor {
                                           ComponentAdapter componentAdapter, Method method,
                                           Object instance,
                                           RuntimeException cause) {
-        out.println(format(LIFECYCLE_INVOCATION_FAILED, toString(method), instance, cause.getMessage()));
+        out.println(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, ComponentMonitorHelper.toString(method), instance, cause.getMessage()));
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
 
     public Object noComponent(MutablePicoContainer container, Object componentKey) {
-        out.println(format(NO_COMPONENT, componentKey));
+        out.println(format(ComponentMonitorHelper.NO_COMPONENT, componentKey));
         return delegate.noComponent(container, componentKey);
     }
 }
