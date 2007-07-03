@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<title>Component Monitors</title>
+</head>
+<body class="composite">
+<div id="bodyColumn">
+<div id="contentBox">
+<div class="section">
+<h2>Component Monitors  </h2>
+<p>A ComponentMonitor if injected into DefultPicoContainer allows for certain events to me monitored at a container level. Events can be:</p>
+<ul>
+  <li>instantiating - refering to a component </li>
+  <li>instantiated - refering to a component</li>
+  <li>instantiationFailed - refering to a component</li>
+  <li>invoking - refering to a method on a component </li>
+  <li>invoked - refering to a method on a component </li>
+  <li>invocationFailed - refering to a method on a component </li>
+  <li>lifecycleInvocationFailed - referring to start/stop/dispose methods on a component </li>
+  <li>noComponentFound - referring to getComponent(..) on a PicoContainer instance. </li>
+</ul>
+<p><strong>Return Values </strong></p>
+<p><em>Instantiating</em> returns a Constructor. An implementor of ComponentMonitor can choose to return a different Constructor reference. This is one way that implementations can be replaced or decorated (AOP style) with additional/changed functionality. </p>
+<p><em>noComponentFound</em> returns an Object (default of null in most cases). An implementor can choose to return an instance instead. That instance should be of a type that makes sense to the component that was being sought. The getComponent(..) would have otherwise failed, but this hypothetical ComponentMonitor intercepted that failure and provided something that makes sense. </p>
+<p><strong>General rules</strong></p>
+<ol>
+  <li>ComponentMonitor can generally be chained together. Meaning you can use them in combination. </li>
+  <li>Most have NullComponentMonitor (see below) as their end stop. </li>
+  <li>Any method on ComponentMonitor is open for interpretation. That means they can throw exceptions as well as return different values, making them modify PicoContainer's behavior. </li>
+</ol>
+<h3>Logging or text-centric varieties of ComponentMonitor </h3>
+<p>Hopefully self explanatory:</p>
+<ul>
+  <li>CommonsLoggingComponentMonitor (Gems) </li>
+  <li>Log4JComponentMonitor (Gems) </li>
+  <li>ConsoleComponentMonitor  </li>
+  <li>WriterComponentMonitor</li>
+</ul>
+<h3>NullComponentMonitor</h3>
+<p>This is PicoContainer's default ComponentMonitor. It generally fits the NullObject pattern, but it does add behavior. Specifically if it encounters a lifecycleInvocationFailed(..) method invocation, it throws a PicoLifecycleException in response. If you use something other than NullComponentMonitor (bear in mind the default 'end stop' for most others is also NullComponentMonitor) then you could change the way PicoContainer responds to components it cannot start, stop of dispose of. </p>
+<h3>LifecycleComponentMonitor</h3>
+<p>This  ComponentMonitor stores lifecycle failures and rethrows them later if rethrowLifecycleFailuresException() is called. </p>
+<p>&nbsp; </p>
+</div>
+</div>
+</div>
+</body>
+</html>
