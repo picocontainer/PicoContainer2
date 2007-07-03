@@ -18,7 +18,7 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.adapters.AbstractAdapter;
-import org.picocontainer.monitors.DelegatingComponentMonitor;
+import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 
@@ -101,7 +101,7 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     protected AbstractInjector(Object componentKey, Class componentImplementation, Parameter... parameters) {
-        this(componentKey, componentImplementation, parameters, new DelegatingComponentMonitor());
+        this(componentKey, componentImplementation, parameters, new AbstractComponentMonitor());
     }
     
     private void checkConcrete() throws NotConcreteRegistrationException {

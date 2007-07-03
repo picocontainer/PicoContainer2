@@ -36,24 +36,24 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * @author Mauro Talevi
  * @version $Revision: $
  */
-public class DelegatingComponentMonitor implements ComponentMonitor, ComponentMonitorStrategy, Serializable {
+public class AbstractComponentMonitor implements ComponentMonitor, ComponentMonitorStrategy, Serializable {
 
     private  ComponentMonitor delegate;
     
     /**
-     * Creates a DelegatingComponentMonitor with a given delegate
+     * Creates a AbstractComponentMonitor with a given delegate
      * @param delegate the ComponentMonitor to which this monitor delegates
      */
-    public DelegatingComponentMonitor(ComponentMonitor delegate) {
+    public AbstractComponentMonitor(ComponentMonitor delegate) {
         checkMonitor(delegate);
         this.delegate = delegate;
     }
 
     /**
-     * Creates a DelegatingComponentMonitor with an instance of 
+     * Creates a AbstractComponentMonitor with an instance of
      * {@link NullComponentMonitor}.
      */
-    public DelegatingComponentMonitor() {
+    public AbstractComponentMonitor() {
         this(NullComponentMonitor.getInstance());
     }
     

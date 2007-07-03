@@ -13,12 +13,12 @@ package org.picocontainer.gems.monitors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.monitors.DelegatingComponentMonitor;
+import org.picocontainer.monitors.AbstractComponentMonitor;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
 
-public final class DotDependencyGraphComponentMonitor extends DelegatingComponentMonitor implements ComponentMonitor {
+public final class DotDependencyGraphComponentMonitor extends AbstractComponentMonitor implements ComponentMonitor {
 
     final ArrayList allInstantiated = new ArrayList();
 

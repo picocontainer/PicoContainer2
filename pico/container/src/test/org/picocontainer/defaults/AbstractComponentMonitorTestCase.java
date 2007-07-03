@@ -16,7 +16,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.monitors.DelegatingComponentMonitor;
+import org.picocontainer.monitors.AbstractComponentMonitor;
 
 import java.lang.reflect.Constructor;
 import java.util.*;
@@ -25,11 +25,11 @@ import java.util.*;
  * @author Mauro Talevi
  * @version $Revision: 2200 $
  */
-public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
+public class AbstractComponentMonitorTestCase extends MockObjectTestCase {
 
     public void testDelegatingMonitorThrowsExpectionWhenConstructionWithNullDelegate(){
         try {
-            new DelegatingComponentMonitor(null);
+            new AbstractComponentMonitor(null);
             fail("NPE expected");
         } catch (NullPointerException e) {
             assertEquals("NPE", "monitor", e.getMessage());
@@ -37,7 +37,7 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
     }
 
     public void testDelegatingMonitorThrowsExpectionWhenChangingToNullMonitor(){
-        DelegatingComponentMonitor dcm = new DelegatingComponentMonitor();
+        AbstractComponentMonitor dcm = new AbstractComponentMonitor();
         try {
             dcm.changeMonitor(null);
             fail("NPE expected");
@@ -48,7 +48,7 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
 
     public void testDelegatingMonitorCanChangeMonitorInDelegateThatDoesSupportMonitorStrategy() {
         ComponentMonitor monitor = mockMonitorWithNoExpectedMethods();
-        DelegatingComponentMonitor dcm = new DelegatingComponentMonitor(mockMonitorThatSupportsStrategy(monitor));
+        AbstractComponentMonitor dcm = new AbstractComponentMonitor(mockMonitorThatSupportsStrategy(monitor));
         dcm.changeMonitor(monitor);
         assertEquals(monitor, dcm.currentMonitor());
         dcm.instantiating(null, null, null);
@@ -56,7 +56,7 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
 
     public void testDelegatingMonitorChangesDelegateThatDoesNotSupportMonitorStrategy() {
         ComponentMonitor delegate = mockMonitorWithNoExpectedMethods();
-        DelegatingComponentMonitor dcm = new DelegatingComponentMonitor(delegate);
+        AbstractComponentMonitor dcm = new AbstractComponentMonitor(delegate);
         ComponentMonitor monitor = mockMonitorWithNoExpectedMethods();
         assertEquals(delegate, dcm.currentMonitor());
         dcm.changeMonitor(monitor);
@@ -65,7 +65,7 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
 
     public void testDelegatingMonitorReturnsDelegateThatDoesNotSupportMonitorStrategy() {
         ComponentMonitor delegate = mockMonitorWithNoExpectedMethods();
-        DelegatingComponentMonitor dcm = new DelegatingComponentMonitor(delegate);
+        AbstractComponentMonitor dcm = new AbstractComponentMonitor(delegate);
         assertEquals(delegate, dcm.currentMonitor());
     }
 
@@ -75,7 +75,7 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
     }
 
     private ComponentMonitor mockMonitorThatSupportsStrategy(ComponentMonitor currentMonitor) {
-        Mock mock = mock(MonitorThatSupportsStrategy.class);
+        Mock mock = mock(TestMonitorThatSupportsStrategy.class);
         mock.expects(once()).method("changeMonitor").with(eq(currentMonitor));
         mock.expects(once()).method("currentMonitor").withAnyArguments().will(returnValue(currentMonitor));
         mock.expects(once()).method("instantiating").withAnyArguments();
@@ -87,7 +87,7 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
         final String ourIntendedInjectee1 = "hullo";
         DefaultPicoContainer parent = new DefaultPicoContainer();
         Mock monitor = mock(ComponentMonitor.class);
-        DefaultPicoContainer child = new DefaultPicoContainer(new DelegatingComponentMonitor((ComponentMonitor) monitor.proxy()), parent);
+        DefaultPicoContainer child = new DefaultPicoContainer(new AbstractComponentMonitor((ComponentMonitor) monitor.proxy()), parent);
 
         Constructor nacotCtor = NeedsACoupleOfThings.class.getConstructors()[0];
         monitor.expects(once()).method("instantiating").with(same(child), isA(ConstructorInjector.class), eq(nacotCtor)).will(returnValue(nacotCtor));
@@ -131,6 +131,6 @@ public class DelegatingComponentMonitorTestCase extends MockObjectTestCase {
         }
     }
 
-    public static interface MonitorThatSupportsStrategy extends ComponentMonitor, ComponentMonitorStrategy {
+    public static interface TestMonitorThatSupportsStrategy extends ComponentMonitor, ComponentMonitorStrategy {
     }
 }

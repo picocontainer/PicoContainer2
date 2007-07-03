@@ -13,7 +13,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitorStrategy;
-import org.picocontainer.monitors.DelegatingComponentMonitor;
+import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.io.Serializable;
@@ -42,7 +42,7 @@ public abstract class AbstractAdapter implements ComponentAdapter, ComponentMoni
      * @param componentImplementation the concrete implementation
      */
     protected AbstractAdapter(Object componentKey, Class componentImplementation) {
-        this(componentKey, componentImplementation, new DelegatingComponentMonitor());
+        this(componentKey, componentImplementation, new AbstractComponentMonitor());
         this.componentMonitor = NullComponentMonitor.getInstance();
     }
 

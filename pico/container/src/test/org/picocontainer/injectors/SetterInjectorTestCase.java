@@ -19,7 +19,7 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.monitors.DelegatingComponentMonitor;
+import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import static org.picocontainer.parameters.ComponentParameter.*;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
@@ -424,7 +424,7 @@ public class SetterInjectorTestCase
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         SetterInjector sica = new SetterInjector(
                 NullLifecycle.class, NullLifecycle.class, new Parameter[0],
-                new DelegatingComponentMonitor(), strategy);
+                new AbstractComponentMonitor(), strategy);
         Touchable touchable = new SimpleTouchable();
         sica.start(touchable);
         sica.stop(touchable);

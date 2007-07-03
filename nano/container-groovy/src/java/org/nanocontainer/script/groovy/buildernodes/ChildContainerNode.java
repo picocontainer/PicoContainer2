@@ -17,14 +17,14 @@ import org.picocontainer.DefaultPicoContainer;
 import java.security.PrivilegedAction;
 import org.picocontainer.ComponentFactory;
 import java.security.AccessController;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
+
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.monitors.DelegatingComponentMonitor;
+import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
 
 /**
@@ -204,7 +204,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
     private ComponentMonitor createComponentMonitor(Map attributes) {
         final ComponentMonitor monitor = (ComponentMonitor) attributes.remove(COMPONENT_MONITOR);
         if ( monitor == null ){
-            return new DelegatingComponentMonitor();
+            return new AbstractComponentMonitor();
         }
         return monitor;
     }

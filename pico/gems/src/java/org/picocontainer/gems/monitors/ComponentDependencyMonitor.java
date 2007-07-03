@@ -11,7 +11,7 @@ package org.picocontainer.gems.monitors;
 
 import java.lang.reflect.Constructor;
 
-import org.picocontainer.monitors.DelegatingComponentMonitor;
+import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.gems.monitors.prefuse.ComponentDependencyListener;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
@@ -23,7 +23,7 @@ import org.picocontainer.PicoContainer;
  * @author Peter Barry
  * @author Kent R. Spillner
  */
-public final class ComponentDependencyMonitor extends DelegatingComponentMonitor {
+public final class ComponentDependencyMonitor extends AbstractComponentMonitor {
 
     private final ComponentDependencyListener listener;
 

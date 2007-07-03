@@ -24,10 +24,9 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.monitors.DelegatingComponentMonitor;
+import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
@@ -354,7 +353,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         ConstructorInjector cica = new ConstructorInjector(
                 NullLifecycle.class, NullLifecycle.class, new Parameter[0],
-                new DelegatingComponentMonitor(), strategy);
+                new AbstractComponentMonitor(), strategy);
         Touchable touchable = new SimpleTouchable();
         cica.start(touchable);
         cica.stop(touchable);
