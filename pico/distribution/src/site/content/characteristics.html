@@ -2,7 +2,7 @@
 
 <html>
 <head>
-<title>Component Monitors</title></head>
+<title>Characteritics</title></head>
 <body class="composite">
 <div id="bodyColumn">
 <div id="contentBox">
@@ -16,8 +16,8 @@
   <tr>
     <td><div class="source">
   <pre>
-import org.picocontainer.Characterizations.SDI;
-import org.picocontainer.Characterizations.CACHE;
+import static org.picocontainer.Characterizations.SDI;
+import static org.picocontainer.Characterizations.CACHE;
 ...
 pico = new DefaultPicoContainer();
 pico.as(CACHE).addComponent(Apple.class);
@@ -35,9 +35,6 @@ pico.change(SDI).addComponent(Pear.class);</pre>
     <tr>
     <td><div class="source">
   <pre>
-import static org.picocontainer.Characterizations.SDI;
-import static org.picocontainer.Characterizations.CACHE;
-...
 pico = new DefaultPicoContainer();
 pico.as(Characterizations.CACHE).addComponent(Apple.class);
 pico.as(Characterizations.CACHE, 
@@ -45,11 +42,7 @@ pico.as(Characterizations.CACHE,
 </pre>
 </div></td>
     <td><div class="source">
-  <pre>
-import static org.picocontainer.Characterizations.SDI;
-import static org.picocontainer.Characterizations.CACHE;
-...
-pico = new DefaultPicoContainer();
+  <pre>pico = new DefaultPicoContainer();
 pico.change(Characterizations.CACHE).addComponent(Apple.class);
 pico.change(Characterizations.SDI).addComponent(Pear.class);</pre>
 </div></td>
