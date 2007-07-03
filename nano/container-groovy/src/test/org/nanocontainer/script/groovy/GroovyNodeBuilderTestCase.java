@@ -476,7 +476,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     public void testBuildContainerWhenExpectedParentDependencyIsNotFound() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        DefaultNanoContainer parent = new DefaultNanoContainer(new CachingBehaviorFactory());
 
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
@@ -570,7 +570,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     public void testWithDynamicClassPath() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        DefaultNanoContainer parent = new DefaultNanoContainer(new CachingBehaviorFactory());
         Reader script = new StringReader(
                 "        builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n"
               + "        File testCompJar = org.nanocontainer.TestHelper.getTestCompJarFile()\n"
@@ -592,7 +592,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     public void testWithDynamicClassPathWithPermissions() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        DefaultNanoContainer parent = new DefaultNanoContainer(new CachingBehaviorFactory());
         Reader script = new StringReader(
                 ""
                 + "        builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n"
@@ -615,7 +615,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     public void testGrantPermissionInWrongPlace() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        DefaultNanoContainer parent = new DefaultNanoContainer(new CachingBehaviorFactory());
         try {
             Reader script = new StringReader("" +
                     "        builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n" +

@@ -19,7 +19,7 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 public class MulticasterTestCase extends TestCase {
     public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
 
-        DefaultPicoContainer pico = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        DefaultPicoContainer pico = new DefaultPicoContainer(new CachingBehaviorFactory());
         pico.addComponent("recording", StringBuffer.class);
         pico.addComponent(RecordingLifecycle.Four.class);
         pico.addComponent(RecordingLifecycle.Two.class);

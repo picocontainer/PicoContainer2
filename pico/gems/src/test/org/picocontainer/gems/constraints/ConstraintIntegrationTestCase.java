@@ -42,7 +42,7 @@ public class ConstraintIntegrationTestCase
     protected void setUp() throws Exception {
         super.setUp();
 
-        container = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        container = new DefaultPicoContainer(new CachingBehaviorFactory());
         container.addComponent(SimpleTouchable.class);
         container.addComponent(DependsOnTouchable.class);
         container.addComponent(DependsOnTwoComponents.class);

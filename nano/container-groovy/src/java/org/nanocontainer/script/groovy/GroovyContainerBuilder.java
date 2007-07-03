@@ -62,7 +62,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
 
         Binding binding = new Binding();
         if ( parentContainer == null ){
-            parentContainer = new DefaultNanoContainer(getClassLoader(), new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), new EmptyPicoContainer()));
+            parentContainer = new DefaultNanoContainer(getClassLoader(), new DefaultPicoContainer(new CachingBehaviorFactory(), new EmptyPicoContainer()));
         }
         binding.setVariable("parent", parentContainer);
         binding.setVariable("builder", createGroovyNodeBuilder());

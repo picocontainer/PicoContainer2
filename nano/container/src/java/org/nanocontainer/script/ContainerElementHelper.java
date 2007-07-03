@@ -19,7 +19,7 @@ public class ContainerElementHelper {
             parent = new EmptyPicoContainer();
         }
         if (componentFactory == null) {
-            componentFactory = new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory());
+            componentFactory = new CachingBehaviorFactory();
         }
         return new DefaultNanoContainer(classLoader, new DefaultPicoContainer(componentFactory, parent));
 

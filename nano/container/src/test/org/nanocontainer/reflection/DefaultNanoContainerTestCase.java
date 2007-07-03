@@ -26,7 +26,7 @@ import org.picocontainer.tck.AbstractPicoContainerTestCase;
 public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase {
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultNanoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), parent));
+        return new DefaultNanoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new CachingBehaviorFactory(), parent));
     }
 
     // TODO - go to a Nano TCK?

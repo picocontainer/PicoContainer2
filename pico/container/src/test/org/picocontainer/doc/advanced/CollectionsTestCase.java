@@ -34,7 +34,7 @@ public class CollectionsTestCase
     private MutablePicoContainer pico;
 
     protected void setUp() throws Exception {
-        pico = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        pico = new DefaultPicoContainer(new CachingBehaviorFactory());
     }
 
     // START SNIPPET: bowl

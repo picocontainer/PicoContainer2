@@ -38,8 +38,8 @@ public class MethodCallingVisitorTest extends MockObjectTestCase {
     }
 
     public void testVisitorWillTraverseAndCall() throws Exception {
-        MutablePicoContainer parent = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
-        MutablePicoContainer child = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        MutablePicoContainer parent = new DefaultPicoContainer(new CachingBehaviorFactory());
+        MutablePicoContainer child = new DefaultPicoContainer(new CachingBehaviorFactory());
         parent.addChildContainer(child);
         parent.addComponent(List.class, LinkedList.class);
         child.addComponent(List.class, LinkedList.class);

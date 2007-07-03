@@ -149,7 +149,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
                 }
                 parent.addChildContainer(childContainer);
             } else if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
-                ComponentFactory componentFactory = new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory());
+                ComponentFactory componentFactory = new CachingBehaviorFactory();
                 childContainer = new DefaultPicoContainer(getDecorationDelegate().decorate(componentFactory, attributes), parent);
                 changeComponentMonitor(childContainer, createComponentMonitor(attributes));
             } else {
@@ -196,7 +196,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
     private ComponentFactory createComponentAdapterFactory(Map attributes) {
         final ComponentFactory factory = (ComponentFactory) attributes.remove(COMPONENT_ADAPTER_FACTORY);
         if ( factory == null ){
-            return new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory());
+            return new CachingBehaviorFactory();
         }
         return factory;
     }

@@ -31,7 +31,7 @@ public class PicoActionFactoryTestCase extends MockObjectTestCase {
     
     public void setUp(){
         factory = new PicoActionFactory();
-        container = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        container = new DefaultPicoContainer(new CachingBehaviorFactory());
         (new ActionContextScopeReference(KeyConstants.REQUEST_CONTAINER)).set(container);
     }
     

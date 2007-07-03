@@ -76,7 +76,7 @@ public class DefaultContainerRecorderTestCase extends TestCase {
 
 
     public void testXMLRecorderHierarchy() {
-        MutablePicoContainer parentPrototype = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        MutablePicoContainer parentPrototype = new DefaultPicoContainer(new CachingBehaviorFactory());
         DefaultContainerRecorder parentRecorder = new DefaultContainerRecorder(parentPrototype);
         StringReader parentResource = new StringReader("" 
                 + "<container>" 

@@ -37,7 +37,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         
-        container = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        container = new DefaultPicoContainer(new CachingBehaviorFactory());
         container.addComponent(SimpleTouchable.class);
         container.addComponent(DecoratedTouchable.class);
         container.addComponent(AlternativeTouchable.class);

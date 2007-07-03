@@ -58,7 +58,7 @@ import java.util.List;
  */
 public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase {
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), parent);
+        return new DefaultPicoContainer(new CachingBehaviorFactory(), parent);
     }
 
     public void testInstantiationWithNullComponentAdapterFactory(){

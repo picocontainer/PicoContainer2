@@ -89,7 +89,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     }
 
     public DefaultNanoContainer(ClassLoader classLoader, PicoContainer parent, ComponentMonitor componentMonitor) {
-        super(new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), parent));
+        super(new DefaultPicoContainer(new CachingBehaviorFactory(), parent));
         parentClassLoader = classLoader;
         ((ComponentMonitorStrategy)getDelegate()).changeMonitor(componentMonitor);
     }

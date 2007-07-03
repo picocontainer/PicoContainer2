@@ -69,9 +69,9 @@ public final class ActionFactoryTestCase extends MockObjectTestCase {
     }
 
     public void testGetActionWhenActionsContainerAlreadyExists() {
-        MutablePicoContainer requestContainer = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        MutablePicoContainer requestContainer = new DefaultPicoContainer(new CachingBehaviorFactory());
         requestContainer.addComponent(TestService.class, service);
-        MutablePicoContainer actionsContainer = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()),requestContainer);
+        MutablePicoContainer actionsContainer = new DefaultPicoContainer(new CachingBehaviorFactory(),requestContainer);
 
         requestMock.stubs().method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
                 returnValue(actionsContainer));

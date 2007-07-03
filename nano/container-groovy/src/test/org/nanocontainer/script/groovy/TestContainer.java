@@ -18,7 +18,7 @@ public class TestContainer extends DefaultNanoContainer {
     }
 
     public TestContainer(PicoContainer parent) {
-        super(TestContainer.class.getClassLoader(), new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()), parent));
+        super(TestContainer.class.getClassLoader(), new DefaultPicoContainer(new CachingBehaviorFactory(), parent));
     }
 
     public TestContainer() {

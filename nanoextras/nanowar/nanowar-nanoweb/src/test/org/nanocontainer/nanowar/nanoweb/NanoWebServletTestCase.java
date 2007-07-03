@@ -82,7 +82,7 @@ public class NanoWebServletTestCase extends MockObjectTestCase {
                           .method("getAttribute")
                           .with(eq(KeyConstants.BUILDER))
                           .will(returnValue(containerBuilderMock.proxy()));
-        requestContainer = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        requestContainer = new DefaultPicoContainer(new CachingBehaviorFactory());
         requestMock.expects(once())
                    .method("getAttribute")
                    .with(eq(KeyConstants.REQUEST_CONTAINER))

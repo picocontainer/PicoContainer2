@@ -99,7 +99,7 @@ public class CollectionComponentParameterTestCase
     }
 
     private MutablePicoContainer getDefaultPicoContainer() {
-        MutablePicoContainer mpc = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        MutablePicoContainer mpc = new DefaultPicoContainer(new CachingBehaviorFactory());
         mpc.addComponent(Bowl.class);
         mpc.addComponent(Cod.class);
         mpc.addComponent(Shark.class);
@@ -139,7 +139,7 @@ public class CollectionComponentParameterTestCase
     }
 
     public void testCollections() {
-        MutablePicoContainer mpc = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        MutablePicoContainer mpc = new DefaultPicoContainer(new CachingBehaviorFactory());
         mpc.addComponent(CollectedBowl.class, CollectedBowl.class,
                          new ComponentParameter(Cod.class, false), new ComponentParameter(Fish.class, false));
         mpc.addComponent(Cod.class);

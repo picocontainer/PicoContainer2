@@ -34,7 +34,7 @@ public class MapsTestCase
     private MutablePicoContainer pico;
 
     protected void setUp() throws Exception {
-        pico = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        pico = new DefaultPicoContainer(new CachingBehaviorFactory());
     }
 
     // START SNIPPET: bowl
@@ -150,7 +150,7 @@ public class MapsTestCase
 
         // START SNIPPET: individualSelection
 
-        MutablePicoContainer mpc = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new AdaptiveInjectionFactory()));
+        MutablePicoContainer mpc = new DefaultPicoContainer(new CachingBehaviorFactory());
         mpc.addComponent("Tom", Cod.class);
         mpc.addComponent("Dick", Cod.class);
         mpc.addComponent("Harry", Cod.class);
