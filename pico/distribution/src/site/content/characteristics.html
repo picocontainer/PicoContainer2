@@ -25,8 +25,8 @@ pico.as(CACHE, SDI).addComponent(Pear.class);
 </pre>
 </div></td>
     <td><div class="source">
-  <pre>import org.picocontainer.Characterizations.SDI;
-import org.picocontainer.Characterizations.CACHE;
+  <pre>import static org.picocontainer.Characterizations.SDI;
+import static org.picocontainer.Characterizations.CACHE;
 ...<br />pico = new DefaultPicoContainer();
 pico.change(CACHE).addComponent(Apple.class);
 pico.change(SDI).addComponent(Pear.class);</pre>
@@ -35,6 +35,9 @@ pico.change(SDI).addComponent(Pear.class);</pre>
     <tr>
     <td><div class="source">
   <pre>
+import static org.picocontainer.Characterizations.SDI;
+import static org.picocontainer.Characterizations.CACHE;
+...
 pico = new DefaultPicoContainer();
 pico.as(Characterizations.CACHE).addComponent(Apple.class);
 pico.as(Characterizations.CACHE, 
@@ -42,7 +45,11 @@ pico.as(Characterizations.CACHE,
 </pre>
 </div></td>
     <td><div class="source">
-  <pre>pico = new DefaultPicoContainer();
+  <pre>
+import static org.picocontainer.Characterizations.SDI;
+import static org.picocontainer.Characterizations.CACHE;
+...
+pico = new DefaultPicoContainer();
 pico.change(Characterizations.CACHE).addComponent(Apple.class);
 pico.change(Characterizations.SDI).addComponent(Pear.class);</pre>
 </div></td>
