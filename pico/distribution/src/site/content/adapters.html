@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<title>Adapters</title></head>
+<body class="composite">
+<div id="bodyColumn">
+<div id="contentBox">
+<div class="section">
+<h2>Adapters</h2>
+<p>Each time  you use addComponent(..) on PicoContainer, behind the scenes a ComponentAdapter instance is set up. There is one ComponentAdapter implementation per ComponentFactory class. Both for BehaviorFactory and InjectionFactory implementations. Its all kinda hidden from you to make PicoContainer's API appear simple.</p>
+<h3>Using ComponentAdapter directly. </h3>
+<p>Some examples : </p>
+<div class="source">
+  <pre>public class MyAdapter extends AbstractAdapter {
+  private QuantumEntanglement qe = new QuantumEntanglementImpl.class
+  public MyAdapter() {
+    super(QuantumEntanglement.class, QuantumEntanglementImpl.class);
+  }
+  public Object getComponentInstance(PicoContainer pico) {
+    Auditor a = pico.getComponent(Auditor.class);
+    a.audit("QE used", new Date());
+    return qe;
+  }
+  public void verify(PicoContainer container) {
+  }
+}
+...
+pico = new DefaultPicoContainer();
+pico.addAdapter(new MyAdapter());
+QuantumEntanglement e = pico.getComponent(QuantumEntanglement.class);
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
