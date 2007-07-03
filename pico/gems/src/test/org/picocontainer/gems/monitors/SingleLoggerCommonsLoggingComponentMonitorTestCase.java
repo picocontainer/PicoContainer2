@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 
 import org.picocontainer.ComponentMonitor;
 
-public class SingleLoggerCommonsLoggingComponentMonitorTestCase extends AbstractComponentMonitorTestCase {
+public class SingleLoggerCommonsLoggingComponentMonitorTestCase extends ComponentMonitorHelperTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();

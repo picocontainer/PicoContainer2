@@ -28,7 +28,7 @@ import org.picocontainer.monitors.ComponentMonitorHelper;
  * @author Juze Peleteiro
  * @version $Revision: 2024 $
  */
-public abstract class AbstractComponentMonitorTestCase extends TestCase {
+public abstract class ComponentMonitorHelperTestCase extends TestCase {
     private ComponentMonitor componentMonitor;
     private Constructor constructor;
     private Method method;

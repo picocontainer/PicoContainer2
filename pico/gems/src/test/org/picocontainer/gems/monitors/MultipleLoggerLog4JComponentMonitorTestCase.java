@@ -17,7 +17,7 @@ import org.picocontainer.ComponentMonitor;
  * @author Paul Hammant
  * @author Mauro Talevi
  */
-public class MultipleLoggerLog4JComponentMonitorTestCase extends AbstractComponentMonitorTestCase {
+public class MultipleLoggerLog4JComponentMonitorTestCase extends ComponentMonitorHelperTestCase {
 
     String logPrefixName = String.class.getName();
 

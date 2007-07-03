@@ -13,7 +13,7 @@ import java.io.IOException;
 
 import org.picocontainer.ComponentMonitor;
 
-public class MultipleLoggerCommonsLoggingComponentMonitorTestCase extends AbstractComponentMonitorTestCase {
+public class MultipleLoggerCommonsLoggingComponentMonitorTestCase extends ComponentMonitorHelperTestCase {
 
     String logPrefixName = String.class.getName();
 
