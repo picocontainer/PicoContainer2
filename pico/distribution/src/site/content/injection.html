@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<title>PicoContainer</title>
+
+</head>
+<body class="composite">
+<div id="bodyColumn">
+<div id="contentBox">
+<div class="section">
+<h2>Injection Types </h2>
+
+<h3>Constructor Dependency Injection (CDI) </h3>
+<p>This is where a component has a constructor, with arguments that are its dependencies:</p>
+<div class="source">
+  <pre>
+public class Apple {
+  private final Orange orange;
+  private final Pear pear;
+  private final Banana banana;
+
+  public Apple(Orange orange, Pear pear, Banana banana) {
+    this.orange = orange;
+    this.pear = pear;
+    this.banana = banana;
+  }
+
+  // methods
+}</pre>
+</div><p>
+The PicoContainer team recomends CDI over other types of DI.  There is no need to mark up the constructor with an annotation. Having more than one constructor is OK too, as PicoContainer will try to use the one with the most arguments and fall back to ones with fewer if it cannot satisfy the longer one. 
+</p>
+<h3>Setter Dependency Injection (SDI) </h3>
+<p>This is where a component has an empty constructor with dependencies provided by setters after instantiation:</p>
+<div class="source">
+  <pre>
+public class Apple {
+  private Orange orange;
+  private Pear pear;
+  private Banana banana;
+
+  public setOrange(Orange orange) {
+    this.orange = orange;
+  }
+  public setPear(Pear pear) {
+    this.pear = pear;
+  }
+  public setBanana(Banana banana) {
+    this.banana = banana;
+  }
+  // other methods
+}
+</pre>
+  </div>
+  <p>Setter methods (those prefixed with 'set') may not be your preferred choice. You can force a different prefix to be choosable in PicoContainer, such as 'init' or 'inject'.</p>
+
+<h3>Annotated Field Dependency Injection </h3>
+<p>This is where a component has an empty constructor with dependencies indicated by a field annotation and provided automatically by the container after instantiation</p>
+<div class="source">
+  <pre>
+public class Apple {
+  @Inject
+  private Orange orange;
+  @Inject
+  private Pear pear;
+  @Inject
+  private Banana banana;
+
+  // methods
+}</pre>
+</div>
+<p>
+Yes thats's right, there's no constructor needed.  It means that for a Unit Test, you cannot simply 'new' the class, which is a downside.</p>
+<h3>Annotated Method Dependency Injection </h3>
+<p>This is where a component has an empty constructor with dependencies provided by annotated methods after instantiation:</p>
+<div class="source">
+  <pre>
+public class Apple {
+  private Orange orange;
+  private Pear pear;
+  private Banana banana;
+
+  @Inject
+  public injectOrange(Orange orange) {
+    this.orange = orange;
+  }
+  @Inject
+  public setPear(Pear pear) {
+    this.pear = pear;
+  }
+  @Inject
+  public provideBanana(Banana banana) {
+    this.banana = banana;
+  }
+  // other methods
+}</pre>
+</div>
+<p>The method (whatever its name) needs an @Inject annotation.  That's from our codebase (org.picocontainer.Inject), but its easy to override that with @Inject from another codebase.  This is important if you like the ideas around transparency.
+</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</div>
+</div>
+</div>
+<div class="clear">
+  <hr />
+</div>
+
+</body>
+
+
+</html>

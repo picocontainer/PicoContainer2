@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<title>PicoContainer</title>
+
+</head>
+<body class="composite">
+<div id="bodyColumn">
+<div id="contentBox">
+<div class="section">
+<h2>Lifecycle </h2>
+<p>Lifecycle with configuration and depenedency injection makes Inversion of Control (IoC).</p>
+<p>After instantiation, if the component warrants it, a 'start' stage may be required. More specifically, if a container has injected and instantiated all components in a set, one or more of them may require starting in the same order they were instantiated. Later, in reverse order, the same component(s) may require stoping. In fact start and stop may happen more than one for the life of an application. Disposal may happen once only, before the component is eligible for garbage collection. </p>
+<p>Thus lifecycle implies three methods:</p>
+<ul>
+  <li>start</li>
+  <li>stop</li>
+  <li>dispose</li>
+  </ul>
+<p>In PicoContainer we think allow a pluggable LifecycleStrategy.</p>
+<h3>Startable</h3>
+<p>Our own interface for startable. We wish it were in the JDK, because we're big into making components unecumbered by the trappings of containment. In English: we'd rather not make components implement/extend/throw anything from our framework. Its a 'transparency' thing. </p>
+<p>Here's an example of components fitting that ideal  </p>
+<table width="100%" border="0">
+  <tr>
+    <td><div class="source">
+  <pre>
+public class Apple implements Startable{
+  public void start() {
+    // listen on socket, start thread etc.
+  }
+  public void stop() {
+    // stop listening on socket, kill thread etc.
+  }
+}
+
+
+...
+
+
+pico = new DefaultPicoContainer(new StartableLifecycleStrategy());
+pico.addComponent(Apple.class);
+pico.start();
+Apple a = pico.getComponent(Apple.class);
+</pre>
+</div></td>
+    </tr>
+</table>
+<p>
+The StartableLifecycleStrategy can be extended if you prefer your own interface for Startable.  Just override
+</p>
+<h3>Reflection based start/stop/dispose</h3>
+<p>This works without an interface. Instead it works via reflection, and appropriate method names.</p>
+
+<table width="100%" border="0">
+  <tr>
+    <td><div class="source">
+  <pre>
+public class Apple {
+  public void start() {
+    // listen on socket, start thread etc.
+  }
+  public void stop() {
+    // stop listening on socket, kill thread etc.
+  }
+}
+
+
+...
+
+
+pico = new DefaultPicoContainer(new ReflectionLifecycleStrategy());
+pico.addComponent(Apple.class);
+pico.start();
+Apple a = pico.getComponent(Apple.class);
+</pre>
+</div></td>
+    </tr>
+</table>
+
+<p>If you have other synonyms for start/stop/dispose, just extend the ReflectionLifecycleStrategy class and provide them.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</div>
+</div>
+</div>
+<div class="clear">
+  <hr />
+</div>
+
+</body>
+
+
+</html>

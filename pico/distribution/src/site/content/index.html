@@ -12,9 +12,13 @@
 <h2>Overview</h2>
 
 <p>PicoContainer is a lightweight and highly embeddable container for components that honour the Dependency Injection pattern.</p>
-<p>See PicoContainer Overview for an introduction to PicoContainer.</p>
-<p>Want something easier to get you started? Have a look at our Tutorials.</p>
-<p>Despite it being very compact in size (the core is ~100K and it has no mandatory dependencies outside the JDK),<br />
+<p>What is Dependency Injection? Martin Fowler has a good article at zzz from 2003, but here is another view: It is a good design pattern that promotes Testability, clean declarative architecture, Maintainability, Adaptibilty for large enterprise applications. It is quite often, but not exclusively, used by Agile practicioners. It counters the situation where an enterprise application: </p>
+<ul>
+  <li>has grown to be thousands of classes, with dozens if not hundreds of Singletons</li>
+  <li>draws similarities  to Spaghetti, Hairballs or Balls of Mud</li>
+  <li>has made development staff  looking after it miserable</li>
+</ul>
+<p>Despite it being very compact in size (the core is ~130K and it has no mandatory dependencies outside the JDK),<br />
   PicoContainer supports different dependency injection types (both CDI and SDI) and offers totally customisable lifecycles</p>
 <p>PicoContainer has originally been implemented in Java but is also available for other platforms and<br />
   languages. These are detailed in Ports.</p>
