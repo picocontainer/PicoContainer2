@@ -24,7 +24,6 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
@@ -598,7 +597,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         final String[] missingKey = new String[1];
         
         String foo = (String) new DefaultPicoContainer(new NullComponentMonitor(){
-            public Object noComponent(MutablePicoContainer container, Object componentKey) {
+            public Object noComponentFound(MutablePicoContainer container, Object componentKey) {
                 missingKey[0] = (String) componentKey;
                 return "foo";
             }

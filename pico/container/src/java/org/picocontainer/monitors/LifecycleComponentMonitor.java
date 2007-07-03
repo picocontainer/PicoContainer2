@@ -94,8 +94,8 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
         }
     }
 
-    public Object noComponent(MutablePicoContainer container, Object componentKey) {
-        return delegate.noComponent(container, componentKey);
+    public Object noComponentFound(MutablePicoContainer container, Object componentKey) {
+        return delegate.noComponentFound(container, componentKey);
     }
 
 

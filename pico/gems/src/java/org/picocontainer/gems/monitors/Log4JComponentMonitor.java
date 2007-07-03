@@ -193,12 +193,12 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
 
-    public Object noComponent(MutablePicoContainer container, Object componentKey) {
+    public Object noComponentFound(MutablePicoContainer container, Object componentKey) {
         Logger logger = this.logger != null ? this.logger : LogManager.getLogger(ComponentMonitor.class);
         if (logger.isEnabledFor(Priority.WARN)) {
             logger.warn(format(ComponentMonitorHelper.NO_COMPONENT, componentKey));
         }
-        return delegate.noComponent(container, componentKey);
+        return delegate.noComponentFound(container, componentKey);
 
     }
 

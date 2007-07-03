@@ -86,7 +86,7 @@ public abstract class ComponentMonitorHelperTestCase extends TestCase {
     }
 
     public void testShouldTraceNoComponent() throws IOException {
-        componentMonitor.noComponent(null, "doh");
+        componentMonitor.noComponentFound(null, "doh");
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.NO_COMPONENT, "doh"));
     }
 

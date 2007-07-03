@@ -411,7 +411,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             retVal = componentAdapter == null ? null : getInstance(componentAdapter);
         }
         if (retVal == null) {
-            retVal = componentMonitor.noComponent(this, componentKeyOrType);
+            retVal = componentMonitor.noComponentFound(this, componentKeyOrType);
         }
         return retVal;
     }

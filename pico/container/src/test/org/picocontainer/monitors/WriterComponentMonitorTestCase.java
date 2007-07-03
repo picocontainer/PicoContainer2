@@ -114,7 +114,7 @@ public class WriterComponentMonitorTestCase extends TestCase {
 
     public void testNoComponent() {
         
-        componentMonitor.noComponent(new TransientPicoContainer(), "foo");
+        componentMonitor.noComponentFound(new TransientPicoContainer(), "foo");
         assertEquals(format(ComponentMonitorHelper.NO_COMPONENT,
                                                    "foo") +NL,  out.toString());
     }

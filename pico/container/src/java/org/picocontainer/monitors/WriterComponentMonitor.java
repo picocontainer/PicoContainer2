@@ -98,8 +98,8 @@ public class WriterComponentMonitor implements ComponentMonitor {
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
 
-    public Object noComponent(MutablePicoContainer container, Object componentKey) {
+    public Object noComponentFound(MutablePicoContainer container, Object componentKey) {
         out.println(format(ComponentMonitorHelper.NO_COMPONENT, componentKey));
-        return delegate.noComponent(container, componentKey);
+        return delegate.noComponentFound(container, componentKey);
     }
 }
