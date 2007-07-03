@@ -191,12 +191,12 @@ public class Log4JComponentMonitor extends AbstractComponentMonitor implements S
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
 
-    public void noComponent(MutablePicoContainer container, Object componentKey) {
+    public Object noComponent(MutablePicoContainer container, Object componentKey) {
         Logger logger = this.logger != null ? this.logger : LogManager.getLogger(ComponentMonitor.class);
         if (logger.isEnabledFor(Priority.WARN)) {
             logger.warn(format(NO_COMPONENT, componentKey));
         }
-        delegate.noComponent(container, componentKey);
+        return delegate.noComponent(container, componentKey);
 
     }
 

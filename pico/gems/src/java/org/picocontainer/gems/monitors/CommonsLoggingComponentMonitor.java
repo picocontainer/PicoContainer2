@@ -187,12 +187,12 @@ public class CommonsLoggingComponentMonitor extends AbstractComponentMonitor imp
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
 
-    public void noComponent(MutablePicoContainer container, Object componentKey) {
+    public Object noComponent(MutablePicoContainer container, Object componentKey) {
         Log log = this.log != null ? this.log : LogFactory.getLog(ComponentMonitor.class);
         if (log.isWarnEnabled()) {
             log.warn(format(NO_COMPONENT, componentKey));
         }
-        delegate.noComponent(container, componentKey);
+        return delegate.noComponent(container, componentKey);
     }
 
     protected Log getLog(Member member) {

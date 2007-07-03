@@ -104,8 +104,8 @@ public class DelegatingComponentMonitor implements ComponentMonitor, ComponentMo
         delegate.lifecycleInvocationFailed(container, componentAdapter, method,instance, cause);
     }
 
-    public void noComponent(MutablePicoContainer container, Object componentKey) {
-        delegate.noComponent(container, componentKey);
+    public Object noComponent(MutablePicoContainer container, Object componentKey) {
+        return delegate.noComponent(container, componentKey);
     }
 
     /**

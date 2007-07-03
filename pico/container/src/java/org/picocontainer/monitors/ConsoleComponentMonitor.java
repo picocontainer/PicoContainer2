@@ -102,9 +102,9 @@ public final class ConsoleComponentMonitor extends AbstractComponentMonitor {
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
 
-    public void noComponent(MutablePicoContainer container, Object componentKey) {
+    public Object noComponent(MutablePicoContainer container, Object componentKey) {
         out.println(format(NO_COMPONENT, componentKey));
-        delegate.noComponent(container, componentKey);
+        return delegate.noComponent(container, componentKey);
     }
 
 }

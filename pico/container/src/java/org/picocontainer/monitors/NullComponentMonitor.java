@@ -73,7 +73,8 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
         throw new PicoLifecycleException(method, instance, cause);
     }
 
-    public void noComponent(MutablePicoContainer container, Object componentKey) {
+    public Object noComponent(MutablePicoContainer container, Object componentKey) {
+        return null;
     }
 
     public static synchronized NullComponentMonitor getInstance() {

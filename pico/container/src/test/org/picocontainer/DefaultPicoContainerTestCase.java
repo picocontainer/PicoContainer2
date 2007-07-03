@@ -594,18 +594,19 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         assertions(donkey, rabbit, turtle);
     }
 
-    public void testNoComponentIsMonitored() {
+    public void testNoComponentIsMonitoredAndPotentiallyLateProvided() {
         final String[] missingKey = new String[1];
         
-        new DefaultPicoContainer(new NullComponentMonitor(){
-            public void noComponent(MutablePicoContainer container, Object componentKey) {
+        String foo = (String) new DefaultPicoContainer(new NullComponentMonitor(){
+            public Object noComponent(MutablePicoContainer container, Object componentKey) {
                 missingKey[0] = (String) componentKey;
+                return "foo";
             }
         }).getComponent("missingKey");
 
         assertNotNull(missingKey[0]);
         assertEquals("missingKey", missingKey[0]);
+        assertEquals("foo", foo);
 
     }
-
 }

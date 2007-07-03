@@ -124,5 +124,5 @@ public interface ComponentMonitor {
      * @param container
      * @param componentKey
      */
-    void noComponent(MutablePicoContainer container, Object componentKey);
+    Object noComponent(MutablePicoContainer container, Object componentKey);
 }
