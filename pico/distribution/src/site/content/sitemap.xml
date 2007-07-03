@@ -6,9 +6,16 @@
    <link title="Download">http://repository.codehaus.org/org/picocontainer</link>
  </section>
   <section>
- <name>Concepts</name>
+ <name>Core Concepts</name>
    <page>injection.html</page>
    <page>behaviors.html</page>
    <page>lifecycle.html</page>
+   <page>monitors.html</page>
+   <page>scopes.html</page>
+ </section>
+  <section>
+ <name>Nuances</name>
+   <page>characteristics.html</page>
+
  </section>
 </sitemap>
