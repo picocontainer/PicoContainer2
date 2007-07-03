@@ -355,6 +355,7 @@
       <module fileurl="file://$PROJECT_DIR$/nano/booter/nano-booter.iml" filepath="$PROJECT_DIR$/nano/booter/nano-booter.iml" />
       <module fileurl="file://$PROJECT_DIR$/nano/container-bsh/nano-bsh.iml" filepath="$PROJECT_DIR$/nano/container-bsh/nano-bsh.iml" />
       <module fileurl="file://$PROJECT_DIR$/nano/deployer/nano-deployer.iml" filepath="$PROJECT_DIR$/nano/deployer/nano-deployer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nano/distribution/nano-distribution.iml" filepath="$PROJECT_DIR$/nano/distribution/nano-distribution.iml" />
       <module fileurl="file://$PROJECT_DIR$/nano/container-groovy/nano-groovy.iml" filepath="$PROJECT_DIR$/nano/container-groovy/nano-groovy.iml" />
       <module fileurl="file://$PROJECT_DIR$/nano/container-jruby/nano-jruby.iml" filepath="$PROJECT_DIR$/nano/container-jruby/nano-jruby.iml" />
       <module fileurl="file://$PROJECT_DIR$/nano/container-jython/nano-jython.iml" filepath="$PROJECT_DIR$/nano/container-jython/nano-jython.iml" />
@@ -367,6 +368,7 @@
       <module fileurl="file://$PROJECT_DIR$/nanoextras/nanowar/nanowar/nanowar.iml" filepath="$PROJECT_DIR$/nanoextras/nanowar/nanowar/nanowar.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras/nanowar/nanowar-nanoweb/nanoweb.iml" filepath="$PROJECT_DIR$/nanoextras/nanowar/nanowar-nanoweb/nanoweb.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras/persistence/persistence/persistence.iml" filepath="$PROJECT_DIR$/nanoextras/persistence/persistence/persistence.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pico/distribution/pico-distribution.iml" filepath="$PROJECT_DIR$/pico/distribution/pico-distribution.iml" />
       <module fileurl="file://$PROJECT_DIR$/pico/container/picocontainer.iml" filepath="$PROJECT_DIR$/pico/container/picocontainer.iml" />
       <module fileurl="file://$PROJECT_DIR$/pico/gems/picocontainer-gems.iml" filepath="$PROJECT_DIR$/pico/gems/picocontainer-gems.iml" />
       <module fileurl="file://$PROJECT_DIR$/pico/tck/picocontainer-tck.iml" filepath="$PROJECT_DIR$/pico/tck/picocontainer-tck.iml" />
