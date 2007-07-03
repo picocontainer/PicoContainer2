@@ -5,4 +5,10 @@
    <link title="JavaDoc">javadoc/index.html</link>
    <link title="Download">http://repository.codehaus.org/org/picocontainer</link>
  </section>
+  <section>
+ <name>Concepts</name>
+   <page>injection.html</page>
+   <page>behaviors.html</page>
+   <page>lifecycle.html</page>
+ </section>
 </sitemap>
