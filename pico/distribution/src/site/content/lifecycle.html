@@ -5,10 +5,6 @@
 <title>Lifecycle</title>
 
 </head>
-<body class="composite">
-<div id="bodyColumn">
-<div id="contentBox">
-<div class="section">
 <h2>Lifecycle </h2>
 <p>Lifecycle with configuration and depenedency injection makes Inversion of Control (IoC).</p>
 <p>After instantiation, if the component warrants it, a 'start' stage may be required. More specifically, if a container has injected and instantiated all components in a set, one or more of them may require starting in the same order they were instantiated. Later, in reverse order, the same component(s) may require stoping. In fact start and stop may happen more than one for the life of an application. Disposal may happen once only, before the component is eligible for garbage collection. </p>
@@ -88,13 +84,6 @@ Apple a = pico.getComponent(Apple.class);
 <p>DefaultPicoContainer does sets StartableLifecycleStrategy by default. You can specify NullLifecycleStrategy instead if you are sure that no components honor any lifecycle concept.. </p>
 <h3>Custom Lifecycles</h3>
 <p>Write a class that implements LifecycleStragegy, there are just four methods to implement. See </p>
-</div>
-</div>
-</div>
-<div class="clear">
-  <hr />
-</div>
-
 </body>
 
 

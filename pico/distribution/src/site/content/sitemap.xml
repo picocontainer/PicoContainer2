@@ -1,23 +1,22 @@
 <sitemap>
- <section>
- <name>About</name>
-   <page>index.html</page>
-   <link title="JavaDoc">javadoc/index.html</link>
-   <link title="Download">http://repository.codehaus.org/org/picocontainer</link>
- </section>
   <section>
- <name>Core Concepts</name>
-   <page>injection.html</page>
-   <page>behaviors.html</page>
-   <page>lifecycle.html</page>
-   <page>monitors.html</page>
-   <page>scopes.html</page>
-   <page>PicoBuilder.html</page>
- </section>
+    <name>About</name>
+    <page>index.html</page>
+    <link title="JavaDoc">javadoc/index.html</link>
+    <link title="Download">http://repository.codehaus.org/org/picocontainer</link>
+  </section>
   <section>
- <name>Nuances</name>
-   <page>characteristics.html</page>
-   <page>adaptors.html</page>
-
- </section>
+    <name>Core Concepts</name>
+    <page>injection.html</page>
+    <page>behaviors.html</page>
+    <page>lifecycle.html</page>
+    <page>monitors.html</page>
+    <page>scopes.html</page>
+    <page>builder.html</page>
+  </section>
+  <section>
+    <name>Nuances</name>
+    <page>characteristics.html</page>
+    <page>adapters.html</page>
+  </section>
 </sitemap>
