@@ -10,48 +10,26 @@ instance with the right behaviors for you. Refer to Martin's <a
   href="http://www.martinfowler.com/bliki/FluentInterface.html">'Fluent
 Interface'</a> article.</p>
 <p>Some simple examples :</p>
-<table width="100%" border="0">
-  <tr>
-    <td>
     <div class="source"><pre>
 pico = new PicoBuilder().build();
 pico.addComponent(Apple.class);
 </pre></div>
-    </td>
-    <td>
     <div class="source"><pre>pico = new PicoBuilder().withCaching().build();
 pico.addComponent(Apple.class);</pre></div>
-    </td>
-  </tr>
-  <tr>
-    <td>
     <div class="source"><pre>
 >pico = new PicoBuilder().withCaching().build();
 pico.addComponent(Apple.class);
 </pre></div>
-    </td>
-    <td>
     <div class="source"><pre>pico = new PicoBuilder().withHiddenImplementations().build();
 pico.addComponent(Apple.class);</pre></div>
-    </td>
-  </tr>
-</table>
+
 <p>More varations for behaviors or parent containers :
-<table width="100%" border="0">
-  <tr>
-    <td>
     <div class="source"><pre>
 pico = new PicoBuilder().withLifecycle().withConsoleMonitor().build();
 pico.addComponent(Apple.class);
 </pre></div>
-    </td>
-    <td>
     <div class="source"><pre>pico = new PicoBuilder().withMonitor(ConsoleComponentMonitor.class).build();
 pico.addComponent(Apple.class);</pre></div>
-    </td>
-  </tr>
-  <tr>
-    <td>
     <div class="source"><pre>
 import static org.picocontainer.injectors.Injectors.SDI;
 import static org.picocontainer.behaviors.Behaviors.caching;
@@ -61,52 +39,31 @@ import static org.picocontainer.behaviors.Behaviors.threadSafe;
 pico = ew PicoBuilder(SDI()).withBehaviors(caching(), threadSafe(), implHiding()).build();
 pico.addComponent(Apple.class);
 </pre></div>
-    </td>
-    <td>
     <div class="source"><pre>child = new PicoBuilder(parentContainer).build();
 child.addComponent(Apple.class);</pre></div>
-    </td>
-  </tr>
-</table>
+
 <p>Specifying an injection type:</p>
-<table width="100%" border="0">
-  <tr>
-    <td>
     <div class="source"><pre>
 pico = new PicoBuilder().withAnnotationInjection().build();
 pico.addComponent(Apple.class);
 </pre></div>
-    </td>
-    <td>
     <div class="source"><pre>
 import static org.picocontainer.injectors.Injectors.SDI;
 ...
 pico = new PicoBuilder(SDI()).build();
 pico.addComponent(Apple.class);</pre></div>
-    </td>
-  </tr>
-</table>
 <p>Advanced Custom stuff:</p>
 
-<table width="100%" border="0">
-  <tr>
-    <td>
     <div class="source"><pre>
 pico = new PicoBuilder()
     .withCustomContainerComponent(new MyQuantumPhysicsConnector())
     .withComponentFactory(MyQuantumPhysicsComponentBehavior.class).build();
 pico.addComponent(Apple.class);
 </pre></div>
-    </td>
-    <td>
     <div class="source"><pre>
 pico = new PicoBuilder().
     implementedBy(MyCustomPicoContainer.class).build();
 pico.addComponent(Apple.class);</pre></div>
-    </td>
-  </tr>
-</table>
 </p>
-<h3>&nbsp;</h3>
 </body>
 </html>

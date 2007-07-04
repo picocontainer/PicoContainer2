@@ -5,23 +5,32 @@
 <title>Lifecycle</title>
 
 </head>
-<h2>Lifecycle </h2>
-<p>Lifecycle with configuration and depenedency injection makes Inversion of Control (IoC).</p>
-<p>After instantiation, if the component warrants it, a 'start' stage may be required. More specifically, if a container has injected and instantiated all components in a set, one or more of them may require starting in the same order they were instantiated. Later, in reverse order, the same component(s) may require stoping. In fact start and stop may happen more than one for the life of an application. Disposal may happen once only, before the component is eligible for garbage collection. </p>
+<h2>Lifecycle</h2>
+<p>Lifecycle with configuration and depenedency injection makes
+Inversion of Control (IoC).</p>
+<p>After instantiation, if the component warrants it, a 'start'
+stage may be required. More specifically, if a container has injected
+and instantiated all components in a set, one or more of them may
+require starting in the same order they were instantiated. Later, in
+reverse order, the same component(s) may require stoping. In fact start
+and stop may happen more than one for the life of an application.
+Disposal may happen once only, before the component is eligible for
+garbage collection.</p>
 <p>Thus lifecycle implies three methods:</p>
 <ul>
   <li>start</li>
   <li>stop</li>
   <li>dispose</li>
-  </ul>
+</ul>
 <p>In PicoContainer we think allow a pluggable LifecycleStrategy.</p>
 <h3>Startable</h3>
-<p>Our own interface for startable. We wish it were in the JDK, because we're big into making components unecumbered by the trappings of containment. In English: we'd rather not make components implement/extend/throw anything from our framework. Its a 'transparency' thing. </p>
-<p>Here's an example of components fitting that ideal  </p>
-<table width="100%" border="0">
-  <tr>
-    <td><div class="source">
-  <pre>
+<p>Our own interface for startable. We wish it were in the JDK,
+because we're big into making components unecumbered by the trappings of
+containment. In English: we'd rather not make components
+implement/extend/throw anything from our framework. Its a 'transparency'
+thing.</p>
+<p>Here's an example of components fitting that ideal</p>
+<div class="source"><pre>
 public class Apple implements Startable{
   public void start() {
     // listen on socket, start thread etc.
@@ -41,20 +50,14 @@ pico.start();
 // start gets called
 
 Apple a = pico.getComponent(Apple.class);
-</pre>
-</div></td>
-    </tr>
-</table>
-<p>
-The StartableLifecycleStrategy can be extended if you prefer your own interface for Startable.  Just override
-</p>
+</pre></div>
+<p>The StartableLifecycleStrategy can be extended if you prefer your
+own interface for Startable. Just override</p>
 <h3>Reflection based start/stop/dispose</h3>
-<p>This works without an interface. Instead it works via reflection, and appropriate method names.</p>
+<p>This works without an interface. Instead it works via reflection,
+and appropriate method names.</p>
 
-<table width="100%" border="0">
-  <tr>
-    <td><div class="source">
-  <pre>
+<div class="source"><pre>
 public class Apple {
   public void start() {
     // listen on socket, start thread etc.
@@ -74,16 +77,17 @@ pico.start();
 // start gets called
 
 Apple a = pico.getComponent(Apple.class);
-</pre>
-</div></td>
-    </tr>
-</table>
+</pre></div>
 
-<p>If you have other synonyms for start/stop/dispose, just extend the ReflectionLifecycleStrategy class and provide them.</p>
+<p>If you have other synonyms for start/stop/dispose, just extend
+the ReflectionLifecycleStrategy class and provide them.</p>
 <h3>No Lifecycle</h3>
-<p>DefaultPicoContainer does sets StartableLifecycleStrategy by default. You can specify NullLifecycleStrategy instead if you are sure that no components honor any lifecycle concept.. </p>
+<p>DefaultPicoContainer does sets StartableLifecycleStrategy by
+default. You can specify NullLifecycleStrategy instead if you are sure
+that no components honor any lifecycle concept..</p>
 <h3>Custom Lifecycles</h3>
-<p>Write a class that implements LifecycleStragegy, there are just four methods to implement. See </p>
+<p>Write a class that implements LifecycleStragegy, there are just
+four methods to implement. See</p>
 </body>
 
 

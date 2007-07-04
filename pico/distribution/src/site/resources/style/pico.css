@@ -8,7 +8,7 @@
 
 #breadcrumbs {
   border: 1px solid;
-  background-color: #ccc;
+  background-color: #090;
 }
 
 #leftColumn {
@@ -40,7 +40,7 @@
 
 #footer {
   width: 100%;
-  background-color: #ccc;
+  background-color: #090;
   border: 1px solid;
   padding: 5px 0 5px 0;
   margin-top: 50px;
@@ -106,15 +106,15 @@ a {
 }
 
 a:link {
-  color: #666699;
+  color: #090;
 }
 
 a:visited {
-  color: #666699;
+  color: #090;
 }
 
 a:active,a:hover {
-  color: #66665c;
+  color: #090;
 }
 
 table.bodyTable th {

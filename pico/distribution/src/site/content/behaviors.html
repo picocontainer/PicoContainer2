@@ -6,94 +6,76 @@
 
 </head>
 <body>
-<h2>Behaviors </h2>
-<p>Components as managed by PicoContainer can have behaviors added to them by the container during instantiation. </p>
+<h2>Behaviors</h2>
+<p>Components as managed by PicoContainer can have behaviors added
+to them by the container during instantiation.</p>
 <h3>Caching</h3>
-<p>This is where a component has a single instance in the container rather that a new one created each time the container is asked for that type. <a href="http://code.google.com/p/google-guice/">Guice</a> calls this a Singleton. After guice came out we debated this, and decided that we should not call this a Singleton. Another PicoContainer instance could be manging another single instance of the same component, so it does not fit the definition of Singleton as defined in the Design Patterns book. </p>
-<p>Choose your style for caching behavior: </p>
-<table width="100%" border="0">
-  <tr>
-    <td><div class="source">
-  <pre>
+<p>This is where a component has a single instance in the container
+rather that a new one created each time the container is asked for that
+type. <a href="http://code.google.com/p/google-guice/">Guice</a> calls
+this a Singleton. After guice came out we debated this, and decided that
+we should not call this a Singleton. Another PicoContainer instance
+could be manging another single instance of the same component, so it
+does not fit the definition of Singleton as defined in the Design
+Patterns book.</p>
+<p>Choose your style for caching behavior:</p>
+<div class="source"><pre>
 pico = new DefaultPicoContainer(new CachingBehavior());
 pico.addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
 // both the same instance
-</pre>
-</div></td>
-    <td><div class="source">
-  <pre>
+</pre></div>
+<div class="source"><pre>
 pico = new DefaultPicoContainer();
 pico.as(CACHE).addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
 // both the same instance
-</pre>
-</div></td>
-  </tr>
-  <tr>
-    <td><div class="source">
-  <pre>pico = new PicoBuilder().withCaching().build();
+</pre></div>
+  <div class="source"><pre>pico = new PicoBuilder().withCaching().build();
 pico.addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
 // both the same instance
-</pre>
-</div></td>
-  <td><div class="source">
-  <pre>pico = new PicoBuilder().withBehaviors(caching()).build();
+</pre></div>
+  <div class="source"><pre>pico = new PicoBuilder().withBehaviors(caching()).build();
 pico.addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
 // both the same instance
-</pre>
-</div></td>
-  </tr>
-</table>
-<h3>Implementation Hiding </h3>
-<p>This is where the implementation of the component is hidden from other components using it. It only works if the type has an interface that it implements. </p>
+</pre></div>
+<h3>Implementation Hiding</h3>
+<p>This is where the implementation of the component is hidden from
+other components using it. It only works if the type has an interface
+that it implements.</p>
 
-<table width="100%" border="0">
-  <tr>
-    <td><div class="source">
-  <pre>
+    <div class="source"><pre>
 pico = new DefaultPicoContainer(new ImplementationHidingBehavior());
 pico.addComponent(Apple.class, AppleImpl.class);
 Apple a1 = pico.getComponent(Apple.class);
 // cannot cast back to AppleImpl
-</pre>
-</div></td>
-    <td><div class="source">
-  <pre>
+</pre></div>
+    <div class="source"><pre>
 pico = new DefaultPicoContainer();
 pico.as(HIDE).addComponent(Apple.class, AppleImpl.class);
 Apple a1 = pico.getComponent(Apple.class);
 // cannot cast back to AppleImpl
-</pre>
-</div></td>
-  </tr>
-  <tr>
-    <td><div class="source">
-  <pre>pico = new PicoBuilder().withImplementationHiding().build();
+</pre></div>
+    <div class="source"><pre>pico = new PicoBuilder().withImplementationHiding().build();
 pico.addComponent(Apple.class, AppleImpl.class);
 Apple a1 = pico.getComponent(Apple.class);
 // cannot cast back to AppleImpl
-</pre>
-</div></td>
-  <td><div class="source">
-  <pre>pico = new PicoBuilder().withBehaviors(hideImplementations()).build();
+</pre></div>
+    <div class="source"><pre>pico = new PicoBuilder().withBehaviors(hideImplementations()).build();
 pico.addComponent(Apple.class, AppleImpl.class);
 Apple a1 = pico.getComponent(Apple.class);
 // cannot cast back to AppleImpl
-</pre>
-</div></td>
-  </tr>
-</table>
+</pre></div>
 
-<p>This Behavior leverages Reflection's dynamic proxy capability. There's another ImplementationHidingBehavior in the Pico Gems jar that leverages ASM to make 'more concrete' hidden implementations. </p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>This Behavior leverages Reflection's dynamic proxy capability.
+There's another ImplementationHidingBehavior in the Pico Gems jar that
+leverages ASM to make 'more concrete' hidden implementations.</p>
 </body>
 
 
