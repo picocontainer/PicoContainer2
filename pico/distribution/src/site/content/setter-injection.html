@@ -21,25 +21,25 @@
         <p>Joe Walnes whist working on Java Open Source Programming with other luminaries, started with a Setter Injection IoC design for WebWork2. This is marked up with doclet tags (though that is not hard and fast) :</p>
         <div class="code">
           <div class="codeContent">
-            <pre class="code-java"><span class="code-keyword">public</span> class Shop {
+            <pre class="code-java">public class Shop {
    StockManager stockManager;
-   <span class="code-object">String</span> shopZipCode;
+   String shopZipCode;
    /**
-    * @service name=<span class="code-quote">&quot;StockManager&quot;</span>      
+    * @service name=&quot;StockManager&quot;
     */
-   <span class="code-keyword">public</span> void setStockManager(StockManager stockManager) {
-       <span class="code-keyword">this</span>.stockManager = stockManager;
+   public void setStockManager(StockManager stockManager) {
+       this.stockManager = stockManager;
    }
    /**
-    * @config name=<span class="code-quote">&quot;shopZipCode&quot;</span>      
+    * @config name=&quot;shopZipCode&quot;
     */
-   <span class="code-keyword">public</span> void setStockManager(<span class="code-object">String</span> shopZipCode) {
-       <span class="code-keyword">this</span>.shopZipCode= shopZipCode;
+   public void setStockManager(String shopZipCode) {
+       this.shopZipCode= shopZipCode;
    }
-   <span class="code-comment">// TODO - Joe - how does setter injector <span class="code-keyword">do</span> config ? Same way?
-</span>   <span class="code-keyword">public</span> void initialize() {
-       <span class="code-comment">// all setXXXs are now done :-)
-</span>   }
+   // TODO - Joe - how does setter injector do config ? Same way?
+   public void initialize() {
+       // all setXXXs are now done :-)
+   }
 }</pre>
           </div>
         </div>
@@ -49,7 +49,7 @@
           <p>Setter Injection components can be used directly, without any container.  The component-using class  will continue to compile, but at run time it will be apparent that there are missing dependencies.  The downside of this is that a developer may miss a setXXX(..) method invocation if they are using the component directly. That is fairly small as a risk as it would clearly be caught in the development cycle.  Caught in the development cycle, but maybe obscurely so with a NullPointerException.</p>
           <div class="code">
             <div class="codeContent">
-              <pre class="code-java">Shop shop = <span class="code-keyword">new</span> Shop();
+              <pre class="code-java">Shop shop = new Shop();
 shop.setStockManager(myStockManager);</pre>
             </div>
           </div>
@@ -61,7 +61,7 @@ shop.setStockManager(myStockManager);</pre>
       </div>
       <div class="section_2">
         <h2><a name="SetterInjection-RefsComparison" id="SetterInjection-RefsComparison"></a>Refs + Comparison</h2>
-        <p><span class="nobr"><a href="http://www.martinfowler.com/articles/injection.html#SetterInjectionWithSpring">Setter Injection</a></span> is a <a href="/Dependency+Injection" title="Dependency Injection">Dependency Injection</a> variant where an object gets all dependencies via setter methods. PicoContainer support this with <span class="nobr"><a href="http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/defaults/SetterInjectionComponentAdapter.html">SetterInjectionComponentAdapter</a></span>, but the PicoContainer team recommends <a href="/Constructor+Injection" title="Constructor Injection">Constructor Injection</a>.</p>
+        <p><a href="http://www.martinfowler.com/articles/injection.html#SetterInjectionWithSpring">Setter Injection</a> is a <a href="/Dependency+Injection" title="Dependency Injection">Dependency Injection</a> variant where an object gets all dependencies via setter methods. PicoContainer support this with <a href="http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/defaults/SetterInjectionComponentAdapter.html">SetterInjectionComponentAdapter</a>, but the PicoContainer team recommends <a href="/Constructor+Injection" title="Constructor Injection">Constructor Injection</a>.</p>
         <p>The advantage of <a href="/Constructor+Injection" title="Constructor Injection">Constructor Injection</a> is that the setting is atomic in a sense that either all or none of the dependencies are set and that it can occur once and only once. With <a href="/Setter+Injection" title="Setter Injection">Setter Injection</a> there is the possibility to forget to set some of the dependencies</p>
       </div>
     </div>

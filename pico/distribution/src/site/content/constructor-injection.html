@@ -23,24 +23,24 @@
           <li>Classes that rely on Constructor Injection are generally <a href="/Good+Citizen" title="Good Citizen">Good Citizen</a>s</li>
           <li>A dependency may be made immutable by making the dependency reference <em>final</em></li>
         </ul>
-        <p><img class="emoticon" src="http://docs.codehaus.org/images/icons/emoticons/information.gif" height="16" width="16" align="absmiddle" alt="" border="0" /></img> Martin Fowler explains <span class="nobr"><a href="http://www.martinfowler.com/articles/injection.html#ConstructorInjectionWithPicocontainer">Constructor Injection</a></span> in more detail.<br />
+        <p><img class="emoticon" src="http://docs.codehaus.org/images/icons/emoticons/information.gif" height="16" width="16" align="absmiddle" alt="" border="0" /></img> Martin Fowler explains <a href="http://www.martinfowler.com/articles/injection.html#ConstructorInjectionWithPicocontainer">Constructor Injection</a> in more detail.<br />
           </br>
           <img class="emoticon" src="http://docs.codehaus.org/images/icons/emoticons/information.gif" height="16" width="16" align="absmiddle" alt="" border="0" /></img> PicoContainer also supports <a href="/Setter+Injection" title="Setter Injection">Setter Injection</a>.</p>
       </div>
       <div class="section_2">
         <h2><a name="ConstructorInjection-Origin" id="ConstructorInjection-Origin"></a>Origin</h2>
-        <p><span class="nobr"><a href="http://www.twelve71.com/rachel/">Rachel Davies</a></span>, while reviewing Joe's book, left a Fermat-like margin note when view a snippet like the above.  &quot;Why not use constructors ?&quot;.  Brilliant and simple.</p>
+        <p><a href="http://www.twelve71.com/rachel/">Rachel Davies</a>, while reviewing Joe's book, left a Fermat-like margin note when view a snippet like the above.  &quot;Why not use constructors ?&quot;.  Brilliant and simple.</p>
       </div>
       <div class="section_2">
         <h2><a name="ConstructorInjection-Example" id="ConstructorInjection-Example"></a>Example</h2>
         <div class="code">
           <div class="codeContent">
-            <pre class="code-java"><span class="code-keyword">public</span> class Shop {
-    <span class="code-keyword">private</span> <span class="code-keyword">final</span> StockManager stockManager;
-    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-object">String</span> shopZipCode;
-    <span class="code-keyword">public</span> Shop(StockManager stockManager, <span class="code-object">String</span> shopZipCode) {
-        <span class="code-keyword">this</span>.stockManager = stockManager;
-        <span class="code-keyword">this</span>.shopZipCode = shopZipCode;
+            <pre class="code-java">public class Shop {
+    private final StockManager stockManager;
+    private final String shopZipCode;
+    public Shop(StockManager stockManager, String shopZipCode) {
+        this.stockManager = stockManager;
+        this.shopZipCode = shopZipCode;
     }
  }</pre>
           </div>
@@ -51,7 +51,7 @@
           <p>The component can be used directly, without any container.  The missing dependency scenario is not an issue since it is impossible to instantiate an object without all dependencies being satisfied.</p>
           <div class="code">
             <div class="codeContent">
-              <pre class="code-java">Shop shop = <span class="code-keyword">new</span> Shop(myStockManager);</pre>
+              <pre class="code-java">Shop shop = new Shop(myStockManager);</pre>
             </div>
           </div>
         </div>

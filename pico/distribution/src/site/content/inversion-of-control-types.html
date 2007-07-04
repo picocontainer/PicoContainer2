@@ -57,17 +57,17 @@
           <p>This is where a dependency is handed into a component via its constructor :</p>
           <div class="code">
             <div class="codeContent">
-              <pre class="code-java"><span class="code-keyword">public</span> <span class="code-keyword">interface</span> Orange {
-  <span class="code-comment">// methods
-</span>}
+              <pre class="code-java">public interface Orange {
+  // methods
+}
 
-<span class="code-keyword">public</span> class AppleImpl <span class="code-keyword">implements</span> Apple {
-  <span class="code-keyword">private</span> Orange orange;
-  <span class="code-keyword">public</span> AppleImpl(Orange orange) {
-    <span class="code-keyword">this</span>.orange = orange;
+public class AppleImpl implements Apple {
+  private Orange orange;
+  public AppleImpl(Orange orange) {
+    this.orange = orange;
   }
-  <span class="code-comment">// other methods
-</span>}</pre>
+  // other methods
+}</pre>
             </div>
           </div>
         </div>
@@ -76,17 +76,17 @@
           <p>This is where dependencies are injected into a component via setters :</p>
           <div class="code">
             <div class="codeContent">
-              <pre class="code-java"><span class="code-keyword">public</span> <span class="code-keyword">interface</span> Orange {
-  <span class="code-comment">// methods
-</span>}
+              <pre class="code-java">public interface Orange {
+  // methods
+}
 
-<span class="code-keyword">public</span> class AppleImpl <span class="code-keyword">implements</span> Apple {
-  <span class="code-keyword">private</span> Orange orange;
-  <span class="code-keyword">public</span> void setOrange(Orange orange) {
-    <span class="code-keyword">this</span>.orange = orange;
+public class AppleImpl implements Apple {
+  private Orange orange;
+  public void setOrange(Orange orange) {
+    this.orange = orange;
   }
-  <span class="code-comment">// other methods
-</span>}</pre>
+  // other methods
+}</pre>
             </div>
           </div>
         </div>
@@ -95,17 +95,17 @@
           <p>This is where dependencies are looked up from a container that is managing the component :</p>
           <div class="code">
             <div class="codeContent">
-              <pre class="code-java"><span class="code-keyword">public</span> <span class="code-keyword">interface</span> Orange {
-  <span class="code-comment">// methods
-</span>}
+              <pre class="code-java">public interface Orange {
+  // methods
+}
 
-<span class="code-keyword">public</span> class AppleImpl <span class="code-keyword">implements</span> Apple, DependencyProvision {
-  <span class="code-keyword">private</span> Orange orange;
-  <span class="code-keyword">public</span> void doDependencyLookup(DependencyProvider dp) <span class="code-keyword">throws</span> DependencyLookupExcpetion{
-    <span class="code-keyword">this</span>.orange = (Orange) dp.lookup(<span class="code-quote">&quot;Orange&quot;</span>);
+public class AppleImpl implements Apple, DependencyProvision {
+  private Orange orange;
+  public void doDependencyLookup(DependencyProvider dp) throws DependencyLookupExcpetion{
+    this.orange = (Orange) dp.lookup(&quot;Orange&quot;);
   }
-  <span class="code-comment">// other methods
-</span>}</pre>
+  // other methods
+}</pre>
             </div>
           </div>
         </div>

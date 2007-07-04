@@ -21,7 +21,7 @@
         <div class="section_3">
           <h3><a name="InversionofControl-IoCSynonyms" id="InversionofControl-IoCSynonyms"></a>IoC Synonyms </h3>
           <p><b>DIP</b></p>
-          <p>One well-known synonym for IoC is DIP - described in Robert C. Martin's excellent <span class="nobr"><a href="http://www.objectmentor.com/resources/articles/dip.pdf">Dependency Inversion Principle</a></span> paper. </p>
+          <p>One well-known synonym for IoC is DIP - described in Robert C. Martin's excellent <a href="http://www.objectmentor.com/resources/articles/dip.pdf">Dependency Inversion Principle</a> paper. </p>
           <p><b>Hollywood Principle</b></p>
           <p>A second nickname for IoC is The Hollywood Principle (Don't call us we'll call you).</p>
         </div>
@@ -47,40 +47,40 @@
           <p>Here is the simplest possible IoC component :</p>
           <div class="code">
             <div class="codeContent">
-              <pre class="code-java"><span class="code-keyword">public</span> <span class="code-keyword">interface</span> Orange {  
-  <span class="code-comment">// methods
-</span>}
-<span class="code-keyword">public</span> class AppleImpl <span class="code-keyword">implements</span> Apple {  
-  <span class="code-keyword">private</span> Orange orange;  
-  <span class="code-keyword">public</span> AppleImpl(Orange orange) {    
-    <span class="code-keyword">this</span>.orange = orange;  
+              <pre class="code-java">public interface Orange {
+  // methods
+}
+public class AppleImpl implements Apple {
+  private Orange orange;
+  public AppleImpl(Orange orange) {
+    this.orange = orange;
   }
-  <span class="code-comment">// other methods
-</span>}</pre>
+  // other methods
+}</pre>
             </div>
           </div>
           <p>Here are some common smells that should lead you to refactor to IoC :</p>
           <div class="code">
             <div class="codeContent">
-              <pre class="code-java"><span class="code-keyword">public</span> class AppleImpl <span class="code-keyword">implements</span> Apple{  
-  <span class="code-keyword">private</span> Orange orange;  
-  <span class="code-keyword">public</span> Apple() {
-    <span class="code-keyword">this</span>.orange = <span class="code-keyword">new</span> OrangeImpl();
+              <pre class="code-java">public class AppleImpl implements Apple{
+  private Orange orange;
+  public Apple() {
+    this.orange = new OrangeImpl();
   }  
-  <span class="code-comment">// other methods
-</span>}</pre>
+  // other methods
+}</pre>
             </div>
           </div>
           <p>The problem is that you are tied to the OrangleImpl implementation for provision of Orange services. Simply put, the above apple cannot be a (configurable) component. It's an application. All hard coded. Not reusable. It is going to be very difficult to have multiple instances in the same classloader with different assembly.</p>
           <p>Here are some other smells along the same line :</p>
           <div class="code">
             <div class="codeContent">
-              <pre class="code-java"><span class="code-keyword">public</span> class AppleImpl <span class="code-keyword">implements</span> Apple {
-  <span class="code-keyword">private</span> <span class="code-keyword">static</span> Orange orange = OrangeFactory.getOrange();
-  <span class="code-keyword">public</span> Apple() {
+              <pre class="code-java">public class AppleImpl implements Apple {
+  private static Orange orange = OrangeFactory.getOrange();
+  public Apple() {
   }  
-  <span class="code-comment">// other methods
-</span>}</pre>
+  // other methods
+}</pre>
             </div>
           </div>
         </div>
@@ -90,48 +90,48 @@
         <p>Sometimes we see configuration like so ...</p>
         <div class="code">
           <div class="codeContent">
-            <pre class="code-java"><span class="code-keyword">public</span> class BigFatComponent {  
-  <span class="code-object">String</span> config01;  
-  <span class="code-object">String</span> config02;  
-  <span class="code-keyword">public</span> BigFatComponent() {    
-    ResourceFactory resources = <span class="code-keyword">new</span> ResourceFactory(<span class="code-keyword">new</span> File(<span class="code-quote">&quot;mycomp.properties&quot;</span>));    
-    config01 = resources.get(<span class="code-quote">&quot;config01&quot;</span>);    
-    config02 = resources.get(<span class="code-quote">&quot;config02&quot;</span>);  
+            <pre class="code-java">public class BigFatComponent {
+  String config01;
+  String config02;
+  public BigFatComponent() {
+    ResourceFactory resources = new ResourceFactory(new File(&quot;mycomp.properties&quot;));
+    config01 = resources.get(&quot;config01&quot;);
+    config02 = resources.get(&quot;config02&quot;);
   }  
-  <span class="code-comment">// other methods
-</span>}</pre>
+  // other methods
+}</pre>
           </div>
         </div>
         <p>In the IoC world, it might be better to see the following for simple component designs :</p>
         <div class="code">
           <div class="codeContent">
-            <pre class="code-java"><span class="code-keyword">public</span> class BigFatComponent {  
-  <span class="code-object">String</span> config01;  
-  <span class="code-object">String</span> config02;  
-  <span class="code-keyword">public</span> BigFatComponent(<span class="code-object">String</span> config01, <span class="code-object">String</span> config02) {    
-    <span class="code-keyword">this</span>.config01 = config01;    
-    <span class="code-keyword">this</span>.config02 = config02;  
+            <pre class="code-java">public class BigFatComponent {
+  String config01;
+  String config02;
+  public BigFatComponent(String config01, String config02) {
+    this.config01 = config01;
+    this.config02 = config02;
   }  
-  <span class="code-comment">// other methods
-</span>}</pre>
+  // other methods
+}</pre>
           </div>
         </div>
         <p>Or this for more complex ones, or ones designed to be more open to reimplementation  ..</p>
         <div class="code">
           <div class="codeContent">
-            <pre class="code-java"><span class="code-keyword">public</span> <span class="code-keyword">interface</span> BigFatComponentConfig {  
-  <span class="code-object">String</span> getConfig01(); 
-  <span class="code-object">String</span> getConfig02();
+            <pre class="code-java">public interface BigFatComponentConfig {
+  String getConfig01();
+  String getConfig02();
 }
-<span class="code-keyword">public</span> class BigFatComponent {  
-  <span class="code-object">String</span> config01;  
-  <span class="code-object">String</span> config02;  
-  <span class="code-keyword">public</span> BigFatComponent(BigFatComponentConfig config) {    
-    <span class="code-keyword">this</span>.config01 = config.getConfig01();    
-    <span class="code-keyword">this</span>.config02 = config.getConfig02();  
+public class BigFatComponent {
+  String config01;
+  String config02;
+  public BigFatComponent(BigFatComponentConfig config) {
+    this.config01 = config.getConfig01();
+    this.config02 = config.getConfig02();
   }  
-  <span class="code-comment">// other methods
-</span>}</pre>
+  // other methods
+}</pre>
           </div>
         </div>
         <p>With the latter design there could be many different implementations of BigFatComponentConfig. Implementations such as:</p>
@@ -147,14 +147,14 @@
         <p>Simply put, the lifecycle of a component is what happens to it in a controlled sense after it has been instantiated.  Say a component has to start threads, do some timed activity or listen on a socket. The component, if not IoC, might do its start in its contructor. Better would be to honor some start/stop functionality from an interface, and have the container or embeddor manage the starting and stopping when they feel it is appropriate:</p>
         <div class="code">
           <div class="codeContent">
-            <pre class="code-java"><span class="code-keyword">public</span> class SomeDaemonComponent <span class="code-keyword">implements</span> Startable {  
-  <span class="code-keyword">public</span> void start() {
-    <span class="code-comment">// listen or whatever  
-</span>  }  
-  <span class="code-keyword">public</span> void stop() {
+            <pre class="code-java">public class SomeDaemonComponent implements Startable {
+  public void start() {
+    // listen or whatever
   }
-  <span class="code-comment">// other methods
-</span>}</pre>
+  public void stop() {
+  }
+  // other methods
+}</pre>
           </div>
         </div>
         <div class="section_3">
