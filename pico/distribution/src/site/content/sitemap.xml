@@ -1,23 +1,46 @@
 <sitemap>
-  <section>
-    <name>About</name>
-    <page>index.html</page>
-    <page>quick.html</page>
-    <link title="JavaDoc">javadoc/index.html</link>
-    <link title="Download">http://repository.codehaus.org/org/picocontainer</link>
-  </section>
-  <section>
-    <name>Core Concepts</name>
-    <page>injection.html</page>
-    <page>behaviors.html</page>
-    <page>lifecycle.html</page>
-    <page>monitors.html</page>
-    <page>scopes.html</page>
-    <page>builder.html</page>
-  </section>
-  <section>
-    <name>Nuances</name>
-    <page>characteristics.html</page>
-    <page>adapters.html</page>
-  </section>
+    <section>
+        <name>About</name>
+        <page>index.html</page>
+        <page>quick.html</page>
+        <link title="JavaDoc">javadoc/index.html</link>
+        <link title="Download">http://repository.codehaus.org/org/picocontainer</link>
+    </section>
+    <section>
+        <name>Core Concepts</name>
+        <page>injection.html</page>
+        <page>behaviors.html</page>
+        <page>lifecycle.html</page>
+        <page>monitors.html</page>
+        <page>scopes.html</page>
+        <page>builder.html</page>
+    </section>
+    <section>
+        <name>Nuances</name>
+        <page>characteristics.html</page>
+        <page>adapters.html</page>
+    </section>
+    <section>
+        <name>Science</name>
+        <page>patterns.html</page>
+        <page>inversion-of-control.html</page>
+        <page>inversion-of-control-types.html</page>
+        <page>mock-objects.html</page>
+        <page>terminology.html</page>
+        <page>constructor-injection.html</page>
+        <page>setter-injection.html</page>
+        <page>comparisons.html</page>
+    </section>
+    <section>
+         <name>Anti-patterns</name>
+         <page>propagating-dependency.html</page>
+         <page>long-constructor-argument-list.html</page>
+         <page>container-dependency-antipattern.html</page>
+         <page>tests-use-container.html</page>
+         <page>singleton.html</page>
+    </section>
+    <section>
+         <name>History</name>
+         <page>contextualized-lookup.html</page>
+     </section>
 </sitemap>

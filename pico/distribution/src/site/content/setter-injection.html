@@ -62,7 +62,7 @@ shop.setStockManager(myStockManager);</pre>
       <div class="section_2">
         <h2><a name="SetterInjection-RefsComparison" id="SetterInjection-RefsComparison"></a>Refs + Comparison</h2>
         <p><a href="http://www.martinfowler.com/articles/injection.html#SetterInjectionWithSpring">Setter Injection</a> is a <a href="/Dependency+Injection" title="Dependency Injection">Dependency Injection</a> variant where an object gets all dependencies via setter methods. PicoContainer support this with <a href="http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/defaults/SetterInjectionComponentAdapter.html">SetterInjectionComponentAdapter</a>, but the PicoContainer team recommends <a href="/Constructor+Injection" title="Constructor Injection">Constructor Injection</a>.</p>
-        <p>The advantage of <a href="/Constructor+Injection" title="Constructor Injection">Constructor Injection</a> is that the setting is atomic in a sense that either all or none of the dependencies are set and that it can occur once and only once. With <a href="/Setter+Injection" title="Setter Injection">Setter Injection</a> there is the possibility to forget to set some of the dependencies</p>
+        <p>The advantage of <a href="/Constructor+Injection" title="Constructor Injection">Constructor Injection</a> is that the setting is atomic in a sense that either all or none of the dependencies are set and that it can occur once and only once. With <a href="/setter-injection.html" title="Setter Injection">Setter Injection</a> there is the possibility to forget to set some of the dependencies</p>
       </div>
     </div>
   </div>

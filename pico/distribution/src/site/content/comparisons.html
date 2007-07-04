@@ -23,18 +23,18 @@
     </h3>
     <div class="content" style="padding-top: 3mm;">
       <div class="section_2">
-        <h2><a name="4.1ContainerComparison-Overview" id="4.1ContainerComparison-Overview"></a>Overview</h2>
+        <h2><a name="comparison-Overview" id="comparison-Overview"></a>Overview</h2>
         <p>This document aims to compare PicoContainer to other IoC containers, both lightweight and not.</p>
         <p>There are a number of published API specifications since Java was initially released that proport to be container/component designs. We discuss then here, suggesting there are goals that some have met, and some not. This may help you make better design choices for your own components.</p>
       </div>
       <div class="section_2">
-        <h2><a name="4.1ContainerComparison-IoCContainers" id="4.1ContainerComparison-IoCContainers"></a>IoC Containers</h2>
+        <h2><a name="comparison-IoCContainers" id="comparison-IoCContainers"></a>IoC Containers</h2>
         <div class="section_3">
-          <h3><a name="4.1ContainerComparison-SpringFramework" id="4.1ContainerComparison-SpringFramework"></a>Spring Framework</h3>
-          <p>The <a href="http://www.springframework.org/">Spring Framework</a> is a J2EE framework. As such, <a href="/Dependency+Injection" title="Dependency Injection">Dependency Injection</a> and <a href="/3.3+Lifecycle" title="3.3 Lifecycle">3.3 Lifecycle</a> is only one of its concerns. PicoContainer, on the other hand, is concerned only with <a href="/Dependency+Injection" title="Dependency Injection">Dependency Injection</a> and <a href="/3.3+Lifecycle" title="3.3 Lifecycle">3.3 Lifecycle</a>.</p>
+          <h3><a name="comparison-SpringFramework" id="comparison-SpringFramework"></a>Spring Framework</h3>
+          <p>The <a href="http://www.springframework.org/">Spring Framework</a> is a J2EE framework. As such, <a href="/Dependency+Injection" title="Dependency Injection">Dependency Injection</a> and <a href="/lifecycle.html" title="lifecycle">Lifecycle</a> is only one of its concerns. PicoContainer, on the other hand, is concerned only with <a href="/Dependency+Injection" title="Dependency Injection">Dependency Injection</a> and <a href="/lifecycle.html" title="lifecycle">Lifecycle</a>.</p>
         </div>
         <div class="section_3">
-          <h3><a name="4.1ContainerComparison-ApacheAvalonanditscontainers" id="4.1ContainerComparison-ApacheAvalonanditscontainers"></a>Apache Avalon and its containers</h3>
+          <h3><a name="comparison-ApacheAvalonanditscontainers" id="comparison-ApacheAvalonanditscontainers"></a>Apache Avalon and its containers</h3>
           <p>Apache hosts a project that has been running for years called Avalon. It has many components that fit that its design and many containers is writtern in Java. Avalon components are characterised by implementation of many optional interfaces. Avalon components are distributed with meta-information in XML in the jar file. More XML is required to assemble components together for the same of a application. Avalon Phoenix, Excalibur Component Manager (ECM), Avalon Fortress and Avalon Merlin are the pertinent containers.</p>
           <p>The Avalon Framework requires implementing components to implement a number of interfaces. This has proven historically to be a bit of a turn-off for component writers. Luckily there are no abstract classes that have to be extended by component writers. Those interfaces are :-</p>
           <table class="confluenceTable">
@@ -97,29 +97,29 @@
               </tr>
             </tbody>
           </table>
-          <p>Avalon is a <a href="/Contextualized+Lookup" title="Contextualized Lookup">Contextualized Lookup</a> IoC design. Its flaw is that components written for it cannot be used without an Avalon Framework compatible container. Many say that the XML that has to accompany each component is also a flaw. Unit testing of Avalon components is very difficult because it is difficult to manage the components from JUnit.</p>
+          <p>Avalon is a <a href="/contextualized-lookup.html" title="Contextualized Lookup">Contextualized Lookup</a> IoC design. Its flaw is that components written for it cannot be used without an Avalon Framework compatible container. Many say that the XML that has to accompany each component is also a flaw. Unit testing of Avalon components is very difficult because it is difficult to manage the components from JUnit.</p>
         </div>
       </div>
       <div class="section_2">
-        <h2><a name="4.1ContainerComparison-SunspecifiednearlyIoCContainers%26Componentdesigns" id="4.1ContainerComparison-SunspecifiednearlyIoCContainers%26Componentdesigns"></a>Sun specified nearly-IoC Containers &amp; Component designs</h2>
+        <h2><a name="comparison-SunspecifiednearlyIoCContainers%26Componentdesigns" id="comparison-SunspecifiednearlyIoCContainers%26Componentdesigns"></a>Sun specified nearly-IoC Containers &amp; Component designs</h2>
         <p>Sun have specified several container/component designs</p>
         <div class="section_3">
-          <h3><a name="4.1ContainerComparison-EnterpriseJavaBeans" id="4.1ContainerComparison-EnterpriseJavaBeans"></a>Enterprise Java Beans</h3>
+          <h3><a name="comparison-EnterpriseJavaBeans" id="comparison-EnterpriseJavaBeans"></a>Enterprise Java Beans</h3>
           <p>Clearly Entity and Session beans run inside a container. The API is well defined, and to varying degrees of success one can deploy EJB appllications to WebLogic, WebSphere, Orion and JBoss etc. For assembly and configuration, there is high use of element-normal XML . There are some mandated parent objects and interfaces for various to extend and/or implement. Resolution is done by the components themselves via JNDI more often than not.</p>
           <p>PicoComponents are simpler in they they do not force an extensive XML markup, nor require the implementing of certaing interfaces or extening base classes. Quite importantly the relationship between factory (home), implementation (bean) and interface (remote) parts is much more real in PicoComponents. Lastly, EJB components are nearly impossible to unit-test without much effort.</p>
         </div>
         <div class="section_3">
-          <h3><a name="4.1ContainerComparison-Servlets" id="4.1ContainerComparison-Servlets"></a>Servlets</h3>
+          <h3><a name="comparison-Servlets" id="comparison-Servlets"></a>Servlets</h3>
           <p>Not so obvious - Servlets are contained by a servlet container. They are generally bundled with (or replaced by) value added propositions like JSP, but it is still a container/component design. High use of XML for assembly and configuration. Servlets have no concept of parent container or the conatainer above that (sometimes EJB) and its provision of components, which is very unfortunate. Servlets have a number of interfaces to honor, none of which is too malignent. Servlets typically deal with external (or parent) components via RMI or JNDI. In more recent releases of EJB, local interfaces rather than RMI may be the mechanism for connection the parent components. WebLogic have always provided an optimizing mechanism for this interoperation</p>
           <p>As with EJB, PicoComponents are far simpler. This is probably because they offer no web experience, apart from anything else. Servlets again are not that unit-testable.</p>
         </div>
         <div class="section_3">
-          <h3><a name="4.1ContainerComparison-Applets" id="4.1ContainerComparison-Applets"></a>Applets</h3>
+          <h3><a name="comparison-Applets" id="comparison-Applets"></a>Applets</h3>
           <p>Applets, though presently not so often used, are a good example of Container/Component separations. There is very little XML in use by Applets. Configuration is typically delivered in applet tags in HTML. Applets are granted some access to the parent container, the brower, and its DOM model for pages and other applets. There very little standardisation for Browser as a container.</p>
           <p>As with EJB, PicoComponents are far simpler. Applets are unit-testable but with a little effort. Complex DOM interoperation is impossible under unit testing.</p>
         </div>
         <div class="section_3">
-          <h3><a name="4.1ContainerComparison-Mainable%28Notactuallyacontainer%29" id="4.1ContainerComparison-Mainable%28Notactuallyacontainer%29"></a>Mainable (Not actually a container)</h3>
+          <h3><a name="comparison-Mainable%28Notactuallyacontainer%29" id="comparison-Mainable%28Notactuallyacontainer%29"></a>Mainable (Not actually a container)</h3>
           <div class="code">
             <div class="codeContent">
               <pre class="code-java">public static void main(String[] args) {}</pre>
@@ -130,15 +130,15 @@
           <p>Familiar? Hopefully not <img class="emoticon" src="http://docs.codehaus.org/images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0" />Static plays no part in a good IoC container/component design. This includes static launching of Java Webstart (JNLP) applications. If you have to keep mainable functionaility separate your components away from the main() class so they may be instntiated separately. In .NET you'll have to make sure that the application assembly is a small bootstrap to a component one.</p>
         </div>
         <div class="section_3">
-          <h3><a name="4.1ContainerComparison-JNDI%28JavaAPI%29" id="4.1ContainerComparison-JNDI%28JavaAPI%29"></a>JNDI (Java API)</h3>
+          <h3><a name="comparison-JNDI%28JavaAPI%29" id="comparison-JNDI%28JavaAPI%29"></a>JNDI (Java API)</h3>
           <p>A huge map of clunkily access components via a very non-IoC mechanism. It has to be strapped with much XML to prevent inappropriate access. This is not IoC because the component reaches out for external component dependancies whenever it feels like. This last fact clouds Serlvets and EJB use.</p>
         </div>
         <div class="section_3">
-          <h3><a name="4.1ContainerComparison-AWT%2CSwing%2CSWT%28Javagraphictoolkits%29" id="4.1ContainerComparison-AWT%2CSwing%2CSWT%28Javagraphictoolkits%29"></a>AWT, Swing, SWT (Java graphic toolkits)</h3>
+          <h3><a name="comparison-AWT%2CSwing%2CSWT%28Javagraphictoolkits%29" id="comparison-AWT%2CSwing%2CSWT%28Javagraphictoolkits%29"></a>AWT, Swing, SWT (Java graphic toolkits)</h3>
           <p>Nice container/component designs. In the case of Swing, perhaps a little difficult for coders to easily assemble applications.</p>
         </div>
         <div class="section_3">
-          <h3><a name="4.1ContainerComparison-Eclipse" id="4.1ContainerComparison-Eclipse"></a><a href="http://eclipse.org">Eclipse</a> (Java graphical application platform)</h3>
+          <h3><a name="comparison-Eclipse" id="comparison-Eclipse"></a><a href="http://eclipse.org">Eclipse</a> (Java graphical application platform)</h3>
           <p>The Eclipse platform is very compelling. It supports the notion of a pluggable application concept. Each component statically accesses other components via a factory (which at least Paul does not like), though it is clear that some complex classloader magic is going on. The underpinning set of graphical components, SWT , are a simple and elegant design.</p>
         </div>
       </div>
