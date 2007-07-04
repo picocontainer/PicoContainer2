@@ -11,7 +11,7 @@
 <div class="section">
 <h2>Quick Introduction to Use </h2>
 There is an assumption here that you know what Dependency Injection and Inversion of Control are.
-<h3>Constructor Dependency Injection (CDI) </h3>
+<h3>Basic Usage </h3>
 <p>With PicoContainer you add components by type or instance, then you get components out. Pico works out the dependancies, or tells you via exception that it cannot. </p>
 <div class="source">
   <pre>
@@ -34,7 +34,7 @@ pico.addComponent(ComponentFour.class, ComponentFourImpl.class) // by type
 
 ComponentFour four = pico.getComponent(ComponentFour.class);
 </pre></div>
-<p>You can use a fluent style if you want:</p>
+<p>You can use a <a href="http://www.martinfowler.com/bliki/FluentInterface.html">fluent</a> style if you want:</p>
 <div class="source">
   <pre>
 ComponentFour four = new DefaultPicoContainer()

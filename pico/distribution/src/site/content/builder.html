@@ -23,8 +23,8 @@ pico.addComponent(Apple.class);
     <div class="source"><pre>pico = new PicoBuilder().withHiddenImplementations().build();
 pico.addComponent(Apple.class);</pre></div>
 
-<p>More varations for behaviors or parent containers :
-    <div class="source"><pre>
+<p>More varations for behaviors :
+<div class="source"><pre>
 pico = new PicoBuilder().withLifecycle().withConsoleMonitor().build();
 pico.addComponent(Apple.class);
 </pre></div>
@@ -39,6 +39,7 @@ import static org.picocontainer.behaviors.Behaviors.threadSafe;
 pico = ew PicoBuilder(SDI()).withBehaviors(caching(), threadSafe(), implHiding()).build();
 pico.addComponent(Apple.class);
 </pre></div>
+<p>Setting a parent container :</p>
     <div class="source"><pre>child = new PicoBuilder(parentContainer).build();
 child.addComponent(Apple.class);</pre></div>
 
@@ -47,23 +48,25 @@ child.addComponent(Apple.class);</pre></div>
 pico = new PicoBuilder().withAnnotationInjection().build();
 pico.addComponent(Apple.class);
 </pre></div>
+<p>Specifying an injection type a different way:</p>
     <div class="source"><pre>
 import static org.picocontainer.injectors.Injectors.SDI;
 ...
 pico = new PicoBuilder(SDI()).build();
 pico.addComponent(Apple.class);</pre></div>
-<p>Advanced Custom stuff:</p>
+<p>A custom container component used by a custom  ComponentBehavior (though could be used by ComponentMonitor or LifecycleStrategy as easily): </p>
 
-    <div class="source"><pre>
+    <div class="source">
+      <pre>
 pico = new PicoBuilder()
     .withCustomContainerComponent(new MyQuantumPhysicsConnector())
-    .withComponentFactory(MyQuantumPhysicsComponentBehavior.class).build();
-pico.addComponent(Apple.class);
-</pre></div>
-    <div class="source"><pre>
-pico = new PicoBuilder().
-    implementedBy(MyCustomPicoContainer.class).build();
+    .withComponentFactory(MyQuantumPhysicsConnectionNeedingComponentBehavior.class).build();
 pico.addComponent(Apple.class);</pre></div>
+	<p>A custom container implementation (DefaultPicoContainer is the default):</p> 
+    <div class="source">
+      <pre>MyCustomPicoContainer pico = (MyCustomPicoContainer) new PicoBuilder().implementedBy(MyCustomPicoContainer.class).build();
+pico.addComponent(Apple.class);</pre>
+</div>
 </p>
 </body>
 </html>
