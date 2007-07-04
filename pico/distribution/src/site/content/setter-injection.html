@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Setter Injection</title>
+</head>
+<body>
+<div id="container">
+  <div id="main">
+    <div class="clear"></div>
+    <div class="content" style="padding-top: 3mm;">
+      <div class="section_2">
+        <h2><a name="SetterInjection-Overview" id="SetterInjection-Overview"></a>Overview</h2>
+        <p>Setter Injection is where the container or embedder hands dependencies to a component via setter methods after instantiation.</p>
+      </div>
+      <div class="section_2">
+        <h2><a name="SetterInjection-Example" id="SetterInjection-Example"></a>Example</h2>
+        <p>Joe Walnes whist working on Java Open Source Programming with other luminaries, started with a Setter Injection IoC design for WebWork2. This is marked up with doclet tags (though that is not hard and fast) :</p>
+        <div class="code">
+          <div class="codeContent">
+            <pre class="code-java"><span class="code-keyword">public</span> class Shop {
+   StockManager stockManager;
+   <span class="code-object">String</span> shopZipCode;
+   /**
+    * @service name=<span class="code-quote">&quot;StockManager&quot;</span>      
+    */
+   <span class="code-keyword">public</span> void setStockManager(StockManager stockManager) {
+       <span class="code-keyword">this</span>.stockManager = stockManager;
+   }
+   /**
+    * @config name=<span class="code-quote">&quot;shopZipCode&quot;</span>      
+    */
+   <span class="code-keyword">public</span> void setStockManager(<span class="code-object">String</span> shopZipCode) {
+       <span class="code-keyword">this</span>.shopZipCode= shopZipCode;
+   }
+   <span class="code-comment">// TODO - Joe - how does setter injector <span class="code-keyword">do</span> config ? Same way?
+</span>   <span class="code-keyword">public</span> void initialize() {
+       <span class="code-comment">// all setXXXs are now done :-)
+</span>   }
+}</pre>
+          </div>
+        </div>
+        <p>The container use the meta-information to resolve all the dependencies.  Components need not be interface/impl separated. Developer's choice.</p>
+        <div class="section_3">
+          <h3><a name="SetterInjection-UsingSetterInjectorComponentsWithoutaContainer." id="SetterInjection-UsingSetterInjectorComponentsWithoutaContainer."></a>Using Setter Injector Components Without a Container.</h3>
+          <p>Setter Injection components can be used directly, without any container.  The component-using class  will continue to compile, but at run time it will be apparent that there are missing dependencies.  The downside of this is that a developer may miss a setXXX(..) method invocation if they are using the component directly. That is fairly small as a risk as it would clearly be caught in the development cycle.  Caught in the development cycle, but maybe obscurely so with a NullPointerException.</p>
+          <div class="code">
+            <div class="codeContent">
+              <pre class="code-java">Shop shop = <span class="code-keyword">new</span> Shop();
+shop.setStockManager(myStockManager);</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section_2">
+        <h2><a name="SetterInjection-Containersupport" id="SetterInjection-Containersupport"></a>Container support</h2>
+        <p>The Spring Framework project is the best example of a container that supports setter injector.  PicoContainer does too, but we really believe that constructor injector is superior.</p>
+      </div>
+      <div class="section_2">
+        <h2><a name="SetterInjection-RefsComparison" id="SetterInjection-RefsComparison"></a>Refs + Comparison</h2>
+        <p><span class="nobr"><a href="http://www.martinfowler.com/articles/injection.html#SetterInjectionWithSpring">Setter Injection</a></span> is a <a href="/Dependency+Injection" title="Dependency Injection">Dependency Injection</a> variant where an object gets all dependencies via setter methods. PicoContainer support this with <span class="nobr"><a href="http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/defaults/SetterInjectionComponentAdapter.html">SetterInjectionComponentAdapter</a></span>, but the PicoContainer team recommends <a href="/Constructor+Injection" title="Constructor Injection">Constructor Injection</a>.</p>
+        <p>The advantage of <a href="/Constructor+Injection" title="Constructor Injection">Constructor Injection</a> is that the setting is atomic in a sense that either all or none of the dependencies are set and that it can occur once and only once. With <a href="/Setter+Injection" title="Setter Injection">Setter Injection</a> there is the possibility to forget to set some of the dependencies</p>
+      </div>
+    </div>
+  </div>
+  <div class="clear">&nbsp;</div>
+</div>
+</body>
+</html>

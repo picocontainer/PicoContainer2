@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Contextualized Lookup</title>
+</head>
+<body>
+<div id="container">
+  <div id="main">
+    <div class="clear"></div>
+    <div class="content" style="padding-top: 3mm;">
+      <div class="section_2">
+        <h2><a name="ContextualizedLookup-Overview" id="ContextualizedLookup-Overview"></a>Overview</h2>
+        <p>Contextualized Dependency Lookup is the type of dependency resolution that Avalon, Loom, Keel and alike do.  It is where the container or embedder hands dependencies after instantiation and via an interface/method that the component implements to indicate that it has dependencies.  The method in question typically hands in an reference to the component that has a lookup mechanism. Only the component dependencies declared will be returned on lookup.  Typically XML is used to describe the dependancies for a particular component.</p>
+      </div>
+      <div class="section_2">
+        <h2><a name="ContextualizedLookup-Example" id="ContextualizedLookup-Example"></a>Example</h2>
+        <div class="code">
+          <div class="codeContent">
+            <pre class="code-java"><span class="code-keyword">import</span> org.apache.avalon.framework.ServiceManager;
+<span class="code-keyword">import</span> org.apache.avalon.framework.Serviceable;
+<span class="code-keyword">import</span> org.apache.avalon.framework.ServiceException;
+
+<span class="code-keyword">public</span> class Shop <span class="code-keyword">implements</span> Serviceable, Initializable {
+    StockManager stockManager;
+    <span class="code-object">String</span> shopZipCode;
+    <span class="code-keyword">public</span> void service(ServiceManager sm) <span class="code-keyword">throws</span> ServiceException {
+        stockManager = (StockManager) sm.lookup(<span class="code-quote">&quot;StockManager&quot;</span>);
+    }
+    <span class="code-keyword">public</span> void initialize() {
+        <span class="code-comment">// all service()ing done.
+</span>    }
+}</pre>
+          </div>
+        </div>
+        <p>A component has to have service (component) declarations in an external file. The popular Loom (forked from Phoenix) container has .xinfo files for such needs.  All Avalon container have some mechanism for storing configuration and assembly externally to the class.  Cross referenced against the xinfo files, Loom's assembly.xml defines the implementations to be used for component types.  This all Avalon components must be interface/implementation separated. This in itself is not a bad thing in my (Paul) opinion.</p>
+        <div class="section_3">
+          <h3><a name="ContextualizedLookup-UsingContextualizedDependencyLookupComponentsWithoutaContainer." id="ContextualizedLookup-UsingContextualizedDependencyLookupComponentsWithoutaContainer."></a>Using Contextualized Dependency Lookup Components Without a Container.</h3>
+          <p>The downside of the this design is that components can only be used without the container with great difficulty. If at all.  This a proper container is needed at all times, and you have to choose one for different purposes (that not withstanding the efforts of the Avalon team to make a single all-purpose container).  If you do manage to instantiate components without a container, you might miss one of the essential service dependencies.  The component-using class  will continue to compile, but at run time it will be apparent that there are missing dependencies.</p>
+        </div>
+      </div>
+      <div class="section_2">
+        <h2><a name="ContextualizedLookup-Containersupport" id="ContextualizedLookup-Containersupport"></a>Container support</h2>
+        <p>The Avalon and JContainer's Loom are the best example of containers that support contextulaized lookup.  PicoContainer does not directly support this type of dependency resultion.  See <a href="/Avalon+Framework" title="Avalon Framework">Avalon Framework</a> page to see how this works.</p>
+      </div>
+    </div>
+    <div style="text-align: center; width: 100%; padding-top: 1cm;padding-bottom: 1cm"> </div>
+  </div>
+  <div class="clear">&nbsp;</div>
+</div>
+</body>
+</html>

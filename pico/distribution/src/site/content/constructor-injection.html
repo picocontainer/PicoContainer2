@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Constructor Injection</title>
+</head>
+<body>
+<div id="container">
+  <div id="main">
+    <div class="clear"></div>
+    <div class="content" style="padding-top: 3mm;">
+      <div class="section_2">
+        <h2><a name="ConstructorInjection-Overview" id="ConstructorInjection-Overview"></a>Overview</h2>
+        <p>Constructor Injection is a <a href="/Dependency+Injection" title="Dependency Injection">Dependency Injection</a> variant where an object gets all its dependencies via the constructor. This is PicoContainer's most important feature.</p>
+        <p>The most important benefits of Constructor Injection are:</p>
+        <ul>
+          <li>It makes a strong dependency contract</li>
+          <li>It makes testing easy, since dependencies can be passed in as <a href="/Mock+Objects" title="Mock Objects">Mock Objects</a></li>
+          <li>It's very succinct in terms of lines of code</li>
+          <li>Classes that rely on Constructor Injection are generally <a href="/Good+Citizen" title="Good Citizen">Good Citizen</a>s</li>
+          <li>A dependency may be made immutable by making the dependency reference <em>final</em></li>
+        </ul>
+        <p><img class="emoticon" src="http://docs.codehaus.org/images/icons/emoticons/information.gif" height="16" width="16" align="absmiddle" alt="" border="0" /></img> Martin Fowler explains <span class="nobr"><a href="http://www.martinfowler.com/articles/injection.html#ConstructorInjectionWithPicocontainer">Constructor Injection</a></span> in more detail.<br />
+          </br>
+          <img class="emoticon" src="http://docs.codehaus.org/images/icons/emoticons/information.gif" height="16" width="16" align="absmiddle" alt="" border="0" /></img> PicoContainer also supports <a href="/Setter+Injection" title="Setter Injection">Setter Injection</a>.</p>
+      </div>
+      <div class="section_2">
+        <h2><a name="ConstructorInjection-Origin" id="ConstructorInjection-Origin"></a>Origin</h2>
+        <p><span class="nobr"><a href="http://www.twelve71.com/rachel/">Rachel Davies</a></span>, while reviewing Joe's book, left a Fermat-like margin note when view a snippet like the above.  &quot;Why not use constructors ?&quot;.  Brilliant and simple.</p>
+      </div>
+      <div class="section_2">
+        <h2><a name="ConstructorInjection-Example" id="ConstructorInjection-Example"></a>Example</h2>
+        <div class="code">
+          <div class="codeContent">
+            <pre class="code-java"><span class="code-keyword">public</span> class Shop {
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> StockManager stockManager;
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> <span class="code-object">String</span> shopZipCode;
+    <span class="code-keyword">public</span> Shop(StockManager stockManager, <span class="code-object">String</span> shopZipCode) {
+        <span class="code-keyword">this</span>.stockManager = stockManager;
+        <span class="code-keyword">this</span>.shopZipCode = shopZipCode;
+    }
+ }</pre>
+          </div>
+        </div>
+        <p>Note, for this there is no need to declare needs in any other way. No interfaces, no doclet tags, no external XML. Just your simple component(s) and PicoContainer.  No need for post assembly/config initialization either.  If it is constructed (not withstanding some asserts on nulls) it has its needs satisfied.  Components need not be interface/implementation separated. This is the coder's choice.</p>
+        <div class="section_3">
+          <h3><a name="ConstructorInjection-UsingConstructorInjectorComponentsWithoutaContainer." id="ConstructorInjection-UsingConstructorInjectorComponentsWithoutaContainer."></a>Using Constructor Injector Components Without a Container.</h3>
+          <p>The component can be used directly, without any container.  The missing dependency scenario is not an issue since it is impossible to instantiate an object without all dependencies being satisfied.</p>
+          <div class="code">
+            <div class="codeContent">
+              <pre class="code-java">Shop shop = <span class="code-keyword">new</span> Shop(myStockManager);</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section_2">
+        <h2><a name="ConstructorInjection-Containersupport" id="ConstructorInjection-Containersupport"></a>Container support</h2>
+        <p>PicoContainer was the first lightweight container to support and popularize this for of dependency injection.  Spring Framework has been retrofitted with constructor injection capability, but its primary focus is still setter injection.  Even Avalon's reference container has been upgraded to have compatibility with constructor injection components.</p>
+      </div>
+    </div>
+  </div>
+  <div class="clear">&nbsp;</div>
+</div>
+</body>
+</html>

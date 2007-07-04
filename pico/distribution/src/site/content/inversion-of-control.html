@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Inversion of Control</title>
+</head>
+<body>
+<div id="container">
+  <div id="main">
+    <div class="content" style="padding-top: 3mm;">
+      <div class="section_2">
+        <h2><a name="InversionofControl-Overview" id="InversionofControl-Overview"></a>Overview</h2>
+        <p>Inversion of Control (IoC) is a design pattern that addresses a component's <a href="/Dependency+Injection" title="Dependency Injection">dependency resolution</a>, <a href="/Component+Configuration" title="Component Configuration">configuration</a> and <a href="/3.3+Lifecycle" title="3.3 Lifecycle">lifecycle</a>. Note to confuse things slightly, IoC is also relevant to simple classes, not just components, but we will refer to components throughout this text. The most significant aspect to IoC is dependency resolution and most of the discussion surrounding IoC dwells solely on that.</p>
+        <div class="section_3">
+          <h3><a name="InversionofControl-TypesofIoC" id="InversionofControl-TypesofIoC"></a>Types of IoC</h3>
+          <p>There are many types of IoC, but we'll concentrate on the type of IoC that PicoContainer introduced to the community.  Formerly known as type-3, now known as <a href="/Constructor+Injection" title="Constructor Injection">Constructor Injection</a>.  We'll ignore <a href="/Setter+Injection" title="Setter Injection">Setter Injection</a> and <a href="/Contextualized+Lookup" title="Contextualized Lookup">Contextualized Lookup</a> as they are described in the <a href="/IoC+Types" title="IoC Types">IoC Types</a> page.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="InversionofControl-IoCSynonyms" id="InversionofControl-IoCSynonyms"></a>IoC Synonyms </h3>
+          <p><b>DIP</b></p>
+          <p>One well-known synonym for IoC is DIP - described in Robert C. Martin's excellent <span class="nobr"><a href="http://www.objectmentor.com/resources/articles/dip.pdf">Dependency Inversion Principle</a></span> paper. </p>
+          <p><b>Hollywood Principle</b></p>
+          <p>A second nickname for IoC is The Hollywood Principle (Don't call us we'll call you).</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="InversionofControl-IoCHistory" id="InversionofControl-IoCHistory"></a>IoC History</h3>
+          <p>Some detail about the history of Inversion of Control - <a href="/IoC+History" title="IoC History">IoC History</a></p>
+        </div>
+      </div>
+      <div class="section_2">
+        <h2><a name="InversionofControl-ComponentDependencies" id="InversionofControl-ComponentDependencies"></a>Component Dependencies</h2>
+        <p>It generally favors loose coupling between components. Loose coupling in turn favours:</p>
+        <ul>
+          <li>More reusable classes</li>
+          <li>Classes that are easier to test</li>
+          <li>Systems that are easier to assemble and configure</li>
+        </ul>
+        <div class="section_3">
+          <h3><a name="InversionofControl-Explanation" id="InversionofControl-Explanation"></a>Explanation</h3>
+          <p>Simply put, a component designed according to IoC does not go off and get other components that it needs in order to do its job. It instead <em>declares</em> these dependencies, and the container supplies them. Thus the name IoC/DIP/Hollywood Principle. The control of the dependencies for a given component is inverted. It is no longer the component itself that establishes its own dependencies, but something on the outside. That something could be a container like PicoContainer, but could easily be normal code instantiating the component in an embedded sense.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="InversionofControl-Examples" id="InversionofControl-Examples"></a>Examples</h3>
+          <p>Here is the simplest possible IoC component :</p>
+          <div class="code">
+            <div class="codeContent">
+              <pre class="code-java"><span class="code-keyword">public</span> <span class="code-keyword">interface</span> Orange {  
+  <span class="code-comment">// methods
+</span>}
+<span class="code-keyword">public</span> class AppleImpl <span class="code-keyword">implements</span> Apple {  
+  <span class="code-keyword">private</span> Orange orange;  
+  <span class="code-keyword">public</span> AppleImpl(Orange orange) {    
+    <span class="code-keyword">this</span>.orange = orange;  
+  }
+  <span class="code-comment">// other methods
+</span>}</pre>
+            </div>
+          </div>
+          <p>Here are some common smells that should lead you to refactor to IoC :</p>
+          <div class="code">
+            <div class="codeContent">
+              <pre class="code-java"><span class="code-keyword">public</span> class AppleImpl <span class="code-keyword">implements</span> Apple{  
+  <span class="code-keyword">private</span> Orange orange;  
+  <span class="code-keyword">public</span> Apple() {
+    <span class="code-keyword">this</span>.orange = <span class="code-keyword">new</span> OrangeImpl();
+  }  
+  <span class="code-comment">// other methods
+</span>}</pre>
+            </div>
+          </div>
+          <p>The problem is that you are tied to the OrangleImpl implementation for provision of Orange services. Simply put, the above apple cannot be a (configurable) component. It's an application. All hard coded. Not reusable. It is going to be very difficult to have multiple instances in the same classloader with different assembly.</p>
+          <p>Here are some other smells along the same line :</p>
+          <div class="code">
+            <div class="codeContent">
+              <pre class="code-java"><span class="code-keyword">public</span> class AppleImpl <span class="code-keyword">implements</span> Apple {
+  <span class="code-keyword">private</span> <span class="code-keyword">static</span> Orange orange = OrangeFactory.getOrange();
+  <span class="code-keyword">public</span> Apple() {
+  }  
+  <span class="code-comment">// other methods
+</span>}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section_2">
+        <h2><a name="InversionofControl-ComponentConfiguration" id="InversionofControl-ComponentConfiguration"></a>Component Configuration</h2>
+        <p>Sometimes we see configuration like so ...</p>
+        <div class="code">
+          <div class="codeContent">
+            <pre class="code-java"><span class="code-keyword">public</span> class BigFatComponent {  
+  <span class="code-object">String</span> config01;  
+  <span class="code-object">String</span> config02;  
+  <span class="code-keyword">public</span> BigFatComponent() {    
+    ResourceFactory resources = <span class="code-keyword">new</span> ResourceFactory(<span class="code-keyword">new</span> File(<span class="code-quote">&quot;mycomp.properties&quot;</span>));    
+    config01 = resources.get(<span class="code-quote">&quot;config01&quot;</span>);    
+    config02 = resources.get(<span class="code-quote">&quot;config02&quot;</span>);  
+  }  
+  <span class="code-comment">// other methods
+</span>}</pre>
+          </div>
+        </div>
+        <p>In the IoC world, it might be better to see the following for simple component designs :</p>
+        <div class="code">
+          <div class="codeContent">
+            <pre class="code-java"><span class="code-keyword">public</span> class BigFatComponent {  
+  <span class="code-object">String</span> config01;  
+  <span class="code-object">String</span> config02;  
+  <span class="code-keyword">public</span> BigFatComponent(<span class="code-object">String</span> config01, <span class="code-object">String</span> config02) {    
+    <span class="code-keyword">this</span>.config01 = config01;    
+    <span class="code-keyword">this</span>.config02 = config02;  
+  }  
+  <span class="code-comment">// other methods
+</span>}</pre>
+          </div>
+        </div>
+        <p>Or this for more complex ones, or ones designed to be more open to reimplementation  ..</p>
+        <div class="code">
+          <div class="codeContent">
+            <pre class="code-java"><span class="code-keyword">public</span> <span class="code-keyword">interface</span> BigFatComponentConfig {  
+  <span class="code-object">String</span> getConfig01(); 
+  <span class="code-object">String</span> getConfig02();
+}
+<span class="code-keyword">public</span> class BigFatComponent {  
+  <span class="code-object">String</span> config01;  
+  <span class="code-object">String</span> config02;  
+  <span class="code-keyword">public</span> BigFatComponent(BigFatComponentConfig config) {    
+    <span class="code-keyword">this</span>.config01 = config.getConfig01();    
+    <span class="code-keyword">this</span>.config02 = config.getConfig02();  
+  }  
+  <span class="code-comment">// other methods
+</span>}</pre>
+          </div>
+        </div>
+        <p>With the latter design there could be many different implementations of BigFatComponentConfig. Implementations such as:</p>
+        <ol>
+          <li>Hard coded (a default impl)</li>
+          <li>Implementations that take config from an XML document (file, URL based or inlined in using class)</li>
+          <li>Properties File.</li>
+        </ol>
+        <p>It is the deployer's, embeddor's or container maker's choice on which to use.</p>
+      </div>
+      <div class="section_2">
+        <h2><a name="InversionofControl-ComponentLifecycle" id="InversionofControl-ComponentLifecycle"></a>Component Lifecycle</h2>
+        <p>Simply put, the lifecycle of a component is what happens to it in a controlled sense after it has been instantiated.  Say a component has to start threads, do some timed activity or listen on a socket. The component, if not IoC, might do its start in its contructor. Better would be to honor some start/stop functionality from an interface, and have the container or embeddor manage the starting and stopping when they feel it is appropriate:</p>
+        <div class="code">
+          <div class="codeContent">
+            <pre class="code-java"><span class="code-keyword">public</span> class SomeDaemonComponent <span class="code-keyword">implements</span> Startable {  
+  <span class="code-keyword">public</span> void start() {
+    <span class="code-comment">// listen or whatever  
+</span>  }  
+  <span class="code-keyword">public</span> void stop() {
+  }
+  <span class="code-comment">// other methods
+</span>}</pre>
+          </div>
+        </div>
+        <div class="section_3">
+          <h3><a name="InversionofControl-Notes" id="InversionofControl-Notes"></a>Notes </h3>
+          <p>The lifecycle interfaces for PicoContainer are the only characterising API elements for a component. If Startable was in the JDK, there would be no need for this.  Sadly, it also menas that every framework team has to write their own Startable interface. </p>
+          <p>The vast majority of components do not require lifecycle functionality, and thus don't have to implement anything.</p>
+        </div>
+      </div>
+      <div class="section_2">
+        <h2><a name="InversionofControl-IoCExceptions" id="InversionofControl-IoCExceptions"></a>IoC Exceptions</h2>
+        <p>Of course, in all of these discussions, it is important to point out that logging is a common exception to the IoC rule. Apache has two static logging frameworks that are in common use: Commons-Logging and Log4J. Neither of these is designed along IoC lines.  Their typical use is static accessed whenever it is felt appropriate in an application.  Whilst static logging is common, the PicoContainer team do not recommend that developers of reusable components include a logging choice.  We suggest instead that a Monitor component interface is created and default adapters are provided to a number of the logging frameworks are provided.</p>
+      </div>
+      <div class="section_2">
+        <h2><a name="InversionofControl-Subpages" id="InversionofControl-Subpages"></a>Subpages</h2>
+        <ul>
+          <li><a href="/Contextualized+Lookup" title="Contextualized Lookup">Contextualized Lookup</a>
+            <ul>
+              <li><a href="/Avalon+Framework" title="Avalon Framework">Avalon Framework</a></li>
+            </ul>
+          </li>
+          <li><a href="/IoC+History" title="IoC History">IoC History</a></li>
+          <li><a href="/IoC+Types" title="IoC Types">IoC Types</a>
+            <ul>
+              <li><a href="/Dependency+Injection" title="Dependency Injection">Dependency Injection</a>
+                <ul>
+                  <li><a href="/Constructor+Injection" title="Constructor Injection">Constructor Injection</a></li>
+                  <li><a href="/Setter+Injection" title="Setter Injection">Setter Injection</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div style="text-align: center; width: 100%; padding-top: 1cm;padding-bottom: 1cm"> </div>
+  </div>
+  <div class="clear">&nbsp;</div>
+</div>
+</body>
+</html>
