@@ -63,9 +63,14 @@
     </repositories>
     <pluginRepositories>
         <pluginRepository>
+            <id>codehaus-plugin-repository</id>
+            <name>Codehaus Plugin Repository</name>
+            <url>http://repository.codehaus.org</url>
+        </pluginRepository>
+        <pluginRepository>
             <id>codehaus-plugin-snapshots-repository</id>
             <name>Codehaus Plugin Snapshots Repository</name>
-            <url>http://snapshots.maven.codehaus.org/maven2/</url>
+            <url>http://snapshots.repository.codehaus.org</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
