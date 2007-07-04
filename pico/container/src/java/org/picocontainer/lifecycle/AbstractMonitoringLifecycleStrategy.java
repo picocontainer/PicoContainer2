@@ -23,7 +23,7 @@ public abstract class AbstractMonitoringLifecycleStrategy implements LifecycleSt
     private ComponentMonitor componentMonitor;
 
     /**
-     * Construct a AbstractMonitoringLifecylceStrategy.
+     * Construct a AbstractMonitoringLifecycleStrategy.
      * 
      * @param monitor the componentMonitor to use
      * @throws NullPointerException if the monitor is <code>null</code>

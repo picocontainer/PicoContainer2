@@ -139,7 +139,7 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
         return false;
     }
 
-    // ~~~~~~~~ LifecylceStrategy ~~~~~~~~
+    // ~~~~~~~~ LifecycleStrategy ~~~~~~~~
 
     /**
      * Invokes delegate start method if the delegate is a LifecycleStrategy

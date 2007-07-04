@@ -72,7 +72,7 @@ public final class InstanceAdapter extends AbstractAdapter implements Behavior, 
         return hasLifecycle(componentInstance.getClass());
     }
 
-    // ~~~~~~~~ LifecylceStrategy ~~~~~~~~
+    // ~~~~~~~~ LifecycleStrategy ~~~~~~~~
     
     public void start(Object component) {
         lifecycleStrategy.start(componentInstance);

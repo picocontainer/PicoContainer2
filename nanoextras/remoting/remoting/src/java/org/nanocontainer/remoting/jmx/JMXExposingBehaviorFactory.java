@@ -23,7 +23,7 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 
 /**
- * {@link org.picocontainer.ComponentFactory} that instantiates {@link JMXExposingBehaviorAdapter} instances.
+ * {@link org.picocontainer.ComponentFactory} that instantiates {@link JMXExposingBehavior} instances.
  * @author J&ouml;rg Schaible
  */
 public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
@@ -64,7 +64,7 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
 
     /**
      * Retrieve a {@link ComponentAdapter}. Wrap the instance retrieved by the delegate with an instance of a
-     * {@link JMXExposingBehaviorAdapter}.
+     * {@link JMXExposingBehavior}.
      * @see org.picocontainer.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristics,Object,Class,org.picocontainer.Parameter...)
      */
     public ComponentAdapter createComponentAdapter(
@@ -77,7 +77,7 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
         if (Characterizations.NOJMX.setAsProcessedIfSoCharacterized(componentCharacteristics)) {
             return componentAdapter;            
         } else {
-            return new JMXExposingBehaviorAdapter(componentAdapter, mBeanServer, providers);
+            return new JMXExposingBehavior(componentAdapter, mBeanServer, providers);
         }
     }
 
