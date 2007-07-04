@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<title>Quick Intro</title>
+
+</head>
+<body class="composite">
+<div id="bodyColumn">
+<div id="contentBox">
+<div class="section">
+<h2>Quick Introduction to Use </h2>
+There is an assumption here that you know what Dependency Injection and Inversion of Control are.
+<h3>Constructor Dependency Injection (CDI) </h3>
+<p>With PicoContainer you add components by type or instance, then you get components out. Pico works out the dependancies, or tells you via exception that it cannot. </p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer();
+pico.addComponent(ComponentOneImpl.class) // by type
+pico.addComponent(ComponentTwoImpl.class) // by type
+pico.addComponent(new ComponentThreeImpl()) // by instance
+pico.addComponent(ComponentFourImpl.class) // by type
+
+ComponentFourImpl four = pico.getComponent(ComponentFourImpl.class);
+</pre></div>
+<p>It is as likely, you will be honoring the facade pattern for your component design and having interface/impl separations.</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer();
+pico.addComponent(ComponentOne.class, ComponentOneImpl.class) // by type
+pico.addComponent(ComponentTwo.class, ComponentTwoImpl.class) // by type
+pico.addComponent(ComponentThree.class, new ComponentThreeImpl()) // by instance
+pico.addComponent(ComponentFour.class, ComponentFourImpl.class) // by type
+
+ComponentFour four = pico.getComponent(ComponentFour.class);
+</pre></div>
+<p>You can use a fluent style if you want:</p>
+<div class="source">
+  <pre>
+ComponentFour four = new DefaultPicoContainer()
+    .addComponent(ComponentOne.class, ComponentOneImpl.class)
+    .addComponent(ComponentTwo.class, ComponentTwoImpl.class)
+    .addComponent(ComponentThree.class, new ComponentThreeImpl())
+    .addComponent(ComponentFour.class, ComponentFourImpl.class)
+    .getComponent(ComponentFour.class);
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="clear">
+  <hr />
+</div>
+
+</body>
+
+
+</html>
