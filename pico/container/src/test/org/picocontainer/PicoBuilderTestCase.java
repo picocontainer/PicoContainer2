@@ -226,7 +226,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithAnnotationDI() {
-        MutablePicoContainer mpc = new PicoBuilder().withAnnotationInjection().build();
+            MutablePicoContainer mpc = new PicoBuilder().withAnnotationInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.injectors.MethodAnnotationInjectionFactory\n" +
@@ -296,6 +296,7 @@ public class PicoBuilderTestCase extends TestCase {
                      "PICO",foo);
     }
 
+    //TODO - fix up to refer to SomeContainerDependency
     public void testWithCustomComponentFactory() {
         MutablePicoContainer mpc = new PicoBuilder().withCustomContainerComponent(new SomeContainerDependency()).withComponentFactory(CustomComponentFactory.class).build();
         String foo = simplifyRepresentation(mpc);

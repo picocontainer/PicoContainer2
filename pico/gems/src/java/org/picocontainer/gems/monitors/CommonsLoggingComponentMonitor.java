@@ -10,6 +10,11 @@
 
 package org.picocontainer.gems.monitors;
 
+import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
+
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -117,7 +122,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     ) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
-            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATING, ComponentMonitorHelper.toString(constructor)));
+            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)));
         }
         return delegate.instantiating(container, componentAdapter, constructor);
     }
@@ -129,7 +134,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
                              long duration) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
-            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATED, ComponentMonitorHelper.toString(constructor), duration, instantiated.getClass().getName(), ComponentMonitorHelper.toString(parameters)));
+            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATED, ctorToString(constructor), duration, instantiated.getClass().getName(), parmsToString(parameters)));
         }
         delegate.instantiated(container, componentAdapter, constructor, instantiated, parameters, duration);
     }
@@ -140,7 +145,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
                                     Exception cause) {
         Log log = getLog(constructor);
         if (log.isWarnEnabled()) {
-            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATION_FAILED, ComponentMonitorHelper.toString(constructor), cause.getMessage()), cause);
+            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATION_FAILED, ctorToString(constructor), cause.getMessage()), cause);
         }
         delegate.instantiationFailed(container, componentAdapter, constructor, cause);
     }
@@ -151,7 +156,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
                          Object instance) {
         Log log = getLog(member);
         if (log.isDebugEnabled()) {
-            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKING, ComponentMonitorHelper.toString(member), instance));
+            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));
         }
         delegate.invoking(container, componentAdapter, member, instance);
     }
@@ -163,7 +168,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
                         long duration) {
         Log log = getLog(method);
         if (log.isDebugEnabled()) {
-            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, ComponentMonitorHelper.toString(method), instance, duration));
+            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, methodToString(method), instance, duration));
         }
         delegate.invoked(container, componentAdapter, method, instance,  duration);
     }
@@ -171,7 +176,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     public void invocationFailed(Member member, Object instance, Exception cause) {
         Log log = getLog(member);
         if (log.isWarnEnabled()) {
-            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOCATION_FAILED, ComponentMonitorHelper.toString(member), instance, cause.getMessage()), cause);
+            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOCATION_FAILED, memberToString(member), instance, cause.getMessage()), cause);
         }
         delegate.invocationFailed(member, instance, cause);
     }
@@ -182,7 +187,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
                                           RuntimeException cause) {
         Log log = getLog(method);
         if (log.isWarnEnabled()) {
-            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, ComponentMonitorHelper.toString(method), instance, cause.getMessage()), cause);
+            log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, methodToString(method), instance, cause.getMessage()), cause);
         }
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }

@@ -10,6 +10,10 @@
 
 package org.picocontainer.monitors;
 
+import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 import static org.picocontainer.monitors.ComponentMonitorHelper.format;
 
 import java.io.OutputStream;
@@ -54,7 +58,7 @@ public final class ConsoleComponentMonitor implements ComponentMonitor, Serializ
     public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
                                      Constructor constructor
     ) {
-        out.println(format(ComponentMonitorHelper.INSTANTIATING, ComponentMonitorHelper.toString(constructor)));
+        out.println(format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)));
         return delegate.instantiating(container, componentAdapter, constructor);
     }
 
@@ -63,7 +67,7 @@ public final class ConsoleComponentMonitor implements ComponentMonitor, Serializ
                              Object instantiated,
                              Object[] parameters,
                              long duration) {
-        out.println(format(ComponentMonitorHelper.INSTANTIATED, ComponentMonitorHelper.toString(constructor), duration, instantiated.getClass().getName(), ComponentMonitorHelper.toString(parameters)));
+        out.println(format(ComponentMonitorHelper.INSTANTIATED, ctorToString(constructor), duration, instantiated.getClass().getName(), parmsToString(parameters)));
         delegate.instantiated(container, componentAdapter, constructor, instantiated, parameters, duration);
     }
 
@@ -71,7 +75,7 @@ public final class ConsoleComponentMonitor implements ComponentMonitor, Serializ
                                     ComponentAdapter componentAdapter,
                                     Constructor constructor,
                                     Exception cause) {
-        out.println(format(ComponentMonitorHelper.INSTANTIATION_FAILED, ComponentMonitorHelper.toString(constructor), cause.getMessage()));
+        out.println(format(ComponentMonitorHelper.INSTANTIATION_FAILED, ctorToString(constructor), cause.getMessage()));
         delegate.instantiationFailed(container, componentAdapter, constructor, cause);
     }
 
@@ -79,7 +83,7 @@ public final class ConsoleComponentMonitor implements ComponentMonitor, Serializ
                          ComponentAdapter componentAdapter,
                          Member member,
                          Object instance) {
-        out.println(format(ComponentMonitorHelper.INVOKING, ComponentMonitorHelper.toString(member), instance));
+        out.println(format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));
         delegate.invoking(container, componentAdapter, member, instance);
     }
 
@@ -88,12 +92,12 @@ public final class ConsoleComponentMonitor implements ComponentMonitor, Serializ
                         Method method,
                         Object instance,
                         long duration) {
-        out.println(format(ComponentMonitorHelper.INVOKED, ComponentMonitorHelper.toString(method), instance, duration));
+        out.println(format(ComponentMonitorHelper.INVOKED, methodToString(method), instance, duration));
         delegate.invoked(container, componentAdapter, method, instance, duration);
     }
 
     public void invocationFailed(Member member, Object instance, Exception cause) {
-        out.println(format(ComponentMonitorHelper.INVOCATION_FAILED, ComponentMonitorHelper.toString(member), instance, cause.getMessage()));
+        out.println(format(ComponentMonitorHelper.INVOCATION_FAILED, memberToString(member), instance, cause.getMessage()));
         delegate.invocationFailed(member, instance, cause);
     }
 
@@ -101,7 +105,7 @@ public final class ConsoleComponentMonitor implements ComponentMonitor, Serializ
                                           ComponentAdapter componentAdapter, Method method,
                                           Object instance,
                                           RuntimeException cause) {
-        out.println(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, ComponentMonitorHelper.toString(method), instance, cause.getMessage()));
+        out.println(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, methodToString(method), instance, cause.getMessage()));
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
 

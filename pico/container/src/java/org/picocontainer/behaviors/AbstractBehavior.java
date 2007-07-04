@@ -98,8 +98,6 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
         throw new PicoCompositionException("No component monitor found in delegate");
     }
 
-    // ~~~~~~~~ LifecylceManager ~~~~~~~~
-   
     /**
      * Invokes delegate start method if the delegate is a Behavior
      * {@inheritDoc}

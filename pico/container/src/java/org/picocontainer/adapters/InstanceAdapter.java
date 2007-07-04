@@ -56,8 +56,6 @@ public final class InstanceAdapter extends AbstractAdapter implements Behavior, 
     public void verify(PicoContainer container) {
     }
 
-    // ~~~~~~~~ LifecylceManager ~~~~~~~~
-
     public void start(PicoContainer container) {
         start(componentInstance);
     }

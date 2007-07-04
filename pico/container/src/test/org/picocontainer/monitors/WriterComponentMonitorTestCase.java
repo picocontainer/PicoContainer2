@@ -9,6 +9,9 @@
  *****************************************************************************/
 package org.picocontainer.monitors;
 
+import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
 import static org.picocontainer.monitors.ComponentMonitorHelper.format;
 
 import java.io.StringWriter;
@@ -48,7 +51,7 @@ public class WriterComponentMonitorTestCase extends TestCase {
 
     public void testShouldTraceInstantiating() {
         componentMonitor.instantiating(null, null, constructor);
-        assertEquals(format(ComponentMonitorHelper.INSTANTIATING, ComponentMonitorHelper.toString(constructor)) +NL,  out.toString());
+        assertEquals(format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)) +NL,  out.toString());
     }
 
     public void testShouldTraceInstantiatedWithInjected() {
@@ -56,35 +59,35 @@ public class WriterComponentMonitorTestCase extends TestCase {
         Object instantiated = new Object();
         componentMonitor.instantiated(null, null, constructor, instantiated, injected, 543);
         assertEquals(format(ComponentMonitorHelper.INSTANTIATED,
-                                                   ComponentMonitorHelper.toString(constructor),
+                                                   ctorToString(constructor),
                                                    (long)543,
-                                                   instantiated.getClass().getName(), ComponentMonitorHelper.toString(injected)) +NL,  out.toString());
+                                                   instantiated.getClass().getName(), parmsToString(injected)) +NL,  out.toString());
     }
 
 
     public void testShouldTraceInstantiationFailed() {
         componentMonitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
         assertEquals(format(ComponentMonitorHelper.INSTANTIATION_FAILED,
-                                                   ComponentMonitorHelper.toString(constructor), "doh") +NL,  out.toString());
+                                                   ctorToString(constructor), "doh") +NL,  out.toString());
     }
 
     public void testShouldTraceInvoking() {
         componentMonitor.invoking(null, null, method, this);
         assertEquals(format(ComponentMonitorHelper.INVOKING,
-                                                   ComponentMonitorHelper.toString(method), this) +NL,  out.toString());
+                                                   methodToString(method), this) +NL,  out.toString());
     }
 
     public void testShouldTraceInvoked() {
         componentMonitor.invoked(null, null, method, this, 543);
         assertEquals(format(ComponentMonitorHelper.INVOKED,
-                                                   ComponentMonitorHelper.toString(method), this,
+                                                   methodToString(method), this,
                                                    (long)543) +NL,  out.toString());
     }
 
     public void testShouldTraceInvocatiationFailed() {
         componentMonitor.invocationFailed(method, this, new RuntimeException("doh"));
         assertEquals(format(ComponentMonitorHelper.INVOCATION_FAILED,
-                                                   ComponentMonitorHelper.toString(method), this, "doh") +NL,  out.toString());
+                                                   methodToString(method), this, "doh") +NL,  out.toString());
     }
 
     public void testShouldTraceLifecycleInvocationFailed() {
@@ -108,7 +111,7 @@ public class WriterComponentMonitorTestCase extends TestCase {
             //expected
         }
         assertEquals(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED,
-                                                   ComponentMonitorHelper.toString(method), "fooooo", "doh") + NL,
+                                                   methodToString(method), "fooooo", "doh") + NL,
                      out.toString());
     }
 

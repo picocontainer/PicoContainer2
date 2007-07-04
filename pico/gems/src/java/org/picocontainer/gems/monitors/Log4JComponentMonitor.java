@@ -10,6 +10,10 @@
 
 package org.picocontainer.gems.monitors;
 
+import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 import static org.picocontainer.monitors.ComponentMonitorHelper.format;
 
 import java.io.Serializable;
@@ -123,7 +127,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     ) {
         Logger logger = getLogger(constructor);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(ComponentMonitorHelper.INSTANTIATING, ComponentMonitorHelper.toString(constructor)));
+            logger.debug(format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)));
         }
         return delegate.instantiating(container, componentAdapter, constructor);
     }
@@ -135,7 +139,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
                              long duration) {
         Logger logger = getLogger(constructor);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(ComponentMonitorHelper.INSTANTIATED, ComponentMonitorHelper.toString(constructor), duration, instantiated.getClass().getName(), ComponentMonitorHelper.toString(parameters)));
+            logger.debug(format(ComponentMonitorHelper.INSTANTIATED, ctorToString(constructor), duration, instantiated.getClass().getName(), parmsToString(parameters)));
         }
         delegate.instantiated(container, componentAdapter, constructor, instantiated, parameters, duration);
     }
@@ -146,7 +150,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
                                     Exception cause) {
         Logger logger = getLogger(constructor);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(ComponentMonitorHelper.INSTANTIATION_FAILED, ComponentMonitorHelper.toString(constructor), cause.getMessage()), cause);
+            logger.warn(format(ComponentMonitorHelper.INSTANTIATION_FAILED, ctorToString(constructor), cause.getMessage()), cause);
         }
         delegate.instantiationFailed(container, componentAdapter, constructor, cause);
     }
@@ -157,7 +161,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
                          Object instance) {
         Logger logger = getLogger(member);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(ComponentMonitorHelper.INVOKING, ComponentMonitorHelper.toString(member), instance));
+            logger.debug(format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));
         }
         delegate.invoking(container, componentAdapter, member, instance);
     }
@@ -169,7 +173,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
                         long duration) {
         Logger logger = getLogger(method);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(ComponentMonitorHelper.INVOKED, ComponentMonitorHelper.toString(method), instance, duration));
+            logger.debug(format(ComponentMonitorHelper.INVOKED, methodToString(method), instance, duration));
         }
         delegate.invoked(container, componentAdapter, method, instance, duration);
     }
@@ -177,7 +181,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     public void invocationFailed(Member member, Object instance, Exception cause) {
         Logger logger = getLogger(member);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(ComponentMonitorHelper.INVOCATION_FAILED, ComponentMonitorHelper.toString(member), instance, cause.getMessage()), cause);
+            logger.warn(format(ComponentMonitorHelper.INVOCATION_FAILED, memberToString(member), instance, cause.getMessage()), cause);
         }
         delegate.invocationFailed(member, instance, cause);
     }
@@ -188,7 +192,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
                                           RuntimeException cause) {
         Logger logger = getLogger(method);
         if (logger.isEnabledFor(Priority.WARN)) {
-            logger.warn(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, ComponentMonitorHelper.toString(method), instance, cause.getMessage()), cause);
+            logger.warn(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, methodToString(method), instance, cause.getMessage()), cause);
         }
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }

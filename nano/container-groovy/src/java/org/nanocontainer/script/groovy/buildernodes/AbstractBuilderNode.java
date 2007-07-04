@@ -18,7 +18,6 @@ import java.util.Set;
 import org.nanocontainer.script.groovy.BuilderNode;
 import java.util.Map;
 import org.nanocontainer.script.NanoContainerMarkupException;
-import java.util.Iterator;
 
 /**
  * Abstract base class for custom nodes.  Also provides basic services and
