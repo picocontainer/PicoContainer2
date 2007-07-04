@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Description" content="_your description goes here_" />
+<meta name="Keywords" content="_your,keywords,goes,here_" />
+<meta name="author" content="Codehaus  / Original design: Andreas Viklund - http://andreasviklund.com/" />
+<link rel="stylesheet" type="text/css" href="http://media.codehaus.org/themes/standard-green-experimental/andreas03.css" />
+<title>PicoContainer - 5.2 Terminology</title>
+</head>
+<body>
+<div id="thetop"> 
+  <p class="hide">Skip to: <a href="#sitemenu" accesskey="2">Site menu</a> | <a href="#maincontent" accesskey="3">Main content</a></p>
+</div>
+<div id="container">
+  <div id="main">
+    <div class="clear"></div>
+    <script type="text/javascript"><!--
+google_ad_client = "pub-3023399591478482";
+google_ad_width = 728;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_channel = "7321085054"; //unity-top
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "2266cc";
+google_color_url = "2266cc";
+google_color_text = "000000";
+//--></script>
+    <script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+    <div class="content" style="padding-top: 3mm;">
+      <p>Also known as Picosaurus</p>
+      <div class="section_2">
+        <h2><a name="5.2Terminology-Overview" id="5.2Terminology-Overview"></a>Overview</h2>
+        <p>These can be arrived at from the definitions.</p>
+        <ul>
+          <li>Everything is an object</li>
+          <li>Everything which is not a Contextualized Lookup component nor a domain-specific object is a POJO</li>
+          <li>A Setter Dependency Injection (SDI) component is a JavaBean, and a JavaBean is an SDI component</li>
+          <li>A Contructor Dependency Injection (CDI) Component is not a JavaBean, but is a POJO</li>
+          <li>A JavaBean can be any of the three types of IoC and domain-specific all at the same time</li>
+          <li>Spring, PicoContainer, XWork and other frameworks all support both Components and Data Objects to some extend. Avalon tries real hard to not support Data Objects, but that is nearly impossible.</li>
+        </ul>
+      </div>
+      <div class="section_2">
+        <h2><a name="5.2Terminology-Terms" id="5.2Terminology-Terms"></a>Terms</h2>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-ObjectorInstance" id="5.2Terminology-ObjectorInstance"></a>Object or Instance</h3>
+          <p>An &quot;object&quot; as per the Java Language Specification.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-Class" id="5.2Terminology-Class"></a>Class</h3>
+          <p>A &quot;class&quot; as per the Java Language Specification.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-POJO%28PlainOldJavaObject%29" id="5.2Terminology-POJO%28PlainOldJavaObject%29"></a>POJO (Plain Old Java Object)</h3>
+          <p>An object that does not use nor support any other kind of component/bean specification. It does not implement any lifecycle or marker interfaces, it does not provide any kind of metadata. Will usually follow the minimum requirements for classifying it as a JavaBean though.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-Javabean%2FBean" id="5.2Terminology-Javabean%2FBean"></a>Javabean / Bean</h3>
+          <p>An object that is a &quot;valid java bean&quot; according to the JavaBean Specification. That is, an object that has a public default constructor, and that supports setting and/or retrieving all or a part of its state using so-called setter and getter methods, which are named getXXX(), setXXX() or isXXX(), where XXX identifies part of its state. The JavaBean specification defines a metadata framework, an event framework, and some other things which are less relevant in this context. A JavaBean may represent both data and functionality.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-DataObject%2FEntityBean%2FDataBean%2FPODO" id="5.2Terminology-DataObject%2FEntityBean%2FDataBean%2FPODO"></a>Data Object / Entity Bean / Data Bean / PODO</h3>
+          <p>An object that only represents data, but contains no 'logic' or any kind of other functionality (except for perhaps some utility methods that transform the data into some other form, like getXXXasString(). Will often override equals() and hashCode(); will often be serializable. Does not create threads, does not keep references to non-data objects.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-Component%2FService" id="5.2Terminology-Component%2FService"></a>Component / Service</h3>
+          <p>An object that only represents functionality. It is a &quot;unit of logic&quot;, that can &quot;do work&quot;. In a well-designed application, the work that a component can do is specified in a work interface. Will usually not override equals() or hashCode().</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-PassiveComponent" id="5.2Terminology-PassiveComponent"></a>Passive Component</h3>
+          <p>A component that does not use threads (not even indirectly).</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-ActiveComponent" id="5.2Terminology-ActiveComponent"></a>Active Component</h3>
+          <p>A component that uses threads (possibly indirectly through the use of a Thread Pool or Executor component).</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-ContextualizedDependancyLookupComponent" id="5.2Terminology-ContextualizedDependancyLookupComponent"></a>Contextualized Dependancy Lookup Component</h3>
+          <p>A component that has a public default constructor and that usually has its state set up and/or modified through the use of some kind of framework-specific mechanism.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-SetterInjectionComponent" id="5.2Terminology-SetterInjectionComponent"></a>Setter Injection Component</h3>
+          <p>A component that has a public default constructor and that has its state set up through the use of setter methods.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-ConstructorInjectionComponent" id="5.2Terminology-ConstructorInjectionComponent"></a>Constructor Injection Component</h3>
+          <p>A component that has one or more public constructors and that has its state set up through the arguments provided in one of these constructors.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-Constructor%2FSetterDependencyInjectionComponent" id="5.2Terminology-Constructor%2FSetterDependencyInjectionComponent"></a>Constructor/Setter Dependency Injection Component</h3>
+          <p>A component that has a public constructor and that has its state set up through the arguments provided in that constructor and through the use of setter methods.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-IoCComponent" id="5.2Terminology-IoCComponent"></a>IoC Component</h3>
+          <p>A component that does not implement any kind of logic to set up its own state, but completely depends on other parties to provide that state to it.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-NonIoCComponent" id="5.2Terminology-NonIoCComponent"></a>Non-IoC Component</h3>
+          <p>A component that implements some kind of logic to set up its own state. Examples: a component that reads an XML file; a component that looks up dependencies in JNDI; a component that queries system properties.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-DomainSpecificObject" id="5.2Terminology-DomainSpecificObject"></a>Domain-Specific Object</h3>
+          <p>An object that implements a specification that is less generic than Java itself in its applicability. Example: EJB, Servlets.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-SpringsupportedObject" id="5.2Terminology-SpringsupportedObject"></a>Spring-supported Object</h3>
+          <p>An object that can be 'natively' used in the Spring Framework. Any JavaBean (with some extensions to that specification like &quot;initialization completion&quot; support), any object with a public default constructor that does not require any method calls to set up its state.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-PicoContainersupportedObject" id="5.2Terminology-PicoContainersupportedObject"></a>PicoContainer-supported Object</h3>
+          <p>An object that can be 'natively' used in PicoContainer. Any Type-3 component.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-XWorksupportedObject" id="5.2Terminology-XWorksupportedObject"></a>XWork-supported Object</h3>
+          <p>An object that can be 'natively' used in the XWork Framework. Any object with a public default constructor that has its state set up through XXXAware interfaces.</p>
+        </div>
+        <div class="section_3">
+          <h3><a name="5.2Terminology-FailFast" id="5.2Terminology-FailFast"></a>Fail Fast</h3>
+          <p>An object that fails fast is an object that indicates as early as possible if it is in an inconsistent or unusable state (by throwing a fatal exception). The fastest possible way to FailFast is to do so during instantiation. This can be handled in an elegant way if the class is a GoodCitizen.</p>
+        </div>
+        <div class="section_3">
+          <h3>&nbsp;</h3>
+        </div>
+        <div class="section_3"></div>
+      </div>
+    </div>
+    <div style="text-align: center; width: 100%; padding-top: 1cm;padding-bottom: 1cm">
+      <script type="text/javascript"><!--
+google_ad_client = "pub-3023399591478482";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_channel ="9744516269"; //unity-bottom
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "009900";
+google_color_url = "009900";
+google_color_text = "000000";
+//--></script>
+      <script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+    </div>
+  </div>
+  <div class="clear">&nbsp;</div>
+</div>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-150515-1";
+urchinTracker();
+</script>
+</body>
+</html>

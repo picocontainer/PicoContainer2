@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Description" content="_your description goes here_" />
+<meta name="Keywords" content="_your,keywords,goes,here_" />
+<meta name="author" content="Codehaus  / Original design: Andreas Viklund - http://andreasviklund.com/" />
+<link rel="stylesheet" type="text/css" href="http://media.codehaus.org/themes/standard-green-experimental/andreas03.css" />
+<title>PicoContainer - Container Dependency</title>
+</head>
+<body>
+<div id="thetop"> 
+  <p class="hide">Skip to: <a href="#sitemenu" accesskey="2">Site menu</a> | <a href="#maincontent" accesskey="3">Main content</a></p>
+</div>
+<div id="container">
+  <div id="main">
+    <div class="clear"></div>
+    <script type="text/javascript"><!--
+google_ad_client = "pub-3023399591478482";
+google_ad_width = 728;
+google_ad_height = 90;
+google_ad_format = "728x90_as";
+google_ad_channel = "7321085054"; //unity-top
+google_color_border = "FFFFFF";
+google_color_bg = "FFFFFF";
+google_color_link = "2266cc";
+google_color_url = "2266cc";
+google_color_text = "000000";
+//--></script>
+    <script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+    <div class="content" style="padding-top: 3mm;">
+      <div class="section_2">
+        <h2><a name="ContainerDependency-Symptoms" id="ContainerDependency-Symptoms"></a>Symptoms</h2>
+        <p>Classes that depend on the container.</p>
+        <p>Consider the following example. We have a class BImpl that requires an A instance. It declares the dependency on the container so it can look up that A:</p>
+        <div class="code">
+          <div class="codeContent">
+            <pre class="code-java"><span class="code-keyword">public</span> <span class="code-keyword">interface</span> A {
+}
+
+<span class="code-keyword">public</span> class AImpl <span class="code-keyword">implements</span> A {
+}
+
+<span class="code-keyword">public</span> class BImpl <span class="code-keyword">implements</span> B {
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> A a;
+
+    BImpl(PicoContainer pico) {
+        a = (A) pico.getComponentInstanceOfType(A.class);
+        
+        /*
+        alternatively:
+        a = (A) pico.getComponentInstance(<span class="code-quote">&quot;a&quot;</span>);
+        */
+    }
+}</pre>
+          </div>
+        </div>
+        <p>It can be used in the following way:</p>
+        <div class="code">
+          <div class="codeContent">
+            <pre class="code-java">MutablePicoContainer pico = <span class="code-keyword">new</span> DefaultPicoContainer();
+pico.registerComponentImplementation(<span class="code-quote">&quot;a&quot;</span>, AImpl.class);
+pico.registerComponentImplementation(<span class="code-quote">&quot;b&quot;</span>, BImpl.class);
+pico.registerComponentInstance(pico);
+
+...
+B b = (B) pico.getComponentInstance(<span class="code-quote">&quot;b&quot;</span>);</pre>
+          </div>
+        </div>
+        <p>This will work, but it's an antipattern. </p>
+        <p>The reasons why the above implementation of BImpl is an antipattern are:</p>
+        <ul>
+          <li>It introduces an unneeded dependency from BImpl to the container.</li>
+          <li>This makes BImpl hard to test without a container.</li>
+          <li>B assumes that the container has a registered an A. As a result, B won't FailFast if it hasn't. Instead, a will reference null, and BImpl will FailLate.</li>
+        </ul>
+      </div>
+      <div class="section_2">
+        <h2><a name="ContainerDependency-Causes" id="ContainerDependency-Causes"></a>Causes</h2>
+        <p>Not sure. Poor understanding of how PicoContainer works? Not being able to think &quot;simple&quot;?</p>
+      </div>
+      <div class="section_2">
+        <h2><a name="ContainerDependency-Whattodo" id="ContainerDependency-Whattodo"></a>What to do</h2>
+        <p>The simple and elegant solution to this antipattern is not to complicate the world more than it is.<br />
+          </br>
+          Here is how it should be:</p>
+        <div class="code">
+          <div class="codeContent">
+            <pre class="code-java"><span class="code-keyword">public</span> class BImpl <span class="code-keyword">implements</span> B {
+    <span class="code-keyword">private</span> <span class="code-keyword">final</span> A a;
+
+    BImpl(A a) {
+        <span class="code-keyword">this</span>.a = a;
+    }
+}</pre>
+          </div>
+        </div>
+        <p>PicoContainer will figure out that BImpl needs an A instance, and will pass in the AImpl, as this is an implementation of A.</p>
+      </div>
+    </div>
+  </div>
+  <div class="clear">&nbsp;</div>
+</div>
+</body>
+</html>

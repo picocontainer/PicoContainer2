@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>FAQ</title>
+</head>
+<body>
+<h2>FAQ</h2>
+<h3 class="headerstyle" id="upage_title">
+  <table style="width: 100%; padding-right: 2mm">
+    <tr>
+      <td align="left" valign="middle">Can my component use multiple constructors</td>
+    </tr>
+  </table>
+</h3>
+<div class="content" style="padding-top: 3mm;">
+  <p>Yes.</p>
+  <p>You should perhaps code multiple constructors for a component:</p>
+  <div class="code">
+    <div class="codeContent">
+      <pre class="code-java">class MyComp {
+
+  <span class="code-keyword">private</span> ThreadPool theThreadPool;
+  
+  <span class="code-keyword">public</span> MyComp(ThreadPool threadpool) {
+    theThreadPool = threadpool;
+  }
+
+  <span class="code-keyword">public</span> MyComp() {
+    theThreadPool = <span class="code-keyword">new</span> DefaultThreadPool();
+  }
+
+  <span class="code-comment">// other methods.
+
+</span>
+}</pre>
+    </div>
+  </div>
+</div>
+</div>
+<h3 class="headerstyle" id="upage_title">
+  <table style="width: 100%; padding-right: 2mm">
+    <tr>
+      <td align="left" valign="middle">How does PicoContainer decide what constructor to use</td>
+    </tr>
+  </table>
+</h3>
+<div class="content" style="padding-top: 3mm;">
+  <p>PicoContainer will instantiate a given component using the &quot;greediest&quot; satisfiable constructor. By greedy, we mean the constructor that takes the most parameters. By satisfiable, we mean constructors where all arguments can be satisfied by other registered components.</p>
+  <p>If you register a component with no satisfiable constructors, or two or more ambiguous &quot;largest&quot; constructors, a RuntimeException will be thrown when you ask for the component instance.</p>
+  <p>We recommend, for the sake of predictablility, that PicoContainer compatible components use only one constructor (see <a href="/Good+Citizen" title="Good Citizen">Good Citizen</a>), although this is by no means a requirement.</p>
+</div>
+</div>
+<h3 class="headerstyle" id="upage_title">
+  <table style="width: 100%; padding-right: 2mm">
+    <tr>
+      <td align="left" valign="middle">How does PicoContainer compare to EJB containers</td>
+    </tr>
+  </table>
+</h3>
+<div class="content" style="padding-top: 3mm;">
+  <p>Oh blimey, it is rather different. EJB has loads of things you must extend, implement, provide and throw. It is also not an IoC design. It is close in that components are managed by a container, but the cumbersome and static nature of the JNDI lookups ensure that it is not actually IoC. PicoContainer is not a superset of EJB though, as it provides no remoting capability (but NanoContainer will). At least the PicoContainer compatible components hosted in this project do not.</p>
+</div>
+</div>
+<h3 class="headerstyle" id="upage_title">
+  <table style="width: 100%; padding-right: 2mm">
+    <tr>
+      <td align="left" valign="middle">How does PicoContainer decide what constructor to use</td>
+    </tr>
+  </table>
+</h3>
+<div class="content" style="padding-top: 3mm;">
+  <p>PicoContainer will instantiate a given component using the &quot;greediest&quot; satisfiable constructor. By greedy, we mean the constructor that takes the most parameters. By satisfiable, we mean constructors where all arguments can be satisfied by other registered components.</p>
+  <p>If you register a component with no satisfiable constructors, or two or more ambiguous &quot;largest&quot; constructors, a RuntimeException will be thrown when you ask for the component instance.</p>
+  <p>We recommend, for the sake of predictablility, that PicoContainer compatible components use only one constructor (see <a href="/Good+Citizen" title="Good Citizen">Good Citizen</a>), although this is by no means a requirement.</p>
+</div>
+</div>
+<h3 class="headerstyle" id="upage_title">
+  <table style="width: 100%; padding-right: 2mm">
+    <tr>
+      <td align="left" valign="middle">How to use primitive types in constructors</td>
+    </tr>
+  </table>
+</h3>
+<div class="content" style="padding-top: 3mm;">
+  <p>PicoContainer will look for the <a href="/How+does+PicoContainer+decide+what+constructor+to+use" title="How does PicoContainer decide what constructor to use">greediest constructor of your component</a>. But if your component's constructor depends on primitive types you may set the values explicitly.</p>
+  <div class="code">
+    <div class="codeContent">
+      <pre class="code-java"><span class="code-keyword">public</span> <span class="code-keyword">interface</span> ThreadPool {
+	void setSize(<span class="code-object">int</span>);
+}
+
+<span class="code-keyword">public</span> class MyComp {
+	<span class="code-keyword">private</span> ThreadPool threadPool;
+	<span class="code-keyword">public</span> MyComp(ThreadPool pool, <span class="code-object">int</span> size) {
+		threadPool = pool;
+		threadPool.setSize(size);
+	}
+}</pre>
+    </div>
+  </div>
+  <p>In this case you can set the parameters at registration time:</p>
+  <div class="code">
+    <div class="codeContent">
+      <pre class="code-java">DefaultPicoContainer pico = <span class="code-keyword">new</span> DefaultPicoContainer();
+pico.registerComponentImplementation(ThreadPool.class, DefaultThreadPool.class);
+pico.registerComponentImplementation(MyComp.class, MyComp.class, <span class="code-keyword">new</span> Parameters[] {
+	<span class="code-keyword">new</span> ComponentParameter(),
+	<span class="code-keyword">new</span> ConstantParameter(<span class="code-keyword">new</span> <span class="code-object">Integer</span>(5));
+})
+MyComp myComp = (MyComp)pico.getInstance(MyComp.class);</pre>
+    </div>
+  </div>
+  <p>Use ConstantParameter to set constant values and the ComponentParameter to let Pico resolve the dependency.</p>
+</div>
+</div>
+<h3 class="headerstyle" id="upage_title">
+  <table style="width: 100%; padding-right: 2mm">
+    <tr>
+      <td align="left" valign="middle">When should I use PicoContainer</td>
+    </tr>
+  </table>
+</h3>
+<div class="content" style="padding-top: 3mm;">
+  <p><br />
+    </br>
+    We recommend using PicoContainer when your application consists of many different classes (components) that are related to each other. Instantiating and lacing/connecting a lot of objects can be difficult task.</p>
+</div>
+</div>
+<h3 class="headerstyle" id="upage_title">
+  <table style="width: 100%; padding-right: 2mm">
+    <tr>
+      <td align="left" valign="middle">Why Another IoC Framework</td>
+    </tr>
+  </table>
+</h3>
+<div class="content" style="padding-top: 3mm;">
+  <p>After a long period of watching Inversion of Control frameworks, and for some of us avoiding them because of their cumbersome nature, we got together to write what we believe is the simplest possible IoC design. One, perhaps, that considers the so-designed component as more important that the container.</p>
+  <p>When we set out to do this in 2003, there was nothing equivalent to PicoContainer (xContainer orginally). XWork, that underpinned WebWork2 was a general/embeddable Setter Dependency Injection framework, but not well known. The Spring Framework started in the same timescale, and we were talking to its authors before Martin Fowlers Dependency Injection article.  Later we discovered that HiveMind (now at Apache) also was in the same space.</p>
+</div>
+</div>
+<h3 class="headerstyle" id="upage_title">
+  <table style="width: 100%; padding-right: 2mm">
+    <tr>
+      <td align="left" valign="middle">Why Constructor Injection</td>
+    </tr>
+  </table>
+</h3>
+<div class="content" style="padding-top: 3mm;">
+  <p><a href="/Constructor+Injection" title="Constructor Injection">Constructor Injection</a> is hard to swallow for people who have been living with Interface Lookup or <a href="/Setter+Injection" title="Setter Injection">Setter Injection</a> for long. We think it's like TDD. Once you get the grasp of it, you don't go back. Here are some benefits with this type of IoC:</p>
+  <ul>
+    <li>Constructor Injection makes a stronger dependency contract</li>
+    <li>Its more succinct in terms of lines of code</li>
+    <li>Its more succinct in terms dependency-statement-mechanism i.e. no XML, attributes, enabler interfaces etc</li>
+    <li>A component is characterized by InterfaceImplSeparation with the interface being the service offered to other comps, and the impl declaring whatever goddarned need it likes and that need being wholly up to the implementor of the component and nothing to do with the service contract.</li>
+    <li>No indeterminate state. Not all the post instantiation setters may be called. Consider the non-container case for comp usage, if v1.2 of that comp introduces a new dependancy, with <a href="/Constructor+Injection" title="Constructor Injection">Constructor Injection</a> the compiler will tell me.</li>
+  </ul>
+</div>
+</div>
+</body></html>
