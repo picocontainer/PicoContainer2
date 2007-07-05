@@ -2,12 +2,13 @@
 
 <html>
 <head>
-<title>Injection Types</title>
+<title>Dependency Injection</title>
 
 </head>
 <body>
-<h2>Injection Types </h2>
-
+<h2>Dependency Injection</h2>
+<p>See Martin Fowlers's <a href="http://www.martinfowler.com/articles/injection.html">Inversion of Control Containers and the Dependency Injection</a>  article from 2003 for a thorough description. Surely everyone has read this by now? </p>
+<h2> Types </h2>
 <h3>Constructor Dependency Injection (CDI) </h3>
 <p>This is where a component has a constructor, with arguments that are its dependencies:</p>
 <div class="source">
@@ -48,7 +49,7 @@ public class Apple {
   // other methods
 }
 </pre>
-  </div>
+</div>
   <p>Setter methods (those prefixed with 'set') may not be your preferred choice. You can force a different prefix to be choosable in PicoContainer, such as 'init' or 'inject'.</p>
 
 <h3>Annotated Field Dependency Injection </h3>

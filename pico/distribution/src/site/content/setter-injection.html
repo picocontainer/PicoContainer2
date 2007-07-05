@@ -14,11 +14,11 @@
     <div class="content" style="padding-top: 3mm;">
       <div class="section_2">
         <h2><a name="SetterInjection-Overview" id="SetterInjection-Overview"></a>Overview</h2>
-        <p>Setter Injection is where the container or embedder hands dependencies to a component via setter methods after instantiation.</p>
+        <p>Setter Dependency Injection (SDI) is where the container or embedder hands dependencies to a component via setter methods after instantiation.</p>
       </div>
       <div class="section_2">
         <h2><a name="SetterInjection-Example" id="SetterInjection-Example"></a>Example</h2>
-        <p>Joe Walnes whist working on Java Open Source Programming with other luminaries, started with a Setter Injection IoC design for WebWork2. This is marked up with doclet tags (though that is not hard and fast) :</p>
+        <p>Joe Walnes whist working on Java Open Source Programming with other luminaries, started with a Setter Injection IoC design for WebWork2. This is marked up with doclet tags (though that was not hard and fast) :</p>
         <div class="code">
           <div class="codeContent">
             <pre class="code-java">public class Shop {
@@ -57,12 +57,12 @@ shop.setStockManager(myStockManager);</pre>
       </div>
       <div class="section_2">
         <h2><a name="SetterInjection-Containersupport" id="SetterInjection-Containersupport"></a>Container support</h2>
-        <p>The Spring Framework project is the best example of a container that supports setter injector.  PicoContainer does too, but we really believe that constructor injector is superior.</p>
+        <p>The Spring Framework project is the best example of a container that favors setter injection.  PicoContainer does too, but we really believe that constructor injector is superior.</p>
       </div>
       <div class="section_2">
         <h2><a name="SetterInjection-RefsComparison" id="SetterInjection-RefsComparison"></a>Refs + Comparison</h2>
-        <p><a href="http://www.martinfowler.com/articles/injection.html#SetterInjectionWithSpring">Setter Injection</a> is a <a href="/Dependency+Injection" title="Dependency Injection">Dependency Injection</a> variant where an object gets all dependencies via setter methods. PicoContainer support this with <a href="http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/defaults/SetterInjectionComponentAdapter.html">SetterInjectionComponentAdapter</a>, but the PicoContainer team recommends <a href="/Constructor+Injection" title="Constructor Injection">Constructor Injection</a>.</p>
-        <p>The advantage of <a href="/Constructor+Injection" title="Constructor Injection">Constructor Injection</a> is that the setting is atomic in a sense that either all or none of the dependencies are set and that it can occur once and only once. With <a href="/setter-injection.html" title="Setter Injection">Setter Injection</a> there is the possibility to forget to set some of the dependencies</p>
+        <p><a href="http://www.martinfowler.com/articles/injection.html#SetterInjectionWithSpring">Setter Injection</a> is a <a href="injection.html" title="Dependency Injection">Dependency Injection</a> variant where an object gets all dependencies via setter methods. PicoContainer support this with <a href="http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/defaults/SetterInjectionComponentAdapter.html">SetterInjectionComponentAdapter</a>, but the PicoContainer team recommends <a href="constructor-injection.html" title="Constructor Injection">Constructor Injection</a>.</p>
+        <p>The advantage of <a href="constructor-injection.html" title="Constructor Injection">Constructor Injection</a> is that the setting is atomic in a sense that either all or none of the dependencies are set and that it can occur once and only once. With Setter Injection there is the possibility to forget to set some of the dependencies</p>
       </div>
     </div>
   </div>
