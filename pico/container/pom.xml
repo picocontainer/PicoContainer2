@@ -12,12 +12,7 @@
     <dependencies>
         <dependency>
             <groupId>com.thoughtworks.paranamer</groupId>
-            <artifactId>paranamer</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>asm</groupId>
-            <artifactId>asm</artifactId>
-            <version>3.0</version>
+            <artifactId>paranamer-asm</artifactId>
         </dependency>
     </dependencies>
 
@@ -26,6 +21,7 @@
             <plugin>
                 <groupId>com.thoughtworks.paranamer</groupId>
                 <artifactId>paranamer-maven-plugin</artifactId>
+                <version>1.1-SNAPSHOT</version>
                 <configuration>
                     <sourceDirectory>src/test</sourceDirectory>
                     <outputDirectory>target/test-classes</outputDirectory>
