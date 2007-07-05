@@ -4,7 +4,7 @@
         <page>index.html</page>
         <page>quick.html</page>
         <link title="JavaDoc">javadoc/index.html</link>
-        <link title="Download">http://repository.codehaus.org/org/picocontainer</link>
+        <page>download.html</page>
     </section>
     <section>
         <name>Core Concepts</name>
@@ -19,6 +19,7 @@
         <name>Nuances</name>
         <page>characteristics.html</page>
         <page>adapters.html</page>
+        <page>component-configuration.html</page>
     </section>
     <section>
         <name>Science</name>
@@ -42,5 +43,6 @@
     <section>
          <name>History</name>
          <page>contextualized-lookup.html</page>
+         <page>inversion-of-control-history.html</page>
      </section>
 </sitemap>
