@@ -18,7 +18,7 @@
               <div class="wiki-content">
                 <p>Authors: Aslak Hellesoy & Jon Tirsen</p>
                 <h2><a name="Fiveminuteintroduction-Basics"></a>Basics</h2>
-                <p>This is a quick introduction to PicoContainer's most important features. Read through it to get an idea of what PicoContainer is and isn't. If you just want to get some code up and running, try out the <a href="/display/PICO/Two+minute+tutorial" title="Two minute tutorial">Two minute tutorial</a>.</p>
+                <p>This is a quick introduction to PicoContainer's most important features. Read through it to get an idea of what PicoContainer is and isn't. </p>
                 <p>PicoContainer's most important feature is its ability to instantiate arbitrary objects. This is done through its API, which is similar to a hash table. You can put java.lang.Class objects in and get object instances back.</p>
                 <p>Example:</p>
                 <div class="code">
@@ -106,7 +106,7 @@ List list = (List) pico.getComponentInstance(ArrayList.class);</pre>
                   </div>
                 </div>
                 <p>&nbsp;</p>
-                <p>(Note that this code suffers from the antipatterns <a href="propagating-dependency-antipattern.html" title="Propagating Dependency">Propagating Dependency</a> and <a href="/display/PICO/Concrete+Class+Dependency" title="Concrete Class Dependency">Concrete Class Dependency</a>, but let's not worry about that for now <img class="emoticon" src="/images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0"/>)</p>
+                <p>(Note that this code suffers from the antipattern <a href="propagating-dependency-antipattern.html" title="Propagating Dependency">Propagating Dependency</a>  but let's not worry about that for now <img class="emoticon" src="/images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0"/>)</p>
                 <h2><a name="Fiveminuteintroduction-Assemblecomponents"></a>Assemble components</h2>
                 <p>You tell PicoContainer what classes to manage by registering them like this (the order of registration has no significance):</p>
                 <div class="code">
@@ -216,7 +216,7 @@ parent.registerComponentInstance(child);
 parent.start();</pre>
                   </div>
                 </div>
-                <p>&nbsp;</p>
+                
                 <h3><a name="Fiveminuteintroduction-Indirectapproach"></a>Indirect approach</h3>
                 <div class="code">
                   <div class="codeContent">
@@ -229,9 +229,9 @@ MutablePicoContainer child = (MutablePicoContainer ) parent.getComponentInstance
 parent.start();</pre>
                   </div>
                 </div>
-                <p>&nbsp;</p>
+                
                 <p><img class="emoticon" src="/images/icons/emoticons/warning.gif" height="16" width="16" align="absmiddle" alt="" border="0"/> Calling lifecycle methods on a container that has a parent container will <b>not</b> propagate the lifecycle to the parent container.</p>
-                <p>Next <a href="/display/PICO/User+Documentation" title="User Documentation">back to contents</a></p>
+                
               </div>
               <div class="wiki-content" style="margin-right:10px;">
                 <p style="clear: both"/>
