@@ -18,7 +18,7 @@
     <div class="content" style="padding-top: 3mm;">
       <p>The singleton pattern was detailed in the GoF &quot;Design Patterns&quot; book. Because of its static nature and public availability, it allows component writers to obscurely reference other components. Overuse makes for bad solutions. At the enterprise level, it makes for very very bad solutions.</p>
       <p>We claim that the GoF Singleton pattern is in fact an antipattern. The downside of the singleton antipattern is that classes depending on it often end up depending on everything and the kitchen sink. Singletons cannot be replaced with <a href="mock-objects.html" title="Mock Objects">Mock Objects</a> for the sake of easy unit testing.</p>
-      <p>With PicoContainer we would replace this with a container managed single instance, possibly in a container hierarchy (see <a href="/Five+minute+introduction" title="Five minute introduction">Five minute introduction</a> and <a href="behaviors.html" title="Caching">Caching</a>).</p>
+      <p>With PicoContainer we would replace this with a container managed single instance, possibly in a container hierarchy (see <a href="five-minute-introduction.html" title="Five minute introduction">Five minute introduction</a> and <a href="behaviors.html" title="Caching">Caching</a>).</p>
       <p>Quite often with J2EE solutions, the component model is honored to a degree for the sake of external APIs, but is sidestepped for the sake of the internals of the application. Session beans Foo and Bar are likely to leverage a hairball of singletons to achieve their ends. Systems developed along these lines, rapidly become entangled and unmaintainable. These entangled systems can also be referred to as</p>
       <ul>
         <li>Raymen Noodle Design</li>
