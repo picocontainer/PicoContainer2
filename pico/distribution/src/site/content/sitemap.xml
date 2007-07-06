@@ -5,7 +5,7 @@
         <page>quick.html</page>
         <page>five-minute-introduction.html</page>
         <link title="JavaDoc">javadoc/index.html</link>
-        <page>download.html</page>
+        <page>downloads.html</page>
     </section>
     <section>
         <name>Core Concepts</name>
