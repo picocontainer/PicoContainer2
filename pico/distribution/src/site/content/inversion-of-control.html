@@ -38,7 +38,7 @@
         <div class="section_3">
           <h3><a name="InversionofControl-Examples" id="InversionofControl-Examples"></a>Examples</h3>
           <p>Here is the simplest possible IoC component :</p>
-          <div class="code">
+          <div class="source">
             <div class="codeContent">
               <pre class="code-java">public interface Orange {
   // methods
@@ -53,7 +53,7 @@ public class AppleImpl implements Apple {
             </div>
           </div>
           <p>Here are some common smells that should lead you to refactor to IoC :</p>
-          <div class="code">
+          <div class="source">
             <div class="codeContent">
               <pre class="code-java">public class AppleImpl implements Apple{
   private Orange orange;
@@ -66,7 +66,7 @@ public class AppleImpl implements Apple {
           </div>
           <p>The problem is that you are tied to the OrangleImpl implementation for provision of Orange services. Simply put, the above apple cannot be a (configurable) component. It's an application. All hard coded. Not reusable. It is going to be very difficult to have multiple instances in the same classloader with different assembly.</p>
           <p>Here are some other smells along the same line :</p>
-          <div class="code">
+          <div class="source">
             <div class="codeContent">
               <pre class="code-java">public class AppleImpl implements Apple {
   private static Orange orange = OrangeFactory.getOrange();
@@ -81,7 +81,7 @@ public class AppleImpl implements Apple {
       <div class="section_2">
         <h2><a name="InversionofControl-ComponentConfiguration" id="InversionofControl-ComponentConfiguration"></a>Component Configuration</h2>
         <p>Sometimes we see configuration like so ...</p>
-        <div class="code">
+        <div class="source">
           <div class="codeContent">
             <pre class="code-java">public class BigFatComponent {
   String config01;
@@ -96,7 +96,7 @@ public class AppleImpl implements Apple {
           </div>
         </div>
         <p>In the IoC world, it might be better to see the following for simple component designs :</p>
-        <div class="code">
+        <div class="source">
           <div class="codeContent">
             <pre class="code-java">public class BigFatComponent {
   String config01;
@@ -110,7 +110,7 @@ public class AppleImpl implements Apple {
           </div>
         </div>
         <p>Or this for more complex ones, or ones designed to be more open to reimplementation  ..</p>
-        <div class="code">
+        <div class="source">
           <div class="codeContent">
             <pre class="code-java">public interface BigFatComponentConfig {
   String getConfig01();
@@ -138,7 +138,7 @@ public class BigFatComponent {
       <div class="section_2">
         <h2><a name="InversionofControl-ComponentLifecycle" id="InversionofControl-ComponentLifecycle"></a>Component Lifecycle</h2>
         <p>Simply put, the lifecycle of a component is what happens to it in a controlled sense after it has been instantiated.  Say a component has to start threads, do some timed activity or listen on a socket. The component, if not IoC, might do its start in its contructor. Better would be to honor some start/stop functionality from an interface, and have the container or embeddor manage the starting and stopping when they feel it is appropriate:</p>
-        <div class="code">
+        <div class="source">
           <div class="codeContent">
             <pre class="code-java">public class SomeDaemonComponent implements Startable {
   public void start() {
@@ -205,7 +205,7 @@ public class BigFatComponent {
         <div class="section_3">
           <h3><a name="IoCTypes-ConstructorDependencyInjection" id="IoCTypes-ConstructorDependencyInjection"></a>Constructor Dependency Injection</h3>
           <p>This is where a dependency is handed into a component via its constructor :</p>
-          <div class="code">
+          <div class="source">
             <div class="codeContent">
               <pre class="code-java">public interface Orange {
   // methods
@@ -224,7 +224,7 @@ public class AppleImpl implements Apple {
         <div class="section_3">
           <h3><a name="IoCTypes-SetterDependencyInjection" id="IoCTypes-SetterDependencyInjection"></a>Setter Dependency Injection</h3>
           <p>This is where dependencies are injected into a component via setters :</p>
-          <div class="code">
+          <div class="source">
             <div class="codeContent">
               <pre class="code-java">public interface Orange {
   // methods
@@ -243,7 +243,7 @@ public class AppleImpl implements Apple {
         <div class="section_3">
           <h3><a name="IoCTypes-ContextualizedDependencyLookup%28PushApproach%29" id="IoCTypes-ContextualizedDependencyLookup%28PushApproach%29"></a>Contextualized Dependency Lookup (Push Approach)</h3>
           <p>This is where dependencies are looked up from a container that is managing the component :</p>
-          <div class="code">
+          <div class="source">
             <div class="codeContent">
               <pre class="code-java">public interface Orange {
   // methods

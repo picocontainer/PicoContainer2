@@ -15,7 +15,7 @@
 <div class="content" style="padding-top: 3mm;">
   <p>Yes.</p>
   <p>You should perhaps code multiple constructors for a component:</p>
-  <div class="code">
+  <div class="source">
     <div class="codeContent">
       <pre class="code-java">class MyComp {
 
@@ -79,7 +79,7 @@
 </h3>
 <div class="content" style="padding-top: 3mm;">
   <p>PicoContainer will look for the <a href="/How+does+PicoContainer+decide+what+constructor+to+use" title="How does PicoContainer decide what constructor to use">greediest constructor of your component</a>. But if your component's constructor depends on primitive types you may set the values explicitly.</p>
-  <div class="code">
+  <div class="source">
     <div class="codeContent">
       <pre class="code-java">public interface ThreadPool {
 	void setSize(int);
@@ -95,7 +95,7 @@ public class MyComp {
     </div>
   </div>
   <p>In this case you can set the parameters at registration time:</p>
-  <div class="code">
+  <div class="source">
     <div class="codeContent">
       <pre class="code-java">DefaultPicoContainer pico = new DefaultPicoContainer();
 pico.addComponent(ThreadPool.class, DefaultThreadPool.class);

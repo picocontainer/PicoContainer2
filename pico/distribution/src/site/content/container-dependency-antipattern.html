@@ -17,7 +17,7 @@
         <h2><a name="ContainerDependency-Symptoms" id="ContainerDependency-Symptoms"></a>Symptoms</h2>
         <p>Classes that depend on the container.</p>
         <p>Consider the following example. We have a class BImpl that requires an A instance. It declares the dependency on the container so it can look up that A:</p>
-        <div class="code">
+        <div class="source">
           <div class="codeContent">
             <pre class="code-java">public interface A {
 }
@@ -40,7 +40,7 @@ public class BImpl implements B {
           </div>
         </div>
         <p>It can be used in the following way:</p>
-        <div class="code">
+        <div class="source">
           <div class="codeContent">
             <pre class="code-java">MutablePicoContainer pico = new DefaultPicoContainer();
 pico.addComponent(&quot;a&quot;, AImpl.class);
@@ -68,7 +68,7 @@ B b = (B) pico.getComponent(&quot;b&quot;);</pre>
         <p>The simple and elegant solution to this antipattern is not to complicate the world more than it is.<br />
           <br/>
           Here is how it should be:</p>
-        <div class="code">
+        <div class="source">
           <div class="codeContent">
             <pre class="code-java">public class BImpl implements B {
     private final A a;

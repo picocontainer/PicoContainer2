@@ -19,7 +19,7 @@
       <div class="section_2">
         <h2><a name="SetterInjection-Example" id="SetterInjection-Example"></a>Example</h2>
         <p>Joe Walnes whist working on Java Open Source Programming with other luminaries, started with a Setter Injection IoC design for WebWork2. This is marked up with doclet tags (though that was not hard and fast) :</p>
-        <div class="code">
+        <div class="source">
           <div class="codeContent">
             <pre class="code-java">public class Shop {
    StockManager stockManager;
@@ -47,7 +47,7 @@
         <div class="section_3">
           <h3><a name="SetterInjection-UsingSetterInjectorComponentsWithoutaContainer." id="SetterInjection-UsingSetterInjectorComponentsWithoutaContainer."></a>Using Setter Injector Components Without a Container.</h3>
           <p>Setter Injection components can be used directly, without any container.  The component-using class  will continue to compile, but at run time it will be apparent that there are missing dependencies.  The downside of this is that a developer may miss a setXXX(..) method invocation if they are using the component directly. That is fairly small as a risk as it would clearly be caught in the development cycle.  Caught in the development cycle, but maybe obscurely so with a NullPointerException.</p>
-          <div class="code">
+          <div class="source">
             <div class="codeContent">
               <pre class="code-java">Shop shop = new Shop();
 shop.setStockManager(myStockManager);</pre>

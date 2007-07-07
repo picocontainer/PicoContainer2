@@ -21,7 +21,7 @@
         <h2><a name="ContainerInstantiation-Causes" id="ContainerInstantiation-Causes"></a>Causes</h2>
         <p>This smell is most often found in unit tests. It could be as a result of <a href="container-dependency-antipattern.html" title="Container Dependency">Container Dependency</a>. The container is supplied to the class being tested, which then uses it to locate its dependencies.</p>
         <p>Another cause is using the container to build the object we are testing, which itself may have several dependencies. For example::</p>
-        <div class="code">
+        <div class="source">
           <div class="codeContent">
             <pre class="code-java">public void testCocktailWithVodkaIsAlcoholic() {
     DefaultPicoContainer container = new DefaultPicoContainer();
@@ -40,7 +40,7 @@
       <div class="section_2">
         <h2><a name="ContainerInstantiation-WhatToDo" id="ContainerInstantiation-WhatToDo"></a>What To Do</h2>
         <p>For unit tests like this, the class being tested should be instantiated directly by the test. <a href="mock-objects.html" title="Mock Objects">Mock Objects</a> should be used to &quot;mock&quot; the dependent objects, i.e. supplying a fake implementation that can have expectations set and verified on it, rather than a real implementataion. So, the test becomes:</p>
-        <div class="code">
+        <div class="source">
           <div class="codeContent">
             <pre class="code-java">public void testCocktailWithVodkaIsAlcoholic() {
 

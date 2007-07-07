@@ -16,7 +16,7 @@
       <div class="section_2">
         <h2><a name="PropagatingDependency-Symptoms" id="PropagatingDependency-Symptoms"></a>Symptoms</h2>
         <p>A dependency exists solely to be propagated to another class, but no methods are called upon the dependent object itself. For example:</p>
-        <div class="code">
+        <div class="source">
           <div class="codeContent">
             <pre class="code-java">public class AControllerImpl implements AController {
 
@@ -47,7 +47,7 @@
         <h2><a name="PropagatingDependency-WhatToDo" id="PropagatingDependency-WhatToDo"></a>What To Do</h2>
         <p>Apply DependencyInjection to 'AControllerImpl' by replacing the dependency on 'SomeService' with a dependency on 'AnotherController'. If, as in the example above, 'AnotherControllerImpl' has a dependency upon some state that is not available at container-registration time, then we need to introduce a factory for creating 'AnotherController' as follows:</p>
         <p>TODO: This is maybe a little contrieved for this example. Maybe remove or simplify. (AH).</p>
-        <div class="code">
+        <div class="source">
           <div class="codeContent">
             <pre class="code-java">public class AControllerImpl implements AController {
 
@@ -69,7 +69,7 @@
           </div>
         </div>
         <p>'AnotherControllerFactory' is an interface:</p>
-        <div class="code">
+        <div class="source">
           <div class="codeContent">
             <pre class="code-java">public interface AnotherControllerFactory {
     AnotherController createAnotherController(int someId);
@@ -77,7 +77,7 @@
           </div>
         </div>
         <p>It can be implemented as follows::</p>
-        <div class="code">
+        <div class="source">
           <div class="codeContent">
             <pre class="code-java">public class AnotherControllerFactoryImpl implements AnotherControllerFactory {
     private SomeService service;
