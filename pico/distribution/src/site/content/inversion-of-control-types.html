@@ -25,7 +25,7 @@
               <li>Constructor Dependency Injection (CDI) <br />
                 <br/>
                 Examples: PicoContainer, Spring Framework, (not in EJB 3.x sadly), Guice with Annotations </li>
-              <li>Setter Dependency Injection (former type 2)<br />
+              <li>Setter Dependency Injection<br />
                 <br/>
                 Examples: Spring Framework, PicoContainer, EJB 3.0 &amp; Guice with Annotations </li>
               <li>Interface Driven Setter Dependency Injection<br />
@@ -41,7 +41,7 @@
               <li>Pull approach (registry concept)<br />
                 <br/>
                 Examples: EJB 2.x that leverages JNDI, Servlets that leverage JNDI</li>
-              <li>Contextualized Dependency Lookup (former type 1) AKA Push approach <br />
+              <li>Contextualized Dependency Lookup - AKA Push approach <br />
                 <br/>
                 Examples: Servlets that leverage ServletContext, Apache's Avalon, OSGi, Keel, Loom (they use Avalon)</li>
             </ul>
@@ -115,15 +115,6 @@ public class AppleImpl implements Apple, DependencyProvision {
         <p>Component is the correct name for things managed in an IoC sense.  However very small ordinary classes are manageable using IoC tricks, though this is for the very brave or extremists <img class="emoticon" src="http://docs.codehaus.org/images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0" /></p>
         <p>A component many have dependencies on others.  Thus dependency is the term we prefer to describe the needs of a component.</p>
         <p>Service as a term is very popular presently. We think 'Service' dictates marshaling and remoteness. Think of Web Service, Database service, Mail service. All of these have a concept of adaptation and transport.  Typically a language neutral  form for a request is passed over the wire.  In the case of the Web Service method requests are marshaled to SOAP XML and forward to a suitable HTTP server for processing.  Most of the time an application coder is hidden from the client/server and marshaling ugliness by a toolkit or API.</p>
-      </div>
-      <div class="section_2">
-        <h2><a name="IoCTypes-ObsoletedTerms" id="IoCTypes-ObsoletedTerms"></a>Obsoleted Terms</h2>
-        <p>Types 1, 2 and 3 IoC were unilaterally coined earlier in 2003 by the PicoContainer team and even <a href="http://java.sys-con.com/read/38102.htm">published</a>, before Dependency Injection rightly took over. </p>
-        <p>Type 1 becomes Contextualized Dependency Lookup<br />
-          <br/>
-          Type 2 becomes Setter Dependency Injection<br />
-          <br/>
-          Type 3 becomes Constructor Dependency Injection</p>
       </div>
       <div class="section_2">
         <h2><a name="IoCTypes-DependencyInjectionversusContextualizedLookup" id="IoCTypes-DependencyInjectionversusContextualizedLookup"></a>Dependency Injection versus Contextualized Lookup</h2>
