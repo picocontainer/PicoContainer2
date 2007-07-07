@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Container Instantiation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Test Use container anti-pattern</title>
 </head>
 <body>
-<div id="container">
-  <div id="main">
-    <div class="clear"></div>
+<div class="section_2">
+    <h2><a name="ContainerInstantiation-Symptoms" id="ContainerInstantiation-Symptoms"></a>Symptoms</h2>
 
-    <div class="content" style="padding-top: 3mm;">
-      <div class="section_2">
-        <h2><a name="ContainerInstantiation-Symptoms" id="ContainerInstantiation-Symptoms"></a>Symptoms</h2>
-        <p> A class is directly instantiating a PicoContainer and registering components within it. </p>
-      </div>
-      <div class="section_2">
-        <h2><a name="ContainerInstantiation-Causes" id="ContainerInstantiation-Causes"></a>Causes</h2>
-        <p>This smell is most often found in unit tests. It could be as a result of <a href="container-dependency-antipattern.html" title="Container Dependency">Container Dependency</a>. The container is supplied to the class being tested, which then uses it to locate its dependencies.</p>
-        <p>Another cause is using the container to build the object we are testing, which itself may have several dependencies. For example::</p>
-        <div class="source">
-          <div class="codeContent">
+    <p> A class is directly instantiating a PicoContainer and registering components within it. </p>
+</div>
+<div class="section_2">
+    <h2><a name="ContainerInstantiation-Causes" id="ContainerInstantiation-Causes"></a>Causes</h2>
+
+    <p>This smell is most often found in unit tests. It could be as a result of <a
+        href="container-dependency-antipattern.html" title="Container Dependency">Container Dependency</a>. The
+                                                                                                          container is
+                                                                                                          supplied to
+                                                                                                          the class
+                                                                                                          being tested,
+                                                                                                          which then
+                                                                                                          uses it to
+                                                                                                          locate its
+                                                                                                          dependencies.
+    </p>
+
+    <p>Another cause is using the container to build the object we are testing, which itself may have several
+       dependencies. For example::</p>
+
+    <div class="source">
+        <div class="codeContent">
             <pre class="code-java">public void testCocktailWithVodkaIsAlcoholic() {
     DefaultPicoContainer container = new DefaultPicoContainer();
     container.addComponent(Banana.class);
@@ -34,14 +44,21 @@
 
     assertTrue(cocktail.isAlcoholic());
 }</pre>
-          </div>
         </div>
-      </div>
-      <div class="section_2">
-        <h2><a name="ContainerInstantiation-WhatToDo" id="ContainerInstantiation-WhatToDo"></a>What To Do</h2>
-        <p>For unit tests like this, the class being tested should be instantiated directly by the test. <a href="mock-objects.html" title="Mock Objects">Mock Objects</a> should be used to &quot;mock&quot; the dependent objects, i.e. supplying a fake implementation that can have expectations set and verified on it, rather than a real implementataion. So, the test becomes:</p>
-        <div class="source">
-          <div class="codeContent">
+    </div>
+</div>
+<div class="section_2">
+    <h2><a name="ContainerInstantiation-WhatToDo" id="ContainerInstantiation-WhatToDo"></a>What To Do</h2>
+
+    <p>For unit tests like this, the class being tested should be instantiated directly by the test. <a
+        href="mock-objects.html" title="Mock Objects">Mock Objects</a> should be used to &quot;mock&quot; the dependent
+                                                                       objects, i.e. supplying a fake implementation
+                                                                       that can have expectations set and verified on
+                                                                       it, rather than a real implementataion. So, the
+                                                                       test becomes:</p>
+
+    <div class="source">
+        <div class="codeContent">
             <pre class="code-java">public void testCocktailWithVodkaIsAlcoholic() {
 
     Banana banana = createMockBanana();
@@ -55,32 +72,42 @@
 
     // verify expectations on banana, vanilla and vodka here.
 }</pre>
-          </div>
         </div>
-        <p>The implementation details of creating a mock object and setting and verifying expectations have been left out of the example, as the details depend on which mock object library/technique is used.</p>
-      </div>
-      <div class="section_2">
-        <h2><a name="ContainerInstantiation-Exceptions" id="ContainerInstantiation-Exceptions"></a>Exceptions</h2>
-        <p>The container has to be instantiated somewhere!</p>
-        <div class="section_3">
-          <h3><a name="ContainerInstantiation-Bootstrappers" id="ContainerInstantiation-Bootstrappers"></a>Bootstrappers</h3>
-          <p>A common place to instantiate containers is in some bootstrap class in the application.</p>
-          <div class="section_1">
-            <h1><a name="ContainerInstantiation-FunctionalTests" id="ContainerInstantiation-FunctionalTests"></a>Functional Tests</h1>
-            <p>There may be a requirement to write a high-level &quot;functional&quot; test, in which you wish to test the interactions between a set of real components (not mocks). In this case, you may wish to create a container with the appropriate components registered for your test.</p>
-            <div class="section_3">
-              <h3><a name="ContainerInstantiation-NanoContainer" id="ContainerInstantiation-NanoContainer"></a>NanoContainer</h3>
-              <p>If you are using <a href="http://www.nanocontainer.org" title="Sister Projects">NanoContainer</a>, you can use NanoContainer's Standalone class (a bootstrapper) to start the application. All the container configuration can live in a script and NanoContainer (and thereby PicoContainer(s)) will be instantiated.</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-    <div style="text-align: center; width: 100%; padding-top: 1cm;padding-bottom: 1cm">
+    <p>The implementation details of creating a mock object and setting and verifying expectations have been left out of
+       the example, as the details depend on which mock object library/technique is used.</p>
+</div>
+<div class="section_2">
+    <h2><a name="ContainerInstantiation-Exceptions" id="ContainerInstantiation-Exceptions"></a>Exceptions</h2>
 
+    <p>The container has to be instantiated somewhere!</p>
+
+    <div class="section_3">
+        <h3><a name="ContainerInstantiation-Bootstrappers" id="ContainerInstantiation-Bootstrappers"></a>Bootstrappers
+        </h3>
+
+        <p>A common place to instantiate containers is in some bootstrap class in the application.</p>
+
+        <div class="section_1">
+            <h1><a name="ContainerInstantiation-FunctionalTests" id="ContainerInstantiation-FunctionalTests"></a>Functional
+                                                                                                                 Tests
+            </h1>
+
+            <p>There may be a requirement to write a high-level &quot;functional&quot; test, in which you wish to test
+               the interactions between a set of real components (not mocks). In this case, you may wish to create a
+               container with the appropriate components registered for your test.</p>
+
+            <div class="section_3">
+                <h3><a name="ContainerInstantiation-NanoContainer" id="ContainerInstantiation-NanoContainer"></a>NanoContainer
+                </h3>
+
+                <p>If you are using <a href="http://www.nanocontainer.org" title="Sister Projects">NanoContainer</a>,
+                   you can use NanoContainer's Standalone class (a bootstrapper) to start the application. All the
+                   container configuration can live in a script and NanoContainer (and thereby PicoContainer(s)) will be
+                   instantiated.</p>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="clear">&nbsp;</div>
 </div>
 
 </body>

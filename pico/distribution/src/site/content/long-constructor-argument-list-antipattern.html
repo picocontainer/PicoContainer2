@@ -1,36 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Long Constructor Argument List</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Long Constructor Argument List</title>
 </head>
 <body>
-<div id="container">
-  <div id="main">
-    <div class="clear"></div>
+<div class="section_2">
+    <h2><a name="LongConstructorArgumentList-Symptoms" id="LongConstructorArgumentList-Symptoms"></a>Symptoms</h2>
 
-    <div class="content" style="padding-top: 3mm;">
-      <div class="section_2">
-        <h2><a name="LongConstructorArgumentList-Symptoms" id="LongConstructorArgumentList-Symptoms"></a>Symptoms</h2>
-        <p>The constructor for an object takes a long list of arguments. </p>
-      </div>
-      <div class="section_2">
-        <h2><a name="LongConstructorArgumentList-Causes" id="LongConstructorArgumentList-Causes"></a>Causes</h2>
-        <ul>
-          <li>Can be a result of <a href="propagating-dependency-antipattern.html" title="Propagating Dependency">Propagating Dependency</a>.</li>
-          <li>Class is concerned with doing more than one thing and therefore has many dependencies.</li>
-        </ul>
-      </div>
-      <div class="section_2">
-        <h2><a name="LongConstructorArgumentList-WhatToDo" id="LongConstructorArgumentList-WhatToDo"></a>What To Do</h2>
-        <p>If the class is doing too much, it should be refactored into a set of smaller classes. Each class should have a clearly defined responsibility and therefore a smaller set of dependencies.</p>
-      </div>
-    </div>
-  </div>
-  <div class="clear">&nbsp;</div>
+    <p>The constructor for an object takes a long list of arguments. </p>
+</div>
+<div class="section_2">
+    <h2><a name="LongConstructorArgumentList-Causes" id="LongConstructorArgumentList-Causes"></a>Causes</h2>
+    <ul>
+        <li>Can be a result of <a href="propagating-dependency-antipattern.html" title="Propagating Dependency">Propagating
+                                                                                                                Dependency</a>.
+        </li>
+        <li>Class is concerned with doing more than one thing and therefore has many dependencies.</li>
+    </ul>
+</div>
+<div class="section_2">
+    <h2><a name="LongConstructorArgumentList-WhatToDo" id="LongConstructorArgumentList-WhatToDo"></a>What To Do</h2>
+
+    <p>If the class is doing too much, it should be refactored into a set of smaller classes. Each class should have a
+       clearly defined responsibility and therefore a smaller set of dependencies.</p>
 </div>
 </body>
 </html>

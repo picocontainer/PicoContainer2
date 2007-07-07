@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html 
-     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Propagating Dependency</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Propagating Dependency</title>
 </head>
 <body>
-<div id="container">
-  <div id="main">
-    <div class="clear"></div>
+<div class="section_2">
+    <h2><a name="PropagatingDependency-Symptoms" id="PropagatingDependency-Symptoms"></a>Symptoms</h2>
 
-    <div class="content" style="padding-top: 3mm;">
-      <div class="section_2">
-        <h2><a name="PropagatingDependency-Symptoms" id="PropagatingDependency-Symptoms"></a>Symptoms</h2>
-        <p>A dependency exists solely to be propagated to another class, but no methods are called upon the dependent object itself. For example:</p>
-        <div class="source">
-          <div class="codeContent">
+    <p>A dependency exists solely to be propagated to another class, but no methods are called upon the dependent object
+       itself. For example:</p>
+
+    <div class="source">
+        <div class="codeContent">
             <pre class="code-java">public class AControllerImpl implements AController {
 
     private SomeService service;
@@ -35,20 +33,29 @@
 
     // ...
 }</pre>
-          </div>
         </div>
-        <p>In this example, no method-calls are made upon 'service', it is simply propagated to the constructor of 'AnotherControllerImpl'. Therefore, it is not a valid dependency for 'AControllerImpl'. </p>
-      </div>
-      <div class="section_2">
-        <h2><a name="PropagatingDependency-Causes" id="PropagatingDependency-Causes"></a>Causes</h2>
-        <p>DependencyInjection has been partially applied to a hierarchy of classes. This could be because some classes in the hierarchy depend upon instance state not available at container-registration time.</p>
-      </div>
-      <div class="section_2">
-        <h2><a name="PropagatingDependency-WhatToDo" id="PropagatingDependency-WhatToDo"></a>What To Do</h2>
-        <p>Apply DependencyInjection to 'AControllerImpl' by replacing the dependency on 'SomeService' with a dependency on 'AnotherController'. If, as in the example above, 'AnotherControllerImpl' has a dependency upon some state that is not available at container-registration time, then we need to introduce a factory for creating 'AnotherController' as follows:</p>
-        <p>TODO: This is maybe a little contrieved for this example. Maybe remove or simplify. (AH).</p>
-        <div class="source">
-          <div class="codeContent">
+    </div>
+    <p>In this example, no method-calls are made upon 'service', it is simply propagated to the constructor of
+       'AnotherControllerImpl'. Therefore, it is not a valid dependency for 'AControllerImpl'. </p>
+</div>
+<div class="section_2">
+    <h2><a name="PropagatingDependency-Causes" id="PropagatingDependency-Causes"></a>Causes</h2>
+
+    <p>DependencyInjection has been partially applied to a hierarchy of classes. This could be because some classes in
+       the hierarchy depend upon instance state not available at container-registration time.</p>
+</div>
+<div class="section_2">
+    <h2><a name="PropagatingDependency-WhatToDo" id="PropagatingDependency-WhatToDo"></a>What To Do</h2>
+
+    <p>Apply DependencyInjection to 'AControllerImpl' by replacing the dependency on 'SomeService' with a dependency on
+       'AnotherController'. If, as in the example above, 'AnotherControllerImpl' has a dependency upon some state that
+       is not available at container-registration time, then we need to introduce a factory for creating
+       'AnotherController' as follows:</p>
+
+    <p>TODO: This is maybe a little contrieved for this example. Maybe remove or simplify. (AH).</p>
+
+    <div class="source">
+        <div class="codeContent">
             <pre class="code-java">public class AControllerImpl implements AController {
 
     private AnotherControllerFactory anotherControllerFactory;
@@ -66,19 +73,21 @@
 
     // ...
 }</pre>
-          </div>
         </div>
-        <p>'AnotherControllerFactory' is an interface:</p>
-        <div class="source">
-          <div class="codeContent">
+    </div>
+    <p>'AnotherControllerFactory' is an interface:</p>
+
+    <div class="source">
+        <div class="codeContent">
             <pre class="code-java">public interface AnotherControllerFactory {
     AnotherController createAnotherController(int someId);
 }</pre>
-          </div>
         </div>
-        <p>It can be implemented as follows::</p>
-        <div class="source">
-          <div class="codeContent">
+    </div>
+    <p>It can be implemented as follows::</p>
+
+    <div class="source">
+        <div class="codeContent">
             <pre class="code-java">public class AnotherControllerFactoryImpl implements AnotherControllerFactory {
     private SomeService service;
 
@@ -90,20 +99,20 @@
         return new AnotherControllerImpl(service, someId);
     }
 }</pre>
-          </div>
         </div>
-        <p>Now we can register both 'AControllerImpl' and 'AnotherControllerFactoryImpl' in the container. When 'AControllerImpl' is instantiated, it is supplied with an implementation of 'AnotherControlFactory' that it can use to create an 'AnotherController' instance.</p>
-        <div class="section_1">
-          <h1><a name="PropagatingDependency-Exceptions" id="PropagatingDependency-Exceptions"></a>Exceptions</h1>
-          <p>When [Migrating from executors to services], it can sometimes be difficult to avoid introducing a Propagating Dependency. In these cases, the Propogating Dependency can be considered as a good first step towards PicoFication of a set of classes. An effort should be made to complete PicoFication at some stage by making a series of further steps as described above.</p>
-        </div>
-      </div>
     </div>
-    <div style="text-align: center; width: 100%; padding-top: 1cm;padding-bottom: 1cm">
+    <p>Now we can register both 'AControllerImpl' and 'AnotherControllerFactoryImpl' in the container. When
+       'AControllerImpl' is instantiated, it is supplied with an implementation of 'AnotherControlFactory' that it can
+       use to create an 'AnotherController' instance.</p>
 
+    <div class="section_1">
+        <h1><a name="PropagatingDependency-Exceptions" id="PropagatingDependency-Exceptions"></a>Exceptions</h1>
+
+        <p>When [Migrating from executors to services], it can sometimes be difficult to avoid introducing a Propagating
+           Dependency. In these cases, the Propogating Dependency can be considered as a good first step towards
+           PicoFication of a set of classes. An effort should be made to complete PicoFication at some stage by making a
+           series of further steps as described above.</p>
     </div>
-  </div>
-  <div class="clear">&nbsp;</div>
 </div>
 
 </body>
