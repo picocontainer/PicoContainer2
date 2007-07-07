@@ -12,6 +12,9 @@ package org.picocontainer;
 import java.util.Properties;
 import java.io.Serializable;
 
+/**
+ * Exten
+ */
 public class ComponentCharacteristics implements Serializable, Cloneable {
 
     private Properties props = new Properties();
@@ -22,17 +25,16 @@ public class ComponentCharacteristics implements Serializable, Cloneable {
     protected void removeProperty(String name) {
         props.remove(name);
     }
-    
+    protected String getProperty(String name) {
+        return props.getProperty(name);
+    }
+
 
     public void mergeInto(ComponentCharacteristics characteristics) {
     }
 
     public boolean setAsProcessedIfSoCharacterized(ComponentCharacteristics characteristics) {
         return false;
-    }
-
-    public String getProperty(String name) {
-        return props.getProperty(name);
     }
 
     public ComponentCharacteristics clone() {
