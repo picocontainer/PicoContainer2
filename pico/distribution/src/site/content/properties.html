@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+    <title>Properties</title>
+</head>
+<body>
+<h2>Properties</h2>
+
+<p>DefaultPicoContainer allows for some properties to be set
+   per component at the time each is added. There is a convenience class on
+   which supplied properties are specified. It is called
+   Characteristics. You can use them via static imports or long-name
+   them.</p>
+
+<p>Properties can be set for a component in a method 'as' on
+   MutablePicoContainer. If that is the case then the charactistics will
+   affect the next component added only.</p>
+
+<p>They can also be set in a more persistent manner for the
+   MutablePicoContainer in question. If so, they will affect all subsequent
+   additions of component.</p>
+
+<p>Some examples :</p>
+
+<div class="source"><pre>
+import static org.picocontainer.Characteristics.SDI;
+import static org.picocontainer.Characteristics.CACHE;
+...
+pico = new DefaultPicoContainer();
+pico.as(CACHE).addComponent(Apple.class);
+pico.as(CACHE, SDI).addComponent(Pear.class);
+</pre>
+</div>
+<div class="source"><pre>import static org.picocontainer.Characteristics.SDI;
+import static org.picocontainer.Characteristics.CACHE;
+...
+pico = new DefaultPicoContainer();
+pico.change(CACHE).addComponent(Apple.class);
+pico.change(SDI).addComponent(Pear.class);</pre>
+</div>
+<div class="source"><pre>
+pico = new DefaultPicoContainer();
+pico.as(Characteristics.CACHE).addComponent(Apple.class);
+pico.as(Characteristics.CACHE,
+    Characteristics.SDI).addComponent(Pear.class);
+</pre>
+</div>
+<div class="source"><pre>pico = new DefaultPicoContainer();
+pico.change(Characteristics.CACHE).addComponent(Apple.class);
+pico.change(Characteristics.SDI).addComponent(Pear.class);</pre>
+</div>
+
+<p>Some characteristics are mutually exclusive. For example CDI,
+   SDI. Meaning the last one set via 'as' or 'change' rules. Others are
+   additive like CACHE and HIDE. It is not important the order of things.</p>
+
+<h3>Appropriate Behavior and Injection Factories.</h3>
+
+<p>Every characteristics set for a component must be handled by a
+   BehaviorFactory or InjectionFactory that recognises it. They are
+   typically chained together. DefaultPicoContainer's default
+   BehaviorFactory and InjectionFactory are AdaptiveBehaviorFactory and
+   AdaptiveInjectionFactory. These can handle CDI and SDI as well as CACHE
+   and HIDE.</p>
+
+<p>If you setup DefaultPicoContainer with a
+   BehaviorFactory/InjectionFactory combination that is unaware of the
+   characteristics you subsequently use, Pico will object by way of an
+   exception as you add the component.</p>
+</body>
+</html>
