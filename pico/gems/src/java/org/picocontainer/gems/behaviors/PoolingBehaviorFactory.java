@@ -36,7 +36,7 @@ public class PoolingBehaviorFactory extends AbstractBehaviorFactory {
                                                                          componentProperties, componentKey, componentImplementation, parameters);
         PoolingBehavior behavior = new PoolingBehavior(componentAdapter, poolContext);
         //TODO
-        //Characterizations.HIDE.setProcessedIn(componentCharacteristics);
+        //Characteristics.HIDE.setProcessedIn(componentCharacteristics);
         return behavior;
     }
 }

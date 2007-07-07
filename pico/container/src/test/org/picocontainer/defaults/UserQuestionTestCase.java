@@ -14,7 +14,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Characterizations;
+import org.picocontainer.Characteristics;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.adapters.AbstractAdapter;
 
@@ -218,7 +218,7 @@ public final class UserQuestionTestCase extends TestCase {
 
     public void testShouldBeAbleShareSameReferenceForDifferentTypes() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.as(Characterizations.CACHE).addComponent(FooBar.class);
+        pico.as(Characteristics.CACHE).addComponent(FooBar.class);
         pico.addComponent(NeedsFoo.class);
         pico.addComponent(NeedsBar.class);
         NeedsFoo needsFoo = pico.getComponent(NeedsFoo.class);

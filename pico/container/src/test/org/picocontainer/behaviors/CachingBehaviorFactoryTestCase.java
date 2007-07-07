@@ -16,7 +16,7 @@ import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.Characterizations;
+import org.picocontainer.Characteristics;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -43,7 +43,7 @@ public class CachingBehaviorFactoryTestCase extends AbstractComponentFactoryTest
 
     public void testContainerCanFollowNOCACHEDirectiveSelectively() {
         picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
-        picoContainer.change(Characterizations.NOCACHE);
+        picoContainer.change(Characteristics.NOCACHE);
         picoContainer.addComponent(Map.class, HashMap.class);
         assertSame(picoContainer.getComponent(Touchable.class), picoContainer.getComponent(Touchable.class));
         final Map component = picoContainer.getComponent(Map.class);

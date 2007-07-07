@@ -8,12 +8,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Characterizations;
 import org.picocontainer.PicoClassNotFoundException;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.containers.TransientPicoContainer;
-
-import org.nanocontainer.script.NanoContainerMarkupException;
 
 
 public final class NanoBuilder {

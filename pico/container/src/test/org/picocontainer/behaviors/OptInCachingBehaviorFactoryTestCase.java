@@ -16,7 +16,7 @@ import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.behaviors.OptInCachingBehaviorFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.Characterizations;
+import org.picocontainer.Characteristics;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -43,7 +43,7 @@ public class OptInCachingBehaviorFactoryTestCase extends AbstractComponentFactor
 
     public void testContainerCanFollowNOCACHEDirectiveSelectively() {
         picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
-        picoContainer.change(Characterizations.CACHE);
+        picoContainer.change(Characteristics.CACHE);
         picoContainer.addComponent(Map.class, HashMap.class);
         assertNotSame(picoContainer.getComponent(Touchable.class), picoContainer.getComponent(Touchable.class));
         assertSame(picoContainer.getComponent(Map.class), picoContainer.getComponent(Map.class));
@@ -51,7 +51,7 @@ public class OptInCachingBehaviorFactoryTestCase extends AbstractComponentFactor
 
     public void testContainerCanFollowSINGLETONDirectiveSelectively() {
         picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
-        picoContainer.change(Characterizations.SINGLE);
+        picoContainer.change(Characteristics.SINGLE);
         picoContainer.addComponent(Map.class, HashMap.class);
         assertNotSame(picoContainer.getComponent(Touchable.class), picoContainer.getComponent(Touchable.class));
         assertSame(picoContainer.getComponent(Map.class), picoContainer.getComponent(Map.class));

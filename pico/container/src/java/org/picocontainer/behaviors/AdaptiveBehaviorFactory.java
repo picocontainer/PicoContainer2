@@ -14,7 +14,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Characterizations;
+import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.BehaviorFactory;
 import org.picocontainer.annotations.Cache;
@@ -60,7 +60,7 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
     }
 
     protected void processThreadSafe(Properties componentProperties, List<ComponentFactory> list) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties,Characterizations.THREAD_SAFE)) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.THREAD_SAFE)) {
             list.add(new SynchronizedBehaviorFactory());
         }
     }
@@ -68,7 +68,7 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
     protected void processCachedInstance(Properties componentProperties,
                                        Class componentImplementation,
                                        List<ComponentFactory> list) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties,Characterizations.CACHE) ||
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CACHE) ||
             componentImplementation.getAnnotation(Cache.class) != null) {
             list.add(new CachingBehaviorFactory());
         }
@@ -76,7 +76,7 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
 
     protected void processImplementationHiding(Properties componentProperties,
                                              List<ComponentFactory> list) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties,Characterizations.HIDE)) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE)) {
             list.add(new ImplementationHidingBehaviorFactory());
         }
     }

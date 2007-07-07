@@ -12,7 +12,7 @@ package org.picocontainer.tck;
 import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Characterizations;
+import org.picocontainer.Characteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.ComponentFactory;
@@ -35,7 +35,7 @@ public abstract class AbstractComponentFactoryTestCase extends TestCase {
     }
 
     public void testEquals() throws PicoCompositionException {
-        ComponentAdapter componentAdapter = createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characterizations.CDI, Touchable.class, SimpleTouchable.class);
+        ComponentAdapter componentAdapter = createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, Touchable.class, SimpleTouchable.class);
 
         assertEquals(componentAdapter, componentAdapter);
         assertTrue(!componentAdapter.equals("blah"));
@@ -43,7 +43,7 @@ public abstract class AbstractComponentFactoryTestCase extends TestCase {
 
     public void testRegisterComponent() throws PicoCompositionException {
         ComponentAdapter componentAdapter =
-                createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characterizations.CDI, Touchable.class, SimpleTouchable.class);
+                createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, Touchable.class, SimpleTouchable.class);
 
         picoContainer.addAdapter(componentAdapter);
 
@@ -52,7 +52,7 @@ public abstract class AbstractComponentFactoryTestCase extends TestCase {
 
     public void testUnregisterComponent() throws PicoCompositionException {
         ComponentAdapter componentAdapter =
-                createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characterizations.CDI, Touchable.class, SimpleTouchable.class);
+                createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, Touchable.class, SimpleTouchable.class);
 
         picoContainer.addAdapter(componentAdapter);
         picoContainer.removeComponent(Touchable.class);

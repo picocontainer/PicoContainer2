@@ -14,7 +14,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Characterizations;
+import org.picocontainer.Characteristics;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 import java.util.Properties;
@@ -23,7 +23,7 @@ public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
-        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties,Characterizations.HIDE);
+        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE);
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                          componentProperties, componentKey, componentImplementation, parameters);
         return new ImplementationHidingBehavior(componentAdapter);

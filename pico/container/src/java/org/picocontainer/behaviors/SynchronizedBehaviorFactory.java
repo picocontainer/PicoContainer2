@@ -13,7 +13,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Characterizations;
+import org.picocontainer.Characteristics;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 import java.util.Properties;
@@ -25,7 +25,7 @@ import java.util.Properties;
 public class SynchronizedBehaviorFactory extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) {
-        removePropertiesIfPresent(componentProperties,Characterizations.THREAD_SAFE);
+        removePropertiesIfPresent(componentProperties, Characteristics.THREAD_SAFE);
         return new SynchronizedBehavior(super.createComponentAdapter(
             componentMonitor,
             lifecycleStrategy,

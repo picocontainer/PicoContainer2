@@ -18,7 +18,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.Characterizations;
+import org.picocontainer.Characteristics;
 import org.picocontainer.gems.adapters.ThreadLocalReference;
 
 /**
@@ -33,7 +33,7 @@ public final class PicoObjectFactoryTestCase extends MockObjectTestCase {
     private final HttpServletRequest request = (HttpServletRequest) requestMock.proxy();
     
     public void setUp(){
-        container = (DefaultPicoContainer)new DefaultPicoContainer().change(Characterizations.CACHE);
+        container = (DefaultPicoContainer)new DefaultPicoContainer().change(Characteristics.CACHE);
         ObjectReference reference = new ThreadLocalReference();
         reference.set(request);
         factory = new PicoObjectFactory(reference);

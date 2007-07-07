@@ -15,7 +15,7 @@ import javax.management.MBeanServer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Characterizations;
+import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
@@ -75,7 +75,7 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
         final ComponentAdapter componentAdapter = super.createComponentAdapter(
                 componentMonitor, lifecycleStrategy,
                 componentProperties, componentKey, componentImplementation, parameters);
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characterizations.NOJMX)) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NOJMX)) {
             return componentAdapter;            
         } else {
             return new JMXExposingBehavior(componentAdapter, mBeanServer, providers);

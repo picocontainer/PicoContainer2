@@ -13,7 +13,7 @@ package org.picocontainer.behaviors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Characterizations;
+import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.LifecycleStrategy;
@@ -31,7 +31,7 @@ public class CachingBehaviorFactory extends AbstractBehaviorFactory {
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException
     {
-        if (removePropertiesIfPresent(componentProperties,Characterizations.NOCACHE)) {
+        if (removePropertiesIfPresent(componentProperties, Characteristics.NOCACHE)) {
             ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor,
                                                                              lifecycleStrategy,
                                                                              componentProperties,
@@ -40,7 +40,7 @@ public class CachingBehaviorFactory extends AbstractBehaviorFactory {
                                                                              parameters);
             return componentAdapter;
         }
-        removePropertiesIfPresent(componentProperties,Characterizations.CACHE);
+        removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
         return new CachingBehavior(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                 componentProperties, componentKey, componentImplementation, parameters));
 

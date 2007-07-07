@@ -21,7 +21,7 @@ import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Characterizations;
+import org.picocontainer.Characteristics;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.AbstractInjector;
@@ -71,7 +71,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
 
     protected final MutablePicoContainer createPicoContainerWithTouchableAndDependsOnTouchable() throws PicoCompositionException {
         MutablePicoContainer pico = createPicoContainerWithDependsOnTouchableOnly();
-        pico.as(Characterizations.CACHE).addComponent(Touchable.class, SimpleTouchable.class);
+        pico.as(Characteristics.CACHE).addComponent(Touchable.class, SimpleTouchable.class);
         return pico;
     }
 
@@ -347,9 +347,9 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
 
     public void testSameInstanceCanBeUsedAsDifferentTypeWhenCaching() {
         MutablePicoContainer pico = createPicoContainer(null);
-        pico.as(Characterizations.CACHE).addComponent("wt", WashableTouchable.class);
+        pico.as(Characteristics.CACHE).addComponent("wt", WashableTouchable.class);
         pico.addComponent("nw", NeedsWashable.class);
-        pico.as(Characterizations.CACHE).addComponent("nt", NeedsTouchable.class);
+        pico.as(Characteristics.CACHE).addComponent("nt", NeedsTouchable.class);
 
         NeedsWashable nw = (NeedsWashable)pico.getComponent("nw");
         NeedsTouchable nt = (NeedsTouchable)pico.getComponent("nt");

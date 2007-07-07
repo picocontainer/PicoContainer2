@@ -14,7 +14,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Characterizations;
+import org.picocontainer.Characteristics;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.InjectionFactory;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
@@ -92,7 +92,7 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
                                                   Object componentKey,
                                                   Class componentImplementation, Parameter... parameters)
     {
-        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties,Characterizations.CDI);
+        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CDI);
         return new ConstructorInjectionFactory().createComponentAdapter(componentMonitor,
                                                                         lifecycleStrategy,
                                                                         componentProperties,
@@ -109,7 +109,7 @@ public class AdaptiveInjectionFactory implements InjectionFactory, Serializable 
                                                    ComponentAdapter componentAdapter,
                                                    Parameter... parameters)
     {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties,Characterizations.SDI)) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.SDI)) {
             componentAdapter = new SetterInjectionFactory().createComponentAdapter(componentMonitor,
                                                                                                     lifecycleStrategy,
                                                                                                     componentProperties,

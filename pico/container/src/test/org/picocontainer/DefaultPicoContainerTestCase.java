@@ -35,8 +35,8 @@ import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-import static org.picocontainer.Characterizations.CDI;
-import static org.picocontainer.Characterizations.SDI;
+import static org.picocontainer.Characteristics.CDI;
+import static org.picocontainer.Characteristics.SDI;
 
 import java.io.Serializable;
 import java.io.StringWriter;
@@ -223,7 +223,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
                 sb.append(member.toString());
             }
         });
-        dpc.as(Characterizations.CACHE).addComponent(DefaultPicoContainer.class);
+        dpc.as(Characteristics.CACHE).addComponent(DefaultPicoContainer.class);
         dpc.start();
         assertEquals("ComponentMonitor should have been notified that the component had been started",
                 "public abstract void org.picocontainer.Startable.start()", sb.toString());
@@ -341,7 +341,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     public void testCanUseCustomLifecycleStrategyForClassRegistrations() {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new FailingLifecycleStrategy(), null);
-        dpc.as(Characterizations.CACHE).addComponent(Startable.class, MyStartable.class);
+        dpc.as(Characteristics.CACHE).addComponent(Startable.class, MyStartable.class);
         try {
             dpc.start();
             fail("should have barfed");

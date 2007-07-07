@@ -11,20 +11,15 @@ package org.picocontainer;
 
 import java.util.Properties;
 
-public final class Characterizations {
+public final class Characteristics {
 
     private static final String _INJECTION = "injection";
     private static final String _CONSTRUCTOR = "constructor";
     private static final String _SETTER = "setter";
-
     private static final String _CACHE = "cache";
-
     private static final String _NOJMX = "no-jmx";
-
     private static final String _THREAD_SAFE = "thread-safe";
-
     private static final String _HIDE = "hide-implementations";
-
     private static final String FALSE = "FALSE";
     private static final String TRUE = "TRUE";
 

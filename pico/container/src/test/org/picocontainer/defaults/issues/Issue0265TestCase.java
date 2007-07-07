@@ -17,7 +17,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Startable;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.DefaultPicoContainerTestCase;
-import org.picocontainer.Characterizations;
+import org.picocontainer.Characteristics;
 
 import java.lang.reflect.Method;
 
@@ -29,7 +29,7 @@ public class Issue0265TestCase extends MockObjectTestCase {
         Mock mockMonitor1 = mock(ComponentMonitor.class, "Monitor1");
         Mock mockMonitor2 = mock(ComponentMonitor.class, "Monitor2");
         DefaultPicoContainer pico = new DefaultPicoContainer((ComponentMonitor) mockMonitor1.proxy());
-        pico.as(Characterizations.CACHE).addComponent(DefaultPicoContainerTestCase.MyStartable.class);
+        pico.as(Characteristics.CACHE).addComponent(DefaultPicoContainerTestCase.MyStartable.class);
         mockMonitor1.expects(once()).method("instantiating").will(returnValue(DefaultPicoContainerTestCase.MyStartable.class.getConstructor()));
         mockMonitor1.expects(once()).method("instantiated");
         mockMonitor1.expects(once()).method("invoking").with(NULL, NULL, eq(start), ANYTHING);
