@@ -21,7 +21,6 @@
         <name>Architecture</name>
         <page>patterns.html</page>
         <page>inversion-of-control.html</page>
-        <page>inversion-of-control-types.html</page>
         <page>adapters.html</page>
         <page>mock-objects.html</page>
         <page>terminology.html</page>
