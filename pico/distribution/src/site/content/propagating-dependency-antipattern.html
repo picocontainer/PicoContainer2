@@ -8,7 +8,7 @@
     <title>Propagating Dependency Anti-pattern</title>
 </head>
 <body>
-<div class="section_2">
+<div>
     <h2><a name="PropagatingDependency-Symptoms" id="PropagatingDependency-Symptoms"></a>Symptoms</h2>
 
     <p>A dependency exists solely to be propagated to another class, but no methods are called upon the dependent object
@@ -38,13 +38,13 @@
     <p>In this example, no method-calls are made upon 'service', it is simply propagated to the constructor of
        'AnotherControllerImpl'. Therefore, it is not a valid dependency for 'AControllerImpl'. </p>
 </div>
-<div class="section_2">
+<div>
     <h2><a name="PropagatingDependency-Causes" id="PropagatingDependency-Causes"></a>Causes</h2>
 
     <p>DependencyInjection has been partially applied to a hierarchy of classes. This could be because some classes in
        the hierarchy depend upon instance state not available at container-registration time.</p>
 </div>
-<div class="section_2">
+<div>
     <h2><a name="PropagatingDependency-WhatToDo" id="PropagatingDependency-WhatToDo"></a>What To Do</h2>
 
     <p>Apply DependencyInjection to 'AControllerImpl' by replacing the dependency on 'SomeService' with a dependency on

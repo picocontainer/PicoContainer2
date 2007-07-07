@@ -8,12 +8,12 @@
     <title>Long Constructor Argument List Anti-pattern</title>
 </head>
 <body>
-<div class="section_2">
+<div>
     <h2><a name="LongConstructorArgumentList-Symptoms" id="LongConstructorArgumentList-Symptoms"></a>Symptoms</h2>
 
     <p>The constructor for an object takes a long list of arguments. </p>
 </div>
-<div class="section_2">
+<div>
     <h2><a name="LongConstructorArgumentList-Causes" id="LongConstructorArgumentList-Causes"></a>Causes</h2>
     <ul>
         <li>Can be a result of <a href="propagating-dependency-antipattern.html" title="Propagating Dependency">Propagating
@@ -22,7 +22,7 @@
         <li>Class is concerned with doing more than one thing and therefore has many dependencies.</li>
     </ul>
 </div>
-<div class="section_2">
+<div>
     <h2><a name="LongConstructorArgumentList-WhatToDo" id="LongConstructorArgumentList-WhatToDo"></a>What To Do</h2>
 
     <p>If the class is doing too much, it should be refactored into a set of smaller classes. Each class should have a

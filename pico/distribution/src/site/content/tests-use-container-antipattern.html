@@ -8,12 +8,12 @@
     <title>Tests Use Container Anti-pattern</title>
 </head>
 <body>
-<div class="section_2">
+<div>
     <h2><a name="ContainerInstantiation-Symptoms" id="ContainerInstantiation-Symptoms"></a>Symptoms</h2>
 
     <p> A class is directly instantiating a PicoContainer and registering components within it. </p>
 </div>
-<div class="section_2">
+<div>
     <h2><a name="ContainerInstantiation-Causes" id="ContainerInstantiation-Causes"></a>Causes</h2>
 
     <p>This smell is most often found in unit tests. It could be as a result of <a
@@ -47,7 +47,7 @@
         </div>
     </div>
 </div>
-<div class="section_2">
+<div>
     <h2><a name="ContainerInstantiation-WhatToDo" id="ContainerInstantiation-WhatToDo"></a>What To Do</h2>
 
     <p>For unit tests like this, the class being tested should be instantiated directly by the test. <a
@@ -77,12 +77,12 @@
     <p>The implementation details of creating a mock object and setting and verifying expectations have been left out of
        the example, as the details depend on which mock object library/technique is used.</p>
 </div>
-<div class="section_2">
+<div>
     <h2><a name="ContainerInstantiation-Exceptions" id="ContainerInstantiation-Exceptions"></a>Exceptions</h2>
 
     <p>The container has to be instantiated somewhere!</p>
 
-    <div class="section_3">
+    <div>
         <h3><a name="ContainerInstantiation-Bootstrappers" id="ContainerInstantiation-Bootstrappers"></a>Bootstrappers
         </h3>
 
@@ -97,7 +97,7 @@
                the interactions between a set of real components (not mocks). In this case, you may wish to create a
                container with the appropriate components registered for your test.</p>
 
-            <div class="section_3">
+            <div>
                 <h3><a name="ContainerInstantiation-NanoContainer" id="ContainerInstantiation-NanoContainer"></a>NanoContainer
                 </h3>
 

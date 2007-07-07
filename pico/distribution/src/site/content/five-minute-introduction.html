@@ -38,15 +38,15 @@ List list = (List) pico.getComponent(ArrayList.class);</pre>
                 </div>
                 <p>&nbsp;</p>
                 <p>With a trivial example such as this there is no point in using PicoContainer. This was just to illustrate the basic API. PicoContainer becomes useful with larger number of classes and interfaces having complex dependencies between each other:</p>
-                <table class='confluenceTable'>
+                <table>
                   <tbody>
                     <tr>
-                      <th class='confluenceTh'> Complex Dependencies </th>
-                      <th class='confluenceTh'> Juicer Example </th>
+                      <th> Complex Dependencies </th>
+                      <th> Juicer Example </th>
                     </tr>
                     <tr>
-                      <td class='confluenceTd'><img src="images/complex-dependencies.png" align="absmiddle" border="0" /> </td>
-                      <td class='confluenceTd'><img src="images/juicer-peeler-peelable.png" align="absmiddle" border="0" /> </td>
+                      <td><img src="images/complex-dependencies.png" align="absmiddle" border="0" /> </td>
+                      <td><img src="images/juicer-peeler-peelable.png" align="absmiddle" border="0" /> </td>
                     </tr>
                   </tbody>
                 </table>
@@ -179,28 +179,28 @@ Juicer juicer = (Juicer) y.getComponent(Juicer.class);</pre>
                 <h2><a name="Fiveminuteintroduction-Lifecycle"></a>Lifecycle</h2>
                 <p>PicoContainer has support for <a href="lifecycle.html" title="Lifecycle">Lifecycle</a>. If your classes implement <a href="http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/Startable.html">Startable<sup><img class="rendericon" src="/images/icons/linkext7.gif" height="7" width="7" align="absmiddle" alt="" border="0"/></sup></a>, you can control the lifecycle of all your objects with a simple method call on the container. The container will figure out the correct order of invocation of start()/stop() all the objects managed by the container.</p>
                 <p>Calling start() on the container will call start() on all container managed objects in the order of their instantiation. This means starting with the ones that have no dependencies, and ending with the ones that have dependencies on others:</p>
-                <table class='confluenceTable'>
+                <table>
                   <tbody>
                     <tr>
-                      <th class='confluenceTh'> PicoContainer.start() </th>
-                      <th class='confluenceTh'> PicoContainer.stop() </th>
+                      <th> PicoContainer.start() </th>
+                      <th> PicoContainer.stop() </th>
                     </tr>
                     <tr>
-                      <td class='confluenceTd'><img src="/download/attachments/100/start-container.png" align="absmiddle" border="0" /> </td>
-                      <td class='confluenceTd'><img src="/download/attachments/100/stop-container.png" align="absmiddle" border="0" /> </td>
+                      <td><img src="/download/attachments/100/start-container.png" align="absmiddle" border="0" /> </td>
+                      <td><img src="/download/attachments/100/stop-container.png" align="absmiddle" border="0" /> </td>
                     </tr>
                   </tbody>
                 </table>
                 <p>Lifecycle also works for hierarchies of containers. Calling start() on a container with child containers will start all the containers in a breadth-first order, starting with itself. Likewise, calling stop() will call stop() on all containers in the hierarchy in a depth-first order. The pictures below show what happens when start() and stop() are called on a container with children.</p>
-                <table class='confluenceTable'>
+                <table>
                   <tbody>
                     <tr>
-                      <th class='confluenceTh'> PicoContainer.start() </th>
-                      <th class='confluenceTh'> PicoContainer.stop() </th>
+                      <th> PicoContainer.start() </th>
+                      <th> PicoContainer.stop() </th>
                     </tr>
                     <tr>
-                      <td class='confluenceTd'><img src="/download/attachments/100/start-hierarchy.png" align="absmiddle" border="0" /> </td>
-                      <td class='confluenceTd'><img src="/download/attachments/100/stop-hierarchy.png" align="absmiddle" border="0" /> </td>
+                      <td><img src="/download/attachments/100/start-hierarchy.png" align="absmiddle" border="0" /> </td>
+                      <td><img src="/download/attachments/100/stop-hierarchy.png" align="absmiddle" border="0" /> </td>
                     </tr>
                   </tbody>
                 </table>
