@@ -14,7 +14,7 @@
   public MyAdapter() {
     super(QuantumEntanglement.class, QuantumEntanglementImpl.class);
   }
-  public Object getComponentInstance(PicoContainer pico) {
+  public Object getComponent(PicoContainer pico) {
     Auditor a = pico.getComponent(Auditor.class);
     a.audit("QE used", new Date());
     return qe;

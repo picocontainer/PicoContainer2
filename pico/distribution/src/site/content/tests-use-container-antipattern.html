@@ -25,12 +25,12 @@
           <div class="codeContent">
             <pre class="code-java">public void testCocktailWithVodkaIsAlcoholic() {
     DefaultPicoContainer container = new DefaultPicoContainer();
-    container.registerComponentImplementation(Banana.class);
-    container.registerComponentImplementation(Vanilla.class);
-    container.registerComponentImplementation(Vodka.class);
-    container.registerComponentImplementation(Cocktail.class);
+    container.addComponent(Banana.class);
+    container.addComponent(Vanilla.class);
+    container.addComponent(Vodka.class);
+    container.addComponent(Cocktail.class);
 
-    Cocktail cocktail = (Cocktail) container.getComponentInstance(Cocktail.class);
+    Cocktail cocktail = (Cocktail) container.getComponent(Cocktail.class);
 
     assertTrue(cocktail.isAlcoholic());
 }</pre>

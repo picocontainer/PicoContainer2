@@ -29,11 +29,11 @@ public class BImpl implements B {
     private final A a;
 
     BImpl(PicoContainer pico) {
-        a = (A) pico.getComponentInstanceOfType(A.class);
+        a = (A) pico.getComponentOfType(A.class);
         
         /*
         alternatively:
-        a = (A) pico.getComponentInstance(&quot;a&quot;);
+        a = (A) pico.getComponent(&quot;a&quot;);
         */
     }
 }</pre>
@@ -43,12 +43,12 @@ public class BImpl implements B {
         <div class="code">
           <div class="codeContent">
             <pre class="code-java">MutablePicoContainer pico = new DefaultPicoContainer();
-pico.registerComponentImplementation(&quot;a&quot;, AImpl.class);
-pico.registerComponentImplementation(&quot;b&quot;, BImpl.class);
-pico.registerComponentInstance(pico);
+pico.addComponent(&quot;a&quot;, AImpl.class);
+pico.addComponent(&quot;b&quot;, BImpl.class);
+pico.addComponent(pico);
 
 ...
-B b = (B) pico.getComponentInstance(&quot;b&quot;);</pre>
+B b = (B) pico.getComponent(&quot;b&quot;);</pre>
           </div>
         </div>
         <p>This will work, but it's an antipattern. </p>

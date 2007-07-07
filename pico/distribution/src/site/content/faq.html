@@ -98,8 +98,8 @@ public class MyComp {
   <div class="code">
     <div class="codeContent">
       <pre class="code-java">DefaultPicoContainer pico = new DefaultPicoContainer();
-pico.registerComponentImplementation(ThreadPool.class, DefaultThreadPool.class);
-pico.registerComponentImplementation(MyComp.class, MyComp.class, new Parameters[] {
+pico.addComponent(ThreadPool.class, DefaultThreadPool.class);
+pico.addComponent(MyComp.class, MyComp.class, new Parameters[] {
 	new ComponentParameter(),
 	new ConstantParameter(new Integer(5));
 })

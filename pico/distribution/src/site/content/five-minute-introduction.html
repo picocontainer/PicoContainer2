@@ -24,8 +24,8 @@
                 <div class="code">
                   <div class="codeContent">
                     <pre class="code-java">MutablePicoContainer pico = new DefaultPicoContainer();
-pico.registerComponentImplementation(ArrayList.class);
-List list = (List) pico.getComponentInstance(ArrayList.class);</pre>
+pico.addComponent(ArrayList.class);
+List list = (List) pico.getComponent(ArrayList.class);</pre>
                   </div>
                 </div>
                 <p>&nbsp;</p>
@@ -112,9 +112,9 @@ List list = (List) pico.getComponentInstance(ArrayList.class);</pre>
                 <div class="code">
                   <div class="codeContent">
                     <pre class="code-java">MutablePicoContainer pico = new DefaultPicoContainer();
-pico.registerComponentImplementation(Apple.class);
-pico.registerComponentImplementation(Juicer.class);
-pico.registerComponentImplementation(Peeler.class);</pre>
+pico.addComponent(Apple.class);
+pico.addComponent(Juicer.class);
+pico.addComponent(Peeler.class);</pre>
                   </div>
                 </div>
                 <p>&nbsp;</p>
@@ -123,7 +123,7 @@ pico.registerComponentImplementation(Peeler.class);</pre>
                 <p>You can tell PicoContainer to give you an instance of a class like this (provided it has been registered previously):</p>
                 <div class="code">
                   <div class="codeContent">
-                    <pre class="code-java">Juicer juicer = (Juicer) pico.getComponentInstance(Juicer.class);</pre>
+                    <pre class="code-java">Juicer juicer = (Juicer) pico.getComponent(Juicer.class);</pre>
                   </div>
                 </div>
                 <p>&nbsp;</p>
@@ -153,16 +153,16 @@ MutablePicoContainer y = new DefaultPicoContainer( x );
 MutablePicoContainer z = new DefaultPicoContainer( x );
 
 // Assemble components
-x.registerComponentImplementation(Apple.class);
-y.registerComponentImplementation(Juicer.class);
-z.registerComponentImplementation(Peeler.class);
+x.addComponent(Apple.class);
+y.addComponent(Juicer.class);
+z.addComponent(Peeler.class);
 
 // Instantiate components
-Peeler peeler = (Peeler) z.getComponentInstance(Peeler.class);
+Peeler peeler = (Peeler) z.getComponent(Peeler.class);
 // WON'T WORK! peeler will be null
-peeler = (Peeler) x.getComponentInstance(Peeler.class);
+peeler = (Peeler) x.getComponent(Peeler.class);
 // WON'T WORK! This will throw an exception
-Juicer juicer = (Juicer) y.getComponentInstance(Juicer.class);</pre>
+Juicer juicer = (Juicer) y.getComponent(Juicer.class);</pre>
                   </div>
                 </div>
                 <p>&nbsp;</p>
@@ -211,7 +211,7 @@ Juicer juicer = (Juicer) y.getComponentInstance(Juicer.class);</pre>
                     <pre class="code-java">MutablePicoContainer parent = new DefaultPicoContainer();
 MutablePicoContainer child = new DefaultPicoContainer(parent);
 // We must let the parent container know about the child container.
-parent.registerComponentInstance(child);
+parent.addComponent(child);
 // This will start the parent, which will start the child.
 parent.start();</pre>
                   </div>
@@ -221,10 +221,10 @@ parent.start();</pre>
                 <div class="code">
                   <div class="codeContent">
                     <pre class="code-java">MutablePicoContainer parent = new DefaultPicoContainer();
-parent.registerComponentImplementation("child", DefaultPicoContainer);
+parent.addComponent("child", DefaultPicoContainer);
 // This will instantiate the child container passing the parent (itself) as parent container.
 // No need to register the child in the parent here.
-MutablePicoContainer child = (MutablePicoContainer ) parent.getComponentInstance("child");
+MutablePicoContainer child = (MutablePicoContainer ) parent.getComponent("child");
 // This will start the parent, which will start the child.
 parent.start();</pre>
                   </div>
