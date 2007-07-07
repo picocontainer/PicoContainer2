@@ -15,15 +15,20 @@
 			<artifactId>picocontainer</artifactId>
 		</dependency>
 		<!-- For proxy -->
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+            <scope>provided</scope>                        
+        </dependency>
 		<dependency>
 			<groupId>proxytoys</groupId>
 			<artifactId>proxytoys</artifactId>
-            <optional>true</optional>
+            <scope>provided</scope>                        
 		</dependency>
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
-            <optional>true</optional>
+            <scope>provided</scope>                        
 		</dependency>
 		<!-- For monitors -->
 		<dependency>
@@ -46,12 +51,6 @@
             <groupId>${pom.groupId}</groupId>
             <artifactId>picocontainer-tck</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>asm</groupId>
-            <artifactId>asm</artifactId>
-            <version>3.0</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
