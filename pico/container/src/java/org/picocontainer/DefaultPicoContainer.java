@@ -31,6 +31,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Properties;
+import java.util.Enumeration;
 
 /**
  * <p/>
@@ -81,7 +83,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private final Set<Integer> childrenStarted = new HashSet<Integer>();
 
     private LifecycleStrategy lifecycleStrategy;
-    private final ComponentCharacteristics componentCharacteristics = new ComponentCharacteristics();
+    private final java.util.Properties componentProperties = new java.util.Properties();
     private ComponentMonitor componentMonitor;
 
     /** List collecting the CAs which have been successfully started */
@@ -295,8 +297,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (implOrInstance instanceof String) {
             addComponent((String) implOrInstance, implOrInstance);
         }
-        if (implOrInstance instanceof CharacterizedObject) {
-            CharacterizedObject co = (CharacterizedObject)implOrInstance;
+        if (implOrInstance instanceof ObjectHasProperties) {
+            ObjectHasProperties co = (ObjectHasProperties)implOrInstance;
             if (co.implOrInst instanceof Class) {
                 clazz = (Class)co.implOrInst;
             } else {
@@ -317,26 +319,25 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      */
     public MutablePicoContainer addComponent(Object componentKey,
                                              Object componentImplementationOrInstance,
-                                             Parameter... parameters)
-    {
-        ComponentCharacteristics characteristics = this.componentCharacteristics;
-        if (componentImplementationOrInstance instanceof CharacterizedObject) {
-            characteristics = ((CharacterizedObject)componentImplementationOrInstance).characteristics;
-            componentImplementationOrInstance = ((CharacterizedObject)componentImplementationOrInstance).implOrInst;
+                                             Parameter... parameters) {
+        java.util.Properties properties = this.componentProperties;
+        if (componentImplementationOrInstance instanceof ObjectHasProperties) {
+            properties = ((ObjectHasProperties)componentImplementationOrInstance).properties;
+            componentImplementationOrInstance = ((ObjectHasProperties)componentImplementationOrInstance).implOrInst;
         }
         if (parameters != null && parameters.length == 0 && parameters != Parameter.ZERO) {
             parameters = null; // backwards compatibility!  solve this better later - Paul
         }
         if (componentImplementationOrInstance instanceof Class) {
-            ComponentCharacteristics tmpComponentCharacteristics = characteristics.clone();
+            Properties tmpProperties = (Properties) properties.clone();
             ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(componentMonitor,
                                                                                                lifecycleStrategy,
-                                                                                               tmpComponentCharacteristics,
+                                                                                               tmpProperties,
                                                                                                componentKey,
                                                                                                (Class)componentImplementationOrInstance,
                                                                                                parameters);
-            if(tmpComponentCharacteristics.hasUnProcessedEntries()) {
-                throw new PicoCompositionException("Unprocessed Characteristics:" + tmpComponentCharacteristics);
+            if(tmpProperties.size() > 0) {
+                throw new PicoCompositionException("Unprocessed Characteristics:" + tmpProperties);
             }
             return addAdapter(componentAdapter);
         } else {
@@ -346,8 +347,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
     }
 
-    protected ComponentCharacteristics getComponentCharacteristic() {
-        return componentCharacteristics;
+    protected Properties getComponentCharacteristic() {
+        return componentProperties;
     }
 
     private void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
@@ -579,15 +580,19 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return result;
     }
 
-    public MutablePicoContainer change(ComponentCharacteristics... characteristics) {
-        for (ComponentCharacteristics c : characteristics) {
-            c.mergeInto(this.componentCharacteristics);
+    public MutablePicoContainer change(java.util.Properties... properties) {
+        for (Properties c : properties) {
+            Enumeration e = c.propertyNames();
+            while (e.hasMoreElements()) {
+                String s = (String)e.nextElement();
+                componentProperties.setProperty(s,c.getProperty(s));
+            }
         }
         return this;
     }
 
-    public MutablePicoContainer as(ComponentCharacteristics... characteristics) {
-        return new TemporaryCharacterizedPicoContainer(characteristics);
+    public MutablePicoContainer as(java.util.Properties... properties) {
+        return new TemporaryCharacterizedPicoContainer(properties);
     }
 
     public void accept(PicoVisitor visitor) {
@@ -698,9 +703,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
     private class TemporaryCharacterizedPicoContainer extends AbstractDelegatingMutablePicoContainer {
-        private final ComponentCharacteristics[] characteristics;
+        private final Properties[] characteristics;
 
-        public TemporaryCharacterizedPicoContainer(ComponentCharacteristics... characteristics) {
+        public TemporaryCharacterizedPicoContainer(Properties... characteristics) {
             super(DefaultPicoContainer.this);
             this.characteristics = characteristics;
         }
@@ -723,24 +728,28 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
 
 
-        private CharacterizedObject makeCharacterizedImplOrInstance(Object componentImplementationOrInstance) {
-            ComponentCharacteristics tempCharacteristics = (ComponentCharacteristics)componentCharacteristics.clone();
-            for (ComponentCharacteristics c : characteristics) {
-                c.mergeInto(tempCharacteristics);
+        private ObjectHasProperties makeCharacterizedImplOrInstance(Object componentImplementationOrInstance) {
+            java.util.Properties tempProperties = (java.util.Properties) componentProperties.clone();
+            for (Properties c : characteristics) {
+                Enumeration e = c.propertyNames();
+                while (e.hasMoreElements()) {
+                    String s = (String)e.nextElement();
+                    tempProperties.setProperty(s,c.getProperty(s));
+                }
             }
-            return new CharacterizedObject(tempCharacteristics, componentImplementationOrInstance);
+            return new ObjectHasProperties(tempProperties, componentImplementationOrInstance);
         }
 
     }
 
-    private static class CharacterizedObject {
-        private final ComponentCharacteristics characteristics;
+    private static class ObjectHasProperties {
+        private final Properties properties;
         private final Object implOrInst;
 
-        public CharacterizedObject(ComponentCharacteristics tempCharacteristics,
+        public ObjectHasProperties(Properties tempProperties,
                                    Object componentImplementationOrInstance)
         {
-            characteristics = tempCharacteristics;
+            properties = tempProperties;
             implOrInst = componentImplementationOrInstance;
         }
     }

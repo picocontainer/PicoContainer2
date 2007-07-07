@@ -10,7 +10,6 @@
 package org.picocontainer.containers;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -21,6 +20,7 @@ import org.picocontainer.PicoCompositionException;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * @author Paul Hammant
@@ -128,11 +128,11 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
         return delegate.equals(obj) || this == obj;
     }
 
-    public MutablePicoContainer change(ComponentCharacteristics... characteristics) {
-        return delegate.change(characteristics);
+    public MutablePicoContainer change(Properties... properties) {
+        return delegate.change(properties);
     }
 
-    public MutablePicoContainer as(ComponentCharacteristics... characteristics) {
-        return delegate.as(characteristics);
+    public MutablePicoContainer as(Properties... properties) {
+        return delegate.as(properties);
     }
 }

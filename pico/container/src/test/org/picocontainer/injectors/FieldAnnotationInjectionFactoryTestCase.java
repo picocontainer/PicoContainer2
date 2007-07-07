@@ -11,12 +11,12 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentAdapter;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Properties;
 
 import junit.framework.TestCase;
 import com.thoughtworks.xstream.XStream;
@@ -33,7 +33,7 @@ public class FieldAnnotationInjectionFactoryTestCase extends TestCase {
         FieldAnnotationInjectionFactory injectionFactory = new FieldAnnotationInjectionFactory();
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
-        ComponentAdapter ca = injectionFactory.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new ComponentCharacteristics(), Map.class, HashMap.class, Parameter.DEFAULT);
+        ComponentAdapter ca = injectionFactory.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new Properties(), Map.class, HashMap.class, Parameter.DEFAULT);
         
         XStream xs = new XStream();
         //xs.alias("CCM", ConsoleComponentMonitor.class);

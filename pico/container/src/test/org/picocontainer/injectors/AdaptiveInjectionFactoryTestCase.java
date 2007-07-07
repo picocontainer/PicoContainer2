@@ -20,7 +20,6 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.injectors.FieldAnnotationInjectorTestCase;
 import org.picocontainer.injectors.MethodAnnotationInjectorTestCase;
@@ -33,6 +32,7 @@ import org.picocontainer.testmodel.Touchable;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Properties;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -100,7 +100,7 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTe
         ComponentFactory cf = createComponentFactory();
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
-        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new ComponentCharacteristics(),
+        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new Properties(),
                                                         Map.class, HashMap.class, Parameter.DEFAULT);
         
         String foo = xs.toXML(ca).replace("\"","");
@@ -120,7 +120,7 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTe
         ComponentFactory cf = createComponentFactory();
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
-        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new ComponentCharacteristics(),
+        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new Properties(),
                                                         FieldAnnotationInjectorTestCase.Helicopter.class, FieldAnnotationInjectorTestCase.Helicopter.class, Parameter.DEFAULT);
 
         String foo = xs.toXML(ca).replace("\"","");
@@ -140,7 +140,7 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTe
         ComponentFactory cf = createComponentFactory();
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
-        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new ComponentCharacteristics(),
+        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new Properties(),
                                                         MethodAnnotationInjectorTestCase.AnnotatedBurp.class, MethodAnnotationInjectorTestCase.AnnotatedBurp.class, Parameter.DEFAULT);
 
         String foo = xs.toXML(ca).replace("\"","");

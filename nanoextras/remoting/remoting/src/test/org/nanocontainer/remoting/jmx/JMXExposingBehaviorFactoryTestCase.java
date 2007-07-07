@@ -17,10 +17,11 @@ import org.nanocontainer.remoting.jmx.testmodel.DynamicMBeanPerson;
 import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Characterizations;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+
+import java.util.Properties;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -57,10 +58,7 @@ public class JMXExposingBehaviorFactoryTestCase extends MockObjectTestCase {
                 (MBeanServer)mockMBeanServer.proxy());
         componentFactory.forThis(new ConstructorInjectionFactory());
 
-        final ComponentCharacteristics rc = new ComponentCharacteristics() {
-        };
-
-        Characterizations.NOJMX.mergeInto(rc);
+        final Properties rc = new Properties(Characterizations.NOJMX);
 
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
                 new NullComponentMonitor(), new NullLifecycleStrategy(), rc, PersonMBean.class, DynamicMBeanPerson.class, null);

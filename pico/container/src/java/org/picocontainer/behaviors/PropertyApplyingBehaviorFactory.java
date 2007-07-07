@@ -13,11 +13,12 @@ package org.picocontainer.behaviors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.behaviors.PropertyApplyingBehavior;
+
+import java.util.Properties;
 
 /**
  * A {@link org.picocontainer.ComponentFactory} that creates
@@ -31,9 +32,9 @@ public final class PropertyApplyingBehaviorFactory extends AbstractBehaviorFacto
     /**
      * {@inheritDoc}
      */
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
         ComponentAdapter decoratedAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                                                         componentCharacteristics, componentKey, componentImplementation, parameters);
+                                                                         componentProperties, componentKey, componentImplementation, parameters);
         return new PropertyApplyingBehavior(decoratedAdapter);
     }
 

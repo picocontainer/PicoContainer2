@@ -23,7 +23,6 @@ import org.nanocontainer.testmodel.X;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentFactory;
@@ -34,11 +33,11 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.injectors.SetterInjectionFactory;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
 
 import java.io.File;
 import java.net.URLClassLoader;
 import java.net.URL;
+import java.util.Properties;
 
 /**
  *
@@ -277,7 +276,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         A a = new A();
         Mock componentFactoryMock = mock(ComponentFactory.class);
         componentFactoryMock.expects(once()).method("createComponentAdapter").with(new Constraint[] { isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(
-            ComponentCharacteristics.class), same(A.class), same(A.class), eq(null)}).will(returnValue(new InstanceAdapter(A.class, a, NullLifecycleStrategy.getInstance(),
+            Properties.class), same(A.class), same(A.class), eq(null)}).will(returnValue(new InstanceAdapter(A.class, a, NullLifecycleStrategy.getInstance(),
                                                                         NullComponentMonitor.getInstance())));
         ComponentFactory componentFactory = (ComponentFactory) componentFactoryMock.proxy();
         PicoContainer pico = buildContainer(script, null, componentFactory);

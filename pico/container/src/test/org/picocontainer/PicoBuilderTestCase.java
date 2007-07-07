@@ -21,6 +21,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Properties;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
@@ -40,7 +41,7 @@ public class PicoBuilderTestCase extends TestCase {
         xs.registerConverter(new Converter() {
             public boolean canConvert(Class aClass) {
                 return aClass.getName().equals("org.picocontainer.DefaultPicoContainer$1") ||
-                       aClass.getName().equals("org.picocontainer.ComponentCharacteristics") ||
+                       aClass.getName().equals("org.picocontainer.Properties") ||
                        aClass == Boolean.class ||
                        aClass == HashSet.class ||
                        aClass == ArrayList.class;
@@ -318,7 +319,7 @@ public class PicoBuilderTestCase extends TestCase {
 
         public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                        LifecycleStrategy lifecycleStrategy,
-                                                       ComponentCharacteristics componentCharacteristics,
+                                                       Properties componentProperties,
                                                        Object componentKey,
                                                        Class componentImplementation,
                                                        Parameter... parameters) throws PicoCompositionException {
@@ -368,7 +369,7 @@ public class PicoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n    delegate\n","\n");
         foo = foo.replaceAll("\n      delegate\n","\n");
         foo = foo.replaceAll("\n  componentCharacteristic class=\"org.picocontainer.DefaultPicoContainer$1\"","");
-        foo = foo.replaceAll("\n  componentCharacteristics","");
+        foo = foo.replaceAll("\n  componentProperties","");
         foo = foo.replaceAll("\n  componentKeyToAdapterCache","");
         foo = foo.replaceAll("\n    startedComponentAdapters","");
         foo = foo.replaceAll("\"class=","\"\nclass=");

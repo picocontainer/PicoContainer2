@@ -12,7 +12,6 @@ package org.picocontainer.behaviors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characterizations;
@@ -24,20 +23,21 @@ import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
-                                                   ComponentCharacteristics componentCharacteristics,
+                                                   Properties componentProperties,
                                                    Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
         List<ComponentFactory> list = new ArrayList<ComponentFactory>();
         ComponentFactory lastFactory = makeInjectionFactory();
-        processThreadSafe(componentCharacteristics, list);
-        processImplementationHiding(componentCharacteristics, list);
-        processCachedInstance(componentCharacteristics, componentImplementation, list);
+        processThreadSafe(componentProperties, list);
+        processImplementationHiding(componentProperties, list);
+        processCachedInstance(componentProperties, componentImplementation, list);
 
         //Instantiate Chain of ComponentFactories
         for (ComponentFactory componentFactory : list) {
@@ -49,7 +49,7 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
 
         return lastFactory.createComponentAdapter(componentMonitor,
                                                   lifecycleStrategy,
-                                                  componentCharacteristics,
+                                                  componentProperties,
                                                   componentKey,
                                                   componentImplementation,
                                                   parameters);
@@ -59,24 +59,24 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
         return new AdaptiveInjectionFactory();
     }
 
-    protected void processThreadSafe(ComponentCharacteristics componentCharacteristics, List<ComponentFactory> list) {
-        if (Characterizations.THREAD_SAFE.setAsProcessedIfSoCharacterized(componentCharacteristics)) {
+    protected void processThreadSafe(Properties componentProperties, List<ComponentFactory> list) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties,Characterizations.THREAD_SAFE)) {
             list.add(new SynchronizedBehaviorFactory());
         }
     }
 
-    protected void processCachedInstance(ComponentCharacteristics componentCharacteristics,
+    protected void processCachedInstance(Properties componentProperties,
                                        Class componentImplementation,
                                        List<ComponentFactory> list) {
-        if (Characterizations.CACHE.setAsProcessedIfSoCharacterized(componentCharacteristics) ||
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties,Characterizations.CACHE) ||
             componentImplementation.getAnnotation(Cache.class) != null) {
             list.add(new CachingBehaviorFactory());
         }
     }
 
-    protected void processImplementationHiding(ComponentCharacteristics componentCharacteristics,
+    protected void processImplementationHiding(Properties componentProperties,
                                              List<ComponentFactory> list) {
-        if (Characterizations.HIDE.setAsProcessedIfSoCharacterized(componentCharacteristics)) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties,Characterizations.HIDE)) {
             list.add(new ImplementationHidingBehaviorFactory());
         }
     }

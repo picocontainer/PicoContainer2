@@ -15,11 +15,12 @@ import javax.management.MBeanServer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.Characterizations;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
+
+import java.util.Properties;
 
 
 /**
@@ -65,16 +66,16 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
     /**
      * Retrieve a {@link ComponentAdapter}. Wrap the instance retrieved by the delegate with an instance of a
      * {@link JMXExposingBehavior}.
-     * @see org.picocontainer.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristics,Object,Class,org.picocontainer.Parameter...)
+     * @see org.picocontainer.ComponentFactory#createComponentAdapter(ComponentMonitor,LifecycleStrategy,Properties,Object,Class,Parameter...)
      */
     public ComponentAdapter createComponentAdapter(
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter... parameters)
+            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException
     {
         final ComponentAdapter componentAdapter = super.createComponentAdapter(
                 componentMonitor, lifecycleStrategy,
-                componentCharacteristics, componentKey, componentImplementation, parameters);
-        if (Characterizations.NOJMX.setAsProcessedIfSoCharacterized(componentCharacteristics)) {
+                componentProperties, componentKey, componentImplementation, parameters);
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characterizations.NOJMX)) {
             return componentAdapter;            
         } else {
             return new JMXExposingBehavior(componentAdapter, mBeanServer, providers);

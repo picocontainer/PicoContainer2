@@ -13,9 +13,10 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+
+import java.util.Properties;
 
 public class PoolingBehaviorFactory extends AbstractBehaviorFactory {
 
@@ -29,10 +30,10 @@ public class PoolingBehaviorFactory extends AbstractBehaviorFactory {
         poolContext = new PoolingBehavior.DefaultContext();
     }
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter... parameters)
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                                                         componentCharacteristics, componentKey, componentImplementation, parameters);
+                                                                         componentProperties, componentKey, componentImplementation, parameters);
         PoolingBehavior behavior = new PoolingBehavior(componentAdapter, poolContext);
         //TODO
         //Characterizations.HIDE.setProcessedIn(componentCharacteristics);

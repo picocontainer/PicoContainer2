@@ -10,7 +10,6 @@
 package org.picocontainer.gems.containers;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -18,6 +17,7 @@ import org.picocontainer.PicoVisitor;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Properties;
 import java.io.Serializable;
 
 import org.apache.commons.logging.Log;
@@ -460,11 +460,11 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	        log = LogFactory.getLog(this.logCategory);
 	}
 
-    public MutablePicoContainer change(ComponentCharacteristics... characteristics) {
-        return delegate.change(characteristics);
+    public MutablePicoContainer change(Properties... properties) {
+        return delegate.change(properties);
     }
 
-    public MutablePicoContainer as(ComponentCharacteristics... characteristics) {
-        return delegate.as(characteristics);
+    public MutablePicoContainer as(Properties... properties) {
+        return delegate.as(properties);
     }
 }

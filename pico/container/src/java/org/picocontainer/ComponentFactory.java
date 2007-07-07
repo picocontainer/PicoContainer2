@@ -12,9 +12,10 @@ package org.picocontainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
+
+import java.util.Properties;
 
 /**
  * <p/>
@@ -36,27 +37,26 @@ public interface ComponentFactory {
      *
      * @param componentMonitor
      * @param lifecycleStrategy
-     * @param componentCharacteristics
-     * @param componentKey                the key to be associated with this adapter. This value should be returned
-     *                                    from a call to {@link org.picocontainer.ComponentAdapter#getComponentKey()} on the created adapter.
-     * @param componentImplementation     the implementation class to be associated with this adapter.
-     *                                    This value should be returned from a call to
-     *                                    {@link org.picocontainer.ComponentAdapter#getComponentImplementation()} on the created adapter. Should not
-     *                                    be null.
-     * @param parameters                  additional parameters to use by the component adapter in constructing
-     *                                    component instances. These may be used, for example, to make decisions about the
-     *                                    arguments passed into the component constructor. These should be considered hints; they
-     *                                    may be ignored by some implementations. May be null, and may be of zero length. @return a new component adapter based on the specified arguments. Should not return null. @throws PicoCompositionException if the creation of the component adapter results in a
-     *                                    {@link PicoCompositionException}.
-     * @return The component adapter
-     * @throws org.picocontainer.PicoCompositionException
-     *          if the creation of the component adapter results in a
-     *          {@link org.picocontainer.PicoCompositionException}.
-     * @throws PicoCompositionException
+     * @param componentProperties
+     * @param componentKey            the key to be associated with this adapter. This value should be returned
+     *                                from a call to {@link ComponentAdapter#getComponentKey()} on the created adapter.
+     * @param componentImplementation the implementation class to be associated with this adapter.
+     *                                This value should be returned from a call to
+     *                                {@link ComponentAdapter#getComponentImplementation()} on the created adapter. Should not
+     *                                be null.
+     * @param parameters              additional parameters to use by the component adapter in constructing
+     *                                component instances. These may be used, for example, to make decisions about the
+     *                                arguments passed into the component constructor. These should be considered hints; they
+     *                                may be ignored by some implementations. May be null, and may be of zero length.
+     *
+     * @return a new component adapter based on the specified arguments. Should not return null.
+     *
+     * @throws PicoCompositionException if the creation of the component adapter results in a
+     *                                  {@link PicoCompositionException}. @return The component adapter
      */
     ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                             LifecycleStrategy lifecycleStrategy,
-                                            ComponentCharacteristics componentCharacteristics,
+                                            Properties componentProperties,
                                             Object componentKey,
                                             Class componentImplementation,
                                             Parameter... parameters) throws PicoCompositionException;

@@ -13,16 +13,17 @@ import org.picocontainer.InjectionFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+
+import java.util.Properties;
 
 public class FieldAnnotationInjectionFactory implements InjectionFactory {
 
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
-                                                   ComponentCharacteristics componentCharacteristics,
+                                                   Properties componentProperties,
                                                    Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters)

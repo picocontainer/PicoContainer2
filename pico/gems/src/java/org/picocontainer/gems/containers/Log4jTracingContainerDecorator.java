@@ -11,7 +11,6 @@
 package org.picocontainer.gems.containers;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
@@ -22,6 +21,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -511,11 +511,11 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
         s.writeUTF(logger.getName());
     }
 
-    public MutablePicoContainer change(ComponentCharacteristics... characteristics) {
-        return delegate.change(characteristics);
+    public MutablePicoContainer change(Properties... properties) {
+        return delegate.change(properties);
     }
 
-    public MutablePicoContainer as(ComponentCharacteristics... characteristics) {
-        return delegate.as(characteristics);
+    public MutablePicoContainer as(Properties... properties) {
+        return delegate.as(properties);
     }
 }

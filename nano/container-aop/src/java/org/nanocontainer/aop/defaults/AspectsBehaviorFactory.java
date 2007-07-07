@@ -13,10 +13,11 @@ import org.nanocontainer.aop.AspectsApplicator;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
+
+import java.util.Properties;
 
 /**
  * Produces component adapters that apply aspects to components.
@@ -40,11 +41,11 @@ public class AspectsBehaviorFactory extends AbstractBehaviorFactory {
         this.aspectsApplicator = aspectsApplicator;
     }
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation,
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException
     {
         return new AspectsBehavior(aspectsApplicator, super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                                                                           componentCharacteristics, componentKey,
+                                                                                   componentProperties, componentKey,
                 componentImplementation, parameters));
     }
 

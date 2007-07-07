@@ -23,8 +23,6 @@ import org.picocontainer.PicoException;
 import org.picocontainer.CustomPermissionsURLClassLoader;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristics;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 
@@ -39,6 +37,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * This is a MutablePicoContainer that also supports soft composition. i.e. assembly by class name rather that class
@@ -347,8 +346,8 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     }
 
 
-    public MutablePicoContainer change(ComponentCharacteristics... characteristics) {
-        super.change(characteristics);
+    public MutablePicoContainer change(Properties... properties) {
+        super.change(properties);
         return this;
     }
 }

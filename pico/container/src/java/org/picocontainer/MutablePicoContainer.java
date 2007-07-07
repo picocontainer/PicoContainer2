@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import java.util.Properties;
+
 /**
  * This is the core interface used for registration of components with a container. It is possible to register
  * implementations and instances here
@@ -144,19 +146,17 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
     /**
      * You can change the characteristic of registration of all subsequent components in this container.
      *
-     * @param characteristics characteristics
-     *
+     * @param properties
      * @return the same Pico instance with changed characteritics
      */
-    MutablePicoContainer change(ComponentCharacteristics... characteristics);
+    MutablePicoContainer change(Properties... properties);
 
     /**
      * You can set for the following operation only the characteristic of registration of a component on the fly.
      *
-     * @param characteristics characteristics
-     *
+     * @param properties
      * @return the same Pico instance with temporary characteritics
      */
-    MutablePicoContainer as(ComponentCharacteristics... characteristics);
+    MutablePicoContainer as(Properties... properties);
 
 }

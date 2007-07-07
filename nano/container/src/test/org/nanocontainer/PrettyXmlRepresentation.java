@@ -4,7 +4,6 @@ import org.picocontainer.MutablePicoContainer;
 
 import java.util.HashSet;
 import java.util.ArrayList;
-import java.io.Reader;
 import java.io.LineNumberReader;
 import java.io.StringReader;
 import java.io.IOException;
@@ -25,7 +24,7 @@ public class PrettyXmlRepresentation {
         xs.registerConverter(new Converter() {
             public boolean canConvert(Class aClass) {
                 return aClass.getName().equals("org.picocontainer.DefaultPicoContainer$1") ||
-                       aClass.getName().equals("org.picocontainer.ComponentCharacteristics") ||
+                       aClass.getName().equals("java.util.Properties") ||
                        aClass == Boolean.class ||
                        aClass == HashSet.class ||
                        aClass == ArrayList.class;

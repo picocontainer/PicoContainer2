@@ -11,18 +11,17 @@ package org.nanocontainer.script.xml;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoClassNotFoundException;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.behaviors.PropertyApplyingBehavior;
 import org.picocontainer.ComponentFactory;
 
+import java.util.Properties;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import java.util.Properties;
 
 /**
  * Implementation of XMLComponentInstanceFactory that uses PropertyApplyingBehavior
@@ -45,7 +44,7 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
         } else {
             PropertyApplyingBehavior propertyAdapter =
                     new PropertyApplyingBehavior(createComponentAdapter(className, classLoader));
-            Properties properties = createProperties(element.getChildNodes());
+            java.util.Properties properties = createProperties(element.getChildNodes());
             propertyAdapter.setProperties(properties);
             instance = propertyAdapter.getComponentInstance(pico);
         }
@@ -55,7 +54,7 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
     private ComponentAdapter createComponentAdapter(String className, ClassLoader classLoader)  {
         Class implementation = loadClass(classLoader, className);
         ComponentFactory factory = new AdaptiveInjectionFactory();
-        return factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new ComponentCharacteristics(), className, implementation);
+        return factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), className, implementation);
     }
 
     private Class loadClass(final ClassLoader classLoader, final String className) {
@@ -66,8 +65,8 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
         }
     }
 
-    private Properties createProperties(NodeList nodes) {
-        Properties properties = new Properties();
+    private java.util.Properties createProperties(NodeList nodes) {
+        java.util.Properties properties = new java.util.Properties();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node n = nodes.item(i);
             if (n.getNodeType() == Node.ELEMENT_NODE) {

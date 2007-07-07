@@ -12,13 +12,13 @@ package org.nanocontainer.remoting.ejb;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Hashtable;
+import java.util.Properties;
 
 import javax.naming.InitialContext;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.LifecycleStrategy;
@@ -67,7 +67,7 @@ public class EJBClientBehaviorFactory implements ComponentFactory {
     }
 
     public ComponentAdapter createComponentAdapter(
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
+            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
             throws PicoCompositionException
     {
         return createComponentAdapter(componentKey.toString(), componentImplementation);
@@ -77,7 +77,7 @@ public class EJBClientBehaviorFactory implements ComponentFactory {
      * Creates a {@link ComponentAdapter} for EJB objects.
      * @param componentKey the key used to lookup the {@link InitialContext}.
      * @param componentImplementation the home interface.
-     * @see org.picocontainer.ComponentFactory#createComponentAdapter(org.picocontainer.ComponentMonitor,org.picocontainer.LifecycleStrategy,org.picocontainer.ComponentCharacteristics,Object,Class,org.picocontainer.Parameter...)
+     * @see ComponentFactory#createComponentAdapter(ComponentMonitor,LifecycleStrategy,Properties,Object,Class,Parameter...)
      * @return Returns the created {@link ComponentAdapter}
      * @throws PicoCompositionException if the home interface of the EJB could not instanciated
      */

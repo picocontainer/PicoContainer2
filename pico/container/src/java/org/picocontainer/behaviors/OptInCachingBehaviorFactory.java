@@ -13,12 +13,13 @@ package org.picocontainer.behaviors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentCharacteristics;
 import org.picocontainer.Characterizations;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.LifecycleStrategy;
+
+import java.util.Properties;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -27,18 +28,18 @@ import org.picocontainer.LifecycleStrategy;
  */
 public class OptInCachingBehaviorFactory extends AbstractBehaviorFactory {
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, ComponentCharacteristics componentCharacteristics, Object componentKey, Class componentImplementation, Parameter... parameters)
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException
     {
-        if (Characterizations.CACHE.setAsProcessedIfSoCharacterized(componentCharacteristics)) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties,Characterizations.CACHE)) {
             return new CachingBehavior(super.createComponentAdapter(componentMonitor,
                                                                                         lifecycleStrategy,
-                                                                                        componentCharacteristics,
+                                                                                        componentProperties,
                                                                                         componentKey,
                                                                                         componentImplementation,
                                                                                         parameters));
         }
         return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                            componentCharacteristics, componentKey, componentImplementation, parameters);
+                                            componentProperties, componentKey, componentImplementation, parameters);
     }
 }
