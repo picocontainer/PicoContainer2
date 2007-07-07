@@ -139,7 +139,7 @@ return juicer;</pre>
                 <p>&nbsp;</p>
                 <p><img class="emoticon" src="/images/icons/emoticons/information.gif" height="16" width="16" align="absmiddle" alt="" border="0"/> Note how PicoContainer figures out that Apple is a Peelable, so that it can be passed to Peeler and Juicer's constructors.</p>
                 <h2><a name="Fiveminuteintroduction-Containerhierarchies"></a>Container hierarchies</h2>
-                <p>PicoContainer provides a powerful alternative to the <a href="singleton-antipattern.html" title="Singleton">Singleton</a>. With container hierarchies you can create singleton-like objects where you have fine grained control over the visibility scope of the instance. (The singleton pattern is static and global - it won't allow more than one instance, and it is visible from anywhere. Not nice).</p>
+                <p>PicoContainer provides a powerful alternative to the <a href="singleton-antipattern.html" title="Singleton">Singleton</a>. With container hierarchies you can create singleton-like objects where you have fine grained control over the visibility scope of the instance. (The singleton pattern is static and global - it won't allow more than one instance, and it is visible from anywhere. Not nice when you try to build a large enterprise application from it).</p>
                 <p><img src="/download/attachments/100/pico-hierarchy.png" align="absmiddle" border="0" /></p>
                 <p>A container (and its registered components) can get access to components registered in a parent container, but not vice-versa. Consider this example, using the classes from above:</p>
                 <p><img class="emoticon" src="/images/icons/emoticons/warning.gif" height="16" width="16" align="absmiddle" alt="" border="0"/><br/>
@@ -229,8 +229,40 @@ MutablePicoContainer child = (MutablePicoContainer ) parent.getComponent("child"
 parent.start();</pre>
                   </div>
                 </div>
+				<p><img class="emoticon" src="/images/icons/emoticons/warning.gif" height="16" width="16" align="absmiddle" alt="" border="0"/> Calling lifecycle methods on a container that has a parent container will <b>not</b> propagate the lifecycle to the parent container.</p>
+				<div id="bodyColumn">
+<div id="contentBox">
+<div class="section">
+
+<h3>Contrasting Usage Styles </h3>
+<p>With PicoContainer you add components and get instances out in two styles. </p>
+<p>Classic bean style: </p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer();
+pico.addComponent(ComponentOneImpl.class) // by type
+pico.addComponent(ComponentTwoImpl.class) // by type
+pico.addComponent(new ComponentThreeImpl()) // by instance
+pico.addComponent(ComponentFourImpl.class) // by type
+
+ComponentFourImpl four = pico.getComponent(ComponentFourImpl.class);
+</pre></div>
+<p>Or you  can use a <a href="http://www.martinfowler.com/bliki/FluentInterface.html">fluent</a> style if you want:</p>
+<div class="source">
+  <pre>
+ComponentFour four = new DefaultPicoContainer()
+    .addComponent(ComponentOne.class)
+    .addComponent(ComponentTwo.class)
+    .addComponent(new ComponentThree())
+    .addComponent(ComponentFour.class)
+    .getComponent(ComponentFour.class);</pre>
+</div>
+
+</div>
+</div>
+</div>
                 
-                <p><img class="emoticon" src="/images/icons/emoticons/warning.gif" height="16" width="16" align="absmiddle" alt="" border="0"/> Calling lifecycle methods on a container that has a parent container will <b>not</b> propagate the lifecycle to the parent container.</p>
+                
                 
               </div>
               <div class="wiki-content" style="margin-right:10px;">
