@@ -30,11 +30,11 @@
     </section>
     <section>
          <name>Anti-patterns</name>
-         <page>propagating-dependency-antipattern.html</page>
-         <page>long-constructor-argument-list-antipattern.html</page>
-         <page>container-dependency-antipattern.html</page>
-         <page>tests-use-container-antipattern.html</page>
-         <page>singleton-antipattern.html</page>
+         <page>antipatterns/propagating-dependency-antipattern.html</page>
+         <page>antipatterns/long-constructor-argument-list-antipattern.html</page>
+         <page>antipatterns/container-dependency-antipattern.html</page>
+         <page>antipatterns/tests-use-container-antipattern.html</page>
+         <page>antipatterns/singleton-antipattern.html</page>
     </section>
     <section>
          <name>History</name>
