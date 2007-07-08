@@ -17,8 +17,8 @@
        the container so it can look up that A:</p>
 
     <div class="source">
-        <div class="codeContent">
-            <pre class="code-java">public interface A {
+        <div>
+            <pre>public interface A {
 }
 
 public class AImpl implements A {
@@ -41,8 +41,8 @@ public class BImpl implements B {
     <p>It can be used in the following way:</p>
 
     <div class="source">
-        <div class="codeContent">
-            <pre class="code-java">MutablePicoContainer pico = new DefaultPicoContainer();
+        <div>
+            <pre>MutablePicoContainer pico = new DefaultPicoContainer();
 pico.addComponent(&quot;a&quot;, AImpl.class);
 pico.addComponent(&quot;b&quot;, BImpl.class);
 pico.addComponent(pico);
@@ -75,8 +75,8 @@ B b = (B) pico.getComponent(&quot;b&quot;);</pre>
        Here is how it should be:</p>
 
     <div class="source">
-        <div class="codeContent">
-            <pre class="code-java">public class BImpl implements B {
+        <div>
+            <pre>public class BImpl implements B {
     private final A a;
 
     BImpl(A a) {

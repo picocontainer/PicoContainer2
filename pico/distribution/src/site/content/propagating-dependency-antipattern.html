@@ -15,8 +15,8 @@
        itself. For example:</p>
 
     <div class="source">
-        <div class="codeContent">
-            <pre class="code-java">public class AControllerImpl implements AController {
+        <div>
+            <pre>public class AControllerImpl implements AController {
 
     private SomeService service;
     private int someId;
@@ -55,8 +55,8 @@
     <p>TODO: This is maybe a little contrieved for this example. Maybe remove or simplify. (AH).</p>
 
     <div class="source">
-        <div class="codeContent">
-            <pre class="code-java">public class AControllerImpl implements AController {
+        <div>
+            <pre>public class AControllerImpl implements AController {
 
     private AnotherControllerFactory anotherControllerFactory;
     private int someId;
@@ -78,8 +78,8 @@
     <p>'AnotherControllerFactory' is an interface:</p>
 
     <div class="source">
-        <div class="codeContent">
-            <pre class="code-java">public interface AnotherControllerFactory {
+        <div>
+            <pre>public interface AnotherControllerFactory {
     AnotherController createAnotherController(int someId);
 }</pre>
         </div>
@@ -87,8 +87,8 @@
     <p>It can be implemented as follows::</p>
 
     <div class="source">
-        <div class="codeContent">
-            <pre class="code-java">public class AnotherControllerFactoryImpl implements AnotherControllerFactory {
+        <div>
+            <pre>public class AnotherControllerFactoryImpl implements AnotherControllerFactory {
     private SomeService service;
 
     public AnotherControllerFactoryImpl(SomeService service) {
