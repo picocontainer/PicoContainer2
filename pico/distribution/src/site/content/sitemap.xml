@@ -39,5 +39,10 @@
     <section>
          <name>History</name>
          <page>inversion-of-control-history.html</page>
+    </section>
+    <section>
+         <name>Project Info</name>
+         <page>project.html</page>
+         <page>team.html</page>
      </section>
 </sitemap>
