@@ -140,7 +140,7 @@ return juicer;</pre>
                 <p><img class="emoticon" src="/images/icons/emoticons/information.gif" height="16" width="16" align="absmiddle" alt="" border="0"/> Note how PicoContainer figures out that Apple is a Peelable, so that it can be passed to Peeler and Juicer's constructors.</p>
                 <h2><a name="Fiveminuteintroduction-Containerhierarchies"></a>Container hierarchies</h2>
                 <p>PicoContainer provides a powerful alternative to the <a href="singleton-antipattern.html" title="Singleton">Singleton</a>. With container hierarchies you can create singleton-like objects where you have fine grained control over the visibility scope of the instance. (The singleton pattern is static and global - it won't allow more than one instance, and it is visible from anywhere. Not nice when you try to build a large enterprise application from it).</p>
-                <p><img src="/download/attachments/100/pico-hierarchy.png" align="absmiddle" border="0" /></p>
+                <p><img src="images/pico-hierarchy.png" align="absmiddle" border="0" /></p>
                 <p>A container (and its registered components) can get access to components registered in a parent container, but not vice-versa. Consider this example, using the classes from above:</p>
                 <p><img class="emoticon" src="/images/icons/emoticons/warning.gif" height="16" width="16" align="absmiddle" alt="" border="0"/><br/>
                   THIS WON'T WORK&#33; It is for illustration purposes only&#33;<br/>
@@ -167,7 +167,7 @@ Juicer juicer = (Juicer) y.getComponent(Juicer.class);</pre>
                 </div>
 
                 <p>This can be visualised as follows:<br/>
-                  <img src="/download/attachments/100/juicer-in-pico-hierarchy.png" align="absmiddle" border="0" /></p>
+                  <img src="images/juicer-in-pico-hierarchy.png" align="absmiddle" border="0" /></p>
                 <p>Let's analyse what will happen here:</p>
                 <ul>
                   <li>Line 12 will work fine. c will be able to resolve the dependencies for Peeler (which is Fruit) from the parent container.</li>
@@ -186,8 +186,8 @@ Juicer juicer = (Juicer) y.getComponent(Juicer.class);</pre>
                       <th> PicoContainer.stop() </th>
                     </tr>
                     <tr>
-                      <td><img src="/download/attachments/100/start-container.png" align="absmiddle" border="0" /> </td>
-                      <td><img src="/download/attachments/100/stop-container.png" align="absmiddle" border="0" /> </td>
+                      <td><img src="images/start-container.png" align="absmiddle" border="0" /> </td>
+                      <td><img src="images/stop-container.png" align="absmiddle" border="0" /> </td>
                     </tr>
                   </tbody>
                 </table>
@@ -199,8 +199,8 @@ Juicer juicer = (Juicer) y.getComponent(Juicer.class);</pre>
                       <th> PicoContainer.stop() </th>
                     </tr>
                     <tr>
-                      <td><img src="/download/attachments/100/start-hierarchy.png" align="absmiddle" border="0" /> </td>
-                      <td><img src="/download/attachments/100/stop-hierarchy.png" align="absmiddle" border="0" /> </td>
+                      <td><img src="images/start-hierarchy.png" align="absmiddle" border="0" /> </td>
+                      <td><img src="images/stop-hierarchy.png" align="absmiddle" border="0" /> </td>
                     </tr>
                   </tbody>
                 </table>
