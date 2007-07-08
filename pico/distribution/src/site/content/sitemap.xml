@@ -38,7 +38,6 @@
     </section>
     <section>
          <name>History</name>
-         <page>contextualized-lookup.html</page>
          <page>inversion-of-control-history.html</page>
      </section>
 </sitemap>

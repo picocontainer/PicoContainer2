@@ -84,7 +84,50 @@
               </tr>
             </tbody>
           </table>
-          <p>Avalon is a <a href="contextualized-lookup.html" title="Contextualized Lookup">Contextualized Lookup</a> IoC design. Its flaw is that components written for it cannot be used without an Avalon Framework compatible container. Many say that the XML that has to accompany each component is also a flaw. Unit testing of Avalon components is very difficult because it is difficult to manage the components from JUnit.</p>
+          <p>Avalon is a Contextualized Lookup IoC design. </p>
+          <div>
+    <h2><a name="ContextualizedLookup-Example" id="ContextualizedLookup-Example"></a>Example</h2>
+
+    <div class="source">
+        <div>
+            <pre>import org.apache.avalon.framework.ServiceManager;
+import org.apache.avalon.framework.Serviceable;
+import org.apache.avalon.framework.ServiceException;
+
+public class Shop implements Serviceable, Initializable {
+    StockManager stockManager;
+    String shopZipCode;
+    public void service(ServiceManager sm) throws ServiceException {
+        stockManager = (StockManager) sm.lookup(&quot;StockManager&quot;);
+    }
+    public void initialize() {
+        // all service()ing has been done.
+    }
+}</pre>
+        </div>
+    </div>
+    <p>A component has to have service (component) declarations in an external file. The  <a href="http://loom.codehaus.org/">Loom</a>  container (forked from
+       <a href="http://www.axint.net/apache/avalon/phoenix/v4.0.2/">Phoenix</a>) has .xinfo files for each component to meet such needs. All Avalon container have some mechanism for storing
+       configuration and assembly externally to the class. Cross referenced against the xinfo files, Loom's assembly.xml
+       defines the implementations to be used for component types. Thus all Avalon components must be
+       interface/implementation separated. Another Avalon using server technology is <a href="http://www.keelframework.org/">Keel</a>. </p>
+
+    <div>
+        <h3><a name="ContextualizedLookup-UsingContextualizedDependencyLookupComponentsWithoutaContainer."
+               id="ContextualizedLookup-UsingContextualizedDependencyLookupComponentsWithoutaContainer."></a>Using
+                                                                                                             <em>Contextualized
+                                                                                                             Dependency
+                                                                                                             Lookup</em>            Components
+            Without a
+            Container.</h3>
+
+        <p>The downside of the this design is that components can only be used without the container with great
+           difficulty. If at all. Thus a proper container is needed at all times, and you have to choose one for
+           different purposes. If you do manage to instantiate components without a container, you might miss one of the
+           essential service dependencies. The component-using class will continue to compile, but at run time it will
+           be apparent that there are missing dependencies. Because of the these complexities, unit testing with frameworks like <a href="http://www.junit.org/index.htm">JUnit</a>  is very difficult for of Avalon components. </p>
+    </div>
+</div>
         </div>
       </div>
       <div>
@@ -93,7 +136,7 @@
         <div>
           <h3><a name="comparison-EnterpriseJavaBeans" id="comparison-EnterpriseJavaBeans"></a>Enterprise Java Beans</h3>
           <p>Clearly Entity and Session beans run inside a container. The API is well defined, and to varying degrees of success one can deploy EJB appllications to WebLogic, WebSphere, Orion and JBoss etc. For assembly and configuration, there is high use of element-normal XML . There are some mandated parent objects and interfaces for various to extend and/or implement. Resolution is done by the components themselves via JNDI more often than not.</p>
-          <p>PicoComponents are simpler in they they do not force an extensive XML markup, nor require the implementing of certaing interfaces or extening base classes. Quite importantly the relationship between factory (home), implementation (bean) and interface (remote) parts is much more real in PicoComponents. Lastly, EJB components are nearly impossible to unit-test without much effort.</p>
+          <p>PicoComponents are simpler in they they do not force an extensive XML markup, nor require the implementing of certaing interfaces or extening base classes. Quite importantly the relationship between factory (home), implementation (bean) and interface (remote) parts is much more real in Pico-style components. Lastly, EJB components are nearly impossible to unit-test without much effort.</p>
         </div>
         <div>
           <h3><a name="comparison-Servlets" id="comparison-Servlets"></a>Servlets</h3>
