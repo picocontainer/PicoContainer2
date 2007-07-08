@@ -8,16 +8,19 @@
 <body>
 <h2>Overview</h2>
 
-<p>PicoContainer is a lightweight and highly embeddable container
+<p>PicoContainer is a  highly embeddable container
 for components that honour the Dependency Injection pattern.</p>
-<p>What is Dependency Injection? Martin Fowler has a good <a href="http://www.martinfowler.com/articles/injection.html">article</a> from 2003, but here is another view: It is a good design pattern that, for large enterprise applications, promotes: </p>
+<p>You could use it as a lightweight alternative to Sun's J2EE patterns for web applications or general solutions. </p>
+<p>What is Dependency Injection? Martin Fowler has a good <a href="http://www.martinfowler.com/articles/injection.html">article</a> from 2003, but here is another view: It is a good design pattern that, for large enterprise applications, facilitates: </p>
 <ul>
-  <li>testability</li>
-  <li>clean &amp; declarative architecture</li>
-  <li>maintainability </li>
-  <li>adaptibilty</li>
+  <li>easy best practice  unit testing - over - little and difficult unit testing. </li>
+  <li>component reuse - over -  rewriting through ignorance or need </li>
+  <li>centralized configuration - over - components reading their own config (scattered) </li>
+  <li>clean &amp; declarative architecture - over - nest of singletons that nobody can make sense of </li>
+  <li>maintainability - over - developers having difficulties fixing bugs </li>
+  <li>adaptability - over - developers not knowing where to start to add features</li>
 </ul>
-<p>It is
+<p>Dependency Injection is
   quite often, but not exclusively, used by Agile practicioners. It
   counters the situation where the enterprise application:</p>
 <ul>
@@ -25,6 +28,7 @@ for components that honour the Dependency Injection pattern.</p>
   hundreds of Singletons</li>
   <li>draws similarities to Spaghetti, Hairballs or <a href="http://www.laputan.org/mud/">Balls of Mud</a></li>
   <li>has made development staff looking after it miserable</li>
+  <li>suffers repeated allegations of being unable to be developed without complete rewrite </li>
 </ul>
 <p>Despite it being very compact in size (the core is ~124K and it
 has no mandatory dependencies outside the JDK), PicoContainer supports different dependency injection types (Constructor, Setter, Annotated Field and Method) and offers multiple lifecycle and monitoring strategies.</p>
