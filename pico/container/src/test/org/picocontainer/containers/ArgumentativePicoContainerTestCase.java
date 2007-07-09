@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
+import org.picocontainer.DefaultPicoContainer;
+
 import java.io.StringReader;
 import java.io.IOException;
 
@@ -24,6 +26,26 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
         assertEquals(12,apc.getComponent("foo2"));
         assertEquals(true,apc.getComponent("foo3"));
         assertEquals(true,apc.getComponent("foo4"));
+    }
+
+    public void DONOTtestAsParentContainer() {
+        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {
+            "a=aaa", "b=bbb", "c=ccc", "d=22"});
+        assertEquals("aaa",apc.getComponent("a"));
+        assertEquals("bbb",apc.getComponent("b"));
+        assertEquals("ccc",apc.getComponent("c"));
+        assertEquals(22,apc.getComponent("d"));
+
+        DefaultPicoContainer dpc = new DefaultPicoContainer(apc);
+        dpc.addComponent(NeedsString.class);
+        assertEquals("bbb", dpc.getComponent(NeedsString.class).val);
+    }
+
+    public static class NeedsString {
+        public String val;
+        public NeedsString(String b) {
+            val = b;
+        }
     }
 
     public void testParsingWithDiffSeparator() {
@@ -68,5 +90,11 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
         assertEquals(true,apc.getComponent("foo3"));
     }
 
+    public void testbyTypeFailsEvenIfOneOfSameType() {
+        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {
+            "foo=bar"});
+        assertEquals("bar",apc.getComponent("foo"));
+        assertNull(apc.getComponent(String.class));
+    }
 
 }

@@ -155,8 +155,7 @@ public class BasicComponentParameter
     private <T> ComponentAdapter<T> getTargetAdapter(PicoContainer container,
                                                      Class<T> expectedType,
                                                      ParameterName expectedParameterName,
-                                                     ComponentAdapter excludeAdapter)
-    {
+                                                     ComponentAdapter excludeAdapter) {
         if (componentKey != null) {
             // key tells us where to look so we follow
             return typeComponentAdapter(container.getComponentAdapter(componentKey));

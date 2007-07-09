@@ -28,7 +28,7 @@ import java.util.Properties;
 
 public class ArgumentativePicoContainer implements PicoContainer, Serializable {
 
-    private MutablePicoContainer delegate = new DefaultPicoContainer();
+    private final MutablePicoContainer delegate = new DefaultPicoContainer();
 
     public ArgumentativePicoContainer(String[] arguments) {
         this("=", arguments);
@@ -99,7 +99,7 @@ public class ArgumentativePicoContainer implements PicoContainer, Serializable {
     }
 
     public <T> T getComponent(Class<T> componentType) {
-        return delegate.getComponent(componentType);
+        return null;
     }
 
     public List getComponents() {
@@ -107,7 +107,7 @@ public class ArgumentativePicoContainer implements PicoContainer, Serializable {
     }
 
     public PicoContainer getParent() {
-        return delegate.getParent();
+        return new EmptyPicoContainer();
     }
 
     public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
@@ -123,7 +123,7 @@ public class ArgumentativePicoContainer implements PicoContainer, Serializable {
     }
 
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
-        return delegate.getComponentAdapters(componentType);
+        return null;
     }
 
     public <T> List<T> getComponents(Class<T> componentType) {
