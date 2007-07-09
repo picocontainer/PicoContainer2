@@ -81,7 +81,8 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTe
     public void testInstantiateComponentWithNoDependencies() throws PicoCompositionException
     {
         ComponentAdapter componentAdapter =
-                createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
+                createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),                                                                                                      (Properties)Characteristics
+                                                                                                         .CDI.clone(), Touchable.class, SimpleTouchable.class, (Parameter[])null);
 
         Object comp = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertNotNull(comp);
@@ -89,7 +90,8 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTe
     }
 
     public void testSingleUsecanBeInstantiatedByDefaultComponentAdapter() {
-        ComponentAdapter componentAdapter = createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, "o", Object.class, (Parameter[])null);
+        ComponentAdapter componentAdapter = createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),                                                                                                      (Properties)Characteristics
+                                                                                                         .CDI.clone(), "o", Object.class, (Parameter[])null);
         Object component = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertNotNull(component);
     }

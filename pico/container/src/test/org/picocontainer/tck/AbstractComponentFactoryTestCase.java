@@ -20,6 +20,8 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
+import java.util.Properties;
+
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
@@ -35,7 +37,8 @@ public abstract class AbstractComponentFactoryTestCase extends TestCase {
     }
 
     public void testEquals() throws PicoCompositionException {
-        ComponentAdapter componentAdapter = createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, Touchable.class, SimpleTouchable.class);
+        ComponentAdapter componentAdapter = createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),                                                                                                      (Properties)Characteristics
+                                                                                                         .CDI.clone(), Touchable.class, SimpleTouchable.class);
 
         assertEquals(componentAdapter, componentAdapter);
         assertTrue(!componentAdapter.equals("blah"));
@@ -43,7 +46,8 @@ public abstract class AbstractComponentFactoryTestCase extends TestCase {
 
     public void testRegisterComponent() throws PicoCompositionException {
         ComponentAdapter componentAdapter =
-                createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, Touchable.class, SimpleTouchable.class);
+                createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),                                                                                                      (Properties)Characteristics
+                                                                                                         .CDI.clone(), Touchable.class, SimpleTouchable.class);
 
         picoContainer.addAdapter(componentAdapter);
 
@@ -52,7 +56,8 @@ public abstract class AbstractComponentFactoryTestCase extends TestCase {
 
     public void testUnregisterComponent() throws PicoCompositionException {
         ComponentAdapter componentAdapter =
-                createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, Touchable.class, SimpleTouchable.class);
+                createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),                                                                                                      (Properties)Characteristics
+                                                                                                         .CDI.clone(), Touchable.class, SimpleTouchable.class);
 
         picoContainer.addAdapter(componentAdapter);
         picoContainer.removeComponent(Touchable.class);

@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.swing.JLabel;
 
@@ -158,7 +159,9 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
     public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {
         PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentFactory();
 
-        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, "foo", Foo.class, (Parameter[])null);
+        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),
+                                                                                                     (Properties)Characteristics
+                                                                                                         .CDI.clone(), "foo", Foo.class, (Parameter[])null);
 
         Map properties = new HashMap();
         properties.put("message", "hello");
@@ -172,7 +175,8 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
 
     public void testDelegateIsAccessible() {
         AbstractBehavior componentAdapter =
-                (AbstractBehavior) createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, Touchable.class, SimpleTouchable.class, (Parameter[])null);
+                (AbstractBehavior) createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),                                                                                                      (Properties)Characteristics
+                                                                                                         .CDI.clone(), Touchable.class, SimpleTouchable.class, (Parameter[])null);
 
         assertNotNull(componentAdapter.getDelegate());
     }
@@ -183,7 +187,8 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
         Map properties = new HashMap();
         properties.put("message", "hello");
 
-        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, impl, impl, (Parameter[])null);
+        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),                                                                                                      (Properties)Characteristics
+                                                                                                         .CDI.clone(), impl, impl, (Parameter[])null);
         adapter.setProperties(properties);
         return adapter;
     }
@@ -203,7 +208,8 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
         properties.put("url_", "http://www.picocontainer.org/");
         properties.put("string_", "g string");
         properties.put("class_", "javax.swing.JLabel");
-        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, Primitives.class, Primitives.class, (Parameter[])null);
+        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),                                                                                                      (Properties)Characteristics
+                                                                                                         .CDI.clone(), Primitives.class, Primitives.class, (Parameter[])null);
         adapter.setProperties(properties);
         Primitives primitives = (Primitives) adapter.getComponentInstance(null);
 
@@ -229,7 +235,8 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
 
         // the second b is the key of the B implementation
         properties.put("b", "b");
-        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, A.class, A.class, (Parameter[])null);
+        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior) factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),                                                                                                      (Properties)Characteristics
+                                                                                                         .CDI.clone(), A.class, A.class, (Parameter[])null);
         adapter.setProperties(properties);
         picoContainer.addAdapter(adapter);
         A a = picoContainer.getComponent(A.class);
@@ -245,7 +252,8 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
       properties.put("lenient", Boolean.FALSE);
       properties.put("2DigitYearStart", new Date(0));
 
-      PropertyApplyingBehavior adapter = (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, SimpleDateFormat.class, SimpleDateFormat.class, (Parameter[])null);
+      PropertyApplyingBehavior adapter = (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),                                                                                                      (Properties)Characteristics
+                                                                                                         .CDI.clone(), SimpleDateFormat.class, SimpleDateFormat.class, (Parameter[])null);
       adapter.setProperties(properties);
       picoContainer.addAdapter(adapter);
 
@@ -274,7 +282,8 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
         PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory) createComponentFactory();
 
 
-        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, "TestBean", testBean.getClass(), (Parameter[])null);
+        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),                                                                                                      (Properties)Characteristics
+                                                                                                         .CDI.clone(), "TestBean", testBean.getClass(), (Parameter[])null);
 
         Map properties = new HashMap();
         properties.put("multiValues","abcdefg");
@@ -300,7 +309,8 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
 
         // Set two digit year to a boolean (should throw error)
         properties.put("2DigitYearStart", Boolean.FALSE);
-        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, SimpleDateFormat.class, SimpleDateFormat.class, (Parameter[])null);
+        PropertyApplyingBehavior adapter = (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),                                                                                                      (Properties)Characteristics
+                                                                                                         .CDI.clone(), SimpleDateFormat.class, SimpleDateFormat.class, (Parameter[])null);
         adapter.setProperties(properties);
         picoContainer.addAdapter(adapter);
 

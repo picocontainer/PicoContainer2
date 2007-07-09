@@ -506,7 +506,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         }
     }
 
-    public void DONOTtestMixingOfSDIandCDI() {
+    public void testMixingOfSDIandCDI() {
 
         MutablePicoContainer container = createPicoContainer(null);
         container.addComponent(Horse.class);
@@ -539,7 +539,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         assertions(donkey, rabbit, turtle);
     }
 
-    public void DONOTtestMixingOfSDIandCDIInBuilderStyle() {
+    public void testMixingOfSDIandCDIInBuilderStyle() {
 
         MutablePicoContainer container = createPicoContainer(null);
         container.addComponent(Horse.class).change(SDI)
