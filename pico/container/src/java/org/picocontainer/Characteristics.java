@@ -40,12 +40,12 @@ public final class Characteristics {
     public static final Properties HIDE = makeProps(_HIDE, TRUE);
 
     private static Properties makeProps(String name, String value) {
-        return new CProperties(name, value);
+        return new ImmutableProperties(name, value);
     }
 
-    public static class CProperties extends Properties {
+    public static class ImmutableProperties extends Properties {
 
-        public CProperties(String name, String value) {
+        public ImmutableProperties(String name, String value) {
             super.setProperty(name, value);
         }
 
