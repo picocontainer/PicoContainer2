@@ -7,8 +7,8 @@ import org.nanocontainer.nanowar.sample.service.CheeseService;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.nanocontainer.script.xml.XStreamContainerBuilder;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.defaults.ObjectReference;
-import org.picocontainer.defaults.SimpleReference;
+import org.picocontainer.ObjectReference;
+import org.picocontainer.behaviors.CachingBehavior;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -18,9 +18,9 @@ import java.io.StringReader;
  */
 public final class ActionsContainerTestCase extends TestCase {
 
-    private final ObjectReference containerRef = new SimpleReference();
+    private final ObjectReference containerRef = new CachingBehavior.SimpleReference();
 
-    private final ObjectReference parentContainerRef = new SimpleReference();
+    private final ObjectReference parentContainerRef = new CachingBehavior.SimpleReference();
 
     protected PicoContainer buildContainer(Reader script) {
         ScriptedContainerBuilder builder = new XStreamContainerBuilder(script,

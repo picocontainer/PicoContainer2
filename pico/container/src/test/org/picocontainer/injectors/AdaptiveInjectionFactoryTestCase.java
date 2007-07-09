@@ -48,8 +48,8 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTe
     protected void setUp() throws Exception {
         super.setUp();
         xs = new XStream();
-        xs.alias("RLS",ReflectionLifecycleStrategy.class);
-        xs.alias("CCM",ConsoleComponentMonitor.class);
+        xs.alias("RLS", ReflectionLifecycleStrategy.class);
+        xs.alias("CCM", ConsoleComponentMonitor.class);
         xs.alias("Method-Injection", MethodAnnotationInjector.class);
         xs.alias("Field-Injection", FieldAnnotationInjector.class);
         xs.alias("Constructor-Injection", ConstructorInjector.class);
@@ -63,11 +63,13 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTe
 
             public void marshal(Object object,
                                 HierarchicalStreamWriter hierarchicalStreamWriter,
-                                MarshallingContext marshallingContext) {
+                                MarshallingContext marshallingContext)
+            {
             }
 
             public Object unmarshal(HierarchicalStreamReader hierarchicalStreamReader,
-                                    UnmarshallingContext unmarshallingContext) {
+                                    UnmarshallingContext unmarshallingContext)
+            {
                 return null;
             }
         });
@@ -78,11 +80,14 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTe
         return new AdaptiveInjectionFactory();
     }
 
-    public void testInstantiateComponentWithNoDependencies() throws PicoCompositionException
-    {
+    public void testInstantiateComponentWithNoDependencies() throws PicoCompositionException {
         ComponentAdapter componentAdapter =
-                createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),                                                                                                      (Properties)Characteristics
-                                                                                                         .CDI.clone(), Touchable.class, SimpleTouchable.class, (Parameter[])null);
+            createComponentFactory().createComponentAdapter(new NullComponentMonitor(),
+                                                            new NullLifecycleStrategy(),
+                                                            new Properties(Characteristics.CDI),
+                                                            Touchable.class,
+                                                            SimpleTouchable.class,
+                                                            (Parameter[])null);
 
         Object comp = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertNotNull(comp);
@@ -90,8 +95,13 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTe
     }
 
     public void testSingleUsecanBeInstantiatedByDefaultComponentAdapter() {
-        ComponentAdapter componentAdapter = createComponentFactory().createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(),                                                                                                      (Properties)Characteristics
-                                                                                                         .CDI.clone(), "o", Object.class, (Parameter[])null);
+        ComponentAdapter componentAdapter = createComponentFactory().createComponentAdapter(new NullComponentMonitor(),
+                                                                                            new NullLifecycleStrategy(),
+                                                                                            new Properties(
+                                                                                                Characteristics.CDI),
+                                                                                            "o",
+                                                                                            Object.class,
+                                                                                            (Parameter[])null);
         Object component = componentAdapter.getComponentInstance(new DefaultPicoContainer());
         assertNotNull(component);
     }
@@ -104,8 +114,8 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTe
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
         ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new Properties(),
                                                         Map.class, HashMap.class, Parameter.DEFAULT);
-        
-        String foo = xs.toXML(ca).replace("\"","");
+
+        String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Constructor-Injection>\n" +
                      "  <lifecycleStrategy class=RLS/>\n" +
@@ -122,10 +132,14 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTe
         ComponentFactory cf = createComponentFactory();
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
-        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new Properties(),
-                                                        FieldAnnotationInjectorTestCase.Helicopter.class, FieldAnnotationInjectorTestCase.Helicopter.class, Parameter.DEFAULT);
+        ComponentAdapter ca = cf.createComponentAdapter(cm,
+                                                        new ReflectionLifecycleStrategy(cm),
+                                                        new Properties(),
+                                                        FieldAnnotationInjectorTestCase.Helicopter.class,
+                                                        FieldAnnotationInjectorTestCase.Helicopter.class,
+                                                        Parameter.DEFAULT);
 
-        String foo = xs.toXML(ca).replace("\"","");
+        String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Field-Injection>\n" +
                      "  <lifecycleStrategy class=RLS/>\n" +
@@ -142,10 +156,14 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTe
         ComponentFactory cf = createComponentFactory();
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
-        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new Properties(),
-                                                        MethodAnnotationInjectorTestCase.AnnotatedBurp.class, MethodAnnotationInjectorTestCase.AnnotatedBurp.class, Parameter.DEFAULT);
+        ComponentAdapter ca = cf.createComponentAdapter(cm,
+                                                        new ReflectionLifecycleStrategy(cm),
+                                                        new Properties(),
+                                                        MethodAnnotationInjectorTestCase.AnnotatedBurp.class,
+                                                        MethodAnnotationInjectorTestCase.AnnotatedBurp.class,
+                                                        Parameter.DEFAULT);
 
-        String foo = xs.toXML(ca).replace("\"","");
+        String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Method-Injection>\n" +
                      "  <lifecycleStrategy class=RLS/>\n" +

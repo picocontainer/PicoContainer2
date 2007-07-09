@@ -40,9 +40,22 @@ public final class Characteristics {
     public static final Properties HIDE = makeProps(_HIDE, TRUE);
 
     private static Properties makeProps(String name, String value) {
-        Properties props = new Properties();
-        props.setProperty(name, value);
-        return props;
+        return new CProperties(name, value);
+    }
+
+    public static class CProperties extends Properties {
+
+        public CProperties(String name, String value) {
+            super.setProperty(name, value);
+        }
+
+        public Object remove(Object o) {
+            throw new UnsupportedOperationException();
+        }
+
+        public synchronized Object setProperty(String string, String string1) {
+            throw new UnsupportedOperationException();
+        }
     }
 
 }

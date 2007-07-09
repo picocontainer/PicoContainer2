@@ -366,6 +366,7 @@
       <module fileurl="file://$PROJECT_DIR$/nano/webcontainer/nano-webcontainer.iml" filepath="$PROJECT_DIR$/nano/webcontainer/nano-webcontainer.iml" />
       <module fileurl="file://$PROJECT_DIR$/nano/container/nanocontainer.iml" filepath="$PROJECT_DIR$/nano/container/nanocontainer.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras/nanowar/nanowar/nanowar.iml" filepath="$PROJECT_DIR$/nanoextras/nanowar/nanowar/nanowar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nanoextras/nanowar/examples/nanowar-examples.iml" filepath="$PROJECT_DIR$/nanoextras/nanowar/examples/nanowar-examples.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras/nanowar/nanowar-nanoweb/nanoweb.iml" filepath="$PROJECT_DIR$/nanoextras/nanowar/nanowar-nanoweb/nanoweb.iml" />
       <module fileurl="file://$PROJECT_DIR$/nanoextras/persistence/persistence/persistence.iml" filepath="$PROJECT_DIR$/nanoextras/persistence/persistence/persistence.iml" />
       <module fileurl="file://$PROJECT_DIR$/pico/distribution/pico-distribution.iml" filepath="$PROJECT_DIR$/pico/distribution/pico-distribution.iml" />
