@@ -83,7 +83,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private final Set<Integer> childrenStarted = new HashSet<Integer>();
 
     private LifecycleStrategy lifecycleStrategy;
-    private final java.util.Properties componentProperties = new java.util.Properties();
+    private final Properties componentProperties = new Properties();
     private ComponentMonitor componentMonitor;
 
     /** List collecting the CAs which have been successfully started */
@@ -320,7 +320,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public MutablePicoContainer addComponent(Object componentKey,
                                              Object componentImplementationOrInstance,
                                              Parameter... parameters) {
-        java.util.Properties properties = this.componentProperties;
+        Properties properties = this.componentProperties;
         if (componentImplementationOrInstance instanceof ObjectHasProperties) {
             properties = ((ObjectHasProperties)componentImplementationOrInstance).properties;
             componentImplementationOrInstance = ((ObjectHasProperties)componentImplementationOrInstance).implOrInst;
@@ -580,7 +580,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return result;
     }
 
-    public MutablePicoContainer change(java.util.Properties... properties) {
+    public MutablePicoContainer change(Properties... properties) {
         for (Properties c : properties) {
             Enumeration e = c.propertyNames();
             while (e.hasMoreElements()) {
@@ -591,7 +591,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return this;
     }
 
-    public MutablePicoContainer as(java.util.Properties... properties) {
+    public MutablePicoContainer as(Properties... properties) {
         return new TemporaryCharacterizedPicoContainer(properties);
     }
 
@@ -729,7 +729,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
         private ObjectHasProperties makeCharacterizedImplOrInstance(Object componentImplementationOrInstance) {
-            java.util.Properties tempProperties = (java.util.Properties) componentProperties.clone();
+            Properties tempProperties = (Properties) componentProperties.clone();
             for (Properties c : characteristics) {
                 Enumeration e = c.propertyNames();
                 while (e.hasMoreElements()) {
