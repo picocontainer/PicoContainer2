@@ -31,9 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.thoughtworks.paranamer.Paranamer;
-import com.thoughtworks.paranamer.asm.AsmParanamer;
-
 /**
  * Instantiates components using Constructor Injection.
  * <em>
@@ -52,7 +49,8 @@ import com.thoughtworks.paranamer.asm.AsmParanamer;
 public class ConstructorInjector extends AbstractInjector {
     private transient List<Constructor> sortedMatchingConstructors;
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
-    private final transient Paranamer paranamer = new AsmParanamer();
+    private transient ParanamerProxy paranamer;
+
 
     /**
      * Creates a ConstructorInjectionComponentAdapter
@@ -132,9 +130,12 @@ public class ConstructorInjector extends AbstractInjector {
                 final int j1 = j;
                 if (currentParameters[j].isResolvable(container, this, parameterTypes[j], new ParameterName() {
                     public String getParameterName() {
-                        String[] names = paranamer.lookupParameterNames(sortedMatchingConstructor);
-                        if (names.length != 0) {
-                            return names[j1];
+                        createIfNeededParanamerProxy();
+                        if (paranamer != null) {
+                            String[] names = paranamer.lookupParameterNames(sortedMatchingConstructor);
+                            if (names.length != 0) {
+                                return names[j1];
+                            }
                         }
                         return null;
                     }
@@ -179,6 +180,14 @@ public class ConstructorInjector extends AbstractInjector {
         return greediestConstructor;
     }
 
+    private void createIfNeededParanamerProxy() {
+        if (paranamer == null) {
+            try {
+                paranamer = new ParanamerProxy();
+            } catch (NoClassDefFoundError e) {
+            }
+        }
+    }
 
 
     public Object getComponentInstance(final PicoContainer container) throws PicoCompositionException {
@@ -232,8 +241,12 @@ public class ConstructorInjector extends AbstractInjector {
             final int i1 = i;
             result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i], new ParameterName() {
                 public String getParameterName() {
-                    String[] strings = paranamer.lookupParameterNames(ctor);
-                    return strings.length == 0 ? "" : strings[i1];
+                    createIfNeededParanamerProxy();
+                    if (paranamer != null) {
+                        String[] strings = paranamer.lookupParameterNames(ctor);
+                        return strings.length == 0 ? "" : strings[i1];
+                    }
+                    return null;
                 }
             });
         }
@@ -279,8 +292,8 @@ public class ConstructorInjector extends AbstractInjector {
                         final int i1 = i;
                         currentParameters[i].verify(container, ConstructorInjector.this, parameterTypes[i], new ParameterName() {
                     public String getParameterName() {
-                        Paranamer dpn = new AsmParanamer();
-                        String[] names = dpn.lookupParameterNames(constructor);
+
+                        String[] names = paranamer.lookupParameterNames(constructor);
                         if (names.length != 0) {
                             return names[i1];
                         }
