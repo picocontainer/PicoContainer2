@@ -76,7 +76,7 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
 
     protected void processImplementationHiding(Properties componentProperties,
                                              List<ComponentFactory> list) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE)) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL)) {
             list.add(new ImplementationHidingBehaviorFactory());
         }
     }

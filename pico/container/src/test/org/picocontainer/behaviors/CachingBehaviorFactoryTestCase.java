@@ -43,7 +43,7 @@ public class CachingBehaviorFactoryTestCase extends AbstractComponentFactoryTest
 
     public void testContainerCanFollowNOCACHEDirectiveSelectively() {
         picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
-        picoContainer.change(Characteristics.NOCACHE);
+        picoContainer.change(Characteristics.NO_CACHE);
         picoContainer.addComponent(Map.class, HashMap.class);
         assertSame(picoContainer.getComponent(Touchable.class), picoContainer.getComponent(Touchable.class));
         final Map component = picoContainer.getComponent(Map.class);

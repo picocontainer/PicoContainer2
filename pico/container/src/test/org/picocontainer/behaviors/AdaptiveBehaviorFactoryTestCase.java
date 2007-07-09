@@ -61,7 +61,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
     public void testImplementationHidingBehaviorCanBeAddedByCharacteristics() {
         AdaptiveBehaviorFactory abf = new AdaptiveBehaviorFactory();
         Properties cc = new Properties();
-        mergeInto(Characteristics.HIDE,cc);
+        mergeInto(Characteristics.HIDE_IMPL,cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof ImplementationHidingBehavior);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
@@ -90,7 +90,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         AdaptiveBehaviorFactory abf = new AdaptiveBehaviorFactory();
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
-        mergeInto(Characteristics.HIDE,cc);
+        mergeInto(Characteristics.HIDE_IMPL,cc);
         mergeInto(Characteristics.THREAD_SAFE,cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof CachingBehavior);
@@ -120,7 +120,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         cbf.forThis(abf);
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
-        mergeInto(Characteristics.HIDE,cc);
+        mergeInto(Characteristics.HIDE_IMPL,cc);
         mergeInto(Characteristics.THREAD_SAFE,cc);
         ComponentAdapter ca = cbf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof CachingBehavior);

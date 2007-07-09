@@ -17,29 +17,29 @@ public final class Characteristics {
     private static final String _CONSTRUCTOR = "constructor";
     private static final String _SETTER = "setter";
     private static final String _CACHE = "cache";
-    private static final String _NOJMX = "no-jmx";
+    private static final String _JMX = "jmx";
     private static final String _THREAD_SAFE = "thread-safe";
-    private static final String _HIDE = "hide-implementations";
-    private static final String FALSE = "FALSE";
-    private static final String TRUE = "TRUE";
+    private static final String _HIDE_IMPL = "hide-impl";
+    private static final String FALSE = "false";
+    private static final String TRUE = "true";
 
-    public static final Properties CDI = makeProps(_INJECTION, _CONSTRUCTOR);
+    public static final Properties CDI = immutable(_INJECTION, _CONSTRUCTOR);
 
-    public static final Properties SDI = makeProps(_INJECTION, _SETTER);
+    public static final Properties SDI = immutable(_INJECTION, _SETTER);
 
-    public static final Properties NOCACHE = makeProps(_CACHE, FALSE);
+    public static final Properties NO_CACHE = immutable(_CACHE, FALSE);
 
-    public static final Properties CACHE = makeProps(_CACHE, TRUE);
+    public static final Properties CACHE = immutable(_CACHE, TRUE);
 
-    public static final Properties NOJMX = makeProps(_NOJMX, TRUE);
+    public static final Properties NO_JMX = immutable(_JMX, FALSE);
 
-    public static final Properties THREAD_SAFE = makeProps(_THREAD_SAFE, TRUE);
+    public static final Properties THREAD_SAFE = immutable(_THREAD_SAFE, TRUE);
     
     public static final Properties SINGLE = CACHE;
     
-    public static final Properties HIDE = makeProps(_HIDE, TRUE);
+    public static final Properties HIDE_IMPL = immutable(_HIDE_IMPL, TRUE);
 
-    private static Properties makeProps(String name, String value) {
+    private static Properties immutable(String name, String value) {
         return new ImmutableProperties(name, value);
     }
 

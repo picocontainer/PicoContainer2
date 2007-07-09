@@ -23,7 +23,7 @@ public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
-        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE);
+        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                          componentProperties, componentKey, componentImplementation, parameters);
         return new ImplementationHidingBehavior(componentAdapter);
