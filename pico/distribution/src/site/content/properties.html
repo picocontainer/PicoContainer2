@@ -51,7 +51,7 @@ pico.change(Characteristics.SDI).addComponent(Pear.class);</pre>
 
 <p>Some characteristics are mutually exclusive. For example CDI,
    SDI. Meaning the last one set via 'as' or 'change' rules. Others are
-   additive like CACHE and HIDE. It is not important the order of things.</p>
+   additive like CACHE and HIDE_IMPL. It is not important the order of things.</p>
 
 <h3>Appropriate Behavior and Injection Factories.</h3>
 
@@ -60,7 +60,7 @@ pico.change(Characteristics.SDI).addComponent(Pear.class);</pre>
    typically chained together. DefaultPicoContainer's default
    BehaviorFactory and InjectionFactory are AdaptiveBehaviorFactory and
    AdaptiveInjectionFactory. These can handle CDI and SDI as well as CACHE
-   and HIDE.</p>
+   and HIDE_IMPL.</p>
 
 <p>If you setup DefaultPicoContainer with a
    BehaviorFactory/InjectionFactory combination that is unaware of the
