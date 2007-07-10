@@ -422,11 +422,16 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         s2.expects(once()).method("start");
         s2.expects(once()).method("stop");
 
+        Mock s3 = mock(Startable.class, "s3");
+        s3.expects(once()).method("start").will(throwException(new RuntimeException("I also do not want to start myself")));
+        s3.expects(once()).method("stop");
+
         LifecycleComponentMonitor lifecycleComponentMonitor = new LifecycleComponentMonitor(NullComponentMonitor.getInstance());
 
         DefaultPicoContainer dpc = new DefaultPicoContainer(lifecycleComponentMonitor);
-        dpc.addComponent("foo", s1.proxy());
-        dpc.addComponent("bar", s2.proxy());
+        dpc.addComponent("one", s1.proxy());
+        dpc.addComponent("two", s2.proxy());
+        dpc.addComponent("three", s3.proxy());
 
         dpc.start();
 
@@ -434,8 +439,9 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
             lifecycleComponentMonitor.rethrowLifecycleFailuresException();
             fail("LifecycleFailuresException expected");
         } catch (LifecycleFailuresException e) {
+            assertEquals("I do not want to start myself;  I also do not want to start myself;", e.getMessage().trim());
             dpc.stop();
-            assertEquals(1, e.getFailures().size());
+            assertEquals(2, e.getFailures().size());
         }
 
     }
