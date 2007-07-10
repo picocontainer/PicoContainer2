@@ -225,16 +225,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return adapter;
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
-        return this.getComponentAdapter(componentType, new NullParameterName());
-    }
-
-    public static class NullParameterName implements ParameterName {
-        public String getParameterName() {
-            return null;
-        }
-    }
-
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
         // See http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-115
         ComponentAdapter<?> adapterByKey = getComponentAdapter((Object)componentType);
@@ -248,16 +238,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             return found.get(0);
         } else if (found.isEmpty()) {
             if (parent != null) {
-                return parent.getComponentAdapter(componentType);
+                return parent.getComponentAdapter(componentType, componentParameterName);
             } else {
                 return null;
             }
         } else {
-            String parameterName = componentParameterName.getParameterName();
-            if (parameterName != null) {
-                ComponentAdapter ca = getComponentAdapter(parameterName);
-                if (componentType.isAssignableFrom(ca.getComponentImplementation())) {
-                    return ca;
+            if (componentParameterName != null) {
+                String parameterName = componentParameterName.getParameterName();
+                if (parameterName != null) {
+                    ComponentAdapter ca = getComponentAdapter(parameterName);
+                    if (componentType.isAssignableFrom(ca.getComponentImplementation())) {
+                        return ca;
+                    }
                 }
             }
             Class[] foundClasses = new Class[found.size()];
@@ -422,7 +414,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public Object getComponent(Object componentKeyOrType) {
         Object retVal;
         if (componentKeyOrType instanceof Class) {
-            final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType);
+            final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, null);
             retVal = componentAdapter == null ? null : getInstance(componentAdapter);
         } else {
             ComponentAdapter<?> componentAdapter = getComponentAdapter(componentKeyOrType);

@@ -35,7 +35,7 @@ public class Issue0170TestCase extends AbstractScriptedContainerBuilderTestCase 
         List list = pico.getComponent(List.class);
         assertNotNull(list);
 
-        ComponentAdapter listCA = pico.getComponentAdapter(List.class);
+        ComponentAdapter listCA = pico.getComponentAdapter(List.class, null);
 
         assertTrue(listCA instanceof HotSwappingBehavior);
         HotSwappingBehavior hsca = (HotSwappingBehavior) listCA;

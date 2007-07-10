@@ -446,7 +446,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         assertEquals(SynchronizedBehavior.class, mpc.addAdapter(instanceAdapter).getComponentAdapter(instanceAdapter.getComponentKey()).getClass());
         MutablePicoContainer container = mpc.addComponent("foobar");
         assertEquals(SynchronizedBehavior.class, container.getComponentAdapter("foobar").getClass());
-        assertEquals(SynchronizedBehavior.class, mpc.addComponent(SimpleA.class).getComponentAdapter(SimpleA.class).getClass());
+        assertEquals(SynchronizedBehavior.class, mpc.addComponent(SimpleA.class).getComponentAdapter(SimpleA.class, null).getClass());
     }
 
 

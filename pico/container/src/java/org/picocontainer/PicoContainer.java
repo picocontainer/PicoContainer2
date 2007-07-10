@@ -73,8 +73,8 @@ public interface PicoContainer {
      * @param componentType the type of the component.
      * @return the component adapter associated with this class, or <code>null</code> if no component has been
      *         registered for the specified key.
+     * @param componentParameterName
      */
-    <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType);
 
     <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName);
 

@@ -465,7 +465,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         NanoContainer parent = new DefaultNanoContainer(
             buildContainer(script, null, new ParentAssemblyScope()));
 
-        assertNotNull(parent.getComponentAdapter(A.class));
+        assertNotNull(parent.getComponentAdapter(A.class, null));
 
         script = new StringReader(scriptValue);
         PicoContainer pico = buildContainer(script, parent,  new SomeAssemblyScope());
@@ -502,7 +502,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         MutablePicoContainer pico = (MutablePicoContainer)buildContainer(script, parent, ASSEMBLY_SCOPE);
         // Should be able to get instance that was registered in the parent container
-        ComponentAdapter componentAdapter = pico.addComponent(String.class).getComponentAdapter(String.class);
+        ComponentAdapter componentAdapter = pico.addComponent(String.class).getComponentAdapter(String.class, null);
         assertTrue("ComponentAdapter should be originally defined by parent" , componentAdapter instanceof SetterInjector);
     }
 

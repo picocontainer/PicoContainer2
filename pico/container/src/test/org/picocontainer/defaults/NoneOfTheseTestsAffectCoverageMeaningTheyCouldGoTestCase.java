@@ -31,10 +31,10 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
     public void testGetComponentSpecification() throws PicoCompositionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
-        assertNull(pico.getComponentAdapter(Touchable.class));
+        assertNull(pico.getComponentAdapter(Touchable.class, null));
         pico.addComponent(SimpleTouchable.class);
-        assertNotNull(pico.getComponentAdapter(SimpleTouchable.class));
-        assertNotNull(pico.getComponentAdapter(Touchable.class));
+        assertNotNull(pico.getComponentAdapter(SimpleTouchable.class, null));
+        assertNotNull(pico.getComponentAdapter(Touchable.class, null));
     }
 
 

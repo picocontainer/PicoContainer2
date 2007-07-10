@@ -58,11 +58,6 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
         return delegate.getComponentAdapter(componentKey);
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
-        return delegate.getComponentAdapter(componentType);
-    }
-
-
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
         return delegate.getComponentAdapter(componentType, componentParameterName);  
     }

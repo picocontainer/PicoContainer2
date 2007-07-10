@@ -159,19 +159,6 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
      *
      * @see org.picocontainer.PicoContainer#getComponentAdapter(java.lang.Class)
      */
-    public <T>ComponentAdapter<T> getComponentAdapter(final Class<T> componentType) {
-        if (log.isDebugEnabled()) {
-            log.debug("Locating component adapter with type " + componentType);
-        }
-
-        ComponentAdapter<T> ca = delegate.getComponentAdapter(componentType);
-
-        if (ca == null) {
-            onKeyOrTypeDoesNotExistInContainer(ca, log);
-        }
-        return ca;
-    }
-
 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
         if (log.isDebugEnabled()) {

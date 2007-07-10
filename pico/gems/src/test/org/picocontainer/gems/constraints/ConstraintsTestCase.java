@@ -13,7 +13,6 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -48,7 +47,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
         Constraint c = new IsKey(SimpleTouchable.class);
 
         Object object = c.resolveInstance(container, 
-                container.getComponentAdapter(DependsOnTouchable.class),
+                container.getComponentAdapter(DependsOnTouchable.class, null),
                 Touchable.class, null);
         assertEquals(SimpleTouchable.class, object.getClass());
     }
@@ -57,7 +56,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
         Constraint c = new IsType(AlternativeTouchable.class);
 
         Object object = c.resolveInstance(container, 
-                container.getComponentAdapter(DependsOnTouchable.class),
+                container.getComponentAdapter(DependsOnTouchable.class, null),
                 Touchable.class, null);
         assertEquals(AlternativeTouchable.class, object.getClass());
     }
@@ -71,7 +70,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
         Constraint c = new IsKeyType(Boolean.class);
 
         assertSame(t, c.resolveInstance(container, 
-                container.getComponentAdapter(DependsOnTouchable.class),
+                container.getComponentAdapter(DependsOnTouchable.class, null),
                 Touchable.class, null));
     }
 
@@ -80,7 +79,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
 
         try {
             c.resolveInstance(container, 
-                    container.getComponentAdapter(DependsOnTouchable.class),
+                    container.getComponentAdapter(DependsOnTouchable.class, null),
                     Touchable.class, null);
             fail("did not throw ambiguous resolution exception");
         } catch (AbstractInjector.AmbiguousComponentResolutionException acre) {
@@ -94,7 +93,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
                 new And(new IsType(Touchable.class),
                 new Not(new IsType(DecoratedTouchable.class))));
         Touchable[] touchables = (Touchable[]) c.resolveInstance(container, 
-                container.getComponentAdapter(DependsOnTouchable.class),
+                container.getComponentAdapter(DependsOnTouchable.class, null),
                 Touchable[].class, null);
         assertEquals(2, touchables.length);
         for (Touchable touchable : touchables) {

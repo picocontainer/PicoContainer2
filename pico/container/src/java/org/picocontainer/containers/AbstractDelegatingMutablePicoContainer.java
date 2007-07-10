@@ -84,10 +84,6 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
         return delegate.getComponentAdapter(componentKey);
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
-        return delegate.getComponentAdapter(componentType);
-    }
-
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
         return delegate.getComponentAdapter(componentType, componentParameterName);
     }

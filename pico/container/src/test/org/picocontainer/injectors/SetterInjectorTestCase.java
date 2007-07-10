@@ -72,7 +72,7 @@ public class SetterInjectorTestCase
         picoContainer.addComponent(PersonBean.class);
         SetterInjector componentAdapter = new SetterInjector(
                 PurseBean.class, MoneyPurse.class, new Parameter[] {DEFAULT, new ConstantParameter(100.0)}, NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance());
-        return picoContainer.addAdapter(componentAdapter).getComponentAdapter(PurseBean.class);
+        return picoContainer.addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, null);
     }
 
     public static class MoneyPurse
@@ -93,7 +93,7 @@ public class SetterInjectorTestCase
         picoContainer.addComponent(PersonBean.class);
         SetterInjector componentAdapter = new SetterInjector(
                 PurseBean.class, MoneyPurse.class, new Parameter[] {DEFAULT},NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance());
-        return picoContainer.addAdapter(componentAdapter).getComponentAdapter(PurseBean.class);
+        return picoContainer.addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, null);
     }
 
     protected ComponentAdapter prepINS_createsNewInstances(MutablePicoContainer picoContainer) {
@@ -163,7 +163,7 @@ public class SetterInjectorTestCase
         picoContainer.addComponent(PersonBean.class, WealthyPerson.class);
         SetterInjector componentAdapter = new SetterInjector(
                 PurseBean.class, PurseBean.class, new Parameter[] {DEFAULT}, NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance());
-        return picoContainer.addAdapter(componentAdapter).getComponentAdapter(PurseBean.class);
+        return picoContainer.addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, null);
     }
 
     protected ComponentAdapter prepRES_failingInstantiationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
@@ -171,7 +171,7 @@ public class SetterInjectorTestCase
         picoContainer.addComponent(PersonBean.class, WealthyPerson.class);
         SetterInjector componentAdapter = new SetterInjector(
                 PurseBean.class, PurseBean.class, new Parameter[] {DEFAULT}, NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance());
-        return picoContainer.addAdapter(componentAdapter).getComponentAdapter(PurseBean.class);
+        return picoContainer.addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, null);
     }
 
     public static class A {

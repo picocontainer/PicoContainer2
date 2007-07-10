@@ -160,7 +160,7 @@ public class BasicComponentParameter
             // key tells us where to look so we follow
             return typeComponentAdapter(container.getComponentAdapter(componentKey));
         } else if (excludeAdapter == null) {
-            return container.getComponentAdapter(expectedType);
+            return container.getComponentAdapter(expectedType, null);
         } else {
             Object excludeKey = excludeAdapter.getComponentKey();
             ComponentAdapter byKey = container.getComponentAdapter((Object)expectedType);

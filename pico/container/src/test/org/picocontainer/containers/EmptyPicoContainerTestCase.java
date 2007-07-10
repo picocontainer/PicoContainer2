@@ -23,8 +23,8 @@ public class EmptyPicoContainerTestCase extends TestCase {
 
     public void testReturnValues() {
         PicoContainer pico = new EmptyPicoContainer();
-        assertNull(pico.getComponentAdapter(null));
-        assertNull(pico.getComponentAdapter(null));
+        assertNull(pico.getComponentAdapter(null, null));
+        assertNull(pico.getComponentAdapter(null, null));
         assertTrue(pico.getComponentAdapters().isEmpty());
         assertTrue(pico.getComponentAdapters(null).isEmpty());
         assertNull(pico.getComponent(null));

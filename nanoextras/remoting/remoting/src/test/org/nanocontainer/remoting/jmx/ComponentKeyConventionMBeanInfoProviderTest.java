@@ -53,7 +53,8 @@ public class ComponentKeyConventionMBeanInfoProviderTest extends MockObjectTestC
     }
 
     public void testMBeanInfoIsDeterminedIfKeyIsManagementInterface() {
-        final ComponentAdapter componentAdapter = pico.addComponent(PersonMBean.class, Person.class).getComponentAdapter(PersonMBean.class);
+        final ComponentAdapter componentAdapter = pico.addComponent(PersonMBean.class, Person.class).getComponentAdapter(PersonMBean.class,
+                                                                                                                         null);
         pico.addComponent(PersonMBean.class.getName() + "Info", Person.createMBeanInfo());
 
         final MBeanInfo info = mBeanProvider.provide(pico, componentAdapter);
