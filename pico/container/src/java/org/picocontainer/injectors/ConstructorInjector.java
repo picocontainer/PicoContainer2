@@ -21,6 +21,9 @@ import org.picocontainer.behaviors.CachingBehavior;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Method;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Field;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -30,6 +33,8 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.thoughtworks.paranamer.ParameterNamesNotFoundException;
 
 /**
  * Instantiates components using Constructor Injection.
@@ -173,17 +178,107 @@ public class ConstructorInjector extends AbstractInjector {
     private ParameterName makeParameterName(final Constructor sortedMatchingConstructor, final int j1) {
         return new ParameterName() {
             public String getParameterName() {
-                createIfNeededParanamerProxy();
-                if (paranamer != null) {
-                    String[] names = paranamer.lookupParameterNames(sortedMatchingConstructor);
-                    if (names.length != 0) {
-                        return names[j1];
-                    }
+                String[] names = lookupParameterNames(sortedMatchingConstructor);
+                if (names.length != 0) {
+                    return names[j1];
                 }
                 return null;
             }
         };
     }
+
+    private static final String[] EMPTY_NAMES = new String[]{};
+    private static final String COMMA = ",";
+    private static final String SPACE = " ";
+
+    // copied from DefaultParanamer
+    private String[] lookupParameterNames(AccessibleObject methodOrCtor) {
+        Class[] types = null;
+        Class declaringClass = null;
+        String name = null;
+        if (methodOrCtor instanceof Method) {
+            Method method = (Method) methodOrCtor;
+            types = method.getParameterTypes();
+            name = method.getName();
+            declaringClass = method.getDeclaringClass();
+        } else {
+            Constructor constructor = (Constructor) methodOrCtor;
+            types = constructor.getParameterTypes();
+            declaringClass = constructor.getDeclaringClass();
+            name = "<init>";
+        }
+
+        if (types.length == 0) {
+            // faster ?
+            return EMPTY_NAMES;
+        }
+        final String parameterTypeNames = getParameterTypeNamesCSV(types);
+        final String[] names = getParameterNames(declaringClass, parameterTypeNames, name + SPACE);
+
+        if (names != null) {
+            return names;
+        }
+        createIfNeededParanamerProxy();
+        if (paranamer != null) {
+            return paranamer.lookupParameterNames((Constructor)methodOrCtor);
+        }
+        return new String[0];
+    }
+    // copied from DefaultParanamer
+    private static String getParameterTypeNamesCSV(Class[] parameterTypes) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < parameterTypes.length; i++) {
+            sb.append(parameterTypes[i].getName());
+            if (i < parameterTypes.length - 1) {
+                sb.append(COMMA);
+            }
+        }
+        return sb.toString();
+    }
+    // copied from DefaultParanamer
+    private static String[] getParameterNames(Class declaringClass, String parameterTypes, String prefix) {
+        String data = getParameterListResource(declaringClass);
+        String line = findFirstMatchingLine(data, prefix + parameterTypes);
+        String[] parts = line.split(SPACE);
+        // assumes line structure: constructorName parameterTypes parameterNames
+        if (parts.length == 3 && parts[1].equals(parameterTypes)) {
+            String parameterNames = parts[2];
+            return parameterNames.split(COMMA);
+        }
+        return null;
+    }
+    // copied from DefaultParanamer
+    private static String getParameterListResource(Class declaringClass) {
+        try {
+            Field field = declaringClass.getDeclaredField("__PARANAMER_DATA");
+            if(!Modifier.isStatic(field.getModifiers()) || !field.getType().equals(String.class)) {
+                return null;
+            }
+            return (String) field.get(null);
+        } catch (NoSuchFieldException e) {
+            return null;
+        } catch (IllegalAccessException e) {
+            return null;
+        }
+    }
+    // copied from DefaultParanamer
+    private static String findFirstMatchingLine(String data, String prefix) {
+        if (data == null) {
+            return "";
+        }
+        int ix = data.indexOf(prefix);
+        if (ix > 0) {
+            int iy = data.indexOf("\n", ix);
+            if(iy >0) {
+                return data.substring(ix,iy);
+            }
+        }
+        return "";
+    }
+
+
+
+
 
     private void createIfNeededParanamerProxy() {
         if (paranamer == null) {
@@ -248,7 +343,7 @@ public class ConstructorInjector extends AbstractInjector {
                 public String getParameterName() {
                     createIfNeededParanamerProxy();
                     if (paranamer != null) {
-                        String[] strings = paranamer.lookupParameterNames(ctor);
+                        String[] strings = lookupParameterNames(ctor);
                         return strings.length == 0 ? "" : strings[i1];
                     }
                     return null;
@@ -298,7 +393,7 @@ public class ConstructorInjector extends AbstractInjector {
                         currentParameters[i].verify(container, ConstructorInjector.this, parameterTypes[i], new ParameterName() {
                     public String getParameterName() {
 
-                        String[] names = paranamer.lookupParameterNames(constructor);
+                        String[] names = lookupParameterNames(constructor);
                         if (names.length != 0) {
                             return names[i1];
                         }
