@@ -41,6 +41,25 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
         assertEquals("bbb", dpc.getComponent(NeedsString.class).val);
     }
 
+    public void testAsParentContainer() {
+//        DefaultPicoContainer apc = new DefaultPicoContainer();
+        //new String[] {
+        //    "a=aaa", "b=bbb", "c=ccc", "d=22"});
+
+        DefaultPicoContainer dpc = new DefaultPicoContainer();
+        dpc.addComponent("a","aaa");
+        dpc.addComponent("b","bbb");
+        dpc.addComponent("c","ccc");
+        dpc.addComponent("d",22);
+        assertEquals("aaa",dpc.getComponent("a"));
+        assertEquals("bbb",dpc.getComponent("b"));
+        assertEquals("ccc",dpc.getComponent("c"));
+        assertEquals(22,dpc.getComponent("d"));
+
+        dpc.addComponent(NeedsString.class);
+        assertEquals("bbb", dpc.getComponent(NeedsString.class).val);
+    }
+
     public static class NeedsString {
         public String val;
         public NeedsString(String b) {

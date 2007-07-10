@@ -9,7 +9,7 @@ public class ParanamerProxy {
 
     private final transient Paranamer paranamer = new AsmParanamer();
 
-    public String[] lookupParameterNames(Constructor sortedMatchingConstructor) {
-        return paranamer.lookupParameterNames(sortedMatchingConstructor);  
+    public String[] lookupParameterNames(Constructor constructor) {
+        return paranamer.lookupParameterNames(constructor);
     }
 }

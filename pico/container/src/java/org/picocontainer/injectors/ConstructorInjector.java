@@ -128,18 +128,8 @@ public class ConstructorInjector extends AbstractInjector {
             for (int j = 0; j < currentParameters.length; j++) {
                 // check wether this constructor is statisfiable
                 final int j1 = j;
-                if (currentParameters[j].isResolvable(container, this, parameterTypes[j], new ParameterName() {
-                    public String getParameterName() {
-                        createIfNeededParanamerProxy();
-                        if (paranamer != null) {
-                            String[] names = paranamer.lookupParameterNames(sortedMatchingConstructor);
-                            if (names.length != 0) {
-                                return names[j1];
-                            }
-                        }
-                        return null;
-                    }
-                })) {
+                if (currentParameters[j].isResolvable(container, this, parameterTypes[j],
+                                                      makeParameterName(sortedMatchingConstructor, j1))) {
                     continue;
                 }
                 unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
@@ -178,6 +168,21 @@ public class ConstructorInjector extends AbstractInjector {
             throw new PicoCompositionException("Either the specified parameters do not match any of the following constructors: " + nonMatching.toString() + "; OR the constructors were not accessible for '" + getComponentImplementation().getName() + "'");
         }
         return greediestConstructor;
+    }
+
+    private ParameterName makeParameterName(final Constructor sortedMatchingConstructor, final int j1) {
+        return new ParameterName() {
+            public String getParameterName() {
+                createIfNeededParanamerProxy();
+                if (paranamer != null) {
+                    String[] names = paranamer.lookupParameterNames(sortedMatchingConstructor);
+                    if (names.length != 0) {
+                        return names[j1];
+                    }
+                }
+                return null;
+            }
+        };
     }
 
     private void createIfNeededParanamerProxy() {
