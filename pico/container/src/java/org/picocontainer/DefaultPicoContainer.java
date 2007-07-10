@@ -226,6 +226,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
+        return this.getComponentAdapter(componentType, new NullParameterName());
+    }
+
+    public static class NullParameterName implements ParameterName {
+        public String getParameterName() {
+            return null;
+        }
+    }
+
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
         // See http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-115
         ComponentAdapter<?> adapterByKey = getComponentAdapter((Object)componentType);
         if (adapterByKey != null) {
@@ -243,6 +253,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                 return null;
             }
         } else {
+            String parameterName = componentParameterName.getParameterName();
+            if (parameterName != null) {
+                ComponentAdapter ca = getComponentAdapter(parameterName);
+                if (componentType.isAssignableFrom(ca.getComponentImplementation())) {
+                    return ca;
+                }
+            }
             Class[] foundClasses = new Class[found.size()];
             for (int i = 0; i < foundClasses.length; i++) {
                 foundClasses[i] = found.get(i).getComponentImplementation();

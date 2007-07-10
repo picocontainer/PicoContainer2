@@ -16,6 +16,7 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.ParameterName;
 import org.picocontainer.adapters.InstanceAdapter;
 
 import java.io.Serializable;
@@ -116,6 +117,10 @@ public class ArgumentativePicoContainer implements PicoContainer, Serializable {
 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
         return delegate.getComponentAdapter(componentType);
+    }
+
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
+        return delegate.getComponentAdapter(componentType, componentParameterName);
     }
 
     public Collection<ComponentAdapter<?>> getComponentAdapters() {

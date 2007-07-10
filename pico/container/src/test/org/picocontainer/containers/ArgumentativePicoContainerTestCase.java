@@ -28,34 +28,14 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
         assertEquals(true,apc.getComponent("foo4"));
     }
 
-    public void DONOTtestAsParentContainer() {
+    public void testAsParentContainer() {
         ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {
-            "a=aaa", "b=bbb", "c=ccc", "d=22"});
+            "a=aaa", "b=bbb", "d=22"});
         assertEquals("aaa",apc.getComponent("a"));
         assertEquals("bbb",apc.getComponent("b"));
-        assertEquals("ccc",apc.getComponent("c"));
         assertEquals(22,apc.getComponent("d"));
 
         DefaultPicoContainer dpc = new DefaultPicoContainer(apc);
-        dpc.addComponent(NeedsString.class);
-        assertEquals("bbb", dpc.getComponent(NeedsString.class).val);
-    }
-
-    public void testAsParentContainer() {
-//        DefaultPicoContainer apc = new DefaultPicoContainer();
-        //new String[] {
-        //    "a=aaa", "b=bbb", "c=ccc", "d=22"});
-
-        DefaultPicoContainer dpc = new DefaultPicoContainer();
-        dpc.addComponent("a","aaa");
-        dpc.addComponent("b","bbb");
-        dpc.addComponent("c","ccc");
-        dpc.addComponent("d",22);
-        assertEquals("aaa",dpc.getComponent("a"));
-        assertEquals("bbb",dpc.getComponent("b"));
-        assertEquals("ccc",dpc.getComponent("c"));
-        assertEquals(22,dpc.getComponent("d"));
-
         dpc.addComponent(NeedsString.class);
         assertEquals("bbb", dpc.getComponent(NeedsString.class).val);
     }

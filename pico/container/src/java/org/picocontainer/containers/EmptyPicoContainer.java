@@ -12,6 +12,7 @@ package org.picocontainer.containers;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.ParameterName;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -48,6 +49,11 @@ public class EmptyPicoContainer implements PicoContainer, Serializable {
     }
 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
+        return null;
+    }
+
+
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
         return null;
     }
 

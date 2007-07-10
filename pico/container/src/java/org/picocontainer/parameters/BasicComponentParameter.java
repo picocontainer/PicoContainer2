@@ -177,7 +177,7 @@ public class BasicComponentParameter
             found.remove(exclude);
             if (found.size() == 0) {
                 if (container.getParent() != null) {
-                    return container.getParent().getComponentAdapter(expectedType);
+                    return container.getParent().getComponentAdapter(expectedType, expectedParameterName);
                 } else {
                     return null;
                 }

@@ -14,6 +14,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.ParameterName;
 
 import java.util.Collection;
 import java.util.List;
@@ -164,6 +165,20 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
         }
 
         ComponentAdapter<T> ca = delegate.getComponentAdapter(componentType);
+
+        if (ca == null) {
+            onKeyOrTypeDoesNotExistInContainer(ca, log);
+        }
+        return ca;
+    }
+
+
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
+        if (log.isDebugEnabled()) {
+            log.debug("Locating component adapter with type " + componentType);
+        }
+
+        ComponentAdapter<T> ca = delegate.getComponentAdapter(componentType, componentParameterName);
 
         if (ca == null) {
             onKeyOrTypeDoesNotExistInContainer(ca, log);

@@ -76,6 +76,8 @@ public interface PicoContainer {
      */
     <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType);
 
+    <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName);
+
     /**
      * Retrieve all the component adapters inside this container. The component adapters from the parent container are
      * not returned.
@@ -113,4 +115,5 @@ public interface PicoContainer {
      * @param visitor the visitor
      */
     void accept(PicoVisitor visitor);
+
 }

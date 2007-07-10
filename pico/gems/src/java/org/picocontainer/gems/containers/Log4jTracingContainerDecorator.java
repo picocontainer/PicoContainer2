@@ -15,6 +15,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.ParameterName;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -188,6 +189,20 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
         }
 
         ComponentAdapter<T> ca = delegate.getComponentAdapter(componentType);
+
+        if (ca == null) {
+            onKeyOrTypeDoesNotExistInContainer(ca, logger);
+        }
+        return ca;
+    }
+
+
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Locating component adapter with type " + componentType);
+        }
+
+        ComponentAdapter<T> ca = delegate.getComponentAdapter(componentType, componentParameterName);
 
         if (ca == null) {
             onKeyOrTypeDoesNotExistInContainer(ca, logger);

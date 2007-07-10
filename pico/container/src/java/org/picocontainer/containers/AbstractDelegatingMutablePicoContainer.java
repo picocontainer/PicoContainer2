@@ -16,6 +16,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.ParameterName;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -85,6 +86,10 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType) {
         return delegate.getComponentAdapter(componentType);
+    }
+
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
+        return delegate.getComponentAdapter(componentType, componentParameterName);
     }
 
     public Collection<ComponentAdapter<?>> getComponentAdapters() {
