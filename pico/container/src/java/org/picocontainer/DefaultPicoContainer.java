@@ -322,7 +322,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public MutablePicoContainer addConfig(String name, Object val) {
-        return addComponent(name, val);  
+        ComponentAdapter componentAdapter =
+            new InstanceAdapter(name, val, lifecycleStrategy, componentMonitor);
+        return addAdapter(componentAdapter);
     }
 
     /**
