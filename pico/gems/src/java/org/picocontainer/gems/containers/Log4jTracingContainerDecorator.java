@@ -417,6 +417,15 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
         return delegate.addComponent(implOrInstance);
     }
 
+    public MutablePicoContainer addConfig(String name, Object val) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Registering config: " + name);
+        }
+
+        return delegate.addConfig(name, val);
+
+    }
+
     /**
      * {@inheritDoc}
      *

@@ -55,20 +55,20 @@ public class ArgumentativePicoContainer implements PicoContainer, Serializable {
     private void processArgument(String argument, String separater) {
         String[] kvs = argument.split(separater);
         if (kvs.length == 2) {
-            addComponent(kvs[0], getValue(kvs[1]));
+            addConfig(kvs[0], getValue(kvs[1]));
         } else if (kvs.length == 1) {
-            addComponent(kvs[0], true);
+            addConfig(kvs[0], true);
         } else if (kvs.length > 2) {
             throw new PicoCompositionException(
                 "Argument name=value pair '" + argument + "' has too many '=' characters");
         }
     }
 
-    private void addComponent(String key, Object val) {
+    private void addConfig(String key, Object val) {
         if (delegate.getComponent(key) != null) {
             delegate.removeComponent(key);
         }
-        delegate.addComponent(key, val);
+        delegate.addConfig(key, val);
     }
 
     public ArgumentativePicoContainer(String separater, StringReader argumentsProps) throws IOException {

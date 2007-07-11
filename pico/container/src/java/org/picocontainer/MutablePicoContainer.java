@@ -50,9 +50,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *                     to the constructor when it is instantiated. Container implementations may ignore
      *                     one or more of these hints.
      *
-     * @return the ComponentAdapter that has been associated with this component. In the majority of cases, this return
-     *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
-     *         {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
+     * @return the same instance of MutablePicoContainer
      *
      * @throws PicoCompositionException if registration of the component fails.
      * @see org.picocontainer.Parameter
@@ -65,17 +63,27 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
 
     /**
      * Register an arbitrary object. The class of the object will be used as a key. Calling this method is equivalent to
-     * calling  <code>addAdapter(componentImplementation, componentImplementation)</code>.
+     * calling  <code>addComponent(componentImplementation, componentImplementation)</code>.
      *
      * @param implOrInstance Component implementation or instance
      *
-     * @return the ComponentAdapter that has been associated with this component. In the majority of cases, this return
-     *         value can be safely ignored, as one of the <code>getXXX()</code> methods of the
-     *         {@link PicoContainer} interface can be used to retrieve a reference to the component later on.
+     * @return the same instance of MutablePicoContainer
      *
      * @throws PicoCompositionException if registration fails.
      */
     MutablePicoContainer addComponent(Object implOrInstance);
+
+    /**
+     * Register a config item.
+     *
+     * @param name the name of the config item
+     * @param val the value of the config item
+     *
+     * @return the same instance of MutablePicoContainer
+     *
+     * @throws PicoCompositionException if registration fails.
+     */
+    MutablePicoContainer addConfig(String name, Object val);
 
     /**
      * Register a component via a ComponentAdapter. Use this if you need fine grained control over what
@@ -83,7 +91,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *
      * @param componentAdapter the addAdapter
      *
-     * @return the same adapter that was passed as an argument.
+     * @return the same instance of MutablePicoContainer
      *
      * @throws PicoCompositionException if registration fails.
      */
@@ -103,7 +111,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *
      * @param componentInstance the component instance to unregister.
      *
-     * @return the ComponentAdapter that was associated with this component.
+     * @return the same instance of MutablePicoContainer
      */
     ComponentAdapter removeComponentByInstance(Object componentInstance);
 
@@ -147,7 +155,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * You can change the characteristic of registration of all subsequent components in this container.
      *
      * @param properties
-     * @return the same Pico instance with changed characteritics
+     * @return the same Pico instance with changed properties
      */
     MutablePicoContainer change(Properties... properties);
 
@@ -155,7 +163,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      * You can set for the following operation only the characteristic of registration of a component on the fly.
      *
      * @param properties
-     * @return the same Pico instance with temporary characteritics
+     * @return the same Pico instance with temporary properties
      */
     MutablePicoContainer as(Properties... properties);
 

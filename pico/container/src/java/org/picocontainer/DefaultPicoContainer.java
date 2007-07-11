@@ -321,6 +321,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return addComponent(clazz, implOrInstance);
     }
 
+    public MutablePicoContainer addConfig(String name, Object val) {
+        return addComponent(name, val);  
+    }
+
     /**
      * {@inheritDoc}
      * The returned ComponentAdapter will be instantiated by the {@link ComponentFactory}

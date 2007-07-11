@@ -52,6 +52,10 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
         return delegate.addComponent(implOrInstance);
     }
 
+    public MutablePicoContainer addConfig(String name, Object val) {
+        return delegate.addConfig(name, val); 
+    }
+
     public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) throws PicoCompositionException {
         return delegate.addAdapter(componentAdapter);
     }

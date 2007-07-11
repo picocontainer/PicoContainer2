@@ -370,6 +370,14 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
         return delegate.addComponent(implOrInstance);
     }
 
+    public MutablePicoContainer addConfig(String name, Object val) {
+        if (log.isDebugEnabled()) {
+            log.debug("Registering config: " + name);
+        }
+
+        return delegate.addConfig(name, val);
+    }
+
     /**
      * {@inheritDoc}
      *

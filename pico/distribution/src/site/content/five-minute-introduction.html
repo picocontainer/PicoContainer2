@@ -150,7 +150,7 @@ return juicer;</pre>
                     <pre>// Create x hierarchy of containers
 MutablePicoContainer x = new DefaultPicoContainer();
 MutablePicoContainer y = new DefaultPicoContainer( x );
-MutablePicoContainer z = new DefaultPicoContainer( x );
+MutablePicoContainer z = new DefaultPicoContainer( y );
 
 // Assemble components
 x.addComponent(Apple.class);
