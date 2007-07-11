@@ -65,8 +65,10 @@ pico.addComponent(BigFatComponent.class, new ConstParameter(&quot;http://foo.com
 
 
 ...
-pico.addComponent(&quot;spellingWebServiceURL&quot;, &quot;http://foo.com/foo.wsdl&quot;);
-pico.addComponent(&quot;timeout&quot;, 120);
+pico.addConfig(&quot;spellingWebServiceURL&quot;, &quot;http://foo.com/foo.wsdl&quot;);
+pico.addConfig(&quot;somethingElse&quot;, &quot;abcde&quot;);
+pico.addConfig(&quot;timeout&quot;, 120);
+pico.addConfig(&quot;123&quot;, 456);
 pico.addComponent(BigFatComponent.class);</pre>
       </div>
     </div>
