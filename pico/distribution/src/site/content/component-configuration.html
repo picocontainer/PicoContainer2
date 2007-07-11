@@ -73,8 +73,35 @@ pico.addComponent(BigFatComponent.class);</pre>
       </div>
     </div>
   </div>
-  <p>&nbsp;</p>
+  <p>This feature of PicoContainer relies on the a non-JDK mechanism of accessing parameter names for methods and constructors. There are two ways for this to work. </p>
+  <ul>
+    <li>adding paranamer 1.0 and ASM 3.0 (or above) to your classpath and ensuring that your component classes have debug info compiled in. </li>
+    <li>post-processing component classes with Paranamer before placing them in a jar (no runtime jar dependencies). </li>
+  </ul>
+  <p>If the parameter name information cannot be accessed at runtime by PicoContainer, then Pico will be unable to differentiate between potential injectable classes of the same type and throws an exception that suggests that there is an ambiguity.</p>
 </div>
-<div>
+<h2>Taking configuration from the command line</h2>
+<p>This take the parameter name style a bit further. </p>
+<p>ArgumentativePicoContainer can be used in a main method to take arguments from the command line and set them up as configuration for components to use elsewhere in the tree of PicoContainers. </p>
+<div class="source">
+  <pre>public class DataStore {
+  public BigFatComponent(String JdbcUser, String JdbcPassword) {
+    // etc
+  }  
+}
+
+...
+public static void main(String[] args) {
+        ArgumentativePicoContainer argContainer = new ArgumentativePicoContainer(args);
+        DefaultPicoContainer appContainer = new DefaultPicoContainer(argContainer);
+        appContainer.addComponent(DataStore.class)
+    }
+
+
+...
+java -jar myapp.jar JdbcUser=joe JdbcPassword=joejoejoe
+</pre>
+</div>
+Not all command line arguments are turned into configuration items, only those separated with an = sign (a second constructor for ArgumentativePicoContainer allows you to specify a different seperater).
 </body>
 </html>
