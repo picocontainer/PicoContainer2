@@ -350,7 +350,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                                                                                                (Class)componentImplementationOrInstance,
                                                                                                parameters);
             if(tmpProperties.size() > 0) {
-                throw new PicoCompositionException("Unprocessed Characteristics:" + tmpProperties);
+                throw new PicoCompositionException("Unprocessed Characteristics:" + tmpProperties +", refer http://picocontainer.org/unprocessed-properties.html");
             }
             return addAdapter(componentAdapter);
         } else {
@@ -358,10 +358,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                 new InstanceAdapter(componentKey, componentImplementationOrInstance, lifecycleStrategy, componentMonitor);
             return addAdapter(componentAdapter);
         }
-    }
-
-    protected Properties getComponentCharacteristic() {
-        return componentProperties;
     }
 
     private void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
