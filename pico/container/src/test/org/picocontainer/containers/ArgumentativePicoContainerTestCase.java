@@ -10,6 +10,7 @@
 package org.picocontainer.containers;
 
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.injectors.AbstractInjector;
 
 import java.io.StringReader;
 import java.io.IOException;
@@ -95,5 +96,23 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
         assertEquals("bar",apc.getComponent("foo"));
         assertNull(apc.getComponent(String.class));
     }
+
+    public void testAmbigousIfNoSuitableTyesForInjection() {
+        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[0]);
+        DefaultPicoContainer pico = new DefaultPicoContainer(apc);
+        pico.addComponent(NeedsAFew.class);
+        try {
+            Object foo = pico.getComponent(NeedsAFew.class);
+            fail();
+        } catch (AbstractInjector.AmbiguousComponentResolutionException e) {
+            // expetced;
+        }
+    }
+    public static class NeedsAFew {
+
+        public NeedsAFew(String a, int b, long c, boolean d) {
+        }
+    }
+
 
 }

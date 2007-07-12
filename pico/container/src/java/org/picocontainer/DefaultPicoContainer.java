@@ -247,7 +247,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                 String parameterName = componentParameterName.getParameterName();
                 if (parameterName != null) {
                     ComponentAdapter ca = getComponentAdapter(parameterName);
-                    if (componentType.isAssignableFrom(ca.getComponentImplementation())) {
+                    if (ca != null && componentType.isAssignableFrom(ca.getComponentImplementation())) {
                         return ca;
                     }
                 }
@@ -322,9 +322,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public MutablePicoContainer addConfig(String name, Object val) {
-        ComponentAdapter componentAdapter =
-            new InstanceAdapter(name, val, lifecycleStrategy, componentMonitor);
-        return addAdapter(componentAdapter);
+        return addAdapter(new InstanceAdapter(name, val, lifecycleStrategy, componentMonitor));
     }
 
     /**
