@@ -85,7 +85,7 @@ pico.addComponent(BigFatComponent.class);</pre>
 <p>ArgumentativePicoContainer can be used in a main method to take arguments from the command line and set them up as configuration for components to use elsewhere in the tree of PicoContainers. </p>
 <div class="source">
   <pre>public class DataStore {
-  public BigFatComponent(String JdbcUser, String JdbcPassword) {
+  public DataStore(String JdbcUser, String JdbcPassword) {
     // etc
   }  
 }
@@ -102,7 +102,7 @@ public static void main(String[] args) {
 java -jar myapp.jar JdbcUser=joe JdbcPassword=joejoejoe
 </pre>
 </div>
-<p>Not all command line arguments are turned into configuration items, only those separated with an = sign (a second constructor for ArgumentativePicoContainer allows you to specify a different seperater). If the value to the right of the = is an int, then the config item will be added as an int (not a String). Likewise for long, and boolean ('true' / 'false'). All else will be left as a String. </p>
+<p>Not all command line arguments are turned into configuration items, only those separated with an = sign (a second constructor for ArgumentativePicoContainer allows you to specify a different separator). If the value to the right of the = is an int, then the config item will be added as an int (not a String). Likewise for long, and boolean ('true' / 'false'). All else will be left as a String. </p>
 <p>Also not that there are not going to be any accidental injections of the wrong configuration value. If you don't specify enough command line arguments, PicoContainer will <strong>always</strong> throw the 'Ambiguous' exception and not inject the first String/int/long/boolean that it finds. </p>
 </body>
 </html>
