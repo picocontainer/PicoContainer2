@@ -35,9 +35,9 @@ public class ArgumentativePicoContainer implements PicoContainer, Serializable {
         this("=", arguments);
     }
 
-    public ArgumentativePicoContainer(String separater, String[] arguments) {
+    public ArgumentativePicoContainer(String separator, String[] arguments) {
         for (String argument : arguments) {
-            processArgument(argument, separater);
+            processArgument(argument, separator);
         }
         int i = 1;
         delegate.addConfig(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, DUMMY_PICOCONTAINER_CONFIG_ITEM + i);
@@ -50,21 +50,21 @@ public class ArgumentativePicoContainer implements PicoContainer, Serializable {
         delegate.addConfig(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, 0L);
     }
 
-    public ArgumentativePicoContainer(String separater, StringReader argumentProperties, String[] arguments)
+    public ArgumentativePicoContainer(String separator, StringReader argumentProperties, String[] arguments)
         throws IOException {
         LineNumberReader lnr = new LineNumberReader(argumentProperties);
         String line = lnr.readLine();
         while (line != null) {
-            processArgument(line, separater);
+            processArgument(line, separator);
             line = lnr.readLine();
         }
         for (String argument : arguments) {
-            processArgument(argument, separater);
+            processArgument(argument, separator);
         }
     }
 
-    private void processArgument(String argument, String separater) {
-        String[] kvs = argument.split(separater);
+    private void processArgument(String argument, String separator) {
+        String[] kvs = argument.split(separator);
         if (kvs.length == 2) {
             addConfig(kvs[0], getValue(kvs[1]));
         } else if (kvs.length == 1) {
@@ -82,8 +82,8 @@ public class ArgumentativePicoContainer implements PicoContainer, Serializable {
         delegate.addConfig(key, val);
     }
 
-    public ArgumentativePicoContainer(String separater, StringReader argumentsProps) throws IOException {
-        this(separater, argumentsProps, new String[0]);
+    public ArgumentativePicoContainer(String separator, StringReader argumentsProps) throws IOException {
+        this(separator, argumentsProps, new String[0]);
     }
 
     private Object getValue(String s) {
