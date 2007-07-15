@@ -276,8 +276,8 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         A a = new A();
         Mock componentFactoryMock = mock(ComponentFactory.class);
         componentFactoryMock.expects(once()).method("createComponentAdapter").with(new Constraint[] { isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(
-            Properties.class), same(A.class), same(A.class), eq(null)}).will(returnValue(new InstanceAdapter(A.class, a, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance())));
+            Properties.class), same(A.class), same(A.class), eq(null)}).will(returnValue(new InstanceAdapter(A.class, a, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor())));
         ComponentFactory componentFactory = (ComponentFactory) componentFactoryMock.proxy();
         PicoContainer pico = buildContainer(script, null, componentFactory);
         assertSame(a, pico.getComponent(A.class));

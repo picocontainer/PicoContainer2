@@ -43,8 +43,8 @@ public class BuildingBlocksTestCase extends TestCase {
         picoContainer.addComponent(new Apple());
         // END SNIPPET: register-convenient
         // START SNIPPET: register-direct
-        picoContainer.addAdapter(new InstanceAdapter("Another Apple", new Apple(), NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()));
+        picoContainer.addAdapter(new InstanceAdapter("Another Apple", new Apple(), new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()));
         // END SNIPPET: register-direct
     }
 
@@ -79,7 +79,7 @@ public class BuildingBlocksTestCase extends TestCase {
                 new SynchronizedBehavior(
                         new CachingBehavior(
                                 new SetterInjector(
-                                        JuicerBean.class, JuicerBean.class, (Parameter[])null, NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance()))));
+                                        JuicerBean.class, JuicerBean.class, (Parameter[])null, new NullComponentMonitor(), new NullLifecycleStrategy()))));
         // END SNIPPET: register-equivalent-at-length2
     }
 }

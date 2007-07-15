@@ -41,7 +41,7 @@ public class WriterComponentMonitor implements ComponentMonitor {
     private final ComponentMonitor delegate;
 
     public WriterComponentMonitor(Writer out) {
-        this(out, NullComponentMonitor.getInstance());
+        this(out, new NullComponentMonitor());
     }
 
     public WriterComponentMonitor(Writer out, ComponentMonitor delegate) {

@@ -293,8 +293,8 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 
 	public void testRegisterComponentInstanceWithKey() {
 		String testString = "This is a test.";
-		ComponentAdapter testAdapter = new InstanceAdapter(String.class, testString, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance());
+		ComponentAdapter testAdapter = new InstanceAdapter(String.class, testString, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor());
 		picoMock.expects(once()).method("addComponent").with(same(String.class), same(testString), eq(Parameter.ZERO)).will(returnValue(picoMock.proxy()));
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 
@@ -359,8 +359,8 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 
 	public void testUnregisterComponentByInstance() {
 		String testString = "This is a test.";
-		ComponentAdapter testAdapter = new InstanceAdapter(String.class, testString, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance());
+		ComponentAdapter testAdapter = new InstanceAdapter(String.class, testString, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor());
 		picoMock.expects(once()).method("removeComponentByInstance").with(same(testString)).will(returnValue(testAdapter));
 		
 		ComponentAdapter result = tracingDecorator.removeComponentByInstance(testString);

@@ -34,8 +34,8 @@ public class AbstractInjectorTestCase extends TestCase {
 
     public void setUp() throws NoSuchMethodException {
         ai = new MyAbstractInjector(Map.class, HashMap.class, new Parameter[0],
-                                                     NullComponentMonitor.getInstance(),
-                                                     NullLifecycleStrategy.getInstance());
+                                                     new NullComponentMonitor(),
+                                                     new NullLifecycleStrategy());
         ctor = HashMap.class.getConstructor();
     }
 

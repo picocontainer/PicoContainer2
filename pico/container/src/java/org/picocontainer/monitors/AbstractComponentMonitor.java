@@ -54,7 +54,7 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
      * {@link NullComponentMonitor}.
      */
     public AbstractComponentMonitor() {
-        this(NullComponentMonitor.getInstance());
+        this(new NullComponentMonitor());
     }
     
     public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,

@@ -33,11 +33,11 @@ public class DynamicMBeanComponentProviderTest extends MockObjectTestCase {
         final PersonMBean person = new DynamicMBeanPerson();
         final DynamicMBeanProvider provider = new DynamicMBeanComponentProvider();
         JMXRegistrationInfo info = provider
-                .provide(null, new InstanceAdapter(PersonMBean.class, new Person(), NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()));
+                .provide(null, new InstanceAdapter(PersonMBean.class, new Person(), new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()));
         assertNull(info);
-        info = provider.provide(null, new InstanceAdapter("JUnit", person, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()));
+        info = provider.provide(null, new InstanceAdapter("JUnit", person, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()));
         assertNotNull(info);
         assertSame(person, info.getMBean());
     }
@@ -50,8 +50,8 @@ public class DynamicMBeanComponentProviderTest extends MockObjectTestCase {
 
         final DynamicMBeanProvider provider = new DynamicMBeanComponentProvider(
                 (ObjectNameFactory)objectNameFactoryMock.proxy());
-        final JMXRegistrationInfo info = provider.provide(null, new InstanceAdapter("JUnit", person, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()));
+        final JMXRegistrationInfo info = provider.provide(null, new InstanceAdapter("JUnit", person, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()));
         assertNull(info);
     }
 
@@ -66,8 +66,8 @@ public class DynamicMBeanComponentProviderTest extends MockObjectTestCase {
         final DynamicMBeanProvider provider = new DynamicMBeanComponentProvider(
                 (ObjectNameFactory)objectNameFactoryMock.proxy());
         try {
-            provider.provide(null, new InstanceAdapter("JUnit", person, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()));
+            provider.provide(null, new InstanceAdapter("JUnit", person, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()));
             fail("JMXRegistrationException expected");
         } catch (final JMXRegistrationException e) {
             assertSame(exception, e.getCause());

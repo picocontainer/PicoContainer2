@@ -15,14 +15,6 @@ import java.io.Serializable;
 
 public class NullLifecycleStrategy implements LifecycleStrategy, Serializable {
 
-    private static LifecycleStrategy instance;
-    public static synchronized LifecycleStrategy getInstance() {
-        if (instance == null) {
-            instance = new NullLifecycleStrategy();
-        }
-        return instance;
-    }
-
     public void start(Object component) {
     }
 

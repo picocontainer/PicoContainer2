@@ -52,7 +52,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
      * at every invocation of the monitor.
      */
     public Log4JComponentMonitor() {
-        delegate = NullComponentMonitor.getInstance();
+        delegate = new NullComponentMonitor();
     }
     
     /**

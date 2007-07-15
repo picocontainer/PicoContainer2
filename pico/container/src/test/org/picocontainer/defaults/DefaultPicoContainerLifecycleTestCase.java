@@ -426,7 +426,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         s3.expects(once()).method("start").will(throwException(new RuntimeException("I also do not want to start myself")));
         s3.expects(once()).method("stop");
 
-        LifecycleComponentMonitor lifecycleComponentMonitor = new LifecycleComponentMonitor(NullComponentMonitor.getInstance());
+        LifecycleComponentMonitor lifecycleComponentMonitor = new LifecycleComponentMonitor(new NullComponentMonitor());
 
         DefaultPicoContainer dpc = new DefaultPicoContainer(lifecycleComponentMonitor);
         dpc.addComponent("one", s1.proxy());

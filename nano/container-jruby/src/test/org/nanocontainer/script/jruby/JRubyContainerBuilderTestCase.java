@@ -235,8 +235,8 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         Mock componentFactoryMock = mock(ComponentFactory.class);
         Constraint[] cons = {isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(Properties.class), same(A.class), same(A.class), eq(null)};
         componentFactoryMock.expects(once()).method("createComponentAdapter").with(cons)
-            .will(returnValue(new InstanceAdapter(A.class, a, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance())));
+            .will(returnValue(new InstanceAdapter(A.class, a, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor())));
         PicoContainer pico = buildContainer(script, null, componentFactoryMock.proxy());
         assertSame(a, pico.getComponent(A.class));
     }

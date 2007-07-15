@@ -30,8 +30,6 @@ import org.picocontainer.PicoContainer;
  */
 public class NullComponentMonitor implements ComponentMonitor, Serializable {
 
-    private static NullComponentMonitor instance;
-
     public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
                                      Constructor constructor) {
         return constructor;
@@ -77,10 +75,4 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
         return null;
     }
 
-    public static synchronized NullComponentMonitor getInstance() {
-        if (instance == null) {
-            instance = new NullComponentMonitor();
-        }
-        return instance;
-    }
 }

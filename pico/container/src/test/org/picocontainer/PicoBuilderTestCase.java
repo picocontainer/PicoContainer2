@@ -70,7 +70,7 @@ public class PicoBuilderTestCase extends TestCase {
 
     public void testWithStartableLifecycle() {
 
-        NullComponentMonitor.getInstance();
+        new NullComponentMonitor();
 
         MutablePicoContainer mpc = new PicoBuilder().withLifecycle().build();
         String foo = simplifyRepresentation(mpc);

@@ -40,7 +40,7 @@ public class FieldAnnotationInjectorTestCase extends TestCase {
     public void testFieldInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new FieldAnnotationInjector(Helicopter.class, Helicopter.class, null,
-                                                    NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance()));
+                                                    new NullComponentMonitor(), new NullLifecycleStrategy()));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
         assertNotNull(chopper);
@@ -50,7 +50,7 @@ public class FieldAnnotationInjectorTestCase extends TestCase {
     public void testFieldInjectionWithoutAnnotationDoesNotWork() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new FieldAnnotationInjector(Helicopter2.class, Helicopter2.class, null,
-                                                    NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance()));
+                                                    new NullComponentMonitor(), new NullLifecycleStrategy()));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter2 chopper = pico.getComponent(Helicopter2.class);
         assertNotNull(chopper);
@@ -60,7 +60,7 @@ public class FieldAnnotationInjectorTestCase extends TestCase {
     public void testFieldDeosNotHappenWithoutRightInjectorDoesNotWork() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new SetterInjector(Helicopter.class, Helicopter.class, null,
-                                                    NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance()));
+                                                    new NullComponentMonitor(), new NullLifecycleStrategy()));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
         assertNotNull(chopper);

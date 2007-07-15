@@ -48,8 +48,8 @@ public class RegisteredMBeanConstructingProviderTest extends MockObjectTestCase 
         final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider(
                 (DynamicMBeanFactory)dynamicMBeanFactory.proxy());
         provider.register(objectName, mBeanInfo);
-        assertNotNull(provider.provide(null, new InstanceAdapter(Person.class, person, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance())));
+        assertNotNull(provider.provide(null, new InstanceAdapter(Person.class, person, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor())));
     }
 
     public void testRegisterWithArbitraryComponentKey() {
@@ -61,8 +61,8 @@ public class RegisteredMBeanConstructingProviderTest extends MockObjectTestCase 
         final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider(
                 (DynamicMBeanFactory)dynamicMBeanFactory.proxy());
         provider.register("JUnit", objectName, mBeanInfo);
-        assertNotNull(provider.provide(null, new InstanceAdapter("JUnit", person, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance())));
+        assertNotNull(provider.provide(null, new InstanceAdapter("JUnit", person, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor())));
     }
 
     public void testRegisterWithArbitraryComponentKeyAndManagementInterface() {
@@ -75,8 +75,8 @@ public class RegisteredMBeanConstructingProviderTest extends MockObjectTestCase 
         final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider(
                 (DynamicMBeanFactory)dynamicMBeanFactory.proxy());
         provider.register("JUnit", objectName, Touchable.class, mBeanInfo);
-        assertNotNull(provider.provide(null, new InstanceAdapter("JUnit", touchable, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance())));
+        assertNotNull(provider.provide(null, new InstanceAdapter("JUnit", touchable, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor())));
     }
 
     public void testRegisterWithTypedComponentKeyButWithoutMBeanInfo() {
@@ -87,8 +87,8 @@ public class RegisteredMBeanConstructingProviderTest extends MockObjectTestCase 
         final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider(
                 (DynamicMBeanFactory)dynamicMBeanFactory.proxy());
         provider.register(PersonMBean.class, objectName);
-        assertNotNull(provider.provide(null, new InstanceAdapter(PersonMBean.class, person, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance())));
+        assertNotNull(provider.provide(null, new InstanceAdapter(PersonMBean.class, person, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor())));
     }
 
     public void testRegisterWithArbitraryComponentKeyButWithoutMBeanInfo() {
@@ -99,16 +99,16 @@ public class RegisteredMBeanConstructingProviderTest extends MockObjectTestCase 
         final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider(
                 (DynamicMBeanFactory)dynamicMBeanFactory.proxy());
         provider.register("JUnit", objectName);
-        assertNotNull(provider.provide(null, new InstanceAdapter("JUnit", person, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance())));
+        assertNotNull(provider.provide(null, new InstanceAdapter("JUnit", person, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor())));
     }
 
     public void testUsageOfStandardMBeanFactory() {
         final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider();
         provider.register(PersonMBean.class, objectName);
         final JMXRegistrationInfo info = provider.provide(null, new InstanceAdapter(
-                PersonMBean.class, new Person(), NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()));
+                PersonMBean.class, new Person(), new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()));
         assertNotNull(info.getMBean());
         assertEquals(objectName, info.getObjectName());
     }

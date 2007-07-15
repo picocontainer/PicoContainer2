@@ -43,7 +43,7 @@ public abstract class AbstractAdapter implements ComponentAdapter, ComponentMoni
      */
     protected AbstractAdapter(Object componentKey, Class componentImplementation) {
         this(componentKey, componentImplementation, new AbstractComponentMonitor());
-        this.componentMonitor = NullComponentMonitor.getInstance();
+        this.componentMonitor = new NullComponentMonitor();
     }
 
     /**

@@ -720,8 +720,8 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
             parent.addAdapter(new ConstructorInjector(HashSet.class, HashSet.class)).getComponentAdapter(HashSet.class,
                                                                                                          null);
         InstanceAdapter instanceAdapter = new InstanceAdapter(String.class, "foo",
-                                                              NullLifecycleStrategy.getInstance(),
-                                                              NullComponentMonitor.getInstance());
+                                                              new NullLifecycleStrategy(),
+                                                              new NullComponentMonitor());
         ComponentAdapter stringAdapter = parent.addAdapter(instanceAdapter).getComponentAdapter(instanceAdapter.getComponentKey());
         ComponentAdapter arrayListAdapter =
             child.addAdapter(new ConstructorInjector(ArrayList.class, ArrayList.class)).getComponentAdapter(ArrayList.class,

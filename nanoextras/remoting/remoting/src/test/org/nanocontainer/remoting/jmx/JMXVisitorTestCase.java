@@ -163,8 +163,8 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
      */
     public void testIllegalVisit() {
         final JMXVisitor jmxVisitor = createVisitor(1);
-        final ComponentAdapter componentAdapter = new InstanceAdapter(this, this, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance());
+        final ComponentAdapter componentAdapter = new InstanceAdapter(this, this, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor());
         try {
             jmxVisitor.traverse(componentAdapter);
             fail("JMXRegistrationException expected");

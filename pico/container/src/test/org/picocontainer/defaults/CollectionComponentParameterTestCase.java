@@ -56,9 +56,9 @@ public class CollectionComponentParameterTestCase
         Mock containerMock = mock(PicoContainer.class);
         containerMock.expects(once()).method("getComponentAdapters").withNoArguments().will(returnValue(new HashSet()));
         containerMock.expects(once()).method("getComponentAdapters").with(eq(String.class)).will(
-                returnValue(Arrays.asList(new InstanceAdapter("y", "Hello", NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()), new InstanceAdapter("z", "World", NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()))));
+                returnValue(Arrays.asList(new InstanceAdapter("y", "Hello", new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()), new InstanceAdapter("z", "World", new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()))));
         containerMock.expects(once()).method("getComponent").with(eq("z")).will(returnValue("World"));
         containerMock.expects(once()).method("getComponent").with(eq("y")).will(returnValue("Hello"));
         containerMock.expects(once()).method("getParent").withNoArguments().will(returnValue(null));

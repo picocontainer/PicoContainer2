@@ -46,7 +46,7 @@ public class MethodAnnotationInjectorTestCase extends TestCase {
     public void testSetterMethodInjectionToContrastWithThatBelow() {
 
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new SetterInjector(SetterBurp.class, SetterBurp.class, Parameter.DEFAULT, NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance()));
+        pico.addAdapter(new SetterInjector(SetterBurp.class, SetterBurp.class, Parameter.DEFAULT, new NullComponentMonitor(), new NullLifecycleStrategy()));
         pico.addComponent(Wind.class, new Wind());
         SetterBurp burp = pico.getComponent(SetterBurp.class);
         assertNotNull(burp);
@@ -56,7 +56,7 @@ public class MethodAnnotationInjectorTestCase extends TestCase {
     public void testNonSetterMethodInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new MethodAnnotationInjector(AnnotatedBurp.class, AnnotatedBurp.class, Parameter.DEFAULT,
-                                               NullComponentMonitor.getInstance(), NullLifecycleStrategy.getInstance()) {
+                                               new NullComponentMonitor(), new NullLifecycleStrategy()) {
             protected String getInjectorPrefix() {
                 return "init";
             }

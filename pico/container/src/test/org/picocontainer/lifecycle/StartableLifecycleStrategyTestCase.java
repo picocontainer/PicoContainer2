@@ -25,7 +25,7 @@ public class StartableLifecycleStrategyTestCase extends MockObjectTestCase {
     private StartableLifecycleStrategy strategy;
     
     public void setUp(){
-        strategy = new StartableLifecycleStrategy(NullComponentMonitor.getInstance());
+        strategy = new StartableLifecycleStrategy(new NullComponentMonitor());
     }
 
     public void testStartable(){

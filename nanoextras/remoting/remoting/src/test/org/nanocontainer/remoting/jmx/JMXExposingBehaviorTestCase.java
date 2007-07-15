@@ -46,8 +46,8 @@ public class JMXExposingBehaviorTestCase extends MockObjectTestCase {
     public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException {
         final PersonMBean person = new DynamicMBeanPerson();
         final ComponentAdapter componentAdapter = new JMXExposingBehavior(new InstanceAdapter(
-                PersonMBean.class, person, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()), (MBeanServer)mockMBeanServer.proxy());
+                PersonMBean.class, person, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()), (MBeanServer)mockMBeanServer.proxy());
 
         mockMBeanServer.expects(once()).method("registerMBean").with(same(person), isA(ObjectName.class));
 
@@ -57,8 +57,8 @@ public class JMXExposingBehaviorTestCase extends MockObjectTestCase {
     public void testWillRegisterAndUnRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException {
         final PersonMBean person = new DynamicMBeanPerson();
         final JMXExposingBehavior componentAdapter = new JMXExposingBehavior(new InstanceAdapter(
-                PersonMBean.class, person, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()), (MBeanServer)mockMBeanServer.proxy());
+                PersonMBean.class, person, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()), (MBeanServer)mockMBeanServer.proxy());
 
         mockMBeanServer.expects(once()).method("registerMBean").with(same(person), isA(ObjectName.class));
         mockMBeanServer.expects(once()).method("unregisterMBean").with(isA(ObjectName.class));
@@ -76,8 +76,8 @@ public class JMXExposingBehaviorTestCase extends MockObjectTestCase {
         final JMXRegistrationInfo info = new JMXRegistrationInfo(objectName, mBean);
 
         final ComponentAdapter componentAdapter = new JMXExposingBehavior(new InstanceAdapter(
-                PersonMBean.class, person, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()), (MBeanServer)mockMBeanServer.proxy(), new DynamicMBeanProvider[]{
+                PersonMBean.class, person, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()), (MBeanServer)mockMBeanServer.proxy(), new DynamicMBeanProvider[]{
                 (DynamicMBeanProvider)mockProvider1.proxy(), (DynamicMBeanProvider)mockProvider2.proxy()});
 
         mockProvider1.expects(once()).method("provide").with(NULL, isA(ComponentAdapter.class)).will(returnValue(null));
@@ -91,8 +91,8 @@ public class JMXExposingBehaviorTestCase extends MockObjectTestCase {
         final PersonMBean person = new DynamicMBeanPerson();
         final Exception exception = new InstanceAlreadyExistsException("JUnit");
         final ComponentAdapter componentAdapter = new JMXExposingBehavior(new InstanceAdapter(
-                PersonMBean.class, person, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()), (MBeanServer)mockMBeanServer.proxy());
+                PersonMBean.class, person, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()), (MBeanServer)mockMBeanServer.proxy());
 
         mockMBeanServer.expects(once()).method("registerMBean").with(same(person), isA(ObjectName.class)).will(
                 throwException(exception));
@@ -109,8 +109,8 @@ public class JMXExposingBehaviorTestCase extends MockObjectTestCase {
         final PersonMBean person = new DynamicMBeanPerson();
         final Exception exception = new MBeanRegistrationException(new Exception(), "JUnit");
         final ComponentAdapter componentAdapter = new JMXExposingBehavior(new InstanceAdapter(
-                PersonMBean.class, person, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()), (MBeanServer)mockMBeanServer.proxy());
+                PersonMBean.class, person, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()), (MBeanServer)mockMBeanServer.proxy());
 
         mockMBeanServer.expects(once()).method("registerMBean").with(same(person), isA(ObjectName.class)).will(
                 throwException(exception));
@@ -127,8 +127,8 @@ public class JMXExposingBehaviorTestCase extends MockObjectTestCase {
         final PersonMBean person = new DynamicMBeanPerson();
         final Exception exception = new NotCompliantMBeanException("JUnit");
         final ComponentAdapter componentAdapter = new JMXExposingBehavior(new InstanceAdapter(
-                PersonMBean.class, person, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()), (MBeanServer)mockMBeanServer.proxy());
+                PersonMBean.class, person, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()), (MBeanServer)mockMBeanServer.proxy());
 
         mockMBeanServer.expects(once()).method("registerMBean").with(same(person), isA(ObjectName.class)).will(
                 throwException(exception));
@@ -144,15 +144,15 @@ public class JMXExposingBehaviorTestCase extends MockObjectTestCase {
     public void testConstructorThrowsNPE() {
         try {
             new JMXExposingBehavior(
-                    new InstanceAdapter(TestCase.class, this, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()), null, new DynamicMBeanProvider[]{});
+                    new InstanceAdapter(TestCase.class, this, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()), null, new DynamicMBeanProvider[]{});
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {
         }
         try {
             new JMXExposingBehavior(
-                    new InstanceAdapter(TestCase.class, this, NullLifecycleStrategy.getInstance(),
-                                                                        NullComponentMonitor.getInstance()), (MBeanServer)mockMBeanServer.proxy(), null);
+                    new InstanceAdapter(TestCase.class, this, new NullLifecycleStrategy(),
+                                                                        new NullComponentMonitor()), (MBeanServer)mockMBeanServer.proxy(), null);
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {
         }

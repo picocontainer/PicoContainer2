@@ -441,8 +441,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     
     public void testDerivedPicoContainerCanOverloadRegisterComponentForAllCreatedComponentAdapters() {
         MutablePicoContainer mpc = new MyPicoContainer();
-        InstanceAdapter instanceAdapter = new InstanceAdapter("foo", "bar", NullLifecycleStrategy.getInstance(),
-                                                              NullComponentMonitor.getInstance());
+        InstanceAdapter instanceAdapter = new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(),
+                                                              new NullComponentMonitor());
         assertEquals(SynchronizedBehavior.class, mpc.addAdapter(instanceAdapter).getComponentAdapter(instanceAdapter.getComponentKey()).getClass());
         MutablePicoContainer container = mpc.addComponent("foobar");
         assertEquals(SynchronizedBehavior.class, container.getComponentAdapter("foobar").getClass());

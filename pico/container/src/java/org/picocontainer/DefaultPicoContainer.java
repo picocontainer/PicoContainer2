@@ -103,7 +103,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent                  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentFactory componentFactory, PicoContainer parent) {
-        this(componentFactory, new StartableLifecycleStrategy(NullComponentMonitor.getInstance()), parent, NullComponentMonitor.getInstance());
+        this(componentFactory, new StartableLifecycleStrategy(new NullComponentMonitor()), parent, new NullComponentMonitor());
     }
 
     /**
@@ -126,7 +126,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public DefaultPicoContainer(ComponentFactory componentFactory,
                                 LifecycleStrategy lifecycleStrategy,
                                 PicoContainer parent) {
-        this(componentFactory, lifecycleStrategy, parent, NullComponentMonitor.getInstance() );
+        this(componentFactory, lifecycleStrategy, parent, new NullComponentMonitor() );
     }
 
     public DefaultPicoContainer(ComponentFactory componentFactory,
@@ -175,7 +175,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent            the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(NullComponentMonitor.getInstance(), lifecycleStrategy, parent);
+        this(new NullComponentMonitor(), lifecycleStrategy, parent);
     }
 
 
