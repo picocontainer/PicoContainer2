@@ -73,48 +73,6 @@ public class ConstructorInjector extends AbstractInjector {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
     }
 
-    /**
-     * Creates a ConstructorInjectionComponentAdapter
-     *
-     * @param componentKey            the search key for this implementation
-     * @param componentImplementation the concrete implementation
-     * @param parameters              the parameters to use for the initialization
-     * @param monitor                 the component monitor used by this addAdapter
-     * @throws NotConcreteRegistrationException
-     *                              if the implementation is not a concrete class.
-     * @throws NullPointerException if one of the parameters is <code>null</code>
-     */
-    public ConstructorInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor) throws  NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, monitor);
-    }
-
-    /**
-     * Creates a ConstructorInjectionComponentAdapter
-     *
-     * @param componentKey            the search key for this implementation
-     * @param componentImplementation the concrete implementation
-     * @param parameters              the parameters to use for the initialization
-     * @throws NotConcreteRegistrationException
-     *                              if the implementation is not a concrete class.
-     * @throws NullPointerException if one of the parameters is <code>null</code>
-     */
-    public ConstructorInjector(final Object componentKey, final Class componentImplementation, Parameter... parameters) throws  NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters);
-    }
-
-    /**
-     * Creates a ConstructorInjectionComponentAdapter with key and implementation
-     *
-     * @param componentKey            the search key for this implementation
-     * @param componentImplementation the concrete implementation
-     * @throws NotConcreteRegistrationException
-     *                              if the implementation is not a concrete class.
-     * @throws NullPointerException if one of the parameters is <code>null</code>
-     */
-    public ConstructorInjector(Object componentKey, Class componentImplementation) throws NotConcreteRegistrationException {
-        this(componentKey, componentImplementation, (Parameter[])null);
-    }
-
     protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
         final Set<Constructor> conflicts = new HashSet<Constructor>();
         final Set<List<Class>> unsatisfiableDependencyTypes = new HashSet<List<Class>>();

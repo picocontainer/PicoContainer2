@@ -175,7 +175,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     public void testDefaultPicoContainerReturnsNewInstanceForEachCallWhenUsingTransientComponentAdapter() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
         picoContainer.addComponent(Service.class);
-        picoContainer.addAdapter(new ConstructorInjector(TransientComponent.class, TransientComponent.class));
+        picoContainer.addAdapter(new ConstructorInjector(TransientComponent.class, TransientComponent.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
         TransientComponent c1 = picoContainer.getComponent(TransientComponent.class);
         TransientComponent c2 = picoContainer.getComponent(TransientComponent.class);
         assertNotSame(c1, c2);

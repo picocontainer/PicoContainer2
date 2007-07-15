@@ -44,7 +44,7 @@ public class AssimilatingBehaviorTestCase extends AbstractComponentAdapterTestCa
     public void testInstanceIsBorged() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         final ComponentAdapter componentAdapter = new CachingBehavior(new ConstructorInjector(
-                CompatibleTouchable.class, CompatibleTouchable.class));
+                CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
         mpc.addAdapter(new AssimilatingBehavior(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = (CompatibleTouchable)componentAdapter.getComponentInstance(mpc);
         final Touchable touchable = mpc.getComponent(Touchable.class);
@@ -60,7 +60,7 @@ public class AssimilatingBehaviorTestCase extends AbstractComponentAdapterTestCa
     public void testComponentKeyIsPreserved() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         final ComponentAdapter componentAdapter = new CachingBehavior(new ConstructorInjector(
-                "Touchy", CompatibleTouchable.class));
+                "Touchy", CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
         mpc.addAdapter(new AssimilatingBehavior(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = (CompatibleTouchable)componentAdapter.getComponentInstance(mpc);
         final Touchable touchable = (Touchable)mpc.getComponent("Touchy");
@@ -134,7 +134,7 @@ public class AssimilatingBehaviorTestCase extends AbstractComponentAdapterTestCa
 
     private ComponentAdapter createComponentAdapterWithTouchable() {
         return new AssimilatingBehavior(Touchable.class, new ConstructorInjector(
-                CompatibleTouchable.class, CompatibleTouchable.class));
+                CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
     }
 
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {

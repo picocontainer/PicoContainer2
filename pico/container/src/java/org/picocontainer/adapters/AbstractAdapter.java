@@ -41,7 +41,7 @@ public abstract class AbstractAdapter implements ComponentAdapter, ComponentMoni
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      */
-    protected AbstractAdapter(Object componentKey, Class componentImplementation) {
+    public AbstractAdapter(Object componentKey, Class componentImplementation) {
         this(componentKey, componentImplementation, new AbstractComponentMonitor());
         this.componentMonitor = new NullComponentMonitor();
     }
@@ -52,7 +52,7 @@ public abstract class AbstractAdapter implements ComponentAdapter, ComponentMoni
      * @param componentImplementation the concrete implementation
      * @param monitor the component monitor used by this ComponentAdapter
      */
-    protected AbstractAdapter(Object componentKey, Class componentImplementation, ComponentMonitor monitor) {
+    public AbstractAdapter(Object componentKey, Class componentImplementation, ComponentMonitor monitor) {
         if (monitor == null) {
             throw new NullPointerException("ComponentMonitor==null");
         }

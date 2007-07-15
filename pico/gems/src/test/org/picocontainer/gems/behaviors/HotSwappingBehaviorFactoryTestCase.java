@@ -3,6 +3,8 @@ package org.picocontainer.gems.behaviors;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.gems.behaviors.HotSwappingBehaviorFactory;
 import org.picocontainer.gems.behaviors.HotSwappingBehavior;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
@@ -62,7 +64,7 @@ public final class HotSwappingBehaviorFactoryTestCase extends AbstractComponentF
 
     public void testSwappingViaSwappableInterface() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        ConstructorInjector constructorInjector = new ConstructorInjector("l", ArrayList.class);
+        ConstructorInjector constructorInjector = new ConstructorInjector("l", ArrayList.class, null, new NullComponentMonitor(), new NullLifecycleStrategy());
         HotSwappingBehavior hsca = (HotSwappingBehavior) pico.addAdapter(new HotSwappingBehavior(constructorInjector)).getComponentAdapter(constructorInjector.getComponentKey());
         List l = (List)pico.getComponent("l");
         l.add("Hello");

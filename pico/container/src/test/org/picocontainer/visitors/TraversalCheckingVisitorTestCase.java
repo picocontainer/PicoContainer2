@@ -48,7 +48,7 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
                                                              null, new NullComponentMonitor(), new NullLifecycleStrategy());
         parentAdapter = pico.addAdapter(componentAdapter).getComponentAdapter(StringBuffer.class, null);
         child = pico.makeChildContainer();
-        ConstructorInjector adapter = new ConstructorInjector(ArrayList.class, ArrayList.class, new ConstantParameter(3));
+        ConstructorInjector adapter = new ConstructorInjector(ArrayList.class, ArrayList.class, new Parameter[] {new ConstantParameter(3)}, new NullComponentMonitor(), new NullLifecycleStrategy());
         childAdapter = child.addAdapter(adapter).getComponentAdapter(ArrayList.class, null);
     }
 

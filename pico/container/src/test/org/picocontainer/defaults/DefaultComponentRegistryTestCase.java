@@ -14,6 +14,8 @@ import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.testmodel.AlternativeTouchable;
@@ -82,6 +84,6 @@ public class DefaultComponentRegistryTestCase extends TestCase {
     }
 
     private ComponentAdapter createComponentAdapter() throws PicoCompositionException {
-        return new ConstructorInjector(Touchable.class, SimpleTouchable.class);
+        return new ConstructorInjector(Touchable.class, SimpleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy());
     }
 }

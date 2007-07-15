@@ -301,8 +301,8 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
     /** Important! Nanning really, really depends on this! */
     public void testComponentAdapterRegistrationOrderIsMaintained() {
 
-        ConstructorInjector c1 = new ConstructorInjector("1", Object.class);
-        ConstructorInjector c2 = new ConstructorInjector("2", String.class);
+        ConstructorInjector c1 = new ConstructorInjector("1", Object.class, null, new NullComponentMonitor(), new NullLifecycleStrategy());
+        ConstructorInjector c2 = new ConstructorInjector("2", String.class, null, new NullComponentMonitor(), new NullLifecycleStrategy());
 
         MutablePicoContainer picoContainer = createPicoContainer(null);
         picoContainer.addAdapter(c1);
@@ -714,24 +714,25 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         final MutablePicoContainer parent = createPicoContainer(null);
         final MutablePicoContainer child = parent.makeChildContainer();
         ComponentAdapter hashMapAdapter =
-            parent.addAdapter(new ConstructorInjector(HashMap.class, HashMap.class)).getComponentAdapter(HashMap.class,
+            parent.addAdapter(new ConstructorInjector(HashMap.class, HashMap.class, null, new NullComponentMonitor(), new NullLifecycleStrategy())).getComponentAdapter(HashMap.class,
                                                                                                          null);
         ComponentAdapter hashSetAdapter =
-            parent.addAdapter(new ConstructorInjector(HashSet.class, HashSet.class)).getComponentAdapter(HashSet.class,
+            parent.addAdapter(new ConstructorInjector(HashSet.class, HashSet.class, null, new NullComponentMonitor(), new NullLifecycleStrategy())).getComponentAdapter(HashSet.class,
                                                                                                          null);
         InstanceAdapter instanceAdapter = new InstanceAdapter(String.class, "foo",
                                                               new NullLifecycleStrategy(),
                                                               new NullComponentMonitor());
         ComponentAdapter stringAdapter = parent.addAdapter(instanceAdapter).getComponentAdapter(instanceAdapter.getComponentKey());
         ComponentAdapter arrayListAdapter =
-            child.addAdapter(new ConstructorInjector(ArrayList.class, ArrayList.class)).getComponentAdapter(ArrayList.class,
+            child.addAdapter(new ConstructorInjector(ArrayList.class, ArrayList.class, null, new NullComponentMonitor(), new NullLifecycleStrategy())).getComponentAdapter(ArrayList.class,
                                                                                                             null);
         Parameter componentParameter = BasicComponentParameter.BASIC_DEFAULT;
         Parameter throwableParameter = new ConstantParameter(new Throwable("bar"));
+        ConstructorInjector ci = new ConstructorInjector(Exception.class, Exception.class,
+                                                         new Parameter[] {componentParameter,
+                                                         throwableParameter}, new NullComponentMonitor(), new NullLifecycleStrategy());
         ComponentAdapter exceptionAdapter =
-            child.addAdapter(new ConstructorInjector(Exception.class, Exception.class,
-                                                             componentParameter,
-                                                             throwableParameter)).getComponentAdapter(Exception.class,
+            child.addAdapter(ci).getComponentAdapter(Exception.class,
                                                                                                       null);
 
         List expectedList = Arrays.asList(parent,

@@ -149,7 +149,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 	}
 
 	public void testGetComponentAdapter() {
-		ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class);
+		ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), new NullLifecycleStrategy());
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 		picoMock.expects(once()).method("getComponentAdapter").with(same(Map.class), same(null)).will(this.returnValue(null));
 		
@@ -177,7 +177,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 	}
 
 	public void testGetComponentAdapterOfType() {
-		ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class);
+		ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), new NullLifecycleStrategy());
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 		picoMock.expects(once()).method("getComponentAdapter").with(same(Map.class), same(null)).will(this.returnValue(null));
 		
@@ -283,7 +283,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 	}
 
 	public void testRegisterComponent() {
-		ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class);
+		ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), new NullLifecycleStrategy());
 		picoMock.expects(once()).method("addAdapter").with(same(testAdapter)).will(returnValue(picoMock.proxy()));
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class)).will(returnValue(testAdapter));
 
@@ -293,7 +293,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 	}
 
 	public void testRegisterComponentImplementationClass() {
-		ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class);
+		ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), new NullLifecycleStrategy());
 		picoMock.expects(once()).method("addComponent").with(same(String.class)).will(returnValue(picoMock.proxy()));
         picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 
@@ -303,7 +303,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 	}
 
 	public void testRegisterComponentImplementationWithKeyAndClass() {
-		ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class);
+		ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), new NullLifecycleStrategy());
 		picoMock.expects(once()).method("addComponent").with(same(String.class), same(String.class), eq(Parameter.ZERO)).will(returnValue(picoMock.proxy()));
         picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 
@@ -330,7 +330,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 
 	public void testRegisterComponentImplementationObjectClassParameterArray() {
 		Parameter params[] = new Parameter []{new ConstantParameter("test")};
-		ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, params);
+		ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, params, new NullComponentMonitor(), new NullLifecycleStrategy());
 		picoMock.expects(once()).method("addComponent").with(same(String.class), same(String.class), same(params)).will(returnValue(picoMock.proxy()));
 	    picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 
@@ -370,7 +370,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 	}
 
 	public void testUnregisterComponent() {
-		ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class);
+		ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), new NullLifecycleStrategy());
 		picoMock.expects(once()).method("removeComponent").with(same(String.class)).will(returnValue(testAdapter));
 		
 		

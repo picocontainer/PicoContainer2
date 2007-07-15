@@ -118,7 +118,7 @@ public class CollectionComponentParameterTestCase
 
     public void testCollectionsAreGeneratedOnTheFly() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.addAdapter(new ConstructorInjector(Bowl.class, Bowl.class));
+        mpc.addAdapter(new ConstructorInjector(Bowl.class, Bowl.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
         mpc.addComponent(Cod.class);
         Bowl bowl = mpc.getComponent(Bowl.class);
         assertEquals(1, bowl.cods.length);
