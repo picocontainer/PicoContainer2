@@ -48,10 +48,7 @@ import java.io.Serializable;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class SetterInjector extends AbstractInjector {
-    private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
-    protected transient List<Member> injectionMembers;
-    protected transient Class[] injectionTypes;
+public class SetterInjector extends PostInstantiationInjector {
 
     /**
      * Constructs a SetterInjectionComponentAdapter
@@ -69,165 +66,6 @@ public class SetterInjector extends AbstractInjector {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
     }
 
-    private Constructor getConstructor()  {
-        Object retVal = AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
-                try {
-                    return getComponentImplementation().getConstructor((Class[])null);
-                } catch (NoSuchMethodException e) {
-                    return new PicoCompositionException(e);
-                } catch (SecurityException e) {
-                    return new PicoCompositionException(e);
-                }
-            }
-        });
-        if (retVal instanceof Constructor) {
-            return (Constructor) retVal;
-        } else {
-            throw (PicoCompositionException) retVal;
-        }
-    }
-
-    private Parameter[] getMatchingParameterListForSetters(PicoContainer container) throws PicoCompositionException {
-        if (injectionMembers == null) {
-            initializeInjectionMembersAndTypeLists();
-        }
-
-        final List<Object> matchingParameterList = new ArrayList<Object>(Collections.nCopies(injectionMembers.size(), null));
-        final Set<Integer> nonMatchingParameterPositions = new HashSet<Integer>();
-        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes);
-        for (int i = 0; i < currentParameters.length; i++) {
-            final Parameter parameter = currentParameters[i];
-            boolean failedDependency = true;
-            for (int j = 0; j < injectionTypes.length; j++) {
-                if (matchingParameterList.get(j) == null && parameter.isResolvable(container, this, injectionTypes[j], new ParameterName() {
-                    public String getParameterName() {
-                        return ""; // TODO 
-                    }
-                })) {
-                    matchingParameterList.set(j, parameter);
-                    failedDependency = false;
-                    break;
-                }
-            }
-            if (failedDependency) {
-                nonMatchingParameterPositions.add(i);
-            }
-        }
-
-        final Set<Class> unsatisfiableDependencyTypes = new HashSet<Class>();
-        for (int i = 0; i < matchingParameterList.size(); i++) {
-            if (matchingParameterList.get(i) == null) {
-                unsatisfiableDependencyTypes.add(injectionTypes[i]);
-            }
-        }
-        if (unsatisfiableDependencyTypes.size() > 0) {
-            throw new UnsatisfiableDependenciesException(this, null, unsatisfiableDependencyTypes, container);
-        } else if (nonMatchingParameterPositions.size() > 0) {
-            throw new PicoCompositionException("Following parameters do not match any of the injectionMembers for " + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
-        }
-        return matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
-    }
-
-    public Object getComponentInstance(final PicoContainer container) throws PicoCompositionException {
-        final Constructor constructor = getConstructor();
-        if (instantiationGuard == null) {
-            instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
-                public Object run() {
-                    final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
-                    ComponentMonitor componentMonitor = currentMonitor();
-                    Object componentInstance;
-                    long startTime = System.currentTimeMillis();
-                    Constructor constructorToUse = componentMonitor.instantiating(container,
-                                                                                  SetterInjector.this, constructor);
-                    try {
-                        componentInstance = newInstance(constructorToUse, null);
-                    } catch (InvocationTargetException e) {
-                        componentMonitor.instantiationFailed(container, SetterInjector.this, constructorToUse, e);
-                        if (e.getTargetException() instanceof RuntimeException) {
-                            throw (RuntimeException) e.getTargetException();
-                        } else if (e.getTargetException() instanceof Error) {
-                            throw (Error) e.getTargetException();
-                        }
-                        throw new PicoCompositionException(e.getTargetException());
-                    } catch (InstantiationException e) {
-                        return caughtInstantiationException(componentMonitor, constructor, e, container);
-                    } catch (IllegalAccessException e) {
-                        return caughtIllegalAccessException(componentMonitor, constructor, e, container);                    }
-                    Member member = null;
-                    Object injected[] = new Object[injectionMembers.size()];
-                    try {
-                        for (int i = 0; i < injectionMembers.size(); i++) {
-                            member = injectionMembers.get(i);
-                            componentMonitor.invoking(container, SetterInjector.this, member, componentInstance);
-                            Object toInject = matchingParameters[i].resolveInstance(guardedContainer, SetterInjector.this, injectionTypes[i], new ParameterName() {
-                                public String getParameterName() {
-                                    return ""; // TODO
-                                }
-                            });
-                            injectIntoMember(member, componentInstance, toInject);
-                            injected[i] = toInject;
-                        }
-                        componentMonitor.instantiated(container,
-                                                      SetterInjector.this,
-                                                      constructorToUse, componentInstance, injected, System.currentTimeMillis() - startTime);
-                        return componentInstance;
-                    } catch (InvocationTargetException e) {
-                        return caughtInvocationTargetException(componentMonitor, member, componentInstance, e);
-                    } catch (IllegalAccessException e) {
-                        return caughtIllegalAccessException(componentMonitor, member, componentInstance, e);
-                    }
-
-                }
-            };
-        }
-        instantiationGuard.setGuardedContainer(container);
-        return instantiationGuard.observe(getComponentImplementation());
-    }
-
-    protected void injectIntoMember(Member member, Object componentInstance, Object toInject)
-        throws IllegalAccessException, InvocationTargetException
-    {
-        ((Method)member).invoke(componentInstance, toInject);
-    }
-
-    public void verify(final PicoContainer container) throws PicoCompositionException {
-        if (verifyingGuard == null) {
-            verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
-                public Object run() {
-                    final Parameter[] currentParameters = getMatchingParameterListForSetters(guardedContainer);
-                    for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].verify(container, SetterInjector.this, injectionTypes[i], new ParameterName() {
-                            public String getParameterName() {
-                                return ""; // TODO
-                            }
-                        });
-                    }
-                    return null;
-                }
-            };
-        }
-        verifyingGuard.setGuardedContainer(container);
-        verifyingGuard.observe(getComponentImplementation());
-    }
-
-    protected void initializeInjectionMembersAndTypeLists() {
-        injectionMembers = new ArrayList<Member>();
-        final List<Class> typeList = new ArrayList<Class>();
-        final Method[] methods = getMethods();
-        for (final Method method : methods) {
-            final Class[] parameterTypes = method.getParameterTypes();
-            // We're only interested if there is only one parameter and the method name is bean-style.
-            if (parameterTypes.length == 1) {
-                boolean isInjector = isInjectorMethod(method);
-                if (isInjector) {
-                    injectionMembers.add(method);
-                    typeList.add(parameterTypes[0]);
-                }
-            }
-        }
-        injectionTypes = typeList.toArray(new Class[0]);
-    }
 
     protected boolean isInjectorMethod(Method method) {
         String methodName = method.getName();
@@ -238,11 +76,4 @@ public class SetterInjector extends AbstractInjector {
         return "set";
     }
 
-    private Method[] getMethods() {
-        return (Method[]) AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
-                return getComponentImplementation().getMethods();
-            }
-        });
-    }
 }

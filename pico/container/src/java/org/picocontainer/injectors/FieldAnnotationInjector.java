@@ -22,10 +22,13 @@ import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FieldAnnotationInjector extends SetterInjector {
+public class FieldAnnotationInjector extends PostInstantiationInjector {
 
     public FieldAnnotationInjector(Object key,
-                                   Class impl, Parameter[] parameters, ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy) {
+                                   Class impl,
+                                   Parameter[] parameters,
+                                   ComponentMonitor componentMonitor,
+                                   LifecycleStrategy lifecycleStrategy) {
 
         super(key, impl, parameters, componentMonitor, lifecycleStrategy);
     }

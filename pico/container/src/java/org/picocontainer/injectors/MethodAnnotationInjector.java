@@ -18,7 +18,11 @@ import java.lang.reflect.Method;
 
 public class MethodAnnotationInjector extends SetterInjector {
 
-    public MethodAnnotationInjector(Object key, Class impl, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
+    public MethodAnnotationInjector(Object key,
+                                    Class impl,
+                                    Parameter[] parameters,
+                                    ComponentMonitor monitor,
+                                    LifecycleStrategy lifecycleStrategy) {
         super(key, impl, parameters, monitor, lifecycleStrategy);
     }
 

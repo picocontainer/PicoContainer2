@@ -77,33 +77,6 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
         this.lifecycleStrategy = lifecycleStrategy;
     }
 
-    /**
-     * Constructs a new ComponentAdapter for the given key and implementation. 
-     * @param componentKey the search key for this implementation
-     * @param componentImplementation the concrete implementation
-     * @param parameters the parameters to use for the initialization
-     * @param monitor the component monitor used by this ComponentAdapter
-     * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException if the implementation is not a concrete class
-     * @throws NullPointerException if one of the parameters is <code>null</code>
-     */
-    protected AbstractInjector(Object componentKey, Class componentImplementation,
-                                            Parameter[] parameters,
-                                            ComponentMonitor monitor) {
-        this(componentKey, componentImplementation, parameters, monitor, new StartableLifecycleStrategy(monitor));
-    }
-
-    /**
-     * Constructs a new ComponentAdapter for the given key and implementation. 
-     * @param componentKey the search key for this implementation
-     * @param componentImplementation the concrete implementation
-     * @param parameters the parameters to use for the initialization
-     * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException if the implementation is not a concrete class.
-     * @throws NullPointerException if one of the parameters is <code>null</code>
-     */
-    protected AbstractInjector(Object componentKey, Class componentImplementation, Parameter... parameters) {
-        this(componentKey, componentImplementation, parameters, new AbstractComponentMonitor());
-    }
-    
     private void checkConcrete() throws NotConcreteRegistrationException {
         // Assert that the component class is concrete.
         boolean isAbstract = (getComponentImplementation().getModifiers() & Modifier.ABSTRACT) == Modifier.ABSTRACT;
