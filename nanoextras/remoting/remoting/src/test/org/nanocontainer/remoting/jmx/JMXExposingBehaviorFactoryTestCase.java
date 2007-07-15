@@ -58,7 +58,7 @@ public class JMXExposingBehaviorFactoryTestCase extends MockObjectTestCase {
                 (MBeanServer)mockMBeanServer.proxy());
         componentFactory.forThis(new ConstructorInjectionFactory());
 
-        final Properties rc = new Properties(Characteristics.NOJMX);
+        final Properties rc = new Properties(Characteristics.NO_JMX);
 
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
                 new NullComponentMonitor(), new NullLifecycleStrategy(), rc, PersonMBean.class, DynamicMBeanPerson.class, null);
