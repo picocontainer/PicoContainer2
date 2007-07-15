@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+    <title>Unprocessed Properties - Help Page</title></head>
+<body>
+<p>Properties are a powerful mechanism to add hints at registration time as to what the behavior of a component should be. It only works though when the right component factories are set for the container. Ones that recognise the property and can process it. For example, DefaultPicoConstructor's default constructor sets up an adaptive ComponentFactory that can handle HIDE_IMPL (and do the right thing): </p>
+
+<div class="source">
+  <pre>pico = new DefaultPicoContainer();
+pico.as(HIDE_IMPL).addComponent(Apple.class);</pre>
+</div>
+But with a custom ComponentFactory, it may not:
+<div class="source">
+  <pre>pico = new DefaultPicoContainer(new MyComponentFactory);
+pico.as(HIDE_IMPL).addComponent(Apple.class); // fails with PicoCompositionException</pre>
+</div>
+The trick is (in this case) to make sure that the right chain of component factories are setup:
+<div class="source">
+  <pre>pico = new DefaultPicoContainer(new MyComponentFactory().forThis(new AdaptiveBehaviorFactory()));
+pico.as(HIDE_IMPL).addComponent(Apple.class); // fails with PicoCompositionException</pre>
+</div>
+
+</body>
+</html>
