@@ -1,23 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>Five minute introduction</title>
+    <title>Introduction</title>
 </head>
 <body>
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-<tr>
-<td valign="top" class="pagebody">
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="clear: both">
-<tr>
-<td width='100%' class="pagecontent" valign="top">
-<table width="100%" style="margin-bottom: 5px" cellspacing="0">
-    <tr>
-        <td align="left" valign="top">&nbsp;</td>
-        <td align="right" valign="top"></td>
-    </tr>
-</table>
-<div class="wiki-content">
-<p>Authors: Aslak Hellesoy & Jon Tirsen</p>
+
+<p>Authors: Aslak Hellesoy, Jon Tirsen</p>
 
 <h2>Basics</h2>
 
@@ -66,18 +54,16 @@ List list = (List) pico.getComponent(ArrayList.class);</pre>
         </tr>
     </tbody>
 </table>
-<p>(Green means class, Yellow means interface).<br />
-   PicoContainer identifies dependencies by looking at the constructors of registered classes (<a
-    href="constructor-injection.html" title="Constructor Injection">Constructor Injection</a>). PicoContainer can also
-                                                                                             be though of as a generic
-                                                                                             factory that can be
-                                                                                             configured dynamically.
-                                                                                             PicoContainer is able to
-                                                                                             instantiate a complex graph
-                                                                                             of several interdependent
-                                                                                             objects.</p>
+        <p>(Green means class, Yellow means interface).<br />
+        PicoContainer identifies dependencies by looking at the
+        constructors of registered classes (<a
+          href="constructor-injection.html"
+          title="Constructor Injection">Constructor Injection</a>).
+        PicoContainer can also be though of as a generic factory that
+        can be configured dynamically. PicoContainer is able to
+        instantiate a complex graph of several interdependent objects.</p>
 
-<h2>Write some simple classes
+        <h2>Write some simple classes
                                                                                              and interfaces with
                                                                                              dependencies</h2>
 
@@ -197,22 +183,16 @@ return juicer;</pre>
 
 <h2>Container hierarchies</h2>
 
-<p>PicoContainer provides a powerful alternative to the <a href="singleton-antipattern.html"
-                                                           title="Singleton">Singleton</a>. With container hierarchies
-                                                                                          you can create singleton-like
-                                                                                          objects where you have fine
-                                                                                          grained control over the
-                                                                                          visibility scope of the
-                                                                                          instance. (The singleton
-                                                                                          pattern is static and global -
-                                                                                          it won't allow more than one
-                                                                                          instance, and it is visible
-                                                                                          from anywhere. Not nice when
-                                                                                          you try to build a large
-                                                                                          enterprise application from
-                                                                                          it).</p>
+        <p>PicoContainer provides a powerful alternative to the <a
+          href="singleton-antipattern.html" title="Singleton">Singleton</a>.
+        With container hierarchies you can create singleton-like objects
+        where you have fine grained control over the visibility scope of
+        the instance. (The singleton pattern is static and global - it
+        won't allow more than one instance, and it is visible from
+        anywhere. Not nice when you try to build a large enterprise
+        application from it).</p>
 
-<p><img src="images/pico-hierarchy.png" align="absmiddle" border="0" /></p>
+        <p><img src="images/pico-hierarchy.png" align="absmiddle" border="0" /></p>
 
 <p>A container (and its registered components) can get access to components registered in a parent container, but not
    vice-versa. Consider this example, using the classes from above:</p>
@@ -257,19 +237,21 @@ Juicer juicer = (Juicer) y.getComponent(Juicer.class);</pre>
         b).
     </li>
 </ul>
-<p><img class="emoticon" src="/images/icons/emoticons/warning.gif" height="16" width="16" align="absmiddle" alt=""
-        border="0" /> Since this obviously won't work, keep in mind that this was just an exercise to illustrate how
-                      container hierarchies work.<br />
-    <img class="emoticon" src="/images/icons/emoticons/information.gif" height="16" width="16" align="absmiddle" alt=""
-         border="0" /> For a more concrete example of the usage of container hierarchies, see <a
-    href="http://www.nanocontainer.org/NanoWar" rel="nofollow">NanoContainer NanoWar<sup><img class="rendericon"
-                                                                                              src="/images/icons/linkext7.gif"
-                                                                                              height="7" width="7"
-                                                                                              align="absmiddle" alt=""
-                                                                                              border="0" /></sup></a>.
-</p>
+        <p><img class="emoticon"
+          src="/images/icons/emoticons/warning.gif" height="16"
+          width="16" align="absmiddle" alt="" border="0" /> Since this
+        obviously won't work, keep in mind that this was just an
+        exercise to illustrate how container hierarchies work.<br />
+        <img class="emoticon"
+          src="/images/icons/emoticons/information.gif" height="16"
+          width="16" align="absmiddle" alt="" border="0" /> For a more
+        concrete example of the usage of container hierarchies, see <a
+          href="http://www.nanocontainer.org/NanoWar" rel="nofollow">NanoContainer
+        NanoWar<sup><img class="rendericon"
+          src="/images/icons/linkext7.gif" height="7" width="7"
+          align="absmiddle" alt="" border="0" /></sup></a>.</p>
 
-<h2>Lifecycle</h2>
+        <h2>Lifecycle</h2>
 
 <p>PicoContainer has support for <a href="lifecycle.html" title="Lifecycle">Lifecycle</a>. If your classes implement <a
     href="http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/Startable.html">Startable<sup><img
@@ -382,19 +364,13 @@ ComponentFour four = new DefaultPicoContainer()
     </div>
 </div>
 
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
 
-</div>
-<div class="wiki-content" style="margin-right:10px;">
-    <p style="clear: both" />
-    <!-- comments should always display underneath the content. we should have a 'clear:both' here just in case there are floats or aligned images in the content -->
-</div>
-<center>
-</center>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-</table>
+
 </body>
 </html>

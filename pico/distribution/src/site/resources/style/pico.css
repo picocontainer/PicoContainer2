@@ -9,13 +9,15 @@
 #breadcrumbs {
   border: 1px solid;
   background-color: #090;
+  color: #fff;
 }
 
-#leftColumn {
-  margin: 10px 0 0 5px;
+#navColumn {
+  margin: 10px 10px 10px 10px;
   border: 1px solid #fff;
   background-color: #fff;
   float: left;
+  height: 5000px;
 }
 
 #navColumn h1 {
