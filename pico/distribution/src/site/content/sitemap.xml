@@ -39,6 +39,11 @@
          <page>antipatterns/singleton-antipattern.html</page>
     </section>
     <section>
+         <name>Help Pages</name>
+         <page>help/ambiguous-injectable-help.html</page>
+         <page>help/unprocessed-properties-help.html</page>
+     </section>    
+    <section>
          <name>History</name>
          <page>inversion-of-control-history.html</page>
     </section>
@@ -46,10 +51,5 @@
          <name>Project Info</name>
          <page>project.html</page>
          <page>team.html</page>
-     </section>
-    <section>
-         <name>help pages</name>
-         <page>ambiguous-injectable.html</page>
-         <page>unprocessed-properties.html</page>
      </section>
 </sitemap>
