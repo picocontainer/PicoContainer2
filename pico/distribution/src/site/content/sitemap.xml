@@ -3,7 +3,7 @@
         <name>About</name>
         <page>index.html</page>
         <page>five-minute-introduction.html</page>
-        <link title="JavaDoc">javadoc/index.html</link>
+        <page>javadoc.html</page>
         <page>downloads.html</page>
         <page>news.html</page>
         <page>faq.html</page>

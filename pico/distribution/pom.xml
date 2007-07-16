@@ -47,21 +47,21 @@
                   <artifactId>picocontainer</artifactId>
                   <version>${pom.version}</version>
                   <classifier>javadoc</classifier>
-                  <outputDirectory>${project.build.directory}/javadoc/core</outputDirectory>
+                  <outputDirectory>${project.build.directory}/site/javadoc/core</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>${pom.groupId}</groupId>
                   <artifactId>picocontainer-gems</artifactId>
                   <version>${pom.version}</version>
                   <classifier>javadoc</classifier>
-                  <outputDirectory>${project.build.directory}/javadoc/gems</outputDirectory>
+                  <outputDirectory>${project.build.directory}/site/javadoc/gems</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>${pom.groupId}</groupId>
                   <artifactId>picocontainer-tck</artifactId>
                   <version>${pom.version}</version>
                   <classifier>javadoc</classifier>
-                  <outputDirectory>${project.build.directory}/javadoc/tck</outputDirectory>
+                  <outputDirectory>${project.build.directory}/site/javadoc/tck</outputDirectory>
                 </artifactItem>
               </artifactItems>
             </configuration>
