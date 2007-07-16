@@ -8,19 +8,19 @@
     <title>Inversion of Control</title>
 </head>
 <body>
-<h2><a name="InversionofControl-Overview" id="InversionofControl-Overview"></a>Overview</h2>
+<h2>Overview</h2>
 
-<p>Inversion of Control (IoC) is a design pattern that addresses a component's <a href="injection.html"
-                                                                                  title="Dependency Injection">dependency
-                                                                                                               resolution</a>,
-    <a href="component-configuration.html" title="Component Configuration">configuration</a> and <a
-    href="lifecycle.html" title="Lifecycle">lifecycle</a>. Note to confuse things slightly, IoC is also relevant to
-                                                         simple classes, not just components, but we will refer to
-                                                         components throughout this text. The most significant aspect to
-                                                         IoC is dependency resolution and most of the discussion
-                                                         surrounding IoC dwells solely on that.</p>
+<p>Inversion of Control (IoC) is a design pattern that addresses a
+component's <a href="injection.html" title="Dependency Injection">dependency
+resolution</a>, <a href="component-configuration.html"
+  title="Component Configuration">configuration</a> and <a
+  href="lifecycle.html" title="Lifecycle">lifecycle</a>. Note to confuse
+things slightly, IoC is also relevant to simple classes, not just
+components, but we will refer to components throughout this text. The
+most significant aspect to IoC is dependency resolution and most of the
+discussion surrounding IoC dwells solely on that.</p>
 
-<h3><a name="InversionofControl-TypesofIoC" id="InversionofControl-TypesofIoC"></a>Types of IoC</h3>
+<h3>Types of IoC</h3>
 
 <p>There are many types of IoC, but we'll concentrate on the type of IoC that PicoContainer introduced to the community
    - <a href="constructor-injection.html" title="Constructor Injection">Constructor Injection</a>. </p>
@@ -30,9 +30,7 @@
 <p>Some detail about the history of Inversion of Control - <a href="inversion-of-control-history.html"
                                                               title="IoC History">IoC History</a></p>
 
-<h2><a name="InversionofControl-ComponentDependencies" id="InversionofControl-ComponentDependencies"></a>Component
-                                                                                                         Dependencies
-</h2>
+<h2>Component Dependencies</h2>
 
 <p>It generally favors loose coupling between components. Loose coupling in turn favours:</p>
 <ul>
@@ -40,7 +38,7 @@
     <li>Classes that are easier to test</li>
     <li>Systems that are easier to assemble and configure</li>
 </ul>
-<h3><a name="InversionofControl-Explanation" id="InversionofControl-Explanation"></a>Explanation</h3>
+<h3>Explanation</h3>
 
 <p>Simply put, a component designed according to IoC does not go off and get other components that it needs in order to
    do its job. It instead <em>declares</em> these dependencies, and the container supplies them. Thus the name
@@ -48,7 +46,7 @@
    component itself that establishes its own dependencies, but something on the outside. That something could be a
    container like PicoContainer, but could easily be normal code instantiating the component in an embedded sense.</p>
 
-<h3><a name="InversionofControl-Examples" id="InversionofControl-Examples"></a>Examples</h3>
+<h3>Examples</h3>
 
 <p>Here is the simplest possible IoC component :</p>
 
@@ -89,9 +87,8 @@ public class AppleImpl implements Apple {
   // other methods
 }</pre>
 </div>
-<h2><a name="InversionofControl-ComponentConfiguration" id="InversionofControl-ComponentConfiguration"></a>Component
-                                                                                                           Configuration
-</h2>
+
+<h2>Component Configuration</h2>
 
 <p>Sometimes we see configuration like so ...</p>
 
@@ -146,8 +143,7 @@ public class BigFatComponent {
 </ol>
 <p>It is the deployer's, embeddor's or container maker's choice on which to use.</p>
 
-<h2><a name="InversionofControl-ComponentLifecycle" id="InversionofControl-ComponentLifecycle"></a>Component Lifecycle
-</h2>
+<h2>Component Lifecycle</h2>
 
 <p>Simply put, the lifecycle of a component is what happens to it in a controlled sense after it has been instantiated.
    Say a component has to start threads, do some timed activity or listen on a socket. The component, if not IoC, might
@@ -164,7 +160,7 @@ public class BigFatComponent {
   // other methods
 }</pre>
 </div>
-<h3><a name="InversionofControl-Notes" id="InversionofControl-Notes"></a>Notes </h3>
+<h3>Notes </h3>
 
 <p>The lifecycle interfaces for PicoContainer are the only characterising API elements for a component. If Startable was
    in the JDK, there would be no need for this. Sadly, it also menas that every framework team has to write their own
@@ -173,7 +169,7 @@ public class BigFatComponent {
 <p>The vast majority of components do not require lifecycle functionality, and thus don't have to implement
    anything.</p>
 
-<h2><a name="InversionofControl-IoCExceptions" id="InversionofControl-IoCExceptions"></a>IoC Exceptions</h2>
+<h2>IoC Exceptions</h2>
 
 <p>Of course, in all of these discussions, it is important to point out that logging is a common exception to the IoC
    rule. Apache has two static logging frameworks that are in common use: Commons-Logging and Log4J. Neither of these is
@@ -182,9 +178,9 @@ public class BigFatComponent {
    mandate a logging choice. We suggest instead that a Monitor component interface is created and default adapters are
    provided to a number of the logging frameworks are provided.</p>
 
-<h2><a name="IoCTypes-Overview" id="IoCTypes-Overview"></a>Overview</h2>
+<h2>Overview</h2>
 
-<h2><a name="IoCTypes-IoCTypesFamilyTree" id="IoCTypes-IoCTypesFamilyTree"></a>IoC Types - Family Tree</h2>
+<h2>IoC Types - Family Tree</h2>
 
 <p>In recent years different approaches have emerged to deliver an IoC vision. Latter types, as part of a 'LightWeight'
    agenda have concentrated on simplicity and transparency.</p>
@@ -234,11 +230,9 @@ public class BigFatComponent {
 <p>Note Field Injection was provisionally known as 'type 4'. There was really no interest 'type 4' until EJB3.0. Getter
    Injection flourished for a while, but did not take and was never supported by the PicoContainer team.</p>
 
-<h2><a name="IoCTypes-ExamplesofCommonTypes" id="IoCTypes-ExamplesofCommonTypes"></a>Examples of Common Types</h2>
+<h2>Examples of Common Types</h2>
 
-<h3><a name="IoCTypes-ConstructorDependencyInjection" id="IoCTypes-ConstructorDependencyInjection"></a>Constructor
-                                                                                                       Dependency
-                                                                                                       Injection</h3>
+<h3>Constructor Dependency Injection</h3>
 
 <p>This is where a dependency is handed into a component via its constructor :</p>
 
@@ -275,9 +269,8 @@ public class AppleImpl implements Apple {
 }</pre>
     </div>
 </div>
-<h3><a name="IoCTypes-ContextualizedDependencyLookup%28PushApproach%29"
-       id="IoCTypes-ContextualizedDependencyLookup%28PushApproach%29"></a>Contextualized Dependency Lookup (Push
-                                                                          Approach)</h3>
+
+<h3>Contextualized Dependency Lookup (Push Approach)</h3>
 
 <p>This is where dependencies are looked up from a container that is managing the component :</p>
 
@@ -294,12 +287,8 @@ public class AppleImpl implements Apple, DependencyProvision {
   // other methods
 }</pre>
 </div>
-<h2><a name="IoCTypes-Terms%3AService%2CComponent%26Class" id="IoCTypes-Terms%3AService%2CComponent%26Class"></a>Terms:
-                                                                                                                 Service,
-                                                                                                                 Component
-                                                                                                                 &amp;
-                                                                                                                 Class
-</h2>
+
+<h2>Terms: Service, Component &amp; Class</h2>
 
 <p>Component is the correct name for things managed in an IoC sense. However very small ordinary classes are manageable
    using IoC tricks, though this is for the very brave or extremists <img class="emoticon"
@@ -316,9 +305,7 @@ public class AppleImpl implements Apple, DependencyProvision {
    marshaled to SOAP XML and forward to a suitable HTTP server for processing. Most of the time an application coder is
    hidden from the client/server and marshaling ugliness by a toolkit or API.</p>
 
-<h2><a name="IoCTypes-DependencyInjectionversusContextualizedLookup"
-       id="IoCTypes-DependencyInjectionversusContextualizedLookup"></a>Dependency Injection versus Contextualized Lookup
-</h2>
+<h2>Dependency Injection versus Contextualized Lookup</h2>
 
 <p>Dependency Injection is non-invasive. Typically this means that components can be used without a container or a
    framework. If you ignore life cycle, there is no import requirements from an applicable framework.</p>
@@ -331,7 +318,7 @@ public class AppleImpl implements Apple, DependencyProvision {
 
 <p>Ultimately, the contextualized lookup designs are not recommended at all. </p>
 
-<h2><a name="IoCTypes-What%27swrongwithJNDI%3F" id="IoCTypes-What%27swrongwithJNDI%3F"></a>What's wrong with JNDI ?</h2>
+<h2>What's wrong with JNDI ?</h2>
 
 <p>With plain JNDI, lookup can be done in a classes' static initialiser, in the constuctor or any method including the
    finaliser. Thus there is no control (refer C of IoC). With JNDI used under EJB control, and concerning only
@@ -344,7 +331,7 @@ public class AppleImpl implements Apple, DependencyProvision {
    services and components. Thus depending whether JNDI is being used in an Enterprise Java Bean or in a POJO, it is
    either an example of IoC or not.</p>
 
-<h2><a name="InversionofControl-Subpages" id="InversionofControl-Subpages"></a>Related Pages </h2>
+<h2>Related Pages </h2>
 <ul>
     <li>Contextualized Lookup
         <ul>
