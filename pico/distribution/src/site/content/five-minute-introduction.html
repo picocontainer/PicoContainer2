@@ -19,7 +19,7 @@
 <div class="wiki-content">
 <p>Authors: Aslak Hellesoy & Jon Tirsen</p>
 
-<h2><a name="Fiveminuteintroduction-Basics"></a>Basics</h2>
+<h2>Basics</h2>
 
 <p>This is a quick introduction to PicoContainer's most important features. Read through it to get an idea of what
    PicoContainer is and isn't. </p>
@@ -77,7 +77,7 @@ List list = (List) pico.getComponent(ArrayList.class);</pre>
                                                                                              of several interdependent
                                                                                              objects.</p>
 
-<h2><a name="Fiveminuteintroduction-Writesomesimpleclassesandinterfaceswithdependencies"></a>Write some simple classes
+<h2>Write some simple classes
                                                                                              and interfaces with
                                                                                              dependencies</h2>
 
@@ -148,7 +148,7 @@ List list = (List) pico.getComponent(ArrayList.class);</pre>
     <img class="emoticon" src="/images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt=""
          border="0" />)</p>
 
-<h2><a name="Fiveminuteintroduction-Assemblecomponents"></a>Assemble components</h2>
+<h2>Assemble components</h2>
 
 <p>You tell PicoContainer what classes to manage by registering them like this (the order of registration has no
    significance):</p>
@@ -168,7 +168,7 @@ pico.addComponent(Peeler.class);</pre>
     class="rendericon" src="/images/icons/linkext7.gif" height="7" width="7" align="absmiddle" alt=""
     border="0" /></sup></a></p>
 
-<h2><a name="Fiveminuteintroduction-Instantiatecomponents"></a>Instantiate components</h2>
+<h2>Instantiate components</h2>
 
 <p>You can tell PicoContainer to give you an instance of a class like this (provided it has been registered
    previously):</p>
@@ -195,7 +195,7 @@ return juicer;</pre>
         border="0" /> Note how PicoContainer figures out that Apple is a Peelable, so that it can be passed to Peeler
                       and Juicer's constructors.</p>
 
-<h2><a name="Fiveminuteintroduction-Containerhierarchies"></a>Container hierarchies</h2>
+<h2>Container hierarchies</h2>
 
 <p>PicoContainer provides a powerful alternative to the <a href="singleton-antipattern.html"
                                                            title="Singleton">Singleton</a>. With container hierarchies
@@ -269,7 +269,7 @@ Juicer juicer = (Juicer) y.getComponent(Juicer.class);</pre>
                                                                                               border="0" /></sup></a>.
 </p>
 
-<h2><a name="Fiveminuteintroduction-Lifecycle"></a>Lifecycle</h2>
+<h2>Lifecycle</h2>
 
 <p>PicoContainer has support for <a href="lifecycle.html" title="Lifecycle">Lifecycle</a>. If your classes implement <a
     href="http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/Startable.html">Startable<sup><img
@@ -314,7 +314,7 @@ Juicer juicer = (Juicer) y.getComponent(Juicer.class);</pre>
                       in their parent container. Just creating a container with another one as a parent will <b>not</b>
                       cause the parent container to know about the child container.</p>
 
-<h3><a name="Fiveminuteintroduction-Directapproach"></a>Direct approach</h3>
+<h3>Direct approach</h3>
 
 <div class="source">
     <div>
@@ -327,7 +327,7 @@ parent.start();</pre>
     </div>
 </div>
 
-<h3><a name="Fiveminuteintroduction-Indirectapproach"></a>Indirect approach</h3>
+<h3>Indirect approach</h3>
 
 <div class="source">
     <div>

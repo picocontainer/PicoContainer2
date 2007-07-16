@@ -9,26 +9,18 @@
 </head>
 <body>
 <div>
-    <h2><a name="ContainerInstantiation-Symptoms" id="ContainerInstantiation-Symptoms"></a>Symptoms</h2>
+    <h2>Symptoms</h2>
 
     <p> A class is directly instantiating a PicoContainer and registering components within it. </p>
 </div>
 <div>
-    <h2><a name="ContainerInstantiation-Causes" id="ContainerInstantiation-Causes"></a>Causes</h2>
+    <h2>Causes</h2>
 
-    <p>This smell is most often found in unit tests. It could be as a result of <a
-        href="container-dependency-antipattern.html" title="Container Dependency">Container Dependency</a>. The
-                                                                                                          container is
-                                                                                                          supplied to
-                                                                                                          the class
-                                                                                                          being tested,
-                                                                                                          which then
-                                                                                                          uses it to
-                                                                                                          locate its
-                                                                                                          dependencies.
-    </p>
+<p>This smell is most often found in unit tests. It could be as a
+result of Container Dependency. The container is supplied to the class
+being tested, which then uses it to locate its dependencies.</p>
 
-    <p>Another cause is using the container to build the object we are testing, which itself may have several
+<p>Another cause is using the container to build the object we are testing, which itself may have several
        dependencies. For example::</p>
 
     <div class="source">
@@ -48,16 +40,16 @@
     </div>
 </div>
 <div>
-    <h2><a name="ContainerInstantiation-WhatToDo" id="ContainerInstantiation-WhatToDo"></a>What To Do</h2>
+    <h2>What To Do</h2>
 
-    <p>For unit tests like this, the class being tested should be instantiated directly by the test. <a
-        href="mock-objects.html" title="Mock Objects">Mock Objects</a> should be used to &quot;mock&quot; the dependent
-                                                                       objects, i.e. supplying a fake implementation
-                                                                       that can have expectations set and verified on
-                                                                       it, rather than a real implementataion. So, the
-                                                                       test becomes:</p>
+<p>For unit tests like this, the class being tested should be
+instantiated directly by the test. <a href="mock-objects.html"
+  title="Mock Objects">Mock Objects</a> should be used to
+&quot;mock&quot; the dependent objects, i.e. supplying a fake
+implementation that can have expectations set and verified on it, rather
+than a real implementataion. So, the test becomes:</p>
 
-    <div class="source">
+<div class="source">
         <div>
             <pre>public void testCocktailWithVodkaIsAlcoholic() {
 
@@ -78,18 +70,18 @@
        the example, as the details depend on which mock object library/technique is used.</p>
 </div>
 <div>
-    <h2><a name="ContainerInstantiation-Exceptions" id="ContainerInstantiation-Exceptions"></a>Exceptions</h2>
+    <h2>Exceptions</h2>
 
     <p>The container has to be instantiated somewhere!</p>
 
     <div>
-        <h3><a name="ContainerInstantiation-Bootstrappers" id="ContainerInstantiation-Bootstrappers"></a>Bootstrappers
+        <h3>Bootstrappers
         </h3>
 
         <p>A common place to instantiate containers is in some bootstrap class in the application.</p>
 
         <div class="section_1">
-            <h1><a name="ContainerInstantiation-FunctionalTests" id="ContainerInstantiation-FunctionalTests"></a>Functional
+            <h1>Functional
                                                                                                                  Tests
             </h1>
 
@@ -98,7 +90,7 @@
                container with the appropriate components registered for your test.</p>
 
             <div>
-                <h3><a name="ContainerInstantiation-NanoContainer" id="ContainerInstantiation-NanoContainer"></a>NanoContainer
+                <h3>NanoContainer
                 </h3>
 
                 <p>If you are using <a href="http://www.nanocontainer.org" title="Sister Projects">NanoContainer</a>,

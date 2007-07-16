@@ -10,7 +10,7 @@
 <body>
 <p>Also known as Picosaurus</p>
 
-<h2><a name="5.2Terminology-Overview" id="5.2Terminology-Overview"></a>Overview</h2>
+<h2>Overview</h2>
 
 <p>These can be arrived at from the definitions.</p>
 <ul>
@@ -23,17 +23,17 @@
         extend. Avalon tries real hard to not support Data Objects, but that is nearly impossible.
     </li>
 </ul>
-<h2><a name="5.2Terminology-Terms" id="5.2Terminology-Terms"></a>Terms</h2>
+<h2>Terms</h2>
 
-<h3><a name="5.2Terminology-ObjectorInstance" id="5.2Terminology-ObjectorInstance"></a>Object or Instance</h3>
+<h3>Object or Instance</h3>
 
 <p>An &quot;object&quot; as per the Java Language Specification.</p>
 
-<h3><a name="5.2Terminology-Class" id="5.2Terminology-Class"></a>Class</h3>
+<h3>Class</h3>
 
 <p>A &quot;class&quot; as per the Java Language Specification.</p>
 
-<h3><a name="5.2Terminology-POJO%28PlainOldJavaObject%29" id="5.2Terminology-POJO%28PlainOldJavaObject%29"></a>POJO
+<h3>POJO
                                                                                                                (Plain
                                                                                                                Old
                                                                                                                Java
@@ -44,7 +44,7 @@
    any lifecycle or marker interfaces, it does not provide any kind of metadata. Will usually follow the minimum
    requirements for classifying it as a JavaBean though.</p>
 
-<h3><a name="5.2Terminology-Javabean%2FBean" id="5.2Terminology-Javabean%2FBean"></a>Javabean / Bean</h3>
+<h3>Javabean / Bean</h3>
 
 <p>An object that is a &quot;valid java bean&quot; according to the JavaBean Specification. That is, an object
    that has a public default constructor, and that supports setting and/or retrieving all or a part of its state
@@ -62,18 +62,18 @@
    override equals() and hashCode(); will often be serializable. Does not create threads, does not keep
    references to non-data objects.</p>
 
-<h3><a name="5.2Terminology-Component%2FService" id="5.2Terminology-Component%2FService"></a>Component / Service
+<h3>Component / Service
 </h3>
 
 <p>An object that only represents functionality. It is a &quot;unit of logic&quot;, that can &quot;do work&quot;.
    In a well-designed application, the work that a component can do is specified in a work interface. Will
    usually not override equals() or hashCode().</p>
 
-<h3><a name="5.2Terminology-PassiveComponent" id="5.2Terminology-PassiveComponent"></a>Passive Component</h3>
+<h3>Passive Component</h3>
 
 <p>A component that does not use threads (not even indirectly).</p>
 
-<h3><a name="5.2Terminology-ActiveComponent" id="5.2Terminology-ActiveComponent"></a>Active Component</h3>
+<h3>Active Component</h3>
 
 <p>A component that uses threads (possibly indirectly through the use of a Thread Pool or Executor
    component).</p>
@@ -85,7 +85,7 @@
 <p>A component that has a public default constructor and that usually has its state set up and/or modified
    through the use of some kind of framework-specific mechanism.</p>
 
-<h3><a name="5.2Terminology-SetterInjectionComponent" id="5.2Terminology-SetterInjectionComponent"></a>Setter
+<h3>Setter
                                                                                                        Injection
                                                                                                        Component
 </h3>
@@ -106,42 +106,42 @@
 <p>A component that has a public constructor and that has its state set up through the arguments provided in
    that constructor and through the use of setter methods.</p>
 
-<h3><a name="5.2Terminology-IoCComponent" id="5.2Terminology-IoCComponent"></a>IoC Component</h3>
+<h3>IoC Component</h3>
 
 <p>A component that does not implement any kind of logic to set up its own state, but completely depends on
    other parties to provide that state to it.</p>
 
-<h3><a name="5.2Terminology-NonIoCComponent" id="5.2Terminology-NonIoCComponent"></a>Non-IoC Component</h3>
+<h3>Non-IoC Component</h3>
 
 <p>A component that implements some kind of logic to set up its own state. Examples: a component that reads an
    XML file; a component that looks up dependencies in JNDI; a component that queries system properties.</p>
 
-<h3><a name="5.2Terminology-DomainSpecificObject" id="5.2Terminology-DomainSpecificObject"></a>Domain-Specific
+<h3>Domain-Specific
                                                                                                Object</h3>
 
 <p>An object that implements a specification that is less generic than Java itself in its applicability.
    Example: EJB, Servlets.</p>
 
-<h3><a name="5.2Terminology-SpringsupportedObject" id="5.2Terminology-SpringsupportedObject"></a>Spring-supported
+<h3>Spring-supported
                                                                                                  Object</h3>
 
 <p>An object that can be 'natively' used in the Spring Framework. Any JavaBean (with some extensions to that
    specification like &quot;initialization completion&quot; support), any object with a public default
    constructor that does not require any method calls to set up its state.</p>
 
-<h3><a name="5.2Terminology-PicoContainersupportedObject" id="5.2Terminology-PicoContainersupportedObject"></a>PicoContainer-supported
+<h3>PicoContainer-supported
                                                                                                                Object
 </h3>
 
 <p>An object that can be 'natively' used in PicoContainer. Any Type-3 component.</p>
 
-<h3><a name="5.2Terminology-XWorksupportedObject" id="5.2Terminology-XWorksupportedObject"></a>XWork-supported
+<h3>XWork-supported
                                                                                                Object</h3>
 
 <p>An object that can be 'natively' used in the XWork Framework. Any object with a public default constructor
    that has its state set up through XXXAware interfaces.</p>
 
-<h3><a name="5.2Terminology-FailFast" id="5.2Terminology-FailFast"></a>Fail Fast</h3>
+<h3>Fail Fast</h3>
 
 <p>An object that fails fast is an object that indicates as early as possible if it is in an inconsistent or
    unusable state (by throwing a fatal exception). The fastest possible way to FailFast is to do so during

@@ -126,8 +126,18 @@ MyComp myComp = (MyComp)pico.getInstance(MyComp.class);</pre>
   </table>
 </h3>
 <div>
-  <p>After a long period of watching Inversion of Control frameworks, and for some of us avoiding them because of their cumbersome nature, we got together to write what we believe is the simplest possible IoC design. One, perhaps, that considers the so-designed component as more important that the container.</p>
-  <p>When we set out to do this in 2003, there was nothing equivalent to PicoContainer (xContainer orginally). XWork, that underpinned WebWork2 was a general/embeddable Setter Dependency Injection framework, but not well known. The Spring Framework started in the same timescale, and we were talking to its authors before Martin Fowlers Dependency Injection article.  Later we discovered that HiveMind (now at Apache) also was in the same space.</p>
+<p>After a long period of watching Inversion of Control frameworks,
+and for some of us avoiding them because of their cumbersome nature, we
+got together to write what we believe is the simplest possible IoC
+design. One, perhaps, that considers the so-designed component as more
+important that the container.</p>
+<p>When we set out to do this in 2003, there was nothing equivalent
+to PicoContainer (xContainer originally). XWork, that underpinned
+WebWork2 was a general/embeddable Setter Dependency Injection framework,
+but not well known. The Spring Framework started in the same timescale,
+and we were talking to its authors before Martin Fowlers Dependency
+Injection article. Later we discovered that HiveMind (now at Apache)
+also was in the same space.</p>
 </div>
 <h3 class="headerstyle" >
   <table style="width: 100%; padding-right: 2mm">
@@ -140,8 +150,8 @@ MyComp myComp = (MyComp)pico.getInstance(MyComp.class);</pre>
   <p><a href="constructor-injection.html" title="Constructor Injection">Constructor Injection</a> is hard to swallow for people who have been living with Interface Lookup or <a href="setter-injection.html" title="Setter Injection">Setter Injection</a> for long. We think it's like TDD. Once you get the grasp of it, you don't go back. Here are some benefits with this type of IoC:</p>
   <ul>
     <li>Constructor Injection makes a stronger dependency contract</li>
-    <li>Its more succinct in terms of lines of code</li>
-    <li>Its more succinct in terms dependency-statement-mechanism i.e. no XML, attributes, enabler interfaces etc</li>
+    <li>It's more succinct in terms of lines of code</li>
+    <li>It's more succinct in terms dependency-statement-mechanism i.e. no XML, attributes, enabler interfaces etc</li>
     <li>A component is characterized by InterfaceImplSeparation with the interface being the service offered to other comps, and the impl declaring whatever goddarned need it likes and that need being wholly up to the implementor of the component and nothing to do with the service contract.</li>
     <li>No indeterminate state. Not all the post instantiation setters may be called. Consider the non-container case for comp usage, if v1.2 of that comp introduces a new dependancy, with <a href="constructor-injection.html" title="Constructor Injection">Constructor Injection</a> the compiler will tell me.</li>
   </ul>
