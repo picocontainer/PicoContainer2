@@ -12,7 +12,7 @@
    them.</p>
 
 <p>Properties can be set for a component in a method 'as' on
-   MutablePicoContainer. If that is the case then the charactistics will
+   MutablePicoContainer. If that is the case then the properties will
    affect the next component added only.</p>
 
 <p>They can also be set in a more persistent manner for the
@@ -51,7 +51,7 @@ pico.change(Characteristics.SDI).addComponent(Pear.class);</pre>
 
 <p>Some characteristics are mutually exclusive. For example CDI,
    SDI. Meaning the last one set via 'as' or 'change' rules. Others are
-   additive like CACHE and HIDE_IMPL. It is not important the order of things.</p>
+   additive like CACHE and HIDE_IMPL. The order of these is not important. </p>
 
 <h3>Appropriate Behavior and Injection Factories.</h3>
 
@@ -65,6 +65,9 @@ pico.change(Characteristics.SDI).addComponent(Pear.class);</pre>
 <p>If you setup DefaultPicoContainer with a
    BehaviorFactory/InjectionFactory combination that is unaware of the
    characteristics you subsequently use, Pico will object by way of an
-   exception as you add the component.</p>
+   exception as you add the component to the container. See <a href="unprocessed-properties.html">Unprocessed Properties</a>. </p>
+   
+<h3>Custom Properties</h3>
+<p>You can make your own properties quite easily - check out the source to <a href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/pico/container/src/java/org/picocontainer/Characteristics.java">Characteristics.java</a>. Each will need to have a ComponentFactory that can process it. </p>
 </body>
 </html>

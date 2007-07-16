@@ -5,6 +5,7 @@
         <page>five-minute-introduction.html</page>
         <link title="JavaDoc">javadoc/index.html</link>
         <page>downloads.html</page>
+        <page>news.html</page>
     </section>
     <section>
         <name>Core Concepts</name>
@@ -44,5 +45,10 @@
          <name>Project Info</name>
          <page>project.html</page>
          <page>team.html</page>
+     </section>
+    <section>
+         <name>help pages</name>
+         <page>ambiguous-injectable.html</page>
+         <page>unprocessed-properties.html</page>
      </section>
 </sitemap>
