@@ -4,6 +4,7 @@
 <head>
 <title>PicoBuilder</title>
 </head>
+<body>
 <p>PicoBuilder is a conveniece way of making a PicoContainer
 instance with the right behaviors for you. Refer to Martin's <a
   href="http://www.martinfowler.com/bliki/FluentInterface.html">'Fluent
@@ -22,7 +23,7 @@ pico.addComponent(Apple.class);
     <div class="source"><pre>pico = new PicoBuilder().withHiddenImplementations().build();
 pico.addComponent(Apple.class);</pre></div>
 
-<p>More varations for behaviors :
+<p>More varations for behaviors :</p>
 <div class="source"><pre>
 pico = new PicoBuilder().withLifecycle().withConsoleMonitor().build();
 pico.addComponent(Apple.class);
@@ -66,6 +67,5 @@ pico.addComponent(Apple.class);</pre></div>
       <pre>MyCustomPicoContainer pico = (MyCustomPicoContainer) new PicoBuilder().implementedBy(MyCustomPicoContainer.class).build();
 pico.addComponent(Apple.class);</pre>
 </div>
-</p>
 </body>
 </html>
