@@ -88,9 +88,8 @@ public class ConstructorInjector extends AbstractInjector {
             // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {
                 // check wether this constructor is statisfiable
-                final int j1 = j;
                 if (currentParameters[j].isResolvable(container, this, parameterTypes[j],
-                                                      makeParameterName(sortedMatchingConstructor, j1))) {
+                         new ConstructorInjectorParameterName(sortedMatchingConstructor,j))) {
                     continue;
                 }
                 unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
@@ -129,18 +128,6 @@ public class ConstructorInjector extends AbstractInjector {
             throw new PicoCompositionException("Either the specified parameters do not match any of the following constructors: " + nonMatching.toString() + "; OR the constructors were not accessible for '" + getComponentImplementation().getName() + "'");
         }
         return greediestConstructor;
-    }
-
-    private ParameterName makeParameterName(final Constructor sortedMatchingConstructor, final int j1) {
-        return new ParameterName() {
-            public String getName() {
-                String[] names = lookupParameterNames(sortedMatchingConstructor);
-                if (names.length != 0) {
-                    return names[j1];
-                }
-                return null;
-            }
-        };
     }
 
     private static final String[] EMPTY_NAMES = new String[]{};
@@ -294,17 +281,8 @@ public class ConstructorInjector extends AbstractInjector {
         Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
         for (int i = 0; i < currentParameters.length; i++) {
-            final int i1 = i;
-            result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i], new ParameterName() {
-                public String getName() {
-                    createIfNeededParanamerProxy();
-                    if (paranamer != null) {
-                        String[] strings = lookupParameterNames(ctor);
-                        return strings.length == 0 ? "" : strings[i1];
-                    }
-                    return null;
-                }
-            });
+            result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i],
+                                                             new ConstructorInjectorParameterName(ctor, i));
         }
         return result;
     }
@@ -345,17 +323,8 @@ public class ConstructorInjector extends AbstractInjector {
                     final Class[] parameterTypes = constructor.getParameterTypes();
                     final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
                     for (int i = 0; i < currentParameters.length; i++) {
-                        final int i1 = i;
-                        currentParameters[i].verify(container, ConstructorInjector.this, parameterTypes[i], new ParameterName() {
-                    public String getName() {
-
-                        String[] names = lookupParameterNames(constructor);
-                        if (names.length != 0) {
-                            return names[i1];
-                        }
-                        return null;
-                    }
-                });
+                        currentParameters[i].verify(container, ConstructorInjector.this, parameterTypes[i],
+                                                    new ConstructorInjectorParameterName(constructor, i));
                     }
                     return null;
                 }
@@ -363,6 +332,25 @@ public class ConstructorInjector extends AbstractInjector {
         }
         verifyingGuard.setGuardedContainer(container);
         verifyingGuard.observe(getComponentImplementation());
+    }
+
+    private class ConstructorInjectorParameterName implements ParameterName {
+        private final Constructor ctor;
+        private final int index;
+
+        public ConstructorInjectorParameterName(Constructor ctor, int index) {
+            this.ctor = ctor;
+            this.index = index;
+        }
+
+        public String getName() {
+            createIfNeededParanamerProxy();
+            if (paranamer != null) {
+                String[] strings = lookupParameterNames(ctor);
+                return strings.length == 0 ? "" : strings[index];
+            }
+            return null;
+        }
     }
 
 }
