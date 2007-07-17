@@ -31,6 +31,7 @@ import java.net.URL;
 import java.security.AccessController;
 import java.security.PermissionCollection;
 import java.security.PrivilegedAction;
+import java.security.Permissions;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -314,10 +315,10 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
         }
     }
 
-    private Map<URL, PermissionCollection> makePermissions() {
-        Map<URL, PermissionCollection> permissionsMap = new HashMap<URL, PermissionCollection>();
+    private Map<URL, Permissions> makePermissions() {
+        Map<URL, Permissions> permissionsMap = new HashMap<URL, Permissions>();
         for (ClassPathElement cpe : classPathElements) {
-            PermissionCollection permissionCollection = cpe.getPermissionCollection();
+            Permissions permissionCollection = cpe.getPermissionCollection();
             permissionsMap.put(cpe.getUrl(), permissionCollection);
         }
         return permissionsMap;

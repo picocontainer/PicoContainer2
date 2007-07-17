@@ -197,7 +197,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
             fail();
         } catch (AbstractInjector.AmbiguousComponentResolutionException expected) {
             String doc = DependsOnCollection.class.getName();
-            assertEquals("class " + doc + " needs a 'java.util.Collection' injected, but there are too many choices to inject. These:[class java.util.ArrayList, class java.util.LinkedList], refer http://picocontainer.org/ambiguous-injectable.html", expected.getMessage());
+            assertEquals("class " + doc + " needs a 'java.util.Collection' injected, but there are too many choices to inject. These:[class java.util.ArrayList, class java.util.LinkedList], refer http://picocontainer.org/ambiguous-injectable-help.html", expected.getMessage());
         }
     }
 

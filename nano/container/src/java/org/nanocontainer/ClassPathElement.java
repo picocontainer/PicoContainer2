@@ -23,7 +23,7 @@ import java.util.List;
 public class ClassPathElement implements Serializable {
 
     private final URL url;
-    private PermissionCollection permissionCollection;
+    private Permissions permissionCollection;
     private final List<Permission> permissions = new ArrayList<Permission>();
     
     public ClassPathElement(URL url) {
@@ -42,7 +42,7 @@ public class ClassPathElement implements Serializable {
         return url;
     }
 
-    public PermissionCollection getPermissionCollection() {
+    public Permissions getPermissionCollection() {
         if (permissionCollection == null) {
             permissionCollection = new Permissions();
             for (Permission permission : permissions) {
