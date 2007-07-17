@@ -28,14 +28,14 @@ import java.util.Map;
  * @author Paul Hammant
  */
 public class CustomPermissionsURLClassLoader extends URLClassLoader {
-    private final Map permissionsMap;
+    private final Map<URL, Permissions> permissionsMap;
 
-    public CustomPermissionsURLClassLoader(URL[] urls, Map permissionsMap, ClassLoader parent) {
+    public CustomPermissionsURLClassLoader(URL[] urls, Map<URL, Permissions> permissionsMap, ClassLoader parent) {
         super(urls, parent);
         this.permissionsMap = permissionsMap;
     }
 
-    public Class loadClass(String name) throws ClassNotFoundException {
+    public Class<?> loadClass(String name) throws ClassNotFoundException {
         try {
             return super.loadClass(name);
         } catch (ClassNotFoundException e) {
@@ -43,7 +43,7 @@ public class CustomPermissionsURLClassLoader extends URLClassLoader {
         }
     }
 
-    protected Class findClass(String name) throws ClassNotFoundException {
+    protected Class<?> findClass(String name) throws ClassNotFoundException {
         try {
             return super.findClass(name);
         } catch (ClassNotFoundException e) {
