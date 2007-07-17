@@ -33,7 +33,7 @@ import java.io.Serializable;
 
 /**
  * Instantiates components using empty constructors and
- * <a href="http://docs.codehaus.org/display/PICO/Setter+Injection">Setter Injection</a>.
+ * <a href="http://picocontainer.org/setter-injection.html">Setter Injection</a>.
  * For easy setting of primitive properties, also see {@link PropertyApplyingBehavior}.
  * <p/>
  * <em>

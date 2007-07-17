@@ -350,7 +350,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                                                                                                (Class)componentImplementationOrInstance,
                                                                                                parameters);
             if(tmpProperties.size() > 0) {
-                throw new PicoCompositionException("Unprocessed Characteristics:" + tmpProperties +", refer http://picocontainer.org/unprocessed-properties.html");
+                throw new PicoCompositionException("Unprocessed Characteristics:" + tmpProperties +", refer http://picocontainer.org/unprocessed-properties-help.html");
             }
             return addAdapter(componentAdapter);
         } else {

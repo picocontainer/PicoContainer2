@@ -298,7 +298,7 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
             msg.append(ambiguousDependency.getName());
             msg.append("' injected, but there are too many choices to inject. These:");
             msg.append(Arrays.asList(getAmbiguousComponentKeys()));
-            msg.append(", refer http://picocontainer.org/ambiguous-injectable.html");
+            msg.append(", refer http://picocontainer.org/ambiguous-injectable-help.html");
             return msg.toString();
         }
 
