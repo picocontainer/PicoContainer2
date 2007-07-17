@@ -14,7 +14,7 @@ import java.util.Map;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
-import org.picocontainer.CustomPermissionsURLClassLoader;
+import org.picocontainer.security.CustomPermissionsURLClassLoader;
 import org.picocontainer.DefaultPicoContainer;
 
 public class BrownBear implements Startable {

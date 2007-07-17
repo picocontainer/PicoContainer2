@@ -7,7 +7,7 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.picocontainer;
+package org.picocontainer.security;
 
 import java.net.URL;
 import java.net.URLClassLoader;

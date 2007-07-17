@@ -20,7 +20,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.CustomPermissionsURLClassLoader;
+import org.picocontainer.security.CustomPermissionsURLClassLoader;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
