@@ -63,7 +63,6 @@ import java.util.Enumeration;
  * @author Jon Tirs&eacute;n
  * @author Thomas Heller
  * @author Mauro Talevi
- * @version $Revision: 1.8 $
  */
 public class DefaultPicoContainer implements MutablePicoContainer, ComponentMonitorStrategy, Serializable {
     private final Map<Object, ComponentAdapter> componentKeyToAdapterCache = new HashMap<Object, ComponentAdapter>();
