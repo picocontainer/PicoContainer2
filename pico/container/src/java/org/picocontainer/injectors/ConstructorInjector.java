@@ -34,8 +34,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.thoughtworks.paranamer.ParameterNamesNotFoundException;
-
 /**
  * Instantiates components using Constructor Injection.
  * <em>
@@ -135,7 +133,7 @@ public class ConstructorInjector extends AbstractInjector {
 
     private ParameterName makeParameterName(final Constructor sortedMatchingConstructor, final int j1) {
         return new ParameterName() {
-            public String getParameterName() {
+            public String getName() {
                 String[] names = lookupParameterNames(sortedMatchingConstructor);
                 if (names.length != 0) {
                     return names[j1];
@@ -298,7 +296,7 @@ public class ConstructorInjector extends AbstractInjector {
         for (int i = 0; i < currentParameters.length; i++) {
             final int i1 = i;
             result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i], new ParameterName() {
-                public String getParameterName() {
+                public String getName() {
                     createIfNeededParanamerProxy();
                     if (paranamer != null) {
                         String[] strings = lookupParameterNames(ctor);
@@ -349,7 +347,7 @@ public class ConstructorInjector extends AbstractInjector {
                     for (int i = 0; i < currentParameters.length; i++) {
                         final int i1 = i;
                         currentParameters[i].verify(container, ConstructorInjector.this, parameterTypes[i], new ParameterName() {
-                    public String getParameterName() {
+                    public String getName() {
 
                         String[] names = lookupParameterNames(constructor);
                         if (names.length != 0) {

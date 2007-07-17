@@ -32,7 +32,7 @@ import org.picocontainer.testmodel.Touchable;
 public final class ParameterTestCase extends TestCase {
 
     public static class FooParameterName implements ParameterName {
-        public String getParameterName() {
+        public String getName() {
             return "";
         }
     }

@@ -186,7 +186,7 @@ public class BasicComponentParameter
             } else {
                 for (ComponentAdapter<T> componentAdapter : found) {
                     Object key = componentAdapter.getComponentKey();
-                    if (key instanceof String && key.equals(expectedParameterName.getParameterName())) {
+                    if (key instanceof String && key.equals(expectedParameterName.getName())) {
                         return componentAdapter;
                     }
                 }

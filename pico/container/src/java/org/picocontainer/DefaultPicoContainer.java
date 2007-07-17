@@ -243,7 +243,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             }
         } else {
             if (componentParameterName != null) {
-                String parameterName = componentParameterName.getParameterName();
+                String parameterName = componentParameterName.getName();
                 if (parameterName != null) {
                     ComponentAdapter ca = getComponentAdapter(parameterName);
                     if (ca != null && componentType.isAssignableFrom(ca.getComponentImplementation())) {
