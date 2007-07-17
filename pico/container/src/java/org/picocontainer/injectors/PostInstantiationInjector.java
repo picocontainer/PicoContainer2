@@ -71,11 +71,8 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
             final Parameter parameter = currentParameters[i];
             boolean failedDependency = true;
             for (int j = 0; j < injectionTypes.length; j++) {
-                if (matchingParameterList.get(j) == null && parameter.isResolvable(container, this, injectionTypes[j], new ParameterName() {
-                    public String getName() {
-                        return ""; // TODO
-                    }
-                })) {
+                if (matchingParameterList.get(j) == null && parameter.isResolvable(container, this, injectionTypes[j],
+                                                                                   new PostInstantiationInjectorParameterName())) {
                     matchingParameterList.set(j, parameter);
                     failedDependency = false;
                     break;
@@ -131,11 +128,8 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
                         for (int i = 0; i < injectionMembers.size(); i++) {
                             member = injectionMembers.get(i);
                             componentMonitor.invoking(container, PostInstantiationInjector.this, member, componentInstance);
-                            Object toInject = matchingParameters[i].resolveInstance(guardedContainer, PostInstantiationInjector.this, injectionTypes[i], new ParameterName() {
-                                public String getName() {
-                                    return ""; // TODO
-                                }
-                            });
+                            Object toInject = matchingParameters[i].resolveInstance(guardedContainer, PostInstantiationInjector.this, injectionTypes[i],
+                                                                                    new PostInstantiationInjectorParameterName());
                             injectIntoMember(member, componentInstance, toInject);
                             injected[i] = toInject;
                         }
@@ -168,11 +162,8 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
                 public Object run() {
                     final Parameter[] currentParameters = getMatchingParameterListForSetters(guardedContainer);
                     for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].verify(container, PostInstantiationInjector.this, injectionTypes[i], new ParameterName() {
-                            public String getName() {
-                                return ""; // TODO
-                            }
-                        });
+                        currentParameters[i].verify(container, PostInstantiationInjector.this, injectionTypes[i],
+                                                    new PostInstantiationInjectorParameterName());
                     }
                     return null;
                 }
@@ -210,6 +201,12 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
                 return getComponentImplementation().getMethods();
             }
         });
+    }
+
+    private static class PostInstantiationInjectorParameterName implements ParameterName {
+        public String getName() {
+            return ""; // TODO
+        }
     }
 
 }
