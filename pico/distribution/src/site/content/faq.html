@@ -7,13 +7,13 @@
 <h3 class="headerstyle">
   <table style="width: 100%; padding-right: 2mm">
     <tr>
-      <td align="left" valign="middle">Can my component use multiple constructors</td>
+      <td align="left" valign="middle">Can my component use multiple constructors?</td>
     </tr>
   </table>
 </h3>
 <div>
   <p>Yes.</p>
-  <p>You should perhaps code multiple constructors for a component:</p>
+  <p>You can code multiple constructors for a component:</p>
   <div class="source">
     <div>
       <pre>class MyComp {
@@ -38,19 +38,19 @@
 <h3 class="headerstyle">
   <table style="width: 100%; padding-right: 2mm">
     <tr>
-      <td align="left" valign="middle">How does PicoContainer decide what constructor to use</td>
+      <td align="left" valign="middle">How does PicoContainer decide what constructor to use?</td>
     </tr>
   </table>
 </h3>
 <div>
   <p>PicoContainer will instantiate a given component using the &quot;greediest&quot; satisfiable constructor. By greedy, we mean the constructor that takes the most parameters. By satisfiable, we mean constructors where all arguments can be satisfied by other registered components.</p>
   <p>If you register a component with no satisfiable constructors, or two or more ambiguous &quot;largest&quot; constructors, a RuntimeException will be thrown when you ask for the component instance.</p>
-  <p>We recommend, for the sake of predictablility, that PicoContainer compatible components use only one constructor, although this is by no means a requirement.</p>
+  <p>We recommend for most components, you use only one constructor, although this is by no means a requirement.</p>
 </div>
 <h3 class="headerstyle">
   <table style="width: 100%; padding-right: 2mm">
     <tr>
-      <td align="left" valign="middle">How does PicoContainer compare to EJB containers</td>
+      <td align="left" valign="middle">How does PicoContainer compare to EJB containers?</td>
     </tr>
   </table>
 </h3>
@@ -60,7 +60,7 @@
 <h3 class="headerstyle" >
   <table style="width: 100%; padding-right: 2mm">
     <tr>
-      <td align="left" valign="middle">How does PicoContainer decide what constructor to use</td>
+      <td align="left" valign="middle">How does PicoContainer decide what constructor to use?</td>
     </tr>
   </table>
 </h3>
@@ -72,7 +72,7 @@
 <h3 class="headerstyle" >
   <table style="width: 100%; padding-right: 2mm">
     <tr>
-      <td align="left" valign="middle">How to use primitive types in constructors</td>
+      <td align="left" valign="middle">How to use primitive types in constructors?</td>
     </tr>
   </table>
 </h3>
@@ -110,7 +110,7 @@ MyComp myComp = (MyComp)pico.getInstance(MyComp.class);</pre>
 <h3 class="headerstyle" >
   <table style="width: 100%; padding-right: 2mm">
     <tr>
-      <td align="left" valign="middle">When should I use PicoContainer</td>
+      <td align="left" valign="middle">When should I use PicoContainer?</td>
     </tr>
   </table>
 </h3>
@@ -121,7 +121,7 @@ MyComp myComp = (MyComp)pico.getInstance(MyComp.class);</pre>
 <h3 class="headerstyle" >
   <table style="width: 100%; padding-right: 2mm">
     <tr>
-      <td align="left" valign="middle">Why Another IoC Framework</td>
+      <td align="left" valign="middle">Why Another IoC Framework?</td>
     </tr>
   </table>
 </h3>
@@ -142,7 +142,7 @@ also was in the same space.</p>
 <h3 class="headerstyle" >
   <table style="width: 100%; padding-right: 2mm">
     <tr>
-      <td align="left" valign="middle">Why Constructor Injection</td>
+      <td align="left" valign="middle">Why Constructor Injection?</td>
     </tr>
   </table>
 </h3>
@@ -155,6 +155,68 @@ also was in the same space.</p>
     <li>A component is characterized by InterfaceImplSeparation with the interface being the service offered to other comps, and the impl declaring whatever goddarned need it likes and that need being wholly up to the implementor of the component and nothing to do with the service contract.</li>
     <li>No indeterminate state. Not all the post instantiation setters may be called. Consider the non-container case for comp usage, if v1.2 of that comp introduces a new dependancy, with <a href="constructor-injection.html" title="Constructor Injection">Constructor Injection</a> the compiler will tell me.</li>
   </ul>
+</div>
+<h3 class="headerstyle" >
+  <table style="width: 100%; padding-right: 2mm">
+    <tr>
+      <td align="left" valign="middle">Will we support Guice's @Inject annotation transparently? </td>
+    </tr>
+  </table>
+</h3>
+<div>
+  <p>We could compile PicoContainer against Guice.jar and leverage the @Inject method, for sure but that is our only choice. The problem is that there is no way to use an annotation without having its class in the classpath. </p>
+  <p>Things do fail silently if the jar is missing, unless the annotation is used. Meaning, the mere declaration of an annotation on a component is not enough to cause a ClassNotFoundException on load, if its not used:</p>
+<div class="source"><pre>@Retention(RetentionPolicy.RUNTIME)
+@Target(value={ElementType.METHOD})
+public static @interface Bar {
+}
+</pre></div>
+<div class="source"><pre>
+import com.google.inject.Inject;
+public class Foo {
+
+    @Inject
+    @Bar
+    public void setFoo(String str) {
+        System.out.println("0>" + str);
+    }
+
+    public static void main(String[] args) throws NoSuchMethodException {
+
+        Foo foo = new Foo();
+        foo.setFoo("hello");
+
+        Method m = Foo.class.getMethod("setFoo", String.class);
+
+        Annotation[] anns =  m.getDeclaredAnnotations();
+        System.out.println("1> " + anns.length);
+        for (int i = 0; i < anns.length; i++) {
+            Annotation ann = anns[i];
+            System.out.println("2> " + ann.toString());
+        }
+
+        Annotation ann =  m.getAnnotation(Inject.class);
+        System.out.println("3> " + ann);
+    }
+}
+</pre></div>
+<p>Leaving Guice out of the classpath, and trying to launch Foo...</p>
+<div class="source">
+  <pre>commandline: java -cp classes Foo
+0>hellos
+1> 1
+2> @Foo$Bar()
+Exception in thread "main" java.lang.NoClassDefFoundError: org/picocontainer/annotations/Inject
+        at Foo.main(Foo.java:32)</pre>
+</div>
+  <p>The class loads, but the @Inject annotation is not present in the set of declared annotations, but another in the classpath is.  Lastly when accessed explicitly, there is an exception thrown.  Contrast to, the same run with Guice in the classpath:</p>
+<div class="source"><pre>0>hello
+1> 2
+2> @org.picocontainer.annotations.Inject()
+2> @Foo$Bar()
+3> @org.picocontainer.annotations.Inject()
+</pre></div>
+
 </div>
 </body>
 
