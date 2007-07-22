@@ -164,9 +164,9 @@ also was in the same space.</p>
   </table>
 </h3>
 <div>
-  <p>We could compile PicoContainer against Guice.jar and leverage the @Inject method, for sure but that is our only choice. The problem is that there is no way to use an annotation without having its class in the classpath. </p>
-  <p>Things do fail silently if the jar is missing, unless the annotation is used. Meaning, the mere declaration of an annotation on a component is not enough to cause a ClassNotFoundException on load, if its not used:</p>
-<div class="source"><pre>@Retention(RetentionPolicy.RUNTIME)
+  <p>We could compile PicoContainer against Guice.jar and leverage the @Inject method with a new InjectionFactory (and probably will). The problem is that there is no easy way to use an annotation without having its class in the classpath. There's no easy 'transparent' solution for this. </p>
+  <p>Things  fail silently if the jar is missing, unless the annotation is used - then it fails noisily. Meaning, the mere declaration of an annotation on a component is not enough to cause a ClassNotFoundException on load, if its not used:</p>
+  <div class="source"><pre>@Retention(RetentionPolicy.RUNTIME)
 @Target(value={ElementType.METHOD})
 public static @interface Bar {
 }
