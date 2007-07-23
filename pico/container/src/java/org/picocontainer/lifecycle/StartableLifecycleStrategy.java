@@ -10,13 +10,15 @@ package org.picocontainer.lifecycle;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
-import org.picocontainer.lifecycle.AbstractMonitoringLifecycleStrategy;
 
 import java.lang.reflect.Method;
 
 /**
  * Startable lifecycle strategy.  Starts and stops component if Startable,
  * and disposes it if Disposable.
+ *
+ * A subclass of this class can define other intrfaces for Startable/Disposable as well as other method names
+ * for start/stop/dispose
  *
  * @author Mauro Talevi
  * @author J&ouml;rg Schaible
@@ -31,16 +33,16 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         super(monitor);
     }
 
-    protected void doMethodsIfNotDone() {
+    private void doMethodsIfNotDone() {
         try {
             if (start == null) {
-                start = getStartableInterface().getMethod(getStartMethodName(), (Class[])null);
+                start = getStartableInterface().getMethod(getStartMethodName());
             }
             if (stop == null) {
-                stop = getStartableInterface().getMethod(getStopMethodName(), (Class[])null);
+                stop = getStartableInterface().getMethod(getStopMethodName());
             }
             if (dispose == null) {
-                dispose = getDisposableInterface().getMethod(getDisposeMethodName(), (Class[])null);
+                dispose = getDisposableInterface().getMethod(getDisposeMethodName());
             }
         } catch (NoSuchMethodException e) {
         }
@@ -61,7 +63,7 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
 
     public void start(Object component) {
         doMethodsIfNotDone();
-        if (component != null && component instanceof Startable) {
+        if (component != null && getStartableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
             currentMonitor().invoking(null, null, start, component);
             try {
@@ -75,7 +77,7 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
 
     public void stop(Object component) {
         doMethodsIfNotDone();
-        if (component != null && component instanceof Startable) {
+        if (component != null && getStartableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
             currentMonitor().invoking(null, null, stop, component);
             try {
@@ -89,7 +91,7 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
 
     public void dispose(Object component) {
         doMethodsIfNotDone();
-        if (component != null && component instanceof Disposable) {
+        if (component != null && getDisposableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
             currentMonitor().invoking(null, null, dispose, component);
             try {
@@ -105,11 +107,11 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         return getStartableInterface().isAssignableFrom(type) || getDisposableInterface().isAssignableFrom(type);
     }
 
-    private Class<Disposable> getDisposableInterface() {
+    protected Class<Disposable> getDisposableInterface() {
         return Disposable.class;
     }
 
-    private Class getStartableInterface() {
+    protected Class getStartableInterface() {
         return Startable.class;
     }
 }
