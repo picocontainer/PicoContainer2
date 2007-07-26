@@ -10,6 +10,7 @@
 package org.nanocontainer.aop.dynaop;
 
 import dynaop.Pointcuts;
+import dynaop.util.NestedException;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.nanocontainer.aop.ClassPointcut;
 import org.nanocontainer.aop.MalformedRegularExpressionException;
@@ -36,11 +37,7 @@ public class  DynaopPointcutsFactory extends AbstractPointcutsFactory {
     }
 
     public ClassPointcut className(String regex) {
-        try {
             return new DynaopClassPointcut(Pointcuts.className(regex));
-        } catch (MalformedPatternException e) {
-            throw new MalformedRegularExpressionException("malformed class name regular expression", e);
-        }
     }
 
     public ClassPointcut oneClass(Class clazz) {
@@ -88,11 +85,7 @@ public class  DynaopPointcutsFactory extends AbstractPointcutsFactory {
     }
 
     public MethodPointcut signature(String regexp) {
-        try {
             return new DynaopMethodPointcut(Pointcuts.signature(regexp));
-        } catch (MalformedPatternException e) {
-            throw new MalformedRegularExpressionException("malformed method signature regular expression", e);
-        }
     }
 
     public MethodPointcut oneMethod(Method method) {

@@ -17,7 +17,10 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Characteristics;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
+
+import java.util.Properties;
 
 /**
  * @author Paul Hammant
@@ -27,6 +30,11 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultNanoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new CachingBehaviorFactory(), parent));
+    }
+
+
+    protected Properties[] getProperties() {
+        return new Properties[] { Characteristics.NONE};
     }
 
     // TODO - go to a Nano TCK?

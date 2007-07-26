@@ -86,7 +86,7 @@ public class DynaopAspectablePicoContainerFactory implements AspectablePicoConta
         Aspects aspects = new Aspects();
         aspects.mixin(Pointcuts.ALL_CLASSES, new Class[]{AspectsContainer.class}, new InstanceMixinFactory(aspectsManager));
         aspects.interfaces(Pointcuts.ALL_CLASSES, new Class[]{AspectablePicoContainer.class});
-        return (AspectablePicoContainer) ProxyFactory.getInstance(aspects).wrap(pico);
+        return (AspectablePicoContainer) new ProxyFactory(aspects).wrap(pico);
     }
 
 }

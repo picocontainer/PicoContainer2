@@ -39,7 +39,7 @@ class PicoContainerProxy implements Interceptor {
         Aspects aspects = new Aspects();
         aspects.interceptor(Pointcuts.ALL_CLASSES, Pointcuts.ALL_METHODS, new PicoContainerProxy(containerLoader));
         aspects.interfaces(Pointcuts.ALL_CLASSES, new Class[]{PicoContainer.class});
-        return (PicoContainer) ProxyFactory.getInstance(aspects).wrap(new Object());
+        return (PicoContainer) new ProxyFactory(aspects).wrap(new Object());
     }
 
     public Object intercept(Invocation invocation) throws Throwable {

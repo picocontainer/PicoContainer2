@@ -196,14 +196,15 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         assertTrue(dao instanceof AnotherInterface);
     }
 
-    public void testInterfacesWithClassPointcutNoAdvice() {
+    public void testInterfacesWithClassPointcutNoAdviceStillSetsUp() {
         pico.addComponent(Dao.class, DaoImpl.class);
         pico.registerInterfaces(cuts.instancesOf(Dao.class), new Class[]{AnotherInterface.class});
         Dao dao = pico.getComponent(Dao.class);
 
         // dynaop doesn't add any interfaces if there's no advice applied to the
         // object:
-        assertFalse(dao instanceof AnotherInterface);
+        assertFalse(dao instanceof Identifiable);
+        assertTrue(dao instanceof AnotherInterface);
     }
 
     public void testInterfacesWithComponentPointcut() {

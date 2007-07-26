@@ -24,15 +24,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/cglib/cglib-asm/1.0/cglib-asm-1.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$M2_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -43,15 +34,6 @@
       <library>
         <CLASSES>
           <root url="jar://$M2_REPOSITORY$/jmock/jmock/1.0.1/jmock-1.0.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/dynaop/dynaop/1.0-beta/dynaop-1.0-beta.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -115,6 +97,15 @@
     <orderEntry type="module" module-name="picocontainer-tck" />
     <orderEntry type="module" module-name="nano-testmodel" />
     <orderEntry type="module" module-name="nanocontainer" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/dynaop/dynaop/1.0/dynaop-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntryProperties />
   </component>
   <component name="copyright">

@@ -44,15 +44,11 @@ public class InstanceMixinFactory implements MixinFactory {
         return instance;
     }
 
-    /**
-     * Used for debugging.
-     *
-     * @return a set of properties useful for debugging.
-     */
-    public Properties getProperties() {
-        Properties properties = new Properties();
-        properties.setProperty("advice", "instance mixin");
-        return properties;
+    public Class getAdviceClass() {
+        return this.getClass();
     }
 
+    public String getScope() {
+        return "per-instance"; 
+    }
 }

@@ -42,10 +42,12 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Characteristics;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Behaviors;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -518,7 +520,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
         Parameter[] parameters = createChildParameters(container, element);
         ComponentFactory componentFactory = createComponentAdapterFactory(element.getAttribute(FACTORY), metaContainer);
 
-        container.addAdapter(componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), key, implementationClass, parameters));
+        container.as(Characteristics.NONE).addAdapter(componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), key, implementationClass, parameters));
     }
 
     private ComponentFactory createComponentAdapterFactory(String factoryName, NanoContainer metaContainer) throws PicoCompositionException {

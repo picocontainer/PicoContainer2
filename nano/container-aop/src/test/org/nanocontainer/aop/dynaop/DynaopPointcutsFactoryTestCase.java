@@ -20,6 +20,8 @@ import org.nanocontainer.testmodel.Dao;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
+import dynaop.util.NestedException;
+
 /**
  * @author Stephen Molitor
  */
@@ -237,14 +239,14 @@ public final class DynaopPointcutsFactoryTestCase extends TestCase {
     public void testMalformedPatternExceptionRethrown() {
         try {
             cuts.className("(");
-            fail("MalformedRegularExpressionException should have been raised");
-        } catch (MalformedRegularExpressionException e) {
+            fail("NestedException should have been raised");
+        } catch (NestedException e) {
         }
 
         try {
             cuts.signature("(");
-            fail("MalformedRegularExpressionException should have been raised");
-        } catch (MalformedRegularExpressionException e) {
+            fail("NestedException should have been raised");
+        } catch (NestedException e) {
         }
     }
 

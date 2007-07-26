@@ -23,9 +23,4 @@ public class InstanceMixinFactoryTestCase extends TestCase {
         assertSame(instance, factory.create(null));
     }
 
-    public void testPropertiesNotNull() {
-        MixinFactory factory = new InstanceMixinFactory("foo");
-        assertNotNull(factory.getProperties());
-    }
-
 }

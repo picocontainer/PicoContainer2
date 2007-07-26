@@ -63,16 +63,11 @@ class ContainerSuppliedInterceptorFactory implements InterceptorFactory {
         return new MethodInterceptorAdapter(methodInterceptor);
     }
 
-    /**
-     * Gets properties. Useful for debugging.
-     *
-     * @return a <code>Properties</code> object.
-     */
-    public Properties getProperties() {
-        Properties properties = new Properties();
-        properties.setProperty("advice", "method interceptor");
-        properties.setProperty("scope", "per-instance");
-        return properties;
+    public Class getAdviceClass() {
+        return this.getClass();
     }
 
+    public String getScope() {
+        return "per-instance";
+    }
 }

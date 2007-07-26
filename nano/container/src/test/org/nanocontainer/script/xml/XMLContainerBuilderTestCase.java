@@ -598,7 +598,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         MutablePicoContainer pico = (MutablePicoContainer)buildContainer(script);
 
         String s = new PrettyXmlRepresentation().simplifyRepresentation(pico);
-        System.out.println("xml rep\n\n" + s);;
+        System.out.println("xml rep\n\n" + s);
 
 
 
@@ -700,7 +700,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertTrue(StaticWriterComponentMonitor.WRITER.toString().length() > 0);
     }
 
-    public void testComponentCanUsePredefinedCAF() {
+    public void testAdaptersAlsoUseBehaviorFactory() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-adapter-factory class='org.picocontainer.injectors.ConstructorInjectionFactory' key='factory'/>" +

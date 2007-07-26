@@ -193,6 +193,33 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         assertSame(a, b.a);
     }
 
+    public static class NeedsString{
+        public final String foo;
+        public NeedsString(String foo) {
+            this.foo = foo;
+        }
+    }
+
+    public void testCanActOnConfigAndParameterNameToResolveAmbiguity() throws PicoCompositionException, IOException {
+
+        org.objectweb.asm.ClassReader cr = new org.objectweb.asm.ClassReader("java.lang.String");
+
+        Reader script = new StringReader("" +
+                "nano = builder.container {\n" +
+                "    config(key:'foo', instance:'one')\n" +
+                "    config(key:'bar', instance:'two')\n" +
+                "    component(class:'"+NeedsString.class.getName()+"')\n" +
+                "}");
+
+        PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
+        NeedsString needsString = pico.getComponent(NeedsString.class);
+
+        assertNotNull(needsString);
+        assertEquals("one", needsString.foo);
+    }
+
+
+
     public void testComponentParametersScript() {
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
@@ -647,7 +674,6 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         }
 
     }
-
 
     public void testWithParentClassPathPropagatesWithNoParentContainer()throws IOException {
         File testCompJar = TestHelper.getTestCompJarFile();

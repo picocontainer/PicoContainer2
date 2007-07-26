@@ -3,12 +3,12 @@ package org.nanocontainer;
 import org.picocontainer.BehaviorFactory;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.InjectionFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoClassNotFoundException;
+import org.picocontainer.InjectionFactory;
 import org.picocontainer.containers.TransientPicoContainer;
 
 

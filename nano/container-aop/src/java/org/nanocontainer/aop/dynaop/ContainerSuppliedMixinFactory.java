@@ -17,8 +17,6 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.injectors.ConstructorInjector;
 
-import java.util.Properties;
-
 /**
  * Manufactures mixins from a <code>PicoContainer</code>. Useful when a mixin
  * has dependencies on other components in the <code>PicoContainer</code>.
@@ -62,15 +60,11 @@ class ContainerSuppliedMixinFactory implements MixinFactory {
         return mixin;
     }
 
-    /**
-     * Gets properties. Useful for debugging.
-     *
-     * @return an empty <code>Properties</code> object.
-     */
-    public Properties getProperties() {
-        Properties properties = new Properties();
-        properties.setProperty("advice", "mixin");
-        return properties;
+    public Class getAdviceClass() {
+        return this.getClass();
     }
 
+    public String getScope() {
+        return "per-instance";  
+    }
 }

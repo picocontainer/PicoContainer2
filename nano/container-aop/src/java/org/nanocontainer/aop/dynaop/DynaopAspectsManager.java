@@ -140,7 +140,7 @@ public class DynaopAspectsManager implements AspectsManager {
     public Object applyAspects(Object componentKey, Object component, PicoContainer container) {
         containerLoader.setContainer(container);
         Aspects aspects = componentAspects.registerAspects(componentKey, containerAspects);
-        return ProxyFactory.getInstance(aspects).wrap(component);
+        return new ProxyFactory(aspects).wrap(component);
     }
 
     private dynaop.ClassPointcut getClassPointcut(final ClassPointcut classPointcut) {

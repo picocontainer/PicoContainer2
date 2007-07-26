@@ -50,9 +50,4 @@ public final class ContainerSuppliedInterceptorFactoryTestCase extends MockObjec
         }
     }
 
-    public void testPropertiesNotNull() {
-        InterceptorFactory interceptorFactory = new ContainerSuppliedInterceptorFactory(pico, "interceptorComponentKey");
-        assertNotNull(interceptorFactory.getProperties());
-    }
-
 }

@@ -28,8 +28,4 @@ public final class ContainerSuppliedMixinFactoryTestCase extends MockObjectTestC
         assertTrue(mixin instanceof IdentifiableMixin);
     }
 
-    public void testPropertiesNotNull() {
-        assertNotNull(mixinFactory.getProperties());
-    }
-
 }
