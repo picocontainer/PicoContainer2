@@ -31,10 +31,19 @@ import java.util.Properties;
 public class HotSwappingBehaviorFactory extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
-            throws PicoCompositionException
-    {
+            throws PicoCompositionException {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                          componentProperties, componentKey, componentImplementation, parameters);
         return new HotSwappingBehavior(componentAdapter);
+    }
+
+    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+                                                LifecycleStrategy lifecycleStrategy,
+                                                Properties componentProperties,
+                                                ComponentAdapter adapter) {
+        return new HotSwappingBehavior(super.addComponentAdapter(componentMonitor,
+                                                                 lifecycleStrategy,
+                                                                 componentProperties,
+                                                                 adapter));
     }
 }

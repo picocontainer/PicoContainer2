@@ -32,7 +32,7 @@ public class ImplementationHidingBehaviorTestCase extends TestCase {
         assertNotNull(comp);
         assertTrue(comp instanceof ActionListener);
         assertTrue(comp instanceof MouseListener);
-    }
+    }    
 
     public void testNonInterfaceInArrayCantBeHidden() {
         ComponentAdapter ca = new ConstructorInjector(new Class[]{String.class}, Footle.class, null, new NullComponentMonitor(), new NullLifecycleStrategy());
@@ -44,6 +44,8 @@ public class ImplementationHidingBehaviorTestCase extends TestCase {
             // expected        
         }
     }
+
+
     
     public class Footle implements ActionListener, MouseListener {
         public void actionPerformed(ActionEvent e) {

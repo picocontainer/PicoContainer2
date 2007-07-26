@@ -9,16 +9,18 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.InjectionFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.InjectionFactory;
 
 import java.util.Properties;
+import java.io.Serializable;
 
-public class FieldAnnotationInjectionFactory implements InjectionFactory {
+public class FieldAnnotationInjectionFactory implements InjectionFactory, Serializable {
 
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,

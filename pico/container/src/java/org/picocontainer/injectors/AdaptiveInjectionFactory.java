@@ -16,6 +16,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.InjectionFactory;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.annotations.Inject;

@@ -21,11 +21,40 @@ import java.util.Properties;
 
 public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory {
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
-            throws PicoCompositionException {
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
+                                                   LifecycleStrategy lifecycleStrategy,
+                                                   Properties componentProperties,
+                                                   Object componentKey,
+                                                   Class componentImplementation,
+                                                   Parameter... parameters) throws PicoCompositionException {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {
+            return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+                                                componentProperties, componentKey, componentImplementation, parameters);
+        }
         AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
-        ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                                                         componentProperties, componentKey, componentImplementation, parameters);
+        ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor,
+                                                                         lifecycleStrategy,
+                                                                         componentProperties,
+                                                                         componentKey,
+                                                                         componentImplementation,
+                                                                         parameters);
         return new ImplementationHidingBehavior(componentAdapter);
+    }
+
+    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+                                                LifecycleStrategy lifecycleStrategy,
+                                                Properties componentProperties,
+                                                ComponentAdapter adapter) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {
+            return super.addComponentAdapter(componentMonitor,
+                                             lifecycleStrategy,
+                                             componentProperties,
+                                             adapter);
+        }
+        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
+        return new ImplementationHidingBehavior(super.addComponentAdapter(componentMonitor,
+                                                                          lifecycleStrategy,
+                                                                          componentProperties,
+                                                                          adapter));
     }
 }

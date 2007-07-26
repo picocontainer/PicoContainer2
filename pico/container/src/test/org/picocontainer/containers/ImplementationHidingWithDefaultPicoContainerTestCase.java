@@ -14,7 +14,10 @@ import org.picocontainer.behaviors.ImplementationHidingBehaviorFactory;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Characteristics;
 import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTestCase;
+
+import java.util.Properties;
 
 import junit.framework.AssertionFailedError;
 
@@ -26,6 +29,10 @@ public class ImplementationHidingWithDefaultPicoContainerTestCase extends Abstra
 
     protected MutablePicoContainer createImplementationHidingPicoContainer() {
         return createPicoContainer(null);
+    }
+
+    protected Properties[] getProperties() {
+        return new Properties[] {Characteristics.NO_CACHE, Characteristics.NO_HIDE_IMPL};
     }
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
@@ -42,4 +49,9 @@ public class ImplementationHidingWithDefaultPicoContainerTestCase extends Abstra
         }
 
     }
+
+    public void testAcceptImplementsBreadthFirstStrategy() {
+        super.testAcceptImplementsBreadthFirstStrategy();
+    }
+
 }

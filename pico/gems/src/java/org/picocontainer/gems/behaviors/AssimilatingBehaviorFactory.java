@@ -64,9 +64,20 @@ public class AssimilatingBehaviorFactory extends AbstractBehaviorFactory {
      */
     public ComponentAdapter createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
-            throws PicoCompositionException
-    {
+            throws PicoCompositionException {
         return new AssimilatingBehavior(assimilationType, super.createComponentAdapter(
                 componentMonitor, lifecycleStrategy, null, componentKey, componentImplementation, parameters), proxyFactory);
     }
+
+
+    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+                                                LifecycleStrategy lifecycleStrategy,
+                                                Properties componentProperties,
+                                                ComponentAdapter adapter) {
+        return new AssimilatingBehavior(assimilationType, super.addComponentAdapter(componentMonitor,
+                                         lifecycleStrategy,
+                                         componentProperties,
+                                         adapter));
+    }
 }
+

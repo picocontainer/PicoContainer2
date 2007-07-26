@@ -32,6 +32,7 @@ import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ObjectReference;
+import org.picocontainer.Characteristics;
 
 import org.jmock.MockObjectTestCase;
 
@@ -277,7 +278,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
 
     final public void testVER_verificationFails() {
         if ((getComponentAdapterNature() & VERIFYING) > 0) {
-            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer();
             final ComponentAdapter componentAdapter = prepVER_verificationFails(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             try {

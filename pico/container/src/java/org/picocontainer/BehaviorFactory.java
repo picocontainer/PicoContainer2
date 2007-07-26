@@ -9,6 +9,13 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import java.util.Properties;
+
 public interface BehaviorFactory extends ComponentFactory {
+
     ComponentFactory forThis(ComponentFactory delegate);
+
+    ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, ComponentAdapter adapter);
+
+
 }

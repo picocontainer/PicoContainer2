@@ -22,6 +22,7 @@ import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 import java.util.Properties;
+import java.util.Collection;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -61,7 +62,8 @@ public abstract class AbstractComponentFactoryTestCase extends TestCase {
 
         picoContainer.addAdapter(componentAdapter);
 
-        assertTrue(picoContainer.getComponentAdapters().contains(componentAdapter));
+        ComponentAdapter adapter = (ComponentAdapter)picoContainer.getComponentAdapters().toArray()[0];
+        assertSame(componentAdapter.getComponentKey(), adapter.getComponentKey());
     }
 
     public void testUnregisterComponent() throws PicoCompositionException {

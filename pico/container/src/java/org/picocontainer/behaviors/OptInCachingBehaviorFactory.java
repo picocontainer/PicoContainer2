@@ -38,7 +38,26 @@ public class OptInCachingBehaviorFactory extends AbstractBehaviorFactory {
                                                                                         componentImplementation,
                                                                                         parameters));
         }
+        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);
         return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                             componentProperties, componentKey, componentImplementation, parameters);
+    }
+
+
+    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+                                                LifecycleStrategy lifecycleStrategy,
+                                                Properties componentProperties,
+                                                ComponentAdapter adapter) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CACHE)) {
+            return new CachingBehavior(super.addComponentAdapter(componentMonitor,
+                                                                 lifecycleStrategy,
+                                                                 componentProperties,
+                                                                 adapter));
+        }
+        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);
+        return super.addComponentAdapter(componentMonitor,
+                                         lifecycleStrategy,
+                                         componentProperties,
+                                         adapter);
     }
 }

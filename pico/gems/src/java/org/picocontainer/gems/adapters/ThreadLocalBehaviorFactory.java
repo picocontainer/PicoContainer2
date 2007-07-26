@@ -120,4 +120,22 @@ public final class ThreadLocalBehaviorFactory extends AbstractBehaviorFactory {
         return componentAdapter;
     }
 
+
+    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+                                                LifecycleStrategy lifecycleStrategy,
+                                                Properties componentProperties,
+                                                ComponentAdapter adapter) {
+        if (ensureThreadLocal) {
+            return new ThreadLocalBehavior(super.addComponentAdapter(componentMonitor,
+                                                                     lifecycleStrategy,
+                                                                     componentProperties,
+                                                                     adapter), proxyFactory);
+        } else {
+            return new CachingBehavior(super.addComponentAdapter(componentMonitor,
+                                                                 lifecycleStrategy,
+                                                                 componentProperties,
+                                                                 adapter), new ThreadLocalReference());
+        }
+
+    }
 }

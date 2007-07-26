@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
+public class AdaptiveBehaviorFactory implements BehaviorFactory, Serializable {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
@@ -33,7 +33,7 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
                                                    Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
-        List<ComponentFactory> list = new ArrayList<ComponentFactory>();
+        List<BehaviorFactory> list = new ArrayList<BehaviorFactory>();
         ComponentFactory lastFactory = makeInjectionFactory();
         processThreadSafe(componentProperties, list);
         processImplementationHiding(componentProperties, list);
@@ -55,11 +55,38 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
                                                   parameters);
     }
 
+
+    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+                                                LifecycleStrategy lifecycleStrategy,
+                                                Properties componentProperties,
+                                                ComponentAdapter adapter) {
+        List<BehaviorFactory> list = new ArrayList<BehaviorFactory>();
+        processThreadSafe(componentProperties, list);
+        processImplementationHiding(componentProperties, list);
+        processCachedInstance(componentProperties, adapter.getComponentImplementation(), list);
+
+        //Instantiate Chain of ComponentFactories
+        BehaviorFactory lastFactory = null;
+        for (BehaviorFactory componentFactory : list) {
+            if (lastFactory != null) {
+                componentFactory.forThis(lastFactory);
+            }
+            lastFactory = componentFactory;
+        }
+
+        if (lastFactory == null) {
+            return adapter;
+        }
+
+
+        return lastFactory.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
+    }
+
     protected AdaptiveInjectionFactory makeInjectionFactory() {
         return new AdaptiveInjectionFactory();
     }
 
-    protected void processThreadSafe(Properties componentProperties, List<ComponentFactory> list) {
+    protected void processThreadSafe(Properties componentProperties, List<BehaviorFactory> list) {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.THREAD_SAFE)) {
             list.add(new SynchronizedBehaviorFactory());
         }
@@ -67,7 +94,7 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
 
     protected void processCachedInstance(Properties componentProperties,
                                        Class componentImplementation,
-                                       List<ComponentFactory> list) {
+                                       List<BehaviorFactory> list) {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CACHE) ||
             componentImplementation.getAnnotation(Cache.class) != null) {
             list.add(new CachingBehaviorFactory());
@@ -75,10 +102,14 @@ public class AdaptiveBehaviorFactory implements ComponentFactory, Serializable {
     }
 
     protected void processImplementationHiding(Properties componentProperties,
-                                             List<ComponentFactory> list) {
+                                             List<BehaviorFactory> list) {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL)) {
             list.add(new ImplementationHidingBehaviorFactory());
         }
     }
 
+
+    public ComponentFactory forThis(ComponentFactory delegate) {
+        throw new UnsupportedOperationException();
+    }
 }

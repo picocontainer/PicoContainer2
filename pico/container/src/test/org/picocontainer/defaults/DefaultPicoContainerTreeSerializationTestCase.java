@@ -15,11 +15,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Properties;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Characteristics;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
 
 /**
@@ -31,6 +33,10 @@ public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoC
         return new DefaultPicoContainer(parent);
     }
 
+    protected Properties[] getProperties() {
+        return new Properties[0];
+    }
+    
     public void testContainerIsDeserializableWithParent() throws PicoException,
                                                                  IOException, ClassNotFoundException {
 

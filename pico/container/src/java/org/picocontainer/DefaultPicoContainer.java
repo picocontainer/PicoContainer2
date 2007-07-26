@@ -14,6 +14,7 @@ import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.behaviors.ImplementationHidingBehavior;
 import org.picocontainer.behaviors.AdaptiveBehaviorFactory;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
@@ -24,7 +25,6 @@ import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Properties;
 import java.util.Enumeration;
+import java.util.Collection;
 
 /**
  * <p/>
@@ -274,12 +275,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return found;
     }
 
-    /**
-     * {@inheritDoc}
-     * This method can be used to override the ComponentAdapter created by the {@link ComponentFactory}
-     * passed to the constructor of this container.
-     */
-    public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) {
+    protected MutablePicoContainer addAdapterInternal(ComponentAdapter componentAdapter) {
         Object componentKey = componentAdapter.getComponentKey();
         if (componentKeyToAdapterCache.containsKey(componentKey)) {
             throw new PicoCompositionException("Duplicate Keys not allowed. Duplicate for '" + componentKey + "'");
@@ -288,6 +284,33 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         componentKeyToAdapterCache.put(componentKey, componentAdapter);
         return this;
     }
+
+    /**
+     * {@inheritDoc}
+     * This method can be used to override the ComponentAdapter created by the {@link ComponentFactory}
+     * passed to the constructor of this container.
+     */
+    public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) {
+        Properties tmpProperties = (Properties)this.componentProperties.clone();
+        if (componentAdapter instanceof AdapterHasProperties) {
+            tmpProperties = ((AdapterHasProperties)componentAdapter).properties;
+            componentAdapter  = ((AdapterHasProperties)componentAdapter).ca;
+        }
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(tmpProperties, Characteristics.NONE) == false && componentFactory instanceof BehaviorFactory) {
+            MutablePicoContainer container = addAdapterInternal(((BehaviorFactory)componentFactory).addComponentAdapter(
+                componentMonitor,
+                lifecycleStrategy,
+                tmpProperties,
+                componentAdapter));
+            throwIfPropertiesLeft(tmpProperties);
+            return container;
+        } else {
+            return addAdapterInternal(componentAdapter);
+        }
+
+    }
+
+
 
     public ComponentAdapter removeComponent(Object componentKey) {
         ComponentAdapter adapter = componentKeyToAdapterCache.remove(componentKey);
@@ -321,7 +344,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public MutablePicoContainer addConfig(String name, Object val) {
-        return addAdapter(new InstanceAdapter(name, val, lifecycleStrategy, componentMonitor));
+        return addAdapterInternal(new InstanceAdapter(name, val, lifecycleStrategy, componentMonitor));
     }
 
     /**
@@ -348,14 +371,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                                                                                                componentKey,
                                                                                                (Class)componentImplementationOrInstance,
                                                                                                parameters);
-            if(tmpProperties.size() > 0) {
-                throw new PicoCompositionException("Unprocessed Characteristics:" + tmpProperties +", refer http://picocontainer.org/unprocessed-properties-help.html");
-            }
-            return addAdapter(componentAdapter);
+            throwIfPropertiesLeft(tmpProperties);
+            return addAdapterInternal(componentAdapter);
         } else {
             ComponentAdapter componentAdapter =
                 new InstanceAdapter(componentKey, componentImplementationOrInstance, lifecycleStrategy, componentMonitor);
-            return addAdapter(componentAdapter);
+            return addAdapterInternal(componentAdapter);
+        }
+    }
+
+    private void throwIfPropertiesLeft(Properties tmpProperties) {
+        if(tmpProperties.size() > 0) {
+            throw new PicoCompositionException("Unprocessed Characteristics:" + tmpProperties +", refer http://picocontainer.org/unprocessed-properties-help.html");
         }
     }
 
@@ -724,8 +751,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
         public MutablePicoContainer addComponent(Object componentKey,
                                                  Object componentImplementationOrInstance,
-                                                 Parameter... parameters) throws PicoCompositionException
-        {
+                                                 Parameter... parameters) throws PicoCompositionException {
             return super.addComponent(componentKey,
                                       makeCharacterizedImplOrInstance(componentImplementationOrInstance),
                                       parameters);
@@ -735,6 +761,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             return super.addComponent(makeCharacterizedImplOrInstance(implOrInstance));
         }
 
+
+        public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) throws PicoCompositionException {
+            return super.addAdapter(makeCharacterizedAdapter(componentAdapter));
+        }
 
         private ObjectHasProperties makeCharacterizedImplOrInstance(Object componentImplementationOrInstance) {
             Properties tempProperties = (Properties) componentProperties.clone();
@@ -747,6 +777,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             }
             return new ObjectHasProperties(tempProperties, componentImplementationOrInstance);
         }
+        private AdapterHasProperties makeCharacterizedAdapter(ComponentAdapter componentAdapter) {
+            Properties tempProperties = (Properties) componentProperties.clone();
+            for (Properties c : characteristics) {
+                Enumeration e = c.propertyNames();
+                while (e.hasMoreElements()) {
+                    String s = (String)e.nextElement();
+                    tempProperties.setProperty(s,c.getProperty(s));
+                }
+            }
+            return new AdapterHasProperties(tempProperties, componentAdapter);
+        }
+
 
     }
 
@@ -755,10 +797,39 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         private final Object implOrInst;
 
         public ObjectHasProperties(Properties tempProperties,
-                                   Object componentImplementationOrInstance)
-        {
+                                   Object componentImplementationOrInstance) {
             properties = tempProperties;
             implOrInst = componentImplementationOrInstance;
+        }
+    }
+
+    private static class AdapterHasProperties implements ComponentAdapter {
+        private final Properties properties;
+        private final ComponentAdapter ca;
+
+        public AdapterHasProperties(Properties tempProperties,
+                                   ComponentAdapter componentAdapter) {
+            properties = tempProperties;
+            ca = componentAdapter;
+        }
+
+
+        public Object getComponentKey() {
+            return null;
+        }
+
+        public Class getComponentImplementation() {
+            return null;
+        }
+
+        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
+            return null;
+        }
+
+        public void verify(PicoContainer container) throws PicoCompositionException {
+        }
+
+        public void accept(PicoVisitor visitor) {
         }
     }
 

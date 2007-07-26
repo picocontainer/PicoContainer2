@@ -39,4 +39,14 @@ public class PoolingBehaviorFactory extends AbstractBehaviorFactory {
         //Characteristics.HIDE.setProcessedIn(componentCharacteristics);
         return behavior;
     }
+
+    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+                                                LifecycleStrategy lifecycleStrategy,
+                                                Properties componentProperties,
+                                                ComponentAdapter adapter) {
+        return new PoolingBehavior(super.addComponentAdapter(componentMonitor,
+                                         lifecycleStrategy,
+                                         componentProperties,
+                                         adapter), poolContext);
+    }
 }

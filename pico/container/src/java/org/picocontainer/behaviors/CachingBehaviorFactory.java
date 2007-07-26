@@ -45,4 +45,15 @@ public class CachingBehaviorFactory extends AbstractBehaviorFactory {
                                                                 componentProperties, componentKey, componentImplementation, parameters));
 
     }
+
+    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+                                    LifecycleStrategy lifecycleStrategy,
+                                    Properties componentProperties,
+                                    ComponentAdapter adapter) {
+        if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
+            return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
+        }
+        removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
+        return new CachingBehavior(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter));
+    }
 }

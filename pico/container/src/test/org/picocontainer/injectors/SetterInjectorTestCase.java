@@ -17,6 +17,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Characteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.monitors.AbstractComponentMonitor;
@@ -72,7 +73,7 @@ public class SetterInjectorTestCase
         picoContainer.addComponent(PersonBean.class);
         SetterInjector componentAdapter = new SetterInjector(
                 PurseBean.class, MoneyPurse.class, new Parameter[] {DEFAULT, new ConstantParameter(100.0)}, new NullComponentMonitor(), new NullLifecycleStrategy());
-        return picoContainer.addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, null);
+        return picoContainer.as(Characteristics.NO_CACHE).addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, null);
     }
 
     public static class MoneyPurse
@@ -163,7 +164,7 @@ public class SetterInjectorTestCase
         picoContainer.addComponent(PersonBean.class, WealthyPerson.class);
         SetterInjector componentAdapter = new SetterInjector(
                 PurseBean.class, PurseBean.class, new Parameter[] {DEFAULT}, new NullComponentMonitor(), new NullLifecycleStrategy());
-        return picoContainer.addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, null);
+        return picoContainer.as(Characteristics.NO_CACHE).addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, null);
     }
 
     protected ComponentAdapter prepRES_failingInstantiationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
@@ -171,7 +172,7 @@ public class SetterInjectorTestCase
         picoContainer.addComponent(PersonBean.class, WealthyPerson.class);
         SetterInjector componentAdapter = new SetterInjector(
                 PurseBean.class, PurseBean.class, new Parameter[] {DEFAULT}, new NullComponentMonitor(), new NullLifecycleStrategy());
-        return picoContainer.addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, null);
+        return picoContainer.as(Characteristics.NO_CACHE).addAdapter(componentAdapter).getComponentAdapter(PurseBean.class, null);
     }
 
     public static class A {

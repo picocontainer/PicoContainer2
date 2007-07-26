@@ -14,6 +14,7 @@ import java.util.Properties;
 public final class Characteristics {
 
     private static final String _INJECTION = "injection";
+    private static final String _NONE = "none";
     private static final String _CONSTRUCTOR = "constructor";
     private static final String _SETTER = "setter";
     private static final String _CACHE = "cache";
@@ -38,6 +39,9 @@ public final class Characteristics {
     public static final Properties SINGLE = CACHE;
     
     public static final Properties HIDE_IMPL = immutable(_HIDE_IMPL, TRUE);
+
+    public static final Properties NO_HIDE_IMPL = immutable(_HIDE_IMPL, FALSE);
+    public static final Properties NONE = immutable(_NONE, "");
 
     private static Properties immutable(String name, String value) {
         return new ImmutableProperties(name, value);

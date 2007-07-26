@@ -10,54 +10,77 @@
 package org.picocontainer.behaviors;
 
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.adapters.InstanceAdapter;
 
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  * @version $Revision$
  */
 public class CachingBehaviorFactoryTestCase extends AbstractComponentFactoryTestCase {
-    protected void setUp() throws Exception {
-        picoContainer = new DefaultPicoContainer(createComponentFactory());
-    }
 
     protected ComponentFactory createComponentFactory() {
         return new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory());
     }
 
-    public void testContainerReturnsSameInstanceEachCall() {
-        picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
-        Touchable t1 = picoContainer.getComponent(Touchable.class);
-        Touchable t2 = picoContainer.getComponent(Touchable.class);
-        assertSame(t1, t2);
+    public void testAddComponentUsesImplementationHidingBehavior() {
+        DefaultPicoContainer pico =
+            new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
+        pico.addComponent("foo", String.class);
+        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        assertEquals(CachingBehavior.class, foo.getClass());
+        assertEquals(ConstructorInjector.class, ((AbstractBehavior) foo).getDelegate().getClass());
     }
 
-    public void testContainerCanFollowNOCACHEDirectiveSelectively() {
-        picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
-        picoContainer.change(Characteristics.NO_CACHE);
-        picoContainer.addComponent(Map.class, HashMap.class);
-        assertSame(picoContainer.getComponent(Touchable.class), picoContainer.getComponent(Touchable.class));
-        final Map component = picoContainer.getComponent(Map.class);
-        final Map component1 = picoContainer.getComponent(Map.class);
-        assertNotSame(component, component1);
+    public void testAddComponentUsesImplementationHidingBehaviorWithRedundandHideImplProperty() {
+        DefaultPicoContainer pico =
+            new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
+        pico.change(Characteristics.CACHE).addComponent("foo", String.class);
+        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        assertEquals(CachingBehavior.class, foo.getClass());
+        assertEquals(ConstructorInjector.class, ((AbstractBehavior) foo).getDelegate().getClass());
     }
-    
-    public void testContainerCachesAsAContrastToTheAbove() {
-        picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
-        picoContainer.addComponent(Map.class, HashMap.class);
-        assertSame(picoContainer.getComponent(Touchable.class), picoContainer.getComponent(Touchable.class));
-        final Map component = picoContainer.getComponent(Map.class);
-        final Map component1 = picoContainer.getComponent(Map.class);
-        assertSame(component, component1);
+
+    public void testAddComponentNoesNotUseImplementationHidingBehaviorWhenNoCachePropertyIsSpecified() {
+        DefaultPicoContainer pico =
+            new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
+        pico.change(Characteristics.NO_CACHE).addComponent("foo", String.class);
+        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        assertEquals(ConstructorInjector.class, foo.getClass());
+    }
+
+    public void testAddAdapterUsesImplementationHidingBehavior() {
+        DefaultPicoContainer pico =
+            new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
+        pico.addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
+        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        assertEquals(CachingBehavior.class, foo.getClass());
+        assertEquals(InstanceAdapter.class, ((AbstractBehavior) foo).getDelegate().getClass());
+    }
+
+    public void testAddAdapterUsesImplementationHidingBehaviorWithRedundandHideImplProperty() {
+        DefaultPicoContainer pico =
+            new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
+        pico.change(Characteristics.CACHE).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
+        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        assertEquals(CachingBehavior.class, foo.getClass());
+        assertEquals(InstanceAdapter.class, ((AbstractBehavior) foo).getDelegate().getClass());
+    }
+
+    public void testAddAdapterNoesNotUseImplementationHidingBehaviorWhenNoCachePropertyIsSpecified() {
+        DefaultPicoContainer pico =
+            new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
+        pico.change(Characteristics.NO_CACHE).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
+        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        assertEquals(InstanceAdapter.class, foo.getClass());
     }
 
 

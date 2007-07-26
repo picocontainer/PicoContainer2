@@ -57,7 +57,11 @@ import java.util.Properties;
  */
 public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase {
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultPicoContainer(new CachingBehaviorFactory(), parent);
+        return new DefaultPicoContainer(parent);
+    }
+
+    protected Properties[] getProperties() {
+        return new Properties[0];
     }
 
     public void testInstantiationWithNullComponentAdapterFactory(){
@@ -132,7 +136,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     public void testPicoUsedInBuilderStyle() {
         MutablePicoContainer pico = createPicoContainer(null);
-        Touchable t = pico.addComponent(SimpleTouchable.class).addComponent(DecoratedTouchable.class).getComponent(DecoratedTouchable.class);
+        Touchable t = pico.change(Characteristics.CACHE).addComponent(SimpleTouchable.class).addComponent(DecoratedTouchable.class).getComponent(DecoratedTouchable.class);
         SimpleTouchable t2 = pico.getComponent(SimpleTouchable.class);
         assertNotNull(t);
         assertNotNull(t2);
@@ -175,7 +179,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     public void testDefaultPicoContainerReturnsNewInstanceForEachCallWhenUsingTransientComponentAdapter() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
         picoContainer.addComponent(Service.class);
-        picoContainer.addAdapter(new ConstructorInjector(TransientComponent.class, TransientComponent.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
+        picoContainer.as(Characteristics.NO_CACHE).addAdapter(new ConstructorInjector(TransientComponent.class, TransientComponent.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
         TransientComponent c1 = picoContainer.getComponent(TransientComponent.class);
         TransientComponent c2 = picoContainer.getComponent(TransientComponent.class);
         assertNotSame(c1, c2);
@@ -430,25 +434,6 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         assertNotNull(container.getComponent(SimpleA.class));
         assertNotSame(container.getComponent("A"), container.getComponent(SimpleA.class));
     }
-    
-    public static class MyPicoContainer extends DefaultPicoContainer {
-
-        public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) {
-            return super.addAdapter(new SynchronizedBehavior(componentAdapter));
-        }
-        
-    }
-    
-    public void testDerivedPicoContainerCanOverloadRegisterComponentForAllCreatedComponentAdapters() {
-        MutablePicoContainer mpc = new MyPicoContainer();
-        InstanceAdapter instanceAdapter = new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(),
-                                                              new NullComponentMonitor());
-        assertEquals(SynchronizedBehavior.class, mpc.addAdapter(instanceAdapter).getComponentAdapter(instanceAdapter.getComponentKey()).getClass());
-        MutablePicoContainer container = mpc.addComponent("foobar");
-        assertEquals(SynchronizedBehavior.class, container.getComponentAdapter("foobar").getClass());
-        assertEquals(SynchronizedBehavior.class, mpc.addComponent(SimpleA.class).getComponentAdapter(SimpleA.class, null).getClass());
-    }
-
 
     public void testPicoCanDifferentiateBetweenNamedStringsThatWouldOtherwiseBeAmbiguous() {
         MutablePicoContainer mpc = createPicoContainer(null);
@@ -508,7 +493,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     public void testMixingOfSDIandCDI() {
 
-        MutablePicoContainer container = createPicoContainer(null);
+        MutablePicoContainer container = createPicoContainer(null).change(Characteristics.CACHE);
         container.addComponent(Horse.class);
         container.change(SDI);
         container.addComponent(SdiDonkey.class);
@@ -525,7 +510,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     public void testMixingOfSDIandCDIDifferently() {
 
-        MutablePicoContainer container = createPicoContainer(null);
+        MutablePicoContainer container = createPicoContainer(null).change(Characteristics.CACHE);
         container.addComponent(Horse.class);
         container.addComponent(CdiTurtle.class);
         container.change(SDI);
@@ -541,7 +526,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     public void testMixingOfSDIandCDIInBuilderStyle() {
 
-        MutablePicoContainer container = createPicoContainer(null);
+        MutablePicoContainer container = createPicoContainer(null).change(Characteristics.CACHE);
         container.addComponent(Horse.class).change(SDI)
                 .addComponent(SdiDonkey.class).addComponent(SdiRabbit.class).change(CDI).addComponent(CdiTurtle.class);
 
@@ -565,7 +550,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     public void testMixingOfSDIandCDIWithTemporaryCharacterizations() {
 
-        MutablePicoContainer container = createPicoContainer(null);
+        MutablePicoContainer container = createPicoContainer(null).change(Characteristics.CACHE);
         container.addComponent(Horse.class);
         container.addComponent(CdiTurtle.class);
         container.as(SDI).addComponent(SdiDonkey.class);
@@ -580,7 +565,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     public void testMixingOfSDIandCDIWithTemporaryCharacterizationsDifferently() {
 
-        MutablePicoContainer container = createPicoContainer(null);
+        MutablePicoContainer container = createPicoContainer(null).change(Characteristics.CACHE);
         container.as(SDI).addComponent(SdiDonkey.class);
         container.as(SDI).addComponent(SdiRabbit.class);
         container.addComponent(Horse.class);
@@ -607,5 +592,9 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         assertEquals("missingKey", missingKey[0]);
         assertEquals("foo", foo);
 
+    }
+
+    public void testAcceptImplementsBreadthFirstStrategy() {
+        super.testAcceptImplementsBreadthFirstStrategy();
     }
 }

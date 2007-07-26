@@ -34,4 +34,15 @@ public class SynchronizedBehaviorFactory extends AbstractBehaviorFactory {
             componentImplementation,
             parameters));
     }
+
+    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+                                                LifecycleStrategy lifecycleStrategy,
+                                                Properties componentProperties,
+                                                ComponentAdapter adapter) {
+        removePropertiesIfPresent(componentProperties, Characteristics.THREAD_SAFE);
+        return new SynchronizedBehavior(super.addComponentAdapter(componentMonitor,
+                                         lifecycleStrategy,
+                                         componentProperties,
+                                         adapter));
+    }
 }

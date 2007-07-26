@@ -41,6 +41,17 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
                                                componentProperties, componentKey, componentImplementation, parameters);
     }
 
+
+    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+                                                LifecycleStrategy lifecycleStrategy,
+                                                Properties componentProperties,
+                                                ComponentAdapter adapter) {
+        if (delegate != null && delegate instanceof BehaviorFactory) {
+            return ((BehaviorFactory) delegate).addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
+        }
+        return adapter;
+    }
+
     public static boolean removePropertiesIfPresent(Properties currProperties, Properties hasProperties) {
         Enumeration props = hasProperties.keys();
         while (props.hasMoreElements()) {

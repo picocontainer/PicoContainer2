@@ -38,4 +38,14 @@ public final class PropertyApplyingBehaviorFactory extends AbstractBehaviorFacto
         return new PropertyApplyingBehavior(decoratedAdapter);
     }
 
+
+    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+                                                LifecycleStrategy lifecycleStrategy,
+                                                Properties componentProperties,
+                                                ComponentAdapter adapter) {
+        return new PropertyApplyingBehavior(super.addComponentAdapter(componentMonitor,
+                                         lifecycleStrategy,
+                                         componentProperties,
+                                         adapter));
+    }
 }
