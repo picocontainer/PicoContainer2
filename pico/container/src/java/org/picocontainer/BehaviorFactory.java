@@ -17,5 +17,4 @@ public interface BehaviorFactory extends ComponentFactory {
 
     ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, ComponentAdapter adapter);
 
-
 }

@@ -13,6 +13,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.annotations.Cache;
 import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.containers.EmptyPicoContainer;
@@ -135,6 +136,30 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         assertFalse(foo.indexOf("<" + CachingBehavior.class.getName() + ">", 1)  > -1); // but only contains it once.
 
     }
+
+    public void testCachingAndImplHidingAndThreadSafetySetupCorrectlyForExtraCachingForAdapter() {
+        CachingBehaviorFactory cbf = new CachingBehaviorFactory();
+        AdaptiveBehaviorFactory abf = new AdaptiveBehaviorFactory();
+        cbf.forThis(abf);
+        Properties cc = new Properties();
+        mergeInto(Characteristics.CACHE,cc);
+        mergeInto(Characteristics.HIDE_IMPL,cc);
+        mergeInto(Characteristics.THREAD_SAFE,cc);
+        ComponentAdapter ca = cbf.addComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, new InstanceAdapter(Map.class, new HashMap(), new NullLifecycleStrategy(), new NullComponentMonitor()));
+        assertTrue(ca instanceof CachingBehavior);
+        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
+        assertNotNull(map);
+        assertTrue(!(map instanceof HashMap));
+
+        XStream xs = new XStream();
+        String foo = xs.toXML(ca);
+
+        assertTrue(foo.indexOf("<" + CachingBehavior.class.getName() + ">", 0)  > -1);  // xml does start with CB
+        assertFalse(foo.indexOf("<" + CachingBehavior.class.getName() + ">", 1)  > -1); // but only contains it once.
+
+    }
+
+
 
     public void mergeInto(Properties p, Properties into) {
         Enumeration e = p.propertyNames();
