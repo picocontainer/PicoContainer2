@@ -70,8 +70,7 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
      */
     public ComponentAdapter createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
-            throws PicoCompositionException
-    {
+            throws PicoCompositionException {
         final ComponentAdapter componentAdapter = super.createComponentAdapter(
                 componentMonitor, lifecycleStrategy,
                 componentProperties, componentKey, componentImplementation, parameters);
@@ -82,4 +81,22 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
         }
     }
 
+
+    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+                                                LifecycleStrategy lifecycleStrategy,
+                                                Properties componentProperties,
+                                                ComponentAdapter adapter) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_JMX)) {
+            return super.addComponentAdapter(componentMonitor,
+                                             lifecycleStrategy,
+                                             componentProperties,
+                                             adapter);
+        } else {
+            return new JMXExposingBehavior(super.addComponentAdapter(componentMonitor,
+                                                                     lifecycleStrategy,
+                                                                     componentProperties,
+                                                                     adapter), mBeanServer, providers);
+        }
+
+    }
 }

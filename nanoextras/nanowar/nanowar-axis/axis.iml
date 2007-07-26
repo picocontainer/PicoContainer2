@@ -178,6 +178,7 @@
     <orderEntry type="module" module-name="nanowar" />
     <orderEntry type="module" module-name="picocontainer" />
     <orderEntry type="module" module-name="nanocontainer" />
+    <orderEntry type="library" name="dynaop-1.0" level="project" />
     <orderEntryProperties />
   </component>
   <component name="copyright">
