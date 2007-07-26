@@ -76,4 +76,9 @@ public class SetterInjector extends PostInstantiationInjector {
         return "set";
     }
 
+    public String toString() {
+        return "SetterInjector-" + super.toString(); 
+    }
+
+
 }

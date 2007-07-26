@@ -90,4 +90,8 @@ public final class InstanceAdapter extends AbstractAdapter implements Behavior, 
         return lifecycleStrategy.hasLifecycle(type);
     }
 
+
+    public String toString() {
+        return "Instance-" + super.toString();   
+    }
 }

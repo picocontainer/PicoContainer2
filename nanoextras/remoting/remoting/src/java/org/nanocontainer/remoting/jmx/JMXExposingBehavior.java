@@ -132,4 +132,9 @@ public class JMXExposingBehavior extends AbstractBehavior {
 	public boolean hasLifecycle( Class type ) {
 		return true;
 	}
+
+    public String toString() {
+        return "ExposedJMX:" + super.toString(); 
+    }
+
 }

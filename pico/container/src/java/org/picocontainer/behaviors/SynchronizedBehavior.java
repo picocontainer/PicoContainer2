@@ -28,4 +28,8 @@ public class SynchronizedBehavior extends AbstractBehavior {
     public synchronized Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
         return super.getComponentInstance(container);
     }
+    public String toString() {
+        return "Synchronized:" + super.toString(); 
+    }
+
 }

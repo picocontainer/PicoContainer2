@@ -288,4 +288,8 @@ public class PropertyApplyingBehavior extends AbstractBehavior {
         }
         return convertedValue;
     }
+    public String toString() {
+        return "PropertyApplied:" + super.toString(); 
+    }
+
 }

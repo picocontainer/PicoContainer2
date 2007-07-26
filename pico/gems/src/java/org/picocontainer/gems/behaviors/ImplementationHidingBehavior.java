@@ -275,6 +275,8 @@ public class ImplementationHidingBehavior extends AbstractBehavior implements Op
         }
     }
 
-
+    public String toString() {
+        return "Hidden:" + super.toString(); 
+    }
 
 }

@@ -334,6 +334,10 @@ public class ConstructorInjector extends AbstractInjector {
         verifyingGuard.observe(getComponentImplementation());
     }
 
+    public String toString() {
+        return "ConstructorInjector-" + super.toString();
+    }
+
     private class ConstructorInjectorParameterName implements ParameterName {
         private final Constructor ctor;
         private final int index;

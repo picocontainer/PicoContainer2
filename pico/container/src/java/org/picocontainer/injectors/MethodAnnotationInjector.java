@@ -29,4 +29,9 @@ public class MethodAnnotationInjector extends SetterInjector {
     protected final boolean isInjectorMethod(Method method) {
         return method.getAnnotation(Inject.class) != null;
     }
+
+    public String toString() {
+        return "MethodInjection-" + super.toString();
+    }
+
 }

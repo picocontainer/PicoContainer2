@@ -93,4 +93,9 @@ public class ImplementationHidingBehavior extends AbstractBehavior {
         return classes;
     }
 
+    public String toString() {
+        return "Hidden:" + super.toString();
+    }
+
+
 }

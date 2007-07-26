@@ -178,6 +178,10 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
     public boolean hasLifecycle(Class type) {
         return delegate instanceof LifecycleStrategy && ((LifecycleStrategy) delegate).hasLifecycle(type);
     }
-    
+
+
+    public String toString() {
+        return delegate.toString();
+    }
 }
 

@@ -141,4 +141,9 @@ public final class AssimilatingBehavior extends AbstractBehavior {
         }
         return key;
     }
+    
+    public String toString() {
+        return "Assimilated:" + super.toString();
+    }
+
 }

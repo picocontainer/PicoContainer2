@@ -138,5 +138,7 @@ public final class CachingBehavior extends AbstractBehavior implements Behavior 
         }
     }
 
-    
+    public String toString() {
+        return "Cached:" + super.toString(); 
+    }
 }

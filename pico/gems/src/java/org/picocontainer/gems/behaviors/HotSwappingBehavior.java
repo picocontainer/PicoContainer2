@@ -23,7 +23,7 @@ import org.picocontainer.behaviors.CachingBehavior;
  * Note that this class doesn't cache instances. If you want caching,
  * use a {@link CachingBehavior} around this one.
  * </em>
- * 
+ *
  * @author Paul Hammant
  * @version $Revision$
  */
@@ -50,7 +50,7 @@ public class HotSwappingBehavior extends ImplementationHidingBehavior {
 
 
     public Object getComponentInstance(PicoContainer container) {
-        synchronized(swappable) {
+        synchronized (swappable) {
             if (instance == null) {
                 instance = super.getComponentInstance(container);
             }
@@ -58,18 +58,24 @@ public class HotSwappingBehavior extends ImplementationHidingBehavior {
         return instance;
     }
 
+    public String toString() {
+        return "HotSwappable:" + super.toString(); 
+    }
+
     public static class Swappable {
 
-    private transient Object delegate;
+        private transient Object delegate;
 
-    public Object getInstance() {
-        return delegate;
+        public Object getInstance() {
+            return delegate;
+        }
+
+        public Object swap(Object delegate) {
+            Object old = this.delegate;
+            this.delegate = delegate;
+            return old;
+        }
+
     }
 
-    public Object swap(Object delegate) {
-        Object old = this.delegate;
-        this.delegate = delegate;
-        return old;
-    }
-}
 }

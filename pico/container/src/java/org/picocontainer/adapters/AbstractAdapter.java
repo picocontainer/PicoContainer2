@@ -98,7 +98,7 @@ public abstract class AbstractAdapter implements ComponentAdapter, ComponentMoni
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        return getClass().getName() + "[" + getComponentKey() + "]";
+        return "" + getComponentKey();
     }
 
     public void accept(PicoVisitor visitor) {

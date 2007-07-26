@@ -65,4 +65,9 @@ public class FieldAnnotationInjector extends PostInstantiationInjector {
         field.setAccessible(true);
         field.set(componentInstance, toInject);
     }
+
+    public String toString() {
+        return "FieldInjector-" + super.toString();
+    }
+
 }

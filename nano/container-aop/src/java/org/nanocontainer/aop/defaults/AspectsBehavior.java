@@ -32,4 +32,9 @@ public class AspectsBehavior extends AbstractBehavior {
         return aspectsApplicator.applyAspects(getComponentKey(), component, pico);
     }
 
+    public String toString() {
+        return "Aspected:" + super.toString();
+    }
+
+
 }

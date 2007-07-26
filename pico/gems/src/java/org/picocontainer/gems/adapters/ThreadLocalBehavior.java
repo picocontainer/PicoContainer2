@@ -98,6 +98,11 @@ public final class ThreadLocalBehavior extends AbstractBehavior {
         return interfaces;
     }
 
+    public String toString() {
+        return "ThreadLocal:" + super.toString();
+    }
+    
+
     final static private class ThreadLocalInvoker implements Invoker {
 
         private final PicoContainer pico;

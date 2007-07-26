@@ -465,4 +465,8 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
 
     }
 
+    public String toString() {
+        return "Pooled:" + super.toString(); 
+    }
+
 }

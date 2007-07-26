@@ -39,6 +39,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         Map map2 = (Map)ca.getComponentInstance(new EmptyPicoContainer());
         assertSame(map, map2);
         assertEquals(0, cc.size());
+        assertEquals("Cached:ConstructorInjector-interface java.util.Map",ca.toString());
     }
 
     public void testCachingBehaviorCanBeAddedByAnnotation() {
@@ -51,6 +52,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         Map map2 = (Map)ca.getComponentInstance(new EmptyPicoContainer());
         assertSame(map, map2);
         assertEquals(0, cc.size());
+        assertEquals("Cached:ConstructorInjector-interface java.util.Map",ca.toString());
     }
 
     @Cache
@@ -70,7 +72,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         assertTrue(!(map instanceof HashMap));
 
         assertEquals(0, cc.size());
-
+        assertEquals("Hidden:ConstructorInjector-interface java.util.Map",ca.toString());
 
     }
 
@@ -83,7 +85,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
         assertNotNull(map);
         assertEquals(0, cc.size());
-
+        assertEquals("SetterInjector-interface java.util.Map",ca.toString());
 
     }
 
@@ -111,6 +113,9 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         assertTrue(sb>ih);
 
         assertEquals(0, cc.size());
+        assertEquals("Cached:Hidden:Synchronized:ConstructorInjector-interface java.util.Map",ca.toString());
+
+        
 
 
     }
@@ -134,6 +139,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
 
         assertTrue(foo.indexOf("<" + CachingBehavior.class.getName() + ">", 0)  > -1);  // xml does start with CB
         assertFalse(foo.indexOf("<" + CachingBehavior.class.getName() + ">", 1)  > -1); // but only contains it once.
+        assertEquals("Cached:Hidden:Synchronized:ConstructorInjector-interface java.util.Map",ca.toString());
 
     }
 
@@ -156,6 +162,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
 
         assertTrue(foo.indexOf("<" + CachingBehavior.class.getName() + ">", 0)  > -1);  // xml does start with CB
         assertFalse(foo.indexOf("<" + CachingBehavior.class.getName() + ">", 1)  > -1); // but only contains it once.
+        assertEquals("Cached:Hidden:Synchronized:Instance-interface java.util.Map",ca.toString());
 
     }
 
