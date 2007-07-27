@@ -125,6 +125,6 @@ public class ComponentAdapterTestCase
     
     public void testStringRepresentation() {
         ComponentAdapter componentAdapter = new TestAdapter("Key", Integer.class);
-        assertEquals(TestAdapter.class.getName() + "[Key]", componentAdapter.toString());
+        assertEquals("Key", componentAdapter.toString());
     }
 }
