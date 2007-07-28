@@ -23,6 +23,11 @@
             <artifactId>groovy-all</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>dynaop</groupId>
+            <artifactId>dynaop</artifactId>
+            <version>1.0</version>
+        </dependency>
         <!-- test scoped dependencies -->
         <dependency>
             <groupId>${pom.groupId}</groupId>

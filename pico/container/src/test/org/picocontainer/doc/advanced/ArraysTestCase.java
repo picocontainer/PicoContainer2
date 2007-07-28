@@ -34,7 +34,7 @@ public class ArraysTestCase
     private MutablePicoContainer pico;
 
     protected void setUp() throws Exception {
-        pico = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
+        pico = new DefaultPicoContainer(new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory()));
     }
 
     private void explanation() {

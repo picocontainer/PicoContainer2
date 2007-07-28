@@ -42,7 +42,7 @@ public class JMXExposingBehaviorFactoryTestCase extends MockObjectTestCase {
     public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException {
         final JMXExposingBehaviorFactory componentFactory = new JMXExposingBehaviorFactory(
                 (MBeanServer)mockMBeanServer.proxy());
-        componentFactory.forThis(new ConstructorInjectionFactory());
+        componentFactory.wrap(new ConstructorInjectionFactory());
 
         mockMBeanServer.expects(once()).method("registerMBean").with(
                 isA(DynamicMBeanPerson.class), isA(ObjectName.class));
@@ -56,7 +56,7 @@ public class JMXExposingBehaviorFactoryTestCase extends MockObjectTestCase {
     public void testWillRegisterByDefaultComponentsThatAreMBeansUnlessNOJMX() throws NotCompliantMBeanException {
         final JMXExposingBehaviorFactory componentFactory = new JMXExposingBehaviorFactory(
                 (MBeanServer)mockMBeanServer.proxy());
-        componentFactory.forThis(new ConstructorInjectionFactory());
+        componentFactory.wrap(new ConstructorInjectionFactory());
 
         final Properties rc = new Properties(Characteristics.NO_JMX);
 

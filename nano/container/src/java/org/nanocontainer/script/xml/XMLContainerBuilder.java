@@ -47,7 +47,6 @@ import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.behaviors.CachingBehaviorFactory;
-import org.picocontainer.behaviors.Behaviors;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -525,7 +524,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
 
     private ComponentFactory createComponentAdapterFactory(String factoryName, NanoContainer metaContainer) throws PicoCompositionException {
         if ( notSet(factoryName)) {
-            return new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory());
+            return new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory());
         }
         final Serializable key;
         if (metaContainer.getComponentAdapter(factoryName) != null) {

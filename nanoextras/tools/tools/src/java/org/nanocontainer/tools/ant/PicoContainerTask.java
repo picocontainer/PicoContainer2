@@ -84,7 +84,7 @@ public final class PicoContainerTask extends Task {
     public final void execute() {
         ContainerBuilder containerBuilder = new DefaultContainerBuilder(containerComposer) {
             final ComponentFactory propertyFactory =
-                    new PropertyApplyingBehaviorFactory().forThis(new AdaptiveInjectionFactory());
+                    new PropertyApplyingBehaviorFactory().wrap(new AdaptiveInjectionFactory());
 
             protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
                 return new DefaultPicoContainer(propertyFactory);

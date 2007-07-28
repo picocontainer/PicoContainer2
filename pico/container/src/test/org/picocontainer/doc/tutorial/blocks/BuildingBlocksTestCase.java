@@ -68,7 +68,7 @@ public class BuildingBlocksTestCase extends TestCase {
 
         // START SNIPPET: register-different-componentFactory
         MutablePicoContainer picoContainer = new DefaultPicoContainer(
-                new SynchronizedBehaviorFactory().forThis(new CachingBehaviorFactory().forThis(new SetterInjectionFactory())));
+                new SynchronizedBehaviorFactory().wrap(new CachingBehaviorFactory().wrap(new SetterInjectionFactory())));
         // END SNIPPET: register-different-componentFactory
     }
 

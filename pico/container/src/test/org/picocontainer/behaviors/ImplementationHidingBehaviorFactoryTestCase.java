@@ -16,7 +16,7 @@ public class ImplementationHidingBehaviorFactoryTestCase extends AbstractCompone
 
     public void testAddComponentUsesImplementationHidingBehavior() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new ImplementationHidingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
+            new DefaultPicoContainer(new ImplementationHidingBehaviorFactory().wrap(new ConstructorInjectionFactory()));
         pico.addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(ImplementationHidingBehavior.class, foo.getClass());
@@ -25,7 +25,7 @@ public class ImplementationHidingBehaviorFactoryTestCase extends AbstractCompone
 
     public void testAddComponentUsesImplementationHidingBehaviorWithRedundandHideImplProperty() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new ImplementationHidingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
+            new DefaultPicoContainer(new ImplementationHidingBehaviorFactory().wrap(new ConstructorInjectionFactory()));
         pico.change(Characteristics.HIDE_IMPL).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(ImplementationHidingBehavior.class, foo.getClass());
@@ -34,7 +34,7 @@ public class ImplementationHidingBehaviorFactoryTestCase extends AbstractCompone
 
     public void testAddComponentNoesNotUseImplementationHidingBehaviorWhenNoCachePropertyIsSpecified() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new ImplementationHidingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
+            new DefaultPicoContainer(new ImplementationHidingBehaviorFactory().wrap(new ConstructorInjectionFactory()));
         pico.change(Characteristics.NO_HIDE_IMPL).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(ConstructorInjector.class, foo.getClass());
@@ -42,7 +42,7 @@ public class ImplementationHidingBehaviorFactoryTestCase extends AbstractCompone
 
     public void testAddAdapterUsesImplementationHidingBehavior() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new ImplementationHidingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
+            new DefaultPicoContainer(new ImplementationHidingBehaviorFactory().wrap(new ConstructorInjectionFactory()));
         pico.addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(ImplementationHidingBehavior.class, foo.getClass());
@@ -51,7 +51,7 @@ public class ImplementationHidingBehaviorFactoryTestCase extends AbstractCompone
 
     public void testAddAdapterUsesImplementationHidingBehaviorWithRedundandHideImplProperty() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new ImplementationHidingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
+            new DefaultPicoContainer(new ImplementationHidingBehaviorFactory().wrap(new ConstructorInjectionFactory()));
         pico.change(Characteristics.HIDE_IMPL).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(ImplementationHidingBehavior.class, foo.getClass());
@@ -60,7 +60,7 @@ public class ImplementationHidingBehaviorFactoryTestCase extends AbstractCompone
 
     public void testAddAdapterNoesNotUseImplementationHidingBehaviorWhenNoCachePropertyIsSpecified() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new ImplementationHidingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
+            new DefaultPicoContainer(new ImplementationHidingBehaviorFactory().wrap(new ConstructorInjectionFactory()));
         pico.change(Characteristics.NO_HIDE_IMPL).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(InstanceAdapter.class, foo.getClass());
@@ -68,7 +68,7 @@ public class ImplementationHidingBehaviorFactoryTestCase extends AbstractCompone
 
 
     private final ComponentFactory implementationHidingComponentAdapterFactory =
-        new ImplementationHidingBehaviorFactory().forThis(new AdaptiveInjectionFactory());
+        new ImplementationHidingBehaviorFactory().wrap(new AdaptiveInjectionFactory());
 
 
     protected ComponentFactory createComponentFactory() {

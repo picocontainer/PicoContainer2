@@ -153,7 +153,7 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
     }
 
     protected ComponentFactory createComponentFactory() {
-        return new PropertyApplyingBehaviorFactory().forThis(new AdaptiveInjectionFactory());
+        return new PropertyApplyingBehaviorFactory().wrap(new AdaptiveInjectionFactory());
     }
 
     public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {

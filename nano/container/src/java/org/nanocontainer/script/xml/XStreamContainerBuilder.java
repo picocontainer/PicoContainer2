@@ -301,7 +301,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
             ComponentFactory componentFactory;
             String componentFactoryName = rootElement.getAttribute("componentadapterfactory");
             if ("".equals(componentFactoryName) || componentFactoryName == null) {
-                componentFactory = new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory());
+                componentFactory = new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory());
             } else {
                 Class componentFactoryClass = getClassLoader().loadClass(componentFactoryName);
                 componentFactory = (ComponentFactory) componentFactoryClass.newInstance();

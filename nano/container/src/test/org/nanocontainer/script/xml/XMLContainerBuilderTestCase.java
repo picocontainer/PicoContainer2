@@ -34,7 +34,6 @@ import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.testmodel.WebServerConfigComp;
 import org.nanocontainer.TestHelper;
 import org.nanocontainer.PrettyXmlRepresentation;
-import org.nanocontainer.NanoContainer;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
@@ -720,12 +719,12 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     }
     public static class MyComponentFactory2 extends AbstractBehaviorFactory {
         public MyComponentFactory2(ComponentFactory delegate) {
-            forThis(delegate);
+            wrap(delegate);
         }
     }
     public static class MyComponentFactory3 extends AbstractBehaviorFactory {
         public MyComponentFactory3(ComponentFactory delegate) {
-            forThis(delegate);
+            wrap(delegate);
         }
     }
 

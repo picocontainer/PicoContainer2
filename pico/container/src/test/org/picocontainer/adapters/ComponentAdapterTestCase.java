@@ -42,7 +42,11 @@ public class ComponentAdapterTestCase
         }
         public void verify(PicoContainer container) throws PicoVerificationException {
         }
-        
+
+
+        public String toString() {
+            return TestAdapter.class.getName() + ":" + super.toString() ;    
+        }
     }
 
     private static class TestMonitoringComponentAdapter extends AbstractAdapter {
@@ -125,6 +129,6 @@ public class ComponentAdapterTestCase
     
     public void testStringRepresentation() {
         ComponentAdapter componentAdapter = new TestAdapter("Key", Integer.class);
-        assertEquals("Key", componentAdapter.toString());
+        assertEquals(TestAdapter.class.getName() + ":Key", componentAdapter.toString());
     }
 }

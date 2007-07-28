@@ -17,7 +17,7 @@ pico.as(HIDE_IMPL).addComponent(Apple.class); // fails with PicoCompositionExcep
 </div>
 The trick is (in this case) to make sure that the right chain of component factories are setup:
 <div class="source">
-  <pre>pico = new DefaultPicoContainer(new MyComponentFactory().forThis(new AdaptiveBehaviorFactory()));
+  <pre>pico = new DefaultPicoContainer(new MyComponentFactory().wrap(new AdaptiveBehaviorFactory()));
 pico.as(HIDE_IMPL).addComponent(Apple.class); // fails with PicoCompositionException</pre>
 </div>
 

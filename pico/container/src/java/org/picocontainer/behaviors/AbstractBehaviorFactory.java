@@ -20,14 +20,13 @@ import org.picocontainer.injectors.AdaptiveInjectionFactory;
 
 import java.io.Serializable;
 import java.util.Properties;
-import java.util.Iterator;
 import java.util.Enumeration;
 
 public class AbstractBehaviorFactory implements ComponentFactory, Serializable, BehaviorFactory {
 
     private ComponentFactory delegate;
 
-    public ComponentFactory forThis(ComponentFactory delegate) {
+    public ComponentFactory wrap(ComponentFactory delegate) {
         this.delegate = delegate;
         return this;
     }

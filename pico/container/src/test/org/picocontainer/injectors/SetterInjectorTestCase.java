@@ -40,7 +40,7 @@ public class SetterInjectorTestCase
     }
 
     protected ComponentFactory createDefaultComponentAdapterFactory() {
-        return new CachingBehaviorFactory().forThis(new SetterInjectionFactory());
+        return new CachingBehaviorFactory().wrap(new SetterInjectionFactory());
     }
 
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
@@ -409,7 +409,7 @@ public class SetterInjectorTestCase
     // TODO PICO-188
     // http://jira.codehaus.org/browse/PICO-188
     public void FIXME_testShouldBeAbleToHandleMutualDependenciesWithSetterInjection() {
-        MutablePicoContainer pico = new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new SetterInjectionFactory()));
+        MutablePicoContainer pico = new DefaultPicoContainer(new CachingBehaviorFactory().wrap(new SetterInjectionFactory()));
 
         pico.addComponent(Yin.class);
         pico.addComponent(Yang.class);

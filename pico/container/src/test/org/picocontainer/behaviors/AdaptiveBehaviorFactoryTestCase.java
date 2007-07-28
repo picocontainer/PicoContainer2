@@ -123,7 +123,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
     public void testCachingAndImplHidingAndThreadSafetySetupCorrectlyForExtraCaching() {
         CachingBehaviorFactory cbf = new CachingBehaviorFactory();
         AdaptiveBehaviorFactory abf = new AdaptiveBehaviorFactory();
-        cbf.forThis(abf);
+        cbf.wrap(abf);
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
         mergeInto(Characteristics.HIDE_IMPL,cc);
@@ -146,7 +146,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
     public void testCachingAndImplHidingAndThreadSafetySetupCorrectlyForExtraCachingForAdapter() {
         CachingBehaviorFactory cbf = new CachingBehaviorFactory();
         AdaptiveBehaviorFactory abf = new AdaptiveBehaviorFactory();
-        cbf.forThis(abf);
+        cbf.wrap(abf);
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
         mergeInto(Characteristics.HIDE_IMPL,cc);

@@ -36,7 +36,7 @@ public class ImplementationHidingWithDefaultPicoContainerTestCase extends Abstra
     }
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultPicoContainer(new CachingBehaviorFactory().forThis(new ImplementationHidingBehaviorFactory().forThis(new ConstructorInjectionFactory())), parent);
+        return new DefaultPicoContainer(new CachingBehaviorFactory().wrap(new ImplementationHidingBehaviorFactory().wrap(new ConstructorInjectionFactory())), parent);
     }
     
     public void testSameInstanceCanBeUsedAsDifferentTypeWhenCaching() {

@@ -13,7 +13,7 @@ import java.util.Properties;
 
 public interface BehaviorFactory extends ComponentFactory {
 
-    ComponentFactory forThis(ComponentFactory delegate);
+    ComponentFactory wrap(ComponentFactory delegate);
 
     ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, ComponentAdapter adapter);
 

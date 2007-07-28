@@ -36,7 +36,7 @@ public class DynaopAspectablePicoContainerFactory implements AspectablePicoConta
     public AspectablePicoContainer createContainer(Class containerClass, AspectsManager aspectsManager,
                                                    ComponentFactory componentFactory, PicoContainer parent) {
 
-        ComponentFactory aspectsComponentAdapterFactory = new AspectsBehaviorFactory(aspectsManager).forThis(componentFactory);
+        ComponentFactory aspectsComponentAdapterFactory = new AspectsBehaviorFactory(aspectsManager).wrap(componentFactory);
         MutablePicoContainer pico = createMutablePicoContainer(containerClass, aspectsComponentAdapterFactory, parent);
         return mixinAspectablePicoContainer(aspectsManager, pico);
     }
@@ -55,11 +55,11 @@ public class DynaopAspectablePicoContainerFactory implements AspectablePicoConta
     }
 
     public AspectablePicoContainer createContainer(PicoContainer parent) {
-        return createContainer(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()), parent);
+        return createContainer(new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory()), parent);
     }
 
     public AspectablePicoContainer createContainer() {
-        return createContainer(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()));
+        return createContainer(new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory()));
     }
 
     public AspectablePicoContainer makeChildContainer(AspectsManager aspectsManager, AspectablePicoContainer parent) {

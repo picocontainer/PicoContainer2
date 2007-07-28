@@ -42,7 +42,7 @@ public class AdaptiveBehaviorFactory implements BehaviorFactory, Serializable {
         //Instantiate Chain of ComponentFactories
         for (ComponentFactory componentFactory : list) {
             if (lastFactory != null && componentFactory instanceof BehaviorFactory) {
-                ((BehaviorFactory)componentFactory).forThis(lastFactory);
+                ((BehaviorFactory)componentFactory).wrap(lastFactory);
             }
             lastFactory = componentFactory;
         }
@@ -69,7 +69,7 @@ public class AdaptiveBehaviorFactory implements BehaviorFactory, Serializable {
         BehaviorFactory lastFactory = null;
         for (BehaviorFactory componentFactory : list) {
             if (lastFactory != null) {
-                componentFactory.forThis(lastFactory);
+                componentFactory.wrap(lastFactory);
             }
             lastFactory = componentFactory;
         }
@@ -109,7 +109,7 @@ public class AdaptiveBehaviorFactory implements BehaviorFactory, Serializable {
     }
 
 
-    public ComponentFactory forThis(ComponentFactory delegate) {
+    public ComponentFactory wrap(ComponentFactory delegate) {
         throw new UnsupportedOperationException();
     }
 }

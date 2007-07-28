@@ -112,7 +112,7 @@ public class PicoBuilder {
             ComponentFactory penultimateCaf = lastCaf;
             lastCaf = (ComponentFactory) temp2.getComponent("componentFactory");
             if (lastCaf instanceof BehaviorFactory) {
-                ((BehaviorFactory) lastCaf).forThis(penultimateCaf);
+                ((BehaviorFactory) lastCaf).wrap(penultimateCaf);
             }
         }
 

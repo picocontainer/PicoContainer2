@@ -19,10 +19,10 @@ import org.picocontainer.monitors.NullComponentMonitor;
 public class TransientPicoContainer extends DefaultPicoContainer {
 
     public TransientPicoContainer() {
-        super(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()), new NullLifecycleStrategy(), null, new NullComponentMonitor());
+        super(new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory()), new NullLifecycleStrategy(), null, new NullComponentMonitor());
     }
 
     public TransientPicoContainer(PicoContainer parent) {
-        super(new CachingBehaviorFactory().forThis(new ConstructorInjectionFactory()), new NullLifecycleStrategy(), parent, new NullComponentMonitor());
+        super(new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory()), new NullLifecycleStrategy(), parent, new NullComponentMonitor());
     }
 }
