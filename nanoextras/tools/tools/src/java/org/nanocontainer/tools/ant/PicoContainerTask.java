@@ -23,7 +23,7 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.behaviors.PropertyApplyingBehavior;
 import org.picocontainer.behaviors.PropertyApplyingBehaviorFactory;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
 
@@ -75,7 +75,7 @@ public final class PicoContainerTask extends Task {
         }
     };
 
-    private final ObjectReference containerRef = new CachingBehavior.SimpleReference();
+    private final ObjectReference containerRef = new Cached.SimpleReference();
 
     public void addComponent(Component component) {
         antSpecifiedComponents.add(component);

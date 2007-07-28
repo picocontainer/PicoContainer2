@@ -25,7 +25,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withBehaviors(IMPL_HIDING()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.gems.behaviors.ImplementationHidingBehaviorFactory\n" +
+                "  componentFactory=org.picocontainer.gems.behaviors.ImplementationHiding\n" +
                 "    delegate=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +

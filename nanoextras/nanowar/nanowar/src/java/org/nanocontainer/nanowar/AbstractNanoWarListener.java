@@ -13,7 +13,7 @@ import java.io.Serializable;
 import org.picocontainer.PicoContainer;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.DefaultContainerBuilder;
@@ -26,8 +26,8 @@ import org.nanocontainer.integrationkit.DefaultContainerBuilder;
 public class AbstractNanoWarListener implements Serializable {
 
     protected PicoContainer buildContainer(ScriptedContainerBuilder builder) {
-        ObjectReference containerRef = new CachingBehavior.SimpleReference();
-        builder.buildContainer(containerRef, new CachingBehavior.SimpleReference(), new CachingBehavior.SimpleReference(), false);
+        ObjectReference containerRef = new Cached.SimpleReference();
+        builder.buildContainer(containerRef, new Cached.SimpleReference(), new Cached.SimpleReference(), false);
         return (PicoContainer) containerRef.get();
     }
 

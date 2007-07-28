@@ -32,7 +32,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 import org.picocontainer.parameters.ConstantParameter;
 
 /**
@@ -144,9 +144,9 @@ public final class ScopedContainerComposer implements ContainerComposer {
                 new ClassName(containerBuilderClassName), parameters);
         ContainerBuilder containerBuilder = (ContainerBuilder) nano
                 .getComponent(containerBuilderClassName);
-        ObjectReference parentRef = new CachingBehavior.SimpleReference();
+        ObjectReference parentRef = new Cached.SimpleReference();
         parentRef.set(parent);
-        containerBuilder.buildContainer(new CachingBehavior.SimpleReference(), parentRef, null, false);
+        containerBuilder.buildContainer(new Cached.SimpleReference(), parentRef, null, false);
         return (ContainerPopulator) containerBuilder;
     }
 

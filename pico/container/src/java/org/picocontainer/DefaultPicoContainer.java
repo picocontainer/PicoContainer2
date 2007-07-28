@@ -10,9 +10,9 @@
 package org.picocontainer;
 
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.behaviors.ImplementationHidingBehavior;
+import org.picocontainer.behaviors.HiddenImplementation;
 import org.picocontainer.behaviors.AdaptiveBehaviorFactory;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
@@ -52,7 +52,7 @@ import java.util.Collection;
  * </p>
  * <p/>
  * Another place where keys that are classes make a subtle difference is in
- * {@link ImplementationHidingBehavior}.
+ * {@link HiddenImplementation}.
  * </p>
  * <p/>
  * This implementation of {@link MutablePicoContainer} also supports
@@ -94,7 +94,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * <p/>
      * <em>
      * Important note about caching: If you intend the components to be cached, you should pass
-     * in a factory that creates {@link CachingBehavior} instances, such as for example
+     * in a factory that creates {@link Cached} instances, such as for example
      * {@link Caching}. Caching can delegate to
      * other ComponentAdapterFactories.
      * </em>
@@ -112,7 +112,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * <p/>
      * <em>
      * Important note about caching: If you intend the components to be cached, you should pass
-     * in a factory that creates {@link CachingBehavior} instances, such as for example
+     * in a factory that creates {@link Cached} instances, such as for example
      * {@link Caching}. Caching can delegate to
      * other ComponentAdapterFactories.
      * </em>

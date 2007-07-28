@@ -28,11 +28,10 @@ import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.Characteristics;
 
 import org.jmock.MockObjectTestCase;
 
@@ -454,7 +453,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
     final public void testRES_failingVerificationWithCyclicDependencyException() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final Set cycleInstances = new HashSet();
-            final ObjectReference cycleCheck = new CachingBehavior.SimpleReference();
+            final ObjectReference cycleCheck = new Cached.SimpleReference();
             final Object[] wrapperDependencies = new Object[]{cycleInstances, cycleCheck};
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
             final ComponentAdapter componentAdapter = prepRES_failingVerificationWithCyclicDependencyException(picoContainer);
@@ -488,7 +487,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
     final public void testRES_failingInstantiationWithCyclicDependencyException() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final Set cycleInstances = new HashSet();
-            final ObjectReference cycleCheck = new CachingBehavior.SimpleReference();
+            final ObjectReference cycleCheck = new Cached.SimpleReference();
             final Object[] wrapperDependencies = new Object[]{cycleInstances, cycleCheck};
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
             final ComponentAdapter componentAdapter = prepRES_failingInstantiationWithCyclicDependencyException(picoContainer);

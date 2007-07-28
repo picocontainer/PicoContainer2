@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.behaviors.ImplementationHidingBehaviorFactory;
+import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.SynchronizedBehaviorFactory;
 import org.picocontainer.BehaviorFactory;
@@ -18,7 +18,7 @@ import org.picocontainer.behaviors.PropertyApplyingBehaviorFactory;
 public class Behaviors {
 
     public static BehaviorFactory implHiding() {
-        return new ImplementationHidingBehaviorFactory();
+        return new ImplementationHiding();
     }
 
     public static BehaviorFactory caching() {

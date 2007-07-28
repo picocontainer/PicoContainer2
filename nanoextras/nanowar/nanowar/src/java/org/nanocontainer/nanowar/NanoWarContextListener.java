@@ -29,7 +29,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 import org.picocontainer.parameters.ConstantParameter;
 
 /**
@@ -80,7 +80,7 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
             builderRef.set(containerBuilder);
 
             ObjectReference containerRef = new ApplicationScopeReference(context, APPLICATION_CONTAINER);
-            containerBuilder.buildContainer(containerRef, new CachingBehavior.SimpleReference(), context, false);
+            containerBuilder.buildContainer(containerRef, new Cached.SimpleReference(), context, false);
         // TODO bad catch - PH
         } catch (Exception e) {
             e.printStackTrace();

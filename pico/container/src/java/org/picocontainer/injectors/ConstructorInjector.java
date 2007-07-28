@@ -16,7 +16,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ParameterName;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -38,7 +38,7 @@ import java.util.Set;
  * Instantiates components using Constructor Injection.
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
- * use a {@link CachingBehavior} around this one.
+ * use a {@link Cached} around this one.
  * </em>
  *
  * @author Paul Hammant

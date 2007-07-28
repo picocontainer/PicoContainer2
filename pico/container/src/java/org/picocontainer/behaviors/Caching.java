@@ -41,7 +41,7 @@ public class Caching extends AbstractBehaviorFactory {
             return componentAdapter;
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
-        return new CachingBehavior(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+        return new Cached(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                 componentProperties, componentKey, componentImplementation, parameters));
 
     }
@@ -54,6 +54,6 @@ public class Caching extends AbstractBehaviorFactory {
             return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
-        return new CachingBehavior(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter));
+        return new Cached(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter));
     }
 }

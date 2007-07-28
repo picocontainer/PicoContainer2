@@ -14,7 +14,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -74,7 +74,7 @@ public class JMXExposingBehavior extends AbstractBehavior {
      * Retrieve the component instance. The implementation will automatically register it in the {@link MBeanServer},
      * if a provider can return a {@link javax.management.DynamicMBean} for it.
      * <p>
-     * Note, that you will have to wrap this {@link ComponentAdapter} with a {@link CachingBehavior} to avoid
+     * Note, that you will have to wrap this {@link ComponentAdapter} with a {@link Cached} to avoid
      * the registration of the same component again.
      * </p>
      * @throws PicoCompositionException Thrown by the delegate or if the registering of the
@@ -84,7 +84,7 @@ public class JMXExposingBehavior extends AbstractBehavior {
     public Object getComponentInstance(final PicoContainer container)
             throws PicoCompositionException
     {
-        final ComponentAdapter componentAdapter = new CachingBehavior(getDelegate());
+        final ComponentAdapter componentAdapter = new Cached(getDelegate());
         final Object componentInstance = componentAdapter.getComponentInstance(container);
         for (DynamicMBeanProvider provider : providers) {
             final JMXRegistrationInfo info = provider.provide(container, componentAdapter);

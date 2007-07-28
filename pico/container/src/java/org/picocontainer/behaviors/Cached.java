@@ -34,18 +34,18 @@ import java.io.Serializable;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public final class CachingBehavior extends AbstractBehavior implements Behavior {
+public final class Cached extends AbstractBehavior implements Behavior {
 
     private final ObjectReference instanceReference;
     private boolean disposed;
     private boolean started;
     private final boolean delegateHasLifecylce;
 
-    public CachingBehavior(ComponentAdapter delegate) {
+    public Cached(ComponentAdapter delegate) {
         this(delegate, new SimpleReference());
     }
 
-    public CachingBehavior(ComponentAdapter delegate, ObjectReference instanceReference) {
+    public Cached(ComponentAdapter delegate, ObjectReference instanceReference) {
         super(delegate);
         this.instanceReference = instanceReference;
         this.disposed = false;

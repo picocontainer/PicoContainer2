@@ -28,7 +28,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 
 /**
  * Decorating component adapter that can be used to set additional properties
@@ -43,7 +43,7 @@ import org.picocontainer.behaviors.CachingBehavior;
  * <p/>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,
- * use a {@link CachingBehavior} around this one.
+ * use a {@link Cached} around this one.
  * </em>
  *
  * @author Aslak Helles&oslash;y

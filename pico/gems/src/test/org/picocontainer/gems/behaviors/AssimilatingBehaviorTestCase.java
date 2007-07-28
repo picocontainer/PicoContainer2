@@ -19,7 +19,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.gems.behaviors.AssimilatingBehavior;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.injectors.ConstructorInjector;
@@ -43,7 +43,7 @@ public class AssimilatingBehaviorTestCase extends AbstractComponentAdapterTestCa
      */
     public void testInstanceIsBorged() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        final ComponentAdapter componentAdapter = new CachingBehavior(new ConstructorInjector(
+        final ComponentAdapter componentAdapter = new Cached(new ConstructorInjector(
                 CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
         mpc.addAdapter(new AssimilatingBehavior(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = (CompatibleTouchable)componentAdapter.getComponentInstance(mpc);
@@ -59,7 +59,7 @@ public class AssimilatingBehaviorTestCase extends AbstractComponentAdapterTestCa
      */
     public void testComponentKeyIsPreserved() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        final ComponentAdapter componentAdapter = new CachingBehavior(new ConstructorInjector(
+        final ComponentAdapter componentAdapter = new Cached(new ConstructorInjector(
                 "Touchy", CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
         mpc.addAdapter(new AssimilatingBehavior(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = (CompatibleTouchable)componentAdapter.getComponentInstance(mpc);

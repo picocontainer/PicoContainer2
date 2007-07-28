@@ -12,7 +12,7 @@ package org.picocontainer;
 import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implHiding;
 import static org.picocontainer.behaviors.Behaviors.threadSafe;
-import org.picocontainer.behaviors.ImplementationHidingBehaviorFactory;
+import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.containers.EmptyPicoContainer;
 import static org.picocontainer.injectors.Injectors.SDI;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
@@ -155,7 +155,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withHiddenImplementations().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
+                "  componentFactory=org.picocontainer.behaviors.ImplementationHiding\n" +
                 "    delegate=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
@@ -164,10 +164,10 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithImplementationHidingInstance() {
-        MutablePicoContainer mpc = new PicoBuilder().withComponentFactory(new ImplementationHidingBehaviorFactory()).build();
+        MutablePicoContainer mpc = new PicoBuilder().withComponentFactory(new ImplementationHiding()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
+                "  componentFactory=org.picocontainer.behaviors.ImplementationHiding\n" +
                 "    delegate=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
@@ -181,7 +181,7 @@ public class PicoBuilderTestCase extends TestCase {
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.behaviors.Caching\n" +
                 "    delegate=org.picocontainer.behaviors.SynchronizedBehaviorFactory\n" +
-                "      delegate=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
+                "      delegate=org.picocontainer.behaviors.ImplementationHiding\n" +
                 "        delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
@@ -252,7 +252,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withHiddenImplementations().withSetterInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
+                "  componentFactory=org.picocontainer.behaviors.ImplementationHiding\n" +
                 "    delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
@@ -265,7 +265,7 @@ public class PicoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.behaviors.Caching\n" +
-                "    delegate=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
+                "    delegate=org.picocontainer.behaviors.ImplementationHiding\n" +
                 "      delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +

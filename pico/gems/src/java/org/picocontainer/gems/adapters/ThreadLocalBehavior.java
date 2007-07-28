@@ -17,7 +17,7 @@ import com.thoughtworks.proxy.kit.ReflectionUtils;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.lang.reflect.InvocationTargetException;
@@ -55,7 +55,7 @@ public final class ThreadLocalBehavior extends AbstractBehavior {
     public ThreadLocalBehavior(final ComponentAdapter delegate, final ProxyFactory proxyFactory)
             throws PicoCompositionException
     {
-        super(new CachingBehavior(delegate, new ThreadLocalReference()));
+        super(new Cached(delegate, new ThreadLocalReference()));
         this.proxyFactory = proxyFactory;
         interfaces = getInterfaces();
     }
@@ -67,7 +67,7 @@ public final class ThreadLocalBehavior extends AbstractBehavior {
      * @throws PicoCompositionException Thrown if the component does not implement any interface.
      */
     public ThreadLocalBehavior(final ComponentAdapter delegate) throws PicoCompositionException {
-        this(new CachingBehavior(delegate, new ThreadLocalReference()), new StandardProxyFactory());
+        this(new Cached(delegate, new ThreadLocalReference()), new StandardProxyFactory());
     }
 
     public Object getComponentInstance(final PicoContainer pico) throws PicoCompositionException {

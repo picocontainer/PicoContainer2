@@ -36,7 +36,7 @@ public class CachingBehaviorFactoryTestCase extends AbstractComponentFactoryTest
             new DefaultPicoContainer(new Caching().wrap(new ConstructorInjectionFactory()));
         pico.addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
-        assertEquals(CachingBehavior.class, foo.getClass());
+        assertEquals(Cached.class, foo.getClass());
         assertEquals(ConstructorInjector.class, ((AbstractBehavior) foo).getDelegate().getClass());
     }
 
@@ -45,7 +45,7 @@ public class CachingBehaviorFactoryTestCase extends AbstractComponentFactoryTest
             new DefaultPicoContainer(new Caching().wrap(new ConstructorInjectionFactory()));
         pico.change(Characteristics.CACHE).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
-        assertEquals(CachingBehavior.class, foo.getClass());
+        assertEquals(Cached.class, foo.getClass());
         assertEquals(ConstructorInjector.class, ((AbstractBehavior) foo).getDelegate().getClass());
     }
 
@@ -62,7 +62,7 @@ public class CachingBehaviorFactoryTestCase extends AbstractComponentFactoryTest
             new DefaultPicoContainer(new Caching().wrap(new ConstructorInjectionFactory()));
         pico.addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter foo = pico.getComponentAdapter("foo");
-        assertEquals(CachingBehavior.class, foo.getClass());
+        assertEquals(Cached.class, foo.getClass());
         assertEquals(InstanceAdapter.class, ((AbstractBehavior) foo).getDelegate().getClass());
     }
 
@@ -71,7 +71,7 @@ public class CachingBehaviorFactoryTestCase extends AbstractComponentFactoryTest
             new DefaultPicoContainer(new Caching().wrap(new ConstructorInjectionFactory()));
         pico.change(Characteristics.CACHE).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter foo = pico.getComponentAdapter("foo");
-        assertEquals(CachingBehavior.class, foo.getClass());
+        assertEquals(Cached.class, foo.getClass());
         assertEquals(InstanceAdapter.class, ((AbstractBehavior) foo).getDelegate().getClass());
     }
 

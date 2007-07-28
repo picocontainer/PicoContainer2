@@ -21,7 +21,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.SynchronizedBehavior;
 import org.picocontainer.injectors.ConstructorInjector;
@@ -98,7 +98,7 @@ public final class SynchronizedBehaviorTestCase extends TestCase {
     }
 
     public void testRaceConditionIsHandledBySynchronizedComponentAdapter() throws InterruptedException {
-        ComponentAdapter componentAdapter = new CachingBehavior(new ConstructorInjector("key", Blocker.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
+        ComponentAdapter componentAdapter = new Cached(new ConstructorInjector("key", Blocker.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
         SynchronizedBehavior synchronizedComponentAdapter = new SynchronizedBehavior(componentAdapter);
         initTest(synchronizedComponentAdapter);
 
@@ -115,7 +115,7 @@ public final class SynchronizedBehaviorTestCase extends TestCase {
     }
 
     public void testRaceConditionIsNotHandledWithoutSynchronizedComponentAdapter() throws InterruptedException {
-        ComponentAdapter componentAdapter = new CachingBehavior(new ConstructorInjector("key", Blocker.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
+        ComponentAdapter componentAdapter = new Cached(new ConstructorInjector("key", Blocker.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
         initTest(componentAdapter);
 
         assertNull(runner[0].exception);
@@ -133,20 +133,20 @@ public final class SynchronizedBehaviorTestCase extends TestCase {
 
     public void THIS_NATURALLY_FAILS_testSingletonCreationWithSynchronizedAdapter() throws InterruptedException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new CachingBehavior(new SynchronizedBehavior(new ConstructorInjector("slow", SlowCtor.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()))));
+        pico.addAdapter(new Cached(new SynchronizedBehavior(new ConstructorInjector("slow", SlowCtor.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()))));
         runConcurrencyTest(pico);
     }
 
     // This is overkill - an outer sync adapter is enough
     public void testSingletonCreationWithSynchronizedAdapterAndDoubleLocking() throws InterruptedException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new SynchronizedBehavior(new CachingBehavior(new SynchronizedBehavior(new ConstructorInjector("slow", SlowCtor.class, null, new NullComponentMonitor(), new NullLifecycleStrategy())))));
+        pico.addAdapter(new SynchronizedBehavior(new Cached(new SynchronizedBehavior(new ConstructorInjector("slow", SlowCtor.class, null, new NullComponentMonitor(), new NullLifecycleStrategy())))));
         runConcurrencyTest(pico);
     }
 
     public void testSingletonCreationWithSynchronizedAdapterOutside() throws InterruptedException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new SynchronizedBehavior(new CachingBehavior(new ConstructorInjector("slow", SlowCtor.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()))));
+        pico.addAdapter(new SynchronizedBehavior(new Cached(new ConstructorInjector("slow", SlowCtor.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()))));
         runConcurrencyTest(pico);
     }
 

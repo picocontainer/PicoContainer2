@@ -17,7 +17,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.SetterInjector;
@@ -59,7 +59,7 @@ public class BuildingBlocksTestCase extends TestCase {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         // START SNIPPET: register-equivalent-at-length
         picoContainer.addAdapter(
-                new CachingBehavior(
+                new Cached(
                         new ConstructorInjector(Juicer.class, Juicer.class, null, new NullComponentMonitor(), new NullLifecycleStrategy())));
         // END SNIPPET: register-equivalent-at-length
     }
@@ -77,7 +77,7 @@ public class BuildingBlocksTestCase extends TestCase {
         // START SNIPPET: register-equivalent-at-length2
         picoContainer.addAdapter(
                 new SynchronizedBehavior(
-                        new CachingBehavior(
+                        new Cached(
                                 new SetterInjector(
                                         JuicerBean.class, JuicerBean.class, (Parameter[])null, new NullComponentMonitor(), new NullLifecycleStrategy()))));
         // END SNIPPET: register-equivalent-at-length2

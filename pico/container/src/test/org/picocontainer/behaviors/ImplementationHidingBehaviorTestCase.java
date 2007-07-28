@@ -20,14 +20,14 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.behaviors.ImplementationHidingBehavior;
+import org.picocontainer.behaviors.HiddenImplementation;
 import org.picocontainer.injectors.ConstructorInjector;
 
 public class ImplementationHidingBehaviorTestCase extends TestCase {
 
     public void testMultipleInterfacesCanBeHidden() {
         ComponentAdapter ca = new ConstructorInjector(new Class[]{ActionListener.class, MouseListener.class}, Footle.class, null, new NullComponentMonitor(), new NullLifecycleStrategy());
-        ImplementationHidingBehavior ihca = new ImplementationHidingBehavior(ca);
+        HiddenImplementation ihca = new HiddenImplementation(ca);
         Object comp = ihca.getComponentInstance(null);
         assertNotNull(comp);
         assertTrue(comp instanceof ActionListener);
@@ -36,7 +36,7 @@ public class ImplementationHidingBehaviorTestCase extends TestCase {
 
     public void testNonInterfaceInArrayCantBeHidden() {
         ComponentAdapter ca = new ConstructorInjector(new Class[]{String.class}, Footle.class, null, new NullComponentMonitor(), new NullLifecycleStrategy());
-        ImplementationHidingBehavior ihca = new ImplementationHidingBehavior(ca);
+        HiddenImplementation ihca = new HiddenImplementation(ca);
         try {
             ihca.getComponentInstance(null);
             fail("PicoCompositionException expected");

@@ -23,7 +23,7 @@ import java.util.Properties;
  * @author Aslak Helles&oslash;y
  * @see org.picocontainer.gems.adapters.HotSwappingComponentAdapterFactory for a more feature-rich version of the class
  */
-public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory {
+public class ImplementationHiding extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
@@ -32,7 +32,7 @@ public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory
             return componentAdapter;
         }
         removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
-        return new ImplementationHidingBehavior(componentAdapter);
+        return new HiddenImplementation(componentAdapter);
 
     }
 
@@ -44,7 +44,7 @@ public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory
             return adapter;
         }
         removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
-        return new ImplementationHidingBehavior(super.addComponentAdapter(componentMonitor,
+        return new HiddenImplementation(super.addComponentAdapter(componentMonitor,
                                                                           lifecycleStrategy,
                                                                           componentProperties,
                                                                           adapter));

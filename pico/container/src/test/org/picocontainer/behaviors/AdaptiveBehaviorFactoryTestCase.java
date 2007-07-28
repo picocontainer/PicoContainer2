@@ -33,7 +33,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
-        assertTrue(ca instanceof CachingBehavior);
+        assertTrue(ca instanceof Cached);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
         assertNotNull(map);
         Map map2 = (Map)ca.getComponentInstance(new EmptyPicoContainer());
@@ -46,7 +46,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         AdaptiveBehaviorFactory abf = new AdaptiveBehaviorFactory();
         Properties cc = new Properties();
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, MyHashMap.class);
-        assertTrue(ca instanceof CachingBehavior);
+        assertTrue(ca instanceof Cached);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
         assertNotNull(map);
         Map map2 = (Map)ca.getComponentInstance(new EmptyPicoContainer());
@@ -66,7 +66,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         Properties cc = new Properties();
         mergeInto(Characteristics.HIDE_IMPL,cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
-        assertTrue(ca instanceof ImplementationHidingBehavior);
+        assertTrue(ca instanceof HiddenImplementation);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
@@ -96,7 +96,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         mergeInto(Characteristics.HIDE_IMPL,cc);
         mergeInto(Characteristics.THREAD_SAFE,cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
-        assertTrue(ca instanceof CachingBehavior);
+        assertTrue(ca instanceof Cached);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
@@ -104,7 +104,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         XStream xs = new XStream();
         String foo = xs.toXML(ca);
 
-        int ih = foo.indexOf(ImplementationHidingBehavior.class.getName());
+        int ih = foo.indexOf(HiddenImplementation.class.getName());
         int sb = foo.indexOf(SynchronizedBehavior.class.getName());
 
         // check right nesting order
@@ -129,7 +129,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         mergeInto(Characteristics.HIDE_IMPL,cc);
         mergeInto(Characteristics.THREAD_SAFE,cc);
         ComponentAdapter ca = cbf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
-        assertTrue(ca instanceof CachingBehavior);
+        assertTrue(ca instanceof Cached);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
@@ -137,8 +137,8 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         XStream xs = new XStream();
         String foo = xs.toXML(ca);
 
-        assertTrue(foo.indexOf("<" + CachingBehavior.class.getName() + ">", 0)  > -1);  // xml does start with CB
-        assertFalse(foo.indexOf("<" + CachingBehavior.class.getName() + ">", 1)  > -1); // but only contains it once.
+        assertTrue(foo.indexOf("<" + Cached.class.getName() + ">", 0)  > -1);  // xml does start with CB
+        assertFalse(foo.indexOf("<" + Cached.class.getName() + ">", 1)  > -1); // but only contains it once.
         assertEquals("Cached:Hidden:Synchronized:ConstructorInjector-interface java.util.Map",ca.toString());
 
     }
@@ -152,7 +152,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         mergeInto(Characteristics.HIDE_IMPL,cc);
         mergeInto(Characteristics.THREAD_SAFE,cc);
         ComponentAdapter ca = cbf.addComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, new InstanceAdapter(Map.class, new HashMap(), new NullLifecycleStrategy(), new NullComponentMonitor()));
-        assertTrue(ca instanceof CachingBehavior);
+        assertTrue(ca instanceof Cached);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
@@ -160,8 +160,8 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         XStream xs = new XStream();
         String foo = xs.toXML(ca);
 
-        assertTrue(foo.indexOf("<" + CachingBehavior.class.getName() + ">", 0)  > -1);  // xml does start with CB
-        assertFalse(foo.indexOf("<" + CachingBehavior.class.getName() + ">", 1)  > -1); // but only contains it once.
+        assertTrue(foo.indexOf("<" + Cached.class.getName() + ">", 0)  > -1);  // xml does start with CB
+        assertFalse(foo.indexOf("<" + Cached.class.getName() + ">", 1)  > -1); // but only contains it once.
         assertEquals("Cached:Hidden:Synchronized:Instance-interface java.util.Map",ca.toString());
 
     }

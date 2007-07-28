@@ -14,7 +14,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -26,7 +26,7 @@ import org.picocontainer.testmodel.Touchable;
 public class CachingBehaviorTestCase extends MockObjectTestCase {
 
     public void testComponentIsNotStartedWhenCachedAndCanBeStarted() {
-        CachingBehavior adapter = new CachingBehavior(
+        Cached adapter = new Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(true, false, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.getComponentInstance(pico);
@@ -34,7 +34,7 @@ public class CachingBehaviorTestCase extends MockObjectTestCase {
     }
 
     public void testComponentCanBeStartedAgainAfterBeingStopped() {
-        CachingBehavior adapter = new CachingBehavior(
+        Cached adapter = new Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(true, true, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -46,7 +46,7 @@ public class CachingBehaviorTestCase extends MockObjectTestCase {
     }
 
     public void testComponentCannotBeStartedIfDisposed() {
-        CachingBehavior adapter = new CachingBehavior(
+        Cached adapter = new Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(false, false, true));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.dispose(pico);
@@ -59,7 +59,7 @@ public class CachingBehaviorTestCase extends MockObjectTestCase {
     }
 
     public void testComponentCannotBeStartedIfAlreadyStarted() {
-        CachingBehavior adapter = new CachingBehavior(
+        Cached adapter = new Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(true, false, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -72,7 +72,7 @@ public class CachingBehaviorTestCase extends MockObjectTestCase {
     }
 
     public void testComponentCannotBeStoppeddIfDisposed() {
-        CachingBehavior adapter = new CachingBehavior(
+        Cached adapter = new Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(false, false, true));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.dispose(pico);
@@ -85,7 +85,7 @@ public class CachingBehaviorTestCase extends MockObjectTestCase {
     }
 
     public void testComponentCannotBeStoppedIfNotStarted() {
-        CachingBehavior adapter = new CachingBehavior(
+        Cached adapter = new Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(true, true, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -99,7 +99,7 @@ public class CachingBehaviorTestCase extends MockObjectTestCase {
     }
 
     public void testComponentCannotBeDisposedIfAlreadyDisposed() {
-        CachingBehavior adapter = new CachingBehavior(
+        Cached adapter = new Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(true, true, true));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -114,7 +114,7 @@ public class CachingBehaviorTestCase extends MockObjectTestCase {
     }
 
     public void testComponentIsStoppedAndDisposedIfStartedWhenFlushed() {
-        CachingBehavior adapter = new CachingBehavior(
+        Cached adapter = new Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(true, true, true));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -122,19 +122,19 @@ public class CachingBehaviorTestCase extends MockObjectTestCase {
     }
 
     public void testComponentIsNotStoppedAndDisposedWhenFlushedIfNotStarted() {
-        CachingBehavior adapter = new CachingBehavior(
+        Cached adapter = new Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(false, false, false));
         adapter.flush();
     }
 
     public void testComponentIsNotStoppedAndDisposedWhenFlushedIfDelegateDoesNotSupportLifecycle() {
-        CachingBehavior adapter = new CachingBehavior(
+        Cached adapter = new Cached(
                 mockComponentAdapterNotSupportingLifecycleStrategy());
         adapter.flush();
     }
 
     public void testLifecycleIsIgnoredIfDelegateDoesNotSupportIt() {
-        CachingBehavior adapter = new CachingBehavior(
+        Cached adapter = new Cached(
                 mockComponentAdapterNotSupportingLifecycleStrategy());
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);

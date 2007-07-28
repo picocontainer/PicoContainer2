@@ -19,7 +19,7 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 import java.util.Properties;
 
-public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory {
+public class ImplementationHiding extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
@@ -38,7 +38,7 @@ public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory
                                                                          componentKey,
                                                                          componentImplementation,
                                                                          parameters);
-        return new ImplementationHidingBehavior(componentAdapter);
+        return new HiddenImplementation(componentAdapter);
     }
 
     public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
@@ -52,7 +52,7 @@ public class ImplementationHidingBehaviorFactory extends AbstractBehaviorFactory
                                              adapter);
         }
         AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
-        return new ImplementationHidingBehavior(super.addComponentAdapter(componentMonitor,
+        return new HiddenImplementation(super.addComponentAdapter(componentMonitor,
                                                                           lifecycleStrategy,
                                                                           componentProperties,
                                                                           adapter));

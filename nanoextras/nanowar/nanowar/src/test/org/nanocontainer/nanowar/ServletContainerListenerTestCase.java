@@ -32,7 +32,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -320,8 +320,8 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
         ServletContext context = (ServletContext)servletContextMock.proxy();
         ContainerBuilder containerBuilder = createContainerBuilder(script, containerBuilderClass);
         
-        ObjectReference containerRef = new CachingBehavior.SimpleReference();
-        containerBuilder.buildContainer(containerRef, new CachingBehavior.SimpleReference(), context, false);
+        ObjectReference containerRef = new Cached.SimpleReference();
+        containerBuilder.buildContainer(containerRef, new Cached.SimpleReference(), context, false);
         return (PicoContainer) containerRef.get();
     }
 

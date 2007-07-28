@@ -31,13 +31,13 @@ import org.picocontainer.behaviors.AbstractBehavior;
  * @author Paul Hammant
  * @see org.picocontainer.gems.adapters.HotSwappingComponentAdapter for a more feature-rich version of this class.
  */
-public class ImplementationHidingBehavior extends AbstractBehavior {
+public class HiddenImplementation extends AbstractBehavior {
 
     /**
      * Creates an ImplementationHidingComponentAdapter with a delegate 
      * @param delegate the component adapter to which this adapter delegates
      */
-    public ImplementationHidingBehavior(ComponentAdapter delegate) {
+    public HiddenImplementation(ComponentAdapter delegate) {
         super(delegate);
     }
 
@@ -68,11 +68,11 @@ public class ImplementationHidingBehavior extends AbstractBehavior {
                         Object componentInstance = getDelegate().getComponentInstance(container);
                         ComponentMonitor componentMonitor = currentMonitor();
                         try {
-                            componentMonitor.invoking(container, ImplementationHidingBehavior.this, method, componentInstance);
+                            componentMonitor.invoking(container, HiddenImplementation.this, method, componentInstance);
                             long startTime = System.currentTimeMillis();
                             Object object = method.invoke(componentInstance, args);
                             componentMonitor.invoked(container,
-                                                     ImplementationHidingBehavior.this,
+                                                     HiddenImplementation.this,
                                                      method, componentInstance, System.currentTimeMillis() - startTime);
                             return object;
                         } catch (final InvocationTargetException ite) {
