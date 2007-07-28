@@ -18,23 +18,23 @@ import org.picocontainer.PicoCompositionException;
 
 import java.util.Properties;
 
-public class PoolingBehaviorFactory extends AbstractBehaviorFactory {
+public class Pooling extends AbstractBehaviorFactory {
 
-    private final PoolingBehavior.Context poolContext;
+    private final Pooled.Context poolContext;
 
-    public PoolingBehaviorFactory(PoolingBehavior.Context poolContext) {
+    public Pooling(Pooled.Context poolContext) {
         this.poolContext = poolContext;
     }
 
-    public PoolingBehaviorFactory() {
-        poolContext = new PoolingBehavior.DefaultContext();
+    public Pooling() {
+        poolContext = new Pooled.DefaultContext();
     }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                          componentProperties, componentKey, componentImplementation, parameters);
-        PoolingBehavior behavior = new PoolingBehavior(componentAdapter, poolContext);
+        Pooled behavior = new Pooled(componentAdapter, poolContext);
         //TODO
         //Characteristics.HIDE.setProcessedIn(componentCharacteristics);
         return behavior;
@@ -44,7 +44,7 @@ public class PoolingBehaviorFactory extends AbstractBehaviorFactory {
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
                                                 ComponentAdapter adapter) {
-        return new PoolingBehavior(super.addComponentAdapter(componentMonitor,
+        return new Pooled(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,
                                          adapter), poolContext);

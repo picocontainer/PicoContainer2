@@ -68,19 +68,19 @@ import com.thoughtworks.proxy.toys.pool.Pool;
  * @author J&ouml;rg Schaible
  * @author Aslak Helles&oslash;y
  */
-public final class PoolingBehavior extends AbstractBehavior implements Behavior {
+public final class Pooled extends AbstractBehavior implements Behavior {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * Context of the PoolingBehavior used to initialize it.
+     * Context of the Pooled used to initialize it.
      * 
      * @author J&ouml;rg Schaible
      */
     public static interface Context {
         /**
          * Retrieve the maximum size of the pool. An implementation may return the maximum value or
-         * {@link PoolingBehavior#UNLIMITED_SIZE} for <em>unlimited</em> growth.
+         * {@link Pooled#UNLIMITED_SIZE} for <em>unlimited</em> growth.
          * 
          * @return the maximum pool size
          */
@@ -88,8 +88,8 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
 
         /**
          * Retrieve the maximum number of milliseconds to wait for a returned element. An
-         * implementation may return alternatively {@link PoolingBehavior#BLOCK_ON_WAIT} or
-         * {@link PoolingBehavior#FAIL_ON_WAIT}.
+         * implementation may return alternatively {@link Pooled#BLOCK_ON_WAIT} or
+         * {@link Pooled#FAIL_ON_WAIT}.
          * 
          * @return the maximum number of milliseconds to wait
          */
@@ -131,21 +131,21 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
     }
 
     /**
-     * The default context for a PoolingBehavior.
+     * The default context for a Pooled.
      * 
      * @author J&ouml;rg Schaible
      */
     public static class DefaultContext implements Context {
 
         /**
-         * {@inheritDoc} Returns {@link PoolingBehavior#DEFAULT_MAX_SIZE}.
+         * {@inheritDoc} Returns {@link Pooled#DEFAULT_MAX_SIZE}.
          */
         public int getMaxSize() {
             return DEFAULT_MAX_SIZE;
         }
 
         /**
-         * {@inheritDoc} Returns {@link PoolingBehavior#FAIL_ON_WAIT}.
+         * {@inheritDoc} Returns {@link Pooled#FAIL_ON_WAIT}.
          */
         public int getMaxWaitInMilliseconds() {
             return FAIL_ON_WAIT;
@@ -166,7 +166,7 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
         }
 
         /**
-         * {@inheritDoc} Returns the {@link PoolingBehavior#DEFAULT_RESETTER}.
+         * {@inheritDoc} Returns the {@link Pooled#DEFAULT_RESETTER}.
          */
         public Resetter getResetter() {
             return DEFAULT_RESETTER;
@@ -215,7 +215,7 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
     private transient List<Object> components;
 
     /**
-     * Construct a PoolingBehavior. Remember, that the implementation will request new
+     * Construct a Pooled. Remember, that the implementation will request new
      * components from the delegate as long as no component instance is available in the pool and
      * the maximum pool size is not reached. Therefore the delegate may not return the same
      * component instance twice. Ensure, that the used {@link ComponentAdapter} does not cache.
@@ -225,7 +225,7 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
      * @throws IllegalArgumentException if the maximum pool size or the serialization mode is
      *             invalid
      */
-    public PoolingBehavior(ComponentAdapter delegate, Context context) {
+    public Pooled(ComponentAdapter delegate, Context context) {
         super(delegate);
         this.maxPoolSize = context.getMaxSize();
         this.waitMilliSeconds = context.getMaxWaitInMilliseconds();
@@ -252,7 +252,7 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
      * Construct an empty ComponentAdapter, used for serialization with reflection only.
      * 
      */
-    protected PoolingBehavior() {
+    protected Pooled() {
         // @todo super class should support standard ctor
         super((ComponentAdapter)Null.object(ComponentAdapter.class));
     }
@@ -330,9 +330,9 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
     static final class LifecycleResetter implements Resetter, Serializable {
         private static final long serialVersionUID = 1L;
         private final Resetter delegate;
-        private final PoolingBehavior adapter;
+        private final Pooled adapter;
 
-        LifecycleResetter(final PoolingBehavior adapter, final Resetter delegate) {
+        LifecycleResetter(final Pooled adapter, final Resetter delegate) {
             this.adapter = adapter;
             this.delegate = delegate;
         }
@@ -436,7 +436,7 @@ public final class PoolingBehavior extends AbstractBehavior implements Behavior 
     }
 
     /**
-     * Exception thrown from the PoolingBehavior. Only thrown if the interaction with the internal pool fails.
+     * Exception thrown from the Pooled. Only thrown if the interaction with the internal pool fails.
      *
      * @author J&ouml;rg Schaible
      */
