@@ -230,7 +230,7 @@ public class PicoBuilderTestCase extends TestCase {
             MutablePicoContainer mpc = new PicoBuilder().withAnnotationInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.MethodAnnotationInjectionFactory\n" +
+                "  componentFactory=org.picocontainer.injectors.AnnotatatedMethodInjection\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +

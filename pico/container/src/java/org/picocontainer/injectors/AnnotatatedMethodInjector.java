@@ -16,9 +16,9 @@ import org.picocontainer.LifecycleStrategy;
 
 import java.lang.reflect.Method;
 
-public class MethodAnnotationInjector extends SetterInjector {
+public class AnnotatatedMethodInjector extends SetterInjector {
 
-    public MethodAnnotationInjector(Object key,
+    public AnnotatatedMethodInjector(Object key,
                                     Class impl,
                                     Parameter[] parameters,
                                     ComponentMonitor monitor,

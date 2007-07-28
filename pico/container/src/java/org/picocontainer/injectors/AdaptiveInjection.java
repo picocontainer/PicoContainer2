@@ -16,7 +16,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ComponentFactory;
 import org.picocontainer.InjectionFactory;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.annotations.Inject;
@@ -131,7 +130,7 @@ public class AdaptiveInjection implements InjectionFactory, Serializable {
     {
         if (isMethodAnnotationInjection(componentImplementation)) {
             componentAdapter =
-                new MethodAnnotationInjectionFactory().createComponentAdapter(componentMonitor,
+                new AnnotatatedMethodInjection().createComponentAdapter(componentMonitor,
                                                                               lifecycleStrategy,
                                                                               componentProperties,
                                                                               componentKey,
@@ -149,7 +148,7 @@ public class AdaptiveInjection implements InjectionFactory, Serializable {
     {
         if (isFieldAnnotationInjection(componentImplementation)) {
              componentAdapter =
-                new FieldAnnotationInjectionFactory().createComponentAdapter(componentMonitor,
+                new AnnotatatedFieldInjection().createComponentAdapter(componentMonitor,
                                                                              lifecycleStrategy,
                                                                              componentProperties,
                                                                              componentKey,

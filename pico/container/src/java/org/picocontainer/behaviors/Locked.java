@@ -13,15 +13,12 @@ package org.picocontainer.behaviors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * @author Aslak Helles&oslash;y
- * @author Manish Shah
- * @version $Revision$
+ * @author Paul Hammant
  */
 public class Locked extends AbstractBehavior {
     private Lock lock = new ReentrantLock();

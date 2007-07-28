@@ -22,9 +22,9 @@ import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FieldAnnotationInjector extends PostInstantiationInjector {
+public class AnnotatedFieldInjector extends PostInstantiationInjector {
 
-    public FieldAnnotationInjector(Object key,
+    public AnnotatedFieldInjector(Object key,
                                    Class impl,
                                    Parameter[] parameters,
                                    ComponentMonitor componentMonitor,

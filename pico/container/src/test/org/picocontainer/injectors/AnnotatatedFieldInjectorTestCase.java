@@ -17,7 +17,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 
 import junit.framework.TestCase;
 
-public class FieldAnnotationInjectorTestCase extends TestCase {
+public class AnnotatatedFieldInjectorTestCase extends TestCase {
 
     public static class Helicopter {
         @Inject
@@ -39,7 +39,7 @@ public class FieldAnnotationInjectorTestCase extends TestCase {
 
     public void testFieldInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new FieldAnnotationInjector(Helicopter.class, Helicopter.class, null,
+        pico.addAdapter(new AnnotatedFieldInjector(Helicopter.class, Helicopter.class, null,
                                                     new NullComponentMonitor(), new NullLifecycleStrategy()));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
@@ -49,7 +49,7 @@ public class FieldAnnotationInjectorTestCase extends TestCase {
 
     public void testFieldInjectionWithoutAnnotationDoesNotWork() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new FieldAnnotationInjector(Helicopter2.class, Helicopter2.class, null,
+        pico.addAdapter(new AnnotatedFieldInjector(Helicopter2.class, Helicopter2.class, null,
                                                     new NullComponentMonitor(), new NullLifecycleStrategy()));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter2 chopper = pico.getComponent(Helicopter2.class);

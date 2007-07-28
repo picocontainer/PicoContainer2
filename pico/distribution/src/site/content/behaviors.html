@@ -19,7 +19,7 @@ does not fit the definition of Singleton as defined in the Design
 Patterns book.</p>
 <p>Choose your style for caching behavior:</p>
 <div class="source"><pre>
-pico = new DefaultPicoContainer(new CachingBehavior());
+pico = new DefaultPicoContainer(new Caching());
 pico.addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
@@ -50,7 +50,7 @@ other components using it. It only works if the type has an interface
 that it implements.</p>
 
     <div class="source"><pre>
-pico = new DefaultPicoContainer(new ImplementationHidingBehavior());
+pico = new DefaultPicoContainer(new ImplementationHiding());
 pico.addComponent(Apple.class, AppleImpl.class);
 Apple a1 = pico.getComponent(Apple.class);
 // cannot cast back to AppleImpl

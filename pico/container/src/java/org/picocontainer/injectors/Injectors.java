@@ -12,7 +12,7 @@ package org.picocontainer.injectors;
 import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.injectors.SetterInjectionFactory;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
-import org.picocontainer.injectors.MethodAnnotationInjectionFactory;
+import org.picocontainer.injectors.AnnotatatedMethodInjection;
 import org.picocontainer.InjectionFactory;
 
 public class Injectors {
@@ -30,11 +30,11 @@ public class Injectors {
     }
 
     public static InjectionFactory methodAnnotationDI() {
-        return new MethodAnnotationInjectionFactory();
+        return new AnnotatatedMethodInjection();
     }
 
     public static InjectionFactory fieldAnnotationDI() {
-        return new FieldAnnotationInjectionFactory();
+        return new AnnotatatedFieldInjection();
     }
 
 }

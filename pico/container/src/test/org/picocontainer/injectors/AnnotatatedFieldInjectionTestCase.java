@@ -26,11 +26,11 @@ import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 
-public class FieldAnnotationInjectionFactoryTestCase extends TestCase {
+public class AnnotatatedFieldInjectionTestCase extends TestCase {
 
     public void testFactoryMakesAnnotationInjector() {
 
-        FieldAnnotationInjectionFactory injectionFactory = new FieldAnnotationInjectionFactory();
+        AnnotatatedFieldInjection injectionFactory = new AnnotatatedFieldInjection();
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
         ComponentAdapter ca = injectionFactory.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new Properties(), Map.class, HashMap.class, Parameter.DEFAULT);
@@ -59,12 +59,12 @@ public class FieldAnnotationInjectionFactoryTestCase extends TestCase {
 
         String foo = xs.toXML(ca);
 
-        assertEquals("<org.picocontainer.injectors.FieldAnnotationInjector>\n" +
+        assertEquals("<org.picocontainer.injectors.AnnotatedFieldInjector>\n" +
                      "  <lifecycleStrategy class=\"org.picocontainer.lifecycle.ReflectionLifecycleStrategy\"/>\n" +
                      "  <componentKey class=\"java-class\">java.util.Map</componentKey>\n" +
                      "  <componentImplementation>java.util.HashMap</componentImplementation>\n" +
                      "  <componentMonitor class=\"org.picocontainer.monitors.ConsoleComponentMonitor\"/>\n" +
-                     "</org.picocontainer.injectors.FieldAnnotationInjector>", foo);
+                     "</org.picocontainer.injectors.AnnotatedFieldInjector>", foo);
 
 
     }

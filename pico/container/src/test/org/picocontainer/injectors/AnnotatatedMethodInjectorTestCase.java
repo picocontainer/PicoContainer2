@@ -16,10 +16,10 @@ import org.picocontainer.annotations.Inject;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.injectors.MethodAnnotationInjector;
+import org.picocontainer.injectors.AnnotatatedMethodInjector;
 import org.picocontainer.injectors.SetterInjector;
 
-public class MethodAnnotationInjectorTestCase extends TestCase {
+public class AnnotatatedMethodInjectorTestCase extends TestCase {
 
     public static class AnnotatedBurp {
 
@@ -55,7 +55,7 @@ public class MethodAnnotationInjectorTestCase extends TestCase {
 
     public void testNonSetterMethodInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new MethodAnnotationInjector(AnnotatedBurp.class, AnnotatedBurp.class, Parameter.DEFAULT,
+        pico.addAdapter(new AnnotatatedMethodInjector(AnnotatedBurp.class, AnnotatedBurp.class, Parameter.DEFAULT,
                                                new NullComponentMonitor(), new NullLifecycleStrategy()) {
             protected String getInjectorPrefix() {
                 return "init";

@@ -21,10 +21,9 @@ import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AdaptiveInjection;
-import org.picocontainer.injectors.FieldAnnotationInjectorTestCase;
-import org.picocontainer.injectors.MethodAnnotationInjectorTestCase;
-import org.picocontainer.injectors.MethodAnnotationInjector;
-import org.picocontainer.injectors.FieldAnnotationInjector;
+import org.picocontainer.injectors.AnnotatatedMethodInjectorTestCase;
+import org.picocontainer.injectors.AnnotatatedMethodInjector;
+import org.picocontainer.injectors.AnnotatedFieldInjector;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -50,8 +49,8 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTe
         xs = new XStream();
         xs.alias("RLS", ReflectionLifecycleStrategy.class);
         xs.alias("CCM", ConsoleComponentMonitor.class);
-        xs.alias("Method-Injection", MethodAnnotationInjector.class);
-        xs.alias("Field-Injection", FieldAnnotationInjector.class);
+        xs.alias("Method-Injection", AnnotatatedMethodInjector.class);
+        xs.alias("Field-Injection", AnnotatedFieldInjector.class);
         xs.alias("Constructor-Injection", ConstructorInjector.class);
         //xs.alias("CCM", ConsoleComponentMonitor.class);
         xs.registerConverter(new Converter() {
@@ -135,16 +134,16 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTe
         ComponentAdapter ca = cf.createComponentAdapter(cm,
                                                         new ReflectionLifecycleStrategy(cm),
                                                         new Properties(),
-                                                        FieldAnnotationInjectorTestCase.Helicopter.class,
-                                                        FieldAnnotationInjectorTestCase.Helicopter.class,
+                                                        AnnotatatedFieldInjectorTestCase.Helicopter.class,
+                                                        AnnotatatedFieldInjectorTestCase.Helicopter.class,
                                                         Parameter.DEFAULT);
 
         String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Field-Injection>\n" +
                      "  <lifecycleStrategy class=RLS/>\n" +
-                     "  <componentKey class=java-class>org.picocontainer.injectors.FieldAnnotationInjectorTestCase$Helicopter</componentKey>\n" +
-                     "  <componentImplementation>org.picocontainer.injectors.FieldAnnotationInjectorTestCase$Helicopter</componentImplementation>\n" +
+                     "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatatedFieldInjectorTestCase$Helicopter</componentKey>\n" +
+                     "  <componentImplementation>org.picocontainer.injectors.AnnotatatedFieldInjectorTestCase$Helicopter</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
                      "</Field-Injection>", foo);
 
@@ -159,16 +158,16 @@ public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTe
         ComponentAdapter ca = cf.createComponentAdapter(cm,
                                                         new ReflectionLifecycleStrategy(cm),
                                                         new Properties(),
-                                                        MethodAnnotationInjectorTestCase.AnnotatedBurp.class,
-                                                        MethodAnnotationInjectorTestCase.AnnotatedBurp.class,
+                                                        AnnotatatedMethodInjectorTestCase.AnnotatedBurp.class,
+                                                        AnnotatatedMethodInjectorTestCase.AnnotatedBurp.class,
                                                         Parameter.DEFAULT);
 
         String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Method-Injection>\n" +
                      "  <lifecycleStrategy class=RLS/>\n" +
-                     "  <componentKey class=java-class>org.picocontainer.injectors.MethodAnnotationInjectorTestCase$AnnotatedBurp</componentKey>\n" +
-                     "  <componentImplementation>org.picocontainer.injectors.MethodAnnotationInjectorTestCase$AnnotatedBurp</componentImplementation>\n" +
+                     "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatatedMethodInjectorTestCase$AnnotatedBurp</componentKey>\n" +
+                     "  <componentImplementation>org.picocontainer.injectors.AnnotatatedMethodInjectorTestCase$AnnotatedBurp</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
                      "</Method-Injection>", foo);
 
