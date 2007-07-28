@@ -48,11 +48,11 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         Class[] interfaces = o.getClass().getInterfaces();
         if (interfaces.length != 0) {
             byte[] bytes = makeProxy("XX", interfaces, true);
-            AsmClassLoader cl = new AsmClassLoader(HotSwappingBehavior.Swappable.class.getClassLoader());
+            AsmClassLoader cl = new AsmClassLoader(HotSwappable.Swappable.class.getClassLoader());
             Class<?> pClazz = cl.defineClass("XX", bytes);
             try {
-                Constructor<?> ctor = pClazz.getConstructor(HotSwappingBehavior.Swappable.class);
-                final HotSwappingBehavior.Swappable swappable = getSwappable();
+                Constructor<?> ctor = pClazz.getConstructor(HotSwappable.Swappable.class);
+                final HotSwappable.Swappable swappable = getSwappable();
                 swappable.swap(o);
                 return ctor.newInstance(swappable);
             } catch (NoSuchMethodException e) {
@@ -64,8 +64,8 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         return o;
     }
 
-    protected HotSwappingBehavior.Swappable getSwappable() {
-        return new HotSwappingBehavior.Swappable();
+    protected HotSwappable.Swappable getSwappable() {
+        return new HotSwappable.Swappable();
     }
 
     public byte[] makeProxy(String proxyName, Class[] interfaces, boolean setter) {
@@ -78,7 +78,7 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         cw.visit(V1_5, ACC_PUBLIC + ACC_SUPER, proxyName, null, dotsToSlashes(superclass), getNames(interfaces));
 
         {
-            fv = cw.visitField(ACC_PRIVATE + ACC_TRANSIENT, "swappable", encodedClassName(HotSwappingBehavior.Swappable.class), null, null);
+            fv = cw.visitField(ACC_PRIVATE + ACC_TRANSIENT, "swappable", encodedClassName(HotSwappable.Swappable.class), null, null);
             fv.visitEnd();
         }
         doConstructor(proxyName, cw);
@@ -108,13 +108,13 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
 
     private void doConstructor(String proxyName, ClassWriter cw) {
         MethodVisitor mv;
-        mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(L"+ dotsToSlashes(HotSwappingBehavior.Swappable.class)+";)V", null, null);
+        mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(L"+ dotsToSlashes(HotSwappable.Swappable.class)+";)V", null, null);
         mv.visitCode();
         mv.visitVarInsn(ALOAD, 0);
         mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V");
         mv.visitVarInsn(ALOAD, 0);
         mv.visitVarInsn(ALOAD, 1);
-        mv.visitFieldInsn(PUTFIELD, proxyName, "swappable", encodedClassName(HotSwappingBehavior.Swappable.class));
+        mv.visitFieldInsn(PUTFIELD, proxyName, "swappable", encodedClassName(HotSwappable.Swappable.class));
         mv.visitInsn(RETURN);
         mv.visitMaxs(2, 2);
         mv.visitEnd();
@@ -127,8 +127,8 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         mv = cw.visitMethod(ACC_PUBLIC, meth.getName(), signature, null, exceptions);
         mv.visitCode();
         mv.visitVarInsn(ALOAD, 0);
-        mv.visitFieldInsn(GETFIELD, proxyName, "swappable", encodedClassName(HotSwappingBehavior.Swappable.class));
-        mv.visitMethodInsn(INVOKEVIRTUAL, dotsToSlashes(HotSwappingBehavior.Swappable.class), "getInstance", "()Ljava/lang/Object;");
+        mv.visitFieldInsn(GETFIELD, proxyName, "swappable", encodedClassName(HotSwappable.Swappable.class));
+        mv.visitMethodInsn(INVOKEVIRTUAL, dotsToSlashes(HotSwappable.Swappable.class), "getInstance", "()Ljava/lang/Object;");
         mv.visitTypeInsn(CHECKCAST, dotsToSlashes(iface));
         Class[] types = meth.getParameterTypes();
         int ix = 1;

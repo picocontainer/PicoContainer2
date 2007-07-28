@@ -26,22 +26,22 @@ import java.util.Properties;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @version $Revision$
- * @see HotSwappingBehavior
+ * @see HotSwappable
  */
-public class HotSwappingBehaviorFactory extends AbstractBehaviorFactory {
+public class HotSwapping extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                          componentProperties, componentKey, componentImplementation, parameters);
-        return new HotSwappingBehavior(componentAdapter);
+        return new HotSwappable(componentAdapter);
     }
 
     public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
                                                 ComponentAdapter adapter) {
-        return new HotSwappingBehavior(super.addComponentAdapter(componentMonitor,
+        return new HotSwappable(super.addComponentAdapter(componentMonitor,
                                                                  lifecycleStrategy,
                                                                  componentProperties,
                                                                  adapter));

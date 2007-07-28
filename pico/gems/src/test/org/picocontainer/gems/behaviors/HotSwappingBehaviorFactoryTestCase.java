@@ -5,8 +5,8 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.gems.behaviors.HotSwappingBehaviorFactory;
-import org.picocontainer.gems.behaviors.HotSwappingBehavior;
+import org.picocontainer.gems.behaviors.HotSwapping;
+import org.picocontainer.gems.behaviors.HotSwappable;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 
 public final class HotSwappingBehaviorFactoryTestCase extends AbstractComponentFactoryTestCase {
-    private final ComponentFactory implementationHidingComponentAdapterFactory = new HotSwappingBehaviorFactory().wrap(new AdaptiveInjectionFactory());
+    private final ComponentFactory implementationHidingComponentAdapterFactory = new HotSwapping().wrap(new AdaptiveInjectionFactory());
 
     // START SNIPPET: man
     public static interface Man {
@@ -53,7 +53,7 @@ public final class HotSwappingBehaviorFactoryTestCase extends AbstractComponentF
 
 
     public void testHotSwappingNaturaelyCaches() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwappingBehaviorFactory().wrap(new ConstructorInjectionFactory()));
+        DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwapping().wrap(new ConstructorInjectionFactory()));
         pico.addComponent(Map.class, HashMap.class);
         Map firstMap = pico.getComponent(Map.class);
         Map secondMap = pico.getComponent(Map.class);
@@ -65,7 +65,7 @@ public final class HotSwappingBehaviorFactoryTestCase extends AbstractComponentF
     public void testSwappingViaSwappableInterface() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         ConstructorInjector constructorInjector = new ConstructorInjector("l", ArrayList.class, null, new NullComponentMonitor(), new NullLifecycleStrategy());
-        HotSwappingBehavior hsca = (HotSwappingBehavior) pico.addAdapter(new HotSwappingBehavior(constructorInjector)).getComponentAdapter(constructorInjector.getComponentKey());
+        HotSwappable hsca = (HotSwappable) pico.addAdapter(new HotSwappable(constructorInjector)).getComponentAdapter(constructorInjector.getComponentKey());
         List l = (List)pico.getComponent("l");
         l.add("Hello");
         final ArrayList newList = new ArrayList();
