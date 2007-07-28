@@ -25,26 +25,25 @@ import java.util.Properties;
  * @author Stephen Molitor
  * @version $Revision$
  */
-public class AspectsBehaviorFactory extends AbstractBehaviorFactory {
+public class Aspecting extends AbstractBehaviorFactory {
 
     private final AspectsApplicator aspectsApplicator;
 
     /**
-     * Creates a new <code>AspectsBehaviorFactory</code>. The factory
-     * will produce <code>AspectsBehavior</code> objects that will use
+     * Creates a new <code>Aspecting</code>. The factory
+     * will produce <code>Aspected</code> objects that will use
      * <code>aspectsApplicator</code> to apply aspects to components produced
      * by <code>delegate</code>.
      *
      * @param aspectsApplicator used to apply the aspects.
      */
-    public AspectsBehaviorFactory(AspectsApplicator aspectsApplicator) {
+    public Aspecting(AspectsApplicator aspectsApplicator) {
         this.aspectsApplicator = aspectsApplicator;
     }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation,
-                                                   Parameter... parameters) throws PicoCompositionException
-    {
-        return new AspectsBehavior(aspectsApplicator, super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+                                                   Parameter... parameters) throws PicoCompositionException {
+        return new Aspected(aspectsApplicator, super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                                    componentProperties, componentKey,
                 componentImplementation, parameters));
     }

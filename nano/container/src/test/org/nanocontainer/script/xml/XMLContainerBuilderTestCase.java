@@ -40,7 +40,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.monitors.WriterComponentMonitor;
@@ -589,7 +589,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "	</org.nanocontainer.script.xml.TestBean>" +
                 "  </component-instance>" +
                 "  <component-adapter key='beanKey' class='org.nanocontainer.script.xml.TestBeanComposer'" +
-                "					factory='" + AdaptiveInjectionFactory.class.getName() + "'>" +
+                "					factory='" + AdaptiveInjection.class.getName() + "'>" +
                 " 		<parameter key='bean1'/>" +
                 " 		<parameter key='bean2'/>" +
                 "  </component-adapter>" +
@@ -689,7 +689,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
     public void testComponentMonitorCanBeSpecifiedIfCAFIsSpecified() {
         Reader script = new StringReader("" +
-                "<container component-adapter-factory='" + AdaptiveInjectionFactory.class.getName() +
+                "<container component-adapter-factory='" + AdaptiveInjection.class.getName() +
                 "' component-monitor='" + StaticWriterComponentMonitor.class.getName() + "'>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
                 "</container>");

@@ -25,39 +25,39 @@ import java.util.Properties;
 
 
 /**
- * Factory for the AssimilatingBehavior. This factory will create {@link AssimilatingBehavior} instances for all
+ * Factory for the Assimilated. This factory will create {@link Assimilated} instances for all
  * {@link ComponentAdapter} instances created by the delegate. This will assimilate every component for a specific type.
  * 
  * @author J&ouml;rg Schaible
  */
-public class AssimilatingBehaviorFactory extends AbstractBehaviorFactory {
+public class Assimilating extends AbstractBehaviorFactory {
 
     private final ProxyFactory proxyFactory;
     private final Class assimilationType;
 
     /**
-     * Construct an AssimilatingBehaviorFactory. The instance will use the {@link StandardProxyFactory} using the JDK
+     * Construct an Assimilating. The instance will use the {@link StandardProxyFactory} using the JDK
      * implementation.
      * 
      * @param type The assimilated type.
      */
-    public AssimilatingBehaviorFactory(final Class type) {
+    public Assimilating(final Class type) {
         this(type, new StandardProxyFactory());
     }
 
     /**
-     * Construct an AssimilatingBehaviorFactory using a special {@link ProxyFactory}.
+     * Construct an Assimilating using a special {@link ProxyFactory}.
      * 
      * @param type The assimilated type.
      * @param proxyFactory The proxy factory to use.
      */
-    public AssimilatingBehaviorFactory(final Class type, final ProxyFactory proxyFactory) {
+    public Assimilating(final Class type, final ProxyFactory proxyFactory) {
         this.assimilationType = type;
         this.proxyFactory = proxyFactory;
     }
 
     /**
-     * Create a {@link AssimilatingBehavior}. This adapter will wrap the returned {@link ComponentAdapter} of the
+     * Create a {@link Assimilated}. This adapter will wrap the returned {@link ComponentAdapter} of the
      * deleated {@link ComponentFactory}.
      * 
      * @see ComponentFactory#createComponentAdapter(ComponentMonitor,LifecycleStrategy,Properties,Object,Class,Parameter...)
@@ -65,7 +65,7 @@ public class AssimilatingBehaviorFactory extends AbstractBehaviorFactory {
     public ComponentAdapter createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
             throws PicoCompositionException {
-        return new AssimilatingBehavior(assimilationType, super.createComponentAdapter(
+        return new Assimilated(assimilationType, super.createComponentAdapter(
                 componentMonitor, lifecycleStrategy, null, componentKey, componentImplementation, parameters), proxyFactory);
     }
 
@@ -74,7 +74,7 @@ public class AssimilatingBehaviorFactory extends AbstractBehaviorFactory {
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
                                                 ComponentAdapter adapter) {
-        return new AssimilatingBehavior(assimilationType, super.addComponentAdapter(componentMonitor,
+        return new Assimilated(assimilationType, super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,
                                          adapter));

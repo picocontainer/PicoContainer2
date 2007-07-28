@@ -7,7 +7,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
@@ -68,7 +68,7 @@ public class ImplementationHidingBehaviorFactoryTestCase extends AbstractCompone
 
 
     private final ComponentFactory implementationHidingComponentAdapterFactory =
-        new ImplementationHiding().wrap(new AdaptiveInjectionFactory());
+        new ImplementationHiding().wrap(new AdaptiveInjection());
 
 
     protected ComponentFactory createComponentFactory() {

@@ -255,7 +255,7 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
     
     public void testGroovyContainerBuilderCanBeScopedWithInlineScriptsUsingPicoSyntax() throws Exception{
       String picoScript =
-          "componentFactory = new org.picocontainer.injectors.AdaptiveInjectionFactory()\n"+
+          "componentFactory = new org.picocontainer.injectors.AdaptiveInjection()\n"+
           "pico = new org.picocontainer.DefaultPicoContainer(componentFactory, parent)\n"+
           "   if ( assemblyScope instanceof javax.servlet.ServletContext ){ \n" +
           "      System.out.println('Application scope parent '+parent)\n "+

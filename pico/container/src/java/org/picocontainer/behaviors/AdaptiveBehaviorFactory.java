@@ -18,7 +18,7 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.BehaviorFactory;
 import org.picocontainer.annotations.Cache;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjection;
 
 import java.io.Serializable;
 import java.util.List;
@@ -82,8 +82,8 @@ public class AdaptiveBehaviorFactory implements BehaviorFactory, Serializable {
         return lastFactory.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
     }
 
-    protected AdaptiveInjectionFactory makeInjectionFactory() {
-        return new AdaptiveInjectionFactory();
+    protected AdaptiveInjection makeInjectionFactory() {
+        return new AdaptiveInjection();
     }
 
     protected void processThreadSafe(Properties componentProperties, List<BehaviorFactory> list) {

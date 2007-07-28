@@ -43,7 +43,7 @@ import java.lang.reflect.Method;
  *     }
  * }
  *        
- * new AssimilatingBehavior(Foo.class, new InstanceAdapter(new Bar()));
+ * new Assimilated(Foo.class, new InstanceAdapter(new Bar()));
  * </pre></code>
  * <p>
  * Notice how Bar does not implement the interface Foo. But Bar does have an identical <code>size()</code> method.
@@ -52,14 +52,14 @@ import java.lang.reflect.Method;
  * @author J&ouml;rg Schaible
  * @author Michael Ward
  */
-public final class AssimilatingBehavior extends AbstractBehavior {
+public final class Assimilated extends AbstractBehavior {
 
     private final Class type;
     private final ProxyFactory proxyFactory;
     private final boolean isCompatible;
 
     /**
-     * Construct an AssimilatingBehavior. The <code>type</code> may not implement the type of the component instance.
+     * Construct an Assimilated. The <code>type</code> may not implement the type of the component instance.
      * If the component instance <b>does</b> implement the interface, no proxy is used though.
      * 
      * @param type The class type used as key.
@@ -67,7 +67,7 @@ public final class AssimilatingBehavior extends AbstractBehavior {
      * @param proxyFactory The {@link ProxyFactory} to use.
      * @throws PicoCompositionException Thrown if the <code>type</code> is not compatible and cannot be proxied.
      */
-    public AssimilatingBehavior(final Class type, final ComponentAdapter delegate, final ProxyFactory proxyFactory)
+    public Assimilated(final Class type, final ComponentAdapter delegate, final ProxyFactory proxyFactory)
             throws PicoCompositionException
     {
         super(delegate);
@@ -94,14 +94,14 @@ public final class AssimilatingBehavior extends AbstractBehavior {
     }
 
     /**
-     * Construct an AssimilatingBehavior. The <code>type</code> may not implement the type of the component instance.
+     * Construct an Assimilated. The <code>type</code> may not implement the type of the component instance.
      * The implementation will use JDK {@link java.lang.reflect.Proxy} instances. If the component instant <b>does </b>
      * implement the interface, no proxy is used anyway.
      * 
      * @param type The class type used as key.
      * @param delegate The delegated {@link ComponentAdapter}.
      */
-    public AssimilatingBehavior(final Class type, final ComponentAdapter delegate) {
+    public Assimilated(final Class type, final ComponentAdapter delegate) {
         this(type, delegate, new StandardProxyFactory());
     }
 

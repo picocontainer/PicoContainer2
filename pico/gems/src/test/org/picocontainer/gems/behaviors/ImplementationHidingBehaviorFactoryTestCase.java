@@ -5,7 +5,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Characteristics;
@@ -25,7 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public final class ImplementationHidingBehaviorFactoryTestCase extends AbstractComponentFactoryTestCase {
 
-    private final ComponentFactory implementationHidingComponentAdapterFactory = new ImplementationHiding().wrap(new AdaptiveInjectionFactory());
+    private final ComponentFactory implementationHidingComponentAdapterFactory = new ImplementationHiding().wrap(new AdaptiveInjection());
 
     public void testAddComponentUsesImplementationHidingBehavior() {
         DefaultPicoContainer pico =

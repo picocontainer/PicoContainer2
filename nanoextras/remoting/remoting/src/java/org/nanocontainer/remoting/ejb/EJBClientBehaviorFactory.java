@@ -22,7 +22,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.gems.adapters.ThreadLocalBehavior;
+import org.picocontainer.gems.adapters.ThreadLocalized;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.StandardProxyFactory;
@@ -85,7 +85,7 @@ public class EJBClientBehaviorFactory implements ComponentFactory {
             throws PicoCompositionException
     {
         try {
-            return new ThreadLocalBehavior(new EJBClientAdapter(
+            return new ThreadLocalized(new EJBClientAdapter(
                 componentKey, componentImplementation, environment, earlyBinding), proxyFactory);
         } catch (final ClassNotFoundException e) {
             throw new PicoCompositionException("Home interface not found", e);

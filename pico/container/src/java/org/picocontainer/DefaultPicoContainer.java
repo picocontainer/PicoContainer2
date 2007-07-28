@@ -19,7 +19,7 @@ import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -145,7 +145,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
     /**
-     * Creates a new container with the AdaptiveInjectionFactory using a
+     * Creates a new container with the AdaptiveInjection using a
      * custom ComponentMonitor
      *
      * @param monitor the ComponentMonitor to use
@@ -156,7 +156,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Creates a new container with the AdaptiveInjectionFactory using a
+     * Creates a new container with the AdaptiveInjection using a
      * custom ComponentMonitor and lifecycle strategy
      *
      * @param monitor           the ComponentMonitor to use
@@ -168,7 +168,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Creates a new container with the AdaptiveInjectionFactory using a
+     * Creates a new container with the AdaptiveInjection using a
      * custom lifecycle strategy
      *
      * @param lifecycleStrategy the lifecycle strategy to use.
@@ -189,7 +189,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Creates a new container with the AdaptiveInjectionFactory using a
+     * Creates a new container with the AdaptiveInjection using a
      * custom ComponentMonitor
      *
      * @param monitor the ComponentMonitor to use
@@ -199,7 +199,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Creates a new container with a (caching) {@link AdaptiveInjectionFactory}
+     * Creates a new container with a (caching) {@link AdaptiveInjection}
      * and a parent container.
      *
      * @param parent the parent container (used for component dependency lookups).

@@ -32,7 +32,7 @@ import java.util.Properties;
  * @author Paul Hammant
  * @version $Revision$
  */
-public class AdaptiveInjectionFactory implements InjectionFactory, Serializable {
+public class AdaptiveInjection implements InjectionFactory, Serializable {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,

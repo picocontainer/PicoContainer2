@@ -24,7 +24,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.monitors.LifecycleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.LifecycleComponentMonitor.LifecycleFailuresException;
@@ -314,7 +314,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
                 return true;
             }
         };
-        MutablePicoContainer pico = new DefaultPicoContainer( new AdaptiveInjectionFactory(), strategy, null );
+        MutablePicoContainer pico = new DefaultPicoContainer( new AdaptiveInjection(), strategy, null );
 
         StringBuffer sb = new StringBuffer();
 

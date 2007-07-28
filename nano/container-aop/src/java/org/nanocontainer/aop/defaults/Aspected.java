@@ -18,11 +18,11 @@ import org.picocontainer.behaviors.AbstractBehavior;
 /**
  * @author Stephen Molitor
  */
-public class AspectsBehavior extends AbstractBehavior {
+public class Aspected extends AbstractBehavior {
 
     private final AspectsApplicator aspectsApplicator;
 
-    public AspectsBehavior(AspectsApplicator aspectsApplicator, ComponentAdapter delegate) {
+    public Aspected(AspectsApplicator aspectsApplicator, ComponentAdapter delegate) {
         super(delegate);
         this.aspectsApplicator = aspectsApplicator;
     }

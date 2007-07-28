@@ -32,7 +32,7 @@ public final class AspectsBehaviorTestCase extends MockObjectTestCase {
         mockApplicator.expects(once()).method("applyAspects").with(same("componentKey"), same("addComponent"),
                 same(container)).will(returnValue("wrappedComponent"));
 
-        ComponentAdapter adapter = new AspectsBehavior((AspectsApplicator) mockApplicator.proxy(),
+        ComponentAdapter adapter = new Aspected((AspectsApplicator) mockApplicator.proxy(),
                 (ComponentAdapter) mockComponentAdapterDelegate.proxy());
         Object component = adapter.getComponentInstance(container);
         assertEquals("wrappedComponent", component);

@@ -20,7 +20,7 @@ import org.nanocontainer.integrationkit.DefaultContainerBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
+import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.behaviors.PropertyApplicator;
 import org.picocontainer.behaviors.PropertyApplying;
 import org.picocontainer.behaviors.Cached;
@@ -84,7 +84,7 @@ public final class PicoContainerTask extends Task {
     public final void execute() {
         ContainerBuilder containerBuilder = new DefaultContainerBuilder(containerComposer) {
             final ComponentFactory propertyFactory =
-                    new PropertyApplying().wrap(new AdaptiveInjectionFactory());
+                    new PropertyApplying().wrap(new AdaptiveInjection());
 
             protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
                 return new DefaultPicoContainer(propertyFactory);

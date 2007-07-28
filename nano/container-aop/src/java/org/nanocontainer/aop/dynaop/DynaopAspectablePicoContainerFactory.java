@@ -16,7 +16,7 @@ import org.nanocontainer.aop.AspectablePicoContainer;
 import org.nanocontainer.aop.AspectablePicoContainerFactory;
 import org.nanocontainer.aop.AspectsContainer;
 import org.nanocontainer.aop.AspectsManager;
-import org.nanocontainer.aop.defaults.AspectsBehaviorFactory;
+import org.nanocontainer.aop.defaults.Aspecting;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentFactory;
@@ -36,7 +36,7 @@ public class DynaopAspectablePicoContainerFactory implements AspectablePicoConta
     public AspectablePicoContainer createContainer(Class containerClass, AspectsManager aspectsManager,
                                                    ComponentFactory componentFactory, PicoContainer parent) {
 
-        ComponentFactory aspectsComponentAdapterFactory = new AspectsBehaviorFactory(aspectsManager).wrap(componentFactory);
+        ComponentFactory aspectsComponentAdapterFactory = new Aspecting(aspectsManager).wrap(componentFactory);
         MutablePicoContainer pico = createMutablePicoContainer(containerClass, aspectsComponentAdapterFactory, parent);
         return mixinAspectablePicoContainer(aspectsManager, pico);
     }

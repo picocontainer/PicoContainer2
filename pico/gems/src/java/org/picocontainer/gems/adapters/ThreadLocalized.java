@@ -31,7 +31,7 @@ import java.util.Set;
  * <p>
  * The adapter creates proxy instances, that will create the necessary instances on-the-fly invoking the methods of the
  * instance. Use this adapter, if you are instantiating your components in a single thread, but should be different when
- * accessed from different threads. See {@link ThreadLocalBehaviorFactory} for details.
+ * accessed from different threads. See {@link ThreadLocalizing} for details.
  * </p>
  * <p>
  * Note: Because this implementation uses a {@link Proxy}, you can only access the methods exposed by the implemented
@@ -40,19 +40,19 @@ import java.util.Set;
  * 
  * @author J&ouml;rg Schaible
  */
-public final class ThreadLocalBehavior extends AbstractBehavior {
+public final class ThreadLocalized extends AbstractBehavior {
 
     private transient Class[] interfaces;
     private final ProxyFactory proxyFactory;
 
     /**
-     * Construct a ThreadLocalBehavior.
+     * Construct a ThreadLocalized.
      * 
      * @param delegate The {@link ComponentAdapter} to delegate.
      * @param proxyFactory The {@link ProxyFactory} to use.
      * @throws PicoCompositionException Thrown if the component does not implement any interface.
      */
-    public ThreadLocalBehavior(final ComponentAdapter delegate, final ProxyFactory proxyFactory)
+    public ThreadLocalized(final ComponentAdapter delegate, final ProxyFactory proxyFactory)
             throws PicoCompositionException
     {
         super(new Cached(delegate, new ThreadLocalReference()));
@@ -61,12 +61,12 @@ public final class ThreadLocalBehavior extends AbstractBehavior {
     }
 
     /**
-     * Construct a ThreadLocalBehavior using {@link Proxy} instances.
+     * Construct a ThreadLocalized using {@link Proxy} instances.
      * 
      * @param delegate The {@link ComponentAdapter} to delegate.
      * @throws PicoCompositionException Thrown if the component does not implement any interface.
      */
-    public ThreadLocalBehavior(final ComponentAdapter delegate) throws PicoCompositionException {
+    public ThreadLocalized(final ComponentAdapter delegate) throws PicoCompositionException {
         this(new Cached(delegate, new ThreadLocalReference()), new StandardProxyFactory());
     }
 
