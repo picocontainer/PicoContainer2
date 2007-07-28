@@ -15,8 +15,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.parameters.CollectionComponentParameter;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -34,7 +33,7 @@ public class CollectionsTestCase
     private MutablePicoContainer pico;
 
     protected void setUp() throws Exception {
-        pico = new DefaultPicoContainer(new CachingBehaviorFactory());
+        pico = new DefaultPicoContainer(new Caching());
     }
 
     // START SNIPPET: bowl

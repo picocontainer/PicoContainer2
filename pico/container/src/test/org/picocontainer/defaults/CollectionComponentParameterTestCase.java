@@ -14,10 +14,9 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.parameters.CollectionComponentParameter;
@@ -99,7 +98,7 @@ public class CollectionComponentParameterTestCase
     }
 
     private MutablePicoContainer getDefaultPicoContainer() {
-        MutablePicoContainer mpc = new DefaultPicoContainer(new CachingBehaviorFactory());
+        MutablePicoContainer mpc = new DefaultPicoContainer(new Caching());
         mpc.addComponent(Bowl.class);
         mpc.addComponent(Cod.class);
         mpc.addComponent(Shark.class);
@@ -139,7 +138,7 @@ public class CollectionComponentParameterTestCase
     }
 
     public void testCollections() {
-        MutablePicoContainer mpc = new DefaultPicoContainer(new CachingBehaviorFactory());
+        MutablePicoContainer mpc = new DefaultPicoContainer(new Caching());
         mpc.addComponent(CollectedBowl.class, CollectedBowl.class,
                          new ComponentParameter(Cod.class, false), new ComponentParameter(Fish.class, false));
         mpc.addComponent(Cod.class);

@@ -179,7 +179,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder(SDI()).withBehaviors(caching(), threadSafe(), implHiding()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                "  componentFactory=org.picocontainer.behaviors.Caching\n" +
                 "    delegate=org.picocontainer.behaviors.SynchronizedBehaviorFactory\n" +
                 "      delegate=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
                 "        delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
@@ -264,7 +264,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withCaching().withHiddenImplementations().withSetterInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                "  componentFactory=org.picocontainer.behaviors.Caching\n" +
                 "    delegate=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
                 "      delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +

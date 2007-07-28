@@ -26,7 +26,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -335,13 +335,13 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
-                "import org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                "import org.picocontainer.behaviors.Caching\n" +
                 "import org.picocontainer.injectors.ConstructorInjectionFactory\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(componentFactory: new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory()), componentMonitor: monitor) {\n" +
+                "nano = builder.container(componentFactory: new Caching().wrap(new ConstructorInjectionFactory()), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -377,13 +377,13 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
-                "import org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                "import org.picocontainer.behaviors.Caching\n" +
                 "import org.picocontainer.injectors.ConstructorInjectionFactory\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(parent:parent, componentFactory: new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory()), componentMonitor: monitor) {\n" +
+                "nano = builder.container(parent:parent, componentFactory: new Caching().wrap(new ConstructorInjectionFactory()), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -502,7 +502,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     public void testBuildContainerWhenExpectedParentDependencyIsNotFound() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new CachingBehaviorFactory());
+        DefaultNanoContainer parent = new DefaultNanoContainer(new Caching());
 
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
@@ -596,7 +596,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     public void testWithDynamicClassPath() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new CachingBehaviorFactory());
+        DefaultNanoContainer parent = new DefaultNanoContainer(new Caching());
         Reader script = new StringReader(
                 "        builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n"
               + "        File testCompJar = org.nanocontainer.TestHelper.getTestCompJarFile()\n"
@@ -618,7 +618,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     public void testWithDynamicClassPathWithPermissions() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new CachingBehaviorFactory());
+        DefaultNanoContainer parent = new DefaultNanoContainer(new Caching());
         Reader script = new StringReader(
                 ""
                 + "        builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n"
@@ -641,7 +641,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     public void testGrantPermissionInWrongPlace() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new CachingBehaviorFactory());
+        DefaultNanoContainer parent = new DefaultNanoContainer(new Caching());
         try {
             Reader script = new StringReader("" +
                     "        builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n" +

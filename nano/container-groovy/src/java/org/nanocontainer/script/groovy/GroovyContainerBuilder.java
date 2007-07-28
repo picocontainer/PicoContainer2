@@ -27,9 +27,8 @@ import org.nanocontainer.NanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.nanocontainer.DefaultNanoContainer;
 
@@ -62,7 +61,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
 
         Binding binding = new Binding();
         if ( parentContainer == null ){
-            parentContainer = new DefaultNanoContainer(getClassLoader(), new DefaultPicoContainer(new CachingBehaviorFactory(), new EmptyPicoContainer()));
+            parentContainer = new DefaultNanoContainer(getClassLoader(), new DefaultPicoContainer(new Caching(), new EmptyPicoContainer()));
         }
         binding.setVariable("parent", parentContainer);
         binding.setVariable("builder", createGroovyNodeBuilder());

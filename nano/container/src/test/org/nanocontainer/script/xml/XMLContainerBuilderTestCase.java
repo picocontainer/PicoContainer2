@@ -665,7 +665,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script);
 
         assertEquals("org.picocontainer.DefaultPicoContainer\n" +
-                     "  componentFactory=org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                     "  componentFactory=org.picocontainer.behaviors.Caching\n" +
                      "    delegate=org.picocontainer.injectors.ConstructorInjectionFactory\n" +
                      "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                      "  lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +

@@ -22,7 +22,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 
 /**
  * Uses dynaop to create <code>AspectablePicoContainer</code> objects.
@@ -55,11 +55,11 @@ public class DynaopAspectablePicoContainerFactory implements AspectablePicoConta
     }
 
     public AspectablePicoContainer createContainer(PicoContainer parent) {
-        return createContainer(new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory()), parent);
+        return createContainer(new Caching().wrap(new ConstructorInjectionFactory()), parent);
     }
 
     public AspectablePicoContainer createContainer() {
-        return createContainer(new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory()));
+        return createContainer(new Caching().wrap(new ConstructorInjectionFactory()));
     }
 
     public AspectablePicoContainer makeChildContainer(AspectsManager aspectsManager, AspectablePicoContainer parent) {

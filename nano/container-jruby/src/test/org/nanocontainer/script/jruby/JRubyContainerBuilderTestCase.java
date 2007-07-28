@@ -265,11 +265,11 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
-                                         "CachingBehaviorFactory = org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                                         "Caching = org.picocontainer.behaviors.Caching\n" +
                                          "ConstructorInjectionFactory = org.picocontainer.injectors.ConstructorInjectionFactory\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
-                                         "container(:component_adapter_factory => CachingBehaviorFactory.new().wrap(ConstructorInjectionFactory.new), :component_monitor => monitor) {\n" +
+                                         "container(:component_adapter_factory => Caching.new().wrap(ConstructorInjectionFactory.new), :component_monitor => monitor) {\n" +
                                          "    component(A)\n" +
                                          "    component(:key => StringWriter, :instance => writer)\n" +
                                          "}");
@@ -303,11 +303,11 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
-                                         "CachingBehaviorFactory = org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                                         "Caching = org.picocontainer.behaviors.Caching\n" +
                                          "ConstructorInjectionFactory = org.picocontainer.injectors.ConstructorInjectionFactory\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
-                                         "container(:parent => $parent, :component_adapter_factory => CachingBehaviorFactory.new().wrap(ConstructorInjectionFactory.new), :component_monitor => monitor) {\n"
+                                         "container(:parent => $parent, :component_adapter_factory => Caching.new().wrap(ConstructorInjectionFactory.new), :component_monitor => monitor) {\n"
                                          +
                                          "    component(A)\n" +
                                          "    component(:key => StringWriter, :instance => writer)\n" +

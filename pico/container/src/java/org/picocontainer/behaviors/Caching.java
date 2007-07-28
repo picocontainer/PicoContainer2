@@ -25,7 +25,7 @@ import java.util.Properties;
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  * @version $Revision$
  */
-public class CachingBehaviorFactory extends AbstractBehaviorFactory {
+public class Caching extends AbstractBehaviorFactory {
 
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)

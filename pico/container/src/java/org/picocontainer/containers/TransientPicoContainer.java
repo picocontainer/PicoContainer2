@@ -12,17 +12,17 @@ package org.picocontainer.containers;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 public class TransientPicoContainer extends DefaultPicoContainer {
 
     public TransientPicoContainer() {
-        super(new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory()), new NullLifecycleStrategy(), null, new NullComponentMonitor());
+        super(new Caching().wrap(new ConstructorInjectionFactory()), new NullLifecycleStrategy(), null, new NullComponentMonitor());
     }
 
     public TransientPicoContainer(PicoContainer parent) {
-        super(new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory()), new NullLifecycleStrategy(), parent, new NullComponentMonitor());
+        super(new Caching().wrap(new ConstructorInjectionFactory()), new NullLifecycleStrategy(), parent, new NullComponentMonitor());
     }
 }

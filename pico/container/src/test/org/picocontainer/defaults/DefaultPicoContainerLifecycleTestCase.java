@@ -21,7 +21,7 @@ import org.picocontainer.PicoLifecycleException;
 import org.picocontainer.Startable;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
@@ -67,7 +67,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
     }
 
     public void testOrderOfStartShouldBeDependencyOrderAndStopAndDisposeTheOpposite() throws Exception {
-        DefaultPicoContainer parent = new DefaultPicoContainer(new CachingBehaviorFactory());
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         MutablePicoContainer child = parent.makeChildContainer();
 
         parent.addComponent("recording", StringBuffer.class);
@@ -177,7 +177,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
     }
 
     public void testStartStopOfDaemonizedThread() throws Exception {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new CachingBehaviorFactory());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Caching());
         pico.addComponent(FooRunnable.class);
 
         pico.getComponents();
@@ -200,7 +200,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
     }
 
     public void testComponentsAreStartedBreadthFirstAndStoppedAndDisposedDepthFirst() {
-        MutablePicoContainer parent = new DefaultPicoContainer(new CachingBehaviorFactory());
+        MutablePicoContainer parent = new DefaultPicoContainer(new Caching());
         parent.addComponent(Two.class);
         parent.addComponent("recording", StringBuffer.class);
         parent.addComponent(One.class);
@@ -214,7 +214,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
     }
 
     public void testMaliciousComponentCannotExistInAChildContainerAndSeeAnyElementOfContainerHierarchy() {
-        MutablePicoContainer parent = new DefaultPicoContainer(new CachingBehaviorFactory());
+        MutablePicoContainer parent = new DefaultPicoContainer(new Caching());
         parent.addComponent(Two.class);
         parent.addComponent("recording", StringBuffer.class);
         parent.addComponent(One.class);
@@ -247,7 +247,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
     }
 
     public void testOnlyStartableComponentsAreStartedOnStart() {
-        MutablePicoContainer pico = new DefaultPicoContainer(new CachingBehaviorFactory());
+        MutablePicoContainer pico = new DefaultPicoContainer(new Caching());
         pico.addComponent("recording", StringBuffer.class);
         pico.addComponent(One.class);
         pico.addComponent(NotStartable.class);
@@ -280,7 +280,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
     public void testShouldStackContainersLast() {
         // this is merely a code coverage test - but it doesn't seem to cover the StackContainersAtEndComparator
         // fully. oh well.
-        MutablePicoContainer pico = new DefaultPicoContainer(new CachingBehaviorFactory());
+        MutablePicoContainer pico = new DefaultPicoContainer(new Caching());
         pico.addComponent(ArrayList.class);
         pico.addComponent(DefaultPicoContainer.class);
         pico.addComponent(HashMap.class);

@@ -15,8 +15,7 @@ import org.jmock.MockObjectTestCase;
 import org.nanocontainer.nanowar.KeyConstants;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 
 import webwork.action.ServletActionContext;
 
@@ -31,7 +30,7 @@ public class PicoActionFactoryTestCase extends MockObjectTestCase {
     
     public void setUp(){
         factory = new PicoActionFactory();
-        container = new DefaultPicoContainer(new CachingBehaviorFactory());
+        container = new DefaultPicoContainer(new Caching());
         (new ActionContextScopeReference(KeyConstants.REQUEST_CONTAINER)).set(container);
     }
     

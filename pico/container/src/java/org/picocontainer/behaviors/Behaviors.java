@@ -10,7 +10,7 @@
 package org.picocontainer.behaviors;
 
 import org.picocontainer.behaviors.ImplementationHidingBehaviorFactory;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.SynchronizedBehaviorFactory;
 import org.picocontainer.BehaviorFactory;
 import org.picocontainer.behaviors.PropertyApplyingBehaviorFactory;
@@ -22,7 +22,7 @@ public class Behaviors {
     }
 
     public static BehaviorFactory caching() {
-        return new CachingBehaviorFactory();
+        return new Caching();
     }
 
     public static BehaviorFactory threadSafe() {

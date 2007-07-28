@@ -5,9 +5,8 @@ import org.nanocontainer.DefaultNanoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 
 import java.util.Set;
 import java.util.List;
@@ -19,7 +18,7 @@ public class ContainerElementHelper {
             parent = new EmptyPicoContainer();
         }
         if (componentFactory == null) {
-            componentFactory = new CachingBehaviorFactory();
+            componentFactory = new Caching();
         }
         return new DefaultNanoContainer(classLoader, new DefaultPicoContainer(componentFactory, parent));
 

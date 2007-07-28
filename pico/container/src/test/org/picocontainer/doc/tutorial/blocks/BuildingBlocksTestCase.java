@@ -16,7 +16,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.CachingBehavior;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.adapters.InstanceAdapter;
@@ -68,7 +68,7 @@ public class BuildingBlocksTestCase extends TestCase {
 
         // START SNIPPET: register-different-componentFactory
         MutablePicoContainer picoContainer = new DefaultPicoContainer(
-                new SynchronizedBehaviorFactory().wrap(new CachingBehaviorFactory().wrap(new SetterInjectionFactory())));
+                new SynchronizedBehaviorFactory().wrap(new Caching().wrap(new SetterInjectionFactory())));
         // END SNIPPET: register-different-componentFactory
     }
 

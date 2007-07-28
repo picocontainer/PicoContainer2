@@ -18,8 +18,7 @@ import junit.framework.TestCase;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.parameters.CollectionComponentParameter;
 import org.picocontainer.parameters.ComponentParameter;
 
@@ -34,7 +33,7 @@ public class MapsTestCase
     private MutablePicoContainer pico;
 
     protected void setUp() throws Exception {
-        pico = new DefaultPicoContainer(new CachingBehaviorFactory());
+        pico = new DefaultPicoContainer(new Caching());
     }
 
     // START SNIPPET: bowl
@@ -150,7 +149,7 @@ public class MapsTestCase
 
         // START SNIPPET: individualSelection
 
-        MutablePicoContainer mpc = new DefaultPicoContainer(new CachingBehaviorFactory());
+        MutablePicoContainer mpc = new DefaultPicoContainer(new Caching());
         mpc.addComponent("Tom", Cod.class);
         mpc.addComponent("Dick", Cod.class);
         mpc.addComponent("Harry", Cod.class);

@@ -11,7 +11,7 @@ package org.picocontainer.containers;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.ImplementationHidingBehaviorFactory;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Characteristics;
@@ -36,7 +36,7 @@ public class ImplementationHidingWithDefaultPicoContainerTestCase extends Abstra
     }
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultPicoContainer(new CachingBehaviorFactory().wrap(new ImplementationHidingBehaviorFactory().wrap(new ConstructorInjectionFactory())), parent);
+        return new DefaultPicoContainer(new Caching().wrap(new ImplementationHidingBehaviorFactory().wrap(new ConstructorInjectionFactory())), parent);
     }
     
     public void testSameInstanceCanBeUsedAsDifferentTypeWhenCaching() {

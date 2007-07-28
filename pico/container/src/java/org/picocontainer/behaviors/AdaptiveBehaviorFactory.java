@@ -97,7 +97,7 @@ public class AdaptiveBehaviorFactory implements BehaviorFactory, Serializable {
                                        List<BehaviorFactory> list) {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CACHE) ||
             componentImplementation.getAnnotation(Cache.class) != null) {
-            list.add(new CachingBehaviorFactory());
+            list.add(new Caching());
         }
     }
 

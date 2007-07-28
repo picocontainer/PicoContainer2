@@ -25,8 +25,7 @@ import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
+import org.picocontainer.behaviors.Caching;
 
 /**
  * The script uses the {@code nanocontainer.rb} script to create an instance of
@@ -63,7 +62,7 @@ public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
         if (parentContainer == null) {
             parentContainer = new EmptyPicoContainer();
         }
-        parentContainer = new DefaultNanoContainer(getClassLoader(), new DefaultPicoContainer(new CachingBehaviorFactory(), parentContainer));
+        parentContainer = new DefaultNanoContainer(getClassLoader(), new DefaultPicoContainer(new Caching(), parentContainer));
 
         Ruby ruby = JavaEmbedUtils.initialize(Collections.EMPTY_LIST);
         ruby.getLoadService().require("org/nanocontainer/script/jruby/nanobuilder");

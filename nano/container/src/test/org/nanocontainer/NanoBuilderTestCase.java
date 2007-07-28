@@ -13,17 +13,9 @@ import org.picocontainer.containers.EmptyPicoContainer;
 import static org.picocontainer.injectors.Injectors.SDI;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.io.IOException;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.Converter;
-import com.thoughtworks.xstream.converters.MarshallingContext;
-import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import junit.framework.TestCase;
 
 public class NanoBuilderTestCase extends TestCase {
@@ -144,7 +136,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = pxr.simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                "    componentFactory=org.picocontainer.behaviors.Caching\n" +
                 "      delegate=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
                 "        delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -233,7 +225,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = pxr.simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.behaviors.CachingBehaviorFactory\n" +
+                "    componentFactory=org.picocontainer.behaviors.Caching\n" +
                 "      delegate=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
                 "        delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +

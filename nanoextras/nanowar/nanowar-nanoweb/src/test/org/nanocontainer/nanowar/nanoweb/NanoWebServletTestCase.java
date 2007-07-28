@@ -6,8 +6,7 @@ import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.nanowar.KeyConstants;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -82,7 +81,7 @@ public class NanoWebServletTestCase extends MockObjectTestCase {
                           .method("getAttribute")
                           .with(eq(KeyConstants.BUILDER))
                           .will(returnValue(containerBuilderMock.proxy()));
-        requestContainer = new DefaultPicoContainer(new CachingBehaviorFactory());
+        requestContainer = new DefaultPicoContainer(new Caching());
         requestMock.expects(once())
                    .method("getAttribute")
                    .with(eq(KeyConstants.REQUEST_CONTAINER))

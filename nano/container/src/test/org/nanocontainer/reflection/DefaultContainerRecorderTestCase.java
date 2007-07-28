@@ -21,8 +21,7 @@ import org.nanocontainer.testmodel.WilmaImpl;
 import org.nanocontainer.DefaultNanoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.parameters.ComponentParameter;
 
 /**
@@ -76,7 +75,7 @@ public class DefaultContainerRecorderTestCase extends TestCase {
 
 
     public void testXMLRecorderHierarchy() {
-        MutablePicoContainer parentPrototype = new DefaultPicoContainer(new CachingBehaviorFactory());
+        MutablePicoContainer parentPrototype = new DefaultPicoContainer(new Caching());
         DefaultContainerRecorder parentRecorder = new DefaultContainerRecorder(parentPrototype);
         StringReader parentResource = new StringReader("" 
                 + "<container>" 

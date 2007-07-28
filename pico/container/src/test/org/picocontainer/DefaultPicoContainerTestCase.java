@@ -25,7 +25,7 @@ import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
@@ -178,7 +178,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
 
 
-        DefaultPicoContainer picoContainer = new DefaultPicoContainer(new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory()));
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjectionFactory()));
 
         picoContainer.addComponent(Service.class);
         picoContainer.as(Characteristics.NO_CACHE).addAdapter(new ConstructorInjector(TransientComponent.class, TransientComponent.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));

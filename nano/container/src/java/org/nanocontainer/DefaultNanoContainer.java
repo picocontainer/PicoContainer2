@@ -23,13 +23,12 @@ import org.picocontainer.PicoException;
 import org.picocontainer.security.CustomPermissionsURLClassLoader;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 
 import java.io.Serializable;
 import java.net.URL;
 import java.security.AccessController;
-import java.security.PermissionCollection;
 import java.security.PrivilegedAction;
 import java.security.Permissions;
 import java.util.ArrayList;
@@ -89,7 +88,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     }
 
     public DefaultNanoContainer(ClassLoader classLoader, PicoContainer parent, ComponentMonitor componentMonitor) {
-        super(new DefaultPicoContainer(new CachingBehaviorFactory(), parent));
+        super(new DefaultPicoContainer(new Caching(), parent));
         parentClassLoader = classLoader;
         ((ComponentMonitorStrategy)getDelegate()).changeMonitor(componentMonitor);
     }

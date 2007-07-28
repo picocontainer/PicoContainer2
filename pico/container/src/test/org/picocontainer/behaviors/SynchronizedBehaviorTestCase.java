@@ -22,7 +22,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.behaviors.CachingBehavior;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.SynchronizedBehavior;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
@@ -152,7 +152,7 @@ public final class SynchronizedBehaviorTestCase extends TestCase {
 
     public void testSingletonCreationWithSynchronizedAdapterOutsideUsingFactory() throws InterruptedException {
         DefaultPicoContainer pico = new DefaultPicoContainer(
-                new SynchronizedBehaviorFactory().wrap(new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory()))
+                new SynchronizedBehaviorFactory().wrap(new Caching().wrap(new ConstructorInjectionFactory()))
         );
         pico.addComponent("slow", SlowCtor.class);
         runConcurrencyTest(pico);

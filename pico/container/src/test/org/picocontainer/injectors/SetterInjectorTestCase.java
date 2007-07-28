@@ -23,7 +23,7 @@ import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import static org.picocontainer.parameters.ComponentParameter.*;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.PersonBean;
@@ -40,7 +40,7 @@ public class SetterInjectorTestCase
     }
 
     protected ComponentFactory createDefaultComponentAdapterFactory() {
-        return new CachingBehaviorFactory().wrap(new SetterInjectionFactory());
+        return new Caching().wrap(new SetterInjectionFactory());
     }
 
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
@@ -409,7 +409,7 @@ public class SetterInjectorTestCase
     // TODO PICO-188
     // http://jira.codehaus.org/browse/PICO-188
     public void FIXME_testShouldBeAbleToHandleMutualDependenciesWithSetterInjection() {
-        MutablePicoContainer pico = new DefaultPicoContainer(new CachingBehaviorFactory().wrap(new SetterInjectionFactory()));
+        MutablePicoContainer pico = new DefaultPicoContainer(new Caching().wrap(new SetterInjectionFactory()));
 
         pico.addComponent(Yin.class);
         pico.addComponent(Yang.class);

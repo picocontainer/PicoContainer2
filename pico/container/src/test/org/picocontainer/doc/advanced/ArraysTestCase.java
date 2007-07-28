@@ -17,7 +17,7 @@ import org.picocontainer.parameters.CollectionComponentParameter;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +34,7 @@ public class ArraysTestCase
     private MutablePicoContainer pico;
 
     protected void setUp() throws Exception {
-        pico = new DefaultPicoContainer(new CachingBehaviorFactory().wrap(new ConstructorInjectionFactory()));
+        pico = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjectionFactory()));
     }
 
     private void explanation() {

@@ -12,9 +12,8 @@ import junit.framework.TestCase;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.DecoratedTouchable;
@@ -42,7 +41,7 @@ public class ConstraintIntegrationTestCase
     protected void setUp() throws Exception {
         super.setUp();
 
-        container = new DefaultPicoContainer(new CachingBehaviorFactory());
+        container = new DefaultPicoContainer(new Caching());
         container.addComponent(SimpleTouchable.class);
         container.addComponent(DependsOnTouchable.class);
         container.addComponent(DependsOnTwoComponents.class);

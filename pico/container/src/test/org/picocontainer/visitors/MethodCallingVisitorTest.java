@@ -10,8 +10,7 @@ package org.picocontainer.visitors;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.AdaptiveInjectionFactory;
-import org.picocontainer.behaviors.CachingBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.visitors.MethodCallingVisitor;
 import org.picocontainer.testmodel.Touchable;
 
@@ -38,8 +37,8 @@ public class MethodCallingVisitorTest extends MockObjectTestCase {
     }
 
     public void testVisitorWillTraverseAndCall() throws Exception {
-        MutablePicoContainer parent = new DefaultPicoContainer(new CachingBehaviorFactory());
-        MutablePicoContainer child = new DefaultPicoContainer(new CachingBehaviorFactory());
+        MutablePicoContainer parent = new DefaultPicoContainer(new Caching());
+        MutablePicoContainer child = new DefaultPicoContainer(new Caching());
         parent.addChildContainer(child);
         parent.addComponent(List.class, LinkedList.class);
         child.addComponent(List.class, LinkedList.class);

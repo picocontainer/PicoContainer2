@@ -23,7 +23,7 @@ public class Issue0170TestCase extends AbstractScriptedContainerBuilderTestCase 
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-adapter-factory key='factory' class='org.picocontainer.gems.behaviors.HotSwappingBehaviorFactory'>"+
-                "    <component-adapter-factory class='org.picocontainer.behaviors.CachingBehaviorFactory'>"+
+                "    <component-adapter-factory class='org.picocontainer.behaviors.Caching'>"+
                 "      <component-adapter-factory class='org.picocontainer.injectors.ConstructorInjectionFactory'/>"+
                 "    </component-adapter-factory>"+
                 "  </component-adapter-factory>"+
