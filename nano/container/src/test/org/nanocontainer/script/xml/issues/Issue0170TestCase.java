@@ -9,7 +9,7 @@ import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.gems.behaviors.HotSwappingBehavior;
+import org.picocontainer.gems.behaviors.HotSwappable;
 
 //http://jira.codehaus.org/browse/NANO-170
 public class Issue0170TestCase extends AbstractScriptedContainerBuilderTestCase {
@@ -22,7 +22,7 @@ public class Issue0170TestCase extends AbstractScriptedContainerBuilderTestCase 
     public void BROKEN_testHotSwappingCAF() {
         Reader script = new StringReader("" +
                 "<container>" +
-                "  <component-adapter-factory key='factory' class='org.picocontainer.gems.behaviors.HotSwappingBehaviorFactory'>"+
+                "  <component-adapter-factory key='factory' class='org.picocontainer.gems.behaviors.HotSwapping'>"+
                 "    <component-adapter-factory class='org.picocontainer.behaviors.Caching'>"+
                 "      <component-adapter-factory class='org.picocontainer.injectors.ConstructorInjectionFactory'/>"+
                 "    </component-adapter-factory>"+
@@ -37,8 +37,8 @@ public class Issue0170TestCase extends AbstractScriptedContainerBuilderTestCase 
 
         ComponentAdapter listCA = pico.getComponentAdapter(List.class, null);
 
-        assertTrue(listCA instanceof HotSwappingBehavior);
-        HotSwappingBehavior hsca = (HotSwappingBehavior) listCA;
+        assertTrue(listCA instanceof HotSwappable);
+        HotSwappable hsca = (HotSwappable) listCA;
         ArrayList newList = new ArrayList();
         List oldList = (List) hsca.swapRealInstance(newList);
 
