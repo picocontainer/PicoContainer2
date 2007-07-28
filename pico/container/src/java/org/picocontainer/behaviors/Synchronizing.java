@@ -22,11 +22,11 @@ import java.util.Properties;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class SynchronizedBehaviorFactory extends AbstractBehaviorFactory {
+public class Synchronizing extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) {
         removePropertiesIfPresent(componentProperties, Characteristics.THREAD_SAFE);
-        return new SynchronizedBehavior(super.createComponentAdapter(
+        return new Synchronized(super.createComponentAdapter(
             componentMonitor,
             lifecycleStrategy,
             componentProperties,
@@ -40,7 +40,7 @@ public class SynchronizedBehaviorFactory extends AbstractBehaviorFactory {
                                                 Properties componentProperties,
                                                 ComponentAdapter adapter) {
         removePropertiesIfPresent(componentProperties, Characteristics.THREAD_SAFE);
-        return new SynchronizedBehavior(super.addComponentAdapter(componentMonitor,
+        return new Synchronized(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,
                                          adapter));

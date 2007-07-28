@@ -26,8 +26,8 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.behaviors.PropertyApplyingBehavior;
-import org.picocontainer.behaviors.PropertyApplyingBehaviorFactory;
+import org.picocontainer.behaviors.PropertyApplicator;
+import org.picocontainer.behaviors.PropertyApplying;
 import org.picocontainer.injectors.AdaptiveInjectionFactory;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.ComponentFactory;
@@ -153,14 +153,14 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
     }
 
     protected ComponentFactory createComponentFactory() {
-        return new PropertyApplyingBehaviorFactory().wrap(new AdaptiveInjectionFactory());
+        return new PropertyApplying().wrap(new AdaptiveInjectionFactory());
     }
 
     public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {
-        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory)createComponentFactory();
+        PropertyApplying factory = (PropertyApplying)createComponentFactory();
 
-        PropertyApplyingBehavior adapter =
-            (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(),
+        PropertyApplicator adapter =
+            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
                                                                          .CDI),
@@ -192,13 +192,13 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
     }
 
     private ComponentAdapter createAdapterCallingSetMessage(Class impl) {
-        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory)createComponentFactory();
+        PropertyApplying factory = (PropertyApplying)createComponentFactory();
 
         Map properties = new HashMap();
         properties.put("message", "hello");
 
-        PropertyApplyingBehavior adapter =
-            (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(),
+        PropertyApplicator adapter =
+            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
                                                                          .CDI),
@@ -210,7 +210,7 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
     }
 
     public void testAllJavaPrimitiveAttributesShouldBeSetByTheAdapter() throws MalformedURLException {
-        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory)createComponentFactory();
+        PropertyApplying factory = (PropertyApplying)createComponentFactory();
         Map properties = new HashMap();
         properties.put("byte_", "1");
         properties.put("short_", "2");
@@ -224,8 +224,8 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
         properties.put("url_", "http://www.picocontainer.org/");
         properties.put("string_", "g string");
         properties.put("class_", "javax.swing.JLabel");
-        PropertyApplyingBehavior adapter =
-            (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(),
+        PropertyApplicator adapter =
+            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
                                                                          .CDI),
@@ -252,13 +252,13 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
 
     public void testSetDependenComponentWillBeSetByTheAdapter() {
         picoContainer.addComponent("b", B.class);
-        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory)createComponentFactory();
+        PropertyApplying factory = (PropertyApplying)createComponentFactory();
         Map properties = new HashMap();
 
         // the second b is the key of the B implementation
         properties.put("b", "b");
-        PropertyApplyingBehavior adapter =
-            (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(),
+        PropertyApplicator adapter =
+            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
                                                                          .CDI),
@@ -274,14 +274,14 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
     }
 
     public void testSetBeanPropertiesWithValueObjects() {
-        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory)createComponentFactory();
+        PropertyApplying factory = (PropertyApplying)createComponentFactory();
 
         Map properties = new HashMap();
         properties.put("lenient", Boolean.FALSE);
         properties.put("2DigitYearStart", new Date(0));
 
-        PropertyApplyingBehavior adapter =
-            (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(),
+        PropertyApplicator adapter =
+            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
                                                                          .CDI),
@@ -311,11 +311,11 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
             }
         };
 
-        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory)createComponentFactory();
+        PropertyApplying factory = (PropertyApplying)createComponentFactory();
 
 
-        PropertyApplyingBehavior adapter =
-            (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(),
+        PropertyApplicator adapter =
+            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
                                                                          .CDI),
@@ -332,7 +332,7 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
         try {
             Object testResult = picoContainer.getComponent("TestBean");
             fail(
-                "Getting a bad test result through PropertyApplyingBehavior should have thrown exception.  Instead got:" +
+                "Getting a bad test result through PropertyApplicator should have thrown exception.  Instead got:" +
                 testResult);
         } catch (PicoCompositionException ex) {
             //A-ok
@@ -342,15 +342,15 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
 
 
     public void testSetBeanPropertiesWithInvalidValueTypes() {
-        PropertyApplyingBehaviorFactory factory = (PropertyApplyingBehaviorFactory)createComponentFactory();
+        PropertyApplying factory = (PropertyApplying)createComponentFactory();
 
 
         Map properties = new HashMap();
 
         // Set two digit year to a boolean (should throw error)
         properties.put("2DigitYearStart", Boolean.FALSE);
-        PropertyApplyingBehavior adapter =
-            (PropertyApplyingBehavior)factory.createComponentAdapter(new NullComponentMonitor(),
+        PropertyApplicator adapter =
+            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
                                                                          .CDI),
@@ -364,7 +364,7 @@ public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFa
         try {
             SimpleDateFormat dateFormat = picoContainer.getComponent(SimpleDateFormat.class);
             fail(
-                "Getting a bad test result through PropertyApplyingBehavior should have thrown exception.  Instead got:" +
+                "Getting a bad test result through PropertyApplicator should have thrown exception.  Instead got:" +
                 dateFormat);
         } catch (ClassCastException ex) {
             //A-ok

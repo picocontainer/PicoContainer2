@@ -12,7 +12,7 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.behaviors.PropertyApplyingBehavior;
+import org.picocontainer.behaviors.PropertyApplicator;
 import org.picocontainer.behaviors.Cached;
 
 import java.lang.reflect.Method;
@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 /**
  * Instantiates components using empty constructors and
  * <a href="http://picocontainer.org/setter-injection.html">Setter Injection</a>.
- * For easy setting of primitive properties, also see {@link PropertyApplyingBehavior}.
+ * For easy setting of primitive properties, also see {@link PropertyApplicator}.
  * <p/>
  * <em>
  * Note that this class doesn't cache instances. If you want caching,

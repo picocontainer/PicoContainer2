@@ -16,18 +16,18 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
-import org.picocontainer.behaviors.PropertyApplyingBehavior;
+import org.picocontainer.behaviors.PropertyApplicator;
 
 import java.util.Properties;
 
 /**
  * A {@link org.picocontainer.ComponentFactory} that creates
- * {@link PropertyApplyingBehavior} instances.
+ * {@link PropertyApplicator} instances.
  * 
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public final class PropertyApplyingBehaviorFactory extends AbstractBehaviorFactory {
+public final class PropertyApplying extends AbstractBehaviorFactory {
 
     /**
      * {@inheritDoc}
@@ -35,7 +35,7 @@ public final class PropertyApplyingBehaviorFactory extends AbstractBehaviorFacto
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
         ComponentAdapter decoratedAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                          componentProperties, componentKey, componentImplementation, parameters);
-        return new PropertyApplyingBehavior(decoratedAdapter);
+        return new PropertyApplicator(decoratedAdapter);
     }
 
 
@@ -43,7 +43,7 @@ public final class PropertyApplyingBehaviorFactory extends AbstractBehaviorFacto
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
                                                 ComponentAdapter adapter) {
-        return new PropertyApplyingBehavior(super.addComponentAdapter(componentMonitor,
+        return new PropertyApplicator(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,
                                          adapter));

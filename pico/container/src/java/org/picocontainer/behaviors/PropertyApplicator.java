@@ -49,17 +49,17 @@ import org.picocontainer.behaviors.Cached;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class PropertyApplyingBehavior extends AbstractBehavior {
+public class PropertyApplicator extends AbstractBehavior {
     private Map properties;
     private transient Map<String, Method> setters = null;
 
     /**
-     * Construct a PropertyApplyingBehavior.
+     * Construct a PropertyApplicator.
      *
      * @param delegate the wrapped {@link ComponentAdapter}
      * @throws PicoCompositionException {@inheritDoc}
      */
-    public PropertyApplyingBehavior(ComponentAdapter delegate) throws PicoCompositionException {
+    public PropertyApplicator(ComponentAdapter delegate) throws PicoCompositionException {
         super(delegate);
     }
 
@@ -89,11 +89,11 @@ public class PropertyApplyingBehavior extends AbstractBehavior {
                 Object valueToInvoke = this.getSetterParameter(propertyName, propertyValue, componentInstance, container);
 
                 try {
-                    componentMonitor.invoking(container, PropertyApplyingBehavior.this, setter, componentInstance);
+                    componentMonitor.invoking(container, PropertyApplicator.this, setter, componentInstance);
                     long startTime = System.currentTimeMillis();
                     setter.invoke(componentInstance, valueToInvoke);
                     componentMonitor.invoked(container,
-                                             PropertyApplyingBehavior.this,
+                                             PropertyApplicator.this,
                                              setter, componentInstance, System.currentTimeMillis() - startTime);
                 } catch (final Exception e) {
                     componentMonitor.invocationFailed(setter, componentInstance, e);

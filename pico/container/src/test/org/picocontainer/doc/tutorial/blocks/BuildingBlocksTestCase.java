@@ -22,8 +22,8 @@ import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.injectors.SetterInjectionFactory;
-import org.picocontainer.behaviors.SynchronizedBehavior;
-import org.picocontainer.behaviors.SynchronizedBehaviorFactory;
+import org.picocontainer.behaviors.Synchronized;
+import org.picocontainer.behaviors.Synchronizing;
 import org.picocontainer.doc.introduction.Apple;
 import org.picocontainer.doc.introduction.Juicer;
 import org.picocontainer.doc.introduction.Peeler;
@@ -68,7 +68,7 @@ public class BuildingBlocksTestCase extends TestCase {
 
         // START SNIPPET: register-different-componentFactory
         MutablePicoContainer picoContainer = new DefaultPicoContainer(
-                new SynchronizedBehaviorFactory().wrap(new Caching().wrap(new SetterInjectionFactory())));
+                new Synchronizing().wrap(new Caching().wrap(new SetterInjectionFactory())));
         // END SNIPPET: register-different-componentFactory
     }
 
@@ -76,7 +76,7 @@ public class BuildingBlocksTestCase extends TestCase {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         // START SNIPPET: register-equivalent-at-length2
         picoContainer.addAdapter(
-                new SynchronizedBehavior(
+                new Synchronized(
                         new Cached(
                                 new SetterInjector(
                                         JuicerBean.class, JuicerBean.class, (Parameter[])null, new NullComponentMonitor(), new NullLifecycleStrategy()))));

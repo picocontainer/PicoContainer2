@@ -11,8 +11,8 @@ package org.picocontainer;
 
 import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implHiding;
-import org.picocontainer.behaviors.PropertyApplyingBehaviorFactory;
-import org.picocontainer.behaviors.SynchronizedBehaviorFactory;
+import org.picocontainer.behaviors.PropertyApplying;
+import org.picocontainer.behaviors.Synchronizing;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
 import static org.picocontainer.injectors.Injectors.CDI;
@@ -163,7 +163,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withThreadSafety() {
-        componentFactories.push(SynchronizedBehaviorFactory.class);
+        componentFactories.push(Synchronizing.class);
         return this;
     }
 
@@ -197,7 +197,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withPropertyApplier() {
-        componentFactories.push(PropertyApplyingBehaviorFactory.class);
+        componentFactories.push(PropertyApplying.class);
         return this;
     }
 }

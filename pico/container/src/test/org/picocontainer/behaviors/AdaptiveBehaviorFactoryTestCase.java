@@ -105,7 +105,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
         String foo = xs.toXML(ca);
 
         int ih = foo.indexOf(HiddenImplementation.class.getName());
-        int sb = foo.indexOf(SynchronizedBehavior.class.getName());
+        int sb = foo.indexOf(Synchronized.class.getName());
 
         // check right nesting order
         assertTrue(ih>0);

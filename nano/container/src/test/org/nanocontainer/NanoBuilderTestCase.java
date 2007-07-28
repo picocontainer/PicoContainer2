@@ -239,7 +239,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = pxr.simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.behaviors.SynchronizedBehaviorFactory\n" +
+                "    componentFactory=org.picocontainer.behaviors.Synchronizing\n" +
                 "      delegate=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +

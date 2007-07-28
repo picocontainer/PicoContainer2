@@ -40,7 +40,7 @@ public class JMXExposingBehaviorFactoryTestCase extends MockObjectTestCase {
     }
 
     public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException {
-        final JMXExposingBehaviorFactory componentFactory = new JMXExposingBehaviorFactory(
+        final JMXExposing componentFactory = new JMXExposing(
                 (MBeanServer)mockMBeanServer.proxy());
         componentFactory.wrap(new ConstructorInjectionFactory());
 
@@ -54,7 +54,7 @@ public class JMXExposingBehaviorFactoryTestCase extends MockObjectTestCase {
     }
 
     public void testWillRegisterByDefaultComponentsThatAreMBeansUnlessNOJMX() throws NotCompliantMBeanException {
-        final JMXExposingBehaviorFactory componentFactory = new JMXExposingBehaviorFactory(
+        final JMXExposing componentFactory = new JMXExposing(
                 (MBeanServer)mockMBeanServer.proxy());
         componentFactory.wrap(new ConstructorInjectionFactory());
 
@@ -68,13 +68,13 @@ public class JMXExposingBehaviorFactoryTestCase extends MockObjectTestCase {
 
     public void testConstructorThrowsNPE() {
         try {
-            new JMXExposingBehaviorFactory(
+            new JMXExposing(
                     null, new DynamicMBeanProvider[]{});
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {
         }
         try {
-            new JMXExposingBehaviorFactory(
+            new JMXExposing(
                     (MBeanServer)mockMBeanServer.proxy(), null);
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {

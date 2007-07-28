@@ -24,10 +24,10 @@ import java.util.Properties;
 
 
 /**
- * {@link org.picocontainer.ComponentFactory} that instantiates {@link JMXExposingBehavior} instances.
+ * {@link org.picocontainer.ComponentFactory} that instantiates {@link JMXExposed} instances.
  * @author J&ouml;rg Schaible
  */
-public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
+public class JMXExposing extends AbstractBehaviorFactory {
 
     private final MBeanServer mBeanServer;
     private final DynamicMBeanProvider[] providers;
@@ -40,7 +40,7 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
      * @throws NullPointerException Thrown if the {@link MBeanServer} or the array with the {@link DynamicMBeanProvider}
      *             instances is null.
      */
-    public JMXExposingBehaviorFactory(
+    public JMXExposing(
             final MBeanServer mBeanServer,
             final DynamicMBeanProvider[] providers) throws NullPointerException {
         if (mBeanServer == null || providers == null) {
@@ -58,14 +58,14 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
      * @throws NullPointerException Thrown if the {@link MBeanServer} or the array with the {@link DynamicMBeanProvider}
      *             instances is null.
      */
-    public JMXExposingBehaviorFactory(final MBeanServer mBeanServer)
+    public JMXExposing(final MBeanServer mBeanServer)
             throws NullPointerException {
         this(mBeanServer, new DynamicMBeanProvider[]{new DynamicMBeanComponentProvider()});
     }
 
     /**
      * Retrieve a {@link ComponentAdapter}. Wrap the instance retrieved by the delegate with an instance of a
-     * {@link JMXExposingBehavior}.
+     * {@link JMXExposed}.
      * @see org.picocontainer.ComponentFactory#createComponentAdapter(ComponentMonitor,LifecycleStrategy,Properties,Object,Class,Parameter...)
      */
     public ComponentAdapter createComponentAdapter(
@@ -77,7 +77,7 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_JMX)) {
             return componentAdapter;            
         } else {
-            return new JMXExposingBehavior(componentAdapter, mBeanServer, providers);
+            return new JMXExposed(componentAdapter, mBeanServer, providers);
         }
     }
 
@@ -92,7 +92,7 @@ public class JMXExposingBehaviorFactory extends AbstractBehaviorFactory {
                                              componentProperties,
                                              adapter);
         } else {
-            return new JMXExposingBehavior(super.addComponentAdapter(componentMonitor,
+            return new JMXExposed(super.addComponentAdapter(componentMonitor,
                                                                      lifecycleStrategy,
                                                                      componentProperties,
                                                                      adapter), mBeanServer, providers);

@@ -180,7 +180,7 @@ public class PicoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.behaviors.Caching\n" +
-                "    delegate=org.picocontainer.behaviors.SynchronizedBehaviorFactory\n" +
+                "    delegate=org.picocontainer.behaviors.Synchronizing\n" +
                 "      delegate=org.picocontainer.behaviors.ImplementationHiding\n" +
                 "        delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -277,7 +277,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withThreadSafety().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.behaviors.SynchronizedBehaviorFactory\n" +
+                "  componentFactory=org.picocontainer.behaviors.Synchronizing\n" +
                 "    delegate=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
@@ -289,7 +289,7 @@ public class PicoBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withPropertyApplier().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                     "  componentFactory=org.picocontainer.behaviors.PropertyApplyingBehaviorFactory\n" +
+                     "  componentFactory=org.picocontainer.behaviors.PropertyApplying\n" +
                      "    delegate=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
                      "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                      "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
