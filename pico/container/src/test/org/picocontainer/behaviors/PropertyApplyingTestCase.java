@@ -40,7 +40,7 @@ import org.picocontainer.testmodel.Touchable;
  * @author Mirko Novakovic
  * @version $Revision$
  */
-public class PropertyApplyingBehaviorFactoryTestCase extends AbstractComponentFactoryTestCase {
+public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
 
     public static class Foo {
         public String message;

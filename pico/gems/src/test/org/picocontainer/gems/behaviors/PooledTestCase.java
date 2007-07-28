@@ -29,7 +29,7 @@ import com.thoughtworks.proxy.toys.pool.Poolable;
 /**
  * @author J&ouml;rg Schaible
  */
-public final class PoolingBehaviorTestCase extends AbstractComponentAdapterTestCase {
+public final class PooledTestCase extends AbstractComponentAdapterTestCase {
 
     public static interface Identifiable {
         int getId();

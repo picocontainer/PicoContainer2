@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * @author J&ouml;rg Schaible
  */
-public class AssimilatingBehaviorFactoryTestCase extends AbstractComponentFactoryTestCase {
+public class AssimilatingTestCase extends AbstractComponentFactoryTestCase {
 
     /**
      * @see org.picocontainer.tck.AbstractComponentFactoryTestCase#createComponentFactory()

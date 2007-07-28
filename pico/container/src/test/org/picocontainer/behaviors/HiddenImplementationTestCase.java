@@ -23,7 +23,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.behaviors.HiddenImplementation;
 import org.picocontainer.injectors.ConstructorInjector;
 
-public class ImplementationHidingBehaviorTestCase extends TestCase {
+public class HiddenImplementationTestCase extends TestCase {
 
     public void testMultipleInterfacesCanBeHidden() {
         ComponentAdapter ca = new ConstructorInjector(new Class[]{ActionListener.class, MouseListener.class}, Footle.class, null, new NullComponentMonitor(), new NullLifecycleStrategy());

@@ -34,7 +34,7 @@ import javax.management.ObjectName;
 /**
  * @author J&ouml;rg Schaible
  */
-public class JMXExposingBehaviorTestCase extends MockObjectTestCase {
+public class JMXExposedTestCase extends MockObjectTestCase {
 
     private Mock mockMBeanServer;
 

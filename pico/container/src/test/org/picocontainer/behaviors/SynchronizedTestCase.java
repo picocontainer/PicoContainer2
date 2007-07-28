@@ -34,7 +34,7 @@ import org.picocontainer.behaviors.Synchronizing;
  * @author J&ouml;rg Schaible
  * @version $Revision$
  */
-public final class SynchronizedBehaviorTestCase extends TestCase {
+public final class SynchronizedTestCase extends TestCase {
     private final Runner[] runner = new Runner[3];
     private int blockerCounter = 0;
 
@@ -60,7 +60,7 @@ public final class SynchronizedBehaviorTestCase extends TestCase {
         public Blocker() throws InterruptedException {
             final Thread thread = Thread.currentThread();
             synchronized (thread) {
-                SynchronizedBehaviorTestCase.this.blockerCounter++;
+                SynchronizedTestCase.this.blockerCounter++;
                 thread.wait();
             }
         }

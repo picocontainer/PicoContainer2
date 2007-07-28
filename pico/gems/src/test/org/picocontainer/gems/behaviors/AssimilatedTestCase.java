@@ -36,7 +36,7 @@ import java.lang.reflect.Proxy;
 /**
  * @author J&ouml;rg Schaible
  */
-public class AssimilatingBehaviorTestCase extends AbstractComponentAdapterTestCase {
+public class AssimilatedTestCase extends AbstractComponentAdapterTestCase {
 
     /**
      * Test if an instance can be assimilated.

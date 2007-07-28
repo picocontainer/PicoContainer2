@@ -23,7 +23,7 @@ import org.picocontainer.testmodel.Touchable;
  * @author Mauro Talevi
  * @version $Revision: $
  */
-public class CachingBehaviorTestCase extends MockObjectTestCase {
+public class CachedTestCase extends MockObjectTestCase {
 
     public void testComponentIsNotStartedWhenCachedAndCanBeStarted() {
         Cached adapter = new Cached(

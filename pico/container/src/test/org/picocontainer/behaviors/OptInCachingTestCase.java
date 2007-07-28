@@ -12,6 +12,7 @@ package org.picocontainer.behaviors;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
 import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.behaviors.OptInCaching;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.Characteristics;
@@ -20,29 +21,27 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceAdapter;
 
-
 /**
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  * @version $Revision$
  */
-public class CachingBehaviorFactoryTestCase extends AbstractComponentFactoryTestCase {
+public class OptInCachingTestCase extends AbstractComponentFactoryTestCase {
 
     protected ComponentFactory createComponentFactory() {
-        return new Caching().wrap(new ConstructorInjectionFactory());
+        return new OptInCaching().wrap(new ConstructorInjectionFactory());
     }
 
-    public void testAddComponentUsesImplementationHidingBehavior() {
+    public void testAddComponentDoesNotUseCachingBehaviorByDefault() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new Caching().wrap(new ConstructorInjectionFactory()));
+            new DefaultPicoContainer(new OptInCaching().wrap(new ConstructorInjectionFactory()));
         pico.addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
-        assertEquals(Cached.class, foo.getClass());
-        assertEquals(ConstructorInjector.class, ((AbstractBehavior) foo).getDelegate().getClass());
+        assertEquals(ConstructorInjector.class, foo.getClass());
     }
 
     public void testAddComponentUsesImplementationHidingBehaviorWithRedundandHideImplProperty() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new Caching().wrap(new ConstructorInjectionFactory()));
+            new DefaultPicoContainer(new OptInCaching().wrap(new ConstructorInjectionFactory()));
         pico.change(Characteristics.CACHE).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(Cached.class, foo.getClass());
@@ -51,24 +50,23 @@ public class CachingBehaviorFactoryTestCase extends AbstractComponentFactoryTest
 
     public void testAddComponentNoesNotUseImplementationHidingBehaviorWhenNoCachePropertyIsSpecified() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new Caching().wrap(new ConstructorInjectionFactory()));
+            new DefaultPicoContainer(new OptInCaching().wrap(new ConstructorInjectionFactory()));
         pico.change(Characteristics.NO_CACHE).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(ConstructorInjector.class, foo.getClass());
     }
 
-    public void testAddAdapterUsesImplementationHidingBehavior() {
+    public void testAddAdapterUsesDoesNotUseCachingBehaviorByDefault() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new Caching().wrap(new ConstructorInjectionFactory()));
+            new DefaultPicoContainer(new OptInCaching().wrap(new ConstructorInjectionFactory()));
         pico.addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter foo = pico.getComponentAdapter("foo");
-        assertEquals(Cached.class, foo.getClass());
-        assertEquals(InstanceAdapter.class, ((AbstractBehavior) foo).getDelegate().getClass());
+        assertEquals(InstanceAdapter.class, foo.getClass());
     }
 
-    public void testAddAdapterUsesImplementationHidingBehaviorWithRedundandHideImplProperty() {
+    public void testAddAdapterUsesCachingBehaviorWithHideImplProperty() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new Caching().wrap(new ConstructorInjectionFactory()));
+            new DefaultPicoContainer(new OptInCaching().wrap(new ConstructorInjectionFactory()));
         pico.change(Characteristics.CACHE).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(Cached.class, foo.getClass());
@@ -77,11 +75,12 @@ public class CachingBehaviorFactoryTestCase extends AbstractComponentFactoryTest
 
     public void testAddAdapterNoesNotUseImplementationHidingBehaviorWhenNoCachePropertyIsSpecified() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new Caching().wrap(new ConstructorInjectionFactory()));
+            new DefaultPicoContainer(new OptInCaching().wrap(new ConstructorInjectionFactory()));
         pico.change(Characteristics.NO_CACHE).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(InstanceAdapter.class, foo.getClass());
     }
+
 
 
 }

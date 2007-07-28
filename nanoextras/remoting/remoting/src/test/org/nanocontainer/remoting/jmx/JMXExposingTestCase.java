@@ -30,7 +30,7 @@ import org.jmock.MockObjectTestCase;
 /**
  * @author J&ouml;rg Schaible
  */
-public class JMXExposingBehaviorFactoryTestCase extends MockObjectTestCase {
+public class JMXExposingTestCase extends MockObjectTestCase {
 
     private Mock mockMBeanServer;
 

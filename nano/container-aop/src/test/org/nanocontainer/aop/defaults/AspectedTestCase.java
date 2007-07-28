@@ -19,7 +19,7 @@ import org.picocontainer.DefaultPicoContainer;
 /**
  * @author Stephen Molitor
  */
-public final class AspectsBehaviorTestCase extends MockObjectTestCase {
+public final class AspectedTestCase extends MockObjectTestCase {
 
     private final Mock mockApplicator = mock(AspectsApplicator.class);
     private final Mock mockComponentAdapterDelegate = mock(ComponentAdapter.class);

@@ -27,7 +27,7 @@ import java.util.List;
  * 
  * @author J&ouml;rg Schaible
  */
-public class ThreadLocalBehaviorFactoryTestCase extends TestCase {
+public class ThreadLocalizingTestCase extends TestCase {
 
     /**
      * Test creation of a CA ensuring ThreadLocal-behaviour.

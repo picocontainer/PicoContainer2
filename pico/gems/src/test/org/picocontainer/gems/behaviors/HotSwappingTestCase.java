@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 
-public final class HotSwappingBehaviorFactoryTestCase extends AbstractComponentFactoryTestCase {
+public final class HotSwappingTestCase extends AbstractComponentFactoryTestCase {
     private final ComponentFactory implementationHidingComponentAdapterFactory = new HotSwapping().wrap(new AdaptiveInjection());
 
     // START SNIPPET: man
