@@ -16,7 +16,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -35,14 +35,14 @@ public class LifecycleContainerBuilderTestCase extends MockObjectTestCase {
         };
         AbstractContainerBuilder builder = new DefaultContainerBuilder(containerComposer);
 
-        ObjectReference parentRef = new CachingBehavior.SimpleReference();
+        ObjectReference parentRef = new Cached.SimpleReference();
         MutablePicoContainer parent = new DefaultPicoContainer();
 
         Mock parentStartable = mock(Startable.class);
         parent.addComponent(parentStartable.proxy());
         parentRef.set(parent);
 
-        ObjectReference childRef = new CachingBehavior.SimpleReference();
+        ObjectReference childRef = new Cached.SimpleReference();
 
         builder.buildContainer(childRef, parentRef, null, true);
         PicoContainer childContainer = (PicoContainer) childRef.get();

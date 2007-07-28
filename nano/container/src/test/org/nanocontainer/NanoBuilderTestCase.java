@@ -8,7 +8,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implHiding;
-import org.picocontainer.behaviors.ImplementationHidingBehaviorFactory;
+import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.containers.EmptyPicoContainer;
 import static org.picocontainer.injectors.Injectors.SDI;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
@@ -110,7 +110,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = pxr.simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
+                "    componentFactory=org.picocontainer.behaviors.ImplementationHiding\n" +
                 "      delegate=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
@@ -119,11 +119,11 @@ public class NanoBuilderTestCase extends TestCase {
 
 
     public void testWithImplementationHidingInstance() throws IOException {
-        NanoContainer nc = new NanoBuilder().withComponentFactory(new ImplementationHidingBehaviorFactory()).build();
+        NanoContainer nc = new NanoBuilder().withComponentFactory(new ImplementationHiding()).build();
         String foo = pxr.simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
+                "    componentFactory=org.picocontainer.behaviors.ImplementationHiding\n" +
                 "      delegate=org.picocontainer.injectors.AdaptiveInjectionFactory\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
@@ -137,7 +137,7 @@ public class NanoBuilderTestCase extends TestCase {
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
                 "    componentFactory=org.picocontainer.behaviors.Caching\n" +
-                "      delegate=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
+                "      delegate=org.picocontainer.behaviors.ImplementationHiding\n" +
                 "        delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
@@ -212,7 +212,7 @@ public class NanoBuilderTestCase extends TestCase {
         String foo = pxr.simplifyRepresentation(nc);
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
+                "    componentFactory=org.picocontainer.behaviors.ImplementationHiding\n" +
                 "      delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
@@ -226,7 +226,7 @@ public class NanoBuilderTestCase extends TestCase {
         assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
                 "  delegate=org.picocontainer.DefaultPicoContainer\n" +
                 "    componentFactory=org.picocontainer.behaviors.Caching\n" +
-                "      delegate=org.picocontainer.behaviors.ImplementationHidingBehaviorFactory\n" +
+                "      delegate=org.picocontainer.behaviors.ImplementationHiding\n" +
                 "        delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +

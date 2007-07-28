@@ -775,7 +775,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     public void BROKEN_testComponentCanUsePredefinedNestedCAF() {
         Reader script = new StringReader("" +
                 "<container>" +
-                "  <component-adapter-factory class='org.picocontainer.behaviors.ImplementationHidingBehaviorFactory' key='factory'>" +
+                "  <component-adapter-factory class='org.picocontainer.behaviors.ImplementationHiding' key='factory'>" +
                 "    <component-adapter-factory class='"+ MyComponentFactory.class.getName()+"'/>" +
                 "  </component-adapter-factory>" +
                 "  <component-adapter class-name-key='org.nanocontainer.testmodel.WebServerConfig' class='org.nanocontainer.testmodel.DefaultWebServerConfig' factory='factory'/>" +

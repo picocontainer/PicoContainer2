@@ -16,11 +16,11 @@ package org.nanocontainer.script;
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 
 public abstract class AbstractScriptedContainerBuilderTestCase extends MockObjectTestCase {
-    private final ObjectReference containerRef = new CachingBehavior.SimpleReference();
-    private final ObjectReference parentContainerRef = new CachingBehavior.SimpleReference();
+    private final ObjectReference containerRef = new Cached.SimpleReference();
+    private final ObjectReference parentContainerRef = new Cached.SimpleReference();
 
     protected PicoContainer buildContainer(ScriptedContainerBuilder builder, PicoContainer parentContainer, Object scope) {
         parentContainerRef.set(parentContainer);

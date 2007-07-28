@@ -756,7 +756,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
         // LifecyleContainerBuilder starts the container
         Object one = pico.getComponents().get(1);
-        assertEquals("org.picocontainer.behaviors.CachingBehavior", one.toString());
+        assertEquals("org.picocontainer.behaviors.Cached", one.toString());
     }
 
 

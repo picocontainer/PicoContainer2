@@ -26,12 +26,12 @@ import org.nanocontainer.webcontainer.TestHelper;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 
 public final class WebContainerBuilderTestCase extends TestCase {
 
-    private final ObjectReference containerRef = new CachingBehavior.SimpleReference();
-    private final ObjectReference parentContainerRef = new CachingBehavior.SimpleReference();
+    private final ObjectReference containerRef = new Cached.SimpleReference();
+    private final ObjectReference parentContainerRef = new Cached.SimpleReference();
 
     private MutablePicoContainer pico;
 

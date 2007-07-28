@@ -27,7 +27,7 @@ import org.apache.commons.vfs.VFS;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.behaviors.CachingBehavior;
+import org.picocontainer.behaviors.Cached;
 
 import org.nanocontainer.script.UnsupportedScriptTypeException;
 import org.nanocontainer.script.ScriptBuilderResolver;
@@ -153,7 +153,7 @@ public class NanoContainerDeployer implements Deployer {
 
         FileObject deploymentScript = getDeploymentScript(applicationFolder);
 
-        ObjectReference result = new CachingBehavior.SimpleReference();
+        ObjectReference result = new Cached.SimpleReference();
 
         String extension = "." + deploymentScript.getName().getExtension();
         Reader scriptReader = new InputStreamReader(deploymentScript.getContent().getInputStream());
