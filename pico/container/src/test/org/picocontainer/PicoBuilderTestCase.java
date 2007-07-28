@@ -11,7 +11,7 @@ package org.picocontainer;
 
 import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implHiding;
-import static org.picocontainer.behaviors.Behaviors.threadSafe;
+import static org.picocontainer.behaviors.Behaviors.synchronizing;
 import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.containers.EmptyPicoContainer;
 import static org.picocontainer.injectors.Injectors.SDI;
@@ -176,7 +176,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithCafsListChainThingy() {
-        MutablePicoContainer mpc = new PicoBuilder(SDI()).withBehaviors(caching(), threadSafe(), implHiding()).build();
+        MutablePicoContainer mpc = new PicoBuilder(SDI()).withBehaviors(caching(), synchronizing(), implHiding()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.behaviors.Caching\n" +

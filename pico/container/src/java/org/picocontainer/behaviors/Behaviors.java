@@ -17,19 +17,19 @@ import org.picocontainer.behaviors.PropertyApplying;
 
 public class Behaviors {
 
-    public static BehaviorFactory implHiding() {
+    public static ImplementationHiding implHiding() {
         return new ImplementationHiding();
     }
 
-    public static BehaviorFactory caching() {
+    public static Caching caching() {
         return new Caching();
     }
 
-    public static BehaviorFactory threadSafe() {
+    public static Synchronizing synchronizing() {
         return new Synchronizing();
     }
 
-    public static BehaviorFactory propertyApplier() {
+    public static PropertyApplying propertyApplying() {
         return new PropertyApplying();
     }
 
