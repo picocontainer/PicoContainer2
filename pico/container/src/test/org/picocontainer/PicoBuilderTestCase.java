@@ -10,7 +10,7 @@
 package org.picocontainer;
 
 import static org.picocontainer.behaviors.Behaviors.caching;
-import static org.picocontainer.behaviors.Behaviors.implHiding;
+import static org.picocontainer.behaviors.Behaviors.implementationHiding;
 import static org.picocontainer.behaviors.Behaviors.synchronizing;
 import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.containers.EmptyPicoContainer;
@@ -176,11 +176,11 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithCafsListChainThingy() {
-        MutablePicoContainer mpc = new PicoBuilder(SDI()).withBehaviors(caching(), synchronizing(), implHiding()).build();
+        MutablePicoContainer mpc = new PicoBuilder(SDI()).withBehaviors(caching(), synchronizing(), implementationHiding()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.behaviors.Caching\n" +
-                "    delegate=org.picocontainer.behaviors.Synchronization\n" +
+                "    delegate=org.picocontainer.behaviors.Synchronizing\n" +
                 "      delegate=org.picocontainer.behaviors.ImplementationHiding\n" +
                 "        delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -284,11 +284,11 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithSynchronization() {
+    public void testWithSynchronizing() {
         MutablePicoContainer mpc = new PicoBuilder().withSynchronization().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.behaviors.Synchronization\n" +
+                "  componentFactory=org.picocontainer.behaviors.Synchronizing\n" +
                 "    delegate=org.picocontainer.injectors.AdaptiveInjection\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +

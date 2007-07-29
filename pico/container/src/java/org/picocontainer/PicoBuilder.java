@@ -10,9 +10,9 @@
 package org.picocontainer;
 
 import static org.picocontainer.behaviors.Behaviors.caching;
-import static org.picocontainer.behaviors.Behaviors.implHiding;
+import static org.picocontainer.behaviors.Behaviors.implementationHiding;
 import org.picocontainer.behaviors.PropertyApplying;
-import org.picocontainer.behaviors.Synchronization;
+import org.picocontainer.behaviors.Synchronizing;
 import org.picocontainer.behaviors.Locking;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
@@ -132,7 +132,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withHiddenImplementations() {
-        componentFactories.push(implHiding());
+        componentFactories.push(implementationHiding());
         return this;
     }
 
@@ -172,7 +172,7 @@ public class PicoBuilder {
     }
 
     public PicoBuilder withSynchronization() {
-        componentFactories.push(Synchronization.class);
+        componentFactories.push(Synchronizing.class);
         return this;
     }
 

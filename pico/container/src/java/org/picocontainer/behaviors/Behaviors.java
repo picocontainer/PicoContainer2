@@ -9,30 +9,40 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.behaviors.ImplementationHiding;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.behaviors.Synchronization;
-import org.picocontainer.behaviors.PropertyApplying;
+import org.picocontainer.BehaviorFactory;
 
+/**
+ * Static collection of factory methods for different BehaviourFactory implementations.
+ * 
+ * @author Paul Hammant
+ * @author Mauro Talevi
+ */
 public class Behaviors {
 
-    public static ImplementationHiding implHiding() {
+    /**
+     * Prevents instantiation
+     */
+    private Behaviors(){
+        // no-op
+    }
+    
+    public static BehaviorFactory implementationHiding() {
         return new ImplementationHiding();
     }
 
-    public static Caching caching() {
+    public static BehaviorFactory caching() {
         return new Caching();
     }
 
-    public static Synchronization synchronizing() {
-        return new Synchronization();
+    public static BehaviorFactory synchronizing() {
+        return new Synchronizing();
     }
 
-    public static Locking locking() {
+    public static BehaviorFactory locking() {
         return new Locking();
     }
 
-    public static PropertyApplying propertyApplying() {
+    public static BehaviorFactory propertyApplying() {
         return new PropertyApplying();
     }
 
