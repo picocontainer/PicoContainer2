@@ -27,8 +27,6 @@ import java.util.Collection;
 
 public class ArgumentativePicoContainer implements PicoContainer, Serializable {
 
-    public static final String DUMMY_PICOCONTAINER_CONFIG_ITEM = "DUMMY_PICOCONTAINER_CONFIG_ITEM";
-
     private final MutablePicoContainer delegate = new DefaultPicoContainer();
 
     public ArgumentativePicoContainer(String[] arguments) {
@@ -39,15 +37,6 @@ public class ArgumentativePicoContainer implements PicoContainer, Serializable {
         for (String argument : arguments) {
             processArgument(argument, separator);
         }
-        int i = 1;
-        delegate.addConfig(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, DUMMY_PICOCONTAINER_CONFIG_ITEM + i);
-        delegate.addConfig(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, DUMMY_PICOCONTAINER_CONFIG_ITEM + i);
-        delegate.addConfig(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, 0);
-        delegate.addConfig(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, 0);
-        delegate.addConfig(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, false);
-        delegate.addConfig(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, false);
-        delegate.addConfig(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, 0L);
-        delegate.addConfig(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, 0L);
     }
 
     public ArgumentativePicoContainer(String separator, StringReader argumentProperties, String[] arguments)

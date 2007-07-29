@@ -98,7 +98,7 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
     }
 
     public void testAmbigousIfNoSuitableTyesForInjection() {
-        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[0]);
+        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {"zz=zz"});
         DefaultPicoContainer pico = new DefaultPicoContainer(apc);
         pico.addComponent(NeedsAFew.class);
         try {

@@ -341,7 +341,24 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
     public MutablePicoContainer addConfig(String name, Object val) {
+        initForConfig();
         return addAdapterInternal(new InstanceAdapter(name, val, lifecycleStrategy, componentMonitor));
+    }
+
+    private void initForConfig() {
+        final String DUMMY_PICOCONTAINER_CONFIG_ITEM = "DUMMY_PICOCONTAINER_CONFIG_ITEM_";
+        if (getComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + 1) != null) {
+            return;
+        }
+        int i = 0;
+        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, DUMMY_PICOCONTAINER_CONFIG_ITEM + i);
+        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, DUMMY_PICOCONTAINER_CONFIG_ITEM + i);
+        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, 0);
+        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, 0);
+        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, false);
+        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, false);
+        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, 0L);
+        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, 0L);
     }
 
     /**
