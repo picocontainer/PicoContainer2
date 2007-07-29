@@ -22,7 +22,7 @@ import java.util.Properties;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class Synchronizing extends AbstractBehaviorFactory {
+public class Synchronization extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) {
         removePropertiesIfPresent(componentProperties, Characteristics.THREAD_SAFE);

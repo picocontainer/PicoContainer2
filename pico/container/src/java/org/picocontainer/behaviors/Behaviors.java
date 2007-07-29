@@ -11,8 +11,7 @@ package org.picocontainer.behaviors;
 
 import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.behaviors.Synchronizing;
-import org.picocontainer.BehaviorFactory;
+import org.picocontainer.behaviors.Synchronization;
 import org.picocontainer.behaviors.PropertyApplying;
 
 public class Behaviors {
@@ -25,8 +24,12 @@ public class Behaviors {
         return new Caching();
     }
 
-    public static Synchronizing synchronizing() {
-        return new Synchronizing();
+    public static Synchronization synchronizing() {
+        return new Synchronization();
+    }
+
+    public static Locking locking() {
+        return new Locking();
     }
 
     public static PropertyApplying propertyApplying() {

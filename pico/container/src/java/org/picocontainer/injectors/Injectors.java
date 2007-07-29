@@ -29,11 +29,11 @@ public class Injectors {
         return new ConstructorInjectionFactory();
     }
 
-    public static InjectionFactory methodAnnotationDI() {
+    public static InjectionFactory annotatedMethodDI() {
         return new AnnotatatedMethodInjection();
     }
 
-    public static InjectionFactory fieldAnnotationDI() {
+    public static InjectionFactory annotatedFieldDI() {
         return new AnnotatatedFieldInjection();
     }
 

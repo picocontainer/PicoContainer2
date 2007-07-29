@@ -12,11 +12,13 @@ package org.picocontainer;
 import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implHiding;
 import org.picocontainer.behaviors.PropertyApplying;
-import org.picocontainer.behaviors.Synchronizing;
+import org.picocontainer.behaviors.Synchronization;
+import org.picocontainer.behaviors.Locking;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
 import static org.picocontainer.injectors.Injectors.CDI;
-import static org.picocontainer.injectors.Injectors.methodAnnotationDI;
+import static org.picocontainer.injectors.Injectors.annotatedMethodDI;
+import static org.picocontainer.injectors.Injectors.annotatedFieldDI;
 import static org.picocontainer.injectors.Injectors.SDI;
 import static org.picocontainer.injectors.Injectors.adaptiveDI;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -139,10 +141,17 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withAnnotationInjection() {
-        injectionType = methodAnnotationDI();
+    public PicoBuilder withAnnotatedMethodInjection() {
+        injectionType = annotatedMethodDI();
         return this;
     }
+
+
+    public PicoBuilder withAnnotatedFieldInjection() {
+        injectionType = annotatedFieldDI();
+        return this;
+    }
+
 
     public PicoBuilder withConstructorInjection() {
         injectionType = CDI();
@@ -162,8 +171,13 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withThreadSafety() {
-        componentFactories.push(Synchronizing.class);
+    public PicoBuilder withSynchronization() {
+        componentFactories.push(Synchronization.class);
+        return this;
+    }
+
+    public PicoBuilder withLocking() {
+        componentFactories.push(Locking.class);
         return this;
     }
 

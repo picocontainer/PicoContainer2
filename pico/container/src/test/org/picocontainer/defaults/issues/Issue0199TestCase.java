@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
-import org.picocontainer.behaviors.Synchronizing;
+import org.picocontainer.behaviors.Synchronization;
 
 public final class Issue0199TestCase extends TestCase {
 
@@ -93,6 +93,6 @@ public final class Issue0199TestCase extends TestCase {
 
     private DefaultPicoContainer createContainer() {
         return new DefaultPicoContainer(
-                new Synchronizing().wrap(new ConstructorInjectionFactory()));
+                new Synchronization().wrap(new ConstructorInjectionFactory()));
     }
 }

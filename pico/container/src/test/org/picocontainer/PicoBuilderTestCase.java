@@ -180,7 +180,7 @@ public class PicoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.behaviors.Caching\n" +
-                "    delegate=org.picocontainer.behaviors.Synchronizing\n" +
+                "    delegate=org.picocontainer.behaviors.Synchronization\n" +
                 "      delegate=org.picocontainer.behaviors.ImplementationHiding\n" +
                 "        delegate=org.picocontainer.injectors.SetterInjectionFactory\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
@@ -226,11 +226,22 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithAnnotationDI() {
-            MutablePicoContainer mpc = new PicoBuilder().withAnnotationInjection().build();
+    public void testWithAnnotatedMethodDI() {
+            MutablePicoContainer mpc = new PicoBuilder().withAnnotatedMethodInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.injectors.AnnotatatedMethodInjection\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
+                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                "PICO",foo);
+    }
+
+    public void testWithAnnotatedFieldDI() {
+            MutablePicoContainer mpc = new PicoBuilder().withAnnotatedFieldInjection().build();
+        String foo = simplifyRepresentation(mpc);
+        assertEquals("PICO\n" +
+                "  componentFactory=org.picocontainer.injectors.AnnotatatedFieldInjection\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -273,11 +284,23 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithThreadSafety() {
-        MutablePicoContainer mpc = new PicoBuilder().withThreadSafety().build();
+    public void testWithSynchronization() {
+        MutablePicoContainer mpc = new PicoBuilder().withSynchronization().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.behaviors.Synchronizing\n" +
+                "  componentFactory=org.picocontainer.behaviors.Synchronization\n" +
+                "    delegate=org.picocontainer.injectors.AdaptiveInjection\n" +
+                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
+                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
+                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
+                "PICO",foo);
+    }
+
+    public void testWithLocking() {
+        MutablePicoContainer mpc = new PicoBuilder().withLocking().build();
+        String foo = simplifyRepresentation(mpc);
+        assertEquals("PICO\n" +
+                "  componentFactory=org.picocontainer.behaviors.Locking\n" +
                 "    delegate=org.picocontainer.injectors.AdaptiveInjection\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +

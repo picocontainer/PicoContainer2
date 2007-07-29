@@ -34,19 +34,17 @@ public class AnnotatatedMethodInjection implements InjectionFactory, Serializabl
      * Create a {@link SetterInjector}.
      *
      * @param componentMonitor
-     *@param lifecycleStrategy
+     * @param lifecycleStrategy
      * @param componentProperties
      * @param componentKey            The component's key
      * @param componentImplementation The class of the bean.
      * @param parameters              Any parameters for the setters. If null the adapter solves the
-*                                dependencies for all setters internally. Otherwise the number parameters must match
-*                                the number of the setter. @return Returns a new {@link SetterInjector}. @throws org.picocontainer.PicoCompositionException if dependencies cannot be solved @throws org.picocontainer.PicoCompositionException
-     *                                    if the implementation is an interface or an
-     *                                    abstract class.
+     *                                dependencies for all setters internally. Otherwise the number parameters must match
+     *                                the number of the setter. @return Returns a new {@link SetterInjector}. @throws org.picocontainer.PicoCompositionException if dependencies 
+     *                                cannot be solved or if the implementation is an interface or an abstract class.
      */
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
-            throws PicoCompositionException
-    {
+            throws PicoCompositionException {
         return new AnnotatatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
     }
 }

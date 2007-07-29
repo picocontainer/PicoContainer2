@@ -27,7 +27,7 @@ import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Synchronized;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.ConstructorInjectionFactory;
-import org.picocontainer.behaviors.Synchronizing;
+import org.picocontainer.behaviors.Synchronization;
 
 /**
  * @author Thomas Heller
@@ -164,7 +164,7 @@ public class SynchronizedTestCase extends TestCase {
     }
 
     protected BehaviorFactory makeBehaviorFactory() {
-        return new Synchronizing();
+        return new Synchronization();
     }
 
     private void runConcurrencyTest(final DefaultPicoContainer pico) throws InterruptedException {

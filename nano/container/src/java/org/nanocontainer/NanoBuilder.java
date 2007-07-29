@@ -91,7 +91,7 @@ public final class NanoBuilder {
     }
 
     public NanoBuilder withAnnotationInjection() {
-        picoBuilder.withAnnotationInjection();
+        picoBuilder.withAnnotatedMethodInjection();
         return this;
     }
 
@@ -106,7 +106,7 @@ public final class NanoBuilder {
     }
 
     public NanoBuilder withThreadSafety() {
-        picoBuilder.withThreadSafety();
+        picoBuilder.withSynchronization();
         return this;
     }
 

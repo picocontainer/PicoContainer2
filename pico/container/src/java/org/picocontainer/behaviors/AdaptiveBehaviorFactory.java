@@ -88,7 +88,7 @@ public class AdaptiveBehaviorFactory implements BehaviorFactory, Serializable {
 
     protected void processThreadSafe(Properties componentProperties, List<BehaviorFactory> list) {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.THREAD_SAFE)) {
-            list.add(new Synchronizing());
+            list.add(new Synchronization());
         }
     }
 
