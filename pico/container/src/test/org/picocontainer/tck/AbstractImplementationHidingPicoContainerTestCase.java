@@ -11,6 +11,7 @@ package org.picocontainer.tck;
 
 import org.picocontainer.PicoException;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Characteristics;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ public abstract class AbstractImplementationHidingPicoContainerTestCase extends 
 
     public void testInstanceIsNotAutomaticallyHidden() {
         MutablePicoContainer pc = createImplementationHidingPicoContainer();
-        pc.addComponent(Map.class, new HashMap());
+        pc.as(this.getProperties()).addComponent(Map.class, new HashMap());
         Map map = pc.getComponent(Map.class);
         assertNotNull(map);
         assertTrue(map instanceof HashMap);
