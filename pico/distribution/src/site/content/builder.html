@@ -33,10 +33,10 @@ pico.addComponent(Apple.class);</pre></div>
     <div class="source"><pre>
 import static org.picocontainer.injectors.Injectors.SDI;
 import static org.picocontainer.behaviors.Behaviors.caching;
-import static org.picocontainer.behaviors.Behaviors.implHiding;
-import static org.picocontainer.behaviors.Behaviors.threadSafe;
+import static org.picocontainer.behaviors.Behaviors.implementationHiding;
+import static org.picocontainer.behaviors.Behaviors.synchronizing;
 ...  
-pico = ew PicoBuilder(SDI()).withBehaviors(caching(), threadSafe(), implHiding()).build();
+pico = new PicoBuilder(SDI()).withBehaviors(caching(), implementationHiding(), synchronizing()).build();
 pico.addComponent(Apple.class);
 </pre></div>
 <p>Setting a parent container :</p>

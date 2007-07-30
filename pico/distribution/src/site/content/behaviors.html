@@ -66,14 +66,14 @@ pico.addComponent(Apple.class, AppleImpl.class);
 Apple a1 = pico.getComponent(Apple.class);
 // cannot cast back to AppleImpl
 </pre></div>
-    <div class="source"><pre>pico = new PicoBuilder().withBehaviors(hideImplementations()).build();
+    <div class="source"><pre>pico = new PicoBuilder().withBehaviors(Behaviours.implementationHiding()).build();
 pico.addComponent(Apple.class, AppleImpl.class);
 Apple a1 = pico.getComponent(Apple.class);
 // cannot cast back to AppleImpl
 </pre></div>
 
 <p>This Behavior leverages Reflection's dynamic proxy capability.
-There's another ImplementationHidingBehavior in the Pico Gems jar that
+There's another ImplementationHiding Behavior in Pico Gems that
 leverages ASM to make 'more concrete' hidden implementations.</p>
 </body>
 
