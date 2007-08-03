@@ -18,6 +18,7 @@
         <page>builder.html</page>
         <page>properties.html</page>
         <page>component-configuration.html</page>
+        <page>transparency.html</page>
     </section>
     <section>
         <name>Architecture</name>
