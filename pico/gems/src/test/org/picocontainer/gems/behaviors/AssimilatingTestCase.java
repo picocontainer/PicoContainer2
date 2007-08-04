@@ -14,7 +14,7 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.gems.behaviors.Assimilating;
-import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.CompatibleTouchable;
@@ -33,7 +33,7 @@ public class AssimilatingTestCase extends AbstractComponentFactoryTestCase {
      * @see org.picocontainer.tck.AbstractComponentFactoryTestCase#createComponentFactory()
      */
     protected ComponentFactory createComponentFactory() {
-        return new Assimilating(Touchable.class).wrap(new ConstructorInjectionFactory());
+        return new Assimilating(Touchable.class).wrap(new ConstructorInjection());
     }
 
     /**

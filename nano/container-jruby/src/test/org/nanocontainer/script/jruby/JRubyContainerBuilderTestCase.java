@@ -11,7 +11,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.injectors.SetterInjectionFactory;
+import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.injectors.AbstractInjector;
 
 import java.io.File;
@@ -266,10 +266,10 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
                                          "Caching = org.picocontainer.behaviors.Caching\n" +
-                                         "ConstructorInjectionFactory = org.picocontainer.injectors.ConstructorInjectionFactory\n" +
+                                         "ConstructorInjection = org.picocontainer.injectors.ConstructorInjection\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
-                                         "container(:component_adapter_factory => Caching.new().wrap(ConstructorInjectionFactory.new), :component_monitor => monitor) {\n" +
+                                         "container(:component_adapter_factory => Caching.new().wrap(ConstructorInjection.new), :component_monitor => monitor) {\n" +
                                          "    component(A)\n" +
                                          "    component(:key => StringWriter, :instance => writer)\n" +
                                          "}");
@@ -304,10 +304,10 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                                          "StringWriter = java.io.StringWriter\n" +
                                          "WriterComponentMonitor = org.picocontainer.monitors.WriterComponentMonitor\n" +
                                          "Caching = org.picocontainer.behaviors.Caching\n" +
-                                         "ConstructorInjectionFactory = org.picocontainer.injectors.ConstructorInjectionFactory\n" +
+                                         "ConstructorInjection = org.picocontainer.injectors.ConstructorInjection\n" +
                                          "writer = StringWriter.new\n" +
                                          "monitor = WriterComponentMonitor.new(writer) \n" +
-                                         "container(:parent => $parent, :component_adapter_factory => Caching.new().wrap(ConstructorInjectionFactory.new), :component_monitor => monitor) {\n"
+                                         "container(:parent => $parent, :component_adapter_factory => Caching.new().wrap(ConstructorInjection.new), :component_monitor => monitor) {\n"
                                          +
                                          "    component(A)\n" +
                                          "    component(:key => StringWriter, :instance => writer)\n" +
@@ -430,7 +430,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     public void FAILING_testBuildContainerWithParentAttributesPropagatesComponentAdapterFactory() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionFactory());
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjection());
         Reader script = new StringReader("container(:parent => $parent)\n");
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, parent, ASSEMBLY_SCOPE);
@@ -441,7 +441,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionFactory());
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjection());
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "B = org.nanocontainer.testmodel.B\n" +

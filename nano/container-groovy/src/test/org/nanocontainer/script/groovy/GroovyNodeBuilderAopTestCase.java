@@ -163,7 +163,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
                 "intLog = new StringBuffer()\n" +
                 "logger = new LoggingInterceptor(intLog)\n" +
                 "componentFactoryLog = new StringBuffer()\n" +
-                "componentFactory = new TestInjectionFactory(componentFactoryLog)\n" +
+                "componentFactory = new TestInjection(componentFactoryLog)\n" +
                 "cuts = new DynaopPointcutsFactory()\n" +
                 "builder = new DynaopGroovyNodeBuilder()\n" +
                 "nano = builder.container(componentFactory:componentFactory) {\n" +

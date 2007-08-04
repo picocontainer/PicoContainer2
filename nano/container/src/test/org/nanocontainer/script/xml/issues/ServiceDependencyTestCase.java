@@ -6,20 +6,20 @@ import java.io.StringReader;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.injectors.SetterInjectionFactory;
+import org.picocontainer.injectors.SetterInjection;
 
 public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderTestCase {
 
-    public static class MySetterInjectionFactory extends SetterInjectionFactory {
-        public MySetterInjectionFactory() {
+    public static class MySetterInjection extends SetterInjection {
+        public MySetterInjection() {
         }
     }
 
     //TODO - make sure that this container builder can supply a LifecycleStrategy.
-    //       meaning MySetterInjectionFactory can be swapped for SetterInjectionComponentAdapterFactory
+    //       meaning MySetterInjection can be swapped for SetterInjectionComponentAdapterFactory
     public void testCanInstantiateProcessWithSDIDependencies() {
         Reader script = new StringReader("" +
-                "<container component-adapter-factory='"+ MySetterInjectionFactory.class.getName()+"'>"+
+                "<container component-adapter-factory='"+ MySetterInjection.class.getName()+"'>"+
                 "  <component-implementation class='"+Service1Impl.class.getName()+"'/>"+
                 "  <component-implementation class='"+ServiceAImpl.class.getName()+"'/>"+
                 "  <component-implementation class='"+Service2Impl.class.getName()+"'/>"+

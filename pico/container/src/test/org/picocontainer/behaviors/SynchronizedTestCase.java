@@ -26,7 +26,7 @@ import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Synchronized;
 import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.behaviors.Synchronizing;
 
 /**
@@ -157,7 +157,7 @@ public class SynchronizedTestCase extends TestCase {
 
     public void testSingletonCreationWithSynchronizedAdapterOutsideUsingFactory() throws InterruptedException {
         DefaultPicoContainer pico = new DefaultPicoContainer(
-                makeBehaviorFactory().wrap(new Caching().wrap(new ConstructorInjectionFactory()))
+                makeBehaviorFactory().wrap(new Caching().wrap(new ConstructorInjection()))
         );
         pico.addComponent("slow", SlowCtor.class);
         runConcurrencyTest(pico);

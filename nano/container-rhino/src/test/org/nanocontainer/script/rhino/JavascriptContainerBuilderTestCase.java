@@ -40,7 +40,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
     public void testInstantiateWithBespokeComponentAdapter() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
 
         Reader script = new StringReader("" +
-                "var pico = new DefaultNanoContainer(new ConstructorInjectionFactory())\n" +
+                "var pico = new DefaultNanoContainer(new ConstructorInjection())\n" +
                 "pico.addComponent(Packages.org.nanocontainer.testmodel.DefaultWebServerConfig)\n" +
                 "pico.addComponent(Packages.org.nanocontainer.testmodel.WebServerImpl)\n");
 

@@ -32,7 +32,7 @@ import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.injectors.ConstructorInjection;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -301,7 +301,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
             ComponentFactory componentFactory;
             String componentFactoryName = rootElement.getAttribute("componentadapterfactory");
             if ("".equals(componentFactoryName) || componentFactoryName == null) {
-                componentFactory = new Caching().wrap(new ConstructorInjectionFactory());
+                componentFactory = new Caching().wrap(new ConstructorInjection());
             } else {
                 Class componentFactoryClass = getClassLoader().loadClass(componentFactoryName);
                 componentFactory = (ComponentFactory) componentFactoryClass.newInstance();

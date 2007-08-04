@@ -40,7 +40,7 @@ import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 
-public class AdaptiveInjectionFactoryTestCase extends AbstractComponentFactoryTestCase {
+public class AdaptiveInjectionTestCase extends AbstractComponentFactoryTestCase {
 
     XStream xs;
 

@@ -32,7 +32,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.injectors.SetterInjectionFactory;
+import org.picocontainer.injectors.SetterInjection;
 
 import java.io.File;
 import java.net.URLClassLoader;
@@ -336,12 +336,12 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
                 "import org.picocontainer.behaviors.Caching\n" +
-                "import org.picocontainer.injectors.ConstructorInjectionFactory\n" +
+                "import org.picocontainer.injectors.ConstructorInjection\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(componentFactory: new Caching().wrap(new ConstructorInjectionFactory()), componentMonitor: monitor) {\n" +
+                "nano = builder.container(componentFactory: new Caching().wrap(new ConstructorInjection()), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -378,12 +378,12 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "package org.nanocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
                 "import org.picocontainer.behaviors.Caching\n" +
-                "import org.picocontainer.injectors.ConstructorInjectionFactory\n" +
+                "import org.picocontainer.injectors.ConstructorInjection\n" +
                 "import org.picocontainer.monitors.WriterComponentMonitor\n" +
                 "import org.nanocontainer.testmodel.*\n" +
                 "writer = new StringWriter()\n" +
                 "monitor = new WriterComponentMonitor(writer) \n"+
-                "nano = builder.container(parent:parent, componentFactory: new Caching().wrap(new ConstructorInjectionFactory()), componentMonitor: monitor) {\n" +
+                "nano = builder.container(parent:parent, componentFactory: new Caching().wrap(new ConstructorInjection()), componentMonitor: monitor) {\n" +
                 "    component(A)\n" +
                 "    component(key:StringWriter, instance:writer)\n" +
                 "}");
@@ -522,7 +522,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     public void testBuildContainerWithParentAttributesPropagatesComponentAdapterFactory() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionFactory() );
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjection() );
         Reader script = new StringReader("" +
                 "nano = builder.container(parent:parent) {\n" +
                 "}\n");
@@ -536,7 +536,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionFactory() );
+        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjection() );
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +

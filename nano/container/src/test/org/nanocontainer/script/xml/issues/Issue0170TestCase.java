@@ -24,7 +24,7 @@ public class Issue0170TestCase extends AbstractScriptedContainerBuilderTestCase 
                 "<container>" +
                 "  <component-adapter-factory key='factory' class='org.picocontainer.gems.behaviors.HotSwapping'>"+
                 "    <component-adapter-factory class='org.picocontainer.behaviors.Caching'>"+
-                "      <component-adapter-factory class='org.picocontainer.injectors.ConstructorInjectionFactory'/>"+
+                "      <component-adapter-factory class='org.picocontainer.injectors.ConstructorInjection'/>"+
                 "    </component-adapter-factory>"+
                 "  </component-adapter-factory>"+
                 "  <component-adapter class-name-key='java.util.List' class='java.util.ArrayList' factory='factory'/>"+

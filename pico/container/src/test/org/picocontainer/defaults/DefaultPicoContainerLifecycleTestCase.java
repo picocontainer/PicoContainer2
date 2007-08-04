@@ -23,7 +23,7 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.monitors.LifecycleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -86,7 +86,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 
 
     public void testLifecycleIsIgnoredIfAdaptersAreNotLifecycleManagers() {
-        DefaultPicoContainer parent = new DefaultPicoContainer(new ConstructorInjectionFactory());
+        DefaultPicoContainer parent = new DefaultPicoContainer(new ConstructorInjection());
         MutablePicoContainer child = parent.makeChildContainer();
 
         parent.addComponent("recording", StringBuffer.class);

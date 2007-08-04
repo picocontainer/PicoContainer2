@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentFactory;
@@ -24,19 +24,19 @@ import org.picocontainer.testmodel.RecordingLifecycle.One;
  * @author Mauro Talevi
  * @version $Revision:  $
  */
-public class ConstructorInjectionFactoryTestCase extends AbstractComponentFactoryTestCase {
+public class ConstructorInjectionTestCase extends AbstractComponentFactoryTestCase {
     protected void setUp() throws Exception {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
     }
 
     protected ComponentFactory createComponentFactory() {
-        return new ConstructorInjectionFactory();
+        return new ConstructorInjection();
     }
 
     public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
-        ConstructorInjectionFactory componentFactory =
-            new ConstructorInjectionFactory();
+        ConstructorInjection componentFactory =
+            new ConstructorInjection();
         ConstructorInjector cica =  (ConstructorInjector)
         componentFactory.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
         One one = new RecordingLifecycle.One(new StringBuffer());

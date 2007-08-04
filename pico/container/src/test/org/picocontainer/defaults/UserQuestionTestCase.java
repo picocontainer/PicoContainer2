@@ -15,7 +15,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Characteristics;
-import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.adapters.AbstractAdapter;
 
 import java.util.HashMap;
@@ -78,7 +78,7 @@ public final class UserQuestionTestCase extends TestCase {
     public void testOmeletteCanHaveDifferentCheeseWithAFunnyComponentAdapter() {
         Map cheeseMap = new HashMap();
 
-        MutablePicoContainer pico = new DefaultPicoContainer(new ConstructorInjectionFactory());
+        MutablePicoContainer pico = new DefaultPicoContainer(new ConstructorInjection());
         pico.addComponent(Omelette.class);
         pico.addAdapter(new CheeseAdapter("scott", Gouda.class, cheeseMap));
 
@@ -228,7 +228,7 @@ public final class UserQuestionTestCase extends TestCase {
 
     public void testSeveralDifferentInstancesCanBeCreatedWithOnePreconfiguredContainer() {
         // create a container that doesn't cache instances
-        MutablePicoContainer container = new DefaultPicoContainer(new ConstructorInjectionFactory());
+        MutablePicoContainer container = new DefaultPicoContainer(new ConstructorInjection());
         container.addComponent(NeedsBar.class);
 
         Bar barOne = new FooBar();

@@ -10,8 +10,8 @@
 package org.picocontainer.injectors;
 
 import org.picocontainer.injectors.AdaptiveInjection;
-import org.picocontainer.injectors.SetterInjectionFactory;
-import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.injectors.SetterInjection;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.AnnotatatedMethodInjection;
 import org.picocontainer.InjectionFactory;
 
@@ -22,11 +22,11 @@ public class Injectors {
     }
 
     public static InjectionFactory SDI() {
-        return new SetterInjectionFactory();
+        return new SetterInjection();
     }
 
     public static InjectionFactory CDI() {
-        return new ConstructorInjectionFactory();
+        return new ConstructorInjection();
     }
 
     public static InjectionFactory annotatedMethodDI() {

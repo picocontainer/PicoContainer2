@@ -29,7 +29,7 @@ import java.util.Properties;
  * @author J&ouml;rg Schaible
  * @version $Revision$
  */
-public class SetterInjectionFactory implements InjectionFactory, Serializable {
+public class SetterInjection implements InjectionFactory, Serializable {
 
     /**
      * Create a {@link SetterInjector}.

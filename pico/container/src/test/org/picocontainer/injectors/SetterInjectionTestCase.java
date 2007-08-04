@@ -11,7 +11,7 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.injectors.SetterInjectionFactory;
+import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.SetterInjector;
@@ -25,13 +25,13 @@ import org.picocontainer.testmodel.RecordingLifecycle.One;
  * @author J&ouml;rg Schaible</a>
  * @version $Revision$
  */
-public class SetterInjectionFactoryTestCase extends AbstractComponentFactoryTestCase {
+public class SetterInjectionTestCase extends AbstractComponentFactoryTestCase {
     protected void setUp() throws Exception {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
     }
 
     protected ComponentFactory createComponentFactory() {
-        return new SetterInjectionFactory();
+        return new SetterInjection();
     }
 
     public static interface Bean {
@@ -90,7 +90,7 @@ public class SetterInjectionFactoryTestCase extends AbstractComponentFactoryTest
 
     public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
-        SetterInjectionFactory componentFactory = new SetterInjectionFactory();
+        SetterInjection componentFactory = new SetterInjection();
         SetterInjector sica = (SetterInjector)componentFactory.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
         One one = new RecordingLifecycle.One(new StringBuffer());
         sica.start(one);

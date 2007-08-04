@@ -9,7 +9,7 @@ import org.picocontainer.gems.behaviors.HotSwapping;
 import org.picocontainer.gems.behaviors.HotSwappable;
 import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTestCase 
 
 
     public void testHotSwappingNaturaelyCaches() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwapping().wrap(new ConstructorInjectionFactory()));
+        DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwapping().wrap(new ConstructorInjection()));
         pico.addComponent(Map.class, HashMap.class);
         Map firstMap = pico.getComponent(Map.class);
         Map secondMap = pico.getComponent(Map.class);

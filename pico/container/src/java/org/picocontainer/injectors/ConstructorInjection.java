@@ -25,14 +25,13 @@ import java.util.Properties;
  * @author Jon Tirs&eacute;n
  * @version $Revision$
  */
-public class ConstructorInjectionFactory implements InjectionFactory, Serializable {
+public class ConstructorInjection implements InjectionFactory, Serializable {
 
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters)
-            throws PicoCompositionException
-    {
+            throws PicoCompositionException {
         return new ConstructorInjector(componentKey, componentImplementation, parameters,
                     componentMonitor, lifecycleStrategy);
     }

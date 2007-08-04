@@ -25,7 +25,7 @@ import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.Cached;
@@ -618,7 +618,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
                 parameters[i] = new ConstantParameter(wrapperDependencies[i - 1]);
             }
             final MutablePicoContainer instantiatingPicoContainer = new DefaultPicoContainer(
-                new ConstructorInjectionFactory());
+                new ConstructorInjection());
             instantiatingPicoContainer.addComponent(
                 "decorator", decoratingComponentAdapterClass, parameters);
             mutablePicoContainer.addAdapter((ComponentAdapter)instantiatingPicoContainer

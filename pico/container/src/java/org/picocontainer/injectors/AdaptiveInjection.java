@@ -93,7 +93,7 @@ public class AdaptiveInjection implements InjectionFactory, Serializable {
                                                   Class componentImplementation, Parameter... parameters)
     {
         AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CDI);
-        return new ConstructorInjectionFactory().createComponentAdapter(componentMonitor,
+        return new ConstructorInjection().createComponentAdapter(componentMonitor,
                                                                         lifecycleStrategy,
                                                                         componentProperties,
                                                                         componentKey,
@@ -110,7 +110,7 @@ public class AdaptiveInjection implements InjectionFactory, Serializable {
                                                    Parameter... parameters)
     {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.SDI)) {
-            componentAdapter = new SetterInjectionFactory().createComponentAdapter(componentMonitor,
+            componentAdapter = new SetterInjection().createComponentAdapter(componentMonitor,
                                                                                                     lifecycleStrategy,
                                                                                                     componentProperties,
                                                                                                     componentKey,

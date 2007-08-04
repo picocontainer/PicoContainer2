@@ -17,7 +17,7 @@ import org.nanocontainer.remoting.jmx.testmodel.DynamicMBeanPerson;
 import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Characteristics;
-import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -42,7 +42,7 @@ public class JMXExposingTestCase extends MockObjectTestCase {
     public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException {
         final JMXExposing componentFactory = new JMXExposing(
                 (MBeanServer)mockMBeanServer.proxy());
-        componentFactory.wrap(new ConstructorInjectionFactory());
+        componentFactory.wrap(new ConstructorInjection());
 
         mockMBeanServer.expects(once()).method("registerMBean").with(
                 isA(DynamicMBeanPerson.class), isA(ObjectName.class));
@@ -56,7 +56,7 @@ public class JMXExposingTestCase extends MockObjectTestCase {
     public void testWillRegisterByDefaultComponentsThatAreMBeansUnlessNOJMX() throws NotCompliantMBeanException {
         final JMXExposing componentFactory = new JMXExposing(
                 (MBeanServer)mockMBeanServer.proxy());
-        componentFactory.wrap(new ConstructorInjectionFactory());
+        componentFactory.wrap(new ConstructorInjection());
 
         final Properties rc = new Properties(Characteristics.NO_JMX);
 

@@ -13,11 +13,11 @@ import java.util.Properties;
  * @author Paul Hammant
  * @version $Revision$
  */
-public final class TestInjectionFactory extends AdaptiveInjection {
+public final class TestInjection extends AdaptiveInjection {
 
     public final StringBuffer sb;
 
-    public TestInjectionFactory(StringBuffer sb) {
+    public TestInjection(StringBuffer sb) {
         this.sb = sb;
     }
 

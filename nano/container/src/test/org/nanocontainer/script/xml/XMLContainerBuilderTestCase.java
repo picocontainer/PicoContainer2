@@ -41,7 +41,7 @@ import org.picocontainer.PicoException;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.injectors.AdaptiveInjection;
-import org.picocontainer.injectors.ConstructorInjectionFactory;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -234,7 +234,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
     public void testCreateContainerFromScriptThrowsSAXException() {
         Reader script = new StringReader("" +
-                "<container component-adapter-factory='" + ConstructorInjectionFactory.class.getName() + "'>" +
+                "<container component-adapter-factory='" + ConstructorInjection.class.getName() + "'>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
                 "<container>"); // open instead of close
         try {
@@ -659,14 +659,14 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
     public void testCustomInjectionFactory() throws IOException {
         Reader script = new StringReader("" +
-                "<container component-adapter-factory='" + ConstructorInjectionFactory.class.getName() + "'>" +
+                "<container component-adapter-factory='" + ConstructorInjection.class.getName() + "'>" +
                 "</container>");
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script);
 
         assertEquals("org.picocontainer.DefaultPicoContainer\n" +
                      "  componentFactory=org.picocontainer.behaviors.Caching\n" +
-                     "    delegate=org.picocontainer.injectors.ConstructorInjectionFactory\n" +
+                     "    delegate=org.picocontainer.injectors.ConstructorInjection\n" +
                      "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                      "  lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
                      "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -702,7 +702,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     public void testAdaptersAlsoUseBehaviorFactory() {
         Reader script = new StringReader("" +
                 "<container>" +
-                "  <component-adapter-factory class='org.picocontainer.injectors.ConstructorInjectionFactory' key='factory'/>" +
+                "  <component-adapter-factory class='org.picocontainer.injectors.ConstructorInjection' key='factory'/>" +
                 "  <component-adapter class='org.nanocontainer.testmodel.DefaultWebServerConfig' factory='factory'/>" +
                 "</container>");
         PicoContainer pico = buildContainer(script);
@@ -712,7 +712,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     }
 
 
-    public static class MyComponentFactory extends ConstructorInjectionFactory {
+    public static class MyComponentFactory extends ConstructorInjection {
         public MyComponentFactory() {
             super();
         }

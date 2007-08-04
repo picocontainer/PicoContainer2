@@ -21,7 +21,7 @@ import org.picocontainer.behaviors.Cached;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.injectors.SetterInjectionFactory;
+import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.behaviors.Synchronized;
 import org.picocontainer.behaviors.Synchronizing;
 import org.picocontainer.doc.introduction.Apple;
@@ -68,7 +68,7 @@ public class BuildingBlocksTestCase extends TestCase {
 
         // START SNIPPET: register-different-componentFactory
         MutablePicoContainer picoContainer = new DefaultPicoContainer(
-                new Synchronizing().wrap(new Caching().wrap(new SetterInjectionFactory())));
+                new Synchronizing().wrap(new Caching().wrap(new SetterInjection())));
         // END SNIPPET: register-different-componentFactory
     }
 
