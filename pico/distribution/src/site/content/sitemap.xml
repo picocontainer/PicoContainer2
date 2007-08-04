@@ -7,6 +7,7 @@
         <page>downloads.html</page>
         <page>news.html</page>
         <page>faq.html</page>
+        <page>goals.html</page>
     </section>
     <section>
         <name>Core Concepts</name>
@@ -18,7 +19,6 @@
         <page>builder.html</page>
         <page>properties.html</page>
         <page>component-configuration.html</page>
-        <page>transparency.html</page>
     </section>
     <section>
         <name>Architecture</name>
@@ -30,6 +30,7 @@
         <page>constructor-injection.html</page>
         <page>setter-injection.html</page>
         <page>comparisons.html</page>
+        <page>transparency.html</page>
     </section>
     <section>
          <name>Anti-patterns</name>
