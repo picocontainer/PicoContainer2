@@ -711,7 +711,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         adapters = orderedComponentAdapters;
         // clear list of started CAs
         startedComponentAdapters.clear();
-        for (final ComponentAdapter adapter : adapters) {
+        // clone the adapters
+        Collection<ComponentAdapter<?>> adaptersClone = new ArrayList<ComponentAdapter<?>>(adapters);
+        for (final ComponentAdapter adapter : adaptersClone) {
             if (adapter instanceof Behavior) {
                 Behavior manager = (Behavior)adapter;
                 manager.start(DefaultPicoContainer.this);
