@@ -169,7 +169,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         }
     }
 
-    public void testExternallyInstantiatedObjectsCanBeRegistgeredAndLookedUp() throws PicoException {
+    public void testExternallyInstantiatedObjectsCanBeRegisteredAndLookedUp() throws PicoException {
         MutablePicoContainer pico = createPicoContainer(null);
         final HashMap map = new HashMap();
         pico.as(getProperties()).addComponent(Map.class, map);

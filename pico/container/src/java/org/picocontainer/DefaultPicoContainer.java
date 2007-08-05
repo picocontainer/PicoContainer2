@@ -295,14 +295,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter, Properties properties) {
-        Properties tmpProperties = (Properties)properties.clone();
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(tmpProperties, Characteristics.NONE) == false && componentFactory instanceof BehaviorFactory) {
+        Properties leftProperties = (Properties)properties.clone();
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(leftProperties, Characteristics.NONE) == false && componentFactory instanceof BehaviorFactory) {
             MutablePicoContainer container = addAdapterInternal(((BehaviorFactory)componentFactory).addComponentAdapter(
                 componentMonitor,
                 lifecycleStrategy,
-                tmpProperties,
+                leftProperties,
                 componentAdapter));
-            throwIfPropertiesLeft(tmpProperties);
+            throwIfPropertiesLeft(leftProperties);
             return container;
         } else {
             return addAdapterInternal(componentAdapter);
@@ -380,14 +380,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             parameters = null; // backwards compatibility!  solve this better later - Paul
         }
         if (componentImplementationOrInstance instanceof Class) {
-            Properties tmpProperties = (Properties) properties.clone();
+            Properties leftProperties = (Properties) properties.clone();
             ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(componentMonitor,
                                                                                                lifecycleStrategy,
-                                                                                               tmpProperties,
+                                                                                               leftProperties,
                                                                                                componentKey,
                                                                                                (Class)componentImplementationOrInstance,
                                                                                                parameters);
-            throwIfPropertiesLeft(tmpProperties);
+            throwIfPropertiesLeft(leftProperties);
             return addAdapterInternal(componentAdapter);
         } else {
             ComponentAdapter componentAdapter =
@@ -396,9 +396,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
     }
 
-    private void throwIfPropertiesLeft(Properties tmpProperties) {
-        if(tmpProperties.size() > 0) {
-            throw new PicoCompositionException("Unprocessed Characteristics:" + tmpProperties +", refer http://picocontainer.org/unprocessed-properties-help.html");
+    private void throwIfPropertiesLeft(Properties properties) {
+        if(properties.size() > 0) {
+            throw new PicoCompositionException("Unprocessed properties:" + properties +", refer http://picocontainer.org/unprocessed-properties-help.html");
         }
     }
 
