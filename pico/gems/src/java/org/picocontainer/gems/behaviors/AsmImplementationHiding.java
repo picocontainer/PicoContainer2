@@ -19,7 +19,7 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 import java.util.Properties;
 
-public class ImplementationHiding extends AbstractBehaviorFactory {
+public class AsmImplementationHiding extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,

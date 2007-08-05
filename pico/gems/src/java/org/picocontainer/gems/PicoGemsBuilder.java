@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.gems;
 
-import org.picocontainer.gems.behaviors.ImplementationHiding;
+import org.picocontainer.gems.behaviors.AsmImplementationHiding;
 import org.picocontainer.gems.monitors.Log4JComponentMonitor;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.BehaviorFactory;
@@ -17,7 +17,7 @@ import org.picocontainer.BehaviorFactory;
 public class PicoGemsBuilder {
 
     public static BehaviorFactory IMPL_HIDING() {
-        return new ImplementationHiding();
+        return new AsmImplementationHiding();
     }
 
     public static ComponentMonitor LOG4J() {
