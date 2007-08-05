@@ -13,7 +13,7 @@ import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.HiddenImplementation;
-import org.picocontainer.behaviors.AdaptiveBehaviorFactory;
+import org.picocontainer.behaviors.AdaptiveBehavior;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
@@ -152,7 +152,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentMonitor monitor, PicoContainer parent) {
-        this(new AdaptiveBehaviorFactory(), new StartableLifecycleStrategy(monitor), parent, monitor);
+        this(new AdaptiveBehavior(), new StartableLifecycleStrategy(monitor), parent, monitor);
     }
 
     /**
@@ -164,7 +164,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent            the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(new AdaptiveBehaviorFactory(), lifecycleStrategy, parent, monitor);
+        this(new AdaptiveBehavior(), lifecycleStrategy, parent, monitor);
     }
 
     /**
@@ -205,12 +205,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(PicoContainer parent) {
-        this(new AdaptiveBehaviorFactory(), parent);
+        this(new AdaptiveBehavior(), parent);
     }
 
-    /** Creates a new container with a {@link AdaptiveBehaviorFactory} and no parent container. */
+    /** Creates a new container with a {@link AdaptiveBehavior} and no parent container. */
     public DefaultPicoContainer() {
-        this(new AdaptiveBehaviorFactory(), null);
+        this(new AdaptiveBehavior(), null);
     }
 
     public Collection<ComponentAdapter<?>> getComponentAdapters() {
@@ -295,14 +295,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter, Properties properties) {
-        Properties leftProperties = (Properties)properties.clone();
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(leftProperties, Characteristics.NONE) == false && componentFactory instanceof BehaviorFactory) {
+        Properties tmpProperties = (Properties)properties.clone();
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(tmpProperties, Characteristics.NONE) == false && componentFactory instanceof BehaviorFactory) {
             MutablePicoContainer container = addAdapterInternal(((BehaviorFactory)componentFactory).addComponentAdapter(
                 componentMonitor,
                 lifecycleStrategy,
-                leftProperties,
+                tmpProperties,
                 componentAdapter));
-            throwIfPropertiesLeft(leftProperties);
+            throwIfPropertiesLeft(tmpProperties);
             return container;
         } else {
             return addAdapterInternal(componentAdapter);
@@ -380,14 +380,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             parameters = null; // backwards compatibility!  solve this better later - Paul
         }
         if (componentImplementationOrInstance instanceof Class) {
-            Properties leftProperties = (Properties) properties.clone();
+            Properties tmpProperties = (Properties) properties.clone();
             ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(componentMonitor,
                                                                                                lifecycleStrategy,
-                                                                                               leftProperties,
+                                                                                               tmpProperties,
                                                                                                componentKey,
                                                                                                (Class)componentImplementationOrInstance,
                                                                                                parameters);
-            throwIfPropertiesLeft(leftProperties);
+            throwIfPropertiesLeft(tmpProperties);
             return addAdapterInternal(componentAdapter);
         } else {
             ComponentAdapter componentAdapter =
@@ -396,9 +396,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
     }
 
-    private void throwIfPropertiesLeft(Properties properties) {
-        if(properties.size() > 0) {
-            throw new PicoCompositionException("Unprocessed properties:" + properties +", refer http://picocontainer.org/unprocessed-properties-help.html");
+    private void throwIfPropertiesLeft(Properties tmpProperties) {
+        if(tmpProperties.size() > 0) {
+            throw new PicoCompositionException("Unprocessed Characteristics:" + tmpProperties +", refer http://picocontainer.org/unprocessed-properties-help.html");
         }
     }
 
