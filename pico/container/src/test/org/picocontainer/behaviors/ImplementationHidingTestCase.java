@@ -14,6 +14,8 @@ import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 
 public class ImplementationHidingTestCase extends AbstractComponentFactoryTestCase {
 
+
+
     public void testAddComponentUsesImplementationHidingBehavior() {
         DefaultPicoContainer pico =
             new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()));

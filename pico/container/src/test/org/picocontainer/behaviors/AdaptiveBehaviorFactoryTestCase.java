@@ -145,7 +145,7 @@ public class AdaptiveBehaviorFactoryTestCase extends TestCase {
 
     public void testCachingAndImplHidingAndThreadSafetySetupCorrectlyForExtraCachingForAdapter() {
         Caching cbf = new Caching();
-        AdaptiveBehaviorFactory abf = new AdaptiveBehaviorFactory();
+        AdaptiveBehaviorFactory abf = new AdaptiveBehaviorFactory();      
         cbf.wrap(abf);
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);

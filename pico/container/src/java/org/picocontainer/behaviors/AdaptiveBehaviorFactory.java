@@ -99,6 +99,7 @@ public class AdaptiveBehaviorFactory implements BehaviorFactory, Serializable {
             componentImplementation.getAnnotation(Cache.class) != null) {
             list.add(new Caching());
         }
+        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);
     }
 
     protected void processImplementationHiding(Properties componentProperties,
@@ -106,6 +107,7 @@ public class AdaptiveBehaviorFactory implements BehaviorFactory, Serializable {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL)) {
             list.add(new ImplementationHiding());
         }
+        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL);
     }
 
 

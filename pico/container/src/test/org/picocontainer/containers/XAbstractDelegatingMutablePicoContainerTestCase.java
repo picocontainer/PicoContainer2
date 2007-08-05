@@ -8,7 +8,9 @@ import org.picocontainer.Characteristics;
 
 import java.util.Properties;
 
-public class AbstractDelegatingMutablePicoContainerTestCase extends AbstractPicoContainerTestCase {
+
+// class name can't begin with Abstract else Maven2 won;t pick up on it.
+public class XAbstractDelegatingMutablePicoContainerTestCase extends AbstractPicoContainerTestCase {
 
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
@@ -33,4 +35,5 @@ public class AbstractDelegatingMutablePicoContainerTestCase extends AbstractPico
     public void testAcceptImplementsBreadthFirstStrategy() {
         // don;t run this one.
     }
+
 }
