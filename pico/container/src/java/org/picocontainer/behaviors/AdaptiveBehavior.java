@@ -35,7 +35,8 @@ public class AdaptiveBehavior implements BehaviorFactory, Serializable {
                                                    Parameter... parameters) throws PicoCompositionException {
         List<BehaviorFactory> list = new ArrayList<BehaviorFactory>();
         ComponentFactory lastFactory = makeInjectionFactory();
-        processThreadSafe(componentProperties, list);
+        processSynchronizing(componentProperties, list);
+        processLocking(componentProperties, list);
         processImplementationHiding(componentProperties, list);
         processCachedInstance(componentProperties, componentImplementation, list);
 
@@ -61,7 +62,7 @@ public class AdaptiveBehavior implements BehaviorFactory, Serializable {
                                                 Properties componentProperties,
                                                 ComponentAdapter adapter) {
         List<BehaviorFactory> list = new ArrayList<BehaviorFactory>();
-        processThreadSafe(componentProperties, list);
+        processSynchronizing(componentProperties, list);
         processImplementationHiding(componentProperties, list);
         processCachedInstance(componentProperties, adapter.getComponentImplementation(), list);
 
@@ -86,9 +87,15 @@ public class AdaptiveBehavior implements BehaviorFactory, Serializable {
         return new AdaptiveInjection();
     }
 
-    protected void processThreadSafe(Properties componentProperties, List<BehaviorFactory> list) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.THREAD_SAFE)) {
+    protected void processSynchronizing(Properties componentProperties, List<BehaviorFactory> list) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE)) {
             list.add(new Synchronizing());
+        }
+    }
+
+    protected void processLocking(Properties componentProperties, List<BehaviorFactory> list) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.LOCK)) {
+            list.add(new Locking());
         }
     }
 

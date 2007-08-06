@@ -19,7 +19,8 @@ public final class Characteristics {
     private static final String _SETTER = "setter";
     private static final String _CACHE = "cache";
     private static final String _JMX = "jmx";
-    private static final String _THREAD_SAFE = "thread-safe";
+    private static final String _SYNCHRONIZING = "synchronizing";
+    private static final String _LOCKING = "locking";
     private static final String _HIDE_IMPL = "hide-impl";
     private static final String FALSE = "false";
     private static final String TRUE = "true";
@@ -34,8 +35,10 @@ public final class Characteristics {
 
     public static final Properties NO_JMX = immutable(_JMX, FALSE);
 
-    public static final Properties THREAD_SAFE = immutable(_THREAD_SAFE, TRUE);
-    
+    public static final Properties SYNCHRONIZE = immutable(_SYNCHRONIZING, TRUE);
+
+    public static final Properties LOCK = immutable(_LOCKING, TRUE);
+
     public static final Properties SINGLE = CACHE;
     
     public static final Properties HIDE_IMPL = immutable(_HIDE_IMPL, TRUE);

@@ -292,4 +292,10 @@ public class PropertyApplicator extends AbstractBehavior {
         return "PropertyApplied:" + super.toString(); 
     }
 
+    public void setProperty(String name, String value) {
+        if (properties == null) {
+            properties = new HashMap();
+        }
+        properties.put(name, value);
+    }
 }

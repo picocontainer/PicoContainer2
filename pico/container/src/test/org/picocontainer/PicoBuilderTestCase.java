@@ -285,7 +285,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     public void testWithSynchronizing() {
-        MutablePicoContainer mpc = new PicoBuilder().withSynchronization().build();
+        MutablePicoContainer mpc = new PicoBuilder().withSynchronizing().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.behaviors.Synchronizing\n" +

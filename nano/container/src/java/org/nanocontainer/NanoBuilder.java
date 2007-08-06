@@ -106,7 +106,7 @@ public final class NanoBuilder {
     }
 
     public NanoBuilder withThreadSafety() {
-        picoBuilder.withSynchronization();
+        picoBuilder.withSynchronizing();
         return this;
     }
 

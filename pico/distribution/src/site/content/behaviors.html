@@ -46,7 +46,7 @@ Apple a2 = pico.getComponent(Apple.class);
 </pre></div>
 <h3>Implementation Hiding</h3>
 <p>This is where the implementation of the component is hidden from
-other components using it. It only works if the type has an interface
+other components using it. The instance cannot be cast back to the implementation. It only works if the type has an interface
 that it implements.</p>
 
     <div class="source"><pre>
@@ -75,6 +75,46 @@ Apple a1 = pico.getComponent(Apple.class);
 <p>This Behavior leverages Reflection's dynamic proxy capability.
 There's another ImplementationHiding Behavior in Pico Gems that
 leverages ASM to make 'more concrete' hidden implementations.</p>
+<h3>Thread Safety</h3>
+<p>When components are created by two threads concurrently, with the intention of the instance being cached, it is possible in a small percentage of cases for the first instance into the cache to be replaced with a second instance. To prevent this, you may want to try one of two behaviors to make the operation thread safe:</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer(new Synchronizing().wrap(new Caching()));
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer();
+pico.as(SYNCHRONIZE, CACHE).addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+  <div class="source">
+    <pre>pico = new PicoBuilder().withSynchronizing().withCaching().build();
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+  </div>
+<div class="source">
+  <pre>pico = new PicoBuilder().withBehaviors(synchronizing(), caching()).build();
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+ <p>The second behavior leverages JDK 1.5's ReentrantLock functionality. To use that, replace SYNCHRONIZE with LOCK, or Syncronizing() with Locking(), withSynchronizing() with withLocking() and synchronizing() with locking() as appicable.</p> 
+<h3>Property Applying</h3>
+<p>This is where there are a number of setters for a component that will be could be set after instantiation. A way of handing in some configuration if you like.</p>
+<p>&nbsp;</p>
 </body>
 
 

@@ -94,7 +94,7 @@ public class AdaptiveBehaviorTestCase extends TestCase {
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
         mergeInto(Characteristics.HIDE_IMPL,cc);
-        mergeInto(Characteristics.THREAD_SAFE,cc);
+        mergeInto(Characteristics.SYNCHRONIZE,cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof Cached);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
@@ -127,7 +127,7 @@ public class AdaptiveBehaviorTestCase extends TestCase {
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
         mergeInto(Characteristics.HIDE_IMPL,cc);
-        mergeInto(Characteristics.THREAD_SAFE,cc);
+        mergeInto(Characteristics.SYNCHRONIZE,cc);
         ComponentAdapter ca = cbf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof Cached);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
@@ -150,7 +150,7 @@ public class AdaptiveBehaviorTestCase extends TestCase {
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
         mergeInto(Characteristics.HIDE_IMPL,cc);
-        mergeInto(Characteristics.THREAD_SAFE,cc);
+        mergeInto(Characteristics.SYNCHRONIZE,cc);
         ComponentAdapter ca = cbf.addComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, new InstanceAdapter(Map.class, new HashMap(), new NullLifecycleStrategy(), new NullComponentMonitor()));
         assertTrue(ca instanceof Cached);
         Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());

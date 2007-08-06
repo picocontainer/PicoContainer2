@@ -25,7 +25,7 @@ import java.util.Properties;
 public class Synchronizing extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) {
-        removePropertiesIfPresent(componentProperties, Characteristics.THREAD_SAFE);
+        removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE);
         return new Synchronized(super.createComponentAdapter(
             componentMonitor,
             lifecycleStrategy,
@@ -39,7 +39,7 @@ public class Synchronizing extends AbstractBehaviorFactory {
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
                                                 ComponentAdapter adapter) {
-        removePropertiesIfPresent(componentProperties, Characteristics.THREAD_SAFE);
+        removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE);
         return new Synchronized(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,

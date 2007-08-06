@@ -171,7 +171,7 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withSynchronization() {
+    public PicoBuilder withSynchronizing() {
         componentFactories.push(Synchronizing.class);
         return this;
     }
@@ -180,7 +180,6 @@ public class PicoBuilder {
         componentFactories.push(Locking.class);
         return this;
     }
-
 
     public PicoBuilder withBehaviors(BehaviorFactory... factories) {
         for (ComponentFactory componentFactory : factories) {

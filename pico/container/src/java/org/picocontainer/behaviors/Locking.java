@@ -30,7 +30,7 @@ public class Locking extends AbstractBehaviorFactory {
                                                    Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters) {
-        removePropertiesIfPresent(componentProperties, Characteristics.THREAD_SAFE);
+        removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE);
         return new Locked(super.createComponentAdapter(
             componentMonitor,
             lifecycleStrategy,
@@ -44,7 +44,7 @@ public class Locking extends AbstractBehaviorFactory {
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
                                                 ComponentAdapter adapter) {
-        removePropertiesIfPresent(componentProperties, Characteristics.THREAD_SAFE);
+        removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE);
         return new Synchronized(super.addComponentAdapter(componentMonitor,
                                                           lifecycleStrategy,
                                                           componentProperties,

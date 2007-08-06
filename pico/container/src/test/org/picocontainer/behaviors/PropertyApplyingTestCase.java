@@ -177,6 +177,24 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
         assertEquals("hello", foo.message);
     }
 
+    public void testPropertySetAfterAdapterCreationShouldBeTakenIntoAccount() {
+        PropertyApplying factory = (PropertyApplying)createComponentFactory();
+
+        PropertyApplicator adapter =
+            (PropertyApplicator)factory.createComponentAdapter(new NullComponentMonitor(),
+                                                                     new NullLifecycleStrategy(),
+                                                                     new Properties(Characteristics
+                                                                         .CDI),
+                                                                     "foo",
+                                                                     Foo.class,
+                                                                     (Parameter[])null);
+        adapter.setProperty("message", "hello");
+
+        Foo foo = (Foo)adapter.getComponentInstance(null);
+
+        assertEquals("hello", foo.message);
+    }
+
 
     public void testDelegateIsAccessible() {
         AbstractBehavior componentAdapter =
