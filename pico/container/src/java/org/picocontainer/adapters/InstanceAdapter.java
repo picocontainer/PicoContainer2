@@ -14,6 +14,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.adapters.AbstractAdapter;
 
 /**
@@ -90,6 +91,14 @@ public final class InstanceAdapter extends AbstractAdapter implements Behavior, 
         return lifecycleStrategy.hasLifecycle(type);
     }
 
+
+    public ComponentAdapter getDelegate() {
+        return null;
+    }
+
+    public ComponentAdapter getDelegate(Class componentAdapterType) {
+        return null;
+    }
 
     public String toString() {
         return "Instance-" + super.toString();   

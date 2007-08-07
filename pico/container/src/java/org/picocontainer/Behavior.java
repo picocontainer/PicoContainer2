@@ -44,4 +44,10 @@ public interface Behavior extends ComponentAdapter {
      * @return <code>true</code> if the component has a lifecycle
      */
     boolean componentHasLifecycle();
+
+
+    ComponentAdapter getDelegate();
+
+    ComponentAdapter getDelegate(Class componentAdapterType);
+
 }

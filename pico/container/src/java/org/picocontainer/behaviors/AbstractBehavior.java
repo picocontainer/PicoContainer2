@@ -69,6 +69,16 @@ public abstract class AbstractBehavior implements ComponentAdapter, ComponentMon
         return delegate;
     }
 
+    public ComponentAdapter getDelegate(Class componentAdapterType) {
+        if (componentAdapterType.isAssignableFrom(delegate.getClass())) {
+            return delegate;
+        } else if (delegate instanceof Behavior) {
+            return ((Behavior)delegate).getDelegate(componentAdapterType);
+        } else {
+            return null;
+        }
+    }
+
     public void accept(PicoVisitor visitor) {
         visitor.visitComponentAdapter(this);
         delegate.accept(visitor);

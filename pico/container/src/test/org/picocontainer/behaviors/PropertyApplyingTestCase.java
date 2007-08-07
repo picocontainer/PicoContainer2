@@ -31,6 +31,7 @@ import org.picocontainer.behaviors.PropertyApplying;
 import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.Behavior;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -290,6 +291,31 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
         assertNotNull(a);
         assertNotNull(a.b);
     }
+
+    public void testPropertySetAfterWrappedAdapterCreationShouldBeTakenIntoAccount() {
+        Caching factory = (Caching) new Caching().wrap(createComponentFactory());
+
+        ComponentAdapter adapter =
+            factory.createComponentAdapter(new NullComponentMonitor(),
+                                                                     new NullLifecycleStrategy(),
+                                                                     new Properties(Characteristics
+                                                                         .CDI),
+                                                                     "foo",
+                                                                     Foo.class,
+                                                                     (Parameter[])null);
+
+
+        PropertyApplicator pa = (PropertyApplicator) ((Behavior)adapter).getDelegate(PropertyApplicator.class);
+
+        pa.setProperty("message", "hello");
+
+        Foo foo = (Foo)adapter.getComponentInstance(null);
+
+        assertEquals("hello", foo.message);
+    }
+
+
+
 
     public void testSetBeanPropertiesWithValueObjects() {
         PropertyApplying factory = (PropertyApplying)createComponentFactory();
