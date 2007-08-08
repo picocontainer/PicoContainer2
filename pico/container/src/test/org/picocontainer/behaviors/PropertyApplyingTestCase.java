@@ -32,6 +32,7 @@ import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.Behavior;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -194,6 +195,13 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
         Foo foo = (Foo)adapter.getComponentInstance(null);
 
         assertEquals("hello", foo.message);
+    }
+
+
+    public void testPropertiesTidiedUpAfterPicoUsage() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(createComponentFactory());
+        pico.as(Characteristics.PROPERTY_APPLYING).addComponent("foo", Foo.class);
+        Foo foo = (Foo) pico.getComponent("foo");
     }
 
 

@@ -15,6 +15,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Characteristics;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.behaviors.PropertyApplicator;
 
@@ -35,14 +36,15 @@ public final class PropertyApplying extends AbstractBehaviorFactory {
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
         ComponentAdapter decoratedAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                          componentProperties, componentKey, componentImplementation, parameters);
+        removePropertiesIfPresent(componentProperties, Characteristics.PROPERTY_APPLYING);
         return new PropertyApplicator(decoratedAdapter);
     }
-
 
     public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
                                                 ComponentAdapter adapter) {
+        removePropertiesIfPresent(componentProperties, Characteristics.PROPERTY_APPLYING);
         return new PropertyApplicator(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,
