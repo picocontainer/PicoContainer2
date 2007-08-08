@@ -111,10 +111,54 @@ Apple a2 = pico.getComponent(Apple.class);
 // both the same instance
 </pre>
 </div>
- <p>The second behavior leverages JDK 1.5's ReentrantLock functionality. To use that, replace SYNCHRONIZE with LOCK, or Syncronizing() with Locking(), withSynchronizing() with withLocking() and synchronizing() with locking() as appicable.</p> 
-<h3>Property Applying</h3>
+ <p>The second behavior leverages JDK 1.5's ReentrantLock functionality. To use that, replace SYNCHRONIZE with LOCK, or Syncronizing() with Locking(), withSynchronizing() with withLocking() and synchronizing() with locking() for above code fragments as appicable.</p> 
+ <h3>Property Applying</h3>
 <p>This is where there are a number of setters for a component that will be could be set after instantiation. A way of handing in some configuration if you like.</p>
-<p>&nbsp;</p>
+<div class="source">
+  <pre>
+class Foo {
+  String message;
+  public void setMessage(String message) {
+     this.message = message;
+  }
+  public String toString() {
+      return message;
+  }
+}
+...
+pico = new DefaultPicoContainer(new PropertyApplying());
+pico.addComponent(Foo.class);
+PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
+pa.setProperty("message", "hello");
+System.out.println(pico.getComponent(Foo.class)); // prints hello
+</pre>
+</div>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer();
+pico.as(APPLY_PROPERTIES).addComponent(Foo.class);
+PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
+pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
+System.out.println(pico.getComponent(Foo.class)); // prints hello
+</pre>
+</div>
+  <div class="source">
+    <pre>pico = new PicoBuilder().withProperties().build();
+pico.addComponent(Foo.class);
+PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
+pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
+System.out.println(pico.getComponent(Foo.class)); // prints hello
+</pre>
+  </div>
+  <div class="source">
+    <pre>pico = new PicoBuilder().withBehaviors(propertyApplying()).build();
+pico.addComponent(Foo.class);
+PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
+pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
+System.out.println(pico.getComponent(Foo.class)); // prints hello
+</pre>
+  </div>
+
 </body>
 
 
