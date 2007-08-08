@@ -61,6 +61,16 @@ public class AdaptiveBehaviorTestCase extends TestCase {
         }
     }
 
+    public static class MyHashMap2 extends HashMap {
+        private String foo;
+
+        public MyHashMap2() {
+        }
+        public void setFoo(String foo) {
+            this.foo = foo;
+        }
+    }
+
     public void testImplementationHidingBehaviorCanBeAddedByCharacteristics() {
         AdaptiveBehavior abf = new AdaptiveBehavior();
         Properties cc = new Properties();
@@ -73,6 +83,25 @@ public class AdaptiveBehaviorTestCase extends TestCase {
 
         assertEquals(0, cc.size());
         assertEquals("Hidden:ConstructorInjector-interface java.util.Map",ca.toString());
+
+    }
+
+    public void testPropertyApplyingBehaviorCanBeAddedByCharacteristics() {
+        AdaptiveBehavior abf = new AdaptiveBehavior();
+        Properties cc = new Properties();
+        mergeInto(Characteristics.PROPERTY_APPLYING,cc);
+        ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, MyHashMap2.class);
+        assertTrue(ca instanceof PropertyApplicator);
+        PropertyApplicator pa = (PropertyApplicator)ca;
+        pa.setProperty("foo", "bar");
+        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
+        assertNotNull(map);
+        assertTrue(map instanceof HashMap);
+        assertTrue(map instanceof MyHashMap2);
+        assertEquals("bar", ((MyHashMap2) map).foo);
+
+        assertEquals(0, cc.size());
+        assertEquals("PropertyApplied:ConstructorInjector-interface java.util.Map",ca.toString());
 
     }
 

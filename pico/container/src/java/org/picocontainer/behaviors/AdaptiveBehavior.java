@@ -37,6 +37,7 @@ public class AdaptiveBehavior implements BehaviorFactory, Serializable {
         ComponentFactory lastFactory = makeInjectionFactory();
         processSynchronizing(componentProperties, list);
         processLocking(componentProperties, list);
+        processPropertyApplying(componentProperties, list);
         processImplementationHiding(componentProperties, list);
         processCachedInstance(componentProperties, componentImplementation, list);
 
@@ -115,6 +116,13 @@ public class AdaptiveBehavior implements BehaviorFactory, Serializable {
             list.add(new ImplementationHiding());
         }
         AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL);
+    }
+
+    protected void processPropertyApplying(Properties componentProperties,
+                                             List<BehaviorFactory> list) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.PROPERTY_APPLYING)) {
+            list.add(new PropertyApplying());
+        }
     }
 
 
