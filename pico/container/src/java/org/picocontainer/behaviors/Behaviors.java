@@ -46,4 +46,8 @@ public class Behaviors {
         return new PropertyApplying();
     }
 
+    public static BehaviorFactory pushing() {
+        return new Pushing();
+    }
+
 }

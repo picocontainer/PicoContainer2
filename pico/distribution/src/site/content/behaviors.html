@@ -167,6 +167,53 @@ pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
 </div>
+ <h3>Pushing</h3>
+ <p>This is where a component is going to be instantiated regardless of whether:</p>
+ <ul>
+   <li> it is looked up</li>
+   <li> any component that needs it is looked up</li>
+   <li>it is Startable</li>
+ </ul>
+ <p>It is most likely that you're doing this because the component in question is self contained and doing something once only. Alternatively, you're cutting a larger codebase over from nest-of-singletons to dependency injection in stages.</p>
+ <div class="source">
+  <pre>
+class Foo {
+
+  public Foo() {
+      System.out.println(&quot;Foo was instantiated&quot;);
+  }
+}
+...
+pico = new DefaultPicoContainer(new Pushing());
+pico.addComponent(Foo.class);
+pico.addComponent(&quot;bar&quot;, String.class);
+pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
+</pre>
+</div>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer();
+pico.as(PUSHING).addComponent(Foo.class);
+pico.addComponent(&quot;bar&quot;, String.class);
+pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
+</pre>
+</div>
+  <div class="source">
+    <pre>pico = new PicoBuilder().withPushing().build();
+pico.addComponent(Foo.class);
+pico.addComponent(&quot;bar&quot;, String.class);
+pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
+</pre>
+</div>
+  <div class="source">
+    <pre>pico = new PicoBuilder().withBehaviors(pushing()).build();
+pico.addComponent(Foo.class);
+pico.addComponent(&quot;bar&quot;, String.class);
+pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
+</pre>
+</div>
+
+
 </body>
 
 

@@ -14,6 +14,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.Characteristics;
 
 import java.io.Serializable;
 import java.util.Properties;
@@ -26,6 +27,7 @@ public class Pushing extends AbstractBehaviorFactory implements Serializable {
                                                    Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
+        removePropertiesIfPresent(componentProperties, Characteristics.PUSHING);
         return new Pushy(super.createComponentAdapter(componentMonitor,
                                             lifecycleStrategy,
                                             componentProperties,
@@ -38,6 +40,7 @@ public class Pushing extends AbstractBehaviorFactory implements Serializable {
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
                                                 ComponentAdapter adapter) {
+        removePropertiesIfPresent(componentProperties, Characteristics.PUSHING);
         return new Pushy(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,

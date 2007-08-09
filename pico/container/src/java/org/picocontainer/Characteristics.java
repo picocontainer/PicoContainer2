@@ -23,6 +23,7 @@ public final class Characteristics {
     private static final String _LOCKING = "locking";
     private static final String _HIDE_IMPL = "hide-impl";
     private static final String _PROPERTY_APPLYING = "property-applying";
+    private static final String _PUSHING = "pushing";
 
     private static final String FALSE = "false";
     private static final String TRUE = "true";
@@ -50,6 +51,8 @@ public final class Characteristics {
     public static final Properties NONE = immutable(_NONE, "");
 
     public static final Properties PROPERTY_APPLYING = immutable(_PROPERTY_APPLYING, TRUE);
+
+    public static final Properties PUSHING = immutable(_PUSHING, TRUE);
 
     private static Properties immutable(String name, String value) {
         return new ImmutableProperties(name, value);

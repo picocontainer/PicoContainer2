@@ -38,8 +38,9 @@ public class AdaptiveBehavior implements BehaviorFactory, Serializable {
         processSynchronizing(componentProperties, list);
         processLocking(componentProperties, list);
         processPropertyApplying(componentProperties, list);
+        processPushing(componentProperties, list);
         processImplementationHiding(componentProperties, list);
-        processCachedInstance(componentProperties, componentImplementation, list);
+        processCaching(componentProperties, componentImplementation, list);
 
         //Instantiate Chain of ComponentFactories
         for (ComponentFactory componentFactory : list) {
@@ -65,7 +66,7 @@ public class AdaptiveBehavior implements BehaviorFactory, Serializable {
         List<BehaviorFactory> list = new ArrayList<BehaviorFactory>();
         processSynchronizing(componentProperties, list);
         processImplementationHiding(componentProperties, list);
-        processCachedInstance(componentProperties, adapter.getComponentImplementation(), list);
+        processCaching(componentProperties, adapter.getComponentImplementation(), list);
 
         //Instantiate Chain of ComponentFactories
         BehaviorFactory lastFactory = null;
@@ -100,7 +101,7 @@ public class AdaptiveBehavior implements BehaviorFactory, Serializable {
         }
     }
 
-    protected void processCachedInstance(Properties componentProperties,
+    protected void processCaching(Properties componentProperties,
                                        Class componentImplementation,
                                        List<BehaviorFactory> list) {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CACHE) ||
@@ -122,6 +123,13 @@ public class AdaptiveBehavior implements BehaviorFactory, Serializable {
                                              List<BehaviorFactory> list) {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.PROPERTY_APPLYING)) {
             list.add(new PropertyApplying());
+        }
+    }
+
+    protected void processPushing(Properties componentProperties,
+                                             List<BehaviorFactory> list) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.PUSHING)) {
+            list.add(new Pushing());
         }
     }
 

@@ -9,7 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+import static org.picocontainer.behaviors.Behaviors.caching;
+import static org.picocontainer.behaviors.Behaviors.*;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoBuilder;
+import org.picocontainer.MutablePicoContainer;
+import static org.picocontainer.Characteristics.*;
 
 import junit.framework.TestCase;
 
@@ -49,5 +54,37 @@ public class PushingTestCase extends TestCase {
         assertEquals("", sb.toString());
     }
 
+    public void testPushingBehaviorByBuilder() {
+        MutablePicoContainer pico = new PicoBuilder().withCaching().withPushing().build();
+        pico.addComponent(StringBuilder.class);
+        pico.addComponent(Foo.class);
+        pico.addComponent(Bar.class);
+        pico.start();
+        assertNotNull(pico.getComponent(Bar.class));
+        StringBuilder sb = pico.getComponent(StringBuilder.class);
+        assertEquals(MESSAGE, sb.toString());
+    }
+
+    public void testPushingBehaviorByBuilderADifferentWay() {
+        MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), pushing()).build();
+        pico.addComponent(StringBuilder.class);
+        pico.addComponent(Foo.class);
+        pico.addComponent(Bar.class);
+        pico.start();
+        assertNotNull(pico.getComponent(Bar.class));
+        StringBuilder sb = pico.getComponent(StringBuilder.class);
+        assertEquals(MESSAGE, sb.toString());
+    }
+
+    public void testPushingBehaviorWorksForAdaptiveBehaviorToo() {
+        MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), pushing()).build();
+        pico.addComponent(StringBuilder.class);
+        pico.as(PUSHING).addComponent(Foo.class);
+        pico.addComponent(Bar.class);
+        pico.start();
+        assertNotNull(pico.getComponent(Bar.class));
+        StringBuilder sb = pico.getComponent(StringBuilder.class);
+        assertEquals(MESSAGE, sb.toString());
+    }
 
 }
