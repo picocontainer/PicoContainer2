@@ -44,6 +44,7 @@ public class PushingTestCase extends TestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
+        assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     public void testPushingBehaviorViaAdapter() {
@@ -55,6 +56,7 @@ public class PushingTestCase extends TestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
+        assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     public void testNonPushingBehaviorAsContrastToTheAbove() {
@@ -88,6 +90,7 @@ public class PushingTestCase extends TestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
+        assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     public void testPushingBehaviorByBuilderViaAdapter() {
@@ -99,6 +102,7 @@ public class PushingTestCase extends TestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
+        assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     public void testPushingBehaviorByBuilderADifferentWay() {
@@ -110,6 +114,7 @@ public class PushingTestCase extends TestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
+        assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
         public void testPushingBehaviorByBuilderADifferentWayViaAdapter() {
@@ -121,6 +126,7 @@ public class PushingTestCase extends TestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
+            assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     public void testPushingBehaviorWorksForAdaptiveBehaviorToo() {
@@ -132,6 +138,7 @@ public class PushingTestCase extends TestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
+        assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     public void testPushingBehaviorWorksForAdaptiveBehaviorTooViaAdapter() {
@@ -143,6 +150,7 @@ public class PushingTestCase extends TestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
+        assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
 }
