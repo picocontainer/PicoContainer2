@@ -20,42 +20,54 @@ with parent containers, but grant no visibility of the child to the
 parent. This is so that containers can be garbage collected at the end
 of their scope.</p>
 <p>Here are examples of parent/child setup:</p>
-    <div class="source"><pre>
+    <div class="source">
+      <pre>
 parent = new DefaultPicoContainer();
 parent.addComponent(Apple.class);
+parent.addComponent(Orange.class);
+parent.addComponent(Pear.class);
 child = parent.makeChildContainer();
 child.addComponent(DependsOnApple.class);
 // this is OK
 parent.start();
 // cascades to child just fine
-</pre></div>
-    <div class="source"><pre>
+</pre>
+</div>
+<div class="source">
+  <pre>
 parent = new DefaultPicoContainer();
 parent.addComponent(Apple.class);
+parent.addComponent(Orange.class);
+parent.addComponent(Pear.class);
 child = parent.addChildContainer(new DefaultPicoContainer());
 child.addComponent(DependsOnApple.class);
 // this is NOT OK. child can't see parent
 parent.start();
 // cascades to child just fine
-</pre></div>
-    <div class="source"><pre>
+</pre>
+</div>
+<div class="source">
+  <pre>
 parent = new DefaultPicoContainer();
-parent.addComponent(Apple.class);
+parent.addComponent(Apple.class).addComponent(Orange.class).addComponent(Pear.class);
 child = parent.addChildContainer(new DefaultPicoContainer(parent));
 child.addComponent(DependsOnApple.class);
 // this is OK
 parent.start();
 // cascades to child just fine
-</pre></div>
-    <div class="source"><pre>parent = new DefaultPicoContainer();
-parent.addComponent(Apple.class);
+</pre>
+</div>
+<div class="source"><pre>parent = new DefaultPicoContainer();
+parent.addComponent(Apple.class).addComponent(Orange.class).addComponent(Pear.class);
 child = new DefaultPicoContainer(parent);
 child.addComponent(DependsOnApple.class);
 // this is  OK
 parent.start();
 // does NOT cascades to child 
-</pre></div>
+</pre>
+</div>
 <p>There is no limit to the extent of the chained containers.
 Grantparent, Parent, Grandchild (etc) is OK.</p>
+<p>Garbage collection is a good way of disposing of scoped containers. If the children refer to the parents, then assign child to null just works. If the parents refer to the children too, then you'll have to do a removeChildContainer first before it will be eligible for garbage collection.</p>
 </body>
 </html>
