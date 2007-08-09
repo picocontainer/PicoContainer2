@@ -158,7 +158,15 @@ pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
   </div>
-
+  <div class="source">
+    <pre>pico = new PicoBuilder().withBehaviors(caching(), propertyApplying()).build();
+pico.addComponent(Foo.class);
+Cached cached = (Cached) pico.getAdapter(Foo.class);
+PropertyApplicator pa = (PropertyApplicator) getDelegate(PropertyApplicator.class);
+pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
+System.out.println(pico.getComponent(Foo.class)); // prints hello
+</pre>
+</div>
 </body>
 
 
