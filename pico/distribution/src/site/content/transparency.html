@@ -10,10 +10,11 @@
 <p>If you live with this ideal, you may be able to use the components you design for Pico with other frameworks or containers. I.e. you are not locked in. We suggest you choose other technologies that are similarly light on API and framework, and could be characterised as transparent. Good examples are XStream, Sitemesh and anything that deals with POJOs.</p>
 <p>There are some exceptions, to this goal of ours.</p>
 <h2>Lifecycle</h2>
-<p>Java does not have a Startable interface, nor does it have a Disposable (.Net has IDisposable). So we made our own. You can use ours or your own in a similar design. If you use your own, you may want to extend StartableLifecycleStrategy and override a couple of methods.</p>
+<p>Java does not have a Startable interface, nor does it have a Disposable (.Net has IDisposable), so we made our own. You can use ours or your own in a similar design. If you use your own, you may want to extend StartableLifecycleStrategy and override a couple of methods. That's if you need lifecycle at all.</p>
 <p>If a Startable inerface goes into J2SE, then it will probably be supported.</p>
 <h2>Annotations</h2>
-<p>We also support @Inject as an annotation for methods and fields. This is a variation of Setter Injection. The annotations are part of our codebase. Again you can use your own, or others, if you override one of the two classes from PicoContainer's codebase- AnnotatedFieldInjection and AnnotatedMethodInjection.</p>
+<p>We also support @Inject as an annotation for methods and fields. This is a variation of Setter Injection. The annotations are part of our codebase. Again, you can use your own, or others if you override one of the two classes from PicoContainer's codebase <strong>AnnotatedFieldInjection</strong> and <strong>AnnotatedMethodInjection</strong>.</p>
+<p>Annotations are a break with transparency, so we don't recomend them - stick to vanilla Constructor Injection if you can.</p>
 <p>If a simple @Inject annotation goes into J2SE, then it will probably be supported. </p>
 <p></p>
 <p>&nbsp;</p>
