@@ -49,6 +49,12 @@ public interface ContainerDeployerMBean {
 	String getScript();
 	void setScript(String script);
 	
+	/**
+	 * whether this container was started
+	 * @return
+	 */
+	boolean isStarted();
+	
 	void start() throws Exception;
 	void stop() throws Exception;
 	

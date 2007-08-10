@@ -1,5 +1,8 @@
 package org.nanocontainer.nanosar;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * mbean for deployment in JBoss SAR
  * @author ko5tik
@@ -7,6 +10,8 @@ package org.nanocontainer.nanosar;
  */
 public class ContainerDeployer implements ContainerDeployerMBean {
 
+	Log log;
+	
 	String containerComposer;
 
 	String jndiName;
@@ -15,6 +20,12 @@ public class ContainerDeployer implements ContainerDeployerMBean {
 
 	String script;
 
+	boolean started = false;
+	
+	public ContainerDeployer() {
+		log = LogFactory.getLog(ContainerDeployer.class);
+		log.info("instantiating container deployer");
+	}
 	public String getContainerComposer() {
 		return containerComposer;
 	}
@@ -46,19 +57,27 @@ public class ContainerDeployer implements ContainerDeployerMBean {
 	public void setScript(String script) {
 		this.script = script;
 	}
+	
 	/**
 	 * compose container and start it
 	 */
-	public void start() throws Exception {
+	public synchronized void start() throws Exception {
+		log.info("starting container");
+		if(started) {
+			throw new IllegalStateException("container already started");
+		}
+		// create container from script
 		
-		
+		started = true;
 	}
 	/**
 	 * stop and dispose container
 	 */
 	public void stop() throws Exception {
-		// TODO Auto-generated method stub
-		
+		log.info("stopping container");
+	}
+	public boolean isStarted() {
+		return started;
 	}
 	
 }
