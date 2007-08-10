@@ -19,7 +19,7 @@ import org.picocontainer.Characteristics;
 import java.io.Serializable;
 import java.util.Properties;
 
-public class Pushing extends AbstractBehaviorFactory implements Serializable {
+public class Automatic extends AbstractBehaviorFactory implements Serializable {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
@@ -27,8 +27,8 @@ public class Pushing extends AbstractBehaviorFactory implements Serializable {
                                                    Object componentKey,
                                                    Class componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
-        removePropertiesIfPresent(componentProperties, Characteristics.PUSHING);
-        return new Pushy(super.createComponentAdapter(componentMonitor,
+        removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC);
+        return new Automated(super.createComponentAdapter(componentMonitor,
                                             lifecycleStrategy,
                                             componentProperties,
                                             componentKey,
@@ -40,8 +40,8 @@ public class Pushing extends AbstractBehaviorFactory implements Serializable {
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
                                                 ComponentAdapter adapter) {
-        removePropertiesIfPresent(componentProperties, Characteristics.PUSHING);
-        return new Pushy(super.addComponentAdapter(componentMonitor,
+        removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC);
+        return new Automated(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,
                                          adapter));

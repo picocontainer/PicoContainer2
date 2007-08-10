@@ -38,7 +38,7 @@ public class AdaptiveBehavior implements BehaviorFactory, Serializable {
         processSynchronizing(componentProperties, list);
         processLocking(componentProperties, list);
         processPropertyApplying(componentProperties, list);
-        processPushing(componentProperties, list);
+        processAutomatic(componentProperties, list);
         processImplementationHiding(componentProperties, list);
         processCaching(componentProperties, componentImplementation, list);
 
@@ -126,10 +126,10 @@ public class AdaptiveBehavior implements BehaviorFactory, Serializable {
         }
     }
 
-    protected void processPushing(Properties componentProperties,
+    protected void processAutomatic(Properties componentProperties,
                                              List<BehaviorFactory> list) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.PUSHING)) {
-            list.add(new Pushing());
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC)) {
+            list.add(new Automatic());
         }
     }
 

@@ -21,7 +21,7 @@ import static org.picocontainer.Characteristics.*;
 
 import junit.framework.TestCase;
 
-public class PushingTestCase extends TestCase {
+public class AutomaticTestCase extends TestCase {
 
     private static String MESSAGE =
         "Foo was instantiated, even though it was not required to be given it was not depended on by anything looked up";
@@ -35,8 +35,8 @@ public class PushingTestCase extends TestCase {
     public static class Bar {
     }
 
-    public void testPushingBehavior() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new Caching().wrap(new Pushing()));
+    public void testAutomaticBehavior() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Caching().wrap(new Automatic()));
         pico.addComponent(StringBuilder.class);
         pico.addComponent(Foo.class);
         pico.addComponent(Bar.class);
@@ -44,11 +44,11 @@ public class PushingTestCase extends TestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-        assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomaticTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testPushingBehaviorViaAdapter() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new Caching().wrap(new Pushing()));
+    public void testAutomaticBehaviorViaAdapter() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Caching().wrap(new Automatic()));
         pico.addComponent(StringBuilder.class);
         pico.addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
         pico.addComponent(Bar.class);
@@ -56,10 +56,10 @@ public class PushingTestCase extends TestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-        assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomaticTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testNonPushingBehaviorAsContrastToTheAbove() {
+    public void testNonAutomaticBehaviorAsContrastToTheAbove() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new Caching());
         pico.addComponent(StringBuilder.class);
         pico.addComponent(Foo.class);
@@ -70,7 +70,7 @@ public class PushingTestCase extends TestCase {
         assertEquals("", sb.toString());
     }
 
-    public void testNonPushingBehaviorAsContrastToTheAboveViaAdapter() {
+    public void testNonAutomaticBehaviorAsContrastToTheAboveViaAdapter() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new Caching());
         pico.addComponent(StringBuilder.class);
         pico.addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
@@ -81,8 +81,8 @@ public class PushingTestCase extends TestCase {
         assertEquals("", sb.toString());
     }
 
-    public void testPushingBehaviorByBuilder() {
-        MutablePicoContainer pico = new PicoBuilder().withCaching().withPushing().build();
+    public void testAutomaticBehaviorByBuilder() {
+        MutablePicoContainer pico = new PicoBuilder().withCaching().withAutomatic().build();
         pico.addComponent(StringBuilder.class);
         pico.addComponent(Foo.class);
         pico.addComponent(Bar.class);
@@ -90,11 +90,11 @@ public class PushingTestCase extends TestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-        assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomaticTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testPushingBehaviorByBuilderViaAdapter() {
-        MutablePicoContainer pico = new PicoBuilder().withCaching().withPushing().build();
+    public void testAutomaticBehaviorByBuilderViaAdapter() {
+        MutablePicoContainer pico = new PicoBuilder().withCaching().withAutomatic().build();
         pico.addComponent(StringBuilder.class);
         pico.addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
         pico.addComponent(Bar.class);
@@ -102,10 +102,10 @@ public class PushingTestCase extends TestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-        assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomaticTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testPushingBehaviorByBuilderADifferentWay() {
+    public void testAutomaticBehaviorByBuilderADifferentWay() {
         MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), pushing()).build();
         pico.addComponent(StringBuilder.class);
         pico.addComponent(Foo.class);
@@ -114,10 +114,10 @@ public class PushingTestCase extends TestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-        assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomaticTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
-        public void testPushingBehaviorByBuilderADifferentWayViaAdapter() {
+        public void testAutomaticBehaviorByBuilderADifferentWayViaAdapter() {
         MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), pushing()).build();
         pico.addComponent(StringBuilder.class);
         pico.addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
@@ -126,31 +126,31 @@ public class PushingTestCase extends TestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-            assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+            assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomaticTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testPushingBehaviorWorksForAdaptiveBehaviorToo() {
+    public void testAutomaticBehaviorWorksForAdaptiveBehaviorToo() {
         MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), pushing()).build();
         pico.addComponent(StringBuilder.class);
-        pico.as(PUSHING).addComponent(Foo.class);
+        pico.as(AUTOMATIC).addComponent(Foo.class);
         pico.addComponent(Bar.class);
         pico.start();
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-        assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomaticTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testPushingBehaviorWorksForAdaptiveBehaviorTooViaAdapter() {
+    public void testAutomaticBehaviorWorksForAdaptiveBehaviorTooViaAdapter() {
         MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), pushing()).build();
         pico.addComponent(StringBuilder.class);
-        pico.as(PUSHING).addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
+        pico.as(AUTOMATIC).addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
         pico.addComponent(Bar.class);
         pico.start();
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-        assertEquals("Cached:Pushy:ConstructorInjector-class org.picocontainer.behaviors.PushingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomaticTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
 }

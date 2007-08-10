@@ -52,7 +52,7 @@ public final class Characteristics {
 
     public static final Properties PROPERTY_APPLYING = immutable(_PROPERTY_APPLYING, TRUE);
 
-    public static final Properties PUSHING = immutable(_PUSHING, TRUE);
+    public static final Properties AUTOMATIC = immutable(_PUSHING, TRUE);
 
     private static Properties immutable(String name, String value) {
         return new ImmutableProperties(name, value);

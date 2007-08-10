@@ -47,7 +47,7 @@ public class Behaviors {
     }
 
     public static BehaviorFactory pushing() {
-        return new Pushing();
+        return new Automatic();
     }
 
 }

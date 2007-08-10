@@ -14,8 +14,8 @@ import org.picocontainer.ComponentAdapter;
 
 import java.io.Serializable;
 
-public class Pushy extends AbstractBehavior implements Behavior, Serializable {
-    public Pushy(ComponentAdapter delegate) {
+public class Automated extends AbstractBehavior implements Behavior, Serializable {
+    public Automated(ComponentAdapter delegate) {
         super(delegate);
     }
 
@@ -24,6 +24,6 @@ public class Pushy extends AbstractBehavior implements Behavior, Serializable {
     }
 
     public String toString() {
-        return "Pushy:" + super.toString();    
+        return "Automated:" + super.toString();
     }
 }

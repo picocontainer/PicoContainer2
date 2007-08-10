@@ -14,7 +14,7 @@ import static org.picocontainer.behaviors.Behaviors.implementationHiding;
 import org.picocontainer.behaviors.PropertyApplying;
 import org.picocontainer.behaviors.Synchronizing;
 import org.picocontainer.behaviors.Locking;
-import org.picocontainer.behaviors.Pushing;
+import org.picocontainer.behaviors.Automatic;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
 import static org.picocontainer.injectors.Injectors.CDI;
@@ -215,8 +215,8 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withPushing() {
-        componentFactories.push(Pushing.class);
+    public PicoBuilder withAutomatic() {
+        componentFactories.push(Automatic.class);
         return this;
     }
 }
