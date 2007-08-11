@@ -16,10 +16,9 @@ package org.picocontainer;
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
- * @version $Revision$
  * @see LifecycleStrategy
  */
-public interface Behavior extends ComponentAdapter {
+public interface Behavior<T, U> extends ComponentAdapter<T> {
 
     /**
      * Invoke the "start" method on the component.
@@ -45,9 +44,8 @@ public interface Behavior extends ComponentAdapter {
      */
     boolean componentHasLifecycle();
 
+    ComponentAdapter<T> getDelegate();
 
-    ComponentAdapter getDelegate();
-
-    ComponentAdapter getDelegate(Class componentAdapterType);
+    ComponentAdapter<U> getDelegate(Class<U> componentAdapterType);
 
 }

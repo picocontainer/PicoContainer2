@@ -303,7 +303,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
     public void testPropertySetAfterWrappedAdapterCreationShouldBeTakenIntoAccount() {
         Caching factory = (Caching) new Caching().wrap(createComponentFactory());
 
-        ComponentAdapter adapter =
+        ComponentAdapter<?> adapter =
             factory.createComponentAdapter(new NullComponentMonitor(),
                                                                      new NullLifecycleStrategy(),
                                                                      new Properties(Characteristics
@@ -313,7 +313,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
                                                                      (Parameter[])null);
 
 
-        PropertyApplicator pa = (PropertyApplicator) ((Behavior)adapter).getDelegate(PropertyApplicator.class);
+        PropertyApplicator pa = (PropertyApplicator) ((Behavior<?,PropertyApplicator>)adapter).getDelegate(PropertyApplicator.class);
 
         pa.setProperty("message", "hello");
 
@@ -321,9 +321,6 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
 
         assertEquals("hello", foo.message);
     }
-
-
-
 
     public void testSetBeanPropertiesWithValueObjects() {
         PropertyApplying factory = (PropertyApplying)createComponentFactory();
