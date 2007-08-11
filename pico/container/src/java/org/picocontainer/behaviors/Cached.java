@@ -34,7 +34,7 @@ import java.io.Serializable;
  * @author Mauro Talevi
  * @version $Revision$
  */
-public final class Cached extends AbstractBehavior implements Behavior {
+public class Cached extends AbstractBehavior implements Behavior {
 
     private final ObjectReference instanceReference;
     private boolean disposed;
