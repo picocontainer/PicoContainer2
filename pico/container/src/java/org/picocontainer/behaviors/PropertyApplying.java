@@ -29,24 +29,19 @@ import java.util.Properties;
  */
 public final class PropertyApplying extends AbstractBehaviorFactory {
 
-    /**
-     * {@inheritDoc}
-     */
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
-        ComponentAdapter decoratedAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                                                         componentProperties, componentKey, componentImplementation, parameters);
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
+            LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,
+            Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
+        ComponentAdapter<?> decoratedAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+                componentProperties, componentKey, componentImplementation, parameters);
         removePropertiesIfPresent(componentProperties, Characteristics.PROPERTY_APPLYING);
         return new PropertyApplicator(decoratedAdapter);
     }
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
-                                                LifecycleStrategy lifecycleStrategy,
-                                                Properties componentProperties,
-                                                ComponentAdapter adapter) {
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
+            LifecycleStrategy lifecycleStrategy, Properties componentProperties, ComponentAdapter<T> adapter) {
         removePropertiesIfPresent(componentProperties, Characteristics.PROPERTY_APPLYING);
-        return new PropertyApplicator(super.addComponentAdapter(componentMonitor,
-                                         lifecycleStrategy,
-                                         componentProperties,
-                                         adapter));
+        return new PropertyApplicator(super.addComponentAdapter(componentMonitor, lifecycleStrategy,
+                componentProperties, adapter));
     }
 }

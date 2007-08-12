@@ -11,6 +11,11 @@ package org.picocontainer;
 
 import java.util.Properties;
 
+/**
+ * Collection of immutable properties, holding behaviour characteristics.
+ * 
+ * @author Paul Hammant
+ */
 public final class Characteristics {
 
     private static final String _INJECTION = "injection";

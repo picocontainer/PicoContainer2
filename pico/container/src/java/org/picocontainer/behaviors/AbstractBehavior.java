@@ -39,12 +39,12 @@ import org.picocontainer.LifecycleStrategy;
  * @author Aslak Hellesoy
  * @author Mauro Talevi
  */
-public abstract class AbstractBehavior implements Behavior, ComponentMonitorStrategy,
+public abstract class AbstractBehavior<T> implements Behavior<T>, ComponentMonitorStrategy,
                                                   LifecycleStrategy, Serializable {
 
-    private final ComponentAdapter delegate;
+    private final ComponentAdapter<?> delegate;
 
-    public AbstractBehavior(ComponentAdapter delegate) {
+    public AbstractBehavior(ComponentAdapter<?> delegate) {
          this.delegate = delegate;
     }
     
@@ -56,23 +56,23 @@ public abstract class AbstractBehavior implements Behavior, ComponentMonitorStra
         return delegate.getComponentImplementation();
     }
 
-    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
-        return delegate.getComponentInstance(container);
+    public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
+        return (T) delegate.getComponentInstance(container);
     }
 
     public void verify(PicoContainer container) throws PicoCompositionException {
         delegate.verify(container);
     }
 
-    public ComponentAdapter getDelegate() {
-        return delegate;
+    public T getDelegate() {
+        return (T) delegate;
     }
 
-    public ComponentAdapter getDelegate(Class componentAdapterType) {
+    public <U> U getDelegate(Class<U> componentAdapterType) {
         if (componentAdapterType.isAssignableFrom(delegate.getClass())) {
-            return delegate;
+            return (U) delegate;
         } else if (delegate instanceof Behavior) {
-            return (ComponentAdapter) ((Behavior)delegate).getDelegate(componentAdapterType);
+            return ((Behavior<?>)delegate).getDelegate(componentAdapterType);
         } else {
             return null;
         }
@@ -113,7 +113,7 @@ public abstract class AbstractBehavior implements Behavior, ComponentMonitorStra
      */
     public void start(PicoContainer container) {
         if ( delegate instanceof Behavior){
-            ((Behavior)delegate).start(container);
+            ((Behavior<?>)delegate).start(container);
         }
     }
 
@@ -123,7 +123,7 @@ public abstract class AbstractBehavior implements Behavior, ComponentMonitorStra
      */
     public void stop(PicoContainer container) {
         if ( delegate instanceof Behavior){
-            ((Behavior)delegate).stop(container);
+            ((Behavior<?>)delegate).stop(container);
         }
     }
     
@@ -133,7 +133,7 @@ public abstract class AbstractBehavior implements Behavior, ComponentMonitorStra
      */
     public void dispose(PicoContainer container) {
         if ( delegate instanceof Behavior){
-            ((Behavior)delegate).dispose(container);
+            ((Behavior<?>)delegate).dispose(container);
         }
     }
 
@@ -143,7 +143,7 @@ public abstract class AbstractBehavior implements Behavior, ComponentMonitorStra
      */
     public boolean componentHasLifecycle() {
         if (delegate instanceof Behavior){
-            return ((Behavior)delegate).componentHasLifecycle();
+            return ((Behavior<?>)delegate).componentHasLifecycle();
         }
         return false;
     }
@@ -187,7 +187,6 @@ public abstract class AbstractBehavior implements Behavior, ComponentMonitorStra
     public boolean hasLifecycle(Class type) {
         return delegate instanceof LifecycleStrategy && ((LifecycleStrategy) delegate).hasLifecycle(type);
     }
-
 
     public String toString() {
         return delegate.toString();

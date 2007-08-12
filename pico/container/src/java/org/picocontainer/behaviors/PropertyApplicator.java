@@ -47,9 +47,10 @@ import org.picocontainer.behaviors.Cached;
  * </em>
  *
  * @author Aslak Helles&oslash;y
+ * @author Mauro Talevi
  */
-public class PropertyApplicator extends AbstractBehavior {
-    private Map properties;
+public class PropertyApplicator<T> extends AbstractBehavior<T> {
+    private Map<String, String> properties;
     private transient Map<String, Method> setters = null;
 
     /**
@@ -58,7 +59,7 @@ public class PropertyApplicator extends AbstractBehavior {
      * @param delegate the wrapped {@link ComponentAdapter}
      * @throws PicoCompositionException {@inheritDoc}
      */
-    public PropertyApplicator(ComponentAdapter delegate) throws PicoCompositionException {
+    public PropertyApplicator(ComponentAdapter<?> delegate) throws PicoCompositionException {
         super(delegate);
     }
 
@@ -72,8 +73,8 @@ public class PropertyApplicator extends AbstractBehavior {
      *                                     {@inheritDoc}
      * @see #setProperties(Map)
      */
-    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
-        final Object componentInstance = super.getComponentInstance(container);
+    public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
+        final T componentInstance = super.getComponentInstance(container);
         if (setters == null) {
             setters = getSetters(getComponentImplementation());
         }
@@ -103,7 +104,7 @@ public class PropertyApplicator extends AbstractBehavior {
         return componentInstance;
     }
 
-    private Map<String, Method> getSetters(Class clazz) {
+    private Map<String, Method> getSetters(Class<?> clazz) {
         Map<String, Method> result = new HashMap<String, Method>();
         Method[] methods = getMethods(clazz);
         for (Method method : methods) {
@@ -114,8 +115,8 @@ public class PropertyApplicator extends AbstractBehavior {
         return result;
     }
 
-    private Method[] getMethods(final Class clazz) {
-        return (Method[]) AccessController.doPrivileged(new PrivilegedAction() {
+    private Method[] getMethods(final Class<?> clazz) {
+        return (Method[]) AccessController.doPrivileged(new PrivilegedAction<Object>() {
             public Object run() {
                 return clazz.getMethods();
             }
@@ -141,13 +142,11 @@ public class PropertyApplicator extends AbstractBehavior {
                 method.getParameterTypes().length == 1;
     }
 
-
-
     private Object convertType(PicoContainer container, Method setter, String propertyValue) {
         if (propertyValue == null) {
             return null;
         }
-        Class type = setter.getParameterTypes()[0];
+        Class<?> type = setter.getParameterTypes()[0];
         String typeName = type.getName();
 
         Object result = convert(typeName, propertyValue, Thread.currentThread().getContextClassLoader());
@@ -209,7 +208,7 @@ public class PropertyApplicator extends AbstractBehavior {
         } else if (typeName.equals(Class.class.getName()) || typeName.equals("class")) {
             return loadClass(classLoader, value);
         } else {
-            final Class clazz = loadClass(classLoader, typeName);
+            final Class<?> clazz = loadClass(classLoader, typeName);
             final PropertyEditor editor = PropertyEditorManager.findEditor(clazz);
             if (editor != null) {
                 editor.setAsText(value);
@@ -219,7 +218,7 @@ public class PropertyApplicator extends AbstractBehavior {
         return null;
     }
 
-    private static Class loadClass(ClassLoader classLoader, String typeName) {
+    private static Class<?> loadClass(ClassLoader classLoader, String typeName) {
         try {
             return classLoader.loadClass(typeName);
         } catch (ClassNotFoundException e) {
@@ -233,7 +232,7 @@ public class PropertyApplicator extends AbstractBehavior {
      *
      * @param properties bean properties
      */
-    public void setProperties(Map properties) {
+    public void setProperties(Map<String, String> properties) {
         this.properties = properties;
     }
 
@@ -262,7 +261,7 @@ public class PropertyApplicator extends AbstractBehavior {
 
         //We can assume that there is only one object (as per typical setters)
         //because the Setter introspector does that job for us earlier.
-        Class setterParameter = setter.getParameterTypes()[0];
+        Class<?> setterParameter = setter.getParameterTypes()[0];
 
         Object convertedValue;
 
@@ -272,7 +271,7 @@ public class PropertyApplicator extends AbstractBehavior {
         //If property value is a string or a true primative then convert it to whatever
         //we need.  (String will convert to string).
         //
-            convertedValue = convertType(container, setter, propertyValue.toString());
+        convertedValue = convertType(container, setter, propertyValue.toString());
 
         //Otherwise, check the parameter type to make sure we can
         //assign it properly.
@@ -293,8 +292,9 @@ public class PropertyApplicator extends AbstractBehavior {
 
     public void setProperty(String name, String value) {
         if (properties == null) {
-            properties = new HashMap();
+            properties = new HashMap<String, String>();
         }
         properties.put(name, value);
     }
+    
 }

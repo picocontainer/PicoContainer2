@@ -45,18 +45,19 @@ public class HiddenImplementation extends AbstractBehavior {
             throws PicoCompositionException
     {
 
-        Object componentKey = getDelegate().getComponentKey();
+        ComponentAdapter delegate = (ComponentAdapter) getDelegate(ComponentAdapter.class);
+        Object componentKey = delegate.getComponentKey();
         Class[] classes;
-        if (componentKey instanceof Class && ((Class) getDelegate().getComponentKey()).isInterface()) {
-            classes = new Class[]{(Class) getDelegate().getComponentKey()};
+        if (componentKey instanceof Class && ((Class) delegate.getComponentKey()).isInterface()) {
+            classes = new Class[]{(Class) delegate.getComponentKey()};
         } else if (componentKey instanceof Class[]) {
             classes = (Class[]) componentKey;
         } else {
-            return getDelegate().getComponentInstance(container);
+            return delegate.getComponentInstance(container);
         }
 
         Class[] interfaces = verifyInterfacesOnly(classes);
-        return createProxy(interfaces, container, getDelegate().getComponentImplementation().getClassLoader());
+        return createProxy(interfaces, container, delegate.getComponentImplementation().getClassLoader());
     }
 
     private Object createProxy(Class[] interfaces, final PicoContainer container, final ClassLoader classLoader) {
@@ -65,7 +66,7 @@ public class HiddenImplementation extends AbstractBehavior {
                     public Object invoke(final Object proxy, final Method method,
                                          final Object[] args)
                             throws Throwable {
-                        Object componentInstance = getDelegate().getComponentInstance(container);
+                        Object componentInstance = ((ComponentAdapter) getDelegate(ComponentAdapter.class)).getComponentInstance(container);
                         ComponentMonitor componentMonitor = currentMonitor();
                         try {
                             componentMonitor.invoking(container, HiddenImplementation.this, method, componentInstance);

@@ -11,10 +11,17 @@ package org.picocontainer;
 
 import java.util.Properties;
 
+/**
+ * Extends ComponentFactory to provide factory methods for Behaviors
+ * 
+ * @author Paul Hammant
+ * @author Mauro Talevi
+ */
 public interface BehaviorFactory extends ComponentFactory {
 
     ComponentFactory wrap(ComponentFactory delegate);
 
-    ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, ComponentAdapter adapter);
+    <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
+            Properties componentProperties, ComponentAdapter<T> adapter);
 
 }

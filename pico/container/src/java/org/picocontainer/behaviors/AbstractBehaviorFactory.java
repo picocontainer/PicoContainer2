@@ -30,44 +30,45 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
         this.delegate = delegate;
         return this;
     }
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,
-                                                   Class componentImplementation,
-                                                   Parameter... parameters) throws PicoCompositionException {
+    
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
+            LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,
+            Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
         if (delegate == null) {
             delegate = new AdaptiveInjection();
         }
-        return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                               componentProperties, componentKey, componentImplementation, parameters);
+        return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, componentKey,
+                componentImplementation, parameters);
     }
 
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
-                                                ComponentAdapter adapter) {
+                                                ComponentAdapter<T> adapter) {        
         if (delegate != null && delegate instanceof BehaviorFactory) {
             return ((BehaviorFactory) delegate).addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
         }
         return adapter;
     }
 
-    public static boolean removePropertiesIfPresent(Properties currProperties, Properties hasProperties) {
-        Enumeration props = hasProperties.keys();
-        while (props.hasMoreElements()) {
-            String o = (String)props.nextElement();
-            String q = hasProperties.getProperty(o);
-            String p = currProperties.getProperty(o);
-            if (p == null) {
+    public static boolean removePropertiesIfPresent(Properties current, Properties present) {
+        Enumeration<?> keys = present.keys();
+        while (keys.hasMoreElements()) {
+            String key = (String)keys.nextElement();
+            String presentValue = present.getProperty(key);
+            String currentValue = current.getProperty(key);
+            if (currentValue == null) {
                 return false;
             }
-            if (!q.equals(p)) {
+            if (!presentValue.equals(currentValue)) {
                 return false;
             }
         }
-        props = hasProperties.keys();
-        while (props.hasMoreElements()) {
-            Object o = props.nextElement();
-            currProperties.remove(o);
+        keys = present.keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            current.remove(key);
         }
         return true;
     }
