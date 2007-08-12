@@ -72,7 +72,7 @@ public abstract class AbstractBehavior implements Behavior, ComponentMonitorStra
         if (componentAdapterType.isAssignableFrom(delegate.getClass())) {
             return delegate;
         } else if (delegate instanceof Behavior) {
-            return ((Behavior)delegate).getDelegate(componentAdapterType);
+            return (ComponentAdapter) ((Behavior)delegate).getDelegate(componentAdapterType);
         } else {
             return null;
         }
