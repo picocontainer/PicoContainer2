@@ -21,7 +21,6 @@ import junit.framework.TestCase;
 /**
  * @author Thomas Heller
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class ComponentKeysTestCase extends TestCase {
     public void testComponensRegisteredWithClassKeyTakePrecedenceOverOthersWhenThereAreMultipleImplementations() throws Exception {

@@ -19,7 +19,6 @@ package org.picocontainer;
  * <p/>
  * <p>For more advanced and pluggable lifecycle support, see the functionality offered by picocontainer-gems
  * subproject.</p>
- * @version $Revision$
  * @see org.picocontainer.Disposable the Disposable interface if you need to <code>dispose()</code> semantics.
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y

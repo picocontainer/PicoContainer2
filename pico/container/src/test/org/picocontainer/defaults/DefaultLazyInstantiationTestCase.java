@@ -15,7 +15,6 @@ import org.picocontainer.tck.AbstractLazyInstantiationTestCase;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class DefaultLazyInstantiationTestCase extends AbstractLazyInstantiationTestCase {
     protected MutablePicoContainer createPicoContainer() {

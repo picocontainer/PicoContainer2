@@ -47,7 +47,6 @@ import java.util.Set;
  * @author Zohar Melamed
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
- * @version $Revision$
  */
 public class ConstructorInjector extends AbstractInjector {
     private transient List<Constructor> sortedMatchingConstructors;

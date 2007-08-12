@@ -32,10 +32,8 @@ import org.objectweb.asm.*;
  * The proxy will implement all the interfaces of the
  * underlying subject. If you want caching,
  * use a {@link Cached} around this one.
- * </em>
  *
  * @author Paul Hammant
- * @version $Revision$
  */
 public class HiddenImplementation extends AbstractBehavior implements Opcodes {
 

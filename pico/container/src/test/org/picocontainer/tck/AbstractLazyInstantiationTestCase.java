@@ -16,7 +16,6 @@ import org.picocontainer.Characteristics;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public abstract class AbstractLazyInstantiationTestCase extends TestCase {
 

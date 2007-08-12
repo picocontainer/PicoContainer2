@@ -23,7 +23,6 @@ import java.util.*;
 
 /**
  * @author Mauro Talevi
- * @version $Revision: 2200 $
  */
 public class AbstractComponentMonitorTestCase extends MockObjectTestCase {
 

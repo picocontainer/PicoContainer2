@@ -35,7 +35,6 @@ import org.picocontainer.PicoContainer;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
- * @version $Revision$
  */
 public final class ConsoleComponentMonitor implements ComponentMonitor, Serializable {
 

@@ -26,7 +26,6 @@ import java.util.Map;
  * Or to answer questions.
  *
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public final class UserQuestionTestCase extends TestCase {
 

@@ -14,7 +14,6 @@ import org.picocontainer.ComponentAdapter;
  * Constraint that accepts an adapter of a specific key.
  *
  * @author Nick Sieger
- * @version 1.1
  */
 public final class IsKey extends AbstractConstraint {
 

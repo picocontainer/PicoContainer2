@@ -32,7 +32,6 @@ import java.io.Serializable;
  * </p>
  *   
  * @author Mauro Talevi
- * @version $Revision$
  */
 public class Cached extends AbstractBehavior implements Behavior {
 
@@ -121,7 +120,6 @@ public class Cached extends AbstractBehavior implements Behavior {
 
     /**
      * @author Aslak Helles&oslash;y
-     * @version $Revision$
      */
     public static class SimpleReference implements ObjectReference, Serializable {
         private Object instance;

@@ -31,7 +31,6 @@ import java.util.List;
  * Integration tests using Constraints.
  *
  * @author Nick Sieger
- * @version 1.1
  */
 public class ConstraintIntegrationTestCase
     extends TestCase {

@@ -23,7 +23,6 @@ import java.util.Properties;
 /**
  * @author Aslak Helles&oslash;y
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
- * @version $Revision$
  */
 public class Caching extends AbstractBehaviorFactory {
 

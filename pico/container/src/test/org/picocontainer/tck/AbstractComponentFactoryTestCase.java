@@ -26,7 +26,6 @@ import java.util.Collection;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public abstract class AbstractComponentFactoryTestCase extends TestCase {
 

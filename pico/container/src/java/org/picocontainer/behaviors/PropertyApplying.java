@@ -26,7 +26,6 @@ import java.util.Properties;
  * {@link PropertyApplicator} instances.
  * 
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public final class PropertyApplying extends AbstractBehaviorFactory {
 

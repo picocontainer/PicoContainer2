@@ -34,7 +34,6 @@ import java.util.Set;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @author Thomas Heller
- * @version $Revision$
  */
 public class BasicComponentParameter
     implements Parameter, Serializable

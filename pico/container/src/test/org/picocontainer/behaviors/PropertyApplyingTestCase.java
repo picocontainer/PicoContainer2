@@ -40,7 +40,6 @@ import org.picocontainer.testmodel.Touchable;
 /**
  * @author Aslak Helles&oslash;y
  * @author Mirko Novakovic
- * @version $Revision$
  */
 public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
 

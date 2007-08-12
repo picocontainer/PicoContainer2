@@ -15,7 +15,6 @@ import org.picocontainer.ComponentAdapter;
  * same type or a subtype of the type(s) represented by this object.
  *
  * @author Nick Sieger
- * @version 1.1
  */
 public final class IsType extends AbstractConstraint {
     private final Class type;

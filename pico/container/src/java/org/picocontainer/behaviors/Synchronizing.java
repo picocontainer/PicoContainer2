@@ -20,7 +20,6 @@ import java.util.Properties;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class Synchronizing extends AbstractBehaviorFactory {
 

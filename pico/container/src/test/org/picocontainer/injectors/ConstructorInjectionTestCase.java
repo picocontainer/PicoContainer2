@@ -22,7 +22,6 @@ import org.picocontainer.testmodel.RecordingLifecycle.One;
 
 /**
  * @author Mauro Talevi
- * @version $Revision:  $
  */
 public class ConstructorInjectionTestCase extends AbstractComponentFactoryTestCase {
     protected void setUp() throws Exception {

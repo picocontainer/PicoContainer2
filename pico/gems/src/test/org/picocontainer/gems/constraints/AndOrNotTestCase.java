@@ -22,7 +22,6 @@ import org.picocontainer.gems.constraints.Or;
  *
  * @author Nick Sieger
  * @author J&ouml;rg Schaible
- * @version 1.1
  */
 public final class AndOrNotTestCase extends MockObjectTestCase {
 

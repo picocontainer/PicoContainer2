@@ -21,7 +21,6 @@ import org.picocontainer.testmodel.Touchable;
 
 /**
  * @author Mauro Talevi
- * @version $Revision: $
  */
 public class CachedTestCase extends MockObjectTestCase {
 

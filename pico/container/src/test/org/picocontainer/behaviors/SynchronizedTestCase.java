@@ -33,7 +33,6 @@ import org.picocontainer.behaviors.Synchronizing;
  * @author Thomas Heller
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
- * @version $Revision$
  */
 public class SynchronizedTestCase extends TestCase {
     private final Runner[] runner = new Runner[3];

@@ -10,7 +10,6 @@ package org.picocontainer.testmodel;
 
 /**
  * @author Nick Sieger
- * @version 1.1
  */
 public final class DependsOnArray {
     private final Object[] array;

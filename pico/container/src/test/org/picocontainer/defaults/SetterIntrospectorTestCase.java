@@ -15,7 +15,6 @@ import java.beans.IntrospectionException;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class SetterIntrospectorTestCase extends TestCase {
     public static class TestBean {

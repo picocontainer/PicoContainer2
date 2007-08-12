@@ -30,7 +30,6 @@ import org.picocontainer.injectors.AbstractInjector;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @author Thomas Heller
- * @version $Revision$
  */
 public class ComponentParameter
         extends BasicComponentParameter {

@@ -25,7 +25,6 @@ import org.picocontainer.parameters.ComponentParameter;
 
 /**
  * @author J&ouml;rg Schaible
- * @version $Revision$
  */
 public class MapsTestCase
         extends TestCase

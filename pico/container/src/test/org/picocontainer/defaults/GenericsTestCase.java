@@ -17,7 +17,6 @@ import junit.framework.TestCase;
  * Requires JDK 1.5 with generics enabled.
  * 
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class GenericsTestCase extends TestCase {
     public void testDummy() {

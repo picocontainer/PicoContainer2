@@ -20,8 +20,6 @@ import java.util.List;
  * collector for all Exceptions occuring at the verification of the complete container
  * hierarchy. The verification is normally done with the
  * {@link org.picocontainer.visitors.VerifyingVisitor}, that will throw this exception.
- * 
- * @version $Revision$
  */
 public class PicoVerificationException
         extends PicoException {

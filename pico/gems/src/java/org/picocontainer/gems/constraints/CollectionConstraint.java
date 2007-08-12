@@ -18,7 +18,6 @@ import org.picocontainer.parameters.CollectionComponentParameter;
  *
  * @author Nick Sieger
  * @author J&ouml;rg Schaible
- * @version 1.1
  */
 public final class CollectionConstraint extends CollectionComponentParameter implements Constraint {
     protected final Constraint constraint;

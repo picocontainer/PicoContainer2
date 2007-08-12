@@ -25,7 +25,6 @@ import java.util.Properties;
 
 /**
  * @author Paul Hammant
- * @version $Revision$
  */
 public abstract class AbstractDelegatingMutablePicoContainer implements MutablePicoContainer, Serializable {
 

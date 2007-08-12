@@ -23,7 +23,6 @@ import java.lang.reflect.Member;
  * @author Obie Fernandez
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
- * @version $Revision$
  */
 public interface ComponentMonitor {
 

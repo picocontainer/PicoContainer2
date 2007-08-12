@@ -17,8 +17,7 @@ import java.io.InputStream;
 /**
  * constructable properties. 
  *
- * @author    Konstantin Pribluda ( ko5tik[at]codehaus.org )
- * @version   $Revision$
+ * @author Konstantin Pribluda
  */
 public class ConstructableProperties extends Properties {
 

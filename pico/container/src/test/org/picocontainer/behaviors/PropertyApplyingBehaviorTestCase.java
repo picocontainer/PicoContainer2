@@ -16,8 +16,6 @@ import org.picocontainer.behaviors.PropertyApplicator;
 /**
  *
  * @author greg
- * @author $Author: $ (last edit)
- * @version $Revision: $ 
  */
 public class PropertyApplyingBehaviorTestCase extends TestCase {
     public void testBeanPropertyComponentAdapterCanUsePropertyEditors() {

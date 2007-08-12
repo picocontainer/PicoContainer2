@@ -16,7 +16,6 @@ import org.picocontainer.PicoVisitor;
  * Constraints are short-circuited as in java.
  *
  * @author Nick Sieger
- * @version 1.1
  */
 public final class And extends AbstractConstraint {
     private final Constraint[] children;

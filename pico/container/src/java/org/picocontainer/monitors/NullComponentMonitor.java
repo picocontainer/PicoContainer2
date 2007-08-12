@@ -26,7 +26,6 @@ import org.picocontainer.PicoContainer;
  * 
  * @author Paul Hammant
  * @author Obie Fernandez
- * @version $Revision$
  */
 public class NullComponentMonitor implements ComponentMonitor, Serializable {
 

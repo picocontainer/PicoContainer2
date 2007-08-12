@@ -21,7 +21,6 @@ import java.awt.event.ActionEvent;
 
 /**
  * @author Paul Hammant
- * @version $Revision$
  */
 public abstract class AbstractImplementationHidingPicoContainerTestCase extends AbstractPicoContainerTestCase {
 

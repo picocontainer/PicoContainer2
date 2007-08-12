@@ -14,7 +14,6 @@ import org.picocontainer.ComponentAdapter;
  * A constraint that matches any component adapter.
  *
  * @author Nick Sieger
- * @version 1.1
  */
 public class Anything extends AbstractConstraint {
     public static final Anything ANYTHING = new Anything();

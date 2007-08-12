@@ -25,7 +25,6 @@ import org.picocontainer.behaviors.Cached;
  * </em>
  *
  * @author Paul Hammant
- * @version $Revision$
  */
 public class HotSwappable extends HiddenImplementation {
 

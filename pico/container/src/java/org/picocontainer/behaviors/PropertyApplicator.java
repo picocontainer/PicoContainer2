@@ -47,7 +47,6 @@ import org.picocontainer.behaviors.Cached;
  * </em>
  *
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class PropertyApplicator extends AbstractBehavior {
     private Map properties;

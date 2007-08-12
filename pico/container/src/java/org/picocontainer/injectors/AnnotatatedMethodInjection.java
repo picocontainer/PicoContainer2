@@ -26,7 +26,6 @@ import java.util.Properties;
  * The factory creates {@link AnnotatatedMethodInjector}.
  *
  * @author Paul Hammant
- * @version $Revision$
  */
 public class AnnotatatedMethodInjection implements InjectionFactory, Serializable {
 

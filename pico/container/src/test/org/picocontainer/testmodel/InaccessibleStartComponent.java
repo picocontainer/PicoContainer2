@@ -14,8 +14,6 @@ import java.util.List;
 
 /**
  * @author Steve.Freeman@m3p.co.uk
- * @version $Revision$
- *          was UnaccessibleStartComponent
  */
 public final class InaccessibleStartComponent {
     private final List messages;

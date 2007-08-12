@@ -18,7 +18,6 @@ import org.picocontainer.behaviors.AbstractBehavior;
 /**
  * @author Aslak Helles&oslash;y
  * @author Manish Shah
- * @version $Revision$
  */
 public class Synchronized extends AbstractBehavior {
     public Synchronized(ComponentAdapter delegate) {

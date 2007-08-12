@@ -12,8 +12,6 @@ package org.picocontainer.testmodel;
 /**
  *
  * @author greg
- * @author $Author: $ (last edit)
- * @version $Revision: $
  */
 public final class CoupleBean {
     private final PersonBean personA;

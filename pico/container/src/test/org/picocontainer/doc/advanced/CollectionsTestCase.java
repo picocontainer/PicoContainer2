@@ -25,7 +25,6 @@ import java.util.Set;
 
 /**
  * @author J&ouml;rg Schaible
- * @version $Revision$
  */
 public class CollectionsTestCase
         extends TestCase

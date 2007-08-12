@@ -16,7 +16,6 @@ import org.picocontainer.ComponentMonitor;
 /**
  * @author Paul Hammant
  * @author Mauro Talevi
- * @version $Revision: 2024 $
  */
 public class SingleLoggerLog4JComponentMonitorTestCase extends ComponentMonitorHelperTestCase {
 

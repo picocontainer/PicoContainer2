@@ -15,7 +15,6 @@ import org.picocontainer.PicoException;
  * 
  * @author Paul Hammant
  * @author Mauro Talevi
- * @version $Revision: 1.3 $
  */
 public class ReflectionLifecycleException extends PicoException {
 

@@ -15,7 +15,6 @@ import org.picocontainer.PicoVisitor;
  * Inverts the logical sense of the given constraint.
  *
  * @author Nick Sieger
- * @version 1.1
  */
 public final class Not extends AbstractConstraint {
     private final Constraint constraint;

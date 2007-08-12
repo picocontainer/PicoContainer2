@@ -14,7 +14,6 @@ package org.picocontainer;
  * 
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
- * @version $Revision$
  */
 public interface PicoVisitor {
     /**

@@ -20,7 +20,6 @@ import org.picocontainer.ComponentMonitor;
 /**
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
- * @version $Revision: 2024 $
  */
 public class ConsoleComponentMonitorTestCase extends TestCase {
     private ComponentMonitor componentMonitor;

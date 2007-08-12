@@ -17,7 +17,6 @@ import org.picocontainer.containers.EmptyPicoContainer;
 
 /**
  * @author Mauro Talevi
- * @version $Revision:  $
  */
 public class EmptyPicoContainerTestCase extends TestCase {
 

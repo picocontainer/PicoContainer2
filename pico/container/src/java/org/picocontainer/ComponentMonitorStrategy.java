@@ -22,7 +22,6 @@ package org.picocontainer;
  * @author Paul Hammant
  * @author Joerg Schaible
  * @author Mauro Talevi
- * @version $Revision: $
  */
 public interface ComponentMonitorStrategy {
 

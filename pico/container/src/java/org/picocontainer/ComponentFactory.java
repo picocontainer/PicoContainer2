@@ -28,7 +28,6 @@ import java.util.Properties;
  *
  * @author Jon Tirs&eacute;n
  * @author Mauro Talevi
- * @version $Revision$
  */
 public interface ComponentFactory {
 

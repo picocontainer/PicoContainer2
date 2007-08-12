@@ -39,7 +39,6 @@ import org.picocontainer.PicoContainer;
  *
  * @author Paul Hammant
  * @author Mauro Talevi
- * @version $Revision: $
  */
 public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
 

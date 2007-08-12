@@ -14,8 +14,6 @@ import java.beans.PropertyEditorSupport;
 /**
  *
  * @author greg
- * @author $Author: $ (last edit)
- * @version $Revision: $
  */
 public class CoupleBeanEditor extends PropertyEditorSupport {
     private static final String PREFIX_A = "a's name:";

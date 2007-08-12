@@ -22,7 +22,6 @@ import java.util.Map;
  * Base class for parameter constraints.
  *
  * @author Nick Sieger
- * @version 1.1
  */
 public abstract class AbstractConstraint extends CollectionComponentParameter implements Constraint {
 

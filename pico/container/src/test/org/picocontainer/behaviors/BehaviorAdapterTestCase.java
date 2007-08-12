@@ -25,7 +25,6 @@ import org.picocontainer.testmodel.Touchable;
 
 /**
  * @author Mauro Talevi
- * @version $Revision: 2200 $
  */
 public class BehaviorAdapterTestCase extends MockObjectTestCase {
 

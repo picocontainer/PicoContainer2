@@ -32,7 +32,6 @@ import java.lang.reflect.Method;
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
  * @author Paul Hammant
- * @version $Revision$
  */
 public class SetterInjector extends PostInstantiationInjector {
 

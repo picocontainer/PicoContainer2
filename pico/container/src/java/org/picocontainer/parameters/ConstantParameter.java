@@ -31,7 +31,6 @@ import java.lang.reflect.Field;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  * @author Thomas Heller
- * @version $Revision$
  */
 public class ConstantParameter
         implements Parameter, Serializable {

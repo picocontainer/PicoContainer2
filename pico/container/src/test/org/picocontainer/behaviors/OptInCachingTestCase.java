@@ -23,7 +23,6 @@ import org.picocontainer.adapters.InstanceAdapter;
 
 /**
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
- * @version $Revision$
  */
 public class OptInCachingTestCase extends AbstractComponentFactoryTestCase {
 

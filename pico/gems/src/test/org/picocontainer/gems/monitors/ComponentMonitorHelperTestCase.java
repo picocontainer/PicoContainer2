@@ -30,7 +30,6 @@ import org.picocontainer.monitors.ComponentMonitorHelper;
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
  * @author Juze Peleteiro
- * @version $Revision: 2024 $
  */
 public abstract class ComponentMonitorHelperTestCase extends TestCase {
     private ComponentMonitor componentMonitor;

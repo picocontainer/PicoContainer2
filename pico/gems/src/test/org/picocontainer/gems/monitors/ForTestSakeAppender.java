@@ -15,7 +15,6 @@ import org.apache.log4j.spi.LoggingEvent;
 
 /**
  * @author Juze Peleteiro
- * @version $Revision$
  */
 public class ForTestSakeAppender implements Appender {
 

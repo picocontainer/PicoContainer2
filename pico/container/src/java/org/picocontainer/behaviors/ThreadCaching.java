@@ -22,7 +22,6 @@ import java.util.Properties;
 
 /**
  * @author Paul Hammant
- * @version $Revision$
  */
 public class ThreadCaching extends AbstractBehaviorFactory {
 

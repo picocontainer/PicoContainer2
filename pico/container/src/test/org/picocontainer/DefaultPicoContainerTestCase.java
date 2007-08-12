@@ -40,7 +40,6 @@ import java.util.Properties;
  * @author Paul Hammant
  * @author Ward Cunningham
  * @author Mauro Talevi
- * @version $Revision$
  */
 public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase {
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {

@@ -17,7 +17,6 @@ package org.picocontainer;
  *   - problem adding a component
  *   - a request for a component that is ambiguous.
  *
- * @version $Revision$
  */
 public class PicoCompositionException extends PicoException {
 

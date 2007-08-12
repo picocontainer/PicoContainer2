@@ -27,7 +27,6 @@ import java.util.Properties;
  * The factory creates {@link SetterInjector}.
  *
  * @author J&ouml;rg Schaible
- * @version $Revision$
  */
 public class SetterInjection implements InjectionFactory, Serializable {
 

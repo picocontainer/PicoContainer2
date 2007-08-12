@@ -27,7 +27,6 @@ import org.jmock.MockObjectTestCase;
  *
  * @author Nick Sieger
  * @author J&ouml;rg Schaible
- * @version 1.1
  */
 public class ConstraintsTestCase extends MockObjectTestCase {
 

@@ -33,7 +33,6 @@ import org.picocontainer.PicoContainer;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
- * @version $Revision: 1882 $
  */
 public class WriterComponentMonitor implements ComponentMonitor {
 

@@ -18,7 +18,6 @@ import java.util.Properties;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
- * @version $Revision$
  * @see <a href="package-summary.html#package_description">See package description for basic overview how to use PicoContainer.</a>
  */
 public interface MutablePicoContainer extends PicoContainer, Startable, Disposable {

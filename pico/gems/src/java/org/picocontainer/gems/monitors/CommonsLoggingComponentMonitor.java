@@ -37,7 +37,6 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * 
  * @author Paul Hammant
  * @author Mauro Talevi
- * @version $Revision: $
  */
 public class CommonsLoggingComponentMonitor implements ComponentMonitor, Serializable {
 

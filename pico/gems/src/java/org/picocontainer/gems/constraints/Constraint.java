@@ -16,7 +16,6 @@ import org.picocontainer.Parameter;
  * constraint-based configuration of component parameters.
  *
  * @author Nick Sieger
- * @version 1.0
  */
 public interface Constraint extends Parameter {
     /**

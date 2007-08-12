@@ -29,7 +29,6 @@ import java.util.Properties;
  * Creates instances Injectors, depending on whether the component is the presence of Annotations and characteristics.
  *
  * @author Paul Hammant
- * @version $Revision$
  */
 public class AdaptiveInjection implements InjectionFactory, Serializable {
 

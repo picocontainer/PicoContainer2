@@ -45,7 +45,6 @@ import java.util.List;
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @author Ward Cunningham
- * @version $Revision$
  */
 public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
 

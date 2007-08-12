@@ -19,7 +19,6 @@ import org.picocontainer.parameters.ConstantParameter;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public abstract class AbstractMultipleConstructorTestCase extends TestCase {
 

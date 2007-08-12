@@ -41,7 +41,6 @@ import java.util.Set;
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
- * @version $Revision$
  */
 public abstract class AbstractInjector extends AbstractAdapter implements LifecycleStrategy {
     /** The cycle guard for the verification. */ 
@@ -319,7 +318,6 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
      *
      * @author Aslak Helles&oslash;y
      * @author Mauro Talevi
-     * @version $Revision$
      */
     public static class UnsatisfiableDependenciesException extends PicoCompositionException {
 
@@ -360,7 +358,6 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
 
     /**
      * @author Aslak Hellesoy
-     * @version $Revision$
      */
     public static class NotConcreteRegistrationException extends PicoCompositionException {
         private final Class componentImplementation;

@@ -12,7 +12,6 @@ import java.util.List;
 
 /**
  * @author Nick Sieger
- * @version 1.1
  */
 public final class DependsOnList {
     private final List list;

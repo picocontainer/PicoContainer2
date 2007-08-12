@@ -21,8 +21,7 @@ import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.RecordingLifecycle.One;
 
 /**
- * @author J&ouml;rg Schaible</a>
- * @version $Revision$
+ * @author J&ouml;rg Schaible
  */
 public class AnnotatatedMethodInjectionTestCase extends AbstractComponentFactoryTestCase {
     protected void setUp() throws Exception {

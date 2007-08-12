@@ -34,7 +34,6 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * </p>
  * 
  * @author Mauro Talevi
- * @version $Revision: $
  */
 public class AbstractComponentMonitor implements ComponentMonitor, ComponentMonitorStrategy, Serializable {
 

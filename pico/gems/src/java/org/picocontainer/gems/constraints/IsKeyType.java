@@ -16,7 +16,6 @@ import org.picocontainer.ComponentAdapter;
  *
  * @author Nick Sieger
  * @author J&ouml;rg Schaible
- * @version 1.1
  */
 public final class IsKeyType extends AbstractConstraint {
     private final Class type;

@@ -16,7 +16,6 @@ import org.picocontainer.parameters.ConstantParameter;
 /**
  * test that constant parameter behaves well.
  * @author Konstantin Pribluda
- * @version $Revision$
  */
 public class ConstantParameterTestCase extends TestCase {
     

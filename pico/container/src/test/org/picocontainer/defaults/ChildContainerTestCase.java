@@ -22,7 +22,6 @@ import org.picocontainer.testmodel.Touchable;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Rafal Krzewski
- * @version $Revision$
  */
 public class ChildContainerTestCase extends TestCase {
 

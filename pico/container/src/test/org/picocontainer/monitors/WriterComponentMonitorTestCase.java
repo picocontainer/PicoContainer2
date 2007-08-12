@@ -33,7 +33,6 @@ import org.picocontainer.containers.TransientPicoContainer;
 /**
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
- * @version $Revision$
  */
 public class WriterComponentMonitorTestCase extends TestCase {
     private Writer out;

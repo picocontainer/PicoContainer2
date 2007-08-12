@@ -22,7 +22,6 @@ import org.picocontainer.ComponentMonitor;
  * An abstract {@link ComponentMonitor} which supports all the message formats.
  * 
  * @author Mauro Talevi
- * @version $Revision: $
  */
 public final class ComponentMonitorHelper  {
 

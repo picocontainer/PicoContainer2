@@ -25,7 +25,6 @@ import java.io.Serializable;
  * </p>
  *
  * @author Paul Hammant
- * @version $Revision$
  */
 public final class ThreadCached extends Cached implements Behavior {
 

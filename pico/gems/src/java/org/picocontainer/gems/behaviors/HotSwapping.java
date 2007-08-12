@@ -25,7 +25,6 @@ import java.util.Properties;
  * 
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  * @see HotSwappable
  */
 public class HotSwapping extends AbstractBehaviorFactory {

@@ -23,7 +23,6 @@ import java.util.Properties;
 
 /**
  * @author Jon Tirs&eacute;n
- * @version $Revision$
  */
 public class ConstructorInjection implements InjectionFactory, Serializable {
 

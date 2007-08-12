@@ -31,7 +31,6 @@ import org.picocontainer.adapters.AbstractAdapter;
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @author Mauro Talevi
- * @version $Revision$
  */
 public final class InstanceAdapter extends AbstractAdapter implements Behavior, LifecycleStrategy {
     private final Object componentInstance;

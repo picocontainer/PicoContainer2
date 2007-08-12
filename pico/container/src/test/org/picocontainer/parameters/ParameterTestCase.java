@@ -27,7 +27,6 @@ import org.picocontainer.testmodel.Touchable;
 
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
- * @version $Revision: 1.7 $
  */
 public final class ParameterTestCase extends TestCase {
 

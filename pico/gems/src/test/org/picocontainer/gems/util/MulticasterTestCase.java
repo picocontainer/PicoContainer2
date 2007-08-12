@@ -13,7 +13,6 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class MulticasterTestCase extends TestCase {
     public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {

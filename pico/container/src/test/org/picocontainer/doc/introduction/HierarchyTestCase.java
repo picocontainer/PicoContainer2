@@ -16,7 +16,6 @@ import org.picocontainer.DefaultPicoContainer;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class HierarchyTestCase extends TestCase {
     public void testHierarchy() {

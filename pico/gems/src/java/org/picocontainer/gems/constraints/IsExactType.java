@@ -15,7 +15,6 @@ import org.picocontainer.ComponentAdapter;
  * class instance as the type represented by this object.
  *
  * @author Nick Sieger
- * @version 1.1
  */
 public final class IsExactType extends AbstractConstraint {
     private final Class type;
