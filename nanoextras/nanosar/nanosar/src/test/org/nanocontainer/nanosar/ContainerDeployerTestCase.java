@@ -1,16 +1,27 @@
 package org.nanocontainer.nanosar;
 
 import junit.framework.TestCase;
+
 /**
  * test capabilities of container deployer
+ * 
  * @author k.pribluda
  */
 public class ContainerDeployerTestCase extends TestCase {
+
 	/**
-	 * fake test for now to satisfy build
-	 *
+	 * test that script name is required to create pico
+	 * 
 	 */
-	public void testFake() {
-		
+	public void testScriptIsRequired() {
+		ContainerDeployer deployer = new ContainerDeployer();
+
+		try {
+			deployer.start();
+			fail("script name is required");
+		} catch (Exception ex) {
+			// that's ok
+		}
+
 	}
 }
