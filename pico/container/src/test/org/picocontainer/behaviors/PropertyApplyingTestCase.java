@@ -312,7 +312,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
                                                                      (Parameter[])null);
 
 
-        PropertyApplicator pa = ((Behavior<?,PropertyApplicator>)adapter).getDelegate(PropertyApplicator.class);
+        PropertyApplicator pa = ((Behavior<?>)adapter).getDelegate(PropertyApplicator.class);
 
         pa.setProperty("message", "hello");
 
