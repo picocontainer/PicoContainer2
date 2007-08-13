@@ -66,14 +66,12 @@ import java.util.Collection;
  * @author Mauro Talevi
  */
 public class DefaultPicoContainer implements MutablePicoContainer, ComponentMonitorStrategy, Serializable {
-    private final Map<Object, ComponentAdapter> componentKeyToAdapterCache = new HashMap<Object, ComponentAdapter>();
+
+    private final ComponentStore componentStore;
+
     private ComponentFactory componentFactory;
     private PicoContainer parent;
     private final Set<PicoContainer> children = new HashSet<PicoContainer>();
-
-    private final List<ComponentAdapter<?>> componentAdapters = new ArrayList<ComponentAdapter<?>>();
-    // Keeps track of instantiation order.
-    private final List<ComponentAdapter<?>> orderedComponentAdapters = new ArrayList<ComponentAdapter<?>>();
 
     // Keeps track of the container started status
     private boolean started = false;
@@ -141,6 +139,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             this.parent = new ImmutablePicoContainer(parent);
         }
         this.componentMonitor = componentMonitor;
+        componentStore = makeComponentStore();
+    }
+
+    private ComponentStore makeComponentStore() {
+        return new DefaultComponentStore();
     }
 
 
@@ -214,11 +217,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public Collection<ComponentAdapter<?>> getComponentAdapters() {
-        return Collections.unmodifiableList(componentAdapters);
+        return Collections.unmodifiableList(componentStore.getComponentAdapterList());
     }
 
     public final ComponentAdapter<?> getComponentAdapter(Object componentKey) {
-        ComponentAdapter adapter = componentKeyToAdapterCache.get(componentKey);
+        ComponentAdapter adapter = componentStore.getComponentKeyToAdapterCacheMap().get(componentKey);
         if (adapter == null && parent != null) {
             adapter = parent.getComponentAdapter(componentKey);
         }
@@ -277,11 +280,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     protected MutablePicoContainer addAdapterInternal(ComponentAdapter componentAdapter) {
         Object componentKey = componentAdapter.getComponentKey();
-        if (componentKeyToAdapterCache.containsKey(componentKey)) {
+        if (componentStore.getComponentKeyToAdapterCacheMap().containsKey(componentKey)) {
             throw new PicoCompositionException("Duplicate Keys not allowed. Duplicate for '" + componentKey + "'");
         }
-        componentAdapters.add(componentAdapter);
-        componentKeyToAdapterCache.put(componentKey, componentAdapter);
+        componentStore.getComponentAdapterList().add(componentAdapter);
+        componentStore.getComponentKeyToAdapterCacheMap().put(componentKey, componentAdapter);
         return this;
     }
 
@@ -315,9 +318,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (started) {
             throw new PicoCompositionException("Cannot remove components after the container has started");
         }
-        ComponentAdapter adapter = componentKeyToAdapterCache.remove(componentKey);
-        componentAdapters.remove(adapter);
-        orderedComponentAdapters.remove(adapter);
+        ComponentAdapter adapter = componentStore.getComponentKeyToAdapterCacheMap().remove(componentKey);
+        componentStore.getComponentAdapterList().remove(adapter);
+        componentStore.getOrderedComponentAdapterList().remove(adapter);
         return adapter;
     }
 
@@ -406,8 +409,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     private void addOrderedComponentAdapter(ComponentAdapter componentAdapter) {
-        if (!orderedComponentAdapters.contains(componentAdapter)) {
-            orderedComponentAdapters.add(componentAdapter);
+        if (!componentStore.getOrderedComponentAdapterList().contains(componentAdapter)) {
+            componentStore.getOrderedComponentAdapterList().add(componentAdapter);
         }
     }
 
@@ -421,7 +424,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
 
         Map<ComponentAdapter<T>, T> adapterToInstanceMap = new HashMap<ComponentAdapter<T>, T>();
-        for (ComponentAdapter<?> componentAdapter : componentAdapters) {
+        for (ComponentAdapter<?> componentAdapter : componentStore.getComponentAdapterList()) {
             if (componentType.isAssignableFrom(componentAdapter.getComponentImplementation())) {
                 ComponentAdapter<T> typedComponentAdapter = typeComponentAdapter(componentAdapter);
                 T componentInstance = getLocalInstance(typedComponentAdapter);
@@ -430,7 +433,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             }
         }
         List<T> result = new ArrayList<T>();
-        for (ComponentAdapter componentAdapter : orderedComponentAdapters) {
+        for (ComponentAdapter componentAdapter : componentStore.getOrderedComponentAdapterList()) {
             final T componentInstance = adapterToInstanceMap.get(componentAdapter);
             if (componentInstance != null) {
                 // may be null in the case of the "implicit" addAdapter
@@ -478,7 +481,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private Object getInstance(ComponentAdapter componentAdapter) {
         // check wether this is our adapter
         // we need to check this to ensure up-down dependencies cannot be followed
-        final boolean isLocal = componentAdapters.contains(componentAdapter);
+        final boolean isLocal = componentStore.getComponentAdapterList().contains(componentAdapter);
 
         if (isLocal) {
             Object instance;
@@ -509,7 +512,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public ComponentAdapter removeComponentByInstance(Object componentInstance) {
-        for (ComponentAdapter<?> componentAdapter : componentAdapters) {
+        for (ComponentAdapter<?> componentAdapter : componentStore.getComponentAdapterList()) {
             if (getLocalInstance(componentAdapter).equals(componentInstance)) {
                 return removeComponent(componentAdapter.getComponentKey());
             }
@@ -671,7 +674,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (lifecycleStrategy instanceof ComponentMonitorStrategy) {
             ((ComponentMonitorStrategy)lifecycleStrategy).changeMonitor(monitor);
         }
-        for (ComponentAdapter adapter : componentAdapters) {
+        for (ComponentAdapter adapter : componentStore.getComponentAdapterList()) {
             if (adapter instanceof ComponentMonitorStrategy) {
                 ((ComponentMonitorStrategy)adapter).changeMonitor(monitor);
             }
@@ -711,7 +714,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                 }
             }
         }
-        adapters = orderedComponentAdapters;
+        adapters = componentStore.getOrderedComponentAdapterList();
         // clear list of started CAs
         startedComponentAdapters.clear();
         // clone the adapters
@@ -732,7 +735,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      */
     private void stopAdapters() {
         for (int i = startedComponentAdapters.size() - 1; 0 <= i; i--) {
-            ComponentAdapter adapter = orderedComponentAdapters.get(startedComponentAdapters.get(i));
+            ComponentAdapter adapter = componentStore.getOrderedComponentAdapterList().get(startedComponentAdapters.get(i));
             if (adapter instanceof Behavior) {
                 Behavior manager = (Behavior)adapter;
                 manager.stop(DefaultPicoContainer.this);
@@ -746,8 +749,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * dispose(PicoContainer) method on the ones which are LifecycleManagers
      */
     private void disposeAdapters() {
-        for (int i = orderedComponentAdapters.size() - 1; 0 <= i; i--) {
-            ComponentAdapter adapter = orderedComponentAdapters.get(i);
+        for (int i = componentStore.getOrderedComponentAdapterList().size() - 1; 0 <= i; i--) {
+            ComponentAdapter adapter = componentStore.getOrderedComponentAdapterList().get(i);
             if (adapter instanceof Behavior) {
                 Behavior manager = (Behavior)adapter;
                 manager.dispose(DefaultPicoContainer.this);
@@ -792,5 +795,27 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             return DefaultPicoContainer.this.addAdapter(componentAdapter, properties);
         }
     }
+
+    public static class DefaultComponentStore implements ComponentStore, Serializable {
+        private final Map<Object, ComponentAdapter> componentKeyToAdapterCache = new HashMap<Object, ComponentAdapter>();
+        private final List<ComponentAdapter<?>> componentAdapters = new ArrayList<ComponentAdapter<?>>();
+        // Keeps track of instantiation order.
+        private final List<ComponentAdapter<?>> orderedComponentAdapters = new ArrayList<ComponentAdapter<?>>();
+
+        public Map<Object, ComponentAdapter> getComponentKeyToAdapterCacheMap() {
+            return componentKeyToAdapterCache;
+        }
+
+        public List<ComponentAdapter<?>> getComponentAdapterList() {
+            return componentAdapters;
+        }
+
+        public List<ComponentAdapter<?>> getOrderedComponentAdapterList() {
+            return orderedComponentAdapters;
+        }
+    }
+
+
+
 
 }

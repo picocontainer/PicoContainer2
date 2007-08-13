@@ -78,8 +78,8 @@ public class PicoGemsBuilderTestCase extends TestCase {
         foo = foo.replaceAll(">","");
         foo = foo.replaceAll("\n  startedComponentAdapters","");
         foo = foo.replaceAll("\n  childrenStarted","");
-        foo = foo.replaceAll("\n  componentAdapters","");
-        foo = foo.replaceAll("\n  orderedComponentAdapters","");
+        foo = foo.replaceAll("\n    componentAdapters","");
+        foo = foo.replaceAll("\n    orderedComponentAdapters","");
         foo = foo.replaceAll("\n  startedfalsestarted","");
         foo = foo.replaceAll("\n  disposedfalsedisposed","");
         foo = foo.replaceAll("\n  handler","");
@@ -87,9 +87,10 @@ public class PicoGemsBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n  delegate\n","\n");
         foo = foo.replaceAll("\n    delegate\n","\n");
         foo = foo.replaceAll("\n    outer-class reference=\"/PICO\"","");
-        foo = foo.replaceAll("\n  componentCharacteristic class=\"org.picocontainer.DefaultPicoContainer$1\"","");
+        foo = foo.replaceAll("\n  componentStore class=\"org.picocontainer.DefaultPicoContainer_DefaultComponentStore\"","");
+        foo = foo.replaceAll("\n  componentStore","");
         foo = foo.replaceAll("\n  componentProperties","");
-        foo = foo.replaceAll("\n  componentKeyToAdapterCache","");
+        foo = foo.replaceAll("\n    componentKeyToAdapterCache","");
         foo = foo.replaceAll("\n    startedComponentAdapters","");
         foo = foo.replaceAll("\n    props","");
         foo = foo.replaceAll("\"class=","\"\nclass=");
