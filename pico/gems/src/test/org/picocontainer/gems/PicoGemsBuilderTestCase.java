@@ -77,6 +77,9 @@ public class PicoGemsBuilderTestCase extends TestCase {
         foo = foo.replaceAll("<","");
         foo = foo.replaceAll(">","");
         foo = foo.replaceAll("\n  startedComponentAdapters","");
+        foo = foo.replaceAll("\n  componentKeyToAdapterCache","");
+        foo = foo.replaceAll("\n  componentAdapters","");
+        foo = foo.replaceAll("\n  orderedComponentAdapters","");
         foo = foo.replaceAll("\n  childrenStarted","");
         foo = foo.replaceAll("\n    componentAdapters","");
         foo = foo.replaceAll("\n    orderedComponentAdapters","");

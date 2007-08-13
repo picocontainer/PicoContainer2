@@ -42,7 +42,6 @@ public class PicoBuilderTestCase extends TestCase {
             public boolean canConvert(Class aClass) {
                 return aClass.getName().equals("org.picocontainer.DefaultPicoContainer$1") ||
                        aClass.getName().equals("org.picocontainer.Properties") ||
-                       aClass.getName().equals("org.picocontainer.DefaultPicoContainer$DefaultComponentStore") ||
                        aClass == Boolean.class ||
                        aClass == HashSet.class ||
                        aClass == ArrayList.class;
@@ -379,8 +378,10 @@ public class PicoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("<","");
         foo = foo.replaceAll(">","");
         foo = foo.replaceAll("\n  startedComponentAdapters","");
+        foo = foo.replaceAll("\n  componentKeyToAdapterCache","");
+        foo = foo.replaceAll("\n  componentAdapters","");
+        foo = foo.replaceAll("\n  orderedComponentAdapters","");
         foo = foo.replaceAll("\n  childrenStarted","");
-        foo = foo.replaceAll("\n  componentStore class=\"org.picocontainer.DefaultPicoContainer_DefaultComponentStore\"","");
         foo = foo.replaceAll("\n  started","");
         foo = foo.replaceAll("\n  disposed","");
         foo = foo.replaceAll("\n  handler","");
