@@ -16,7 +16,7 @@ public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderT
     }
 
     //TODO - make sure that this container builder can supply a LifecycleStrategy.
-    //       meaning MySetterInjection can be swapped for SetterInjectionComponentAdapterFactory
+    //       meaning MySetterInjection can be swapped for SetterInjectionComponentFactory
     public void testCanInstantiateProcessWithSDIDependencies() {
         Reader script = new StringReader("" +
                 "<container component-adapter-factory='"+ MySetterInjection.class.getName()+"'>"+

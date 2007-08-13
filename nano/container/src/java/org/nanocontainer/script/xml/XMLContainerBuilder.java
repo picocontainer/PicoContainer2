@@ -212,7 +212,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                 } else if (COMPONENT_ADAPTER.equals(name)) {
                     registerComponentAdapter(parentContainer, childElement, metaContainer);
                 } else if (COMPONENT_ADAPTER_FACTORY.equals(name)) {
-                    addComponentAdapterFactory(childElement, metaContainer);
+                    addComponentFactory(childElement, metaContainer);
                 } else if (CLASSLOADER.equals(name)) {
                     registerClassLoader(parentContainer, childElement, metaContainer);
                 } else if (!CLASSPATH.equals(name)) {
@@ -223,7 +223,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     }
 
 
-    private void addComponentAdapterFactory(Element element, NanoContainer metaContainer) throws MalformedURLException, ClassNotFoundException {
+    private void addComponentFactory(Element element, NanoContainer metaContainer) throws MalformedURLException, ClassNotFoundException {
         if (notSet(element.getAttribute(KEY))) {
             throw new NanoContainerMarkupException("'" + KEY + "' attribute not specified for " + element.getNodeName());
         }
@@ -240,7 +240,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
                     childElement = (Element)childElement.cloneNode(true);
                     String key = String.valueOf(System.identityHashCode(childElement));
                     childElement.setAttribute(KEY, key);
-                    addComponentAdapterFactory(childElement, metaContainer);
+                    addComponentFactory(childElement, metaContainer);
                     // replace nested CAF with a ComponentParameter using an internally generated key
                     Element parameter = node.getOwnerDocument().createElement(PARAMETER);
                     parameter.setAttribute(KEY, key);
@@ -517,12 +517,12 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
             }
         }
         Parameter[] parameters = createChildParameters(container, element);
-        ComponentFactory componentFactory = createComponentAdapterFactory(element.getAttribute(FACTORY), metaContainer);
+        ComponentFactory componentFactory = createComponentFactory(element.getAttribute(FACTORY), metaContainer);
 
         container.as(Characteristics.NONE).addAdapter(componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), key, implementationClass, parameters));
     }
 
-    private ComponentFactory createComponentAdapterFactory(String factoryName, NanoContainer metaContainer) throws PicoCompositionException {
+    private ComponentFactory createComponentFactory(String factoryName, NanoContainer metaContainer) throws PicoCompositionException {
         if ( notSet(factoryName)) {
             return new Caching().wrap(new ConstructorInjection());
         }

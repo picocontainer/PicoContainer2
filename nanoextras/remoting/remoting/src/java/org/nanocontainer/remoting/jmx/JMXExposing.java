@@ -33,7 +33,7 @@ public class JMXExposing extends AbstractBehaviorFactory {
     private final DynamicMBeanProvider[] providers;
 
     /**
-     * Construct a JMXExposingComponentAdapterFactory.
+     * Construct a JMXExposingComponentFactory.
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.
      * @param providers An array with providers for converting the component instance into a
      *            {@link javax.management.DynamicMBean}.
@@ -51,7 +51,7 @@ public class JMXExposing extends AbstractBehaviorFactory {
     }
 
     /**
-     * Construct a JMXExposingComponentAdapterFactory. This instance uses a {@link DynamicMBeanComponentProvider} as
+     * Construct a JMXExposingComponentFactory. This instance uses a {@link DynamicMBeanComponentProvider} as
      * default to register any component instance in the {@link MBeanServer}, that is already a
      * {@link javax.management.DynamicMBean}.
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.

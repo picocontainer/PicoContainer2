@@ -21,7 +21,7 @@
 )>
 
 <!--
-    Specifies the implementation class of the org.picocontainer.ComponentAdapterFactory
+    Specifies the implementation class of the org.picocontainer.ComponentFactory
     used globally by the container
 -->
 <!ATTLIST container component-adapter-factory CDATA #IMPLIED>
@@ -61,7 +61,7 @@
 <!ATTLIST element url CDATA #IMPLIED>
 
 <!--
-    Defines a org.picocontainer.ComponentAdapterFactory
+    Defines a org.picocontainer.ComponentFactory
 -->
 <!ELEMENT component-adapter-factory (
     (component-adapter-factory | parameter)*
@@ -122,7 +122,7 @@
 <!ATTLIST component-adapter class-name-key CDATA #IMPLIED>
 
 <!--
-    Component adapters may optionally specify s org.picocontainer.ComponentAdapterFactory
+    Component adapters may optionally specify s org.picocontainer.ComponentFactory
     implementation class or a key of an already defined compoennt-adapter-factory
     which overrides the globally specified one.
 -->

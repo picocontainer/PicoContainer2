@@ -39,7 +39,7 @@ public class SetterInjectorTestCase
         return SetterInjector.class;
     }
 
-    protected ComponentFactory createDefaultComponentAdapterFactory() {
+    protected ComponentFactory createDefaultComponentFactory() {
         return new Caching().wrap(new SetterInjection());
     }
 

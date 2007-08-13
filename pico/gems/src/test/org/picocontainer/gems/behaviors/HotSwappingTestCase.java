@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 
 public final class HotSwappingTestCase extends AbstractComponentFactoryTestCase {
-    private final ComponentFactory implementationHidingComponentAdapterFactory = new HotSwapping().wrap(new AdaptiveInjection());
+    private final ComponentFactory implementationHidingComponentFactory = new HotSwapping().wrap(new AdaptiveInjection());
 
     // START SNIPPET: man
     public static interface Man {
@@ -79,7 +79,7 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTestCase 
 
 
     protected ComponentFactory createComponentFactory() {
-        return implementationHidingComponentAdapterFactory;
+        return implementationHidingComponentFactory;
     }
 
 }

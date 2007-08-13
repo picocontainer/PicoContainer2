@@ -127,7 +127,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
      * Creates a new container.  There may or may not be a parent to this container.
      * Supported attributes are:
      * <ul>
-     *  <li><tt>componentFactory</tt>: The ComponentAdapterFactory used for new container</li>
+     *  <li><tt>componentFactory</tt>: The ComponentFactory used for new container</li>
      *  <li><tt>componentMonitor</tt>: The ComponentMonitor used for new container</li>
      * </ul>
      * @param attributes Map Attributes defined by the builder in the script.
@@ -141,7 +141,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
         if (parent != null) {
             parentClassLoader = parent.getComponentClassLoader();
             if ( isAttribute(attributes, COMPONENT_ADAPTER_FACTORY) ) {
-                ComponentFactory componentFactory = createComponentAdapterFactory(attributes);
+                ComponentFactory componentFactory = createComponentFactory(attributes);
                 childContainer = new DefaultPicoContainer(
                         getDecorationDelegate().decorate(componentFactory, attributes), parent);
                 if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
@@ -161,7 +161,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
                     return PicoContainer.class.getClassLoader();
                 }
             });
-            ComponentFactory componentFactory = createComponentAdapterFactory(attributes);
+            ComponentFactory componentFactory = createComponentFactory(attributes);
             childContainer = new DefaultPicoContainer(
                     getDecorationDelegate().decorate(componentFactory, attributes));
             if ( isAttribute(attributes, COMPONENT_MONITOR) ) {
@@ -193,7 +193,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
         return (NanoContainer) componentInstance;
     }
 
-    private ComponentFactory createComponentAdapterFactory(Map attributes) {
+    private ComponentFactory createComponentFactory(Map attributes) {
         final ComponentFactory factory = (ComponentFactory) attributes.remove(COMPONENT_ADAPTER_FACTORY);
         if ( factory == null ){
             return new Caching();

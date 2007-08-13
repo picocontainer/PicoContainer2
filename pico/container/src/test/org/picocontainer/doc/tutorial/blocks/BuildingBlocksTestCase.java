@@ -64,7 +64,7 @@ public class BuildingBlocksTestCase extends TestCase {
         // END SNIPPET: register-equivalent-at-length
     }
 
-    public void testRegisterDifferentComponentAdapterFactory() {
+    public void testRegisterDifferentComponentFactory() {
 
         // START SNIPPET: register-different-componentFactory
         MutablePicoContainer picoContainer = new DefaultPicoContainer(

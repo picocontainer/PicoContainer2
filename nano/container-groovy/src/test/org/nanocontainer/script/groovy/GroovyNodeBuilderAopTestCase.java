@@ -155,7 +155,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
         verifyMixin(dao);
     }
 
-    public void testCustomComponentAdapterFactory() {
+    public void testCustomComponentFactory() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +

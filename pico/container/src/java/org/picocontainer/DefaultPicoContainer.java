@@ -88,7 +88,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private final List<Integer> startedComponentAdapters = new ArrayList<Integer>();
 
     /**
-     * Creates a new container with a custom ComponentAdapterFactory and a parent container.
+     * Creates a new container with a custom ComponentFactory and a parent container.
      * <p/>
      * <em>
      * Important note about caching: If you intend the components to be cached, you should pass
@@ -105,7 +105,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Creates a new container with a custom ComponentAdapterFactory, LifecycleStrategy for instance registration,
+     * Creates a new container with a custom ComponentFactory, LifecycleStrategy for instance registration,
      * and a parent container.
      * <p/>
      * <em>
@@ -183,9 +183,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
     /**
-     * Creates a new container with a custom ComponentAdapterFactory and no parent container.
+     * Creates a new container with a custom ComponentFactory and no parent container.
      *
-     * @param componentFactory the ComponentAdapterFactory to use.
+     * @param componentFactory the ComponentFactory to use.
      */
     public DefaultPicoContainer(ComponentFactory componentFactory) {
         this(componentFactory, null);
@@ -665,7 +665,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Changes monitor in the ComponentAdapterFactory, the component adapters
+     * Changes monitor in the ComponentFactory, the component adapters
      * and the child containers, if these support a ComponentMonitorStrategy.
      * {@inheritDoc}
      */
@@ -687,7 +687,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Returns the first current monitor found in the ComponentAdapterFactory, the component adapters
+     * Returns the first current monitor found in the ComponentFactory, the component adapters
      * and the child containers, if these support a ComponentMonitorStrategy.
      * {@inheritDoc}
      *

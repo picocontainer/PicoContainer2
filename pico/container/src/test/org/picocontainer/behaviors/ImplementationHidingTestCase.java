@@ -69,12 +69,12 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTestCa
     }
 
 
-    private final ComponentFactory implementationHidingComponentAdapterFactory =
+    private final ComponentFactory implementationHidingComponentFactory =
         new ImplementationHiding().wrap(new AdaptiveInjection());
 
 
     protected ComponentFactory createComponentFactory() {
-        return implementationHidingComponentAdapterFactory;
+        return implementationHidingComponentFactory;
     }
 
 }

@@ -51,7 +51,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         return new Properties[0];
     }
 
-    public void testInstantiationWithNullComponentAdapterFactory() {
+    public void testInstantiationWithNullComponentFactory() {
         try {
             new DefaultPicoContainer((ComponentFactory)null, null);
             fail("NPE expected");
@@ -325,7 +325,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         assertTrue("writer empty", writer.toString().length() == 0);
     }
 
-    public void testCanReturnCurrentMonitorFromComponentAdapterFactory() {
+    public void testCanReturnCurrentMonitorFromComponentFactory() {
         StringWriter writer1 = new StringWriter();
         ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
         DefaultPicoContainer pico = new DefaultPicoContainer(monitor1);

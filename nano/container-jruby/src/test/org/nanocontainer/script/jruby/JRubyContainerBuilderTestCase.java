@@ -224,7 +224,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertEquals("Should match the expression", "<A!A", X.componentRecorder);
     }
 
-    public void testCustomComponentAdapterFactoryCanBeSpecified() {
+    public void testCustomComponentFactoryCanBeSpecified() {
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "container(:component_adapter_factory => $assembly_scope) {\n" +
@@ -429,7 +429,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertNotNull(pico.getComponent(B.class));
     }
 
-    public void FAILING_testBuildContainerWithParentAttributesPropagatesComponentAdapterFactory() {
+    public void FAILING_testBuildContainerWithParentAttributesPropagatesComponentFactory() {
         DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjection());
         Reader script = new StringReader("container(:parent => $parent)\n");
 
@@ -575,7 +575,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
 //    public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-//        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentAdapterFactory() );
+//        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentFactory() );
 //        Reader script = new StringReader("" +
 //                "package org.nanocontainer.testmodel\n" +
 //                "nano = new GroovyNodeBuilder().container() {\n" +

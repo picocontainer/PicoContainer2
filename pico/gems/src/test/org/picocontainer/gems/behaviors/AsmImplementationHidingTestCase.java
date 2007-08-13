@@ -25,7 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public final class AsmImplementationHidingTestCase extends AbstractComponentFactoryTestCase {
 
-    private final ComponentFactory implementationHidingComponentAdapterFactory = new AsmImplementationHiding().wrap(new AdaptiveInjection());
+    private final ComponentFactory implementationHidingComponentFactory = new AsmImplementationHiding().wrap(new AdaptiveInjection());
 
     public void testAddComponentUsesImplementationHidingBehavior() {
         DefaultPicoContainer pico =
@@ -81,7 +81,7 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
     }
 
     protected ComponentFactory createComponentFactory() {
-        return implementationHidingComponentAdapterFactory;
+        return implementationHidingComponentFactory;
     }
 
     public void testElephantWithoutAsmProxy() throws IOException {

@@ -21,7 +21,7 @@ import java.util.Properties;
 
 /**
  * @author Aslak Helles&oslash;y
- * @see org.picocontainer.gems.adapters.HotSwappingComponentAdapterFactory for a more feature-rich version of the class
+ * @see org.picocontainer.gems.adapters.HotSwappingComponentFactory for a more feature-rich version of the class
  */
 public class ImplementationHiding extends AbstractBehaviorFactory {
 

@@ -68,7 +68,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         return SERIALIZABLE | VERIFYING | INSTANTIATING | RESOLVING;
     }
 
-    protected ComponentFactory createDefaultComponentAdapterFactory() {
+    protected ComponentFactory createDefaultComponentFactory() {
         return new AdaptiveInjection();
     }
 
@@ -86,7 +86,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
     protected abstract ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer);
 
     final public void testDEF_verifyWithoutDependencyWorks() {
-        final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+        final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
         final ComponentAdapter componentAdapter = prepDEF_verifyWithoutDependencyWorks(picoContainer);
         assertSame(getComponentAdapterType(), componentAdapter.getClass());
         componentAdapter.verify(picoContainer);
@@ -102,7 +102,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
     protected abstract ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer);
 
     final public void testDEF_verifyDoesNotInstantiate() {
-        final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+        final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
         final ComponentAdapter componentAdapter = prepDEF_verifyDoesNotInstantiate(picoContainer);
         assertSame(getComponentAdapterType(), componentAdapter.getClass());
         final ComponentAdapter notInstantiatablecomponentAdapter = new NotInstantiatableBehavior(
@@ -159,7 +159,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         final Class type = getComponentAdapterType();
         boolean hasParameters = supportsParameters(type);
         if (hasParameters) {
-            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepDEF_isAbleToTakeParameters(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             final RecordingVisitor visitor = new RecordingVisitor();
@@ -194,7 +194,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
 
     final public void testSER_isSerializable() throws IOException, ClassNotFoundException {
         if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
-            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepSER_isSerializable(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             final Object instance = componentAdapter.getComponentInstance(picoContainer);
@@ -227,7 +227,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
 
     final public void testSER_isXStreamSerializableWithPureReflection() {
         if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
-            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepSER_isXStreamSerializable(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             final Object instance = componentAdapter.getComponentInstance(picoContainer);
@@ -244,7 +244,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
 
     final public void testSER_isXStreamSerializable() {
         if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
-            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepSER_isXStreamSerializable(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             final Object instance = componentAdapter.getComponentInstance(picoContainer);
@@ -315,7 +315,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
 
     final public void testINS_createsNewInstances() {
         if ((getComponentAdapterNature() & INSTANTIATING) > 0) {
-            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepINS_createsNewInstances(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             final Object instance = componentAdapter.getComponentInstance(picoContainer);
@@ -338,7 +338,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
 
     final public void testINS_errorIsRethrown() {
         if ((getComponentAdapterNature() & INSTANTIATING) > 0) {
-            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepINS_errorIsRethrown(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             try {
@@ -364,7 +364,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
 
     final public void testINS_runtimeExceptionIsRethrown() {
         if ((getComponentAdapterNature() & INSTANTIATING) > 0) {
-            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepINS_runtimeExceptionIsRethrown(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             try {
@@ -392,7 +392,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
 
     final public void testINS_normalExceptionIsRethrownInsidePicoInitializationException() {
         if ((getComponentAdapterNature() & INSTANTIATING) > 0) {
-            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepINS_normalExceptionIsRethrownInsidePicoInitializationException(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             try {
@@ -425,7 +425,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final List dependencies = new LinkedList();
             final Object[] wrapperDependencies = new Object[]{dependencies};
-            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepRES_dependenciesAreResolved(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));
@@ -455,7 +455,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             final Set cycleInstances = new HashSet();
             final ObjectReference cycleCheck = new Cached.SimpleReference();
             final Object[] wrapperDependencies = new Object[]{cycleInstances, cycleCheck};
-            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepRES_failingVerificationWithCyclicDependencyException(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             assertTrue(picoContainer.getComponentAdapters().contains(componentAdapter));
@@ -489,7 +489,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             final Set cycleInstances = new HashSet();
             final ObjectReference cycleCheck = new Cached.SimpleReference();
             final Object[] wrapperDependencies = new Object[]{cycleInstances, cycleCheck};
-            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentAdapterFactory());
+            final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepRES_failingInstantiationWithCyclicDependencyException(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             assertTrue(picoContainer.getComponentAdapters().contains(componentAdapter));

@@ -292,7 +292,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         assertEquals("Should match the expression", "<A!A", X.componentRecorder);
     }
 
-    public void testCustomComponentAdapterFactoryCanBeSpecified() {
+    public void testCustomComponentFactoryCanBeSpecified() {
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +
@@ -521,7 +521,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         }
     }
 
-    public void testBuildContainerWithParentAttributesPropagatesComponentAdapterFactory() {
+    public void testBuildContainerWithParentAttributesPropagatesComponentFactory() {
         DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjection() );
         Reader script = new StringReader("" +
                 "nano = builder.container(parent:parent) {\n" +

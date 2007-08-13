@@ -280,7 +280,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTestCase {
             if (Behavior.class.isAssignableFrom(type)) {
                 final StringBuffer buffer = new StringBuffer();
                 final MutablePicoContainer picoContainer = new DefaultPicoContainer(
-                        createDefaultComponentAdapterFactory());
+                        createDefaultComponentFactory());
                 picoContainer.addComponent(buffer);
                 final ComponentAdapter componentAdapter = prepDEF_lifecycleManagerSupport(picoContainer);
                 assertSame(getComponentAdapterType(), componentAdapter.getClass());
@@ -316,7 +316,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTestCase {
             if (Behavior.class.isAssignableFrom(type)) {
                 final StringBuffer buffer = new StringBuffer();
                 final MutablePicoContainer picoContainer = new DefaultPicoContainer(
-                        createDefaultComponentAdapterFactory());
+                        createDefaultComponentFactory());
                 picoContainer.addComponent(buffer);
                 final ComponentAdapter componentAdapter = prepRES_lifecycleManagerHonorsInstantiationSequence(picoContainer);
                 assertSame(getComponentAdapterType(), componentAdapter.getClass());

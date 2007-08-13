@@ -293,7 +293,7 @@ public class DefaultPicoContainerLifecycleTestCase extends MockObjectTestCase {
         }
     }
 
-    public void testCanSpecifyLifeCycleStrategyForInstanceRegistrationWhenSpecifyingComponentAdapterFactory()
+    public void testCanSpecifyLifeCycleStrategyForInstanceRegistrationWhenSpecifyingComponentFactory()
         throws Exception
     {
         LifecycleStrategy strategy = new LifecycleStrategy() {
