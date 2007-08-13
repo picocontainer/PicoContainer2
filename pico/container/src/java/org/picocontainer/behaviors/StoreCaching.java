@@ -28,9 +28,9 @@ import java.util.Map;
  */
 public class StoreCaching extends AbstractBehaviorFactory {
 
-    private final MapThreadLocalObjectReference mapThreadLocalObjectReference = new MapThreadLocalObjectReference();
+    private final StoreThreadLocal mapThreadLocalObjectReference = new StoreThreadLocal();
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
             return super.createComponentAdapter(componentMonitor,
@@ -41,21 +41,38 @@ public class StoreCaching extends AbstractBehaviorFactory {
                                                                              parameters);
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
-        return new StoreCached(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+        return new Cached(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                 componentProperties, componentKey, componentImplementation, parameters),
-                          mapThreadLocalObjectReference);
+                          new ObjectReference() {
+                              public Object get() {
+                                  return ((Map)mapThreadLocalObjectReference.get()).get(componentKey) ;
+                              }
+                              public void set(Object item) {
+                                  ((Map)mapThreadLocalObjectReference.get()).put(componentKey, item) ;
+
+                              }
+                          });
 
     }
 
     public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
                                     LifecycleStrategy lifecycleStrategy,
                                     Properties componentProperties,
-                                    ComponentAdapter adapter) {
+                                    final ComponentAdapter adapter) {
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
             return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
-        return new StoreCached(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter), mapThreadLocalObjectReference);
+        return new Cached(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter),
+                               new ObjectReference() {
+                                   public Object get() {
+                                       return ((Map)mapThreadLocalObjectReference.get()).get(adapter.getComponentKey()) ;
+                                   }
+
+                                   public void set(Object item) {
+                                       ((Map)mapThreadLocalObjectReference.get()).put(adapter.getComponentKey(), item) ;
+                                   }
+                               });
     }
 
 
@@ -67,7 +84,9 @@ public class StoreCaching extends AbstractBehaviorFactory {
         mapThreadLocalObjectReference.set(keysAndInstances);
     }
 
-    public static class MapThreadLocalObjectReference extends ThreadLocal implements ObjectReference {
+
+
+    public static class StoreThreadLocal extends ThreadLocal {
 
         protected Object initialValue() {
             return new HashMap();

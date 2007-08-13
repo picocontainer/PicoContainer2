@@ -47,7 +47,7 @@ public class StoreCachingTestCase extends TestCase {
         assertNotNull(foo2);
         assertEquals(foo,foo2);
         assertEquals("<Foo", sb.toString());
-        assertEquals("StoreCached:ConstructorInjector-class org.picocontainer.behaviors.StoreCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached:ConstructorInjector-class org.picocontainer.behaviors.StoreCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
     public void testThatTwoThreadsHaveSeparatedCacheValues() {
@@ -81,7 +81,7 @@ public class StoreCachingTestCase extends TestCase {
         assertEquals(foos[1],foos[3]);
         assertFalse(foos[0] == foos[1]);
         assertEquals("<Foo<Foo", sb.toString());
-        assertEquals("StoreCached:ConstructorInjector-class org.picocontainer.behaviors.StoreCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached:ConstructorInjector-class org.picocontainer.behaviors.StoreCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
     public void testThatTwoThreadsHaveSeparatedCacheValuesForThreeScopeScenario() {
@@ -122,7 +122,7 @@ public class StoreCachingTestCase extends TestCase {
         assertSame(bars[2].foo,foos[2]);
         assertSame(bars[3].foo,foos[3]);
         assertEquals("<Foo<Bar<Foo<Bar", sb.toString());
-        assertEquals("StoreCached:ConstructorInjector-class org.picocontainer.behaviors.StoreCachingTestCase$Foo", sessionScope.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached:ConstructorInjector-class org.picocontainer.behaviors.StoreCachingTestCase$Foo", sessionScope.getComponentAdapter(Foo.class).toString());
     }
 
     public void testThatCacheMapCanBeReUsedOnASubsequentThreadSimulatingASessionConcept() {
@@ -169,7 +169,7 @@ public class StoreCachingTestCase extends TestCase {
         assertSame(foos[1],foos[2]);
         assertSame(foos[2],foos[3]);
         assertEquals("<Foo", sb.toString());
-        assertEquals("StoreCached:ConstructorInjector-class org.picocontainer.behaviors.StoreCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached:ConstructorInjector-class org.picocontainer.behaviors.StoreCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
     private void sleepALittle() {

@@ -35,7 +35,7 @@ import java.io.Serializable;
  */
 public class Cached extends AbstractBehavior implements Behavior {
 
-    protected final ObjectReference instanceReference;
+    private final ObjectReference instanceReference;
     private boolean disposed;
     private boolean started;
     private final boolean delegateHasLifecylce;
