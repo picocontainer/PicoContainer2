@@ -87,7 +87,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private ComponentMonitor componentMonitor;
 
     /** List collecting the CAs which have been successfully started */
-    private final List<ComponentAdapter> startedComponentAdapters = new ArrayList<ComponentAdapter>();
+    private final List<Integer> startedComponentAdapters = new ArrayList<Integer>();
 
     /**
      * Creates a new container with a custom ComponentAdapterFactory and a parent container.
@@ -312,6 +312,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
     public ComponentAdapter removeComponent(Object componentKey) {
+        if (started) {
+            throw new PicoCompositionException("Cannot remove components after the container has started");
+        }
         ComponentAdapter adapter = componentKeyToAdapterCache.remove(componentKey);
         componentAdapters.remove(adapter);
         orderedComponentAdapters.remove(adapter);
@@ -712,12 +715,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         // clear list of started CAs
         startedComponentAdapters.clear();
         // clone the adapters
-        Collection<ComponentAdapter<?>> adaptersClone = new ArrayList<ComponentAdapter<?>>(adapters);
+        List<ComponentAdapter<?>> adaptersClone = new ArrayList<ComponentAdapter<?>>(adapters);
         for (final ComponentAdapter adapter : adaptersClone) {
             if (adapter instanceof Behavior) {
                 Behavior manager = (Behavior)adapter;
                 manager.start(DefaultPicoContainer.this);
-                startedComponentAdapters.add(adapter);
+                startedComponentAdapters.add(adaptersClone.indexOf(adapter));
             }
         }
     }
@@ -728,9 +731,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * stop(PicoContainer) method on the ones which are LifecycleManagers
      */
     private void stopAdapters() {
-        List<ComponentAdapter> adapters = startedComponentAdapters;
-        for (int i = adapters.size() - 1; 0 <= i; i--) {
-            ComponentAdapter adapter = adapters.get(i);
+        for (int i = startedComponentAdapters.size() - 1; 0 <= i; i--) {
+            ComponentAdapter adapter = orderedComponentAdapters.get(startedComponentAdapters.get(i));
             if (adapter instanceof Behavior) {
                 Behavior manager = (Behavior)adapter;
                 manager.stop(DefaultPicoContainer.this);
@@ -744,9 +746,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * dispose(PicoContainer) method on the ones which are LifecycleManagers
      */
     private void disposeAdapters() {
-        List<ComponentAdapter<?>> adapters = orderedComponentAdapters;
-        for (int i = adapters.size() - 1; 0 <= i; i--) {
-            ComponentAdapter adapter = adapters.get(i);
+        for (int i = orderedComponentAdapters.size() - 1; 0 <= i; i--) {
+            ComponentAdapter adapter = orderedComponentAdapters.get(i);
             if (adapter instanceof Behavior) {
                 Behavior manager = (Behavior)adapter;
                 manager.dispose(DefaultPicoContainer.this);

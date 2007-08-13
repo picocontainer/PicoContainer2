@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Map;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -643,7 +644,14 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     }
 
-    public void testAcceptImplementsBreadthFirstStrategy() {
-        super.testAcceptImplementsBreadthFirstStrategy();
+    public void testThatComponentCannotBeRemovedFromStartedContainer() {
+        MutablePicoContainer container = createPicoContainer(null);
+        container.addComponent(Map.class, HashMap.class);
+        container.start();
+        try {
+            container.removeComponent(Map.class);
+            fail("should have barfed");
+        } catch (PicoCompositionException e) {
+        }
     }
 }
