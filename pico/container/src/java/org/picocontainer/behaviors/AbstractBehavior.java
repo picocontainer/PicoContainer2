@@ -42,7 +42,7 @@ import org.picocontainer.LifecycleStrategy;
 public abstract class AbstractBehavior<T> implements Behavior<T>, ComponentMonitorStrategy,
                                                   LifecycleStrategy, Serializable {
 
-    private final ComponentAdapter<?> delegate;
+    protected final ComponentAdapter<?> delegate;
 
     public AbstractBehavior(ComponentAdapter<?> delegate) {
          this.delegate = delegate;
