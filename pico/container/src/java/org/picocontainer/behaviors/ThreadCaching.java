@@ -29,13 +29,12 @@ public class ThreadCaching extends AbstractBehaviorFactory {
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
-            ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor,
+            return super.createComponentAdapter(componentMonitor,
                                                                              lifecycleStrategy,
                                                                              componentProperties,
                                                                              componentKey,
                                                                              componentImplementation,
                                                                              parameters);
-            return componentAdapter;
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
         return new ThreadCached(super.createComponentAdapter(componentMonitor, lifecycleStrategy,

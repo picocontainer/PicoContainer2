@@ -38,7 +38,7 @@ public class OptInCachingTestCase extends AbstractComponentFactoryTestCase {
         assertEquals(ConstructorInjector.class, foo.getClass());
     }
 
-    public void testAddComponentUsesImplementationHidingBehaviorWithRedundandHideImplProperty() {
+    public void testAddComponentUsesImplementationHidingBehaviorWithRedundantCacheProperty() {
         DefaultPicoContainer pico =
             new DefaultPicoContainer(new OptInCaching().wrap(new ConstructorInjection()));
         pico.change(Characteristics.CACHE).addComponent("foo", String.class);

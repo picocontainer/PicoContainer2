@@ -32,10 +32,6 @@ public final class ThreadCached extends Cached implements Behavior {
         super(delegate, new ThreadLocalReference());
     }
 
-    public ThreadCached(ComponentAdapter delegate, ObjectReference instanceReference) {
-        super(delegate, instanceReference);
-    }
-
     public static class ThreadLocalReference extends ThreadLocal implements ObjectReference, Serializable {
     }
 

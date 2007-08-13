@@ -17,6 +17,7 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.ObjectReference;
 
 import java.util.Properties;
 
@@ -26,21 +27,20 @@ import java.util.Properties;
  */
 public class Caching extends AbstractBehaviorFactory {
 
-
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
-            ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor,
+            return super.createComponentAdapter(componentMonitor,
                                                                              lifecycleStrategy,
                                                                              componentProperties,
                                                                              componentKey,
                                                                              componentImplementation,
                                                                              parameters);
-            return componentAdapter;
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
         return new Cached(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                                                                componentProperties, componentKey, componentImplementation, parameters));
+                                                                componentProperties, componentKey, componentImplementation, parameters),
+                          newObjectReference());
 
     }
 
@@ -52,6 +52,11 @@ public class Caching extends AbstractBehaviorFactory {
             return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
-        return new Cached(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter));
+        return new Cached(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter),
+                          newObjectReference());
+    }
+
+    protected ObjectReference newObjectReference() {
+        return new Cached.SimpleReference();
     }
 }
