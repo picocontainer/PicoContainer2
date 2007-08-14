@@ -74,6 +74,8 @@ public class PrettyXmlRepresentation {
         foo = foo.replaceAll("<","");
         foo = foo.replaceAll(">","");
         foo = foo.replaceAll(" class=","=");
+        foo = foo.replaceAll("setterMethodPrefix","");
+        foo = foo.replaceAll("injectionAnnotation","");
         foo = foo.replaceAll("\"","");
 
         return foo;
