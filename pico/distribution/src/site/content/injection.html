@@ -6,7 +6,7 @@
 </head>
 <body>
 <p>See Martin Fowlers's <a href="http://www.martinfowler.com/articles/injection.html">Inversion of Control Containers and the Dependency Injection</a>  article from 2003 for a thorough description. Surely everyone has read this by now? </p>
-<h2> Types </h2>
+<h2> Injection Types </h2>
 <h3>Constructor Dependency Injection (CDI) </h3>
 <p>This is where a component has a constructor, with arguments that are its dependencies:</p>
 <div class="source">
@@ -69,7 +69,7 @@ public class Apple {
 </div>
 <p>
 Yes thats's right, there's no constructor needed.  It means that for a Unit Test, you cannot simply 'new' the class, which is a downside.</p>
-<p>The main component factory for this is a class<strong>AnnotatedFieldInjection</strong>. It only handles field-annotation injection types of components.</p>
+<p>The  component factory for this is a class<strong> AnnotatedFieldInjection</strong>. It only handles field-annotation injection types of components.</p>
 <p>Additionally component factory <strong>AdaptiveInjection</strong> can also handle field annotation types, if the @Inject annotation from PicoContainer's codebase is used as the marker for injection.  <strong>AdaptiveInjection</strong> will also fall through to constructor injection if there is no recognised @Inject annotation.</p>
 <p>If you want to use an @Inject annotation from another codebase, then extend <strong>AnnotatedFieldInjector</strong> overriding isAnnotatedForInjection(..), and have a <strong>BehaviorFactory</strong> implementation for it. </p>
 <h3>Annotated Method Dependency Injection </h3>
@@ -97,9 +97,63 @@ public class Apple {
 }</pre>
 </div>
 <p>The method (whatever its name) needs an @Inject annotation.  That's from our codebase (org.picocontainer.Inject).</p>
-<p>The main component factory for this is <strong>AnnotatedMethodInjection</strong>. It only handles method-annotation injection types of components.</p>
+<p>The  component factory for this is <strong>AnnotatedMethodInjection</strong>. It only handles method-annotation injection types of components.</p>
 <p>Additionally component factory <strong>AdaptiveInjection</strong> can also handle method-annotation injection types, if the @Inject annotation from PicoContainer's codebase is used as the marker for injection. AdaptiveInjection will also fall through to constructor injection if there is no recognised annotation.</p>
 <p>If you want to use an @Inject annotation from another codebase, then extend <strong>AnnotatedMethodInjector</strong> overriding isAnnotatedForInjection(..), and have a <strong>BehaviorFactory</strong> implementation for it. </p>
+<h2>Using PicoContainer with Injection Types</h2>
+<p>Explicit Constructor Injection:</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer(new ConstructorInjection());
+pico.addComponent(Apple.class);
+</pre>
+</div>
+<p>Constructor Injection, is a default too (via AdaptiveInjection):</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer();
+pico.addComponent(Apple.class);
+</pre>
+</div>
+<p>Explicit Setter Injection:</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer(new SetterInjection());
+pico.addComponent(Apple.class);
+</pre>
+</div>
+<p>Explicit Annotated Field injection:</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer(new AnnotatedFieldInjection();
+pico.addComponent(Apple.class);
+</pre>
+</div>
+<p>Annotated Field injection, via property:</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer();
+pico.as(Characteristics.ANNOTATED_FIELD_INJECTION).addComponent(Apple.class);
+</pre>
+</div>
+
+<p>Explicit Annotated Method injection:</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer(new AnnotatedMethodInjection();
+pico.addComponent(Apple.class);
+</pre>
+</div>
+<p>Annotated Method injection, via property:</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer();
+pico.as(Characteristics.ANNOTATED_METHOD_INJECTION).addComponent(Apple.class);
+</pre>
+</div>
+
+
+
 </body>
 
 

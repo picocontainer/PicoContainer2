@@ -45,8 +45,7 @@ public class SetterInjection implements InjectionFactory, Serializable {
      *          abstract class.
      */
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
-            throws PicoCompositionException
-    {
+            throws PicoCompositionException {
         return new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
     }
 }
