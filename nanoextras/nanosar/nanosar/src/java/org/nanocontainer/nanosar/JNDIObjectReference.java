@@ -40,8 +40,13 @@ public class JNDIObjectReference implements ObjectReference {
 	 * store object in JNDI under specified name
 	 */
 	public void set(Object item) {
+		
 		try {
-			context.bind(name, item);
+			if(item == null) {
+				context.unbind(name);
+			} else {
+				context.bind(name, item);
+			}
 		} catch (NamingException e) {
 			throw new PicoCompositionException("unable to bind to  jndi name:"
 					+ name, e);

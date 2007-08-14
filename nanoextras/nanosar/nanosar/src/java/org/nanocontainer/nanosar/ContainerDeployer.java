@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nanocontainer.script.ScriptBuilderResolver;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
+import org.picocontainer.PicoContainer;
 
 /**
  * mbean for deployment in JBoss SAR
@@ -28,6 +29,8 @@ public class ContainerDeployer implements ContainerDeployerMBean {
 
 	String script;
 
+	JNDIObjectReference containerRef;
+	
 	boolean started = false;
 
 	public ContainerDeployer() {
@@ -81,12 +84,13 @@ public class ContainerDeployer implements ContainerDeployerMBean {
 		if (getScript() == null) {
 			throw new Exception("script shall be specified");
 		}
+		log.info("specified script:" + getScript());
 		// explicit setting wins
 		String builderName = getContainerComposer();
 
 		// if no builder is set, try to resolve from script
 		if (builderName == null) {
-			builderName = resolver.getBuilderClassName(getScript());
+			builderName = resolver.getBuilderClassName(getScript().substring(getScript().lastIndexOf('.')));
 		}
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Reader scriptReader = new InputStreamReader(loader
@@ -96,10 +100,13 @@ public class ContainerDeployer implements ContainerDeployerMBean {
 		
 		InitialContext context = new InitialContext();
 		
-		JNDIObjectReference parentContainer = new JNDIObjectReference(getParentName(),context);
-		JNDIObjectReference myContainer = new JNDIObjectReference(getJndiName(),context);
+		JNDIObjectReference parentContainer = null;
+		if(getParentName() != null) {
+			parentContainer = new JNDIObjectReference(getParentName(),context);
+		}
+		containerRef = new JNDIObjectReference(getJndiName(),context);
 		
-		factory.getContainerBuilder().buildContainer(myContainer,parentContainer,null,false);
+		factory.getContainerBuilder().buildContainer(containerRef,parentContainer,null,false);
 		
 		log.info("container started an bound to JNDI");
 		started = true;
@@ -110,6 +117,13 @@ public class ContainerDeployer implements ContainerDeployerMBean {
 	 */
 	public void stop() throws Exception {
 		log.info("stopping container");
+		
+		if (!started) {
+			throw new IllegalStateException("container not started");
+		}
+		
+		// dispose container out of reference
+		containerRef.set(null);
 	}
 
 	public boolean isStarted() {
