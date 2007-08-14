@@ -129,6 +129,13 @@ pico = new DefaultPicoContainer(new AnnotatedFieldInjection();
 pico.addComponent(Apple.class);
 </pre>
 </div>
+<p>Explicit Annotated Field injection, with alternate Annotation:</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer(new AnnotatedFieldInjection(MyInjectAnnotaton.class);
+pico.addComponent(Apple.class);
+</pre>
+</div>
 <p>Annotated Field injection, via property:</p>
 <div class="source">
   <pre>
