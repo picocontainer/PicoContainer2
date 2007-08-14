@@ -138,7 +138,7 @@ public class StoreCachingTestCase extends TestCase {
 
         StringBuilder sb = parent.getComponent(StringBuilder.class);
 
-        final Map[] tmpMap = new Map[1];
+        final StoreCaching.StoreWrapper[] tmpMap = new StoreCaching.StoreWrapper[1];
         Thread thread = new Thread() {
             public void run() {
                 foos[0] = child.getComponent(Foo.class);

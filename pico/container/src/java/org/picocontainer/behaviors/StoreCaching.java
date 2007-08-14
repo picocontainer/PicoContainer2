@@ -75,21 +75,23 @@ public class StoreCaching extends AbstractBehaviorFactory {
                                });
     }
 
-
-    public Map getCacheForThread() {
-        return (Map)mapThreadLocalObjectReference.get();
+    public StoreWrapper getCacheForThread() {
+        StoreWrapper wrappedMap = new StoreWrapper();
+        wrappedMap.wrapped = (Map)mapThreadLocalObjectReference.get();
+        return wrappedMap;
     }
 
-    public void putCacheForThread(Map keysAndInstances) {
-        mapThreadLocalObjectReference.set(keysAndInstances);
+    public void putCacheForThread(StoreWrapper wrappedMap) {
+        mapThreadLocalObjectReference.set(wrappedMap.wrapped);
     }
-
-
 
     public static class StoreThreadLocal extends ThreadLocal {
-
         protected Object initialValue() {
             return new HashMap();
         }
     }
+    public static class StoreWrapper extends ThreadLocal {
+        private Map wrapped;
+    }
+
 }
