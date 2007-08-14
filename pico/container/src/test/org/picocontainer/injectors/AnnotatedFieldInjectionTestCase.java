@@ -26,11 +26,11 @@ import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 
-public class AnnotatatedFieldInjectionTestCase extends TestCase {
+public class AnnotatedFieldInjectionTestCase extends TestCase {
 
     public void testFactoryMakesAnnotationInjector() {
 
-        AnnotatatedFieldInjection injectionFactory = new AnnotatatedFieldInjection();
+        AnnotatedFieldInjection injectionFactory = new AnnotatedFieldInjection();
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
         ComponentAdapter ca = injectionFactory.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new Properties(), Map.class, HashMap.class, Parameter.DEFAULT);

@@ -129,7 +129,7 @@ public class AdaptiveInjection implements InjectionFactory, Serializable {
     {
         if (isMethodAnnotationInjection(componentImplementation)) {
             componentAdapter =
-                new AnnotatatedMethodInjection().createComponentAdapter(componentMonitor,
+                new AnnotatedMethodInjection().createComponentAdapter(componentMonitor,
                                                                               lifecycleStrategy,
                                                                               componentProperties,
                                                                               componentKey,
@@ -147,7 +147,7 @@ public class AdaptiveInjection implements InjectionFactory, Serializable {
     {
         if (isFieldAnnotationInjection(componentImplementation)) {
              componentAdapter =
-                new AnnotatatedFieldInjection().createComponentAdapter(componentMonitor,
+                new AnnotatedFieldInjection().createComponentAdapter(componentMonitor,
                                                                              lifecycleStrategy,
                                                                              componentProperties,
                                                                              componentKey,

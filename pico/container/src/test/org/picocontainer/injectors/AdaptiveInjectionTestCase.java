@@ -21,8 +21,8 @@ import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AdaptiveInjection;
-import org.picocontainer.injectors.AnnotatatedMethodInjectorTestCase;
-import org.picocontainer.injectors.AnnotatatedMethodInjector;
+import org.picocontainer.injectors.AnnotatedMethodInjectorTestCase;
+import org.picocontainer.injectors.AnnotatedMethodInjector;
 import org.picocontainer.injectors.AnnotatedFieldInjector;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
@@ -49,7 +49,7 @@ public class AdaptiveInjectionTestCase extends AbstractComponentFactoryTestCase 
         xs = new XStream();
         xs.alias("RLS", ReflectionLifecycleStrategy.class);
         xs.alias("CCM", ConsoleComponentMonitor.class);
-        xs.alias("Method-Injection", AnnotatatedMethodInjector.class);
+        xs.alias("Method-Injection", AnnotatedMethodInjector.class);
         xs.alias("Field-Injection", AnnotatedFieldInjector.class);
         xs.alias("Constructor-Injection", ConstructorInjector.class);
         //xs.alias("CCM", ConsoleComponentMonitor.class);
@@ -134,16 +134,16 @@ public class AdaptiveInjectionTestCase extends AbstractComponentFactoryTestCase 
         ComponentAdapter ca = cf.createComponentAdapter(cm,
                                                         new ReflectionLifecycleStrategy(cm),
                                                         new Properties(),
-                                                        AnnotatatedFieldInjectorTestCase.Helicopter.class,
-                                                        AnnotatatedFieldInjectorTestCase.Helicopter.class,
+                                                        AnnotatedFieldInjectorTestCase.Helicopter.class,
+                                                        AnnotatedFieldInjectorTestCase.Helicopter.class,
                                                         Parameter.DEFAULT);
 
         String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Field-Injection>\n" +
                      "  <lifecycleStrategy class=RLS/>\n" +
-                     "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatatedFieldInjectorTestCase$Helicopter</componentKey>\n" +
-                     "  <componentImplementation>org.picocontainer.injectors.AnnotatatedFieldInjectorTestCase$Helicopter</componentImplementation>\n" +
+                     "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</componentKey>\n" +
+                     "  <componentImplementation>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
                      "</Field-Injection>", foo);
 
@@ -158,16 +158,16 @@ public class AdaptiveInjectionTestCase extends AbstractComponentFactoryTestCase 
         ComponentAdapter ca = cf.createComponentAdapter(cm,
                                                         new ReflectionLifecycleStrategy(cm),
                                                         new Properties(),
-                                                        AnnotatatedMethodInjectorTestCase.AnnotatedBurp.class,
-                                                        AnnotatatedMethodInjectorTestCase.AnnotatedBurp.class,
+                                                        AnnotatedMethodInjectorTestCase.AnnotatedBurp.class,
+                                                        AnnotatedMethodInjectorTestCase.AnnotatedBurp.class,
                                                         Parameter.DEFAULT);
 
         String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Method-Injection>\n" +
                      "  <lifecycleStrategy class=RLS/>\n" +
-                     "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatatedMethodInjectorTestCase$AnnotatedBurp</componentKey>\n" +
-                     "  <componentImplementation>org.picocontainer.injectors.AnnotatatedMethodInjectorTestCase$AnnotatedBurp</componentImplementation>\n" +
+                     "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentKey>\n" +
+                     "  <componentImplementation>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
                      "</Method-Injection>", foo);
 

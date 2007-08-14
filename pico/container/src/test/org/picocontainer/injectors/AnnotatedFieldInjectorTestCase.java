@@ -22,7 +22,7 @@ import java.lang.annotation.ElementType;
 
 import junit.framework.TestCase;
 
-public class AnnotatatedFieldInjectorTestCase extends TestCase {
+public class AnnotatedFieldInjectorTestCase extends TestCase {
 
     public static class Helicopter {
         @Inject

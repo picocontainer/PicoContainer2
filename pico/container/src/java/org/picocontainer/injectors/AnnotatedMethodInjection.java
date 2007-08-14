@@ -23,11 +23,11 @@ import java.util.Properties;
 
 /**
  * A {@link org.picocontainer.ComponentFactory} for Guice style annotated methods.
- * The factory creates {@link AnnotatatedMethodInjector}.
+ * The factory creates {@link AnnotatedMethodInjector}.
  *
  * @author Paul Hammant
  */
-public class AnnotatatedMethodInjection implements InjectionFactory, Serializable {
+public class AnnotatedMethodInjection implements InjectionFactory, Serializable {
 
     /**
      * Create a {@link SetterInjector}.
@@ -44,6 +44,6 @@ public class AnnotatatedMethodInjection implements InjectionFactory, Serializabl
      */
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
-        return new AnnotatatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
+        return new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
     }
 }

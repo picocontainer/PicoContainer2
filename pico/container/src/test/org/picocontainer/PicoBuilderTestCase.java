@@ -230,7 +230,7 @@ public class PicoBuilderTestCase extends TestCase {
             MutablePicoContainer mpc = new PicoBuilder().withAnnotatedMethodInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AnnotatatedMethodInjection\n" +
+                "  componentFactory=org.picocontainer.injectors.AnnotatedMethodInjection\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -241,7 +241,7 @@ public class PicoBuilderTestCase extends TestCase {
             MutablePicoContainer mpc = new PicoBuilder().withAnnotatedFieldInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AnnotatatedFieldInjection\n" +
+                "  componentFactory=org.picocontainer.injectors.AnnotatedFieldInjection\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +

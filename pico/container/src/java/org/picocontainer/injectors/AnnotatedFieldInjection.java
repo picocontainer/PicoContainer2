@@ -20,15 +20,15 @@ import org.picocontainer.annotations.Inject;
 import java.util.Properties;
 import java.io.Serializable;
 
-public class AnnotatatedFieldInjection implements InjectionFactory, Serializable {
+public class AnnotatedFieldInjection implements InjectionFactory, Serializable {
 
     private final Class injectAnnotation;
 
-    public AnnotatatedFieldInjection(Class annotation) {
+    public AnnotatedFieldInjection(Class annotation) {
         injectAnnotation = annotation;
     }
 
-    public AnnotatatedFieldInjection() {
+    public AnnotatedFieldInjection() {
         injectAnnotation = Inject.class;
     }
 
