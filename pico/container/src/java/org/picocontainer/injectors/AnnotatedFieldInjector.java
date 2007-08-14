@@ -24,13 +24,16 @@ import java.util.List;
 
 public class AnnotatedFieldInjector extends PostInstantiationInjector {
 
+    private final Class injectAnnotation;
+
     public AnnotatedFieldInjector(Object key,
-                                   Class impl,
-                                   Parameter[] parameters,
-                                   ComponentMonitor componentMonitor,
-                                   LifecycleStrategy lifecycleStrategy) {
+                                  Class impl,
+                                  Parameter[] parameters,
+                                  ComponentMonitor componentMonitor,
+                                  LifecycleStrategy lifecycleStrategy, Class injectAnnotation) {
 
         super(key, impl, parameters, componentMonitor, lifecycleStrategy);
+        this.injectAnnotation = injectAnnotation;
     }
 
     protected void initializeInjectionMembersAndTypeLists() {
@@ -47,7 +50,7 @@ public class AnnotatedFieldInjector extends PostInstantiationInjector {
     }
 
     protected boolean isAnnotatedForInjection(Field field) {
-        return field.getAnnotation(Inject.class) != null;
+        return field.getAnnotation(injectAnnotation) != null;
     }
 
     private Field[] getFields() {

@@ -15,12 +15,22 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.InjectionFactory;
+import org.picocontainer.annotations.Inject;
 
 import java.util.Properties;
 import java.io.Serializable;
 
 public class AnnotatatedFieldInjection implements InjectionFactory, Serializable {
 
+    private final Class injectAnnotation;
+
+    public AnnotatatedFieldInjection(Class annotation) {
+        injectAnnotation = annotation;
+    }
+
+    public AnnotatatedFieldInjection() {
+        injectAnnotation = Inject.class;
+    }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
@@ -29,6 +39,7 @@ public class AnnotatatedFieldInjection implements InjectionFactory, Serializable
                                                    Class componentImplementation,
                                                    Parameter... parameters)
         throws PicoCompositionException {
-        return new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
+        return new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy,
+                                          injectAnnotation);
     }
 }
