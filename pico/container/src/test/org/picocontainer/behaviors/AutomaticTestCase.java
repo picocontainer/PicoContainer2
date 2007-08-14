@@ -106,7 +106,7 @@ public class AutomaticTestCase extends TestCase {
     }
 
     public void testAutomaticBehaviorByBuilderADifferentWay() {
-        MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), pushing()).build();
+        MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), automatic()).build();
         pico.addComponent(StringBuilder.class);
         pico.addComponent(Foo.class);
         pico.addComponent(Bar.class);
@@ -118,7 +118,7 @@ public class AutomaticTestCase extends TestCase {
     }
 
         public void testAutomaticBehaviorByBuilderADifferentWayViaAdapter() {
-        MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), pushing()).build();
+        MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), automatic()).build();
         pico.addComponent(StringBuilder.class);
         pico.addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
         pico.addComponent(Bar.class);
@@ -130,7 +130,7 @@ public class AutomaticTestCase extends TestCase {
     }
 
     public void testAutomaticBehaviorWorksForAdaptiveBehaviorToo() {
-        MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), pushing()).build();
+        MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), automatic()).build();
         pico.addComponent(StringBuilder.class);
         pico.as(AUTOMATIC).addComponent(Foo.class);
         pico.addComponent(Bar.class);
@@ -142,7 +142,7 @@ public class AutomaticTestCase extends TestCase {
     }
 
     public void testAutomaticBehaviorWorksForAdaptiveBehaviorTooViaAdapter() {
-        MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), pushing()).build();
+        MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), automatic()).build();
         pico.addComponent(StringBuilder.class);
         pico.as(AUTOMATIC).addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
         pico.addComponent(Bar.class);

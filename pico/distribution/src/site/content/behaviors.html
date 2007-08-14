@@ -8,6 +8,7 @@
 <body>
 <p>Components as managed by PicoContainer can have behaviors added
 to them by the container during instantiation.</p>
+<p>Behaviors are deleivered by passing a BehaviorFactory reference into the PicoContainer instance on construction. For the most part BehaviorFactories are completely stateless.</p>
 <h3>Caching</h3>
 <p>This is where a component has a single instance in the container
 rather that a new one created each time the container is asked for that
@@ -73,8 +74,8 @@ Apple a1 = pico.getComponent(Apple.class);
 </pre></div>
 
 <p>This Behavior leverages Reflection's dynamic proxy capability.
-There's another ImplementationHiding Behavior in Pico Gems that
-leverages ASM to make 'more concrete' hidden implementations.</p>
+There's another implementation hiding behavior in Pico Gems that
+leverages ASM to make 'more concrete' hidden implementations. AsmImplemenationHiding is the BehaviorFactory class.</p>
 <h3>Thread Safety</h3>
 <p>When components are created by two threads concurrently, with the intention of the instance being cached, it is possible in a small percentage of cases for the first instance into the cache to be replaced with a second instance. To prevent this, you may want to try one of two behaviors to make the operation thread safe:</p>
 <div class="source">
@@ -167,14 +168,14 @@ pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
 </div>
- <h3>Pushing</h3>
+ <h3>Automatic</h3>
  <p>This is where a component is going to be instantiated regardless of whether:</p>
  <ul>
    <li> it is looked up</li>
    <li> any component that needs it is looked up</li>
    <li>it is Startable</li>
  </ul>
- <p>It is most likely that you're doing this because the component in question is self contained and doing something once only. Alternatively, you're cutting a larger codebase over from nest-of-singletons to dependency injection in stages.</p>
+ <p>It is most likely that you're doing this because the component in question is self contained and doing something once only. Alternatively, you're cutting a legacy codebase over from nest-of-singletons to dependency injection in stages.</p>
  <div class="source">
   <pre>
 class Foo {
@@ -184,7 +185,7 @@ class Foo {
   }
 }
 ...
-pico = new DefaultPicoContainer(new Pushing());
+pico = new DefaultPicoContainer(new Automatic());
 pico.addComponent(Foo.class);
 pico.addComponent(&quot;bar&quot;, String.class);
 pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
@@ -193,27 +194,105 @@ pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
 <div class="source">
   <pre>
 pico = new DefaultPicoContainer();
-pico.as(PUSHING).addComponent(Foo.class);
+pico.as(AUTOMATIC).addComponent(Foo.class);
 pico.addComponent(&quot;bar&quot;, String.class);
 pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
 </pre>
 </div>
   <div class="source">
-    <pre>pico = new PicoBuilder().withPushing().build();
+    <pre>pico = new PicoBuilder().withAutomatic().build();
 pico.addComponent(Foo.class);
 pico.addComponent(&quot;bar&quot;, String.class);
 pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
 </pre>
 </div>
   <div class="source">
-    <pre>pico = new PicoBuilder().withBehaviors(pushing()).build();
+    <pre>pico = new PicoBuilder().withBehaviors(automatic()).build();
 pico.addComponent(Foo.class);
 pico.addComponent(&quot;bar&quot;, String.class);
 pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
 </pre>
 </div>
+ <h3>Thread Caching</h3>
+<p>This is where a component has a single instance in the container
+rather that a new one created each time the container is asked for that
+type. The difference to 'Caching' is that there is one cache per thread using the container. For the most part you are not going to use this behavior unless you are 100% sure that the muti-threaded application you are writing maps threads to the notional session you are trying to model.</p>
+<p>Choose your style for thread caching behavior:</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer(new ThreadCaching());
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer();
+pico.as(THREAD_CACHE).addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+  <div class="source">
+    <pre>pico = new PicoBuilder().withThreadCaching().build();
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+  </div>
+<div class="source">
+    <pre>pico = new PicoBuilder().withBehaviors(threadCaching()).build();
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
 
-
+ <h3>Store Caching</h3>
+ <p>This is where a component has a single instance in the container
+rather that a new one created each time the container is asked for that
+type. This is like 'ThreadCaching' as it has the one cache per thread behavior, but the whole store is can be extracted and set outside if you have a referene to the StoreCaching instance. Again you are likely to use this behavior if you are trying to model 'session' behavior. With this one though you able to retrieve the cache from some place associated with the session  and set it for the thread before use. After use, it can be extracted and stored back with the sesion.</p>
+ <p>Choose your style for thread caching behavior:</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer(new StoreCaching());
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+  <div class="source">
+    <pre>pico = new PicoBuilder().withStoreCaching().build();
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+  </div>
+<div class="source">
+  <pre>pico = new PicoBuilder().withBehaviors(storeCaching()).build();
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<p>The BehaviorFactory for this behavior is not stateless. It allows the cache to be set for the thread as well as extracted. Here's a code snippet to illustrate that:</p>
+<div class="source">
+    <pre>sc = new StoreCaching();
+pico = new DefaultPicoContainer(sc);
+....
+sc.putCacheForThread(httpRequest.getSession().getAttribute(&quot;sessionComponentCache&quot;);
+// do other methods that process request in session concept and may do getComponent(..) from the sesion container.
+httpRequest.getSession().setAttribute(&quot;sessionComponentCache&quot;, sc.getCacheForThread());
+</pre>
+</div>
 </body>
 
 

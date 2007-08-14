@@ -46,7 +46,7 @@ public class Behaviors {
         return new PropertyApplying();
     }
 
-    public static BehaviorFactory pushing() {
+    public static BehaviorFactory automatic() {
         return new Automatic();
     }
 
