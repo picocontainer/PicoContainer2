@@ -151,6 +151,13 @@ pico = new DefaultPicoContainer(new AnnotatedMethodInjection();
 pico.addComponent(Apple.class);
 </pre>
 </div>
+<p>Explicit Annotated Method injection, with alternate Annotation:</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer(new AnnotatedMethodInjection(MyInjectAnnotaton.class);
+pico.addComponent(Apple.class);
+</pre>
+</div>
 <p>Annotated Method injection, via property:</p>
 <div class="source">
   <pre>
