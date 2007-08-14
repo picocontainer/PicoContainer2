@@ -19,6 +19,7 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ObjectReference;
 
+import java.io.Serializable;
 import java.util.Properties;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,7 +91,7 @@ public class StoreCaching extends AbstractBehaviorFactory {
             return new HashMap();
         }
     }
-    public static class StoreWrapper extends ThreadLocal {
+    public static class StoreWrapper implements Serializable {
         private Map wrapped;
     }
 
