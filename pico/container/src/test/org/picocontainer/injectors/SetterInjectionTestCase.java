@@ -96,5 +96,27 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTestCase {
         sica.stop(one);        
         sica.dispose(one);
         assertEquals("<start<stop<dispose", strategy.recording());
-    }    
+    }
+
+    public static class AnotherNamedBean implements Bean {
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void initName(String name) {
+            this.name = name;
+        }
+    }
+
+    public void testAlternatePrefixWorks() {
+        picoContainer = new DefaultPicoContainer(new SetterInjection("init"));
+        picoContainer.addComponent(Bean.class, AnotherNamedBean.class);
+        picoContainer.addComponent("Tom");
+        AnotherNamedBean bean = picoContainer.getComponent(AnotherNamedBean.class);
+        assertEquals("Tom", bean.getName());
+    }
+
+
 }

@@ -11,7 +11,6 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.annotations.Inject;
 import org.picocontainer.LifecycleStrategy;
 
 import java.lang.reflect.Method;
@@ -25,7 +24,7 @@ public class AnnotatedMethodInjector extends SetterInjector {
                                    Parameter[] parameters,
                                    ComponentMonitor monitor,
                                    LifecycleStrategy lifecycleStrategy, Class injectionAnnotation) {
-        super(key, impl, parameters, monitor, lifecycleStrategy);
+        super(key, impl, parameters, monitor, lifecycleStrategy, "");
         this.injectionAnnotation = injectionAnnotation;
     }
 

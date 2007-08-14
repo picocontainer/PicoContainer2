@@ -35,6 +35,8 @@ import java.lang.reflect.Method;
  */
 public class SetterInjector extends PostInstantiationInjector {
 
+    private final String setterMethodPrefix;
+
     /**
      * Constructs a SetterInjectionComponentAdapter
      *
@@ -43,12 +45,19 @@ public class SetterInjector extends PostInstantiationInjector {
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
      * @param lifecycleStrategy       the component lifecycle strategy used by this addAdapter
+     * @param setterMethodPrefix
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public SetterInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws  NotConcreteRegistrationException {
+    public SetterInjector(final Object componentKey,
+                          final Class componentImplementation,
+                          Parameter[] parameters,
+                          ComponentMonitor monitor,
+                          LifecycleStrategy lifecycleStrategy,
+                          String setterMethodPrefix) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
+        this.setterMethodPrefix = setterMethodPrefix;
     }
 
 
@@ -58,7 +67,7 @@ public class SetterInjector extends PostInstantiationInjector {
     }
 
     protected String getInjectorPrefix() {
-        return "set";
+        return setterMethodPrefix;
     }
 
     public String toString() {

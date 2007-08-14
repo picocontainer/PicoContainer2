@@ -167,6 +167,7 @@ public class AdaptiveInjectionTestCase extends AbstractComponentFactoryTestCase 
 
         assertEquals("<Method-Injection>\n" +
                      "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
+                     "  <setterMethodPrefix></setterMethodPrefix>\n" +
                      "  <lifecycleStrategy class=RLS/>\n" +
                      "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentKey>\n" +
                      "  <componentImplementation>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentImplementation>\n" +

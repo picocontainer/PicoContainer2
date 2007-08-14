@@ -79,7 +79,8 @@ public class BuildingBlocksTestCase extends TestCase {
                 new Synchronized(
                         new Cached(
                                 new SetterInjector(
-                                        JuicerBean.class, JuicerBean.class, (Parameter[])null, new NullComponentMonitor(), new NullLifecycleStrategy()))));
+                                        JuicerBean.class, JuicerBean.class, (Parameter[])null, new NullComponentMonitor(), new NullLifecycleStrategy(),
+                                        "set"))));
         // END SNIPPET: register-equivalent-at-length2
     }
 }

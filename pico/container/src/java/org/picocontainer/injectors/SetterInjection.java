@@ -30,6 +30,16 @@ import java.util.Properties;
  */
 public class SetterInjection implements InjectionFactory, Serializable {
 
+    private final String setterMethodPrefix;
+
+    public SetterInjection(String setterMethodPrefix) {
+        this.setterMethodPrefix = setterMethodPrefix;
+    }
+
+    public SetterInjection() {
+        this("set");
+    }
+
     /**
      * Create a {@link SetterInjector}.
      *
@@ -46,6 +56,6 @@ public class SetterInjection implements InjectionFactory, Serializable {
      */
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
-        return new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
+        return new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterMethodPrefix);
     }
 }
