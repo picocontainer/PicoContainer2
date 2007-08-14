@@ -10,7 +10,6 @@
 package org.picocontainer.injectors;
 
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.annotations.Inject;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 
@@ -24,16 +23,16 @@ import java.util.List;
 
 public class AnnotatedFieldInjector extends PostInstantiationInjector {
 
-    private final Class injectAnnotation;
+    private final Class injectionAnnotation;
 
     public AnnotatedFieldInjector(Object key,
                                   Class impl,
                                   Parameter[] parameters,
                                   ComponentMonitor componentMonitor,
-                                  LifecycleStrategy lifecycleStrategy, Class injectAnnotation) {
+                                  LifecycleStrategy lifecycleStrategy, Class injectionAnnotation) {
 
         super(key, impl, parameters, componentMonitor, lifecycleStrategy);
-        this.injectAnnotation = injectAnnotation;
+        this.injectionAnnotation = injectionAnnotation;
     }
 
     protected void initializeInjectionMembersAndTypeLists() {
@@ -50,7 +49,7 @@ public class AnnotatedFieldInjector extends PostInstantiationInjector {
     }
 
     protected boolean isAnnotatedForInjection(Field field) {
-        return field.getAnnotation(injectAnnotation) != null;
+        return field.getAnnotation(injectionAnnotation) != null;
     }
 
     private Field[] getFields() {

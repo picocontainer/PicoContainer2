@@ -141,6 +141,7 @@ public class AdaptiveInjectionTestCase extends AbstractComponentFactoryTestCase 
         String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Field-Injection>\n" +
+                     "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
                      "  <lifecycleStrategy class=RLS/>\n" +
                      "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</componentKey>\n" +
                      "  <componentImplementation>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</componentImplementation>\n" +
@@ -165,6 +166,7 @@ public class AdaptiveInjectionTestCase extends AbstractComponentFactoryTestCase 
         String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Method-Injection>\n" +
+                     "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
                      "  <lifecycleStrategy class=RLS/>\n" +
                      "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentKey>\n" +
                      "  <componentImplementation>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentImplementation>\n" +

@@ -18,16 +18,19 @@ import java.lang.reflect.Method;
 
 public class AnnotatedMethodInjector extends SetterInjector {
 
+    private final Class injectionAnnotation;
+
     public AnnotatedMethodInjector(Object key,
-                                    Class impl,
-                                    Parameter[] parameters,
-                                    ComponentMonitor monitor,
-                                    LifecycleStrategy lifecycleStrategy) {
+                                   Class impl,
+                                   Parameter[] parameters,
+                                   ComponentMonitor monitor,
+                                   LifecycleStrategy lifecycleStrategy, Class injectionAnnotation) {
         super(key, impl, parameters, monitor, lifecycleStrategy);
+        this.injectionAnnotation = injectionAnnotation;
     }
 
     protected final boolean isInjectorMethod(Method method) {
-        return method.getAnnotation(Inject.class) != null;
+        return method.getAnnotation(injectionAnnotation) != null;
     }
 
     public String toString() {

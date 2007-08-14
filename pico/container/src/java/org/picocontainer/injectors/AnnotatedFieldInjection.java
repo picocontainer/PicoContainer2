@@ -22,14 +22,14 @@ import java.io.Serializable;
 
 public class AnnotatedFieldInjection implements InjectionFactory, Serializable {
 
-    private final Class injectAnnotation;
+    private final Class injectionAnnotation;
 
-    public AnnotatedFieldInjection(Class annotation) {
-        injectAnnotation = annotation;
+    public AnnotatedFieldInjection(Class injectionAnnotation) {
+        this.injectionAnnotation = injectionAnnotation;
     }
 
     public AnnotatedFieldInjection() {
-        injectAnnotation = Inject.class;
+        this(Inject.class);
     }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
@@ -40,6 +40,6 @@ public class AnnotatedFieldInjection implements InjectionFactory, Serializable {
                                                    Parameter... parameters)
         throws PicoCompositionException {
         return new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy,
-                                          injectAnnotation);
+                                          injectionAnnotation);
     }
 }

@@ -19,6 +19,11 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.injectors.AnnotatedMethodInjector;
 import org.picocontainer.injectors.SetterInjector;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.annotation.ElementType;
+
 public class AnnotatedMethodInjectorTestCase extends TestCase {
 
     public static class AnnotatedBurp {
@@ -56,15 +61,38 @@ public class AnnotatedMethodInjectorTestCase extends TestCase {
     public void testNonSetterMethodInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedMethodInjector(AnnotatedBurp.class, AnnotatedBurp.class, Parameter.DEFAULT,
-                                               new NullComponentMonitor(), new NullLifecycleStrategy()) {
-            protected String getInjectorPrefix() {
-                return "init";
-            }
-        });
+                                               new NullComponentMonitor(), new NullLifecycleStrategy(),
+                                               Inject.class));
         pico.addComponent(Wind.class, new Wind());
         AnnotatedBurp burp = pico.getComponent(AnnotatedBurp.class);
         assertNotNull(burp);
         assertNotNull(burp.wind);
     }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(value={ ElementType.METHOD, ElementType.FIELD})
+    public @interface AlternativeInject {
+    }
+
+    public static class AnotherAnnotatedBurp {
+        private Wind wind;
+        @AlternativeInject
+        public void windyWind(Wind wind) {
+            this.wind = wind;
+        }
+    }
+
+    
+    public void testNonSetterMethodInjectionWithAlternativeAnnotation() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.addAdapter(new AnnotatedMethodInjector(AnotherAnnotatedBurp.class, AnotherAnnotatedBurp.class, Parameter.DEFAULT,
+                                               new NullComponentMonitor(), new NullLifecycleStrategy(),
+                                               AlternativeInject.class));
+        pico.addComponent(Wind.class, new Wind());
+        AnotherAnnotatedBurp burp = pico.getComponent(AnotherAnnotatedBurp.class);
+        assertNotNull(burp);
+        assertNotNull(burp.wind);
+    }
+
 
 }

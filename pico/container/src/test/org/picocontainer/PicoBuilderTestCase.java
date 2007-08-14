@@ -231,6 +231,7 @@ public class PicoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.injectors.AnnotatedMethodInjection\n" +
+                "    org.picocontainer.annotations.Inject\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -242,6 +243,7 @@ public class PicoBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.injectors.AnnotatedFieldInjection\n" +
+                "    org.picocontainer.annotations.Inject\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -386,6 +388,7 @@ public class PicoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n  disposed","");
         foo = foo.replaceAll("\n  handler","");
         foo = foo.replaceAll("\n  children","");
+        foo = foo.replaceAll("injectionAnnotation","");
         foo = foo.replaceAll("\n  lifecycleStrategy\n","\n");
         foo = foo.replaceAll("\n  componentMonitor\n","\n");
         foo = foo.replaceAll("\n    componentMonitor\n","\n");

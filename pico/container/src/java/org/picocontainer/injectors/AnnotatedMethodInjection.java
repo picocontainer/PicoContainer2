@@ -16,6 +16,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.InjectionFactory;
+import org.picocontainer.annotations.Inject;
 
 import java.io.Serializable;
 import java.util.Properties;
@@ -28,6 +29,16 @@ import java.util.Properties;
  * @author Paul Hammant
  */
 public class AnnotatedMethodInjection implements InjectionFactory, Serializable {
+
+    private final Class injectionAnnotation;
+
+    public AnnotatedMethodInjection(Class injectionAnnotation) {
+        this.injectionAnnotation = injectionAnnotation;
+    }
+
+    public AnnotatedMethodInjection() {
+        this(Inject.class);
+    }
 
     /**
      * Create a {@link SetterInjector}.
@@ -44,6 +55,6 @@ public class AnnotatedMethodInjection implements InjectionFactory, Serializable 
      */
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
-        return new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
+        return new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionAnnotation);
     }
 }

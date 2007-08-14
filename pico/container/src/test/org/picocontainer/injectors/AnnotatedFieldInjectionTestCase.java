@@ -17,6 +17,10 @@ import org.picocontainer.ComponentAdapter;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Properties;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.annotation.ElementType;
 
 import junit.framework.TestCase;
 import com.thoughtworks.xstream.XStream;
@@ -60,6 +64,7 @@ public class AnnotatedFieldInjectionTestCase extends TestCase {
         String foo = xs.toXML(ca);
 
         assertEquals("<org.picocontainer.injectors.AnnotatedFieldInjector>\n" +
+                     "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
                      "  <lifecycleStrategy class=\"org.picocontainer.lifecycle.ReflectionLifecycleStrategy\"/>\n" +
                      "  <componentKey class=\"java-class\">java.util.Map</componentKey>\n" +
                      "  <componentImplementation>java.util.HashMap</componentImplementation>\n" +
@@ -68,5 +73,6 @@ public class AnnotatedFieldInjectionTestCase extends TestCase {
 
 
     }
+
 
 }
