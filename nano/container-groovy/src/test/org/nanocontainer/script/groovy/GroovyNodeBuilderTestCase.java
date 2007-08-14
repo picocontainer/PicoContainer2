@@ -202,12 +202,12 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
     public void testCanActOnConfigAndParameterNameToResolveAmbiguity() throws PicoCompositionException, IOException {
 
-        org.objectweb.asm.ClassReader cr = new org.objectweb.asm.ClassReader("java.lang.String");
+        //org.objectweb.asm.ClassReader cr = new org.objectweb.asm.ClassReader("java.lang.String");
 
         Reader script = new StringReader("" +
                 "nano = builder.container {\n" +
-                "    config(key:'foo', instance:'one')\n" +
-                "    config(key:'bar', instance:'two')\n" +
+                "    config(key:'foo', value:'one')\n" +
+                "    config(key:'bar', value:'two')\n" +
                 "    component(class:'"+NeedsString.class.getName()+"')\n" +
                 "}");
 
@@ -676,6 +676,10 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     public void testWithParentClassPathPropagatesWithNoParentContainer()throws IOException {
+    	System.err.println("testcomp.jar:" + System.getProperty("testcomp.jar"));
+    	Class aClass = TestHelper.class;
+    	File base = new File(aClass.getProtectionDomain().getCodeSource().getLocation().getFile());
+    	System.err.println("base:" + base);
         File testCompJar = TestHelper.getTestCompJarFile();
 
         URLClassLoader classLoader = new URLClassLoader(new URL[] {testCompJar.toURL()}, this.getClass().getClassLoader());
