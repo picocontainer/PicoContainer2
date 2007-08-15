@@ -345,10 +345,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
     public MutablePicoContainer addConfig(String name, Object val) {
+    	// shall be removed somehow...
         initForConfig();
         return addAdapterInternal(new InstanceAdapter(name, val, lifecycleStrategy, componentMonitor));
     }
 
+    /**
+     * TODO: need for this method is being disputed
+     */
     private void initForConfig() {
         final String DUMMY_PICOCONTAINER_CONFIG_ITEM = "DUMMY_PICOCONTAINER_CONFIG_ITEM_";
         if (getComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + 1) != null) {

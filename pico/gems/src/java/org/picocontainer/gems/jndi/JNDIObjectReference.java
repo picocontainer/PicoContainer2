@@ -1,6 +1,4 @@
-package org.nanocontainer.nanosar;
-
-
+package org.picocontainer.gems.jndi;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -8,8 +6,8 @@ import javax.naming.Name;
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
-import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.picocontainer.ObjectReference;
+import org.picocontainer.PicoCompositionException;
 
 /**
  * object reference to store and retrieve objects from JNDI
@@ -21,12 +19,12 @@ public class JNDIObjectReference implements ObjectReference {
 
 	String name;
 
-	InitialContext context;
+	Context context;
 
-	public JNDIObjectReference(String name, InitialContext context) {
+	public JNDIObjectReference(String name, Context ctx) {
 		super();
 		this.name = name;
-		this.context = context;
+		this.context = ctx;
 	}
 
 	/**
@@ -51,7 +49,6 @@ public class JNDIObjectReference implements ObjectReference {
 			} else {
 
 				Context ctx = context;
-
 				Name n = ctx.getNameParser("").parse(name);
 				while (n.size() > 1) {
 					String ctxName = n.get(0);
@@ -62,7 +59,15 @@ public class JNDIObjectReference implements ObjectReference {
 					}
 					n = n.getSuffix(1);
 				}
-				context.bind(n, item);
+				// unbind name just in case
+				try {
+					if (ctx.lookup(n) != null) {
+						ctx.unbind(n);
+					}
+				} catch (NameNotFoundException e) {
+					// that's ok
+				}
+				ctx.bind(n, item);
 			}
 		} catch (NamingException e) {
 			throw new PicoCompositionException("unable to bind to  jndi name:"
