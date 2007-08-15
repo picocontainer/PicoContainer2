@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.nanocontainer.script.ScriptBuilderResolver;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.gems.jndi.JNDIObjectReference;
 
 /**
  * mbean for deployment in JBoss SAR

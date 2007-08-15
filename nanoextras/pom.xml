@@ -9,6 +9,7 @@
 
     <modules>
         <module>nanowar/nanowar</module>
+        <module>nanowar/nanowar</module>
         <module>nanowar/nanowar-axis</module>
         <module>nanowar/nanowar-jsf</module>
         <module>nanowar/nanowar-nanoweb</module>

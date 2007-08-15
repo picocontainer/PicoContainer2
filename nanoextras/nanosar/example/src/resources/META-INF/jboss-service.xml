@@ -2,17 +2,17 @@
 <server>
     <mbean code="org.nanocontainer.nanosar.ContainerDeployer"
             name="nano:container=main">
-        <attribute name="JndiName">nanomain</attribute>
+        <attribute name="JndiName">nano:/main</attribute>
         <attribute name="Script">main.groovy</attribute>
         <depends>jboss:service=Naming</depends>
     </mbean>
 
     <mbean code="org.nanocontainer.nanosar.ContainerDeployer"
             name="nano:container=child">
-        <attribute name="JndiName">nanochild</attribute>
+        <attribute name="JndiName">nano:/child</attribute>
         <attribute name="Script">child.xml</attribute>
         <attribute name="ContainerComposer">org.nanocontainer.script.xml.XStreamContainerBuilder</attribute>
-        <attribute name="ParentName">nanomain</attribute>
+        <attribute name="ParentName">nano:/main</attribute>
         <depends>nano:container=main</depends>
     </mbean>
 
