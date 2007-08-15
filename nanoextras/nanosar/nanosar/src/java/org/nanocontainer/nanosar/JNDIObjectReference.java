@@ -1,6 +1,11 @@
 package org.nanocontainer.nanosar;
 
+
+
+import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.Name;
+import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import org.nanocontainer.integrationkit.PicoCompositionException;
@@ -40,12 +45,24 @@ public class JNDIObjectReference implements ObjectReference {
 	 * store object in JNDI under specified name
 	 */
 	public void set(Object item) {
-		
 		try {
-			if(item == null) {
+			if (item == null) {
 				context.unbind(name);
 			} else {
-				context.bind(name, item);
+
+				Context ctx = context;
+
+				Name n = ctx.getNameParser("").parse(name);
+				while (n.size() > 1) {
+					String ctxName = n.get(0);
+					try {
+						ctx = (Context) ctx.lookup(ctxName);
+					} catch (NameNotFoundException e) {
+						ctx = ctx.createSubcontext(ctxName);
+					}
+					n = n.getSuffix(1);
+				}
+				context.bind(n, item);
 			}
 		} catch (NamingException e) {
 			throw new PicoCompositionException("unable to bind to  jndi name:"
