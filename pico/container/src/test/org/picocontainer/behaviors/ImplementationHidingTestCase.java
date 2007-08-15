@@ -72,9 +72,50 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTestCa
     private final ComponentFactory implementationHidingComponentFactory =
         new ImplementationHiding().wrap(new AdaptiveInjection());
 
-
     protected ComponentFactory createComponentFactory() {
         return implementationHidingComponentFactory;
     }
+
+
+    public static interface NeedsStringBuilder {
+        void foo();
+    }
+    public static class NeedsStringBuilderImpl implements NeedsStringBuilder {
+        StringBuilder sb;
+
+        public NeedsStringBuilderImpl(StringBuilder sb) {
+            this.sb = sb;
+            sb.append("<init>");
+        }
+        public void foo() {
+            sb.append("foo()");
+        }
+    }
+    public static class NeedsNeedsStringBuilder {
+
+        NeedsStringBuilder nsb;
+
+        public NeedsNeedsStringBuilder(NeedsStringBuilder nsb) {
+            this.nsb = nsb;
+        }
+        public void foo() {
+            nsb.foo();
+        }
+    }
+
+    public void testLazyInstantiationSideEffectWhenForceOfDelayedInstantiationOfDependantClass() {
+        DefaultPicoContainer pico =
+            new DefaultPicoContainer(new ImplementationHiding().wrap(new Caching().wrap(new ConstructorInjection())));
+        pico.addComponent(StringBuilder.class);
+        pico.addComponent(NeedsStringBuilder.class, NeedsStringBuilderImpl.class);
+        pico.addComponent(NeedsNeedsStringBuilder.class);
+        NeedsNeedsStringBuilder nnsb = pico.getComponent(NeedsNeedsStringBuilder.class);
+        assertNotNull(nnsb);
+        StringBuilder sb = pico.getComponent(StringBuilder.class);
+        assertEquals("", sb.toString()); // not instantiated yet
+        nnsb.foo();
+        assertEquals("<init>foo()", sb.toString()); // instantiated
+    }
+
 
 }
