@@ -69,16 +69,14 @@ public class BasicComponentParameter
     public boolean isResolvable(PicoContainer container,
                                 ComponentAdapter adapter,
                                 Class expectedType,
-                                ParameterName expectedParameterName)
-    {
+                                ParameterName expectedParameterName) {
         return resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName) != null;
     }
 
     public Object resolveInstance(PicoContainer container,
                                   ComponentAdapter adapter,
                                   Class expectedType,
-                                  ParameterName expectedParameterName)
-    {
+                                  ParameterName expectedParameterName) {
         final ComponentAdapter componentAdapter =
             resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName);
         if (componentAdapter != null) {
@@ -90,8 +88,7 @@ public class BasicComponentParameter
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
                        Class expectedType,
-                       ParameterName expectedParameterName)
-    {
+                       ParameterName expectedParameterName) {
         final ComponentAdapter componentAdapter =
             resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName);
         if (componentAdapter == null) {
@@ -114,8 +111,7 @@ public class BasicComponentParameter
     private <T> ComponentAdapter<T> resolveAdapter(PicoContainer container,
                                                    ComponentAdapter adapter,
                                                    Class<T> expectedType,
-                                                   ParameterName expectedParameterName)
-    {
+                                                   ParameterName expectedParameterName) {
 
         final ComponentAdapter<T> result = getTargetAdapter(container, expectedType, expectedParameterName, adapter);
         if (result == null) {

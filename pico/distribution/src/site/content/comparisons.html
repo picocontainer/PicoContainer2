@@ -18,12 +18,13 @@
         <h2>IoC Containers</h2>
         <div>
           <h3>Spring Framework</h3>
-          <p>The <a href="http://www.springframework.org/">Spring Framework</a> is a J2EE framework. As such, <a href="injection.html" title="Dependency Injection">Dependency Injection</a> and <a href="lifecycle.html" title="lifecycle">Lifecycle</a> is only one of its concerns. PicoContainer, on the other hand, is concerned only with <a href="injection.html" title="Dependency Injection">Dependency Injection</a> and <a href="lifecycle.html" title="lifecycle">Lifecycle</a>.</p>
+          <p>The <a href="http://www.springframework.org/">Spring Framework</a> is a J2EE framework. As such, <a href="injection.html" title="Dependency Injection">Dependency Injection</a> and <a href="lifecycle.html" title="lifecycle">Lifecycle</a> is only one of its concerns. PicoContainer, on the other hand, is concerned only with <a href="injection.html" title="Dependency Injection">Dependency Injection</a>, configuration and <a href="lifecycle.html" title="lifecycle">Lifecycle</a>.</p>
         </div>
         <div>
           <h3>Apache Avalon and its containers</h3>
-          <p>Apache hosts a project that has been running for years called Avalon. It has many components that fit that its design and many containers is writtern in Java. Avalon components are characterised by implementation of many optional interfaces. Avalon components are distributed with meta-information in XML in the jar file. More XML is required to assemble components together for the same of a application. Avalon Phoenix, Excalibur Component Manager (ECM), Avalon Fortress and Avalon Merlin are the pertinent containers.</p>
-          <p>The Avalon Framework requires implementing components to implement a number of interfaces. This has proven historically to be a bit of a turn-off for component writers. Luckily there are no abstract classes that have to be extended by component writers. Those interfaces are :-</p>
+          <p>(Avalon ceased development in 2005)</p>
+          <p>Apache hosted a project that had been running for many years called Avalon. It had many components that fit that its design and many containers is writtern in Java. Avalon components were characterised by implementation of many optional interfaces. Avalon components were distributed with meta-information in XML in the jar file. More XML is required to assemble components together for the same of a application. Avalon Phoenix, Excalibur Component Manager (ECM), Avalon Fortress and Avalon Merlin were the pertinent containers.</p>
+          <p>The Avalon Framework required implementing components to implement a number of interfaces. By the end of the the project, this had proven historically to be a bit of a turn-off for component writers.  Those interfaces were :-</p>
           <table>
             <tbody>
               <tr>
@@ -40,11 +41,11 @@
               </tr>
               <tr>
                 <td> Serviceable (was Composable) </td>
-                <td> Arguments in Constructor </td>
+                <td>arguments are injected</td>
               </tr>
               <tr>
                 <td> Configurable </td>
-                <td> Arguments in Constructor </td>
+                <td>arguments are injected</td>
               </tr>
               <tr>
                 <td> Parameterizable </td>
@@ -52,7 +53,7 @@
               </tr>
               <tr>
                 <td> Initializable </td>
-                <td> Constructor is equivalent lifecycle place </td>
+                <td> Constructor is the equivalent lifecycle concept </td>
               </tr>
               <tr>
                 <td> Startable </td>
@@ -111,7 +112,7 @@ public class Shop implements Serviceable, Initializable {
        configuration and assembly externally to the class. Cross referenced against the xinfo files, Loom's assembly.xml
        defines the implementations to be used for component types. Thus all Avalon components must be
        interface/implementation separated. Another Avalon using server technology is <a href="http://www.keelframework.org/">Keel</a>. </p>
-
+    <p>It has to be said that all post-Avalon projects are not as active as they could be.</p>
     <div>
       <h3>Using <em>Contextualized Dependency Lookup</em> Components
           Without a Container.</h3>
@@ -127,16 +128,17 @@ public class Shop implements Serviceable, Initializable {
       </div>
       <div>
         <h2>Sun specified nearly-IoC Containers &amp; Component designs</h2>
-        <p>Sun have specified several container/component designs</p>
+        <p>Sun have specified several container/component designs over the years.</p>
         <div>
           <h3>Enterprise Java Beans</h3>
           <p>Clearly Entity and Session beans run inside a container. The API is well defined, and to varying degrees of success one can deploy EJB appllications to WebLogic, WebSphere, Orion and JBoss etc. For assembly and configuration, there is high use of element-normal XML . There are some mandated parent objects and interfaces for various to extend and/or implement. Resolution is done by the components themselves via JNDI more often than not.</p>
-          <p>PicoComponents are simpler in they they do not force an extensive XML markup, nor require the implementing of certaing interfaces or extening base classes. Quite importantly the relationship between factory (home), implementation (bean) and interface (remote) parts is much more real in Pico-style components. Lastly, EJB components are nearly impossible to unit-test without much effort.</p>
+          <p>PicoComponents are simpler in they they do not force an extensive XML markup, nor require the implementing of certaing interfaces or extening base classes. Quite importantly the relationship between factory (home), implementation (bean) and interface (remote) parts is much more real in Pico-style components. EJB 2.0 components are nearly impossible to unit-test without much effort.</p>
+          <p>With the advent of EJB 3.0 (which the our team directly influenced), things became easier for EJB developers. Annotations were used to mark fields, and methods for injection. Strangely constructors were not eligible for injection. It was reported back to the our team that it was felt that the J2EE container makers would not find it easy making multi-argument constructor injection a reality.</p>
         </div>
         <div>
           <h3>Servlets</h3>
           <p>Not so obvious - Servlets are contained by a servlet container. They are generally bundled with (or replaced by) value added propositions like JSP, but it is still a container/component design. High use of XML for assembly and configuration. Servlets have no concept of parent container or the conatainer above that (sometimes EJB) and its provision of components, which is very unfortunate. Servlets have a number of interfaces to honor, none of which is too malignent. Servlets typically deal with external (or parent) components via RMI or JNDI. In more recent releases of EJB, local interfaces rather than RMI may be the mechanism for connection the parent components. WebLogic have always provided an optimizing mechanism for this interoperation</p>
-          <p>As with EJB, PicoComponents are far simpler. This is probably because they offer no web experience, apart from anything else. Servlets again are not that unit-testable.</p>
+          <p>As with EJB, PicoComponents are far simpler. This is probably because they offer no web experience, without an extension. Servlets again are not that unit-testable.</p>
         </div>
         <div>
           <h3></a>Applets</h3>
