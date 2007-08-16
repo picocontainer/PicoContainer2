@@ -10,133 +10,59 @@
 
 package org.picocontainer.behaviors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Behavior;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ObjectReference;
-
 import java.io.Serializable;
+
+import org.picocontainer.Behavior;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ObjectReference;
 
 /**
  * <p>
  * {@link ComponentAdapter} implementation that caches the component instance.
  * </p>
  * <p>
- * This adapter supports components with a lifecycle, as it is a {@link Behavior lifecycle manager}
- * which will apply the delegate's {@link org.picocontainer.LifecycleStrategy lifecycle strategy} to the cached component instance.
- * The lifecycle state is maintained so that the component instance behaves in the expected way:
- * it can't be started if already started, it can't be started or stopped if disposed, it can't
- * be stopped if not started, it can't be disposed if already disposed.
+ * This adapter supports components with a lifecycle, as it is a
+ * {@link Behavior lifecycle manager} which will apply the delegate's
+ * {@link org.picocontainer.LifecycleStrategy lifecycle strategy} to the cached
+ * component instance. The lifecycle state is maintained so that the component
+ * instance behaves in the expected way: it can't be started if already started,
+ * it can't be started or stopped if disposed, it can't be stopped if not
+ * started, it can't be disposed if already disposed.
  * </p>
- *   
+ * 
  * @author Mauro Talevi
  */
-public class Cached extends AbstractBehavior implements Behavior {
+public class Cached<T> extends Stored<T> {
 
-    private final ObjectReference instanceReference;
-    private boolean disposed;
-    private boolean started;
-    private final boolean delegateHasLifecylce;
+	public Cached(ComponentAdapter delegate) {
+		this(delegate, new SimpleReference());
+	}
 
-    public Cached(ComponentAdapter delegate) {
-        this(delegate, new SimpleReference());
-    }
+	public Cached(ComponentAdapter delegate, ObjectReference instanceReference) {
+		super(delegate, instanceReference);
+	}
 
-    public Cached(ComponentAdapter delegate, ObjectReference instanceReference) {
-        super(delegate);
-        this.instanceReference = instanceReference;
-        this.disposed = false;
-        this.started = false;
-        this.delegateHasLifecylce = delegate instanceof LifecycleStrategy
-                && ((LifecycleStrategy) delegate).hasLifecycle(delegate.getComponentImplementation());
-    }
+	/**
+	 * @author Aslak Helles&oslash;y
+	 */
+	public static class SimpleReference<T> implements ObjectReference<T>,
+			Serializable {
+		private T instance;
 
-    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
-        Object instance = instanceReference.get();
-        if (instance == null) {
-            instance = super.getComponentInstance(container);
-            instanceReference.set(instance);
-        }
-        return instance;
-    }
+		public SimpleReference() {
+		}
 
-    /**
-     * Flushes the cache.
-     * If the component instance is started is will stop and dispose it before
-     * flushing the cache.
-     */
-    public void flush() {
-        Object instance = instanceReference.get();
-        if ( instance != null && delegateHasLifecylce && started ) {
-            stop(instance);
-            dispose(instance);
-        }
-        instanceReference.set(null);
-    }
+		public T get() {
+			return instance;
+		}
 
-    /**
-     * Starts the cached component instance
-     * {@inheritDoc}
-     */
-    public void start(PicoContainer container) {
-        if ( delegateHasLifecylce ){
-            if (disposed) throw new IllegalStateException("Already disposed");
-            if (started) throw new IllegalStateException("Already started");
-            start(getComponentInstance(container));
-            started = true;
-        }
-    }
+		public void set(T item) {
+			this.instance = item;
+		}
+	}
 
-    /**
-     * Stops the cached component instance
-     * {@inheritDoc}
-     */
-    public void stop(PicoContainer container) {
-        if ( delegateHasLifecylce ){
-            if (disposed) throw new IllegalStateException("Already disposed");
-            if (!started) throw new IllegalStateException("Not started");
-            stop(getComponentInstance(container));
-            started = false;
-        }
-    }
+	public String toString() {
+		return "Cached:" + super.toString();
+	}
 
-    /**
-     * Disposes the cached component instance
-     * {@inheritDoc}
-     */
-    public void dispose(PicoContainer container) {
-        if ( delegateHasLifecylce ){
-            if (disposed) throw new IllegalStateException("Already disposed");
-            dispose(getComponentInstance(container));
-            disposed = true;
-        }
-    }
-
-    public boolean componentHasLifecycle() {
-        return delegateHasLifecylce;
-    }
-
-    /**
-     * @author Aslak Helles&oslash;y
-     */
-    public static class SimpleReference implements ObjectReference, Serializable {
-        private Object instance;
-
-        public SimpleReference() {
-        }
-
-        public Object get() {
-            return instance;
-        }
-
-        public void set(Object item) {
-            this.instance = item;
-        }
-    }
-
-    public String toString() {
-        return "Cached:" + super.toString(); 
-    }
 }

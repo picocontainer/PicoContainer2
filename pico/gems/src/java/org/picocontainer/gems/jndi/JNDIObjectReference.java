@@ -15,7 +15,7 @@ import org.picocontainer.PicoCompositionException;
  * @author ko5tik
  * 
  */
-public class JNDIObjectReference implements ObjectReference {
+public class JNDIObjectReference<T> implements ObjectReference<T> {
 
 	String name;
 
@@ -30,9 +30,9 @@ public class JNDIObjectReference implements ObjectReference {
 	/**
 	 * retrieve object from JNDI if possible
 	 */
-	public Object get() {
+	public T get() {
 		try {
-			return context.lookup(name);
+			return (T) context.lookup(name);
 		} catch (NamingException e) {
 			throw new PicoCompositionException("unable to resolve jndi name:"
 					+ name, e);
@@ -42,7 +42,7 @@ public class JNDIObjectReference implements ObjectReference {
 	/**
 	 * store object in JNDI under specified name
 	 */
-	public void set(Object item) {
+	public void set(T item) {
 		try {
 			if (item == null) {
 				context.unbind(name);

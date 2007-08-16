@@ -44,8 +44,8 @@ public interface Behavior<T> extends ComponentAdapter<T> {
      */
     boolean componentHasLifecycle();
 
-    T getDelegate();
+    ComponentAdapter<T> getDelegate();
 
-    <U> U getDelegate(Class<U> componentAdapterType);
+    <U extends ComponentAdapter> U getDelegate(Class<U> componentAdapterType);
 
 }

@@ -42,9 +42,9 @@ import org.picocontainer.LifecycleStrategy;
 public abstract class AbstractBehavior<T> implements Behavior<T>, ComponentMonitorStrategy,
                                                   LifecycleStrategy, Serializable {
 
-    protected final ComponentAdapter<?> delegate;
+    protected final ComponentAdapter<T> delegate;
 
-    public AbstractBehavior(ComponentAdapter<?> delegate) {
+    public AbstractBehavior(ComponentAdapter<T> delegate) {
          this.delegate = delegate;
     }
     
@@ -52,7 +52,7 @@ public abstract class AbstractBehavior<T> implements Behavior<T>, ComponentMonit
         return delegate.getComponentKey();
     }
 
-    public Class getComponentImplementation() {
+    public Class<T> getComponentImplementation() {
         return delegate.getComponentImplementation();
     }
 
@@ -64,13 +64,13 @@ public abstract class AbstractBehavior<T> implements Behavior<T>, ComponentMonit
         delegate.verify(container);
     }
 
-    public T getDelegate() {
-        return (T) delegate;
+    public ComponentAdapter<T> getDelegate() {
+        return   delegate;
     }
 
-    public <U> U getDelegate(Class<U> componentAdapterType) {
+    public <U extends ComponentAdapter> U getDelegate(Class<U> componentAdapterType) {
         if (componentAdapterType.isAssignableFrom(delegate.getClass())) {
-            return (U) delegate;
+            return  (U) delegate;
         } else if (delegate instanceof Behavior) {
             return ((Behavior<?>)delegate).getDelegate(componentAdapterType);
         } else {

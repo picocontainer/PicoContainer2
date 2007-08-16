@@ -10,14 +10,10 @@
 
 package org.picocontainer.behaviors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Behavior;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ObjectReference;
-
 import java.io.Serializable;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ObjectReference;
 
 /**
  * <p>
@@ -26,16 +22,16 @@ import java.io.Serializable;
  *
  * @author Paul Hammant
  */
-public final class ThreadCached extends Cached implements Behavior {
+public final class ThreadCached<T> extends Stored<T>{
 
-    public ThreadCached(ComponentAdapter delegate) {
-        super(delegate, new ThreadLocalReference());
+    public ThreadCached(ComponentAdapter<T> delegate) {
+        super(delegate, new ThreadLocalReference<T>());
     }
 
-    public static class ThreadLocalReference extends ThreadLocal implements ObjectReference, Serializable {
+    public static class ThreadLocalReference<T> extends ThreadLocal<T> implements ObjectReference<T>, Serializable {
     }
 
     public String toString() {
-        return "Thread" + super.toString();
+        return "ThreadCached:" + super.toString();
     }
 }

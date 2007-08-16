@@ -59,7 +59,7 @@ public class PropertyApplicator<T> extends AbstractBehavior<T> {
      * @param delegate the wrapped {@link ComponentAdapter}
      * @throws PicoCompositionException {@inheritDoc}
      */
-    public PropertyApplicator(ComponentAdapter<?> delegate) throws PicoCompositionException {
+    public PropertyApplicator(ComponentAdapter<T> delegate) throws PicoCompositionException {
         super(delegate);
     }
 
