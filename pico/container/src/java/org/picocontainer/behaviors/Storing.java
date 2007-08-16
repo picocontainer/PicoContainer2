@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * @author Paul Hammant
  */
-public class StoreCaching extends AbstractBehaviorFactory {
+public class Storing extends AbstractBehaviorFactory {
 
     private final StoreThreadLocal mapThreadLocalObjectReference = new StoreThreadLocal();
 
