@@ -29,10 +29,11 @@ public class JNDIExposed<T> extends Stored<T> {
 	 * construct reference itself using vanilla initial context
 	 * @param delegate delegate adapter
 	 * @param name JNDI name
+	 * @throws NamingException 
 	 * @throws NamingException
 	 */
-	public JNDIExposed(ComponentAdapter<T> delegate, String name) throws NamingException {
-		super(delegate,new JNDIObjectReference<T>(name, new InitialContext()));
+	public JNDIExposed(ComponentAdapter<T> delegate) throws NamingException{
+		super(delegate,new JNDIObjectReference<T>(delegate.getComponentKey().toString(), new InitialContext()));
 	}
 
 	  public String toString() {

@@ -101,9 +101,6 @@
 					</execution>
 				</executions>
 				<dependencies>
-					<!-- Required for rmic to compile with Sun JDKs
-					NOTE:  It fails on Mac JDK - simply comment out as it seems the the tools.jar in the classpath
-
 					<dependency>
 						<groupId>sun</groupId>
 						<artifactId>tools</artifactId>
@@ -111,7 +108,6 @@
 						<scope>system</scope>
 						<systemPath>${java.home}/../lib/tools.jar</systemPath>
 					</dependency>
-					-->
 				</dependencies>
 			</plugin>
 		</plugins>
