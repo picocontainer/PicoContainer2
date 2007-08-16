@@ -8,7 +8,7 @@
     <url>http://www.nanocontainer.org</url>
 
     <modules>
-        <module>nanowar/nanosar</module>
+        <module>nanosar</module>
         <module>nanowar/nanowar</module>
         <module>nanowar/nanowar-axis</module>
         <module>nanowar/nanowar-jsf</module>

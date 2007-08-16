@@ -9,6 +9,7 @@
         <version>2.0-SNAPSHOT</version>
     </parent>
     <artifactId>nanocontainer-nanosar</artifactId>
+    <name>NanoContainer deployer MBean</name>
     <packaging>jar</packaging>
     <url>http://www.nanocontainer.org/nanosar</url>
     <dependencies>
