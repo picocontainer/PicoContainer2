@@ -105,23 +105,8 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
                     final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
                     ComponentMonitor componentMonitor = currentMonitor();
                     Object componentInstance;
-                    long startTime = System.currentTimeMillis();
-                    Constructor constructorToUse = componentMonitor.instantiating(container,
-                                                                                  PostInstantiationInjector.this, constructor);
-                    try {
-                        componentInstance = newInstance(constructorToUse, null);
-                    } catch (InvocationTargetException e) {
-                        componentMonitor.instantiationFailed(container, PostInstantiationInjector.this, constructorToUse, e);
-                        if (e.getTargetException() instanceof RuntimeException) {
-                            throw (RuntimeException) e.getTargetException();
-                        } else if (e.getTargetException() instanceof Error) {
-                            throw (Error) e.getTargetException();
-                        }
-                        throw new PicoCompositionException(e.getTargetException());
-                    } catch (InstantiationException e) {
-                        return caughtInstantiationException(componentMonitor, constructor, e, container);
-                    } catch (IllegalAccessException e) {
-                        return caughtIllegalAccessException(componentMonitor, constructor, e, container);                    }
+
+                    componentInstance = getOrMakeInstance(container, constructor, componentMonitor);
                     Member member = null;
                     Object injected[] = new Object[injectionMembers.size()];
                     try {
@@ -133,9 +118,6 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
                             injectIntoMember(member, componentInstance, toInject);
                             injected[i] = toInject;
                         }
-                        componentMonitor.instantiated(container,
-                                                      PostInstantiationInjector.this,
-                                                      constructorToUse, componentInstance, injected, System.currentTimeMillis() - startTime);
                         return componentInstance;
                     } catch (InvocationTargetException e) {
                         return caughtInvocationTargetException(componentMonitor, member, componentInstance, e);
@@ -150,9 +132,39 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
         return instantiationGuard.observe(getComponentImplementation());
     }
 
+    protected Object getOrMakeInstance(PicoContainer container,
+                                       Constructor constructor,
+                                       ComponentMonitor componentMonitor) {
+        long startTime = System.currentTimeMillis();
+        Constructor constructorToUse = componentMonitor.instantiating(container,
+                                                                      PostInstantiationInjector.this, constructor);
+        Object componentInstance;
+        try {
+            componentInstance = newInstance(constructorToUse, null);
+        } catch (InvocationTargetException e) {
+            componentMonitor.instantiationFailed(container, PostInstantiationInjector.this, constructorToUse, e);
+            if (e.getTargetException() instanceof RuntimeException) {
+                throw (RuntimeException)e.getTargetException();
+            } else if (e.getTargetException() instanceof Error) {
+                throw (Error)e.getTargetException();
+            }
+            throw new PicoCompositionException(e.getTargetException());
+        } catch (InstantiationException e) {
+            return caughtInstantiationException(componentMonitor, constructor, e, container);
+        } catch (IllegalAccessException e) {
+            return caughtIllegalAccessException(componentMonitor, constructor, e, container);
+        }
+        componentMonitor.instantiated(container,
+                                      PostInstantiationInjector.this,
+                                      constructorToUse,
+                                      componentInstance,
+                                      null,
+                                      System.currentTimeMillis() - startTime);
+        return componentInstance;
+    }
+
     protected void injectIntoMember(Member member, Object componentInstance, Object toInject)
-        throws IllegalAccessException, InvocationTargetException
-    {
+        throws IllegalAccessException, InvocationTargetException {
         ((Method)member).invoke(componentInstance, toInject);
     }
 
