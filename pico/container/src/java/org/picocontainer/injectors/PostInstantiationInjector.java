@@ -40,7 +40,8 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
     }
 
-    private Constructor getConstructor()  {
+
+    protected Constructor getConstructor()  {
         Object retVal = AccessController.doPrivileged(new PrivilegedAction() {
             public Object run() {
                 try {

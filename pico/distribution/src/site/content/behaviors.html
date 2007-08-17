@@ -254,37 +254,22 @@ Apple a2 = pico.getComponent(Apple.class);
 </pre>
 </div>
 
- <h3>Store Caching</h3>
- <p>This is where a component has a single instance in the container
+ <h3>Storing</h3>
+<p>This is where a component has a single instance in the container
 rather that a new one created each time the container is asked for that
-type. This is like 'ThreadCaching' as it has the one cache per thread behavior, but the whole store is can be extracted and set outside if you have a referene to the StoreCaching instance. Again you are likely to use this behavior if you are trying to model 'session' behavior. With this one though you able to retrieve the cache from some place associated with the session  and set it for the thread before use. After use, it can be extracted and stored back with the sesion.</p>
- <p>Choose your style for thread caching behavior:</p>
+type. This is like 'ThreadCaching' as it has the one cache per thread behavior, but the whole store is can be extracted and set outside if you have a referene to the Storing instance. Again you are likely to use this behavior if you are trying to model 'session' behavior. With this one though you able to retrieve the cache from some place associated with the session  and set it for the thread before use. After use, it can be extracted and stored back with the sesion.</p>
+<p>Only one style is shown here as you will need to hang on to the reference to the BehaviorFactory to make use of it:</p>
 <div class="source">
   <pre>
-pico = new DefaultPicoContainer(new StoreCaching());
+sc = new StoreCaching();
+pico = new DefaultPicoContainer(sc);
 pico.addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
 // both the same instance
 </pre>
 </div>
-  <div class="source">
-    <pre>pico = new PicoBuilder().withStoreCaching().build();
-pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
-  </div>
-<div class="source">
-  <pre>pico = new PicoBuilder().withBehaviors(storeCaching()).build();
-pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
-</div>
-<p>The BehaviorFactory for this behavior is not stateless. It allows the cache to be set for the thread as well as extracted. Here's a code snippet to illustrate that:</p>
+<p>The BehaviorFactory for Storing behavior is not stateless. It allows the cache to be set for the thread as well as extracted. Here's a code snippet to illustrate that:</p>
 <div class="source">
     <pre>sc = new StoreCaching();
 pico = new DefaultPicoContainer(sc);
