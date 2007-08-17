@@ -9,27 +9,25 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ObjectReference;
-import org.picocontainer.adapters.AbstractAdapter;
-import org.picocontainer.monitors.AbstractComponentMonitor;
-import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Member;
-import java.util.List;
-import java.util.LinkedList;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.ObjectReference;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.adapters.AbstractAdapter;
+import org.picocontainer.parameters.ComponentParameter;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to

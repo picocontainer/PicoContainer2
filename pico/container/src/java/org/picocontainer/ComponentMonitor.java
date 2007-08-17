@@ -11,9 +11,8 @@
 package org.picocontainer;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 
 /**
  * A component monitor is responsible for monitoring the component instantiation

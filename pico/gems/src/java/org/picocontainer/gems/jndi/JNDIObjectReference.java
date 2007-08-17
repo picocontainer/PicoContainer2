@@ -27,6 +27,10 @@ public class JNDIObjectReference<T> implements ObjectReference<T> {
 		this.context = ctx;
 	}
 
+	public JNDIObjectReference(String jndiName) throws NamingException {
+		this(jndiName,new InitialContext());
+	}
+
 	/**
 	 * retrieve object from JNDI if possible
 	 */
@@ -73,6 +77,14 @@ public class JNDIObjectReference<T> implements ObjectReference<T> {
 			throw new PicoCompositionException("unable to bind to  jndi name:"
 					+ name, e);
 		}
+	}
+
+	/**
+	 * name of this reference
+	 * @return
+	 */
+	public String getName() {
+		return name;
 	}
 
 }
