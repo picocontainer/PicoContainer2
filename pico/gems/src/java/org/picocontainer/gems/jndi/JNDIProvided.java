@@ -18,9 +18,9 @@ import org.picocontainer.PicoVisitor;
  */
 public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 
-	JNDIObjectReference<T> jndiReference;
+	 JNDIObjectReference<T> jndiReference;
 	
-	Object componentKey;
+	 Object componentKey;
 	
 	/**
 	 * create adapter with specified key and reference
@@ -29,6 +29,7 @@ public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 	 */
 	public JNDIProvided(Object componentKey,JNDIObjectReference<T> reference) {
 		this.componentKey = componentKey;
+		this.jndiReference = reference;
 	}
 	
 	/**

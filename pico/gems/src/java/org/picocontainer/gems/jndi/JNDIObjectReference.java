@@ -1,5 +1,7 @@
 package org.picocontainer.gems.jndi;
 
+import java.io.Serializable;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.Name;
@@ -15,11 +17,11 @@ import org.picocontainer.PicoCompositionException;
  * @author ko5tik
  * 
  */
-public class JNDIObjectReference<T> implements ObjectReference<T> {
+public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable{
 
 	String name;
 
-	Context context;
+	transient Context context;
 
 	public JNDIObjectReference(String name, Context ctx) {
 		super();
@@ -71,6 +73,7 @@ public class JNDIObjectReference<T> implements ObjectReference<T> {
 				} catch (NameNotFoundException e) {
 					// that's ok
 				}
+				System.err.println("binding to JNDI" + item.getClass());
 				ctx.bind(n, item);
 			}
 		} catch (NamingException e) {
