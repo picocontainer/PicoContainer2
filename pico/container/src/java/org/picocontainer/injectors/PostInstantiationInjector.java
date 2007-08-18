@@ -91,11 +91,15 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
             }
         }
         if (unsatisfiableDependencyTypes.size() > 0) {
-            throw new UnsatisfiableDependenciesException(this, null, unsatisfiableDependencyTypes, container);
+            unsatisfiedDependencies(container, unsatisfiableDependencyTypes);
         } else if (nonMatchingParameterPositions.size() > 0) {
             throw new PicoCompositionException("Following parameters do not match any of the injectionMembers for " + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
         }
         return matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
+    }
+
+    protected void unsatisfiedDependencies(PicoContainer container, Set<Class> unsatisfiableDependencyTypes) {
+        throw new UnsatisfiableDependenciesException(this, null, unsatisfiableDependencyTypes, container);
     }
 
     public Object getComponentInstance(final PicoContainer container) throws PicoCompositionException {
@@ -114,6 +118,9 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
                         for (int i = 0; i < injectionMembers.size(); i++) {
                             member = injectionMembers.get(i);
                             componentMonitor.invoking(container, PostInstantiationInjector.this, member, componentInstance);
+                            if (matchingParameters[i] == null) {
+                                continue;
+                            }
                             Object toInject = matchingParameters[i].resolveInstance(guardedContainer, PostInstantiationInjector.this, injectionTypes[i],
                                                                                     new PostInstantiationInjectorParameterName());
                             injectIntoMember(member, componentInstance, toInject);

@@ -15,6 +15,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 
 import java.lang.reflect.Constructor;
+import java.util.Set;
 
 /** @author Paul Hammant */
 public class MultiInjector extends AbstractInjector {
@@ -25,10 +26,10 @@ public class MultiInjector extends AbstractInjector {
     public MultiInjector(Object componentKey,
                          Class componentImplementation,
                          Parameter[] parameters,
-                         ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy) {
+                         ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, String setterPrefix) {
         super(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
         constuctorInjector = new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
-        setterInjector = new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, "set") {
+        setterInjector = new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterPrefix) {
             protected Object getOrMakeInstance(PicoContainer container,
                                                Constructor constructor,
                                                ComponentMonitor componentMonitor) {
@@ -37,6 +38,9 @@ public class MultiInjector extends AbstractInjector {
 
             protected Constructor getConstructor() {
                 return null;   
+            }
+
+            protected void unsatisfiedDependencies(PicoContainer container, Set<Class> unsatisfiableDependencyTypes) {
             }
         };
     }

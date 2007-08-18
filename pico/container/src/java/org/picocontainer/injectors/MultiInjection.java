@@ -22,6 +22,15 @@ import java.util.Properties;
 
 /** @author Paul Hammant */
 public class MultiInjection implements InjectionFactory, Serializable {
+    private final String setterPrefix;
+
+    public MultiInjection(String setterPrefix) {
+        this.setterPrefix = setterPrefix;
+    }
+
+    public MultiInjection() {
+        this("set");
+    }
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                           LifecycleStrategy lifecycleStrategy,
@@ -29,6 +38,6 @@ public class MultiInjection implements InjectionFactory, Serializable {
                                                           Object componentKey,
                                                           Class<T> componentImplementation,
                                                           Parameter... parameters) throws PicoCompositionException {
-        return new MultiInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
+        return new MultiInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterPrefix);
     }
 }

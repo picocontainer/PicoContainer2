@@ -44,7 +44,20 @@ public class MultiInjectionTestCase extends TestCase {
         }
     }
 
-    public void testBasics() throws NoSuchMethodException {
+    public static class Foo2 {
+        private final Bar bar;
+        private Baz baz;
+
+        public Foo2(Bar bar) {
+            this.bar = bar;
+        }
+
+        public void injectBaz(Baz baz) {
+            this.baz = baz;
+        }
+    }
+
+    public void testComponentWithCtorAndSetterDiCanHaveAllDepsSatisfied() throws NoSuchMethodException {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new MultiInjection());
         dpc.addComponent(Bar.class);
         dpc.addComponent(Baz.class);
@@ -53,6 +66,27 @@ public class MultiInjectionTestCase extends TestCase {
         assertNotNull(foo);
         assertNotNull(foo.bar);
         assertNotNull(foo.baz);
+    }
+
+    public void testComponentWithCtorAndSetterDiCanHaveAllDepsSatisfiedWithANonSetInjectMethod() throws NoSuchMethodException {
+        DefaultPicoContainer dpc = new DefaultPicoContainer(new MultiInjection("inject"));
+        dpc.addComponent(Bar.class);
+        dpc.addComponent(Baz.class);
+        dpc.addComponent(Foo2.class);
+        Foo2 foo = dpc.getComponent(Foo2.class);
+        assertNotNull(foo);
+        assertNotNull(foo.bar);
+        assertNotNull(foo.baz);
+    }
+
+    public void testComponentWithCtorAndSetterDiCanHaveAllCtorDepsAndSomeSetterDepsSatisfiedSubjectToAvailability() throws NoSuchMethodException {
+        DefaultPicoContainer dpc = new DefaultPicoContainer(new MultiInjection());
+        dpc.addComponent(Bar.class);
+        dpc.addComponent(Foo.class);
+        Foo foo = dpc.getComponent(Foo.class);
+        assertNotNull(foo);
+        assertNotNull(foo.bar);
+        assertNull(foo.baz); // baz was never added to the container.s
     }
 
 }
