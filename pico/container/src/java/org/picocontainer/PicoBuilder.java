@@ -15,6 +15,7 @@ import org.picocontainer.behaviors.PropertyApplying;
 import org.picocontainer.behaviors.Synchronizing;
 import org.picocontainer.behaviors.Locking;
 import org.picocontainer.behaviors.Automatic;
+import org.picocontainer.behaviors.MethodInjection;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
 import static org.picocontainer.injectors.Injectors.CDI;
@@ -217,6 +218,11 @@ public class PicoBuilder {
 
     public PicoBuilder withAutomatic() {
         componentFactories.push(Automatic.class);
+        return this;
+    }
+
+    public PicoBuilder withMethodInjection() {
+        componentFactories.push(new MethodInjection());
         return this;
     }
 }
