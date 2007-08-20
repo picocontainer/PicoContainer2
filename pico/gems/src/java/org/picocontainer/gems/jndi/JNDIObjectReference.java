@@ -1,5 +1,6 @@
 package org.picocontainer.gems.jndi;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.naming.Context;
@@ -39,6 +40,10 @@ public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable
 	public T get() {
 		try {
 			return (T) context.lookup(name);
+		} catch(NameNotFoundException e) {
+			// this is not error, but normal situation - nothing
+			// was stored yet
+			return null;
 		} catch (NamingException e) {
 			throw new PicoCompositionException("unable to resolve jndi name:"
 					+ name, e);
@@ -73,7 +78,6 @@ public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable
 				} catch (NameNotFoundException e) {
 					// that's ok
 				}
-				System.err.println("binding to JNDI" + item.getClass());
 				ctx.bind(n, item);
 			}
 		} catch (NamingException e) {
@@ -84,10 +88,28 @@ public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable
 
 	/**
 	 * name of this reference
+	 * 
 	 * @return
 	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * here we try to capture (eventual) deserealisation of this reference by
+	 * some container (notably JBoss)  and restore context as initial context
+	 * I hope this will be sufficient for most puproses
+	 * 
+	 * @param in
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	private void readObject(java.io.ObjectInputStream in)throws IOException, ClassNotFoundException {
+		try {
+			context = new InitialContext();
+		} catch (NamingException e) {
+			throw new IOException("unable to create initial context");
+		}
+		in.defaultReadObject();
+	}
 }

@@ -5,6 +5,7 @@
         <attribute name="JndiName">nano:/main</attribute>
         <attribute name="Script">main.groovy</attribute>
         <depends>jboss:service=Naming</depends>
+        <depends>jboss:service=Mail</depends>
     </mbean>
 
     <mbean code="org.nanocontainer.nanosar.ContainerDeployer"

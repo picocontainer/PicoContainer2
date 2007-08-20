@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.nanocontainer.script.ScriptBuilderResolver;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.gems.jndi.JNDIContainerVisitor;
 import org.picocontainer.gems.jndi.JNDIObjectReference;
 
 /**
@@ -107,9 +108,17 @@ public class ContainerDeployer implements ContainerDeployerMBean {
 		}
 		containerRef = new JNDIObjectReference(getJndiName(),context);
 		
+		// build and start container
 		factory.getContainerBuilder().buildContainer(containerRef,parentContainer,null,false);
 		
 		log.info("container started an bound to JNDI");
+		
+		// expose everything necessary to JNDI
+		(new JNDIContainerVisitor()).traverse(containerRef.get());
+		log.info("components bound to JNDI");
+		
+		// TODO: expose components to JMX
+		
 		started = true;
 	}
 
