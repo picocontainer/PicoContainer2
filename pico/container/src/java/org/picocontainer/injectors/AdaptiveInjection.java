@@ -18,6 +18,7 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.InjectionFactory;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.MethodInjection;
 import org.picocontainer.annotations.Inject;
 
 import java.io.Serializable;
@@ -76,6 +77,18 @@ public class AdaptiveInjection implements InjectionFactory, Serializable {
             return componentAdapter;
         }
 
+        componentAdapter = makeIfMethodInjection(componentProperties,
+                                                 componentMonitor,
+                                                 lifecycleStrategy,
+                                                 componentKey,
+                                                 componentImplementation,
+                                                 componentAdapter,
+                                                 parameters);
+
+        if (componentAdapter != null) {
+            return componentAdapter;
+        }
+
 
         return makeDefaultInjection(componentProperties,
                                     componentMonitor,
@@ -89,8 +102,7 @@ public class AdaptiveInjection implements InjectionFactory, Serializable {
                                                   ComponentMonitor componentMonitor,
                                                   LifecycleStrategy lifecycleStrategy,
                                                   Object componentKey,
-                                                  Class componentImplementation, Parameter... parameters)
-    {
+                                                  Class componentImplementation, Parameter... parameters) {
         AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CDI);
         return new ConstructorInjection().createComponentAdapter(componentMonitor,
                                                                         lifecycleStrategy,
@@ -106,11 +118,9 @@ public class AdaptiveInjection implements InjectionFactory, Serializable {
                                                    Object componentKey,
                                                    Class componentImplementation,
                                                    ComponentAdapter componentAdapter,
-                                                   Parameter... parameters)
-    {
+                                                   Parameter... parameters) {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.SDI)) {
-            componentAdapter = new SetterInjection().createComponentAdapter(componentMonitor,
-                                                                                                    lifecycleStrategy,
+            componentAdapter = new SetterInjection().createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                                                     componentProperties,
                                                                                                     componentKey,
                                                                                                     componentImplementation,
@@ -119,14 +129,31 @@ public class AdaptiveInjection implements InjectionFactory, Serializable {
         return componentAdapter;
     }
 
+    protected ComponentAdapter makeIfMethodInjection(Properties componentProperties,
+                                                   ComponentMonitor componentMonitor,
+                                                   LifecycleStrategy lifecycleStrategy,
+                                                   Object componentKey,
+                                                   Class componentImplementation,
+                                                   ComponentAdapter componentAdapter,
+                                                   Parameter... parameters) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.METHOD_INJECTION)) {
+            componentAdapter = new MethodInjection().createComponentAdapter(componentMonitor, lifecycleStrategy,
+                                                                                                    componentProperties,
+                                                                                                    componentKey,
+                                                                                                    componentImplementation,
+                                                                                                    parameters);
+        }
+        return componentAdapter;
+    }
+
+
     protected ComponentAdapter makeIfMethodAnnotationInjection(Class componentImplementation,
                                                              ComponentMonitor componentMonitor,
                                                              LifecycleStrategy lifecycleStrategy,
                                                              Properties componentProperties,
                                                              Object componentKey,
                                                              ComponentAdapter componentAdapter,
-                                                             Parameter... parameters)
-    {
+                                                             Parameter... parameters) {
         if (isMethodAnnotationInjection(componentImplementation)) {
             componentAdapter =
                 new AnnotatedMethodInjection().createComponentAdapter(componentMonitor,

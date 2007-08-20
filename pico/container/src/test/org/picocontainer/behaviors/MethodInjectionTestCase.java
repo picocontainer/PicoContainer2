@@ -14,6 +14,7 @@ import static org.picocontainer.behaviors.Behaviors.*;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Characteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.injectors.ConstructorInjector;
@@ -44,6 +45,17 @@ public class MethodInjectionTestCase extends TestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection());
         pico.addComponent("hello");
         pico.addComponent(Foo.class);
+        pico.addComponent(Bar.class);
+        Foo foo = pico.getComponent(Foo.class);
+        assertNotNull(foo.bar);
+        assertNotNull(foo.string);
+        assertEquals("MethodInjector-class org.picocontainer.behaviors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+    }
+
+    public void testMethodInjectionViaCharacteristics() {
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        pico.addComponent("hello");
+        pico.as(Characteristics.METHOD_INJECTION).addComponent(Foo.class);
         pico.addComponent(Bar.class);
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);

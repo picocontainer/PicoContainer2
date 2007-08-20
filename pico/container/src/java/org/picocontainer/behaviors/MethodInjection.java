@@ -15,6 +15,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.Characteristics;
 import org.picocontainer.injectors.MethodInjector;
 
 import java.util.Properties;

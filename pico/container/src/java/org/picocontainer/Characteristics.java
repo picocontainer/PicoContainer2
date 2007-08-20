@@ -21,6 +21,7 @@ public final class Characteristics {
     private static final String _INJECTION = "injection";
     private static final String _NONE = "none";
     private static final String _CONSTRUCTOR = "constructor";
+    private static final String _METHOD = "method";
     private static final String _SETTER = "setter";
     private static final String _CACHE = "cache";
     private static final String _JMX = "jmx";
@@ -36,6 +37,8 @@ public final class Characteristics {
     public static final Properties CDI = immutable(_INJECTION, _CONSTRUCTOR);
 
     public static final Properties SDI = immutable(_INJECTION, _SETTER);
+
+    public static final Properties METHOD_INJECTION = immutable(_INJECTION, _METHOD);
 
     public static final Properties NO_CACHE = immutable(_CACHE, FALSE);
 
