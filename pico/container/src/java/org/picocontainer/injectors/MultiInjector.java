@@ -13,6 +13,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.annotations.Inject;
 
 import java.lang.reflect.Constructor;
 import java.util.Set;
@@ -22,6 +23,7 @@ public class MultiInjector extends AbstractInjector {
 
     private final ConstructorInjector constuctorInjector;
     private final SetterInjector setterInjector;
+    private AnnotatedMethodInjector annotatedMethodInjector;
 
     public MultiInjector(Object componentKey,
                          Class componentImplementation,
@@ -43,15 +45,30 @@ public class MultiInjector extends AbstractInjector {
             protected void unsatisfiedDependencies(PicoContainer container, Set<Class> unsatisfiableDependencyTypes) {
             }
         };
+        annotatedMethodInjector = new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, Inject.class) {
+            protected Object getOrMakeInstance(PicoContainer container,
+                                               Constructor constructor,
+                                               ComponentMonitor componentMonitor)  {
+                return setterInjector.getComponentInstance(container);
+            }
+
+            protected Constructor getConstructor() {
+                return null;
+            }
+
+            protected void unsatisfiedDependencies(PicoContainer container, Set<Class> unsatisfiableDependencyTypes) {
+            }
+        };
     }
 
     public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
-        return setterInjector.getComponentInstance(container);
+        return annotatedMethodInjector.getComponentInstance(container);
     }
 
     public void verify(PicoContainer container) throws PicoCompositionException {
         constuctorInjector.verify(container);
         constuctorInjector.verify(container);
+        annotatedMethodInjector.verify(container);
     }
 
 }

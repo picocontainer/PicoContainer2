@@ -13,6 +13,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.Characteristics;
+import org.picocontainer.annotations.Inject;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;
@@ -57,6 +58,20 @@ public class MultiInjectionTestCase extends TestCase {
         }
     }
 
+    public static class Foo3 {
+        private final Bar bar;
+        private Baz baz;
+
+        public Foo3(Bar bar) {
+            this.bar = bar;
+        }
+
+        @Inject
+        public void fjshdfkjhsdkfjh(Baz baz) {
+            this.baz = baz;
+        }
+    }
+
     public void testComponentWithCtorAndSetterDiCanHaveAllDepsSatisfied() throws NoSuchMethodException {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new MultiInjection());
         dpc.addComponent(Bar.class);
@@ -78,6 +93,18 @@ public class MultiInjectionTestCase extends TestCase {
         assertNotNull(foo.bar);
         assertNotNull(foo.baz);
     }
+
+    public void testComponentWithCtorAndMethodAnnotatedDiCanHaveAllDepsSatisfied() throws NoSuchMethodException {
+        DefaultPicoContainer dpc = new DefaultPicoContainer(new MultiInjection());
+        dpc.addComponent(Bar.class);
+        dpc.addComponent(Baz.class);
+        dpc.addComponent(Foo3.class);
+        Foo3 foo = dpc.getComponent(Foo3.class);
+        assertNotNull(foo);
+        assertNotNull(foo.bar);
+        assertNotNull(foo.baz);
+    }
+
 
     public void testComponentWithCtorAndSetterDiCanHaveAllCtorDepsAndSomeSetterDepsSatisfiedSubjectToAvailability() throws NoSuchMethodException {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new MultiInjection());
