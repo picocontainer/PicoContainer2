@@ -9,24 +9,17 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import static org.picocontainer.behaviors.Behaviors.caching;
-import static org.picocontainer.behaviors.Behaviors.*;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Characteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.MethodInjector;
-import static org.picocontainer.Characteristics.*;
 
 import junit.framework.TestCase;
 
 public class MethodInjectionTestCase extends TestCase {
-
-    private static String MESSAGE =
-        "Foo was instantiated, even though it was not required to be given it was not depended on by anything looked up";
 
     public static class Foo {
         private Bar bar;

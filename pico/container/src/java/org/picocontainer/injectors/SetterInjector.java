@@ -38,7 +38,7 @@ public class SetterInjector extends IterativeInjector {
     private final String setterMethodPrefix;
 
     /**
-     * Constructs a SetterInjectionComponentAdapter
+     * Constructs a SetterInjector
      *
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation

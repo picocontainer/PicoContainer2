@@ -25,7 +25,7 @@ public abstract class IterativeInjector extends AbstractInjector {
     protected transient Class[] injectionTypes;
 
     /**
-     * Constructs a SetterInjectionComponentAdapter
+     * Constructs a IterativeInjector
      *
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
