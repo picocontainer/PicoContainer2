@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-package org.picocontainer.behaviors;
+package org.picocontainer.injectors;
 
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoBuilder;
@@ -15,7 +15,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Characteristics;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.injectors.MethodInjector;
 
 import junit.framework.TestCase;
 

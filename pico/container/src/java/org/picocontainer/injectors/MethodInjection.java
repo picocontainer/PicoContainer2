@@ -7,7 +7,7 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by Aslak Hellesoy and Paul Hammant   *
  *****************************************************************************/
-package org.picocontainer.behaviors;
+package org.picocontainer.injectors;
 
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentAdapter;
@@ -15,8 +15,6 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Characteristics;
-import org.picocontainer.injectors.MethodInjector;
 
 import java.util.Properties;
 

@@ -18,7 +18,7 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.InjectionFactory;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
-import org.picocontainer.behaviors.MethodInjection;
+import org.picocontainer.injectors.MethodInjection;
 import org.picocontainer.annotations.Inject;
 
 import java.io.Serializable;
