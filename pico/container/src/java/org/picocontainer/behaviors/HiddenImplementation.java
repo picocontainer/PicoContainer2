@@ -41,11 +41,9 @@ public class HiddenImplementation extends AbstractBehavior {
         super(delegate);
     }
 
-    public Object getComponentInstance(final PicoContainer container)
-            throws PicoCompositionException
-    {
+    public Object getComponentInstance(final PicoContainer container) throws PicoCompositionException {
 
-        ComponentAdapter delegate = (ComponentAdapter) getDelegate(ComponentAdapter.class);
+        ComponentAdapter delegate = getDelegate(ComponentAdapter.class);
         Object componentKey = delegate.getComponentKey();
         Class[] classes;
         if (componentKey instanceof Class && ((Class) delegate.getComponentKey()).isInterface()) {
@@ -66,36 +64,44 @@ public class HiddenImplementation extends AbstractBehavior {
                     public Object invoke(final Object proxy, final Method method,
                                          final Object[] args)
                             throws Throwable {
-                        Object componentInstance = ((ComponentAdapter) getDelegate(ComponentAdapter.class)).getComponentInstance(container);
-                        ComponentMonitor componentMonitor = currentMonitor();
-                        try {
-                            componentMonitor.invoking(container, HiddenImplementation.this, method, componentInstance);
-                            long startTime = System.currentTimeMillis();
-                            Object object = method.invoke(componentInstance, args);
-                            componentMonitor.invoked(container,
-                                                     HiddenImplementation.this,
-                                                     method, componentInstance, System.currentTimeMillis() - startTime);
-                            return object;
-                        } catch (final InvocationTargetException ite) {
-                            componentMonitor.invocationFailed(method, componentInstance, ite);
-                            throw ite.getTargetException();
-                        }
+                        return invokeMethod(method, args, container);
                     }
                 });
     }
 
+    protected Object invokeMethod(Method method, Object[] args, PicoContainer container) throws Throwable {
+        Object componentInstance = getDelegate(ComponentAdapter.class).getComponentInstance(container);
+        ComponentMonitor componentMonitor = currentMonitor();
+        try {
+            componentMonitor.invoking(container, this, method, componentInstance);
+            long startTime = System.currentTimeMillis();
+            Object object = method.invoke(componentInstance, args);
+            componentMonitor.invoked(container,
+                                     this,
+                                     method, componentInstance, System.currentTimeMillis() - startTime);
+            return object;
+        } catch (final InvocationTargetException ite) {
+            componentMonitor.invocationFailed(method, componentInstance, ite);
+            throw ite.getTargetException();
+        }
+    }
+
     private Class[] verifyInterfacesOnly(Class[] classes) {
-        for (Class aClass : classes) {
-            if (!aClass.isInterface()) {
+        for (Class clazz : classes) {
+            if (!clazz.isInterface()) {
                 throw new PicoCompositionException(
-                    "Class keys must be interfaces. " + aClass + " is not an interface.");
+                    "Class keys must be interfaces. " + clazz + " is not an interface.");
             }
         }
         return classes;
     }
 
     public String toString() {
-        return "Hidden:" + super.toString();
+        return getName() + super.toString();
+    }
+
+    protected String getName() {
+        return "Hidden:";
     }
 
 
