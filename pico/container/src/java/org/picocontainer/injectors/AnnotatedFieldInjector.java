@@ -21,7 +21,7 @@ import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnnotatedFieldInjector extends PostInstantiationInjector {
+public class AnnotatedFieldInjector extends IterativeInjector {
 
     private final Class injectionAnnotation;
 

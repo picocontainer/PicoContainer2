@@ -33,7 +33,7 @@ import java.lang.reflect.Method;
  * @author Mauro Talevi
  * @author Paul Hammant
  */
-public class SetterInjector extends PostInstantiationInjector {
+public class SetterInjector extends IterativeInjector {
 
     private final String setterMethodPrefix;
 

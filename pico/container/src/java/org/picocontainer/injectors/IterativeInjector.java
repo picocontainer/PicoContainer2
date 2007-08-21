@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
-public abstract class PostInstantiationInjector extends AbstractInjector {
+public abstract class IterativeInjector extends AbstractInjector {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     protected transient List<Member> injectionMembers;
     protected transient Class[] injectionTypes;
@@ -36,7 +36,7 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public PostInstantiationInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws  NotConcreteRegistrationException {
+    public IterativeInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
     }
 
@@ -73,7 +73,7 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
             boolean failedDependency = true;
             for (int j = 0; j < injectionTypes.length; j++) {
                 if (matchingParameterList.get(j) == null && parameter.isResolvable(container, this, injectionTypes[j],
-                                                                                   new PostInstantiationInjectorParameterName())) {
+                                                                                   new IterativeInjectorParameterName())) {
                     matchingParameterList.set(j, parameter);
                     failedDependency = false;
                     break;
@@ -117,12 +117,12 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
                     try {
                         for (int i = 0; i < injectionMembers.size(); i++) {
                             member = injectionMembers.get(i);
-                            componentMonitor.invoking(container, PostInstantiationInjector.this, member, componentInstance);
+                            componentMonitor.invoking(container, IterativeInjector.this, member, componentInstance);
                             if (matchingParameters[i] == null) {
                                 continue;
                             }
-                            Object toInject = matchingParameters[i].resolveInstance(guardedContainer, PostInstantiationInjector.this, injectionTypes[i],
-                                                                                    new PostInstantiationInjectorParameterName());
+                            Object toInject = matchingParameters[i].resolveInstance(guardedContainer, IterativeInjector.this, injectionTypes[i],
+                                                                                    new IterativeInjectorParameterName());
                             injectIntoMember(member, componentInstance, toInject);
                             injected[i] = toInject;
                         }
@@ -145,12 +145,12 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
                                        ComponentMonitor componentMonitor) {
         long startTime = System.currentTimeMillis();
         Constructor constructorToUse = componentMonitor.instantiating(container,
-                                                                      PostInstantiationInjector.this, constructor);
+                                                                      IterativeInjector.this, constructor);
         Object componentInstance;
         try {
             componentInstance = newInstance(constructorToUse, null);
         } catch (InvocationTargetException e) {
-            componentMonitor.instantiationFailed(container, PostInstantiationInjector.this, constructorToUse, e);
+            componentMonitor.instantiationFailed(container, IterativeInjector.this, constructorToUse, e);
             if (e.getTargetException() instanceof RuntimeException) {
                 throw (RuntimeException)e.getTargetException();
             } else if (e.getTargetException() instanceof Error) {
@@ -163,7 +163,7 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
             return caughtIllegalAccessException(componentMonitor, constructor, e, container);
         }
         componentMonitor.instantiated(container,
-                                      PostInstantiationInjector.this,
+                                      IterativeInjector.this,
                                       constructorToUse,
                                       componentInstance,
                                       null,
@@ -182,8 +182,8 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
                 public Object run() {
                     final Parameter[] currentParameters = getMatchingParameterListForSetters(guardedContainer);
                     for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].verify(container, PostInstantiationInjector.this, injectionTypes[i],
-                                                    new PostInstantiationInjectorParameterName());
+                        currentParameters[i].verify(container, IterativeInjector.this, injectionTypes[i],
+                                                    new IterativeInjectorParameterName());
                     }
                     return null;
                 }
@@ -223,7 +223,7 @@ public abstract class PostInstantiationInjector extends AbstractInjector {
         });
     }
 
-    private static class PostInstantiationInjectorParameterName implements ParameterName {
+    private static class IterativeInjectorParameterName implements ParameterName {
         public String getName() {
             return ""; // TODO
         }
