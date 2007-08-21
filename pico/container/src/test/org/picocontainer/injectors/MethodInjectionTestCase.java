@@ -41,7 +41,7 @@ public class MethodInjectionTestCase extends TestCase {
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.string);
-        assertEquals("MethodInjector-class org.picocontainer.behaviors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     public void testMethodInjectionViaCharacteristics() {
@@ -52,7 +52,7 @@ public class MethodInjectionTestCase extends TestCase {
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.string);
-        assertEquals("MethodInjector-class org.picocontainer.behaviors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     public void testMethodInjectionViaAdapter() {
@@ -63,7 +63,7 @@ public class MethodInjectionTestCase extends TestCase {
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.string);
-        assertEquals("MethodInjector-class org.picocontainer.behaviors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     public void testMethodInjectionByBuilder() {
@@ -74,7 +74,7 @@ public class MethodInjectionTestCase extends TestCase {
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.string);
-        assertEquals("MethodInjector-class org.picocontainer.behaviors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
 }
