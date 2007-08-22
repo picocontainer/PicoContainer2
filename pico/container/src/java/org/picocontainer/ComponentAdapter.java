@@ -68,4 +68,8 @@ public interface ComponentAdapter<T> {
      */
     void accept(PicoVisitor visitor);
 
+    ComponentAdapter<T> getDelegate();
+
+    <U extends ComponentAdapter> U getDelegate(Class<U> componentAdapterType);
+
 }

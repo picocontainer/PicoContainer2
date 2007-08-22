@@ -116,5 +116,11 @@ public abstract class AbstractAdapter implements ComponentAdapter, ComponentMoni
         return componentMonitor;
     }
 
+    public final ComponentAdapter getDelegate() {
+        return null;
+    }
 
+    public final ComponentAdapter getDelegate(Class componentAdapterType) {
+        return null;
+    }
 }

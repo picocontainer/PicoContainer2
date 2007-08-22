@@ -42,7 +42,7 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
     }
 
     public Object getComponentInstance(final PicoContainer container) {
-        Object o = ((ComponentAdapter) getDelegate(ComponentAdapter.class)).getComponentInstance(container);
+        Object o = getDelegate(ComponentAdapter.class).getComponentInstance(container);
         Class[] interfaces = o.getClass().getInterfaces();
         if (interfaces.length != 0) {
             byte[] bytes = makeProxy("XX", interfaces, true);

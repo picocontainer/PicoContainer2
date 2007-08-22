@@ -83,7 +83,15 @@ public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 	public void accept(PicoVisitor visitor) {
 	}
 
-	/**
+    public ComponentAdapter<T> getDelegate() {
+        return null;
+    }
+
+    public <U extends ComponentAdapter> U getDelegate(Class<U> componentAdapterType) {
+        return null;
+    }
+
+    /**
 	 * produce string representation
 	 */
 	@Override

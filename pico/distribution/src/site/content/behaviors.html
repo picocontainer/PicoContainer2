@@ -279,6 +279,42 @@ sc.putCacheForThread(httpRequest.getSession().getAttribute(&quot;sessionComponen
 httpRequest.getSession().setAttribute(&quot;sessionComponentCache&quot;, sc.getCacheForThread());
 </pre>
 </div>
+
+<h3>Interception</h3>
+<p>This is a rudimentary Aspect Orientated Programing (AOP) capability. With respect to the methods of a component, both before and after invocation, control can be handed to an interceptor. You can intercept a method call:</p>
+<ul>
+  <li> before it is invoked (and optionally veto its invocation, with an alternate return value).</li>
+  <li> after it is invoked  (and optionally override the return value). </li>
+</ul>
+<p>There are some limitations:</p>
+<ul>
+  <li>it will only work for interface/impl separated components</li>
+  <li>will (likely) break if there's deep recursion into Intercepted components</li>
+  <li>it is not possible to modify a method's arguments</li>
+  <li>the constructor invocation for the component is not interceptable</li>
+  <li>the component fields are not touchable</li>
+</ul>
+<div class="source">
+      <pre>
+interception = new Interception();
+pico = new DefaultPicoContainer(interception);
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+  </pre>
+</div>
+<p>The BehaviorFactory for Storing behavior is not stateless. It allows the cache to be set for the thread as well as extracted. Here's a code snippet to illustrate that:</p>
+<div class="source">
+    <pre>sc = new StoreCaching();
+pico = new DefaultPicoContainer(sc);
+....
+sc.putCacheForThread(httpRequest.getSession().getAttribute(&quot;sessionComponentCache&quot;);
+// do other methods that process request in session concept and may do getComponent(..) from the sesion container.
+httpRequest.getSession().setAttribute(&quot;sessionComponentCache&quot;, sc.getCacheForThread());
+</pre>
+</div>
+<
 </body>
 
 

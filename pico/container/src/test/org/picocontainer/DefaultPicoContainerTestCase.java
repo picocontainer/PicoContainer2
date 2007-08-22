@@ -378,6 +378,14 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
         public void accept(PicoVisitor visitor) {
         }
+
+        public ComponentAdapter getDelegate() {
+            return null;
+        }
+
+        public ComponentAdapter getDelegate(Class componentAdapterType) {
+            return null;
+        }
     }
 
     public void testMakeChildContainer() {
