@@ -114,4 +114,20 @@ public class DBCPDataSource extends AbstractDataSource implements Startable {
 		dataSource = null;
 	}
 
+	/**
+	 * to satisfy wrapper interface - not sure what to do there
+	 */
+	public boolean isWrapperFor(Class<?> arg0) throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	/**
+	 * to satisfy wrapper interface - not sure what to do there
+	 */
+
+	public <T> T unwrap(Class<T> arg0) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

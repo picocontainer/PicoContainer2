@@ -9,7 +9,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.nanocontainer.script.ScriptBuilderResolver;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.gems.jndi.JNDIContainerVisitor;
 import org.picocontainer.gems.jndi.JNDIObjectReference;
 
@@ -86,7 +85,7 @@ public class ContainerDeployer implements ContainerDeployerMBean {
 		if (getScript() == null) {
 			throw new Exception("script shall be specified");
 		}
-		log.info("specified script:" + getScript());
+		log.info("loading  script:" + getScript());
 		// explicit setting wins
 		String builderName = getContainerComposer();
 

@@ -9,8 +9,17 @@
  *****************************************************************************/
 package org.nanocontainer.persistence.jdbc;
 
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.Connection;
+import java.sql.NClob;
+import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
+import java.sql.SQLXML;
+import java.sql.Struct;
+import java.util.Map;
+import java.util.Properties;
 
 import javax.sql.DataSource;
 
@@ -90,6 +99,76 @@ public final class FailoverDataSourceConnection extends AbstractConnection imple
 		} catch (Exception e) {
 			// Do nothing?
 		}
+	}
+
+	public Array createArrayOf(String arg0, Object[] arg1) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Blob createBlob() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Clob createClob() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public NClob createNClob() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public SQLXML createSQLXML() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Struct createStruct(String arg0, Object[] arg1) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Properties getClientInfo() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getClientInfo(String arg0) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean isValid(int arg0) throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void setClientInfo(Properties arg0) throws SQLClientInfoException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setClientInfo(String arg0, String arg1) throws SQLClientInfoException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setTypeMap(Map arg0) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean isWrapperFor(Class<?> arg0) throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public <T> T unwrap(Class<T> arg0) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

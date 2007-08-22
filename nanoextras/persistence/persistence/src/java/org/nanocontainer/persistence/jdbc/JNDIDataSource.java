@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.nanocontainer.persistence.jdbc;
 
+import java.sql.SQLException;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -102,6 +104,16 @@ public class JNDIDataSource extends AbstractDataSource implements Startable {
 	 */
 	public void stop() {
 		dataSource = null;
+	}
+
+	public boolean isWrapperFor(Class<?> arg0) throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public <T> T unwrap(Class<T> arg0) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
