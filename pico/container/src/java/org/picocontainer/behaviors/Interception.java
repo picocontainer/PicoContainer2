@@ -26,8 +26,7 @@ public class Interception extends AbstractBehaviorFactory {
     private final Map<Class, Object> pres = new HashMap<Class, Object>();
     private final Map<Class, Object> posts = new HashMap<Class, Object>();
 
-    private InterceptorThreadLocal interceptorThreadLocal = new InterceptorThreadLocal();
-    private InterceptorWrapper interceptorWrapper = new InterceptorWrapper();
+    private InterceptorWrapper interceptor = new InterceptorWrapper(new InterceptorThreadLocal());
 
     public void pre(Class type, Object interceptor) {
         pres.put(type, interceptor);
@@ -45,7 +44,7 @@ public class Interception extends AbstractBehaviorFactory {
                                                           Parameter... parameters) throws PicoCompositionException {
         return new Intercepted(super.createComponentAdapter(componentMonitor,
 				lifecycleStrategy, componentProperties, componentKey,
-				componentImplementation, parameters), pres, posts, interceptorWrapper);
+				componentImplementation, parameters), pres, posts, interceptor);
     }
 
     public static class InterceptorThreadLocal extends ThreadLocal implements Serializable {
@@ -55,7 +54,7 @@ public class Interception extends AbstractBehaviorFactory {
     }
 
     public Interceptor interceptor() {
-        return interceptorWrapper;
+        return interceptor;
     }
 
     public interface Interceptor {
@@ -118,37 +117,43 @@ public class Interception extends AbstractBehaviorFactory {
     }
 
     public class InterceptorWrapper implements Interceptor {
+        private final ThreadLocal threadLocal;
+
+        public InterceptorWrapper(ThreadLocal threadLocal) {
+            this.threadLocal = threadLocal;
+        }
+
         public void veto() {
-            ((Interceptor) interceptorThreadLocal.get()).veto();
+            ((Interceptor) threadLocal.get()).veto();
         }
 
         public void clear() {
-            ((Interceptor) interceptorThreadLocal.get()).clear();
+            ((Interceptor) threadLocal.get()).clear();
         }
 
         public boolean isVetoed() {
-            return ((Interceptor) interceptorThreadLocal.get()).isVetoed();
+            return ((Interceptor) threadLocal.get()).isVetoed();
         }
 
         public void setOriginalRetVal(Object retVal) {
-            ((Interceptor) interceptorThreadLocal.get()).setOriginalRetVal(retVal);
+            ((Interceptor) threadLocal.get()).setOriginalRetVal(retVal);
         }
 
         public Object getOriginalRetVal() {
-            return ((Interceptor) interceptorThreadLocal.get()).getOriginalRetVal();
+            return ((Interceptor) threadLocal.get()).getOriginalRetVal();
         }
 
         public boolean isOverridden() {
-            return ((Interceptor) interceptorThreadLocal.get()).isOverridden();
+            return ((Interceptor) threadLocal.get()).isOverridden();
         }
 
         public void instance(Object instance) {
-            ((Interceptor) interceptorThreadLocal.get()).instance(instance);
+            ((Interceptor) threadLocal.get()).instance(instance);
 
         }
 
         public void override() {
-            ((Interceptor) interceptorThreadLocal.get()).override();
+            ((Interceptor) threadLocal.get()).override();
         }
     }
 
