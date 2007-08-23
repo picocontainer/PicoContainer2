@@ -23,17 +23,6 @@ import java.io.Serializable;
 /** @author Paul Hammant */
 public class Interception extends AbstractBehaviorFactory {
 
-    private final Map<Class, Object> pres = new HashMap<Class, Object>();
-    private final Map<Class, Object> posts = new HashMap<Class, Object>();
-
-    public void pre(Class type, Object interceptor) {
-        pres.put(type, interceptor);
-    }
-
-    public void post(Class type, Object interceptor) {
-        posts.put(type, interceptor);
-    }
-
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                           LifecycleStrategy lifecycleStrategy,
                                                           Properties componentProperties,
@@ -42,7 +31,7 @@ public class Interception extends AbstractBehaviorFactory {
                                                           Parameter... parameters) throws PicoCompositionException {
         return new Intercepted(super.createComponentAdapter(componentMonitor,
 				lifecycleStrategy, componentProperties, componentKey,
-				componentImplementation, parameters), pres, posts);
+				componentImplementation, parameters));
     }
 
 

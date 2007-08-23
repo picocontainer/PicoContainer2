@@ -12,22 +12,28 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 
 import java.util.Map;
+import java.util.HashMap;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import java.io.Serializable;
 
 /** @author Paul Hammant */
 public class Intercepted<T> extends HiddenImplementation {
-    private final Map<Class, Object> pres;
-    private final Map<Class, Object> posts;
 
-    private InterceptorWrapper interceptor = new InterceptorWrapper(new InterceptorThreadLocal());
+    private final Map<Class, Object> pres = new HashMap<Class, Object>();
+    private final Map<Class, Object> posts = new HashMap<Class, Object>();
+    private Interceptor interceptor = new InterceptorWrapper(new InterceptorThreadLocal());
 
-    public Intercepted(ComponentAdapter delegate, Map<Class, Object> pres,  Map<Class, Object> posts) {
+    public Intercepted(ComponentAdapter delegate) {
         super(delegate);
-        this.pres = pres;
-        this.posts = posts;
-        this.interceptor = interceptor;
+    }
+
+    public void pre(Class type, Object interceptor) {
+        pres.put(type, interceptor);
+    }
+
+    public void post(Class type, Object interceptor) {
+        posts.put(type, interceptor);
     }
 
     protected Object invokeMethod(Method method, Object[] args, PicoContainer container) throws Throwable {
@@ -57,7 +63,7 @@ public class Intercepted<T> extends HiddenImplementation {
         }
     }
 
-    public InterceptorWrapper getInterceptor() {
+    public Interceptor getInterceptor() {
         return interceptor;
     }
 
