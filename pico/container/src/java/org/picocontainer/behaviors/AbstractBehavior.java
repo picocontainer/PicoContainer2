@@ -64,15 +64,17 @@ public abstract class AbstractBehavior<T> implements Behavior<T>, ComponentMonit
         delegate.verify(container);
     }
 
-    public ComponentAdapter<T> getDelegate() {
+    public final ComponentAdapter<T> getDelegate() {
         return delegate;
     }
 
-    public <U extends ComponentAdapter> U getDelegate(Class<U> componentAdapterType) {
-        if (componentAdapterType.isAssignableFrom(delegate.getClass())) {
+    public final <U extends ComponentAdapter> U findAdapterOfType(Class<U> componentAdapterType) {
+        if (componentAdapterType.isAssignableFrom(this.getClass())) {
+            return (U) this;
+        } else if (componentAdapterType.isAssignableFrom(delegate.getClass())) {
             return (U) delegate;
         } else {
-            return delegate.getDelegate(componentAdapterType);
+            return delegate.findAdapterOfType(componentAdapterType);
         }
     }
 

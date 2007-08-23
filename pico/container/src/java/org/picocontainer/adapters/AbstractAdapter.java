@@ -120,7 +120,7 @@ public abstract class AbstractAdapter implements ComponentAdapter, ComponentMoni
         return null;
     }
 
-    public final ComponentAdapter getDelegate(Class componentAdapterType) {
+    public final ComponentAdapter findAdapterOfType(Class componentAdapterType) {
         return null;
     }
 }

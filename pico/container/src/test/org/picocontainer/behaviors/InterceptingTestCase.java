@@ -40,12 +40,15 @@ public class InterceptingTestCase extends TestCase {
     public void testPreAndPostObservation() {
         final StringBuilder sb = new StringBuilder();
         Interception interception = new Interception();
-        final Interception.Interceptor interceptor = interception.interceptor();
+        DefaultPicoContainer pico = new DefaultPicoContainer(interception);
+        pico.addComponent(StringBuilder.class, sb);
+        pico.addComponent(Foo.class, FooImpl.class);
+
+        final Intercepted.Interceptor interceptor = pico.getComponentAdapter(Foo.class).findAdapterOfType(Intercepted.class).getInterceptor();
         interception.pre(Foo.class, new Foo() {
             public void one() {
                 sb.append("pre-one(),");
             }
-
             public String two(String a, int b) {
                 sb.append("pre-two('"+a+"',"+b+"),");
                 return null;
@@ -55,7 +58,6 @@ public class InterceptingTestCase extends TestCase {
             public void one() {
                 sb.append("post-one(),");
             }
-
             public String two(String a, int b) {
                 assertEquals("two", interceptor.getOriginalRetVal());
                 sb.append("post-two('"+a+"',"+b+"),");
@@ -63,9 +65,6 @@ public class InterceptingTestCase extends TestCase {
             }
         });
 
-        DefaultPicoContainer pico = new DefaultPicoContainer(interception);
-        pico.addComponent(StringBuilder.class, sb);
-        pico.addComponent(Foo.class, FooImpl.class);
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo);
         foo.one();
@@ -77,7 +76,11 @@ public class InterceptingTestCase extends TestCase {
     public void testPreCanBlockInvocationWithAlternateReturnValue() {
         final StringBuilder sb = new StringBuilder();
         final Interception interception = new Interception();
-        final Interception.Interceptor interceptor = interception.interceptor();
+        DefaultPicoContainer pico = new DefaultPicoContainer(interception);
+        pico.addComponent(Foo.class, FooImpl.class);
+        pico.addComponent(StringBuilder.class, sb);
+
+        final Intercepted.Interceptor interceptor = pico.getComponentAdapter(Foo.class).findAdapterOfType(Intercepted.class).getInterceptor();
         interception.pre(Foo.class, new Foo() {
             public void one() {
                 interceptor.veto();
@@ -91,9 +94,6 @@ public class InterceptingTestCase extends TestCase {
             }
         });
 
-        DefaultPicoContainer pico = new DefaultPicoContainer(interception);
-        pico.addComponent(Foo.class, FooImpl.class);
-        pico.addComponent(StringBuilder.class, sb);
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo);
         foo.one();
@@ -105,7 +105,10 @@ public class InterceptingTestCase extends TestCase {
     public void testOverrideOfReturnValue() {
         final StringBuilder sb = new StringBuilder();
         final Interception interception = new Interception();
-        final Interception.Interceptor interceptor = interception.interceptor();
+        DefaultPicoContainer pico = new DefaultPicoContainer(interception);
+        pico.addComponent(Foo.class, FooImpl.class);
+        pico.addComponent(StringBuilder.class, sb);
+        final Intercepted.Interceptor interceptor = pico.getComponentAdapter(Foo.class).findAdapterOfType(Intercepted.class).getInterceptor();
         interception.pre(Foo.class, new Foo() {
             public void one() {
                 sb.append("pre-one(),");
@@ -129,9 +132,6 @@ public class InterceptingTestCase extends TestCase {
             }
         });
 
-        DefaultPicoContainer pico = new DefaultPicoContainer(interception);
-        pico.addComponent(Foo.class, FooImpl.class);
-        pico.addComponent(StringBuilder.class, sb);
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo);
         foo.one();

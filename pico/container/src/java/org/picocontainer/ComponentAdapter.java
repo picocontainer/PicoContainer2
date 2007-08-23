@@ -70,6 +70,6 @@ public interface ComponentAdapter<T> {
 
     ComponentAdapter<T> getDelegate();
 
-    <U extends ComponentAdapter> U getDelegate(Class<U> componentAdapterType);
+    <U extends ComponentAdapter> U findAdapterOfType(Class<U> componentAdapterType);
 
 }

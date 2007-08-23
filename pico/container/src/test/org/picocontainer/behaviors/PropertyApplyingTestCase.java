@@ -31,7 +31,6 @@ import org.picocontainer.behaviors.PropertyApplying;
 import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.Behavior;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -312,7 +311,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
                                                                      (Parameter[])null);
 
 
-        PropertyApplicator pa = adapter.getDelegate(PropertyApplicator.class);
+        PropertyApplicator pa = adapter.findAdapterOfType(PropertyApplicator.class);
 
         pa.setProperty("message", "hello");
 

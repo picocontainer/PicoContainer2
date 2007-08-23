@@ -43,7 +43,7 @@ public class HiddenImplementation extends AbstractBehavior {
 
     public Object getComponentInstance(final PicoContainer container) throws PicoCompositionException {
 
-        ComponentAdapter delegate = getDelegate(ComponentAdapter.class);
+        ComponentAdapter delegate = getDelegate();
         Object componentKey = delegate.getComponentKey();
         Class[] classes;
         if (componentKey instanceof Class && ((Class) delegate.getComponentKey()).isInterface()) {
@@ -70,7 +70,7 @@ public class HiddenImplementation extends AbstractBehavior {
     }
 
     protected Object invokeMethod(Method method, Object[] args, PicoContainer container) throws Throwable {
-        Object componentInstance = getDelegate(ComponentAdapter.class).getComponentInstance(container);
+        Object componentInstance = getDelegate().getComponentInstance(container);
         ComponentMonitor componentMonitor = currentMonitor();
         try {
             componentMonitor.invoking(container, this, method, componentInstance);
