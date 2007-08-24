@@ -289,32 +289,95 @@ httpRequest.getSession().setAttribute(&quot;sessionComponentCache&quot;, sc.getC
 <p>There are some limitations:</p>
 <ul>
   <li>it will only work for interface/impl separated components</li>
-  <li>will (likely) break if there's deep recursion into Intercepted components</li>
+  <li>it needs a class that implements the interface in question
+    <ul>
+      <li>all of the methods need null implementations, even if not intended to be intercepted</li>
+    </ul>
+  </li>
+  <li>will (likely) break if there's deep recursion into Intercepted instances</li>
+  <li>you can't intercept an implementation's static methods</li>
   <li>it is not possible to modify a method's arguments</li>
-  <li>the constructor invocation for the component is not interceptable</li>
-  <li>the component fields are not touchable</li>
+  <li>the constructor's invocation for the component is not interceptable</li>
+  <li>the component's fields are not touchable</li>
 </ul>
 <div class="source">
-      <pre>
-interception = new Interception();
-pico = new DefaultPicoContainer(interception);
-pico.addComponent(Apple.class);
+      <pre>public static class BiteReporter implements Apple {
+    private Interceptor interceptor;
+
+    public BiteReporter(Interceptor interceptor) {
+        this.interceptor = interceptor;
+
+    } 
+    public boolean takeBite(int grams) {
+        System.out.println(&quot;Bite of &quot; + grams + &quot; grams of apple '&quot; + interceptor.instance().getName() + &quot;'&quot;);
+        return false; // ignored, but necessary.
+    }
+}
+...
+pico = new DefaultPicoContainer(new Interception());
+pico.addComponent(Apple.class, BraeburnApple.class);
+Intercpeted intercepted = pico.getComponentAdapter(Apple.class).findAdapterOfType(Intercpeted.class);
+injected.pre(Apple.class, new BiteReporter(intercepted.getInterceptor()));
+// see also Intercpeted.post(...) method.
 Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
+a1.takeBite(100); 
+// prints Bite of 100 grams of apple 'Braeburn' 
+// ... irrespective of what else Braeburn.takeBite(int) does.
   </pre>
 </div>
-<p>The BehaviorFactory for Storing behavior is not stateless. It allows the cache to be set for the thread as well as extracted. Here's a code snippet to illustrate that:</p>
 <div class="source">
-    <pre>sc = new StoreCaching();
-pico = new DefaultPicoContainer(sc);
-....
-sc.putCacheForThread(httpRequest.getSession().getAttribute(&quot;sessionComponentCache&quot;);
-// do other methods that process request in session concept and may do getComponent(..) from the sesion container.
-httpRequest.getSession().setAttribute(&quot;sessionComponentCache&quot;, sc.getCacheForThread());
+    <pre>pico = new DefaultPicoContainer();
+pico.as(INTERCEPT).addComponent(Apple.class, BraeburnApple.class);
+// etc</pre>
+</div>
+<div class="source">
+    <pre>pico = new PicoBuilder.withInterception().build();
+pico.addComponent(Apple.class, BraeburnApple.class);
+// etc</pre>
+</div>
+<div class="source">
+    <pre>pico = new PicoBuilder.withBehaviors(interception()).build();
+pico.as(INTERCEPT).addComponent(Apple.class, BraeburnApple.class);
+// etc</pre>
+</div>
+
+<h4>Fing grained participation in interception</h4>
+<p>Assuming you're passing in the Interceptor to the classes you're using for interception of a component, you can participate in the fate of the method call. For a 'pre' invocation, you can veto the calling of the 'real' method. </p>
+<div class="source">
+    <pre>    public boolean takeBite(int grams) {
+        if (grams &gt; 50) {
+             interceptor.veto();
+
+        }
+        return false; // will be passed back to the caller.
+    }
 </pre>
 </div>
-<
+<p>For a 'post' invocation, you can override the return value of the 'real' method. </p>
+<div class="source">
+    <pre>    public boolean takeBite(int grams) {        
+
+        if (grams &gt; 50) {
+             interceptor.override();
+             (Apple) realApple = (Apple) interceptor.instance();
+             realApple.takeBite(-1 * grams); // undo !
+        }
+        return false; // will be passed back to the caller.
+    }
+</pre>
+</div>
+<p>Also for a 'post' invocation, you can access the return value of the 'real' method. </p>
+<div class="source">
+    <pre>    public boolean takeBite(int grams) {        
+
+        boolean rv = (boolean) interceptor.getOriginalRetVal(); 
+        if (rv == false) {
+             // do something !
+        }
+        return true; // ignored as no 'override'
+    }
+</pre>
+</div>
 </body>
 
 
