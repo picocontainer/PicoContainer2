@@ -13,6 +13,7 @@
         <name>Core Concepts</name>
         <page>injection.html</page>
         <page>behaviors.html</page>
+        <page>fluent-style.html</page>
         <page>lifecycle.html</page>
         <page>monitors.html</page>
         <page>scopes.html</page>
