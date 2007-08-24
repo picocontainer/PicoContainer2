@@ -37,7 +37,7 @@ public class JMXExposed extends AbstractBehavior {
     private List registeredObjectNames;
 
     /**
-     * Construct a JMXExposingComponentAdapter.
+     * Construct a JMXExposed behaviour
      * @param delegate The delegated {@link ComponentAdapter}.
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.
      * @param providers An array with providers for converting the component instance into a
@@ -57,7 +57,7 @@ public class JMXExposed extends AbstractBehavior {
     }
 
     /**
-     * Construct a JMXExposingComponentAdapter. This instance uses a {@link DynamicMBeanComponentProvider} as default to
+     * Construct a JMXExposed behaviour. This instance uses a {@link DynamicMBeanComponentProvider} as default to
      * register any component instance in the {@link MBeanServer}, that is already a
      * {@link javax.management.DynamicMBean}.
      * @param delegate The delegated {@link ComponentAdapter}.
