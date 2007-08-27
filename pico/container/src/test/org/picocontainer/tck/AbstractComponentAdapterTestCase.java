@@ -21,6 +21,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.SimpleReference;
 import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.ComponentFactory;
@@ -453,7 +454,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
     final public void testRES_failingVerificationWithCyclicDependencyException() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final Set cycleInstances = new HashSet();
-            final ObjectReference cycleCheck = new Cached.SimpleReference();
+            final ObjectReference cycleCheck = new SimpleReference();
             final Object[] wrapperDependencies = new Object[]{cycleInstances, cycleCheck};
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepRES_failingVerificationWithCyclicDependencyException(picoContainer);
@@ -487,7 +488,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
     final public void testRES_failingInstantiationWithCyclicDependencyException() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final Set cycleInstances = new HashSet();
-            final ObjectReference cycleCheck = new Cached.SimpleReference();
+            final ObjectReference cycleCheck = new SimpleReference();
             final Object[] wrapperDependencies = new Object[]{cycleInstances, cycleCheck};
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepRES_failingInstantiationWithCyclicDependencyException(picoContainer);

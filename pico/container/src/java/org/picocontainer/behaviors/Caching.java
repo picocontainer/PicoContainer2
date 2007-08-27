@@ -15,6 +15,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.SimpleReference;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ObjectReference;
@@ -64,6 +65,6 @@ public class Caching extends AbstractBehaviorFactory {
 	}
 
 	protected <T> ObjectReference<T> newObjectReference() {
-		return new Cached.SimpleReference<T>();
+		return new SimpleReference<T>();
 	}
 }

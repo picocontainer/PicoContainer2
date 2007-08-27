@@ -112,4 +112,9 @@ public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable
 		}
 		in.defaultReadObject();
 	}
+	
+	
+	public String toString() {
+		return "(" + getName() + ")";
+	}
 }

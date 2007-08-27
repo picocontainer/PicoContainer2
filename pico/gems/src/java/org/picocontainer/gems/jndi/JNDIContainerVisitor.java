@@ -6,6 +6,7 @@ import javax.management.MBeanServer;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
 import org.picocontainer.visitors.TraversalCheckingVisitor;
 
 /**
@@ -26,6 +27,7 @@ public class JNDIContainerVisitor extends TraversalCheckingVisitor {
 	public void visitComponentAdapter(ComponentAdapter componentAdapter)
 	{
 		super.visitComponentAdapter(componentAdapter);
+
 		if(componentAdapter instanceof JNDIExposed) {
 			componentAdapter.getComponentInstance(container);
 		}

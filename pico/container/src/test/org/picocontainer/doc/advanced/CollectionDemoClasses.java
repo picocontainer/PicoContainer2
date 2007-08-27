@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2004 Jörg Schaible
- * Created on 24.10.2004 by Jörg Schaible
+ * Copyright (C) 2004 J&ouml;rg Schaible
+ * Created on 24.10.2004 by J&ouml;rg Schaible
  */
 package org.picocontainer.doc.advanced;
 

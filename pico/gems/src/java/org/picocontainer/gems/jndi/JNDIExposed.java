@@ -6,6 +6,8 @@ import javax.naming.NamingException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.behaviors.Stored;
 
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
+
 /**
  * exposes component to JNDI basically does same thing as cached, but uses JNDI
  * reference instead. Maybe Cached shall be refactored? as there is little new
@@ -15,17 +17,6 @@ import org.picocontainer.behaviors.Stored;
  * 
  */
 public class JNDIExposed<T> extends Stored<T> {
-
-	/**
-	 * create with provided reference
-	 * 
-	 * @param delegate
-	 * @param instanceReference
-	 */
-	public JNDIExposed(ComponentAdapter<T> delegate,
-			JNDIObjectReference<T> instanceReference) {
-		super(delegate, instanceReference);
-	}
 
 	/**
 	 * construct reference itself using vanilla initial context.
@@ -41,6 +32,17 @@ public class JNDIExposed<T> extends Stored<T> {
 	}
 
 	/**
+	 * create with provided reference
+	 * 
+	 * @param delegate
+	 * @param instanceReference
+	 */
+	public JNDIExposed(ComponentAdapter<T> delegate,
+			JNDIObjectReference<T> instanceReference) {
+		super(delegate, instanceReference);
+	}
+
+	/**
 	 * create adapter with desired name
 	 * @param delegate
 	 * @param name
@@ -51,6 +53,6 @@ public class JNDIExposed<T> extends Stored<T> {
 	}
 	
 	public String toString() {
-		return "JNDI:" + super.toString();
+		return "JNDI" + instanceReference.toString() +  super.toString();
 	}
 }

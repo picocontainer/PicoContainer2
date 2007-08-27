@@ -15,6 +15,7 @@ import java.io.Serializable;
 import org.picocontainer.Behavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ObjectReference;
+import org.picocontainer.SimpleReference;
 
 /**
  * <p>
@@ -42,24 +43,6 @@ public class Cached<T> extends Stored<T> {
 		super(delegate, instanceReference);
 	}
 
-	/**
-	 * @author Aslak Helles&oslash;y
-	 */
-	public static class SimpleReference<T> implements ObjectReference<T>,
-			Serializable {
-		private T instance;
-
-		public SimpleReference() {
-		}
-
-		public T get() {
-			return instance;
-		}
-
-		public void set(T item) {
-			this.instance = item;
-		}
-	}
 
 	public String toString() {
 		return "Cached:" + super.toString();
