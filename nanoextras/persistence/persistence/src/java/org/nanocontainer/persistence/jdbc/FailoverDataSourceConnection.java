@@ -13,10 +13,7 @@ import java.sql.Array;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Connection;
-import java.sql.NClob;
-import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
-import java.sql.SQLXML;
 import java.sql.Struct;
 import java.util.Map;
 import java.util.Properties;
@@ -116,16 +113,6 @@ public final class FailoverDataSourceConnection extends AbstractConnection imple
 		return null;
 	}
 
-	public NClob createNClob() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public SQLXML createSQLXML() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Struct createStruct(String arg0, Object[] arg1) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
@@ -144,16 +131,6 @@ public final class FailoverDataSourceConnection extends AbstractConnection imple
 	public boolean isValid(int arg0) throws SQLException {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	public void setClientInfo(Properties arg0) throws SQLClientInfoException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setClientInfo(String arg0, String arg1) throws SQLClientInfoException {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void setTypeMap(Map arg0) throws SQLException {

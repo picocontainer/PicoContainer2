@@ -24,15 +24,15 @@ import org.jmock.MockObjectTestCase;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.DefaultContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.nanocontainer.script.NanoContainerMarkupException;
+import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ObjectReference;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.Cached;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.ObjectReference;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.SimpleReference;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -320,8 +320,8 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
         ServletContext context = (ServletContext)servletContextMock.proxy();
         ContainerBuilder containerBuilder = createContainerBuilder(script, containerBuilderClass);
         
-        ObjectReference containerRef = new Cached.SimpleReference();
-        containerBuilder.buildContainer(containerRef, new Cached.SimpleReference(), context, false);
+        ObjectReference containerRef = new SimpleReference();
+        containerBuilder.buildContainer(containerRef, new SimpleReference(), context, false);
         return (PicoContainer) containerRef.get();
     }
 

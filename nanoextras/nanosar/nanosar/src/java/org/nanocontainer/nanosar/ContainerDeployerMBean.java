@@ -9,54 +9,44 @@ public interface ContainerDeployerMBean {
 
 
 	/**
-	 * JNDI name of parent container
+	 * FQ-name of container composer class. only required in cases 
+	 * where script name can not resolve proper composer. setting this will 
+	 * override implicit specification
 	 * @return
 	 */
-	String getParentName();
-	
-	/**
-	 * set JNDI name of parent container
-	 * @param name
-	 */
-	void setParentName(String name);
+	String getContainerComposer();
+	void setContainerComposer(String composer);
 	/**
 	 * JNDI name to bind container to 
 	 * @return
 	 */
 	String getJndiName();
+	void setJndiName(String name);
 	/**
-	 * JNDI name to bind contaienr to
-	 * @param jndiName
-	 */
-	void setJndiName(String jndiName);
-	
-	/**
-	 * FQ-name of container composer class
+	 * JNDI name of parent container
 	 * @return
 	 */
-	String getContainerComposer();
-	
-	/**
-	 * FQN of container composer class
-	 * @param composer
-	 */
-	void setContainerComposer(String composer);
-	
+	String getParentName();
+	void setParentName(String name);
 	/**
 	 * script to feed to composer
 	 * @return
 	 */
 	String getScript();
 	void setScript(String script);
-	
 	/**
 	 * whether this container was started
 	 * @return
 	 */
 	boolean isStarted();
 	
+	/**
+	 * list contents of container
+	 * @return stringified container representation
+	 */
+	String list();
+
 	void start() throws Exception;
+	
 	void stop() throws Exception;
-	
-	
 }

@@ -25,6 +25,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
+import org.picocontainer.SimpleReference;
 import org.picocontainer.behaviors.Cached;
 
 /**
@@ -101,8 +102,8 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
     }
     
     private PicoContainer buildContainer(ScriptedContainerBuilder builder) {
-        ObjectReference containerRef = new Cached.SimpleReference();
-        builder.buildContainer(containerRef, new Cached.SimpleReference(), new Cached.SimpleReference(), false);
+        ObjectReference containerRef = new SimpleReference();
+        builder.buildContainer(containerRef, new SimpleReference(), new SimpleReference(), false);
         return (PicoContainer) containerRef.get();
     }
         

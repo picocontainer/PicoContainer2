@@ -13,12 +13,14 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Enumeration;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
+import org.nanocontainer.ClassName;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
-import org.nanocontainer.ClassName;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultContainerBuilder;
@@ -26,10 +28,10 @@ import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptBuilderResolver;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ObjectReference;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.behaviors.Cached;
+import org.picocontainer.ObjectReference;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.SimpleReference;
 import org.picocontainer.parameters.ConstantParameter;
 
 /**
@@ -80,7 +82,7 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
             builderRef.set(containerBuilder);
 
             ObjectReference containerRef = new ApplicationScopeReference(context, APPLICATION_CONTAINER);
-            containerBuilder.buildContainer(containerRef, new Cached.SimpleReference(), context, false);
+            containerBuilder.buildContainer(containerRef, new SimpleReference(), context, false);
         // TODO bad catch - PH
         } catch (Exception e) {
             e.printStackTrace();

@@ -9,18 +9,18 @@
 
 package org.nanocontainer.nanowar;
 
-import javax.servlet.http.HttpSessionListener;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSession;
-import org.picocontainer.ObjectReference;
-import org.picocontainer.behaviors.Cached;
-
-import org.nanocontainer.integrationkit.ContainerBuilder;
-import javax.servlet.http.HttpSessionBindingEvent;
+import java.io.Serializable;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
-import java.io.Serializable;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
+
+import org.nanocontainer.integrationkit.ContainerBuilder;
+import org.picocontainer.ObjectReference;
+import org.picocontainer.SimpleReference;
 
 /**
  * Servlet listener class that hooks into the underlying servlet
@@ -80,7 +80,7 @@ public class NanoWarSessionListener extends AbstractNanoWarListener implements H
         session.setAttribute(KILLER_HELPER, new SessionContainerKillerHelper() {
             public void valueBound(HttpSessionBindingEvent bindingEvent) {
                 HttpSession session = bindingEvent.getSession();
-                containerRef = new Cached.SimpleReference();
+                containerRef = new SimpleReference();
                 containerRef.set(new SessionScopeReference(session, SESSION_CONTAINER).get());
             }
 
@@ -108,6 +108,6 @@ public class NanoWarSessionListener extends AbstractNanoWarListener implements H
     }
 
     private abstract class SessionContainerKillerHelper implements HttpSessionBindingListener, Serializable {
-        transient Cached.SimpleReference containerRef;
+        transient SimpleReference containerRef;
     }
 }

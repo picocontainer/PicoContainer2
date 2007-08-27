@@ -19,20 +19,20 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.nanocontainer.ClassName;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
-import org.nanocontainer.ClassName;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.ContainerRecorder;
 import org.nanocontainer.reflection.DefaultContainerRecorder;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.ObjectReference;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.Cached;
+import org.picocontainer.SimpleReference;
 import org.picocontainer.parameters.ConstantParameter;
 
 /**
@@ -144,9 +144,9 @@ public final class ScopedContainerComposer implements ContainerComposer {
                 new ClassName(containerBuilderClassName), parameters);
         ContainerBuilder containerBuilder = (ContainerBuilder) nano
                 .getComponent(containerBuilderClassName);
-        ObjectReference parentRef = new Cached.SimpleReference();
+        ObjectReference parentRef = new SimpleReference();
         parentRef.set(parent);
-        containerBuilder.buildContainer(new Cached.SimpleReference(), parentRef, null, false);
+        containerBuilder.buildContainer(new SimpleReference(), parentRef, null, false);
         return (ContainerPopulator) containerBuilder;
     }
 
