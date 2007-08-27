@@ -306,8 +306,7 @@ Apple a2 = pico.getComponent(Apple.class);
 
 <div class="source">
   <pre>
-sc = new StoreCaching();
-pico = new DefaultPicoContainer(sc);
+pico = new DefaultPicoContainer(new Storing());
 pico.addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
@@ -318,12 +317,12 @@ Apple a2 = pico.getComponent(Apple.class);
    extracted. Here's a code snippet to illustrate that:</p>
 
 <div class="source">
-    <pre>sc = new StoreCaching();
+    <pre>storing = new Storing();
 pico = new DefaultPicoContainer(sc);
 ....
-sc.putCacheForThread(httpRequest.getSession().getAttribute(&quot;sessionComponentCache&quot;);
+storing.putCacheForThread(httpRequest.getSession().getAttribute(&quot;sessionComponentStore&quot;);
 // do other methods that process request in session concept and may do getComponent(..) from the sesion container.
-httpRequest.getSession().setAttribute(&quot;sessionComponentCache&quot;, sc.getCacheForThread());
+httpRequest.getSession().setAttribute(&quot;sessionComponentStore&quot;, sc.getCacheForThread());
 </pre>
 </div>
 
@@ -347,18 +346,23 @@ httpRequest.getSession().setAttribute(&quot;sessionComponentCache&quot;, sc.getC
     <li>you can't intercept an implementation's static methods</li>
     <li>it is not possible to modify a method's arguments</li>
     <li>the constructor's invocation for the component is not interceptable</li>
-    <li>the component's fields are not touchable</li>
+    <li>the component's fields are not interceptable</li>
+    <li>only one component invoking the methods on another component will be intercepted.
+      <ul>
+        <li>components and related classes calling their own methods will not be intercepted</li>
+      </ul>
+    </li>
 </ul>
 <div class="source">
       <pre>public static class BiteReporter implements Apple {
-    private Interceptor interceptor;
+    private Intercepted.Controller controller;
 
-    public BiteReporter(Interceptor interceptor) {
-        this.interceptor = interceptor;
+    public BiteReporter(Intercepted.Controller controller) {
+        this.controller = controller;
 
     } 
     public boolean takeBite(int grams) {
-        System.out.println(&quot;Bite of &quot; + grams + &quot; grams of apple '&quot; + interceptor.instance().getName() + &quot;'&quot;);
+        System.out.println(&quot;Bite of &quot; + grams + &quot; grams of apple '&quot; + controller.instance().getName() + &quot;'&quot;);
         return false; // ignored, but necessary.
     }
 }
@@ -366,7 +370,7 @@ httpRequest.getSession().setAttribute(&quot;sessionComponentCache&quot;, sc.getC
 pico = new DefaultPicoContainer(new Interception());
 pico.addComponent(Apple.class, BraeburnApple.class);
 Intercpeted intercepted = pico.getComponentAdapter(Apple.class).findAdapterOfType(Intercpeted.class);
-injected.pre(Apple.class, new BiteReporter(intercepted.getInterceptor()));
+intercepted.pre(Apple.class, new BiteReporter(intercepted.getController()));
 // see also Intercpeted.post(...) method.
 Apple a1 = pico.getComponent(Apple.class);
 a1.takeBite(100); 
@@ -386,20 +390,17 @@ pico.addComponent(Apple.class, BraeburnApple.class);
 </div>
 <div class="source">
     <pre>pico = new PicoBuilder.withBehaviors(interception()).build();
-pico.as(INTERCEPT).addComponent(Apple.class, BraeburnApple.class);
+pico.addComponent(Apple.class, BraeburnApple.class);
 // etc</pre>
 </div>
-
-<b>Fine grained participation in interception</b>
-
-<p>Assuming you're passing in the Interceptor to the classes you're using for interception of a component, you can
+<p><b>Fine grained participation in interception</b><br/>Assuming you're passing in the Interceptor to the classes you're using for interception of a component, you can
    participate in the fate of the method call. For a 'pre' invocation, you can veto the calling of the 'real'
    method. </p>
 
 <div class="source">
     <pre>    public boolean takeBite(int grams) {
         if (grams &gt; 50) {
-             interceptor.veto();
+             controller.veto();
 
         }
         return false; // will be passed back to the caller.
@@ -412,8 +413,8 @@ pico.as(INTERCEPT).addComponent(Apple.class, BraeburnApple.class);
     <pre>    public boolean takeBite(int grams) {        
 
         if (grams &gt; 50) {
-             interceptor.override();
-             (Apple) realApple = (Apple) interceptor.instance();
+             controller.override();
+             (Apple) realApple = (Apple) controller.instance();
              realApple.takeBite(-1 * grams); // undo !
         }
         return false; // will be passed back to the caller.
@@ -425,7 +426,7 @@ pico.as(INTERCEPT).addComponent(Apple.class, BraeburnApple.class);
 <div class="source">
     <pre>    public boolean takeBite(int grams) {        
 
-        boolean rv = (boolean) interceptor.getOriginalRetVal(); 
+        boolean rv = (boolean) controller.getOriginalRetVal();
         if (rv == false) {
              // do something !
         }

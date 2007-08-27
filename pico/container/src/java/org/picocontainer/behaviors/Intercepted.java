@@ -22,38 +22,38 @@ public class Intercepted<T> extends HiddenImplementation {
 
     private final Map<Class, Object> pres = new HashMap<Class, Object>();
     private final Map<Class, Object> posts = new HashMap<Class, Object>();
-    private Interceptor interceptor = new InterceptorWrapper(new InterceptorThreadLocal());
+    private Controller controller = new ControllerWrapper(new InterceptorThreadLocal());
 
     public Intercepted(ComponentAdapter delegate) {
         super(delegate);
     }
 
-    public void pre(Class type, Object interceptor) {
+    public void addPreInvocation(Class type, Object interceptor) {
         pres.put(type, interceptor);
     }
 
-    public void post(Class type, Object interceptor) {
+    public void addPostInvocation(Class type, Object interceptor) {
         posts.put(type, interceptor);
     }
 
     protected Object invokeMethod(Method method, Object[] args, PicoContainer container) throws Throwable {
         Object componentInstance = getDelegate().getComponentInstance(container);
         try {
-            interceptor.clear();
-            interceptor.instance(componentInstance);
+            controller.clear();
+            controller.instance(componentInstance);
             Object pre = pres.get(method.getDeclaringClass());
             if (pre != null) {
                 Object rv =  method.invoke(pre, args);
-                if (interceptor.isVetoed()) {
+                if (controller.isVetoed()) {
                     return rv;
                 }
             }
             Object result = method.invoke(componentInstance, args);
-            interceptor.setOriginalRetVal(result);
+            controller.setOriginalRetVal(result);
             Object post = posts.get(method.getDeclaringClass());
             if (post != null) {
                 Object rv = method.invoke(post, args);
-                if (interceptor.isOverridden()) {
+                if (controller.isOverridden()) {
                     return rv;
                 }
             }
@@ -63,17 +63,17 @@ public class Intercepted<T> extends HiddenImplementation {
         }
     }
 
-    public Interceptor getInterceptor() {
-        return interceptor;
+    public Controller getController() {
+        return controller;
     }
 
     public static class InterceptorThreadLocal extends ThreadLocal implements Serializable {
         protected Object initialValue() {
-            return new InterceptorImpl();
+            return new ControllerImpl();
         }
     }
 
-    public interface Interceptor {
+    public interface Controller {
         void veto();
 
         void clear();
@@ -91,7 +91,7 @@ public class Intercepted<T> extends HiddenImplementation {
         void override();
     }
 
-    public static class InterceptorImpl implements Interceptor {
+    public static class ControllerImpl implements Controller {
         private boolean vetoed;
         private Object retVal;
         private boolean overridden;
@@ -132,44 +132,44 @@ public class Intercepted<T> extends HiddenImplementation {
         }
     }
 
-    public class InterceptorWrapper implements Interceptor {
+    public class ControllerWrapper implements Controller {
         private final ThreadLocal threadLocal;
 
-        public InterceptorWrapper(ThreadLocal threadLocal) {
+        public ControllerWrapper(ThreadLocal threadLocal) {
             this.threadLocal = threadLocal;
         }
 
         public void veto() {
-            ((Interceptor) threadLocal.get()).veto();
+            ((Controller) threadLocal.get()).veto();
         }
 
         public void clear() {
-            ((Interceptor) threadLocal.get()).clear();
+            ((Controller) threadLocal.get()).clear();
         }
 
         public boolean isVetoed() {
-            return ((Interceptor) threadLocal.get()).isVetoed();
+            return ((Controller) threadLocal.get()).isVetoed();
         }
 
         public void setOriginalRetVal(Object retVal) {
-            ((Interceptor) threadLocal.get()).setOriginalRetVal(retVal);
+            ((Controller) threadLocal.get()).setOriginalRetVal(retVal);
         }
 
         public Object getOriginalRetVal() {
-            return ((Interceptor) threadLocal.get()).getOriginalRetVal();
+            return ((Controller) threadLocal.get()).getOriginalRetVal();
         }
 
         public boolean isOverridden() {
-            return ((Interceptor) threadLocal.get()).isOverridden();
+            return ((Controller) threadLocal.get()).isOverridden();
         }
 
         public void instance(Object instance) {
-            ((Interceptor) threadLocal.get()).instance(instance);
+            ((Controller) threadLocal.get()).instance(instance);
 
         }
 
         public void override() {
-            ((Interceptor) threadLocal.get()).override();
+            ((Controller) threadLocal.get()).override();
         }
     }
 

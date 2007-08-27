@@ -44,8 +44,8 @@ public class InterceptingTestCase extends TestCase {
         pico.addComponent(Foo.class, FooImpl.class);
 
         Intercepted intercepted = pico.getComponentAdapter(Foo.class).findAdapterOfType(Intercepted.class);
-        final Intercepted.Interceptor interceptor = intercepted.getInterceptor();
-        intercepted.pre(Foo.class, new Foo() {
+        final Intercepted.Controller interceptor = intercepted.getController();
+        intercepted.addPreInvocation(Foo.class, new Foo() {
             public void one() {
                 sb.append("pre-one(),");
             }
@@ -54,13 +54,13 @@ public class InterceptingTestCase extends TestCase {
                 return null;
             }
         });
-        intercepted.post(Foo.class, new Foo() {
+        intercepted.addPostInvocation(Foo.class, new Foo() {
             public void one() {
-                sb.append("post-one(),");
+                sb.append("addPostInvocation-one(),");
             }
             public String two(String a, int b) {
                 assertEquals("two", interceptor.getOriginalRetVal());
-                sb.append("post-two('"+a+"',"+b+"),");
+                sb.append("addPostInvocation-two('"+a+"',"+b+"),");
                 return null;
             }
         });
@@ -69,7 +69,7 @@ public class InterceptingTestCase extends TestCase {
         assertNotNull(foo);
         foo.one();
         assertEquals("two", foo.two("hello", 99));
-        assertEquals("pre-one(),call-one(),post-one(),pre-two('hello',99),call-two('hello',99),post-two('hello',99),", sb.toString());
+        assertEquals("pre-one(),call-one(),addPostInvocation-one(),pre-two('hello',99),call-two('hello',99),addPostInvocation-two('hello',99),", sb.toString());
         assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
@@ -80,8 +80,8 @@ public class InterceptingTestCase extends TestCase {
         pico.addComponent(StringBuilder.class, sb);
 
         Intercepted intercepted = pico.getComponentAdapter(Foo.class).findAdapterOfType(Intercepted.class);
-        final Intercepted.Interceptor interceptor = intercepted.getInterceptor();
-        intercepted.pre(Foo.class, new Foo() {
+        final Intercepted.Controller interceptor = intercepted.getController();
+        intercepted.addPreInvocation(Foo.class, new Foo() {
             public void one() {
                 interceptor.veto();
                 sb.append("veto-one(),");
@@ -108,8 +108,8 @@ public class InterceptingTestCase extends TestCase {
         pico.addComponent(Foo.class, FooImpl.class);
         pico.addComponent(StringBuilder.class, sb);
         Intercepted intercepted = pico.getComponentAdapter(Foo.class).findAdapterOfType(Intercepted.class);
-        final Intercepted.Interceptor interceptor = intercepted.getInterceptor();
-        intercepted.pre(Foo.class, new Foo() {
+        final Intercepted.Controller interceptor = intercepted.getController();
+        intercepted.addPreInvocation(Foo.class, new Foo() {
             public void one() {
                 sb.append("pre-one(),");
             }
@@ -119,7 +119,7 @@ public class InterceptingTestCase extends TestCase {
                 return null;
             }
         });
-        intercepted.post(Foo.class, new Foo() {
+        intercepted.addPostInvocation(Foo.class, new Foo() {
             public void one() {
                 interceptor.override();
                 sb.append("override-one(),");
