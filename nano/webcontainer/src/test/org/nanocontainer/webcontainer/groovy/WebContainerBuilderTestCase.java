@@ -24,14 +24,14 @@ import org.mortbay.util.IO;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.webcontainer.TestHelper;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.behaviors.Cached;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.SimpleReference;
 
 public final class WebContainerBuilderTestCase extends TestCase {
 
-    private final ObjectReference containerRef = new Cached.SimpleReference();
-    private final ObjectReference parentContainerRef = new Cached.SimpleReference();
+    private final ObjectReference containerRef = new SimpleReference();
+    private final ObjectReference parentContainerRef = new SimpleReference();
 
     private MutablePicoContainer pico;
 

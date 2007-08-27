@@ -22,15 +22,14 @@ import org.apache.commons.vfs.FileSelectInfo;
 import org.apache.commons.vfs.FileSelector;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.FileSystemManager;
-import org.apache.commons.vfs.impl.VFSClassLoader;
 import org.apache.commons.vfs.VFS;
+import org.apache.commons.vfs.impl.VFSClassLoader;
 import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.script.ScriptedContainerBuilderFactory;
-import org.picocontainer.ObjectReference;
-import org.picocontainer.behaviors.Cached;
-
-import org.nanocontainer.script.UnsupportedScriptTypeException;
 import org.nanocontainer.script.ScriptBuilderResolver;
+import org.nanocontainer.script.ScriptedContainerBuilderFactory;
+import org.nanocontainer.script.UnsupportedScriptTypeException;
+import org.picocontainer.ObjectReference;
+import org.picocontainer.SimpleReference;
 
 /**
  * This class is capable of deploying an application from any kind of file system
@@ -153,7 +152,7 @@ public class NanoContainerDeployer implements Deployer {
 
         FileObject deploymentScript = getDeploymentScript(applicationFolder);
 
-        ObjectReference result = new Cached.SimpleReference();
+        ObjectReference result = new SimpleReference();
 
         String extension = "." + deploymentScript.getName().getExtension();
         Reader scriptReader = new InputStreamReader(deploymentScript.getContent().getInputStream());

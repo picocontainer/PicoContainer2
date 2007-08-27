@@ -20,7 +20,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.behaviors.Cached;
+import org.picocontainer.SimpleReference;
 
 /**
  * Standalone offers a command line interface to NanoContainer.
@@ -155,7 +155,7 @@ public class Standalone {
 
 
     private static void buildContainer(final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory, boolean nowait, final boolean quiet) {
-        final ObjectReference containerRef = new Cached.SimpleReference();
+        final ObjectReference containerRef = new SimpleReference();
         scriptedContainerBuilderFactory.getContainerBuilder().buildContainer(containerRef, null, null, true);
 
         if (!nowait) {
