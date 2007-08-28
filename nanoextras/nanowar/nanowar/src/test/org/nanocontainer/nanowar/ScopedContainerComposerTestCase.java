@@ -21,12 +21,11 @@ import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.SimpleReference;
-import org.picocontainer.behaviors.Cached;
 
 /**
  * @author Mauro Talevi
