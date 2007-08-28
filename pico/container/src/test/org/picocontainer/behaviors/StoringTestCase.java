@@ -170,6 +170,40 @@ public class StoringTestCase extends TestCase {
         assertEquals("Cached:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
+    public void testThatCacheMapCanBeFlushedOnASubsequentThreadSimulatingASessionConcept() {
+
+
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
+        final Storing storeCaching = new Storing();
+        final DefaultPicoContainer child = new DefaultPicoContainer(storeCaching, parent);
+
+        parent.addComponent(StringBuilder.class);
+        child.addComponent(Foo.class);
+
+        StringBuilder sb = parent.getComponent(StringBuilder.class);
+
+        Foo one = child.getComponent(Foo.class);
+        Foo two = child.getComponent(Foo.class);
+
+        assertNotNull(one);
+        assertNotNull(two);
+        assertSame(one,two);
+
+        storeCaching.flushCacheForThread();
+
+        Foo three = child.getComponent(Foo.class);
+        Foo four = child.getComponent(Foo.class);
+
+        assertNotNull(three);
+        assertNotNull(four);
+        assertNotSame(one,three);
+        assertSame(three,four);
+
+        assertEquals("<Foo<Foo", sb.toString());
+        assertEquals("Cached:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
+    }
+
+
     private void sleepALittle() {
         try {
             Thread.sleep(100);

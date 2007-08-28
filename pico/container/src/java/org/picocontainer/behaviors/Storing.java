@@ -86,6 +86,10 @@ public class Storing extends AbstractBehaviorFactory {
         mapThreadLocalObjectReference.set(wrappedMap.wrapped);
     }
 
+    public void flushCacheForThread() {
+        mapThreadLocalObjectReference.set(new HashMap());
+    }
+
     public static class StoreThreadLocal extends ThreadLocal {
         protected Object initialValue() {
             return new HashMap();
