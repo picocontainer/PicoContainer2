@@ -32,11 +32,11 @@ import org.picocontainer.adapters.AbstractAdapter;
  * @author Paul Hammant
  * @author Mauro Talevi
  */
-public final class InstanceAdapter extends AbstractAdapter implements Behavior, LifecycleStrategy {
-    private final Object componentInstance;
+public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Behavior<T>, LifecycleStrategy {
+    private final T componentInstance;
     private final LifecycleStrategy lifecycleStrategy;
 
-    public InstanceAdapter(Object componentKey, Object componentInstance, LifecycleStrategy lifecycleStrategy, ComponentMonitor componentMonitor) throws PicoCompositionException {
+    public InstanceAdapter(Object componentKey, T componentInstance, LifecycleStrategy lifecycleStrategy, ComponentMonitor componentMonitor) throws PicoCompositionException {
         super(componentKey, getInstanceClass(componentInstance), componentMonitor);
         this.componentInstance = componentInstance;
         this.lifecycleStrategy = lifecycleStrategy;
@@ -49,7 +49,7 @@ public final class InstanceAdapter extends AbstractAdapter implements Behavior, 
         return componentInstance.getClass();
     }
 
-    public Object getComponentInstance(PicoContainer container) {
+    public T getComponentInstance(PicoContainer container) {
         return componentInstance;
     }
     
@@ -93,4 +93,6 @@ public final class InstanceAdapter extends AbstractAdapter implements Behavior, 
     public String toString() {
         return "Instance-" + super.toString();   
     }
+
+
 }

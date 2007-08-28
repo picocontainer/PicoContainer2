@@ -29,9 +29,9 @@ import java.io.Serializable;
  * @author Aslak Helles&oslash;y
  * @author Jon Tirs&eacute;n
  */
-public abstract class AbstractAdapter implements ComponentAdapter, ComponentMonitorStrategy, Serializable {
+public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, ComponentMonitorStrategy, Serializable {
     private Object componentKey;
-    private Class componentImplementation;
+    private Class<T> componentImplementation;
     private ComponentMonitor componentMonitor;
 
 
@@ -79,13 +79,13 @@ public abstract class AbstractAdapter implements ComponentAdapter, ComponentMoni
      * {@inheritDoc}
      * @see org.picocontainer.ComponentAdapter#getComponentImplementation()
      */
-    public Class getComponentImplementation() {
+    public Class<T> getComponentImplementation() {
         return componentImplementation;
     }
 
     protected void checkTypeCompatibility() {
         if (componentKey instanceof Class) {
-            Class componentType = (Class) componentKey;
+            Class<?> componentType = (Class) componentKey;
             if (!componentType.isAssignableFrom(componentImplementation)) {
                 throw new ClassCastException(componentImplementation.getName() + " is not a " + componentType.getName());
             }
@@ -116,11 +116,13 @@ public abstract class AbstractAdapter implements ComponentAdapter, ComponentMoni
         return componentMonitor;
     }
 
-    public final ComponentAdapter getDelegate() {
+    public final ComponentAdapter<T> getDelegate() {
         return null;
     }
 
-    public final ComponentAdapter findAdapterOfType(Class componentAdapterType) {
+    public final <U extends ComponentAdapter> U findAdapterOfType(Class<U> componentAdapterType) {
         return null;
     }
+    
+    
 }
