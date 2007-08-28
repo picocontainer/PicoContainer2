@@ -16,6 +16,8 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.adapters.AbstractAdapter;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
  * <p>
@@ -36,13 +38,26 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Beha
     private final T componentInstance;
     private final LifecycleStrategy lifecycleStrategy;
 
+    
     public InstanceAdapter(Object componentKey, T componentInstance, LifecycleStrategy lifecycleStrategy, ComponentMonitor componentMonitor) throws PicoCompositionException {
         super(componentKey, getInstanceClass(componentInstance), componentMonitor);
         this.componentInstance = componentInstance;
         this.lifecycleStrategy = lifecycleStrategy;
     }
 
-    private static Class getInstanceClass(Object componentInstance) {
+    public InstanceAdapter(Object componentKey, T componentInstance) {
+    	this(componentKey,componentInstance,new NullLifecycleStrategy(),new NullComponentMonitor());   	
+    }
+
+    public InstanceAdapter(Object componentKey, T componentInstance, LifecycleStrategy lifecycleStrategy) {
+    	this(componentKey,componentInstance,lifecycleStrategy,new NullComponentMonitor());  
+    }
+
+    public InstanceAdapter(Object componentKey, T componentInstance,  ComponentMonitor componentMonitor) {
+    	this(componentKey,componentInstance,new NullLifecycleStrategy(),componentMonitor);  
+    }
+     
+     private static Class getInstanceClass(Object componentInstance) {
         if (componentInstance == null) {
             throw new NullPointerException("componentInstance cannot be null");
         }
