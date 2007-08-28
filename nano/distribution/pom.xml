@@ -172,7 +172,7 @@
 						<id>bin</id>
 						<phase>install</phase>
 						<goals>
-							<goal>assembly</goal>
+							<goal>single</goal>
 						</goals>
 						<configuration>
 							<descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
@@ -184,7 +184,7 @@
 						<id>src</id>
 						<phase>install</phase>
 						<goals>
-							<goal>assembly</goal>
+							<goal>single</goal>
 						</goals>
 						<configuration>
 							<descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
