@@ -3,7 +3,7 @@ pico = new org.picocontainer.DefaultPicoContainer()
 
     pico.addComponent(new java.lang.String("glarch glurch"))
     /*
-        note, that JNDIO exposition shall be before (upstack?) cachong - else
+        note, that JNDI exposition shall be before (upstack?) caching - else
         each visitor invocation iwll create new instance
     */
     pico.addAdapter(
@@ -24,6 +24,21 @@ pico = new org.picocontainer.DefaultPicoContainer()
     pico.addAdapter(
         new org.picocontainer.gems.jndi.JNDIProvided(
             "java:/Mail"
+        )
+    )
+    
+    
+    pico.addAdapter(
+        new org.nanocontainer.nanosar.SimpleJMXExposed(
+            new org.picocontainer.behaviors.Cached(
+                 new org.picocontainer.injectors.ConstructorInjector(
+                    "JMXExposed",
+                    org.nanocontainer.nanosar.example.SimpleBean,
+                    null,
+                    new org.picocontainer.monitors.NullComponentMonitor(),
+                    new org.picocontainer.lifecycle.NullLifecycleStrategy()
+                )
+            )
         )
     )
 

@@ -13,7 +13,9 @@ import org.apache.commons.logging.LogFactory;
 import org.nanocontainer.script.ScriptBuilderResolver;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.SimpleReference;
 import org.picocontainer.gems.jndi.JNDIContainerVisitor;
 import org.picocontainer.gems.jndi.JNDIObjectReference;
 
@@ -27,7 +29,7 @@ public class ContainerDeployer implements ContainerDeployerMBean, MBeanRegistrat
 
 	String containerComposer;
 
-	JNDIObjectReference<PicoContainer> containerRef;
+	ObjectReference<PicoContainer> containerRef;
 
 	String jndiName;
 
@@ -50,6 +52,10 @@ public class ContainerDeployer implements ContainerDeployerMBean, MBeanRegistrat
 		return containerComposer;
 	}
 
+	/**
+	 * jndi name to bind container to.  if not specified, container 
+	 * will be not bound
+	 */
 	public String getJndiName() {
 		return jndiName;
 	}
@@ -135,8 +141,8 @@ public class ContainerDeployer implements ContainerDeployerMBean, MBeanRegistrat
 					getParentName(), context);
 		}
 		
-		containerRef = new JNDIObjectReference<PicoContainer>(getJndiName(),
-				context);
+		containerRef = getJndiName() != null? new JNDIObjectReference<PicoContainer>(getJndiName(),
+				context): new SimpleReference<PicoContainer>();
 
 		// build and start container
 		factory.getContainerBuilder().buildContainer(containerRef,
@@ -149,7 +155,7 @@ public class ContainerDeployer implements ContainerDeployerMBean, MBeanRegistrat
 		log.info("components bound to JNDI");
 
 		// TODO: expose components to JMX
-
+		(new JMXContainerVisitor(objectName,mbeanServer)).traverse(containerRef.get());
 		log.info("components are exposed to JMX");
 		started = true;
 	}
@@ -170,8 +176,9 @@ public class ContainerDeployer implements ContainerDeployerMBean, MBeanRegistrat
 	}
 
 	public ObjectName preRegister(MBeanServer server, ObjectName name) throws Exception {
-		System.err.println("registered at server: " + server);
+
 		mbeanServer = server;
+		objectName = name;
 		return name;
 	}
 
