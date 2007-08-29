@@ -29,7 +29,7 @@ import org.nanocontainer.script.ScriptBuilderResolver;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.nanocontainer.script.UnsupportedScriptTypeException;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.SimpleReference;
+import org.picocontainer.references.SimpleReference;
 
 /**
  * This class is capable of deploying an application from any kind of file system

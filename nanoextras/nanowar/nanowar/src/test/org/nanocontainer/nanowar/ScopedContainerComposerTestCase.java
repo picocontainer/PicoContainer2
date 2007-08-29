@@ -25,7 +25,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.SimpleReference;
+import org.picocontainer.references.SimpleReference;
 
 /**
  * @author Mauro Talevi

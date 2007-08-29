@@ -11,9 +11,11 @@ pico = new org.picocontainer.DefaultPicoContainer()
             new org.picocontainer.behaviors.Cached(
                 new org.picocontainer.adapters.InstanceAdapter(
                     "exposedMap",
-                    new java.util.HashMap(),
+                    new java.util.HashMap()
+                    /*,
                     new org.picocontainer.lifecycle.NullLifecycleStrategy(),
                     new org.picocontainer.monitors.NullComponentMonitor()
+                    */
                     )
                 ),
                 "nano:/blurge/jndiExposedMap" 

@@ -20,7 +20,7 @@ import org.nanocontainer.integrationkit.DefaultContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.SimpleReference;
+import org.picocontainer.references.SimpleReference;
 
 /**
  * ContainerComposerMocker mocks the functionality of a specified container composer class.

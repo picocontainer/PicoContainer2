@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSessionListener;
 
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.SimpleReference;
+import org.picocontainer.references.SimpleReference;
 
 /**
  * Servlet listener class that hooks into the underlying servlet

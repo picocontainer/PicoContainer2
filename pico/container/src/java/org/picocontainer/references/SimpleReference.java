@@ -1,6 +1,8 @@
-package org.picocontainer;
+package org.picocontainer.references;
 
 import java.io.Serializable;
+
+import org.picocontainer.ObjectReference;
 
 /**
  * Simple instance implementation of ObjectReference. 

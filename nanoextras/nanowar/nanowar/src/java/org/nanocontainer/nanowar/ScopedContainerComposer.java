@@ -32,7 +32,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.SimpleReference;
+import org.picocontainer.references.SimpleReference;
 import org.picocontainer.parameters.ConstantParameter;
 
 /**

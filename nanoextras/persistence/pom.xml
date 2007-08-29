@@ -13,7 +13,9 @@
 	<packaging>pom</packaging>
 	<url>http://www.nanocontainer.org/persistence</url>
 	<modules>
-		<module>persistence</module>
+        <!--
+		<module>persistence</module> 
+        -->
 		<module>persistence-hibernate2</module>
 		<module>persistence-hibernate3</module>
 		<module>persistence-hibernate-annotations</module>

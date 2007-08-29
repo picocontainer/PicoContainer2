@@ -27,14 +27,14 @@ public class ClassPathElementHelper {
             if (path.toLowerCase().startsWith(HTTP)) {
                 pathURL = new URL(path);
             } else {
-                Object rVal = AccessController.doPrivileged(new PrivilegedAction() {
+                Object rVal = AccessController.doPrivileged(new PrivilegedAction<Object>() {
                     public Object run() {
                         try {
                             File file = new File(path);
                             if (!file.exists()) {
                                 return new NanoContainerMarkupException("classpath '" + path + "' does not exist ");
                             }
-                            return file.toURL();
+                            return file.toURI().toURL();
                         } catch (MalformedURLException e) {
                             return e;
                         }

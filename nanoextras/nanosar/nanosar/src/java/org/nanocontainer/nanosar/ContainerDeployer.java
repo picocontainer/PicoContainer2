@@ -15,9 +15,9 @@ import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.SimpleReference;
 import org.picocontainer.gems.jndi.JNDIContainerVisitor;
 import org.picocontainer.gems.jndi.JNDIObjectReference;
+import org.picocontainer.references.SimpleReference;
 
 /**
  * mbean for deployment in JBoss SAR

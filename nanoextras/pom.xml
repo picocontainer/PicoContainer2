@@ -9,18 +9,26 @@
 
     <modules>
         <module>nanosar</module>
-        <module>nanowar/nanowar</module>
+        <module>nanowar</module>
+        <!--
+        <module>nanowar/nanowar</module>  
+
         <module>nanowar/nanowar-axis</module>
         <module>nanowar/nanowar-jsf</module>
         <module>nanowar/nanowar-nanoweb</module>
         <module>nanowar/nanowar-struts</module>
         <module>nanowar/nanowar-webwork</module>
         <module>nanowar/nanowar-webwork2</module>
-        <module>persistence/persistence</module>
-        <module>persistence/persistence-hibernate-annotations</module>
+                -->
+        <module>persistence</module>
+        <!--
+        <module>persistence/persistence-hibernate-annotations</module> 
+
         <module>persistence/persistence-hibernate2</module>
         <module>persistence/persistence-hibernate3</module>
-        <module>remoting/remoting</module>
+        -->
+
+        <module>remoting</module>
     </modules>
 
     <organization>

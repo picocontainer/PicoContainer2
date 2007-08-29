@@ -15,7 +15,7 @@ import java.io.Serializable;
 import org.picocontainer.Behavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ObjectReference;
-import org.picocontainer.SimpleReference;
+import org.picocontainer.references.SimpleReference;
 
 /**
  * <p>

@@ -16,7 +16,7 @@ import org.nanocontainer.integrationkit.DefaultContainerBuilder;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.SimpleReference;
+import org.picocontainer.references.SimpleReference;
 
 /**
  * Base class for application-level and session-level listeners.
