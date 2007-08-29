@@ -66,8 +66,10 @@ pico.addConfig(&quot;spellingWebServiceURL&quot;, &quot;http://foo.com/foo.wsdl&
 pico.addConfig(&quot;somethingElse&quot;, &quot;abcde&quot;);
 pico.addConfig(&quot;timeout&quot;, 120);
 pico.addConfig(&quot;123&quot;, 456);
-pico.addComponent(BigFatComponent.class);</pre>
-      </div>
+pico.addComponent(BigFatComponent.class);
+BigFatComponent bfc = pico.getComponent(BigFatComponent.class);
+// bfg has &quot;http://foo.com/foo.wsdl&quot; and 120 as URL and timeout, <strong>not</strong> &quot;abcde&quot; and 456.</pre>
+  </div>
   <p>This feature of PicoContainer relies on the a non-JDK mechanism of accessing parameter names for methods and constructors. There are two ways for this to work. </p>
   <ul>
     <li>adding paranamer 1.0 and ASM 3.0 (or above) to your classpath and ensuring that your component classes have debug info compiled in. </li>
@@ -95,7 +97,10 @@ public static void main(String[] args) {
 
 ...
 java -jar myapp.jar JdbcUser=joe JdbcPassword=joejoejoe
-</pre>
+
+...
+Result: DataStore is instantiated with the right &quot;Joe&quot; and &quot;joejoejoe&quot; as the two strings passed into the constructor.
+ </pre>
 </div>
 <p>Not all command line arguments are turned into configuration items, only those separated with an = sign (a second constructor for ArgumentativePicoContainer allows you to specify a different separator). If the value to the right of the = is an int, then the config item will be added as an int (not a String). Likewise for long, and boolean ('true' / 'false'). All else will be left as a String. </p>
 <p>Also not that there are not going to be any accidental injections of the wrong configuration value. If you don't specify enough command line arguments, PicoContainer will <strong>always</strong> throw the <a href="ambiguous-injectable-help.html">'Ambiguous' exception</a> and not inject the first String/int/long/boolean that it finds. </p>
