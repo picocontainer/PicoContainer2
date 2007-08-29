@@ -260,35 +260,34 @@ pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
   <pre>
 pico = new DefaultPicoContainer(new ThreadCaching());
 pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
+new Thread(new Runnable() {
+  public void run() {
+
+    Apple a1 = pico.getComponent(Apple.class);
+  }
+}).start();
+new Thread(new Runnable() {
+  public void run() {
+    Apple a2 = pico.getComponent(Apple.class);
+  }
+}).start();
+// a1 and a2 are different instances
 </pre>
 </div>
 <div class="source">
   <pre>
 pico = new DefaultPicoContainer();
 pico.as(THREAD_CACHE).addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
+
 </pre>
 </div>
 <div class="source">
     <pre>pico = new PicoBuilder().withThreadCaching().build();
-pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
+pico.addComponent(Apple.class);</pre>
 </div>
 <div class="source">
     <pre>pico = new PicoBuilder().withBehaviors(threadCaching()).build();
-pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
+pico.addComponent(Apple.class);</pre>
 </div>
 
 <h3>Storing</h3>
