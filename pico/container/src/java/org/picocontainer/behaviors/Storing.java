@@ -15,7 +15,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ObjectReference;
 
@@ -31,7 +30,7 @@ public class Storing extends AbstractBehaviorFactory {
 
     private final StoreThreadLocal mapThreadLocalObjectReference = new StoreThreadLocal();
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, Class componentImplementation, Parameter... parameters)
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
             return super.createComponentAdapter(componentMonitor,
@@ -42,21 +41,21 @@ public class Storing extends AbstractBehaviorFactory {
                                                                              parameters);
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
-        return new Cached(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+        return new Cached<T>(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                 componentProperties, componentKey, componentImplementation, parameters),
                           new ThreadLocalObjectReference(componentKey));
 
     }
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
                                     LifecycleStrategy lifecycleStrategy,
                                     Properties componentProperties,
-                                    final ComponentAdapter adapter) {
+                                    final ComponentAdapter<T> adapter) {
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
             return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
-        return new Cached(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter),
+        return new Cached<T>(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter),
                           new ThreadLocalObjectReference(adapter.getComponentKey()));
     }
 
