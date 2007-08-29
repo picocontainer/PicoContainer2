@@ -3,18 +3,18 @@ package org.picocontainer;
 import java.io.Serializable;
 
 /**
- * simple memopry reference. I (KP)  extracted this out of 
- * Cahced (where it was static inner class) because 
- * it is needed elsewhere. 
+ * Simple instance implementation of ObjectReference. 
  * 
  * @author Aslak Helles&oslash;y
  * @author Konstantin Pribluda
  */
+@SuppressWarnings("serial")
 public class SimpleReference<T> implements ObjectReference<T>,
 		Serializable {
 	private T instance;
 
 	public SimpleReference() {
+	    // no-op
 	}
 
 	public T get() {
