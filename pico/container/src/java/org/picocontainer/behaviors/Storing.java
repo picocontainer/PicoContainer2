@@ -44,15 +44,7 @@ public class Storing extends AbstractBehaviorFactory {
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
         return new Cached(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                 componentProperties, componentKey, componentImplementation, parameters),
-                          new ObjectReference() {
-                              public Object get() {
-                                  return ((Map)mapThreadLocalObjectReference.get()).get(componentKey) ;
-                              }
-                              public void set(Object item) {
-                                  ((Map)mapThreadLocalObjectReference.get()).put(componentKey, item) ;
-
-                              }
-                          });
+                          new ThreadLocalObjectReference(componentKey));
 
     }
 
@@ -65,15 +57,7 @@ public class Storing extends AbstractBehaviorFactory {
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
         return new Cached(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter),
-                               new ObjectReference() {
-                                   public Object get() {
-                                       return ((Map)mapThreadLocalObjectReference.get()).get(adapter.getComponentKey()) ;
-                                   }
-
-                                   public void set(Object item) {
-                                       ((Map)mapThreadLocalObjectReference.get()).put(adapter.getComponentKey(), item) ;
-                                   }
-                               });
+                          new ThreadLocalObjectReference(adapter.getComponentKey()));
     }
 
     public StoreWrapper getCacheForThread() {
@@ -99,4 +83,20 @@ public class Storing extends AbstractBehaviorFactory {
         private Map wrapped;
     }
 
+    private class ThreadLocalObjectReference implements ObjectReference {
+        private final Object componentKey;
+
+        public ThreadLocalObjectReference(Object componentKey) {
+            this.componentKey = componentKey;
+        }
+
+        public Object get() {
+            return ((Map)mapThreadLocalObjectReference.get()).get(componentKey) ;
+        }
+
+        public void set(Object item) {
+            ((Map)mapThreadLocalObjectReference.get()).put(componentKey, item) ;
+
+        }
+    }
 }
