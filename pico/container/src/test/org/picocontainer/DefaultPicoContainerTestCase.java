@@ -348,8 +348,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
                                                        Properties componentProperties,
                                                        Object componentKey,
                                                        Class componentImplementation,
-                                                       Parameter... parameters) throws PicoCompositionException
-        {
+                                                       Parameter... parameters) throws PicoCompositionException {
             return adapter;
         }
     }

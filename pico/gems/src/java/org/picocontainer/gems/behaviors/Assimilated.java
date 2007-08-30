@@ -68,8 +68,7 @@ public final class Assimilated extends AbstractBehavior {
      * @throws PicoCompositionException Thrown if the <code>type</code> is not compatible and cannot be proxied.
      */
     public Assimilated(final Class type, final ComponentAdapter delegate, final ProxyFactory proxyFactory)
-            throws PicoCompositionException
-    {
+            throws PicoCompositionException {
         super(delegate);
         this.type = type;
         this.proxyFactory = proxyFactory;
@@ -112,8 +111,7 @@ public final class Assimilated extends AbstractBehavior {
      * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer)
      */
     public Object getComponentInstance(final PicoContainer container)
-            throws PicoCompositionException
-    {
+            throws PicoCompositionException  {
         return isCompatible ? super.getComponentInstance(container) : Delegating.object(
                 type, super.getComponentInstance(container), proxyFactory);
     }

@@ -170,7 +170,7 @@ public class StoringTestCase extends TestCase {
         assertEquals("Cached:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testThatCacheMapCanBeFlushedOnASubsequentThreadSimulatingASessionConcept() {
+    public void testThatCacheMapCanBeResetOnASubsequentThreadSimulatingASessionConcept() {
 
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
@@ -189,7 +189,7 @@ public class StoringTestCase extends TestCase {
         assertNotNull(two);
         assertSame(one,two);
 
-        storeCaching.flushCacheForThread();
+        storeCaching.resetCacheForThread();
 
         Foo three = child.getComponent(Foo.class);
         Foo four = child.getComponent(Foo.class);
@@ -201,6 +201,34 @@ public class StoringTestCase extends TestCase {
 
         assertEquals("<Foo<Foo", sb.toString());
         assertEquals("Cached:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
+    }
+
+    public void testThatCacheMapCanBeDisabledSimulatingAnEndedRequest() {
+
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
+        final Storing storeCaching = new Storing();
+        final DefaultPicoContainer child = new DefaultPicoContainer(storeCaching, parent);
+
+        parent.addComponent(StringBuilder.class);
+        child.addComponent(Foo.class);
+
+        StringBuilder sb = parent.getComponent(StringBuilder.class);
+
+        Foo one = child.getComponent(Foo.class);
+        Foo two = child.getComponent(Foo.class);
+
+        assertNotNull(one);
+        assertNotNull(two);
+        assertSame(one,two);
+
+        storeCaching.invalidateCache();
+
+        try {
+            Foo three = child.getComponent(Foo.class);
+            fail("should have barfed");
+        } catch (UnsupportedOperationException e) {
+            e.printStackTrace();
+        }
     }
 
 

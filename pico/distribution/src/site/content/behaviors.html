@@ -260,18 +260,22 @@ pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
   <pre>
 pico = new DefaultPicoContainer(new ThreadCaching());
 pico.addComponent(Apple.class);
-new Thread(new Runnable() {
+new Thread() {
   public void run() {
 
     Apple a1 = pico.getComponent(Apple.class);
-  }
-}).start();
-new Thread(new Runnable() {
-  public void run() {
+
     Apple a2 = pico.getComponent(Apple.class);
+
   }
 }).start();
-// a1 and a2 are different instances
+new Thread() {
+  public void run() {
+    Apple a3 = pico.getComponent(Apple.class);
+  }
+}).start();
+// a1 and a2 are the same instance
+// a1 and a3 are different instances
 </pre>
 </div>
 <div class="source">
@@ -307,26 +311,38 @@ pico.addComponent(Apple.class);</pre>
   <pre>
 pico = new DefaultPicoContainer(new Storing());
 pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
+
+new Thread() {
+  public void run() {
+
+    Apple a1 = pico.getComponent(Apple.class);
+
+    Apple a2 = pico.getComponent(Apple.class);
+
+  }
+}).start();
+new Thread() {
+  public void run() {
+    Apple a3 = pico.getComponent(Apple.class);
+  }
+}).start();
+// a1 and a2 are the same instance
+// a1 and a3 are different instances
 </pre>
 </div>
 <p>The BehaviorFactory for Storing behavior is not stateless. It allows the cache to be set for the thread as well as
    extracted. Here's a code snippet to illustrate that:</p>
 
 <div class="source">
-    <pre>storing = new Storing();
+  <pre>storing = new Storing();
 pico = new DefaultPicoContainer(sc);
 ....
 storing.putCacheForThread(httpRequest.getSession().getAttribute(&quot;sessionComponentStore&quot;);
 // do other methods that process request in session concept and may do getComponent(..) from the sesion container.
-httpRequest.getSession().setAttribute(&quot;sessionComponentStore&quot;, sc.getCacheForThread());
-</pre>
-</div>
+httpRequest.getSession().setAttribute(&quot;sessionComponentStore&quot;, sc.getCacheForThread());</pre></div>
 
+<p>See <a href="scopes.html">scopes</a> for another example for a web framework</p>
 <h3>Interception</h3>
-
 <p>This is a rudimentary Aspect Orientated Programing (AOP) capability. With respect to the methods of a component, both
    before and after invocation, control can be handed to an interceptor. You can intercept a method call:</p>
 <ul>

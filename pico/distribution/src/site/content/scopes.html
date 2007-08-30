@@ -120,11 +120,15 @@ public class MyTinyPicoServlet extends HttpServlet {
         action.execute(req, resp); // yeah yeah, this is pretty basic
 
         sessionStoring.putStoreInHttpSession(req);
-        requestStoring.flushStore();
+
+        sessionStoring.invalidateStore();
+        requestStoring.invalidateStore();
+        // trying to retrieve components from at session or request scopes here will result in an UnsupportedOperationException
     }
 
 }
 </pre>
 </div>
+<p>HttpSessionStoring is not in the core jar, its in the 'gems' one.</p>
 </body>
 </html>

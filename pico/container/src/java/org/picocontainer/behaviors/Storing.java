@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.Properties;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collections;
 
 /**
  * @author Paul Hammant
@@ -69,8 +70,12 @@ public class Storing extends AbstractBehaviorFactory {
         mapThreadLocalObjectReference.set(wrappedMap.wrapped);
     }
 
-    public void flushCacheForThread() {
+    public void resetCacheForThread() {
         mapThreadLocalObjectReference.set(new HashMap());
+    }
+
+    public void invalidateCache() {
+        mapThreadLocalObjectReference.set(Collections.unmodifiableMap(Collections.emptyMap()));
     }
 
     public static class StoreThreadLocal extends ThreadLocal {

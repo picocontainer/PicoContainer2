@@ -33,11 +33,15 @@ public class HttpSessionStoring {
 
     public void putStoreInHttpSession(HttpServletRequest req) {
         req.getSession().setAttribute(name, storingBehavior.getCacheForThread());
-        flushStore();
+        resetStore();
     }
 
-    public void flushStore() {
-        storingBehavior.flushCacheForThread();
+    public void resetStore() {
+        storingBehavior.resetCacheForThread();
+    }
+
+    public void invalidateStore() {
+        storingBehavior.invalidateCache();
     }
 
 }
