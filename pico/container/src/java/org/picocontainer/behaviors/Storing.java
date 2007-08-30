@@ -17,6 +17,7 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ObjectReference;
+import org.picocontainer.references.ThreadLocalObjectReference;
 
 import java.io.Serializable;
 import java.util.Properties;
@@ -45,7 +46,7 @@ public class Storing extends AbstractBehaviorFactory {
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
         return new Cached<T>(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                 componentProperties, componentKey, componentImplementation, parameters),
-                          new ThreadLocalObjectReference(componentKey));
+                          new ThreadLocalObjectReference(mapThreadLocalObjectReference, componentKey));
 
     }
 
@@ -59,7 +60,7 @@ public class Storing extends AbstractBehaviorFactory {
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
 
         return new Cached<T>(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter),
-                          new ThreadLocalObjectReference(adapter.getComponentKey()));
+                          new ThreadLocalObjectReference(mapThreadLocalObjectReference, adapter.getComponentKey()));
     }
 
     public StoreWrapper getCacheForThread() {
@@ -89,20 +90,4 @@ public class Storing extends AbstractBehaviorFactory {
         private Map wrapped;
     }
 
-    private class ThreadLocalObjectReference implements ObjectReference {
-        private final Object componentKey;
-
-        public ThreadLocalObjectReference(Object componentKey) {
-            this.componentKey = componentKey;
-        }
-
-        public Object get() {
-            return ((Map)mapThreadLocalObjectReference.get()).get(componentKey) ;
-        }
-
-        public void set(Object item) {
-            ((Map)mapThreadLocalObjectReference.get()).put(componentKey, item) ;
-
-        }
-    }
 }
