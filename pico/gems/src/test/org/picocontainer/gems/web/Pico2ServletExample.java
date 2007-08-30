@@ -52,7 +52,8 @@ public class Pico2ServletExample extends HttpServlet {
         action.execute(req, resp);
 
         sessionStoring.putStoreInHttpSession(req);
-        requestStoring.resetStore();
+        sessionStoring.invalidateStore();
+        requestStoring.invalidateStore();
     }
 
     public static class Action {
