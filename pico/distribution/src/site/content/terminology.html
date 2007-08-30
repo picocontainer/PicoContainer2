@@ -53,9 +53,7 @@
    and some other things which are less relevant in this context. A JavaBean may represent both data and
    functionality.</p>
 
-<h3><a name="5.2Terminology-DataObject%2FEntityBean%2FDataBean%2FPODO"
-       id="5.2Terminology-DataObject%2FEntityBean%2FDataBean%2FPODO"></a>Data Object / Entity Bean / Data Bean /
-                                                                         PODO</h3>
+<h3>Data Object / Entity Bean / Data Bean / PODO</h3>
 
 <p>An object that only represents data, but contains no 'logic' or any kind of other functionality (except for
    perhaps some utility methods that transform the data into some other form, like getXXXasString(). Will often
@@ -66,8 +64,9 @@
 
 <p>An object that only represents functionality. It is a &quot;unit of logic&quot;, that can &quot;do work&quot;.
    In a well-designed application, the work that a component can do is specified in a work interface. Will
-   usually not override equals() or hashCode().</p>
+   usually not override equals() or hashCode(). It typically coexists with other components of the same language in the same application or server process.</p>
 <h3>Service</h3>
+<p>One or more components that communicate with others over the wire. Services, laced together for some large stack, may be from different technologies or languages, and share only the specification of the wire protocol. Service implies remoteness and potential unavailability or outage.</p>
 <h3>Passive Component</h3>
 
 <p>A component that does not use threads (not even indirectly).</p>
@@ -77,8 +76,7 @@
 <p>A component that uses threads (possibly indirectly through the use of a Thread Pool or Executor
    component).</p>
 
-<h3><a name="5.2Terminology-ContextualizedDependancyLookupComponent"
-       id="5.2Terminology-ContextualizedDependancyLookupComponent"></a>Contextualized Dependancy Lookup
+<h3>Contextualized Dependancy Lookup
                                                                        Component</h3>
 
 <p>A component that has a public default constructor and that usually has its state set up and/or modified
@@ -92,14 +90,12 @@
 <p>A component that has a public default constructor and that has its state set up through the use of setter
    methods.</p>
 
-<h3><a name="5.2Terminology-ConstructorInjectionComponent"
-       id="5.2Terminology-ConstructorInjectionComponent"></a>Constructor Injection Component</h3>
+<h3>Constructor Injection Component</h3>
 
 <p>A component that has one or more public constructors and that has its state set up through the arguments
    provided in one of these constructors.</p>
 
-<h3><a name="5.2Terminology-Constructor%2FSetterDependencyInjectionComponent"
-       id="5.2Terminology-Constructor%2FSetterDependencyInjectionComponent"></a>Constructor/Setter Dependency
+<h3>Constructor/ Setter Dependency
                                                                                 Injection Component</h3>
 
 <p>A component that has a public constructor and that has its state set up through the arguments provided in
