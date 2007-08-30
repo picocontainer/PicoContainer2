@@ -23,9 +23,9 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.AdaptiveInjection;
 import org.picocontainer.behaviors.PropertyApplicator;
 import org.picocontainer.behaviors.PropertyApplying;
-import org.picocontainer.behaviors.Cached;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
+import org.picocontainer.references.SimpleReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public final class PicoContainerTask extends Task {
         }
     };
 
-    private final ObjectReference containerRef = new Cached.SimpleReference();
+    private final ObjectReference containerRef = new SimpleReference();
 
     public void addComponent(Component component) {
         antSpecifiedComponents.add(component);

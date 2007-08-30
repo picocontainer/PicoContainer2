@@ -76,7 +76,7 @@ public class  SimpleJMXExposed<T> extends AbstractBehavior<T> {
 	
 	/**
 	 * register bean to server if possible. 
-	 * @param server mbean server to register to 
+	 * @param srv mbean server to register to 
 	 * @param baseName base object name. 
 	 * @throws PicoCompositionException 
 	 * @throws NotCompliantMBeanException 
