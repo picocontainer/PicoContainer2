@@ -8,7 +8,7 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.remoting.jmx;
+package org.picocontainer.gems.jmx;
 
 import javax.management.DynamicMBean;
 import javax.management.ObjectName;
@@ -22,7 +22,7 @@ public class PredefinedObjectNameFactory implements ObjectNameFactory {
 
     /**
      * Return the <code>key</code> if it is an {@link ObjectName}.
-     * @see org.nanocontainer.remoting.jmx.ObjectNameFactory#create(java.lang.Object, javax.management.DynamicMBean)
+     * @see org.picocontainer.gems.jmx.ObjectNameFactory#create(java.lang.Object, javax.management.DynamicMBean)
      */
     public ObjectName create(final Object key, final DynamicMBean mBean) {
         return key instanceof ObjectName ? (ObjectName)key : null;

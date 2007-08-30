@@ -8,7 +8,7 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.remoting.jmx;
+package org.picocontainer.gems.jmx;
 
 import javax.management.MBeanInfo;
 
@@ -30,7 +30,7 @@ public class ComponentKeyConventionMBeanInfoProvider extends AbstractNamingConve
      * otherwise the string representation of the key. The key part may already end with &quot;MBean&quot; as it would
      * for components registered with the management interface as key, that follow the JMX naming conventions. As last
      * resort the calculated key of the MBeanInfo is turned into a type that is used again as lookup key.
-     * @see org.nanocontainer.remoting.jmx.MBeanInfoProvider#provide(org.picocontainer.PicoContainer,
+     * @see org.picocontainer.gems.jmx.MBeanInfoProvider#provide(org.picocontainer.PicoContainer,
      *      org.picocontainer.ComponentAdapter)
      */
     public MBeanInfo provide(final PicoContainer picoContainer, final ComponentAdapter componentAdapter) {

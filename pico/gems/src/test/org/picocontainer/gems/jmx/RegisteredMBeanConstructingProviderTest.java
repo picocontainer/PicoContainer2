@@ -8,13 +8,13 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.remoting.jmx;
+package org.picocontainer.gems.jmx;
 
 import javax.management.MBeanInfo;
 import javax.management.ObjectName;
 
-import org.nanocontainer.remoting.jmx.testmodel.Person;
-import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
+import org.picocontainer.gems.jmx.testmodel.Person;
+import org.picocontainer.gems.jmx.testmodel.PersonMBean;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;

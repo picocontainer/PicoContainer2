@@ -59,6 +59,19 @@
             <version>0.11.2</version>
             <scope>test</scope>
         </dependency>
+        <!-- mx4j stuff. kind of deprecated but  we need it now for testing -->
+			<dependency>
+				<groupId>mx4j</groupId>
+				<artifactId>mx4j-jmx</artifactId>
+				<version>2.1.1</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>mx4j</groupId>
+				<artifactId>mx4j-impl</artifactId>
+				<version>2.1.1</version>
+				<scope>provided</scope>
+			</dependency>        
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>

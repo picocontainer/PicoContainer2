@@ -8,7 +8,7 @@
  * Original code by Michael Ward                                    		 *
  *****************************************************************************/
 
-package org.nanocontainer.remoting.jmx;
+package org.picocontainer.gems.jmx;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +52,7 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
      * internal registry. Only components that were registered with additional information will be considered and a
      * {@link DynamicMBean} will be created for them using the {@link DynamicMBeanFactory}. If the component key is of
      * type class, it is used as management interface.
-     * @see org.nanocontainer.remoting.jmx.DynamicMBeanProvider#provide(PicoContainer, ComponentAdapter)
+     * @see org.picocontainer.gems.jmx.DynamicMBeanProvider#provide(PicoContainer, ComponentAdapter)
      */
     public JMXRegistrationInfo provide(final PicoContainer picoContainer, final ComponentAdapter componentAdapter) {
         final Object key = componentAdapter.getComponentKey();

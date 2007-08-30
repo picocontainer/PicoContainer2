@@ -7,14 +7,14 @@
  *                                                                           *
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
-package org.nanocontainer.remoting.jmx;
+package org.picocontainer.gems.jmx;
 
 import javax.management.MBeanServer;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
-import org.nanocontainer.remoting.jmx.testmodel.DynamicMBeanPerson;
-import org.nanocontainer.remoting.jmx.testmodel.PersonMBean;
+import org.picocontainer.gems.jmx.testmodel.DynamicMBeanPerson;
+import org.picocontainer.gems.jmx.testmodel.PersonMBean;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Characteristics;
 import org.picocontainer.injectors.ConstructorInjection;

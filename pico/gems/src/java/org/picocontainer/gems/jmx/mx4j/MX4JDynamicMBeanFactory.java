@@ -8,12 +8,12 @@
  * Original code by Michael Ward                                    		 *
  *****************************************************************************/
 
-package org.nanocontainer.remoting.jmx.mx4j;
+package org.picocontainer.gems.jmx.mx4j;
 
 import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
 
-import org.nanocontainer.remoting.jmx.StandardMBeanFactory;
+import org.picocontainer.gems.jmx.StandardMBeanFactory;
 
 
 /**
@@ -28,7 +28,7 @@ public class MX4JDynamicMBeanFactory extends StandardMBeanFactory {
 
     /**
      * Create a MX4JDynamicMBean for the component. MX4J is only used, if management is <code>null</code>.
-     * @see org.nanocontainer.remoting.jmx.StandardMBeanFactory#create(java.lang.Object, java.lang.Class,
+     * @see org.picocontainer.gems.jmx.StandardMBeanFactory#create(java.lang.Object, java.lang.Class,
      *      javax.management.MBeanInfo)
      */
     public DynamicMBean create(final Object componentInstance, final Class management, final MBeanInfo mBeanInfo) {

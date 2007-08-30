@@ -8,7 +8,7 @@
  * Original code by Michael Ward                                    		 *
  *****************************************************************************/
 
-package org.nanocontainer.remoting.jmx;
+package org.picocontainer.gems.jmx;
 
 import javax.management.DynamicMBean;
 import javax.management.InstanceNotFoundException;
@@ -43,7 +43,7 @@ public class StandardMBeanFactory implements DynamicMBeanFactory {
      *            automatically generated one.
      * @return Returns a {@link StandardMBean}. If the <strong>mBeanInfo</strong> was not null, it is an instance of a
      *         {@link StandardNanoMBean}.
-     * @see org.nanocontainer.remoting.jmx.DynamicMBeanFactory#create(java.lang.Object, java.lang.Class,
+     * @see org.picocontainer.gems.jmx.DynamicMBeanFactory#create(java.lang.Object, java.lang.Class,
      *      javax.management.MBeanInfo)
      */
     public DynamicMBean create(final Object componentInstance, final Class management, final MBeanInfo mBeanInfo) {

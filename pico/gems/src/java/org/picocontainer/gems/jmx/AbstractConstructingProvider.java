@@ -8,7 +8,7 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.remoting.jmx;
+package org.picocontainer.gems.jmx;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
@@ -33,7 +33,7 @@ public abstract class AbstractConstructingProvider implements DynamicMBeanProvid
      * <p>
      * Note: An instance of the component is only created, if a management interface is available.
      * </p>
-     * @see org.nanocontainer.remoting.jmx.DynamicMBeanProvider#provide(org.picocontainer.PicoContainer,
+     * @see org.picocontainer.gems.jmx.DynamicMBeanProvider#provide(org.picocontainer.PicoContainer,
      *      org.picocontainer.ComponentAdapter)
      */
     public JMXRegistrationInfo provide(final PicoContainer picoContainer, final ComponentAdapter componentAdapter) {

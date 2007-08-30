@@ -8,7 +8,7 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.remoting.jmx.testmodel;
+package org.picocontainer.gems.jmx.testmodel;
 
 public final class OtherPerson implements PersonMBean {
     public void setName(String name) {

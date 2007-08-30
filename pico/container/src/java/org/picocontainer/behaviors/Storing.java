@@ -31,7 +31,8 @@ public class Storing extends AbstractBehaviorFactory {
 
     private final StoreThreadLocal mapThreadLocalObjectReference = new StoreThreadLocal();
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, Class<T> componentImplementation, Parameter... parameters)
+    public <T> ComponentAdapter<T>  createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, Class<T> componentImplementation, Parameter... parameters)
+
             throws PicoCompositionException {
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
             return super.createComponentAdapter(componentMonitor,
@@ -56,6 +57,7 @@ public class Storing extends AbstractBehaviorFactory {
             return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
+
         return new Cached<T>(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter),
                           new ThreadLocalObjectReference(adapter.getComponentKey()));
     }

@@ -7,7 +7,7 @@
  *                                                                           *
  * Original code by James Strachan                                           *
  *****************************************************************************/
-package org.nanocontainer.remoting.jmx.mx4j;
+package org.picocontainer.gems.jmx.mx4j;
 
 import javax.management.MBeanInfo;
 

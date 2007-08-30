@@ -68,7 +68,7 @@ public abstract class Stored<T> extends AbstractBehavior<T> {
 	        instance = super.getComponentInstance(container);
 	        instanceReference.set(instance);
 	    }
-	    return (T)instance;
+	    return instance;
 	}
 
 	/**

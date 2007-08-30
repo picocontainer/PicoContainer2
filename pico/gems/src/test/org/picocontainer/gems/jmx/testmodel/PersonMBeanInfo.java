@@ -8,7 +8,7 @@
  * Original code by Joerg Schaible                                           *
  *****************************************************************************/
 
-package org.nanocontainer.remoting.jmx.testmodel;
+package org.picocontainer.gems.jmx.testmodel;
 
 import javax.management.MBeanInfo;
 
