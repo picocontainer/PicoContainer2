@@ -34,6 +34,10 @@
         <page>transparency.html</page>
     </section>
     <section>
+         <name>Applications</name>
+         <page>web-frameworks.html</page>
+    </section>
+    <section>
          <name>Anti-patterns</name>
          <page>antipatterns/propagating-dependency-antipattern.html</page>
          <page>antipatterns/long-constructor-argument-list-antipattern.html</page>

@@ -13,8 +13,10 @@
 <p>The take away from both is that we don't have to have long classnames like <em>CachingComponentAdapterFactory</em> and <em>ImplementationHidingComponentAdapterFactory</em>, we can in fact have shorter names, that read better in their intended use:</p>
 <pre>  new DefaultPicoContainer(new Caching());</pre>
 <p>Similarly,  method names can play a part in simplicity and meaning for real situations where they are used.</p>
-<pre>  new DefaultPicoContainer(new Caching().wrap(new ImplementationHiding()));</pre>
-<pre></pre>
+<pre>  new DefaultPicoContainer(new Caching().wrap(new ImplementationHiding()));
+</pre>
+<p>Caching, the class, implements an abstraction called BehaviorFactory as do many others. All BehaviorFactory implementations make implementations of Behavior like 'Cached'. Similarly 'ConstructionInjection' (and similar) make implementations of Injector like 'ConstructorInjector' (and similar). Both BehaviorFactory and InjectionFactory are extensions of ComponentFactory.</p>
+<p></p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 </body>
