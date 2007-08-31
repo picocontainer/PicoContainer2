@@ -13,7 +13,7 @@ package org.picocontainer.behaviors;
 import java.io.Serializable;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ObjectReference;
+import org.picocontainer.references.ThreadLocalReference;
 
 /**
  * <p>
@@ -26,9 +26,6 @@ public final class ThreadCached<T> extends Stored<T>{
 
     public ThreadCached(ComponentAdapter<T> delegate) {
         super(delegate, new ThreadLocalReference<T>());
-    }
-
-    public static class ThreadLocalReference<T> extends ThreadLocal<T> implements ObjectReference<T>, Serializable {
     }
 
     public String toString() {

@@ -90,15 +90,15 @@ public class MyTinyPicoServlet extends HttpServlet {
 
         PicoContainer appContainer = new DefaultPicoContainer(new Caching());
 
-        Storing sessionStore = new Storing();
+        Storing sessionStoreBehavior = new Storing();
 
-        PicoContainer sessionContainer = new DefaultPicoContainer(sessionStore, appContainer);
+        PicoContainer sessionContainer = new DefaultPicoContainer(sessionStoreBehavior, appContainer);
 
-        sessionStoring = new HttpSessionStoring(sessionStore, &quot;sessionStore&quot;);
+        sessionStoring = new HttpSessionStoring(sessionStoreBehavior, &quot;sessionStore&quot;);
 
-        Storing requestStore = new Storing();
-        requestContainer = new DefaultPicoContainer(requestStore, sessionContainer);
-        requestStoring = new HttpSessionStoring(requestStore, &quot;requestStore&quot;);
+        Storing requestStoreBehavior = new Storing();
+        requestContainer = new DefaultPicoContainer(requestStoreBehavior, sessionContainer);
+        requestStoring = new HttpSessionStoring(requestStoreBehavior, &quot;requestStore&quot;);
 
         // populate app, session and request scoped containers.
         // appContainer.addComponent(HibernateManager.class, MyHibernateManager.class); // all users/people share one HibernateManager

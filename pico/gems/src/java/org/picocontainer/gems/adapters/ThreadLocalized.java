@@ -17,6 +17,7 @@ import com.thoughtworks.proxy.kit.ReflectionUtils;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.references.ThreadLocalReference;
 import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.AbstractBehavior;
 

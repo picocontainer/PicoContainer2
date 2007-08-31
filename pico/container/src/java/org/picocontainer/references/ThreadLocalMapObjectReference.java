@@ -13,11 +13,11 @@ import org.picocontainer.ObjectReference;
 import java.util.Map;
 
 /** @author Paul Hammant */
-public  class ThreadLocalObjectReference implements ObjectReference {
+public  class ThreadLocalMapObjectReference implements ObjectReference {
     private final ThreadLocal threadLocal;
     private final Object componentKey;
 
-    public ThreadLocalObjectReference(ThreadLocal threadLocal, Object componentKey) {
+    public ThreadLocalMapObjectReference(ThreadLocal threadLocal, Object componentKey) {
         this.threadLocal = threadLocal;
         this.componentKey = componentKey;
     }

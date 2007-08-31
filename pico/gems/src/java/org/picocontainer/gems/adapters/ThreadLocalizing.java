@@ -21,6 +21,7 @@ import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.references.ThreadLocalReference;
 
 import java.util.Properties;
 

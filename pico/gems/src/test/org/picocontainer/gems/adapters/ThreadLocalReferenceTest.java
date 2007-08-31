@@ -13,6 +13,7 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.picocontainer.ObjectReference;
+import org.picocontainer.references.ThreadLocalReference;
 
 import java.util.ArrayList;
 import java.util.Collections;

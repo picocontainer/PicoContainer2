@@ -16,8 +16,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ObjectReference;
-import org.picocontainer.references.ThreadLocalObjectReference;
+import org.picocontainer.references.ThreadLocalMapObjectReference;
 
 import java.io.Serializable;
 import java.util.Properties;
@@ -46,7 +45,7 @@ public class Storing extends AbstractBehaviorFactory {
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
         return new Cached<T>(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                 componentProperties, componentKey, componentImplementation, parameters),
-                          new ThreadLocalObjectReference(mapThreadLocalObjectReference, componentKey));
+                          new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, componentKey));
 
     }
 
@@ -60,7 +59,7 @@ public class Storing extends AbstractBehaviorFactory {
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
 
         return new Cached<T>(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter),
-                          new ThreadLocalObjectReference(mapThreadLocalObjectReference, adapter.getComponentKey()));
+                          new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, adapter.getComponentKey()));
     }
 
     public StoreWrapper getCacheForThread() {
