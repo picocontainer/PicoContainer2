@@ -19,7 +19,7 @@ import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.Characteristics;
-import org.picocontainer.gems.adapters.ThreadLocalReference;
+import org.picocontainer.references.ThreadLocalReference;
 
 /**
  * @author Mauro Talevi
