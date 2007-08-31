@@ -12,6 +12,7 @@ package org.picocontainer.gems.web;
 import org.picocontainer.behaviors.Storing;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /** @author Paul Hammant */
 public class HttpSessionStoring {
@@ -24,15 +25,15 @@ public class HttpSessionStoring {
         this.name = name;
     }
 
-    public void retrieveStoreFromHttpSession(HttpServletRequest req) {
-        Storing.StoreWrapper sr = (Storing.StoreWrapper)req.getSession().getAttribute(name);
+    public void retrieveStoreFromHttpSession(HttpSession session) {
+        Storing.StoreWrapper sr = (Storing.StoreWrapper)session.getAttribute(name);
         if (sr != null) {
             storingBehavior.putCacheForThread(sr);
         }
     }
 
-    public void putStoreInHttpSession(HttpServletRequest req) {
-        req.getSession().setAttribute(name, storingBehavior.getCacheForThread());
+    public void putStoreInHttpSession(HttpSession session) {
+        session.setAttribute(name, storingBehavior.getCacheForThread());
         resetStore();
     }
 
