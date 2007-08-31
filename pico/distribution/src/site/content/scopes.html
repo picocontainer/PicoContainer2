@@ -15,10 +15,7 @@ work considerably. If a child has its parent registered, then it can
 lean on it for component resolution (but not without). If a parent has
 its child registered asa child, then it can manage it (start, stop,
 dispose cascade into children).</p>
-<p>Web frameworks leveraging PicoContainer typically setup child up
-with parent containers, but grant no visibility of the child to the
-parent. This is so that containers can be garbage collected at the end
-of their scope.</p>
+<p>Web frameworks that leverage PicoContainer typically construct a tree of containers.  For example an application level container maintains components that can be shared across the application. The application container will have child containers to maintain session level components.  These session level containers can resolve dependencies through their parent containers, but the application container will have no visibility into its children.  Additionally these child container do not have visibility into their sibling containers.  With this design, containers can easily be garbage collected at the end of their scope. </p>
 <h2>Simple Examples</h2>
 <p>Here are examples of parent/child setup:</p>
     <div class="source">
