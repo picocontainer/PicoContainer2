@@ -63,4 +63,8 @@ public final class StaticFactoryAdapter extends AbstractAdapter {
      */
     public void verify(PicoContainer container) throws PicoVerificationException {
     }
+
+    public String getDescriptor() {
+        return "StaticFactory";
+    }
 }

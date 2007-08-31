@@ -608,6 +608,10 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         public boolean componentHasLifecycle() {
             return true;
         }
+
+        public String getDescriptor() {
+            return null;
+        }
     }
 
     public static class TestLifecycleComponent implements Startable {

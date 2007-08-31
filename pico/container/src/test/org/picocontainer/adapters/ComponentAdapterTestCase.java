@@ -43,9 +43,8 @@ public class ComponentAdapterTestCase
         public void verify(PicoContainer container) throws PicoVerificationException {
         }
 
-
-        public String toString() {
-            return TestAdapter.class.getName() + ":" + super.toString() ;    
+        public String getDescriptor() {
+            return TestAdapter.class.getName() + ":" ;
         }
     }
 
@@ -65,7 +64,11 @@ public class ComponentAdapterTestCase
             return null;
         }
         public void accept(PicoVisitor visitor) {
-        }        
+        }
+
+        public String getDescriptor() {
+            return null;
+        }
     }
     
     private static class TestInstantiatingAdapter extends AbstractInjector {
@@ -80,6 +83,10 @@ public class ComponentAdapterTestCase
         }
 
         public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
+            return null;
+        }
+
+        public String getDescriptor() {
             return null;
         }
     }

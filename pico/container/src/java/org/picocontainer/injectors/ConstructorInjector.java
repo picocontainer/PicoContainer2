@@ -221,8 +221,8 @@ public class ConstructorInjector extends SingleMemberInjector {
         verifyingGuard.observe(getComponentImplementation());
     }
 
-    public String toString() {
-        return "ConstructorInjector-" + super.toString();
+    public String getDescriptor() {
+        return "ConstructorInjector-";
     }
 
 

@@ -81,6 +81,7 @@ public final class ThreadLocalized extends AbstractBehavior {
         return proxyFactory.createProxy(interfaces, invoker);
     }
 
+
     private Class[] getInterfaces() {
         final Object componentKey = getComponentKey();
         final Class[] interfaces;
@@ -98,8 +99,8 @@ public final class ThreadLocalized extends AbstractBehavior {
         return interfaces;
     }
 
-    public String toString() {
-        return "ThreadLocal:" + super.toString();
+    public String getDescriptor() {
+        return "ThreadLocal";
     }
     
 

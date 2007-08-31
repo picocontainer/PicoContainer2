@@ -126,4 +126,8 @@ public class  SimpleJMXExposed<T> extends AbstractBehavior<T> {
 			}
         }		
 	}
+
+    public String getDescriptor() {
+        return "SimpleJMXExposed";
+    }
 }

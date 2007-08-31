@@ -139,8 +139,8 @@ public class MethodInjector extends SingleMemberInjector {
         verifyingGuard.observe(getComponentImplementation());
     }
 
-    public String toString() {
-        return "MethodInjector-" + super.toString();
+    public String getDescriptor() {
+        return "MethodInjector-";
     }
 
 }

@@ -108,5 +108,9 @@ public class BehaviorAdapterTestCase extends MockObjectTestCase {
         public FooAbstractBehavior(ComponentAdapter delegate) {
             super(delegate);
         }
+
+        public String getDescriptor() {
+            return null;
+        }
     }
 }

@@ -68,8 +68,8 @@ public class AnnotatedFieldInjector extends IterativeInjector {
         field.set(componentInstance, toInject);
     }
 
-    public String toString() {
-        return "FieldInjector-" + super.toString();
+    public String getDescriptor() {
+        return "FieldInjector-";
     }
 
 }

@@ -173,9 +173,7 @@ public class Intercepted<T> extends HiddenImplementation {
         }
     }
 
-
-
-    protected String getName() {
-        return "Intercepted:";
+    public String getDescriptor() {
+        return "Intercepted";
     }
 }

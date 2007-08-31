@@ -43,9 +43,7 @@ public class Cached<T> extends Stored<T> {
 		super(delegate, instanceReference);
 	}
 
-
-	public String toString() {
-		return "Cached:" + super.toString();
-	}
-
+    public String getDescriptor() {
+        return "Cached";
+    }
 }

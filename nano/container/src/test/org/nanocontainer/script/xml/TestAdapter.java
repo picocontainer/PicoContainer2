@@ -36,6 +36,10 @@ public final class TestAdapter extends AbstractAdapter {
     public Object getComponentInstance(PicoContainer pico) {
         return null;
     }
+
+    public String getDescriptor() {
+        return null;
+    }
 }
 
 

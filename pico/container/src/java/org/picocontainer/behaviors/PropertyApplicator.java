@@ -104,6 +104,10 @@ public class PropertyApplicator<T> extends AbstractBehavior<T> {
         return componentInstance;
     }
 
+    public String getDescriptor() {
+        return "PropertyApplied";
+    }
+
     private Map<String, Method> getSetters(Class<?> clazz) {
         Map<String, Method> result = new HashMap<String, Method>();
         Method[] methods = getMethods(clazz);
@@ -285,9 +289,6 @@ public class PropertyApplicator<T> extends AbstractBehavior<T> {
             }
         }
         return convertedValue;
-    }
-    public String toString() {
-        return "PropertyApplied:" + super.toString(); 
     }
 
     public void setProperty(String name, String value) {

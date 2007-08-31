@@ -97,7 +97,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        return "" + getComponentKey();
+        return getDescriptor() + getComponentKey();
     }
 
     public void accept(PicoVisitor visitor) {

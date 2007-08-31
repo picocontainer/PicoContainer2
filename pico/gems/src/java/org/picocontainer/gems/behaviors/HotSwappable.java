@@ -57,8 +57,8 @@ public class HotSwappable extends HiddenImplementation {
         return instance;
     }
 
-    public String toString() {
-        return "HotSwappable:" + super.toString(); 
+    public String getDescriptor() {
+        return "HotSwappable";
     }
 
     public static class Swappable {

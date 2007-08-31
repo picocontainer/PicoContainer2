@@ -72,4 +72,6 @@ public interface ComponentAdapter<T> {
 
     <U extends ComponentAdapter> U findAdapterOfType(Class<U> componentAdapterType);
 
+    String getDescriptor();
+
 }

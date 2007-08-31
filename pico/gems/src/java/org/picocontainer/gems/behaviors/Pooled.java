@@ -317,6 +317,10 @@ public final class Pooled extends AbstractBehavior implements Behavior {
         return componentInstance;
     }
 
+    public String getDescriptor() {
+        return "Pooled";
+    }
+
     /**
      * Retrieve the current size of the pool. The returned value reflects the number of all managed
      * components.
@@ -463,10 +467,6 @@ public final class Pooled extends AbstractBehavior implements Behavior {
             super(message);
         }
 
-    }
-
-    public String toString() {
-        return "Pooled:" + super.toString(); 
     }
 
 }

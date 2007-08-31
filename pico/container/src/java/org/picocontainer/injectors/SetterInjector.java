@@ -70,8 +70,8 @@ public class SetterInjector extends IterativeInjector {
         return setterMethodPrefix;
     }
 
-    public String toString() {
-        return "SetterInjector-" + super.toString(); 
+    public String getDescriptor() {
+        return "SetterInjector-"; 
     }
 
 

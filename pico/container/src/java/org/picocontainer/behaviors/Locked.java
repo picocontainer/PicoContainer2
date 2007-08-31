@@ -38,8 +38,9 @@ public class Locked extends AbstractBehavior {
         }
         return retVal;
     }
-    public String toString() {
-        return "Locked:" + super.toString();
+
+    public String getDescriptor() {
+        return "Locked";
     }
 
 }

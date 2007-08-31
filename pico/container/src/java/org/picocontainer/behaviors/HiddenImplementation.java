@@ -58,6 +58,10 @@ public class HiddenImplementation extends AbstractBehavior {
         return createProxy(interfaces, container, delegate.getComponentImplementation().getClassLoader());
     }
 
+    public String getDescriptor() {
+        return "Hidden";
+    }
+
     private Object createProxy(Class[] interfaces, final PicoContainer container, final ClassLoader classLoader) {
         return Proxy.newProxyInstance(classLoader,
                 interfaces, new InvocationHandler() {
@@ -95,14 +99,5 @@ public class HiddenImplementation extends AbstractBehavior {
         }
         return classes;
     }
-
-    public String toString() {
-        return getName() + super.toString();
-    }
-
-    protected String getName() {
-        return "Hidden:";
-    }
-
 
 }

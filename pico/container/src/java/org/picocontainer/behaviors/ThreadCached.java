@@ -28,7 +28,7 @@ public final class ThreadCached<T> extends Stored<T>{
         super(delegate, new ThreadLocalReference<T>());
     }
 
-    public String toString() {
-        return "ThreadCached:" + super.toString();
+    public String getDescriptor() {
+        return "ThreadCached";
     }
 }

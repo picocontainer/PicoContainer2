@@ -43,7 +43,7 @@ public class Storing extends AbstractBehaviorFactory {
                                                                              parameters);
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
-        return new Cached<T>(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+        return new Stored<T>(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                 componentProperties, componentKey, componentImplementation, parameters),
                           new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, componentKey));
 
@@ -58,7 +58,7 @@ public class Storing extends AbstractBehaviorFactory {
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
 
-        return new Cached<T>(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter),
+        return new Stored<T>(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter),
                           new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, adapter.getComponentKey()));
     }
 

@@ -101,6 +101,10 @@ public class WriterComponentMonitorTestCase extends TestCase {
                                                            public void verify(PicoContainer container)
                                                                throws PicoCompositionException{
                                                            }
+
+                                                           public String getDescriptor() {
+                                                               return null;
+                                                           }
                                                        },
                                                        method,
                                                        "fooooo",

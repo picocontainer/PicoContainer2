@@ -45,7 +45,7 @@ public class StoringTestCase extends TestCase {
         assertNotNull(foo2);
         assertEquals(foo,foo2);
         assertEquals("<Foo", sb.toString());
-        assertEquals("Cached:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
+        assertEquals("Stored:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
     public void testThatTwoThreadsHaveSeparatedCacheValues() {
@@ -79,7 +79,7 @@ public class StoringTestCase extends TestCase {
         assertEquals(foos[1],foos[3]);
         assertFalse(foos[0] == foos[1]);
         assertEquals("<Foo<Foo", sb.toString());
-        assertEquals("Cached:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
+        assertEquals("Stored:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
     public void testThatTwoThreadsHaveSeparatedCacheValuesForThreeScopeScenario() {
@@ -120,7 +120,7 @@ public class StoringTestCase extends TestCase {
         assertSame(bars[2].foo,foos[2]);
         assertSame(bars[3].foo,foos[3]);
         assertEquals("<Foo<Bar<Foo<Bar", sb.toString());
-        assertEquals("Cached:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", sessionScope.getComponentAdapter(Foo.class).toString());
+        assertEquals("Stored:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", sessionScope.getComponentAdapter(Foo.class).toString());
     }
 
     public void testThatCacheMapCanBeReUsedOnASubsequentThreadSimulatingASessionConcept() {
@@ -167,7 +167,7 @@ public class StoringTestCase extends TestCase {
         assertSame(foos[1],foos[2]);
         assertSame(foos[2],foos[3]);
         assertEquals("<Foo", sb.toString());
-        assertEquals("Cached:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
+        assertEquals("Stored:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
     public void testThatCacheMapCanBeResetOnASubsequentThreadSimulatingASessionConcept() {
@@ -200,7 +200,7 @@ public class StoringTestCase extends TestCase {
         assertSame(three,four);
 
         assertEquals("<Foo<Foo", sb.toString());
-        assertEquals("Cached:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
+        assertEquals("Stored:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
     public void testThatCacheMapCanBeDisabledSimulatingAnEndedRequest() {

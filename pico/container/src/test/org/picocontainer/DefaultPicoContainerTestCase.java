@@ -385,6 +385,10 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         public ComponentAdapter findAdapterOfType(Class componentAdapterType) {
             return null;
         }
+        public String getDescriptor() {
+            return null;
+        }
+        
     }
 
     public void testMakeChildContainer() {

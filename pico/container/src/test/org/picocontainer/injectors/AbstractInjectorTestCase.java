@@ -147,5 +147,9 @@ public class AbstractInjectorTestCase extends TestCase {
         public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
             return null;
         }
+
+        public String getDescriptor() {
+            return null;
+        }
     }
 }

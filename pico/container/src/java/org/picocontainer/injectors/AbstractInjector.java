@@ -106,7 +106,6 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
             }
         }
     }
-  
     public void start(Object component) {
         lifecycleStrategy.start(component);
     }

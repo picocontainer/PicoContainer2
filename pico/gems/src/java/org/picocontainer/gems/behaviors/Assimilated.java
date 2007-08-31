@@ -116,6 +116,10 @@ public final class Assimilated extends AbstractBehavior {
                 type, super.getComponentInstance(container), proxyFactory);
     }
 
+    public String getDescriptor() {
+        return "Assimilated";
+    }
+
     /**
      * Return the type of the component. If the component type is not compatible with the type to assimilate, the assimilated
      * type is returned.
@@ -138,10 +142,6 @@ public final class Assimilated extends AbstractBehavior {
             return type;
         }
         return key;
-    }
-    
-    public String toString() {
-        return "Assimilated:" + super.toString();
     }
 
 }

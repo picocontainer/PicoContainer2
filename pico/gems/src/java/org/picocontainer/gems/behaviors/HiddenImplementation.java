@@ -62,6 +62,10 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         return o;
     }
 
+    public String getDescriptor() {
+        return "Hidden";
+    }
+
     protected HotSwappable.Swappable getSwappable() {
         return new HotSwappable.Swappable();
     }
@@ -271,10 +275,6 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         public Class<?> defineClass(String name, byte[] b) {
             return defineClass(name, b, 0, b.length);
         }
-    }
-
-    public String toString() {
-        return "Hidden:" + super.toString(); 
     }
 
 }

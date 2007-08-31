@@ -189,7 +189,7 @@ public abstract class AbstractBehavior<T> implements Behavior<T>, ComponentMonit
     }
 
     public String toString() {
-        return delegate.toString();
+        return getDescriptor() + ":" + delegate.toString();
     }
 }
 

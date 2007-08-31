@@ -23,7 +23,7 @@ public class Automated extends AbstractBehavior implements Behavior, Serializabl
         return true;
     }
 
-    public String toString() {
-        return "Automated:" + super.toString();
+    public String getDescriptor() {
+        return "Automated";
     }
 }

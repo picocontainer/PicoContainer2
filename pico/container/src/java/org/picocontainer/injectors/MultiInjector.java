@@ -71,4 +71,7 @@ public class MultiInjector extends AbstractInjector {
         annotatedMethodInjector.verify(container);
     }
 
+    public String getDescriptor() {
+        return "MultiInjector";
+    }
 }

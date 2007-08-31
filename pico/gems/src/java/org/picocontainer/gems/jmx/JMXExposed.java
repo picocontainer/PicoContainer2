@@ -111,6 +111,10 @@ public class JMXExposed extends AbstractBehavior {
         return componentInstance;
     }
 
+    public String getDescriptor() {
+        return "ExposedJMX";
+    }
+
     public void dispose(Object component) {
         if( null != registeredObjectNames ) {
             for (Object registeredObjectName : registeredObjectNames) {
@@ -132,9 +136,5 @@ public class JMXExposed extends AbstractBehavior {
 	public boolean hasLifecycle( Class type ) {
 		return true;
 	}
-
-    public String toString() {
-        return "ExposedJMX:" + super.toString(); 
-    }
 
 }

@@ -539,6 +539,10 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             Assert.fail("Not instantiatable");
             return null;
         }
+        public String getDescriptor() {
+            return null;
+        }
+        
     }
 
     static public class CollectingBehavior extends AbstractBehavior {
@@ -553,6 +557,10 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
             final Object result = super.getComponentInstance(container);
             list.add(result);
             return result;
+        }
+
+        public String getDescriptor() {
+            return "xxx";
         }
     }
 
@@ -574,6 +582,10 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
                 set.add(this);
             }
             return super.getComponentInstance(container);
+        }
+
+        public String getDescriptor() {
+            return "xxx";
         }
     }
 

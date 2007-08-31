@@ -71,6 +71,10 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Beha
     public void verify(PicoContainer container) {
     }
 
+    public String getDescriptor() {
+        return "Instance-";
+    }
+
     public void start(PicoContainer container) {
         start(componentInstance);
     }
@@ -104,10 +108,5 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Beha
     public boolean hasLifecycle(Class type) {
         return lifecycleStrategy.hasLifecycle(type);
     }
-
-    public String toString() {
-        return "Instance-" + super.toString();   
-    }
-
 
 }

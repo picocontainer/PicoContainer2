@@ -109,4 +109,8 @@ public class BeanShellAdapter extends AbstractAdapter {
 
     public void verify(PicoContainer pico) {
     }
+
+    public String getDescriptor() {
+        return "BeanShellConsole";
+    }
 }

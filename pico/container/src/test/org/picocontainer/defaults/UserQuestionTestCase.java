@@ -44,6 +44,10 @@ public final class UserQuestionTestCase extends TestCase {
 
         public void verify(PicoContainer pico) {
         }
+
+        public String getDescriptor() {
+            return null;
+        }
     }
 
     public static interface Cheese {

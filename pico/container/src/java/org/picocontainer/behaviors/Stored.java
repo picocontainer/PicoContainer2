@@ -7,13 +7,13 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 
 /**
- * abstract base behaviour for all behaviours wishing to store
+ * behaviour for all behaviours wishing to store
  * their component in "awkward places" ( object references ) 
  * @author Konstantin Pribluda
  *
  * @param <T>
  */
-public abstract class Stored<T> extends AbstractBehavior<T> {
+public class Stored<T> extends AbstractBehavior<T> {
 
 	    
 	protected final boolean delegateHasLifecylce;
@@ -71,7 +71,11 @@ public abstract class Stored<T> extends AbstractBehavior<T> {
 	    return instance;
 	}
 
-	/**
+    public String getDescriptor() {
+        return "Stored";
+    }
+
+    /**
 	 * Starts the cached component instance
 	 * {@inheritDoc}
 	 */

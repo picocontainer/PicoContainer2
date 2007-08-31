@@ -100,12 +100,8 @@ public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
         return null;
     }
 
-    /**
-	 * produce string representation
-	 */
-	@Override
-	public String toString() {
-		return "JNDI(" + jndiReference.getName() + ")";
-	}
+    public String getDescriptor() {
+        return "JNDI(" + jndiReference.getName() + ")";
+    }
 
 }

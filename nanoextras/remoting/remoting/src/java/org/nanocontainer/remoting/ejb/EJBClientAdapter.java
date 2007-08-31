@@ -206,4 +206,8 @@ public class EJBClientAdapter extends AbstractAdapter {
             }
         }
     }
+
+    public String getDescriptor() {
+        return "EJBClientAdapter";
+    }
 }
