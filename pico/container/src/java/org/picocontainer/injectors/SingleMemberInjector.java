@@ -151,6 +151,7 @@ public abstract class SingleMemberInjector extends AbstractInjector {
     protected class MemberInjectorParameterName implements ParameterName {
         private final AccessibleObject member;
         private final int index;
+        private String name;
 
         public MemberInjectorParameterName(AccessibleObject member, int index) {
             this.member = member;
@@ -158,12 +159,15 @@ public abstract class SingleMemberInjector extends AbstractInjector {
         }
 
         public String getName() {
+            if (name != null) {
+                return name;
+            }
             createIfNeededParanamerProxy();
             if (paranamer != null) {
                 String[] strings = lookupParameterNames(member);
-                return strings.length == 0 ? "" : strings[index];
+                name = strings.length == 0 ? "" : strings[index];
             }
-            return null;
+            return name;
         }
     }
 
