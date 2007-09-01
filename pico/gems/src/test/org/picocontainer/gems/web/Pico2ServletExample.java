@@ -44,14 +44,13 @@ public class Pico2ServletExample extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
 
-        sessionStoring.retrieveStoreFromHttpSession(req.getSession());
+        sessionStoring.retrieveSessionStoreOrCreateNewOne(req.getSession());
         requestStoring.resetStore();
 
         Action action = (Action) requestContainer.getComponent(req.getPathTranslated());
 
         action.execute(req, resp);
 
-        sessionStoring.putStoreInHttpSession(req.getSession());
         sessionStoring.invalidateStore();
         requestStoring.invalidateStore();
     }

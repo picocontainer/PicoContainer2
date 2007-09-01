@@ -25,10 +25,13 @@ public class HttpSessionStoring {
         this.name = name;
     }
 
-    public void retrieveStoreFromHttpSession(HttpSession session) {
+    public void retrieveSessionStoreOrCreateNewOne(HttpSession session) {
         Storing.StoreWrapper sr = (Storing.StoreWrapper)session.getAttribute(name);
         if (sr != null) {
             storingBehavior.putCacheForThread(sr);
+        } else {
+            session.setAttribute(name, storingBehavior.resetCacheForThread());
+
         }
     }
 
