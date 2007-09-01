@@ -25,7 +25,7 @@ public class HttpSessionStoring {
         this.name = name;
     }
 
-    public void retrieveSessionStoreOrCreateNewOne(HttpSession session) {
+    public synchronized void retrieveSessionStoreOrCreateNewOne(HttpSession session) {
         Storing.StoreWrapper sr = (Storing.StoreWrapper)session.getAttribute(name);
         if (sr != null) {
             storingBehavior.putCacheForThread(sr);
@@ -33,11 +33,6 @@ public class HttpSessionStoring {
             session.setAttribute(name, storingBehavior.resetCacheForThread());
 
         }
-    }
-
-    public void putStoreInHttpSession(HttpSession session) {
-        session.setAttribute(name, storingBehavior.getCacheForThread());
-        resetStore();
     }
 
     public void resetStore() {

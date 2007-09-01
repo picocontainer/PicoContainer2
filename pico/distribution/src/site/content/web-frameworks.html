@@ -48,18 +48,16 @@ public class MyTinyPicoServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
 
-        sessionStoring.retrieveStoreFromHttpSession(req.getSession());
-        requestStoring.flushStore();
+        sessionStoring.retrieveSessionStoreOrCreateNewOne(req.getSession());
+        requestStoring.resetStore();
 
         Action action = (Action) requestContainer.getComponent(req.getPathTranslated());
 
         action.execute(req, resp); // yeah yeah, this is pretty basic
 
-        sessionStoring.putStoreInHttpSession(req.getSession());
-
         sessionStoring.invalidateStore();
         requestStoring.invalidateStore();
-        // trying to retrieve components from at session or request scopes here will result in an UnsupportedOperationException
+        // trying to retrieve components from at session or request scopes from here on will result in an UnsupportedOperationException
     }
 
 }
