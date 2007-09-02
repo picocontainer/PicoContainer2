@@ -26,7 +26,7 @@ public class ConstantParameterTestCase extends TestCase {
     public void testThatInstaceTypeAcceptedForPrimitives() throws Exception {
         ConstantParameter param = new ConstantParameter(239);
         try{
-            param.verify(null,null,Integer.TYPE, null);
+            param.verify(null,null,Integer.TYPE, null, false);
         } catch(PicoCompositionException ex) {
             fail("failed verification for primitive / instance ");
         }

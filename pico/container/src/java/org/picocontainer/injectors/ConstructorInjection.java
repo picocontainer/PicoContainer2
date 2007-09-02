@@ -17,6 +17,8 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.InjectionFactory;
+import org.picocontainer.Characteristics;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 import java.io.Serializable;
 import java.util.Properties;
@@ -27,11 +29,12 @@ import java.util.Properties;
 public class ConstructorInjection implements InjectionFactory, Serializable {
 
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,
-                                                   Class componentImplementation,
-                                                   Parameter... parameters)
-            throws PicoCompositionException {
-        return new ConstructorInjector(componentKey, componentImplementation, parameters,
-                    componentMonitor, lifecycleStrategy);
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties properties, Object componentKey,
+                                                   Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
+        ConstructorInjector injector = new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(properties, Characteristics.USE_NAMES)) {
+            injector.setUseNames(true);
+        }
+        return injector;
     }
 }

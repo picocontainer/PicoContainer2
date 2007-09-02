@@ -367,9 +367,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (parameters != null && parameters.length == 0 && parameters != Parameter.ZERO) {
             parameters = null; // backwards compatibility!  solve this better later - Paul
         }
-        if (parameters == null && AbstractBehaviorFactory.removePropertiesIfPresent(properties, Characteristics.USE_NAMES) ) {
-            parameters = Parameter.USE_NAMES;
-        }
         if (componentImplementationOrInstance instanceof Class) {
             Properties tmpProperties = (Properties) properties.clone();
             ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(componentMonitor,

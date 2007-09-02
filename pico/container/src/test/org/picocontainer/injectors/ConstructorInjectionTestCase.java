@@ -20,6 +20,8 @@ import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.RecordingLifecycle;
 import org.picocontainer.testmodel.RecordingLifecycle.One;
 
+import java.util.Properties;
+
 /**
  * @author Mauro Talevi
  */
@@ -37,7 +39,7 @@ public class ConstructorInjectionTestCase extends AbstractComponentFactoryTestCa
         ConstructorInjection componentFactory =
             new ConstructorInjection();
         ConstructorInjector cica =  (ConstructorInjector)
-        componentFactory.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
+        componentFactory.createComponentAdapter(new NullComponentMonitor(), strategy, new Properties(), NullLifecycle.class, NullLifecycle.class);
         One one = new RecordingLifecycle.One(new StringBuffer());
         cica.start(one);
         cica.stop(one);        

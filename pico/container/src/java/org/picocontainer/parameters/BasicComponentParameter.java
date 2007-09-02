@@ -64,21 +64,21 @@ public class BasicComponentParameter
      *
      * @throws org.picocontainer.PicoCompositionException
      *          {@inheritDoc}
-     * @see org.picocontainer.Parameter#isResolvable(org.picocontainer.PicoContainer,org.picocontainer.ComponentAdapter,Class,org.picocontainer.ParameterName)
+     * @see Parameter#isResolvable(PicoContainer,ComponentAdapter,Class,ParameterName,boolean)
      */
     public boolean isResolvable(PicoContainer container,
                                 ComponentAdapter adapter,
                                 Class expectedType,
-                                ParameterName expectedParameterName) {
-        return resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName) != null;
+                                ParameterName expectedParameterName, boolean useNames) {
+        return resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName, useNames) != null;
     }
 
     public Object resolveInstance(PicoContainer container,
                                   ComponentAdapter adapter,
                                   Class expectedType,
-                                  ParameterName expectedParameterName) {
+                                  ParameterName expectedParameterName, boolean useNames) {
         final ComponentAdapter componentAdapter =
-            resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName);
+            resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName, useNames);
         if (componentAdapter != null) {
             return container.getComponent(componentAdapter.getComponentKey());
         }
@@ -88,9 +88,9 @@ public class BasicComponentParameter
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
                        Class expectedType,
-                       ParameterName expectedParameterName) {
+                       ParameterName expectedParameterName, boolean useNames) {
         final ComponentAdapter componentAdapter =
-            resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName);
+            resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName, useNames);
         if (componentAdapter == null) {
             final Set<Class> set = new HashSet<Class>();
             set.add(expectedType);
@@ -111,9 +111,9 @@ public class BasicComponentParameter
     private <T> ComponentAdapter<T> resolveAdapter(PicoContainer container,
                                                    ComponentAdapter adapter,
                                                    Class<T> expectedType,
-                                                   ParameterName expectedParameterName) {
+                                                   ParameterName expectedParameterName, boolean useNames) {
 
-        final ComponentAdapter<T> result = getTargetAdapter(container, expectedType, expectedParameterName, adapter);
+        final ComponentAdapter<T> result = getTargetAdapter(container, expectedType, expectedParameterName, adapter, useNames);
         if (result == null) {
             return null;
         }
@@ -150,7 +150,7 @@ public class BasicComponentParameter
     private <T> ComponentAdapter<T> getTargetAdapter(PicoContainer container,
                                                      Class<T> expectedType,
                                                      ParameterName expectedParameterName,
-                                                     ComponentAdapter excludeAdapter) {
+                                                     ComponentAdapter excludeAdapter, boolean useNames) {
         if (componentKey != null) {
             // key tells us where to look so we follow
             return typeComponentAdapter(container.getComponentAdapter(componentKey));
@@ -163,7 +163,7 @@ public class BasicComponentParameter
             if (byKey != null && !excludeKey.equals(byKey.getComponentKey())) {
                 return typeComponentAdapter(byKey);
             }
-            if (expectedParameterName.useNames()) {
+            if (useNames) {
                 ComponentAdapter found = container.getComponentAdapter(expectedParameterName.getName());
                 if ((found != null)
                     && expectedType.isAssignableFrom(found.getComponentImplementation())

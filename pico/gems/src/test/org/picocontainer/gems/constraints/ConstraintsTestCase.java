@@ -47,7 +47,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
 
         Object object = c.resolveInstance(container, 
                 container.getComponentAdapter(DependsOnTouchable.class, null),
-                Touchable.class, null);
+                Touchable.class, null, false);
         assertEquals(SimpleTouchable.class, object.getClass());
     }
 
@@ -56,7 +56,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
 
         Object object = c.resolveInstance(container, 
                 container.getComponentAdapter(DependsOnTouchable.class, null),
-                Touchable.class, null);
+                Touchable.class, null, false);
         assertEquals(AlternativeTouchable.class, object.getClass());
     }
 
@@ -70,7 +70,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
 
         assertSame(t, c.resolveInstance(container, 
                 container.getComponentAdapter(DependsOnTouchable.class, null),
-                Touchable.class, null));
+                Touchable.class, null, false));
     }
 
     public void testConstraintTooBroadThrowsAmbiguityException() {
@@ -79,7 +79,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
         try {
             c.resolveInstance(container, 
                     container.getComponentAdapter(DependsOnTouchable.class, null),
-                    Touchable.class, null);
+                    Touchable.class, null, false);
             fail("did not throw ambiguous resolution exception");
         } catch (AbstractInjector.AmbiguousComponentResolutionException acre) {
             // success
@@ -93,7 +93,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
                 new Not(new IsType(DecoratedTouchable.class))));
         Touchable[] touchables = (Touchable[]) c.resolveInstance(container, 
                 container.getComponentAdapter(DependsOnTouchable.class, null),
-                Touchable[].class, null);
+                Touchable[].class, null, false);
         assertEquals(2, touchables.length);
         for (Touchable touchable : touchables) {
             assertFalse(touchable instanceof DecoratedTouchable);

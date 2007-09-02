@@ -19,7 +19,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Member;
 
 /** @author Paul Hammant */
 public abstract class SingleMemberInjector extends AbstractInjector {
@@ -105,7 +104,8 @@ public abstract class SingleMemberInjector extends AbstractInjector {
 
         for (int i = 0; i < currentParameters.length; i++) {
             result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i],
-                                                             new MemberInjectorParameterName(member, i, useNames));
+                                                             new MemberInjectorParameterName(member, i),
+                                                             useNames());
         }
         return result;
     }
@@ -167,13 +167,11 @@ public abstract class SingleMemberInjector extends AbstractInjector {
     protected class MemberInjectorParameterName implements ParameterName {
         private final AccessibleObject member;
         private final int index;
-        private final boolean useNames;
         private String name;
 
-        public MemberInjectorParameterName(AccessibleObject member, int index, boolean useNames) {
+        public MemberInjectorParameterName(AccessibleObject member, int index) {
             this.member = member;
             this.index = index;
-            this.useNames = useNames;
         }
 
         public String getName() {
@@ -187,13 +185,5 @@ public abstract class SingleMemberInjector extends AbstractInjector {
             }
             return name;
         }
-
-        public boolean useNames() {
-            return useNames;
-        }
     }
-
-
-
-
 }

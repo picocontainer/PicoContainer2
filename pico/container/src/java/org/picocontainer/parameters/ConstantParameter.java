@@ -41,13 +41,21 @@ public class ConstantParameter
         this.value = value;
     }
 
-    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
+    public Object resolveInstance(PicoContainer container,
+                                  ComponentAdapter adapter,
+                                  Class expectedType,
+                                  ParameterName expectedParameterName,
+                                  boolean useNames) {
         return value;
     }
 
-    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
+    public boolean isResolvable(PicoContainer container,
+                                ComponentAdapter adapter,
+                                Class expectedType,
+                                ParameterName expectedParameterName,
+                                boolean useNames) {
         try {
-            verify(container, adapter, expectedType, expectedParameterName);
+            verify(container, adapter, expectedType, expectedParameterName, useNames);
             return true;
         } catch(final PicoCompositionException e) {
             return false;
@@ -57,9 +65,13 @@ public class ConstantParameter
     /**
      * {@inheritDoc}
      *
-     * @see org.picocontainer.Parameter#verify(org.picocontainer.PicoContainer,org.picocontainer.ComponentAdapter,Class,org.picocontainer.ParameterName)
+     * @see Parameter#verify(PicoContainer,ComponentAdapter,Class,ParameterName,boolean)
      */
-    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) throws PicoException {
+    public void verify(PicoContainer container,
+                       ComponentAdapter adapter,
+                       Class expectedType,
+                       ParameterName expectedParameterName,
+                       boolean useNames) throws PicoException {
         if (!checkPrimitive(expectedType) && !expectedType.isInstance(value)) {
             throw new PicoCompositionException(expectedType.getClass().getName() + " is not assignable from " +
                                                  (value != null ? value.getClass().getName() : "null"));

@@ -107,31 +107,45 @@ public class ComponentParameter
         this.collectionParameter = collectionParameter;
     }
 
-    public Object resolveInstance(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
+    public Object resolveInstance(PicoContainer container,
+                                  ComponentAdapter adapter,
+                                  Class expectedType,
+                                  ParameterName expectedParameterName,
+                                  boolean useNames) {
         // type check is done in isResolvable
-        Object result = super.resolveInstance(container, adapter, expectedType, expectedParameterName);
+        Object result = super.resolveInstance(container, adapter, expectedType, expectedParameterName, useNames);
         if (result == null && collectionParameter != null) {
-            result = collectionParameter.resolveInstance(container, adapter, expectedType, expectedParameterName);
+            result = collectionParameter.resolveInstance(container, adapter, expectedType, expectedParameterName,
+                                                         useNames);
         }
         return result;
     }
 
-    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
-        if (!super.isResolvable(container, adapter, expectedType, expectedParameterName)) {
+    public boolean isResolvable(PicoContainer container,
+                                ComponentAdapter adapter,
+                                Class expectedType,
+                                ParameterName expectedParameterName,
+                                boolean useNames) {
+        if (!super.isResolvable(container, adapter, expectedType, expectedParameterName, useNames)) {
             if (collectionParameter != null) {
-                return collectionParameter.isResolvable(container, adapter, expectedType, expectedParameterName);
+                return collectionParameter.isResolvable(container, adapter, expectedType, expectedParameterName,
+                                                        useNames);
             }
             return false;
         }
         return true;
     }
 
-    public void verify(PicoContainer container, ComponentAdapter adapter, Class expectedType, ParameterName expectedParameterName) {
+    public void verify(PicoContainer container,
+                       ComponentAdapter adapter,
+                       Class expectedType,
+                       ParameterName expectedParameterName,
+                       boolean useNames) {
         try {
-            super.verify(container, adapter, expectedType, expectedParameterName);
+            super.verify(container, adapter, expectedType, expectedParameterName, useNames);
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             if (collectionParameter != null) {
-                collectionParameter.verify(container, adapter, expectedType, expectedParameterName);
+                collectionParameter.verify(container, adapter, expectedType, expectedParameterName, useNames);
                 return;
             }
             throw e;

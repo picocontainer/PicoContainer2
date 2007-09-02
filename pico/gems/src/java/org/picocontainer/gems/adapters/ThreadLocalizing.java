@@ -113,10 +113,10 @@ public final class ThreadLocalizing extends AbstractBehaviorFactory {
         final ComponentAdapter componentAdapter;
         if (ensureThreadLocal) {
             componentAdapter = new ThreadLocalized(super.createComponentAdapter(
-                    componentMonitor, lifecycleStrategy, null, componentKey, componentImplementation, parameters), proxyFactory);
+                    componentMonitor, lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters), proxyFactory);
         } else {
             componentAdapter = new Cached(super.createComponentAdapter(
-                    componentMonitor, lifecycleStrategy, null, componentKey, componentImplementation, parameters), new ThreadLocalReference());
+                    componentMonitor, lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters), new ThreadLocalReference());
         }
         return componentAdapter;
     }

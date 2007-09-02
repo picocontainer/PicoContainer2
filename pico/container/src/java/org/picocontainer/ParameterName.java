@@ -10,8 +10,5 @@
 package org.picocontainer;
 
 public interface ParameterName {
-
     String getName();
-    boolean useNames();
-
 }

@@ -113,6 +113,7 @@ public class CollectionComponentParameter
      * @param expectedType          {@inheritDoc}
      * @param expectedParameterName {@inheritDoc}
      *
+     * @param useNames
      * @return the instance of the collection type or <code>null</code>
      *
      * @throws PicoCompositionException {@inheritDoc}
@@ -121,7 +122,7 @@ public class CollectionComponentParameter
     public Object resolveInstance(PicoContainer container,
                                   ComponentAdapter adapter,
                                   Class expectedType,
-                                  ParameterName expectedParameterName)
+                                  ParameterName expectedParameterName, boolean useNames)
     {
         // type check is done in isResolvable
         Object result = null;
@@ -153,13 +154,14 @@ public class CollectionComponentParameter
      * @param expectedType          {@inheritDoc}
      * @param expectedParameterName {@inheritDoc}
      *
+     * @param useNames
      * @return <code>true</code> if matching components were found or an empty collective type
      *         is allowed
      */
     public boolean isResolvable(PicoContainer container,
                                 ComponentAdapter adapter,
                                 Class expectedType,
-                                ParameterName expectedParameterName)
+                                ParameterName expectedParameterName, boolean useNames)
     {
         final Class collectionType = getCollectionType(expectedType);
         final Class valueType = getValueType(expectedType);
@@ -180,12 +182,13 @@ public class CollectionComponentParameter
      * @param expectedType          {@inheritDoc}
      * @param expectedParameterName {@inheritDoc}
      *
+     * @param useNames
      * @throws PicoCompositionException {@inheritDoc}
      */
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
                        Class expectedType,
-                       ParameterName expectedParameterName)
+                       ParameterName expectedParameterName, boolean useNames)
     {
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {

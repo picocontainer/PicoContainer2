@@ -73,7 +73,8 @@ public abstract class IterativeInjector extends AbstractInjector {
             boolean failedDependency = true;
             for (int j = 0; j < injectionTypes.length; j++) {
                 if (matchingParameterList.get(j) == null && parameter.isResolvable(container, this, injectionTypes[j],
-                                                                                   new IterativeInjectorParameterName())) {
+                                                                                   new IterativeInjectorParameterName(),
+                                                                                   useNames())) {
                     matchingParameterList.set(j, parameter);
                     failedDependency = false;
                     break;
@@ -122,7 +123,8 @@ public abstract class IterativeInjector extends AbstractInjector {
                                 continue;
                             }
                             Object toInject = matchingParameters[i].resolveInstance(guardedContainer, IterativeInjector.this, injectionTypes[i],
-                                                                                    new IterativeInjectorParameterName());
+                                                                                    new IterativeInjectorParameterName(),
+                                                                                    useNames());
                             injectIntoMember(member, componentInstance, toInject);
                             injected[i] = toInject;
                         }
@@ -183,7 +185,7 @@ public abstract class IterativeInjector extends AbstractInjector {
                     final Parameter[] currentParameters = getMatchingParameterListForSetters(guardedContainer);
                     for (int i = 0; i < currentParameters.length; i++) {
                         currentParameters[i].verify(container, IterativeInjector.this, injectionTypes[i],
-                                                    new IterativeInjectorParameterName());
+                                                    new IterativeInjectorParameterName(), useNames());
                     }
                     return null;
                 }
@@ -226,10 +228,6 @@ public abstract class IterativeInjector extends AbstractInjector {
     private static class IterativeInjectorParameterName implements ParameterName {
         public String getName() {
             return ""; // TODO
-        }
-
-        public boolean useNames() {
-            return false;
         }
     }
 

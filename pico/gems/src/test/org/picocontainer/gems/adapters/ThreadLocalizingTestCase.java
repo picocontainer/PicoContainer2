@@ -20,6 +20,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 
 /**
@@ -37,7 +38,7 @@ public class ThreadLocalizingTestCase extends TestCase {
     public final void testCreateComponentAdapterEnsuringThreadLocal() throws InterruptedException {
         final ComponentFactory componentFactory = new ThreadLocalizing().wrap(new ConstructorInjection());
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
-                new NullComponentMonitor(), new NullLifecycleStrategy(), null, List.class, ArrayList.class);
+                new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), List.class, ArrayList.class);
         final List list = (List)componentAdapter.getComponentInstance(null);
         list.add(this);
         final List list2 = new ArrayList();
@@ -64,7 +65,7 @@ public class ThreadLocalizingTestCase extends TestCase {
     public final void testCreateComponentAdapterFailingThreadLocal() throws InterruptedException {
         final ComponentFactory componentFactory = new ThreadLocalizing(ThreadLocalizing.THREAD_ENSURES_LOCALITY).wrap(new ConstructorInjection());
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
-                new NullComponentMonitor(), new NullLifecycleStrategy(), null, List.class, ArrayList.class);
+                new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), List.class, ArrayList.class);
         final List list = (List)componentAdapter.getComponentInstance(null);
         list.add(this);
         final List list2 = new ArrayList();
@@ -92,7 +93,7 @@ public class ThreadLocalizingTestCase extends TestCase {
     public final void testCreateComponentAdapterWorksForDifferentThreads() throws InterruptedException {
         final ComponentFactory componentFactory = new ThreadLocalizing(ThreadLocalizing.THREAD_ENSURES_LOCALITY).wrap(new ConstructorInjection());
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
-                new NullComponentMonitor(), new NullLifecycleStrategy(), null, List.class, ArrayList.class);
+                new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), List.class, ArrayList.class);
         final List list = (List)componentAdapter.getComponentInstance(null);
         list.add(this);
         final List list2 = new ArrayList();

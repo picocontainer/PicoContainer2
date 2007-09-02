@@ -30,16 +30,16 @@ public interface Parameter {
 
     Parameter[] ZERO = new Parameter[0];
     Parameter[] DEFAULT = new Parameter[]{ ComponentParameter.DEFAULT };
-    Parameter[] USE_NAMES = new Parameter[] {ComponentParameter.DEFAULT};
 
     /**
      * Retrieve the object from the Parameter that statisfies the expected type.
      *
      * @param container             the container from which dependencies are resolved.
-     * @param adapter               the {@link org.picocontainer.ComponentAdapter} that is asking for the instance
+     * @param adapter               the {@link ComponentAdapter} that is asking for the instance
      * @param expectedType          the type that the returned instance needs to match.
      * @param expectedParameterName Expected parameter name
      *
+     * @param useNames
      * @return the instance or <code>null</code> if no suitable instance can be found.
      *
      * @throws PicoCompositionException if a referenced component could not be instantiated.
@@ -47,7 +47,7 @@ public interface Parameter {
     Object resolveInstance(PicoContainer container,
                            ComponentAdapter adapter,
                            Class expectedType,
-                           ParameterName expectedParameterName);
+                           ParameterName expectedParameterName, boolean useNames);
 
     /**
      * Check if the Parameter can statisfy the expected type using the container.
@@ -57,28 +57,30 @@ public interface Parameter {
      * @param expectedType          the required type
      * @param expectedParameterName Expected parameter name
      *
+     * @param useNames
      * @return <code>true</code> if the component parameter can be resolved.
      *
      */
     boolean isResolvable(PicoContainer container,
                          ComponentAdapter adapter,
                          Class expectedType,
-                         ParameterName expectedParameterName);
+                         ParameterName expectedParameterName, boolean useNames);
 
     /**
      * Verify that the Parameter can statisfied the expected type using the container
      *
      * @param container             the container from which dependencies are resolved.
-     * @param adapter               the {@link org.picocontainer.ComponentAdapter} that is asking for the verification
+     * @param adapter               the {@link ComponentAdapter} that is asking for the verification
      * @param expectedType          the required type
      * @param expectedParameterName Expected parameter name
      *
+     * @param useNames
      * @throws PicoCompositionException if parameter and its dependencies cannot be resolved
      */
     void verify(PicoContainer container,
                 ComponentAdapter adapter,
                 Class expectedType,
-                ParameterName expectedParameterName);
+                ParameterName expectedParameterName, boolean useNames);
 
     /**
      * Accepts a visitor for this Parameter. The method is normally called by visiting a {@link ComponentAdapter}, that

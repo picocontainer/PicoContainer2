@@ -130,9 +130,9 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
 
         assertTrue(allParameters.size() == 1);
         assertTrue(allParameters.get(0) instanceof ConstantParameter);
-        assertTrue( ( (ConstantParameter) allParameters.get(0)).resolveInstance(null, null, null, null) instanceof Integer);
+        assertTrue( ( (ConstantParameter) allParameters.get(0)).resolveInstance(null, null, null, null, false) instanceof Integer);
         assertEquals(3, ( (Integer) ( (ConstantParameter) allParameters.get(0)).resolveInstance(null, null,
-            null, null)).intValue());
+            null, null, false)).intValue());
     }
 
 }    
