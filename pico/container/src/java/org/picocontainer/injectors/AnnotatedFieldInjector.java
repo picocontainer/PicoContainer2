@@ -16,6 +16,7 @@ import org.picocontainer.Parameter;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
+import java.lang.reflect.AccessibleObject;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class AnnotatedFieldInjector extends IterativeInjector {
     }
 
     protected void initializeInjectionMembersAndTypeLists() {
-        injectionMembers = new ArrayList<Member>();
+        injectionMembers = new ArrayList<AccessibleObject>();
         final List<Class> typeList = new ArrayList<Class>();
         final Field[] fields = getFields();
         for (final Field field : fields) {
@@ -61,7 +62,7 @@ public class AnnotatedFieldInjector extends IterativeInjector {
     }
 
 
-    protected void injectIntoMember(Member member, Object componentInstance, Object toInject)
+    protected void injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
         throws IllegalAccessException, InvocationTargetException {
         Field field = (Field) member;
         field.setAccessible(true);

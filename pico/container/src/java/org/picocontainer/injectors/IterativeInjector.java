@@ -11,6 +11,9 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,8 +24,14 @@ import java.security.PrivilegedAction;
 
 public abstract class IterativeInjector extends AbstractInjector {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
-    protected transient List<Member> injectionMembers;
+    protected transient List<AccessibleObject> injectionMembers;
     protected transient Class[] injectionTypes;
+    private transient ParanamerProxy paranamer;
+
+    private static final String[] EMPTY_NAMES = new String[]{};
+    private static final String COMMA = ",";
+    private static final String SPACE = " ";
+
 
     /**
      * Constructs a IterativeInjector
@@ -74,7 +83,7 @@ public abstract class IterativeInjector extends AbstractInjector {
             boolean failedDependency = true;
             for (int j = 0; j < injectionTypes.length; j++) {
                 if (matchingParameterList.get(j) == null && parameter.isResolvable(container, this, injectionTypes[j],
-                                                                                   new IterativeInjectorParameterName(),
+                                                                                   new IterativeInjectorParameterName(injectionMembers.get(i)),
                                                                                    useNames())) {
                     matchingParameterList.set(j, parameter);
                     failedDependency = false;
@@ -114,26 +123,26 @@ public abstract class IterativeInjector extends AbstractInjector {
                     Object componentInstance;
 
                     componentInstance = getOrMakeInstance(container, constructor, componentMonitor);
-                    Member member = null;
+                    AccessibleObject member = null;
                     Object injected[] = new Object[injectionMembers.size()];
                     try {
                         for (int i = 0; i < injectionMembers.size(); i++) {
                             member = injectionMembers.get(i);
-                            componentMonitor.invoking(container, IterativeInjector.this, member, componentInstance);
+                            componentMonitor.invoking(container, IterativeInjector.this, (Member) member, componentInstance);
                             if (matchingParameters[i] == null) {
                                 continue;
                             }
                             Object toInject = matchingParameters[i].resolveInstance(guardedContainer, IterativeInjector.this, injectionTypes[i],
-                                                                                    new IterativeInjectorParameterName(),
+                                                                                    new IterativeInjectorParameterName(injectionMembers.get(i)),
                                                                                     useNames());
                             injectIntoMember(member, componentInstance, toInject);
                             injected[i] = toInject;
                         }
                         return componentInstance;
                     } catch (InvocationTargetException e) {
-                        return caughtInvocationTargetException(componentMonitor, member, componentInstance, e);
+                        return caughtInvocationTargetException(componentMonitor, (Member) member, componentInstance, e);
                     } catch (IllegalAccessException e) {
-                        return caughtIllegalAccessException(componentMonitor, member, componentInstance, e);
+                        return caughtIllegalAccessException(componentMonitor, (Member) member, componentInstance, e);
                     }
 
                 }
@@ -174,7 +183,7 @@ public abstract class IterativeInjector extends AbstractInjector {
         return componentInstance;
     }
 
-    protected void injectIntoMember(Member member, Object componentInstance, Object toInject)
+    protected void injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
         throws IllegalAccessException, InvocationTargetException {
         ((Method)member).invoke(componentInstance, toInject);
     }
@@ -186,7 +195,7 @@ public abstract class IterativeInjector extends AbstractInjector {
                     final Parameter[] currentParameters = getMatchingParameterListForSetters(guardedContainer);
                     for (int i = 0; i < currentParameters.length; i++) {
                         currentParameters[i].verify(container, IterativeInjector.this, injectionTypes[i],
-                                                    new IterativeInjectorParameterName(), useNames());
+                                                    new IterativeInjectorParameterName(injectionMembers.get(i)), useNames());
                     }
                     return null;
                 }
@@ -197,7 +206,7 @@ public abstract class IterativeInjector extends AbstractInjector {
     }
 
     protected void initializeInjectionMembersAndTypeLists() {
-        injectionMembers = new ArrayList<Member>();
+        injectionMembers = new ArrayList<AccessibleObject>();
         final List<Class> typeList = new ArrayList<Class>();
         final Method[] methods = getMethods();
         for (final Method method : methods) {
@@ -207,7 +216,7 @@ public abstract class IterativeInjector extends AbstractInjector {
                 boolean isInjector = isInjectorMethod(method);
                 if (isInjector) {
                     injectionMembers.add(method);
-                    typeList.add(parameterTypes[0]);
+                    typeList.add(box(parameterTypes[0]));
                 }
             }
         }
@@ -226,10 +235,119 @@ public abstract class IterativeInjector extends AbstractInjector {
         });
     }
 
-    private static class IterativeInjectorParameterName implements ParameterName {
+    private class IterativeInjectorParameterName implements ParameterName {
+        private final AccessibleObject member;
+        private String name;
+
+        public IterativeInjectorParameterName(AccessibleObject member) {
+            this.member = member;
+        }
+
         public String getName() {
-            return ""; // TODO
+            if (name != null) {
+                return name;
+            }
+            createIfNeededParanamerProxy();
+            if (paranamer != null) {
+                String[] strings = lookupParameterNames(member);
+                name = strings.length == 0 ? "" : strings[0];
+            }
+            return name;
         }
     }
+    private void createIfNeededParanamerProxy() {
+        if (paranamer == null) {
+            try {
+                paranamer = new ParanamerProxy();
+            } catch (NoClassDefFoundError e) {
+            }
+        }
+    }
+
+    // copied from DefaultParanamer
+    protected String[] lookupParameterNames(AccessibleObject methodOrCtor) {
+        Class[] types = null;
+        Class declaringClass = null;
+        String name = null;
+        if (methodOrCtor instanceof Method) {
+            Method method = (Method) methodOrCtor;
+            types = method.getParameterTypes();
+            name = method.getName();
+            declaringClass = method.getDeclaringClass();
+        } else {
+            Constructor constructor = (Constructor) methodOrCtor;
+            types = constructor.getParameterTypes();
+            declaringClass = constructor.getDeclaringClass();
+            name = "<init>";
+        }
+
+        if (types.length == 0) {
+            // faster ?
+            return EMPTY_NAMES;
+        }
+        final String parameterTypeNames = getParameterTypeNamesCSV(types);
+        final String[] names = getParameterNames(declaringClass, parameterTypeNames, name + SPACE);
+
+        if (names != null) {
+            return names;
+        }
+        createIfNeededParanamerProxy();
+        if (paranamer != null) {
+            return paranamer.lookupParameterNames((Method)methodOrCtor);
+        }
+        return new String[0];
+    }
+    // copied from DefaultParanamer
+    private static String getParameterTypeNamesCSV(Class[] parameterTypes) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < parameterTypes.length; i++) {
+            sb.append(parameterTypes[i].getName());
+            if (i < parameterTypes.length - 1) {
+                sb.append(COMMA);
+            }
+        }
+        return sb.toString();
+    }
+    // copied from DefaultParanamer
+    private static String[] getParameterNames(Class declaringClass, String parameterTypes, String prefix) {
+        String data = getParameterListResource(declaringClass);
+        String line = findFirstMatchingLine(data, prefix + parameterTypes);
+        String[] parts = line.split(SPACE);
+        // assumes line structure: constructorName parameterTypes parameterNames
+        if (parts.length == 3 && parts[1].equals(parameterTypes)) {
+            String parameterNames = parts[2];
+            return parameterNames.split(COMMA);
+        }
+        return null;
+    }
+    // copied from DefaultParanamer
+    private static String getParameterListResource(Class declaringClass) {
+        try {
+            Field field = declaringClass.getDeclaredField("__PARANAMER_DATA");
+            if(!Modifier.isStatic(field.getModifiers()) || !field.getType().equals(String.class)) {
+                return null;
+            }
+            return (String) field.get(null);
+        } catch (NoSuchFieldException e) {
+            return null;
+        } catch (IllegalAccessException e) {
+            return null;
+        }
+    }
+    // copied from DefaultParanamer
+    private static String findFirstMatchingLine(String data, String prefix) {
+        if (data == null) {
+            return "";
+        }
+        int ix = data.indexOf(prefix);
+        if (ix > 0) {
+            int iy = data.indexOf("\n", ix);
+            if(iy >0) {
+                return data.substring(ix,iy);
+            }
+        }
+        return "";
+    }
+
 
 }

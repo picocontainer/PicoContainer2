@@ -11,7 +11,10 @@ package org.picocontainer.containers;
 
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Characteristics;
+import org.picocontainer.annotations.Inject;
 import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.SetterInjection;
+import org.picocontainer.injectors.AnnotatedFieldInjection;
 
 import java.io.StringReader;
 import java.io.IOException;
@@ -120,9 +123,10 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testComponentCanDependOnConfig() {
+    public void testConstructorInjectionComponentCanDependOnConfig() {
         ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {"a=a", "b=2", "c=true"});
         DefaultPicoContainer pico = new DefaultPicoContainer(apc);
+        pico.addConfig("zzz","zzz");
         pico.as(Characteristics.USE_NAMES).addComponent(NeedsAFew.class);
         NeedsAFew needsAFew = pico.getComponent(NeedsAFew.class);
         assertNotNull(needsAFew);
@@ -131,5 +135,34 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
         assertEquals(true, needsAFew.c);
     }
 
+    public static class NeedsAFew2 {
+        private String a;
+        private int b;
+        private boolean c;
+
+        public void setA(String a) {
+            this.a = a;
+        }
+
+        public void setB(int b) {
+            this.b = b;
+        }
+
+        public void setC(boolean c) {
+            this.c = c;
+        }
+    }
+
+    public void testSetterInjectionComponentCanDependOnConfig() {
+        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {"a=a", "b=2", "c=true"});
+        DefaultPicoContainer pico = new DefaultPicoContainer(new SetterInjection(), apc);
+        pico.addConfig("zzz","zzz");
+        pico.as(Characteristics.USE_NAMES).addComponent(NeedsAFew2.class);
+        NeedsAFew2 needsAFew = pico.getComponent(NeedsAFew2.class);
+        assertNotNull(needsAFew);
+        assertEquals("a", needsAFew.a);
+        assertEquals(2, needsAFew.b);
+        assertEquals(true, needsAFew.c);
+    }
 
 }

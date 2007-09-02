@@ -83,7 +83,7 @@ public class ConstructorInjector extends SingleMemberInjector {
             for (int j = 0; j < currentParameters.length; j++) {
                 // check wether this constructor is statisfiable
                 if (currentParameters[j].isResolvable(container, this, box(parameterTypes[j]),
-                         new MemberInjectorParameterName(sortedMatchingConstructor,j), useNames())) {
+                         new SingleMemberInjectorParameterName(sortedMatchingConstructor,j), useNames())) {
                     continue;
                 }
                 unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
@@ -207,7 +207,7 @@ public class ConstructorInjector extends SingleMemberInjector {
                     final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
                     for (int i = 0; i < currentParameters.length; i++) {
                         currentParameters[i].verify(container, ConstructorInjector.this, box(parameterTypes[i]),
-                                                    new MemberInjectorParameterName(constructor, i), useNames());
+                                                    new SingleMemberInjectorParameterName(constructor, i), useNames());
                     }
                     return null;
                 }

@@ -104,7 +104,7 @@ public abstract class SingleMemberInjector extends AbstractInjector {
 
         for (int i = 0; i < currentParameters.length; i++) {
             result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i],
-                                                             new MemberInjectorParameterName(member, i),
+                                                             new SingleMemberInjectorParameterName(member, i),
                                                              useNames());
         }
         return result;
@@ -164,12 +164,12 @@ public abstract class SingleMemberInjector extends AbstractInjector {
         return "";
     }
 
-    protected class MemberInjectorParameterName implements ParameterName {
+    protected class SingleMemberInjectorParameterName implements ParameterName {
         private final AccessibleObject member;
         private final int index;
         private String name;
 
-        public MemberInjectorParameterName(AccessibleObject member, int index) {
+        public SingleMemberInjectorParameterName(AccessibleObject member, int index) {
             this.member = member;
             this.index = index;
         }

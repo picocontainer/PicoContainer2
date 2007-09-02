@@ -177,6 +177,17 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
         throw new PicoCompositionException(e);
     }
 
+    protected Class box(Class parameterType) {
+        if (parameterType.isPrimitive()) {
+            if (parameterType == Integer.TYPE) {
+                return Integer.class;
+            } else if (parameterType == Boolean.TYPE) {
+                return Boolean.class;
+            }
+        }
+        return parameterType;
+    }
+
     /**
      * Abstract utility class to detect recursion cycles.
      * Derive from this class and implement {@link ThreadLocalCyclicDependencyGuard#run}.
@@ -374,9 +385,4 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
             return componentImplementation;
         }
     }
-
-
-
-
-
 }
