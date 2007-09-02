@@ -66,7 +66,7 @@ pico.addConfig(&quot;spellingWebServiceURL&quot;, &quot;http://foo.com/foo.wsdl&
 pico.addConfig(&quot;somethingElse&quot;, &quot;abcde&quot;);
 pico.addConfig(&quot;timeout&quot;, 120);
 pico.addConfig(&quot;123&quot;, 456);
-pico.addComponent(BigFatComponent.class);
+pico.as(Characteristics.USE_NAMES).addComponent(BigFatComponent.class);
 BigFatComponent bfc = pico.getComponent(BigFatComponent.class);
 // bfg has &quot;http://foo.com/foo.wsdl&quot; and 120 as URL and timeout, <strong>not</strong> &quot;abcde&quot; and 456.</pre>
   </div>
