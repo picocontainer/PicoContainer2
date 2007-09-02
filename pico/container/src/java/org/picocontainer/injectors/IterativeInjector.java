@@ -83,7 +83,7 @@ public abstract class IterativeInjector extends AbstractInjector {
             boolean failedDependency = true;
             for (int j = 0; j < injectionTypes.length; j++) {
                 if (matchingParameterList.get(j) == null && parameter.isResolvable(container, this, injectionTypes[j],
-                                                                                   new IterativeInjectorParameterName(injectionMembers.get(i)),
+                                                                                   makeParameterNameImpl(injectionMembers.get(i)),
                                                                                    useNames())) {
                     matchingParameterList.set(j, parameter);
                     failedDependency = false;
@@ -107,6 +107,10 @@ public abstract class IterativeInjector extends AbstractInjector {
             throw new PicoCompositionException("Following parameters do not match any of the injectionMembers for " + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
         }
         return matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
+    }
+
+    protected ParameterName makeParameterNameImpl(AccessibleObject member) {
+        return new IterativeInjectorParameterName(member);
     }
 
     protected void unsatisfiedDependencies(PicoContainer container, Set<Class> unsatisfiableDependencyTypes) {
@@ -133,7 +137,7 @@ public abstract class IterativeInjector extends AbstractInjector {
                                 continue;
                             }
                             Object toInject = matchingParameters[i].resolveInstance(guardedContainer, IterativeInjector.this, injectionTypes[i],
-                                                                                    new IterativeInjectorParameterName(injectionMembers.get(i)),
+                                                                                    makeParameterNameImpl(injectionMembers.get(i)),
                                                                                     useNames());
                             injectIntoMember(member, componentInstance, toInject);
                             injected[i] = toInject;
@@ -195,7 +199,7 @@ public abstract class IterativeInjector extends AbstractInjector {
                     final Parameter[] currentParameters = getMatchingParameterListForSetters(guardedContainer);
                     for (int i = 0; i < currentParameters.length; i++) {
                         currentParameters[i].verify(container, IterativeInjector.this, injectionTypes[i],
-                                                    new IterativeInjectorParameterName(injectionMembers.get(i)), useNames());
+                                                    makeParameterNameImpl(injectionMembers.get(i)), useNames());
                     }
                     return null;
                 }

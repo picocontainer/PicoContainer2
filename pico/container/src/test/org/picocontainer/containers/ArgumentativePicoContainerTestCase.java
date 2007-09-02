@@ -165,4 +165,25 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
         assertEquals(true, needsAFew.c);
     }
 
+    public static class NeedsAFew3 {
+        @Inject
+        private String a;
+        @Inject
+        private int b;
+        @Inject
+        private boolean c;
+    }
+
+    public void testAnnotatedFieldInjectionComponentCanDependOnConfig() {
+        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {"a=a", "b=2", "c=true"});
+        DefaultPicoContainer pico = new DefaultPicoContainer(new AnnotatedFieldInjection(), apc);
+        pico.addConfig("zzz","zzz");
+        pico.as(Characteristics.USE_NAMES).addComponent(NeedsAFew3.class);
+        NeedsAFew3 needsAFew = pico.getComponent(NeedsAFew3.class);
+        assertNotNull(needsAFew);
+        assertEquals("a", needsAFew.a);
+        assertEquals(2, needsAFew.b);
+        assertEquals(true, needsAFew.c);
+    }
+
 }
