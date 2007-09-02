@@ -16,6 +16,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.Characteristics;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 import java.io.Serializable;
 import java.util.Properties;
@@ -38,6 +40,7 @@ public class MultiInjection implements InjectionFactory, Serializable {
                                                           Object componentKey,
                                                           Class<T> componentImplementation,
                                                           Parameter... parameters) throws PicoCompositionException {
-        return new MultiInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterPrefix);
+        boolean useNames = AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.USE_NAMES);
+        return new MultiInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterPrefix, useNames);
     }
 }

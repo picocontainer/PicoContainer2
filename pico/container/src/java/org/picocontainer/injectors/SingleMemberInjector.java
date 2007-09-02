@@ -33,8 +33,8 @@ public abstract class SingleMemberInjector extends AbstractInjector {
                                 Class componentImplementation,
                                 Parameter[] parameters,
                                 ComponentMonitor monitor,
-                                LifecycleStrategy lifecycleStrategy) {
-        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
+                                LifecycleStrategy lifecycleStrategy, boolean useNames) {
+        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
     }
 
 

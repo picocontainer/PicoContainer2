@@ -35,7 +35,7 @@ public class AbstractInjectorTestCase extends TestCase {
     public void setUp() throws NoSuchMethodException {
         ai = new MyAbstractInjector(Map.class, HashMap.class, new Parameter[0],
                                                      new NullComponentMonitor(),
-                                                     new NullLifecycleStrategy());
+                                                     new NullLifecycleStrategy(), false);
         ctor = HashMap.class.getConstructor();
     }
 
@@ -137,8 +137,9 @@ public class AbstractInjectorTestCase extends TestCase {
                                   Class componentImplementation,
                                   Parameter[] parameters,
                                   ComponentMonitor monitor,
-                                  LifecycleStrategy lifecycleStrategy) {
-            super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
+                                  LifecycleStrategy lifecycleStrategy,
+                                  boolean useNames) {
+            super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
         }
 
         public void verify(PicoContainer container) throws PicoCompositionException {

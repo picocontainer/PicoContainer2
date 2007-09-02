@@ -29,9 +29,9 @@ public class AnnotatedFieldInjector extends IterativeInjector {
                                   Class impl,
                                   Parameter[] parameters,
                                   ComponentMonitor componentMonitor,
-                                  LifecycleStrategy lifecycleStrategy, Class injectionAnnotation) {
+                                  LifecycleStrategy lifecycleStrategy, Class injectionAnnotation, boolean useNames) {
 
-        super(key, impl, parameters, componentMonitor, lifecycleStrategy);
+        super(key, impl, parameters, componentMonitor, lifecycleStrategy, useNames);
         this.injectionAnnotation = injectionAnnotation;
     }
 

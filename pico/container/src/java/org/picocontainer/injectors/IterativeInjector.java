@@ -36,8 +36,9 @@ public abstract class IterativeInjector extends AbstractInjector {
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    public IterativeInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws  NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
+    public IterativeInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
+                             LifecycleStrategy lifecycleStrategy, boolean useNames) throws  NotConcreteRegistrationException {
+        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
     }
 
 

@@ -43,7 +43,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTestCase {
     public void testInstanceIsBorged() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         final ComponentAdapter<CompatibleTouchable> componentAdapter = new Cached<CompatibleTouchable>(new ConstructorInjector(
-                CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
+                CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
         mpc.addAdapter(new Assimilated(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = componentAdapter.getComponentInstance(mpc);
         final Touchable touchable = mpc.getComponent(Touchable.class);
@@ -59,7 +59,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTestCase {
     public void testComponentKeyIsPreserved() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         final ComponentAdapter<CompatibleTouchable> componentAdapter = new Cached<CompatibleTouchable>(new ConstructorInjector(
-                "Touchy", CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
+                "Touchy", CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
         mpc.addAdapter(new Assimilated(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = componentAdapter.getComponentInstance(mpc);
         final Touchable touchable = (Touchable)mpc.getComponent("Touchy");
@@ -133,7 +133,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTestCase {
 
     private ComponentAdapter createComponentAdapterWithTouchable() {
         return new Assimilated(Touchable.class, new ConstructorInjector(
-                CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy()));
+                CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
     }
 
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {

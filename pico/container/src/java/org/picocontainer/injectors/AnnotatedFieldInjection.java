@@ -15,6 +15,8 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.InjectionFactory;
+import org.picocontainer.Characteristics;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.annotations.Inject;
 
 import java.util.Properties;
@@ -37,9 +39,9 @@ public class AnnotatedFieldInjection implements InjectionFactory, Serializable {
                                                    Properties componentProperties,
                                                    Object componentKey,
                                                    Class componentImplementation,
-                                                   Parameter... parameters)
-        throws PicoCompositionException {
+                                                   Parameter... parameters) throws PicoCompositionException {
+        boolean useNames = AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.USE_NAMES);
         return new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy,
-                                          injectionAnnotation);
+                                          injectionAnnotation, useNames);
     }
 }

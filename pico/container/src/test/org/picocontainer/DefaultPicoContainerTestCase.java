@@ -178,7 +178,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
                                                 TransientComponent.class,
                                                 null,
                                                 new NullComponentMonitor(),
-                                                new NullLifecycleStrategy()));
+                                                new NullLifecycleStrategy(), false));
         TransientComponent c1 = picoContainer.getComponent(TransientComponent.class);
         TransientComponent c2 = picoContainer.getComponent(TransientComponent.class);
         assertNotSame(c1, c2);

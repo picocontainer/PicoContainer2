@@ -31,13 +31,15 @@ import java.util.Properties;
 public class AnnotatedMethodInjection implements InjectionFactory, Serializable {
 
     private final Class injectionAnnotation;
+    private final boolean useNames;
 
-    public AnnotatedMethodInjection(Class injectionAnnotation) {
+    public AnnotatedMethodInjection(Class injectionAnnotation, boolean useNames) {
         this.injectionAnnotation = injectionAnnotation;
+        this.useNames = useNames;
     }
 
     public AnnotatedMethodInjection() {
-        this(Inject.class);
+        this(Inject.class, false);
     }
 
     /**
@@ -53,8 +55,9 @@ public class AnnotatedMethodInjection implements InjectionFactory, Serializable 
      *                                the number of the setter. @return Returns a new {@link SetterInjector}. @throws org.picocontainer.PicoCompositionException if dependencies 
      *                                cannot be solved or if the implementation is an interface or an abstract class.
      */
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties,
+                                                   Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
-        return new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionAnnotation);
+        return new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionAnnotation, useNames);
     }
 }

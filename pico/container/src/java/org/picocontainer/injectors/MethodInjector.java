@@ -51,8 +51,8 @@ public class MethodInjector extends SingleMemberInjector {
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public MethodInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
-                          LifecycleStrategy lifecycleStrategy, String methodName) throws AbstractInjector.NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
+                          LifecycleStrategy lifecycleStrategy, String methodName, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
+        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
         this.methodName = methodName;
     }
 

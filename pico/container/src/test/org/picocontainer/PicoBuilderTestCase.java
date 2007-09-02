@@ -398,6 +398,7 @@ public class PicoBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n  componentMonitor\n","\n");
         foo = foo.replaceAll("\n    componentMonitor\n","\n");
         foo = foo.replaceAll("\n  delegate\n","\n");
+        foo = foo.replaceAll("\n    useNames\n","\n");
         foo = foo.replaceAll("\n    delegate\n","\n");
         foo = foo.replaceAll("\n      delegate\n","\n");
         foo = foo.replaceAll("\n        delegate\n","\n");

@@ -55,8 +55,8 @@ public class SetterInjector extends IterativeInjector {
                           Parameter[] parameters,
                           ComponentMonitor monitor,
                           LifecycleStrategy lifecycleStrategy,
-                          String setterMethodPrefix) throws  NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy);
+                          String setterMethodPrefix, boolean useNames) throws  NotConcreteRegistrationException {
+        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
         this.setterMethodPrefix = setterMethodPrefix;
     }
 

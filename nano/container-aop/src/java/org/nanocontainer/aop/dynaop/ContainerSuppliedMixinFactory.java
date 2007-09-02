@@ -54,7 +54,7 @@ class ContainerSuppliedMixinFactory implements MixinFactory {
     public Object create(Proxy proxy) throws NullPointerException {
         Object mixin = pico.getComponent(mixinClass);
         if (mixin == null) {
-            ComponentAdapter adapter = new ConstructorInjector(mixinClass, mixinClass, null, new NullComponentMonitor(), new NullLifecycleStrategy());
+            ComponentAdapter adapter = new ConstructorInjector(mixinClass, mixinClass, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
             mixin = adapter.getComponentInstance(pico);
         }
         return mixin;

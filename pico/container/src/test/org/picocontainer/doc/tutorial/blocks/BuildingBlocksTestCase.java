@@ -60,7 +60,7 @@ public class BuildingBlocksTestCase extends TestCase {
         // START SNIPPET: register-equivalent-at-length
         picoContainer.addAdapter(
                 new Cached(
-                        new ConstructorInjector(Juicer.class, Juicer.class, null, new NullComponentMonitor(), new NullLifecycleStrategy())));
+                        new ConstructorInjector(Juicer.class, Juicer.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false)));
         // END SNIPPET: register-equivalent-at-length
     }
 
@@ -80,7 +80,7 @@ public class BuildingBlocksTestCase extends TestCase {
                         new Cached(
                                 new SetterInjector(
                                         JuicerBean.class, JuicerBean.class, (Parameter[])null, new NullComponentMonitor(), new NullLifecycleStrategy(),
-                                        "set"))));
+                                        "set", false))));
         // END SNIPPET: register-equivalent-at-length2
     }
 }

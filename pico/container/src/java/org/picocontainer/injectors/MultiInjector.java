@@ -28,10 +28,10 @@ public class MultiInjector extends AbstractInjector {
     public MultiInjector(Object componentKey,
                          Class componentImplementation,
                          Parameter[] parameters,
-                         ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, String setterPrefix) {
-        super(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
-        constuctorInjector = new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy);
-        setterInjector = new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterPrefix) {
+                         ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, String setterPrefix, boolean useNames) {
+        super(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, useNames);
+        constuctorInjector = new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, useNames);
+        setterInjector = new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterPrefix, useNames) {
             protected Object getOrMakeInstance(PicoContainer container,
                                                Constructor constructor,
                                                ComponentMonitor componentMonitor) {
@@ -45,7 +45,7 @@ public class MultiInjector extends AbstractInjector {
             protected void unsatisfiedDependencies(PicoContainer container, Set<Class> unsatisfiableDependencyTypes) {
             }
         };
-        annotatedMethodInjector = new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, Inject.class) {
+        annotatedMethodInjector = new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, Inject.class, useNames) {
             protected Object getOrMakeInstance(PicoContainer container,
                                                Constructor constructor,
                                                ComponentMonitor componentMonitor)  {

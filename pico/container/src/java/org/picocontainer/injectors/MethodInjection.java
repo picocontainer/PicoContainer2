@@ -15,6 +15,8 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.Characteristics;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 import java.util.Properties;
 
@@ -32,13 +34,9 @@ public class MethodInjection implements ComponentFactory {
     }
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,
-                                                   Class componentImplementation,
-                                                   Parameter... parameters)
-            throws PicoCompositionException {
-        return new MethodInjector(componentKey, componentImplementation, parameters,
-                    componentMonitor, lifecycleStrategy, injectionMethodName);
+                                                   Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
+        boolean useNames = AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.USE_NAMES);
+        return new MethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionMethodName, useNames);
     }
-
-
 
 }

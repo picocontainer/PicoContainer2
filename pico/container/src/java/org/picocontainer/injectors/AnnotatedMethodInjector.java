@@ -23,8 +23,8 @@ public class AnnotatedMethodInjector extends SetterInjector {
                                    Class impl,
                                    Parameter[] parameters,
                                    ComponentMonitor monitor,
-                                   LifecycleStrategy lifecycleStrategy, Class injectionAnnotation) {
-        super(key, impl, parameters, monitor, lifecycleStrategy, "");
+                                   LifecycleStrategy lifecycleStrategy, Class injectionAnnotation, boolean useNames) {
+        super(key, impl, parameters, monitor, lifecycleStrategy, "", useNames);
         this.injectionAnnotation = injectionAnnotation;
     }
 

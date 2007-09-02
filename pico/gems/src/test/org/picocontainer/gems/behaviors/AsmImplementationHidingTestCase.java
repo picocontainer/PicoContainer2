@@ -99,7 +99,7 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
 
     public void testElephantWithAsmProxy() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new HiddenImplementation(new ConstructorInjector("l", ArrayList.class, null, new NullComponentMonitor(), new NullLifecycleStrategy())));
+        pico.addAdapter(new HiddenImplementation(new ConstructorInjector("l", ArrayList.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false)));
         Elephant elephant = pico.addComponent(Elephant.class, ElephantImpl.class).getComponent(Elephant.class);
 
         assertions(elephant);
