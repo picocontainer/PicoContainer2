@@ -10,6 +10,7 @@
 package org.picocontainer.containers;
 
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Characteristics;
 import org.picocontainer.injectors.AbstractInjector;
 
 import java.io.StringReader;
@@ -97,21 +98,37 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
         assertNull(apc.getComponent(String.class));
     }
 
-    public void testAmbigousIfNoSuitableTyesForInjection() {
+    public void testUnsatisfiableIfNoSuitableTyesForInjection() {
         ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {"zz=zz"});
         DefaultPicoContainer pico = new DefaultPicoContainer(apc);
-        pico.addComponent(NeedsAFew.class);
+        pico.as(Characteristics.USE_NAMES).addComponent(NeedsAFew.class);
         try {
             Object foo = pico.getComponent(NeedsAFew.class);
             fail();
-        } catch (AbstractInjector.AmbiguousComponentResolutionException e) {
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             // expetced;
         }
     }
     public static class NeedsAFew {
-
-        public NeedsAFew(String a, int b, long c, boolean d) {
+        private final String a;
+        private final int b;
+        private final boolean c;
+        public NeedsAFew(String a, int b, boolean c) {
+            this.a = a;
+            this.b = b;
+            this.c = c;
         }
+    }
+
+    public void testComponentCanDependOnConfig() {
+        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {"a=a", "b=2", "c=true"});
+        DefaultPicoContainer pico = new DefaultPicoContainer(apc);
+        pico.as(Characteristics.USE_NAMES).addComponent(NeedsAFew.class);
+        NeedsAFew needsAFew = pico.getComponent(NeedsAFew.class);
+        assertNotNull(needsAFew);
+        assertEquals("a", needsAFew.a);
+        assertEquals(2, needsAFew.b);
+        assertEquals(true, needsAFew.c);
     }
 
 

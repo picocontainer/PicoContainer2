@@ -60,7 +60,7 @@ public class ArgumentativePicoContainer implements PicoContainer, Serializable {
             addConfig(kvs[0], true);
         } else if (kvs.length > 2) {
             throw new PicoCompositionException(
-                "Argument name=value pair '" + argument + "' has too many '=' characters");
+                "Argument name'"+separator+"'value pair '" + argument + "' has too many '"+separator+"' characters");
         }
     }
 
@@ -85,11 +85,6 @@ public class ArgumentativePicoContainer implements PicoContainer, Serializable {
             return Integer.parseInt(s);
         } catch (NumberFormatException e) {
         }
-        try {
-            return Long.parseLong(s);
-        } catch (NumberFormatException e) {
-        }
-
         return s;
     }
 

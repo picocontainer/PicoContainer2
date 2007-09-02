@@ -83,13 +83,29 @@ public abstract class SingleMemberInjector extends AbstractInjector {
         return new String[0];
     }
 
+    protected Class box(Class parameterType) {
+        if (parameterType.isPrimitive()) {
+            if (parameterType == Integer.TYPE) {
+                return Integer.class;
+            } else if (parameterType == Boolean.TYPE) {
+                return Boolean.class;
+            }
+        }
+        return parameterType;
+    }
+
+
     protected Object[] getMemberArguments(PicoContainer container, final AccessibleObject member, final Class[] parameterTypes) {
+        for (int i = 0; i < parameterTypes.length; i++) {
+            parameterTypes[i] = box(parameterTypes[i]);
+
+        }
         Object[] result = new Object[parameterTypes.length];
         Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
         for (int i = 0; i < currentParameters.length; i++) {
             result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i],
-                                                             new MemberInjectorParameterName(member, i));
+                                                             new MemberInjectorParameterName(member, i, useNames));
         }
         return result;
     }
@@ -151,11 +167,13 @@ public abstract class SingleMemberInjector extends AbstractInjector {
     protected class MemberInjectorParameterName implements ParameterName {
         private final AccessibleObject member;
         private final int index;
+        private final boolean useNames;
         private String name;
 
-        public MemberInjectorParameterName(AccessibleObject member, int index) {
+        public MemberInjectorParameterName(AccessibleObject member, int index, boolean useNames) {
             this.member = member;
             this.index = index;
+            this.useNames = useNames;
         }
 
         public String getName() {
@@ -168,6 +186,10 @@ public abstract class SingleMemberInjector extends AbstractInjector {
                 name = strings.length == 0 ? "" : strings[index];
             }
             return name;
+        }
+
+        public boolean useNames() {
+            return useNames;
         }
     }
 

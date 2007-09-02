@@ -495,7 +495,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         MutablePicoContainer mpc = createPicoContainer(null);
         mpc.addComponent("greeting", "1");
         mpc.addComponent("message", "2");
-        mpc.addComponent(PicoCompositionException.class, PicoCompositionException.class);
+        mpc.as(Characteristics.USE_NAMES).addComponent(PicoCompositionException.class, PicoCompositionException.class);
         assertEquals("2", mpc.getComponent(PicoCompositionException.class).getMessage());
     }
 
@@ -505,7 +505,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         Horse redRum = new Horse();
         mpc.addComponent("dobbin", dobbin);
         mpc.addComponent("horse", redRum);
-        mpc.addComponent(CdiTurtle.class);
+        mpc.as(Characteristics.USE_NAMES).addComponent(CdiTurtle.class);
         assertEquals(redRum, mpc.getComponent(CdiTurtle.class).horse);
     }
 
@@ -513,7 +513,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         MutablePicoContainer mpc = createPicoContainer(null);
         mpc.addComponent("one", 1);
         mpc.addComponent("two", 2);
-        mpc.addComponent(NeedsTwo.class);
+        mpc.as(Characteristics.USE_NAMES).addComponent(NeedsTwo.class);
         assertEquals(2, mpc.getComponent(NeedsTwo.class).two);
     }
 

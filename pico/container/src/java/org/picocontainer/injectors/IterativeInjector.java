@@ -227,6 +227,10 @@ public abstract class IterativeInjector extends AbstractInjector {
         public String getName() {
             return ""; // TODO
         }
+
+        public boolean useNames() {
+            return false;
+        }
     }
 
 }

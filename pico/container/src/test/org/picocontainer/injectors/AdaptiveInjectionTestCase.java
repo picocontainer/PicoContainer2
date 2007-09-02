@@ -118,6 +118,7 @@ public class AdaptiveInjectionTestCase extends AbstractComponentFactoryTestCase 
 
         assertEquals("<Constructor-Injection>\n" +
                      "  <lifecycleStrategy class=RLS/>\n" +
+                     "  <useNames>false</useNames>\n" +
                      "  <componentKey class=java-class>java.util.Map</componentKey>\n" +
                      "  <componentImplementation>java.util.HashMap</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
@@ -143,6 +144,7 @@ public class AdaptiveInjectionTestCase extends AbstractComponentFactoryTestCase 
         assertEquals("<Field-Injection>\n" +
                      "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
                      "  <lifecycleStrategy class=RLS/>\n" +
+                     "  <useNames>false</useNames>\n" +
                      "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</componentKey>\n" +
                      "  <componentImplementation>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
@@ -169,6 +171,7 @@ public class AdaptiveInjectionTestCase extends AbstractComponentFactoryTestCase 
                      "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
                      "  <setterMethodPrefix></setterMethodPrefix>\n" +
                      "  <lifecycleStrategy class=RLS/>\n" +
+                     "  <useNames>false</useNames>\n" +                     
                      "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentKey>\n" +
                      "  <componentImplementation>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +

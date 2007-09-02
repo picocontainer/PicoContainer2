@@ -14,16 +14,12 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ParameterName;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.Cached;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Method;
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Field;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -85,12 +81,12 @@ public class ConstructorInjector extends SingleMemberInjector {
             // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {
                 // check wether this constructor is statisfiable
-                if (currentParameters[j].isResolvable(container, this, parameterTypes[j],
-                         new MemberInjectorParameterName(sortedMatchingConstructor,j))) {
+                if (currentParameters[j].isResolvable(container, this, box(parameterTypes[j]),
+                         new MemberInjectorParameterName(sortedMatchingConstructor,j, useNames))) {
                     continue;
                 }
                 unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
-                unsatisfiedDependencyType = parameterTypes[j];
+                unsatisfiedDependencyType = box(parameterTypes[j]);
                 failedDependency = true;
                 break;
             }
@@ -126,7 +122,6 @@ public class ConstructorInjector extends SingleMemberInjector {
         }
         return greediestConstructor;
     }
-
 
     public Object getComponentInstance(final PicoContainer container) throws PicoCompositionException {
         if (instantiationGuard == null) {
@@ -210,8 +205,8 @@ public class ConstructorInjector extends SingleMemberInjector {
                     final Class[] parameterTypes = constructor.getParameterTypes();
                     final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
                     for (int i = 0; i < currentParameters.length; i++) {
-                        currentParameters[i].verify(container, ConstructorInjector.this, parameterTypes[i],
-                                                    new MemberInjectorParameterName(constructor, i));
+                        currentParameters[i].verify(container, ConstructorInjector.this, box(parameterTypes[i]),
+                                                    new MemberInjectorParameterName(constructor, i, useNames));
                     }
                     return null;
                 }

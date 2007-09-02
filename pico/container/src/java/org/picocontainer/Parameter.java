@@ -30,6 +30,7 @@ public interface Parameter {
 
     Parameter[] ZERO = new Parameter[0];
     Parameter[] DEFAULT = new Parameter[]{ ComponentParameter.DEFAULT };
+    Parameter[] USE_NAMES = new Parameter[] {ComponentParameter.DEFAULT};
 
     /**
      * Retrieve the object from the Parameter that statisfies the expected type.

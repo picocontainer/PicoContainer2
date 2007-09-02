@@ -13,13 +13,11 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ParameterName;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.Cached;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Member;
 
 /**
  * Instantiates components using Method Injection.
@@ -129,7 +127,7 @@ public class MethodInjector extends SingleMemberInjector {
                     final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
                     for (int i = 0; i < currentParameters.length; i++) {
                         currentParameters[i].verify(container, MethodInjector.this, parameterTypes[i],
-                                                    new MemberInjectorParameterName(method, i));
+                                                    new MemberInjectorParameterName(method, i, useNames));
                     }
                     return null;
                 }

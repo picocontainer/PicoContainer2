@@ -157,10 +157,19 @@ public class BasicComponentParameter
         } else if (excludeAdapter == null) {
             return container.getComponentAdapter(expectedType, null);
         } else {
+
             Object excludeKey = excludeAdapter.getComponentKey();
             ComponentAdapter byKey = container.getComponentAdapter((Object)expectedType);
             if (byKey != null && !excludeKey.equals(byKey.getComponentKey())) {
                 return typeComponentAdapter(byKey);
+            }
+            if (expectedParameterName.useNames()) {
+                ComponentAdapter found = container.getComponentAdapter(expectedParameterName.getName());
+                if ((found != null)
+                    && expectedType.isAssignableFrom(found.getComponentImplementation())
+                    && found != excludeAdapter) {
+                    return (ComponentAdapter<T>) found;                    
+                }
             }
             List<ComponentAdapter<T>> found = container.getComponentAdapters(expectedType);
             ComponentAdapter exclude = null;
@@ -179,13 +188,6 @@ public class BasicComponentParameter
             } else if (found.size() == 1) {
                 return found.get(0);
             } else {
-                for (ComponentAdapter<T> componentAdapter : found) {
-                    Object key = componentAdapter.getComponentKey();
-                    if (key instanceof String && key.equals(expectedParameterName.getName())) {
-                        return componentAdapter;
-                    }
-                }
-
                 Class[] foundClasses = new Class[found.size()];
                 for (int i = 0; i < foundClasses.length; i++) {
                     foundClasses[i] = found.get(i).getComponentImplementation();

@@ -34,6 +34,10 @@ public final class ParameterTestCase extends TestCase {
         public String getName() {
             return "";
         }
+
+        public boolean useNames() {
+            return false;
+        }
     }
 
     final ParameterName pn = new FooParameterName();

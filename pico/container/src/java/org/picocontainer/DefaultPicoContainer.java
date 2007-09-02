@@ -345,29 +345,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
     public MutablePicoContainer addConfig(String name, Object val) {
-    	// shall be removed somehow...
-        initForConfig();
         return addAdapterInternal(new InstanceAdapter(name, val, lifecycleStrategy, componentMonitor));
     }
 
-    /**
-     * TODO: need for this method is being disputed
-     */
-    private void initForConfig() {
-        final String DUMMY_PICOCONTAINER_CONFIG_ITEM = "DUMMY_PICOCONTAINER_CONFIG_ITEM_";
-        if (getComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + 1) != null) {
-            return;
-        }
-        int i = 0;
-        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, DUMMY_PICOCONTAINER_CONFIG_ITEM + i);
-        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, DUMMY_PICOCONTAINER_CONFIG_ITEM + i);
-        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, 0);
-        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, 0);
-        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, false);
-        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, false);
-        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, 0L);
-        addComponent(DUMMY_PICOCONTAINER_CONFIG_ITEM + ++i, 0L);
-    }
 
     /**
      * {@inheritDoc}
@@ -386,6 +366,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                                              Parameter... parameters) {
         if (parameters != null && parameters.length == 0 && parameters != Parameter.ZERO) {
             parameters = null; // backwards compatibility!  solve this better later - Paul
+        }
+        if (parameters == null && AbstractBehaviorFactory.removePropertiesIfPresent(properties, Characteristics.USE_NAMES) ) {
+            parameters = Parameter.USE_NAMES;
         }
         if (componentImplementationOrInstance instanceof Class) {
             Properties tmpProperties = (Properties) properties.clone();

@@ -48,7 +48,8 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
  
     /** The strategy used to control the lifecycle */
     protected LifecycleStrategy lifecycleStrategy;
-    
+    protected final boolean useNames;
+
     /**
      * Constructs a new ComponentAdapter for the given key and implementation. 
      * @param componentKey the search key for this implementation
@@ -63,6 +64,12 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
                                             ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) {
         super(componentKey, componentImplementation, monitor);
         checkConcrete();
+        if (parameters == Parameter.USE_NAMES) {
+            parameters = null;
+            useNames = true;
+        } else {
+            useNames = false;
+        }
         if (parameters != null) {
             for (int i = 0; i < parameters.length; i++) {
                 if(parameters[i] == null) {
