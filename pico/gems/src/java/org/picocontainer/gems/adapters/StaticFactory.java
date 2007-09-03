@@ -7,7 +7,7 @@ package org.picocontainer.gems.adapters;
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by Leo Simmons & Jörg Schaible                              *
+ * Original code by Leo Simmons & J&ouml;rg Schaible                              *
  *****************************************************************************/
 /**
  * Interface for a static factory wrapper used by the {@link StaticFactoryAdapter}.
