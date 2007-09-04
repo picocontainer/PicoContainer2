@@ -23,7 +23,7 @@ import java.util.Properties;
 
 
 /**
- * A {@link org.picocontainer.ComponentFactory} for Guice style annotated methods.
+ * A {@link org.picocontainer.InjectionFactory} for Guice-style annotated methods.
  * The factory creates {@link AnnotatedMethodInjector}.
  *
  * @author Paul Hammant
@@ -44,19 +44,22 @@ public class AnnotatedMethodInjection implements InjectionFactory, Serializable 
 
     /**
      * Create a {@link SetterInjector}.
-     *
+     * 
      * @param componentMonitor
      * @param lifecycleStrategy
      * @param componentProperties
-     * @param componentKey            The component's key
+     * @param componentKey The component's key
      * @param componentImplementation The class of the bean.
-     * @param parameters              Any parameters for the setters. If null the adapter solves the
-     *                                dependencies for all setters internally. Otherwise the number parameters must match
-     *                                the number of the setter. @return Returns a new {@link SetterInjector}. @throws org.picocontainer.PicoCompositionException if dependencies 
-     *                                cannot be solved or if the implementation is an interface or an abstract class.
+     * @param parameters Any parameters for the setters. If null the adapter
+     *            solves the dependencies for all setters internally. Otherwise
+     *            the number parameters must match the number of the setter.
+     * @return Returns a new {@link SetterInjector}.
+     * @throws org.picocontainer.PicoCompositionException if dependencies cannot
+     *             be solved or if the implementation is an interface or an
+     *             abstract class.
      */
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties,
-                                                   Object componentKey, Class componentImplementation, Parameter... parameters)
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties,
+                                                   Object componentKey, Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         return new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionAnnotation, useNames);
     }

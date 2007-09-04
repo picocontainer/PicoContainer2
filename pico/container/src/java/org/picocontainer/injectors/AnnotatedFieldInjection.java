@@ -22,6 +22,12 @@ import org.picocontainer.annotations.Inject;
 import java.util.Properties;
 import java.io.Serializable;
 
+/**
+ * A {@link org.picocontainer.InjectionFactory} for Guice-style annotated fields.
+ * The factory creates {@link AnnotatedFieldInjector}.
+ *
+ * @author Paul Hammant
+ */
 public class AnnotatedFieldInjection implements InjectionFactory, Serializable {
 
     private final Class injectionAnnotation;
@@ -34,11 +40,11 @@ public class AnnotatedFieldInjection implements InjectionFactory, Serializable {
         this(Inject.class);
     }
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties,
                                                    Object componentKey,
-                                                   Class componentImplementation,
+                                                   Class<T> componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
         boolean useNames = AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.USE_NAMES);
         return new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy,

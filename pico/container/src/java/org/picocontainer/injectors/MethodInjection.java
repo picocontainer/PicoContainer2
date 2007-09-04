@@ -20,7 +20,12 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 import java.util.Properties;
 
-/** @author Paul Hammant */
+/**
+ * A {@link org.picocontainer.InjectionFactory} for methods.
+ * The factory creates {@link MethodInjector}.
+ * 
+ *  @author Paul Hammant 
+ */
 public class MethodInjection implements ComponentFactory {
 
     private final String injectionMethodName;
@@ -33,8 +38,8 @@ public class MethodInjection implements ComponentFactory {
         this("inject");
     }
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,
-                                                   Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,
+                                                   Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
         boolean useNames = AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.USE_NAMES);
         return new MethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionMethodName, useNames);
     }

@@ -10,22 +10,21 @@
 
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.InjectionFactory;
-import org.picocontainer.Characteristics;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
-
 import java.io.Serializable;
 import java.util.Properties;
 
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.InjectionFactory;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
+
 
 /**
- * A {@link org.picocontainer.ComponentFactory} for JavaBeans.
+ * A {@link org.picocontainer.InjectionFactory} for JavaBeans.
  * The factory creates {@link SetterInjector}.
  *
  * @author J&ouml;rg Schaible
@@ -44,19 +43,21 @@ public class SetterInjection implements InjectionFactory, Serializable {
 
     /**
      * Create a {@link SetterInjector}.
-     *
+     * 
      * @param componentMonitor
      * @param lifecycleStrategy
      * @param componentProperties
-     *@param componentKey                The component's key
-     * @param componentImplementation     The class of the bean.
-     * @param parameters                  Any parameters for the setters. If null the adapter solves the
-*                                    dependencies for all setters internally. Otherwise the number parameters must match
-*                                    the number of the setter. @return Returns a new {@link SetterInjector}. @throws PicoCompositionException if dependencies cannot be solved @throws org.picocontainer.PicoCompositionException
-     *          if the implementation is an interface or an
-     *          abstract class.
+     * @param componentKey The component's key
+     * @param componentImplementation The class of the bean.
+     * @param parameters Any parameters for the setters. If null the adapter
+     *            solves the dependencies for all setters internally. Otherwise
+     *            the number parameters must match the number of the setter.
+     * @return Returns a new {@link SetterInjector}.
+     * @throws PicoCompositionException if dependencies cannot be solved
+     * @throws org.picocontainer.PicoCompositionException if the implementation
+     *             is an interface or an abstract class.
      */
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         boolean useNames = AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.USE_NAMES);
         return new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterMethodPrefix, useNames);

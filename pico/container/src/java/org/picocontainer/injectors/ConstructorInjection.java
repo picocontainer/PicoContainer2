@@ -10,27 +10,30 @@
 
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.InjectionFactory;
-import org.picocontainer.Characteristics;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
-
 import java.io.Serializable;
 import java.util.Properties;
 
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.InjectionFactory;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
+
 /**
+ * A {@link org.picocontainer.InjectionFactory} for constructors.
+ * The factory creates {@link ConstructorInjector}.
+ * 
+ *  @author Paul Hammant 
  * @author Jon Tirs&eacute;n
  */
 public class ConstructorInjection implements InjectionFactory, Serializable {
 
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties properties, Object componentKey,
-                                                   Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties properties, Object componentKey,
+                                                   Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
         boolean useNames = AbstractBehaviorFactory.removePropertiesIfPresent(properties, Characteristics.USE_NAMES);
         return new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, useNames);
     }
