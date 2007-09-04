@@ -34,40 +34,40 @@
           </execution>
         </executions>
       </plugin>
-        <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>shade-maven-plugin</artifactId>
-            <executions>
-                <execution>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>shade</goal>
-                    </goals>
-                    <configuration>
-                        <shadedArtifactId>picocontainer-shaded</shadedArtifactId>
-                        <artifactSet>
-                            <excludes>
-                                <exclude>com.thoughtworks.paranamer:paranamer-asm</exclude>
-                            </excludes>
-                        </artifactSet>
-                        <relocations>
-                            <relocation>
-                                <pattern>com.thoughtworks.paranamer</pattern>
-                                <excludes>
-                                    <!--<exclude>org.codehaus.plexus.util.xml.pull.*</exclude>-->
-                                </excludes>
-                            </relocation>
-                            <relocation>
-                                <pattern>org.objectweb.asm</pattern>
-                                <excludes>
-                                    <!--<exclude>org.codehaus.plexus.util.xml.pull.*</exclude>-->
-                                </excludes>
-                            </relocation>
-                        </relocations>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
+        <!--<plugin>-->
+            <!--<groupId>org.codehaus.mojo</groupId>-->
+            <!--<artifactId>shade-maven-plugin</artifactId>-->
+            <!--<executions>-->
+                <!--<execution>-->
+                    <!--<phase>package</phase>-->
+                    <!--<goals>-->
+                        <!--<goal>shade</goal>-->
+                    <!--</goals>-->
+                    <!--<configuration>-->
+                        <!--<shadedArtifactId>picocontainer-shaded</shadedArtifactId>-->
+                        <!--<artifactSet>-->
+                            <!--<excludes>-->
+                                <!--<exclude>com.thoughtworks.paranamer:paranamer-asm</exclude>-->
+                            <!--</excludes>-->
+                        <!--</artifactSet>-->
+                        <!--<relocations>-->
+                            <!--<relocation>-->
+                                <!--<pattern>com.thoughtworks.paranamer</pattern>-->
+                                <!--<excludes>-->
+                                    <!--<!--<exclude>org.codehaus.plexus.util.xml.pull.*</exclude>-->
+                                <!--</excludes>-->
+                            <!--</relocation>-->
+                            <!--<relocation>-->
+                                <!--<pattern>org.objectweb.asm</pattern>-->
+                                <!--<excludes>-->
+                                    <!--<!--<exclude>org.codehaus.plexus.util.xml.pull.*</exclude>-->
+                                <!--</excludes>-->
+                            <!--</relocation>-->
+                        <!--</relocations>-->
+                    <!--</configuration>-->
+                <!--</execution>-->
+            <!--</executions>-->
+        <!--</plugin>-->
     </plugins>
   </build>
 
