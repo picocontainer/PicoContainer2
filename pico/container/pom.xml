@@ -54,13 +54,13 @@
                             <!--<relocation>-->
                                 <!--<pattern>com.thoughtworks.paranamer</pattern>-->
                                 <!--<excludes>-->
-                                    <!--<!--<exclude>org.codehaus.plexus.util.xml.pull.*</exclude>-->
+                                    <!--<exclude>org.codehaus.plexus.util.xml.pull.*</exclude>-->
                                 <!--</excludes>-->
                             <!--</relocation>-->
                             <!--<relocation>-->
                                 <!--<pattern>org.objectweb.asm</pattern>-->
                                 <!--<excludes>-->
-                                    <!--<!--<exclude>org.codehaus.plexus.util.xml.pull.*</exclude>-->
+                                    <!--<exclude>org.codehaus.plexus.util.xml.pull.*</exclude>-->
                                 <!--</excludes>-->
                             <!--</relocation>-->
                         <!--</relocations>-->
