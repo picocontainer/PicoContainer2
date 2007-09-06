@@ -42,10 +42,19 @@ public class PropertiesPicoContainer implements PicoContainer {
 		this.properties = properties;
 	}
 
+	/**
+	 * retrieve component out of container. delegate to parent if 
+	 * nothing suitable here
+	 */
 	public Object getComponent(Object componentKeyOrType) {
-		return null;
+		// at last delegate to parent
+		return getParent() != null ? getParent().getComponent(componentKeyOrType):null;
 	}
 
+	/**
+	 * as we do not provide meaningfull semantic to it, we just delegate 
+	 * to parent
+	 */
 	public <T> T getComponent(Class<T> componentType) {
 		return null;
 	}
@@ -55,7 +64,7 @@ public class PropertiesPicoContainer implements PicoContainer {
 	}
 
 	public PicoContainer getParent() {
-		return null;
+		return parent;
 	}
 
 	public ComponentAdapter<?> getComponentAdapter(Object componentKey) {

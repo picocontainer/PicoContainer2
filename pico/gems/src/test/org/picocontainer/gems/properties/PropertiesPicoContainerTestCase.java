@@ -6,7 +6,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.picocontainer.PicoContainer;
 
-import junit.framework.TestCase;
+
 
 /**
  * test capabilities of properties based pico container
@@ -35,15 +35,24 @@ public class PropertiesPicoContainerTestCase extends MockObjectTestCase {
 	}
 
 	/**
-	 * retrieval by key shall delegate to parent when key type is not acceptable
-	 * 
+	 * retrieval by key shall delegate to parent when nothing acceptable 
+	 * found
 	 */
 	public void testThatContainerDelegatesToParent() {
 		final Mock picoMock = mock(PicoContainer.class);
+		
+		String unavailableKey = "unavailable";
+		
+		picoMock.expects(once()).method("getComponent").with(same(unavailableKey)).will(returnValue(null));
+
 		PicoContainer parent = (PicoContainer) picoMock.proxy();
 		
-		//picoMock.expects(once()).method("getComponent");
-
+		PropertiesPicoContainer container = new PropertiesPicoContainer(
+				new Properties(),parent);
+		
+		container.getComponent(unavailableKey);
+		
+		picoMock.verify();
 	}
 
 }

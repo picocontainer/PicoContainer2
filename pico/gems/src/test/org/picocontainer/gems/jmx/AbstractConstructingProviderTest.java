@@ -88,6 +88,7 @@ public class AbstractConstructingProviderTest extends MockObjectTestCase {
         final DynamicMBeanProvider provider = new ConstructingProvider();
         final JMXRegistrationInfo info = provider.provide(pico, componentAdapter);
         assertNotNull(info);
+
     }
 
     public void testNoInstanceIsCreatedIfManagementInterfaceIsMissing() {
