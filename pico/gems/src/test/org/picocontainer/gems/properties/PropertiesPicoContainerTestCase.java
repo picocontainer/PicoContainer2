@@ -51,8 +51,7 @@ public class PropertiesPicoContainerTestCase extends MockObjectTestCase {
 				new Properties(),parent);
 		
 		container.getComponent(unavailableKey);
-		
-		picoMock.verify();
+
 	}
 
 }
