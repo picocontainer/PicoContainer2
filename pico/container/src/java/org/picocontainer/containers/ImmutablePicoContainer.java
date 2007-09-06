@@ -23,7 +23,7 @@ import java.io.Serializable;
  * do not like to check whether container reference suplpied to you
  * is null or not
  *
- * Typically its used to merk a parent container.
+ * Typically its used to mock a parent container.
  *
  * @author Konstantin Pribluda
  */
