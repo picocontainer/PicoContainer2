@@ -40,7 +40,7 @@ import org.picocontainer.parameters.ComponentParameter;
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
  */
-public abstract class AbstractInjector extends AbstractAdapter implements LifecycleStrategy {
+public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements LifecycleStrategy {
     /** The cycle guard for the verification. */ 
     protected transient ThreadLocalCyclicDependencyGuard verifyingGuard;
     /** The parameters to use for initialization. */ 
@@ -138,11 +138,18 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    protected Object newInstance(Constructor constructor, Object[] parameters) throws InstantiationException, IllegalAccessException, InvocationTargetException {
+    protected T newInstance(Constructor<T> constructor, Object[] parameters) throws InstantiationException, IllegalAccessException, InvocationTargetException {
         return constructor.newInstance(parameters);
     }
-
-    protected Object caughtInstantiationException(ComponentMonitor componentMonitor,
+    /**
+     * inform monitor about component instantiation failure
+     * @param componentMonitor
+     * @param constructor
+     * @param e
+     * @param container
+     * @return
+     */
+    protected T caughtInstantiationException(ComponentMonitor componentMonitor,
                                                 Constructor constructor,
                                                 InstantiationException e, PicoContainer container) {
         // can't get here because checkConcrete() will catch it earlier, but see PICO-191
@@ -150,7 +157,15 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
         throw new PicoCompositionException("Should never get here");
     }
 
-    protected Object caughtIllegalAccessException(ComponentMonitor componentMonitor,
+    /**
+     * inform monitor about access exception.
+     * @param componentMonitor
+     * @param constructor
+     * @param e
+     * @param container
+     * @return
+     */
+    protected T caughtIllegalAccessException(ComponentMonitor componentMonitor,
                                                 Constructor constructor,
                                                 IllegalAccessException e, PicoContainer container) {
         // can't get here because either filtered or access mode set
@@ -158,7 +173,15 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
         throw new PicoCompositionException(e);
     }
 
-    protected Object caughtInvocationTargetException(ComponentMonitor componentMonitor,
+    /**
+     * inform monitor about exception while instantiating component
+     * @param componentMonitor
+     * @param member
+     * @param componentInstance
+     * @param e
+     * @return
+     */
+    protected T caughtInvocationTargetException(ComponentMonitor componentMonitor,
                                                    Member member,
                                                    Object componentInstance, InvocationTargetException e) {
         componentMonitor.invocationFailed(member, componentInstance, e);
@@ -197,11 +220,11 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
      *
      * @author J&ouml;rg Schaible
      */
-    static abstract class ThreadLocalCyclicDependencyGuard extends ThreadLocal {
+    static abstract class ThreadLocalCyclicDependencyGuard<T> extends ThreadLocal<Boolean> {
 
         protected PicoContainer guardedContainer;
 
-        protected Object initialValue() {
+        protected Boolean initialValue() {
             return Boolean.FALSE;
         }
 
@@ -212,7 +235,7 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
          * @return a value, if the functionality result in an expression,
          *      otherwise just return <code>null</code>
          */
-        public abstract Object run();
+        public abstract T run();
 
         /**
          * Call the observing function. The provided guard will hold the {@link Boolean} value.
@@ -222,11 +245,11 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
          * @param stackFrame the current stack frame
          * @return the result of the <code>run</code> method
          */
-        public final Object observe(Class stackFrame) {
+        public final T observe(Class stackFrame) {
             if (Boolean.TRUE.equals(get())) {
                 throw new CyclicDependencyException(stackFrame);
             }
-            Object result = null;
+            T result = null;
             try {
                 set(Boolean.TRUE);
                 result = run();
@@ -245,7 +268,8 @@ public abstract class AbstractInjector extends AbstractAdapter implements Lifecy
 
     }
 
-    public static class CyclicDependencyException extends PicoCompositionException {
+    @SuppressWarnings("serial")
+	public static class CyclicDependencyException extends PicoCompositionException {
         private final List<Class> stack;
 
         /**

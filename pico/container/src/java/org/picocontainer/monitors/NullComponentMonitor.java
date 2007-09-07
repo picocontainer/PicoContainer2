@@ -28,10 +28,11 @@ import org.picocontainer.PicoContainer;
  * @author Paul Hammant
  * @author Obie Fernandez
  */
-public class NullComponentMonitor implements ComponentMonitor, Serializable {
+@SuppressWarnings("serial")
+public class NullComponentMonitor<T> implements ComponentMonitor<T>, Serializable {
 
-    public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
-                                     Constructor constructor) {
+    public Constructor<T> instantiating(PicoContainer container, ComponentAdapter componentAdapter,
+                                     Constructor<T> constructor) {
         return constructor;
     }
 

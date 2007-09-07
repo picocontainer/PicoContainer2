@@ -44,9 +44,10 @@ import java.util.Set;
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
  */
-public class ConstructorInjector extends SingleMemberInjector {
+@SuppressWarnings("serial")
+public class ConstructorInjector<T> extends SingleMemberInjector<T> {
     private transient List<Constructor> sortedMatchingConstructors;
-    private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
+    private transient ThreadLocalCyclicDependencyGuard<T> instantiationGuard;
 
     /**
      * Creates a ConstructorInjector
@@ -65,7 +66,7 @@ public class ConstructorInjector extends SingleMemberInjector {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
     }
 
-    protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
+    protected Constructor<T> getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
         final Set<Constructor> conflicts = new HashSet<Constructor>();
         final Set<List<Class>> unsatisfiableDependencyTypes = new HashSet<List<Class>>();
         if (sortedMatchingConstructors == null) {
@@ -124,23 +125,23 @@ public class ConstructorInjector extends SingleMemberInjector {
         return greediestConstructor;
     }
 
-    public Object getComponentInstance(final PicoContainer container) throws PicoCompositionException {
+    public T getComponentInstance(final PicoContainer container) throws PicoCompositionException {
         if (instantiationGuard == null) {
-            instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
-                public Object run() {
-                    Constructor constructor;
+            instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
+                public T run() {
+                    Constructor<T> constructor;
                     try {
                         constructor = getGreediestSatisfiableConstructor(guardedContainer);
                     } catch (AmbiguousComponentResolutionException e) {
                         e.setComponent(getComponentImplementation());
                         throw e;
                     }
-                    ComponentMonitor componentMonitor = currentMonitor();
+                    ComponentMonitor<T> componentMonitor = currentMonitor();
                     try {
                         Object[] parameters = getMemberArguments(guardedContainer, constructor);
                         constructor = componentMonitor.instantiating(container, ConstructorInjector.this, constructor);
                         long startTime = System.currentTimeMillis();
-                        Object inst = newInstance(constructor, parameters);
+                        T inst = newInstance(constructor, parameters);
                         componentMonitor.instantiated(container,
                                                       ConstructorInjector.this,
                                                       constructor, inst, parameters, System.currentTimeMillis() - startTime);
@@ -181,9 +182,10 @@ public class ConstructorInjector extends SingleMemberInjector {
         }
         // optimize list of constructors moving the longest at the beginning
         if (parameters == null) {
-            Collections.sort(matchingConstructors, new Comparator() {
-                public int compare(Object arg0, Object arg1) {
-                    return ((Constructor) arg1).getParameterTypes().length - ((Constructor) arg0).getParameterTypes().length;
+        	
+            Collections.sort(matchingConstructors, new Comparator<Constructor>() {
+                public int compare(Constructor arg0, Constructor arg1) {
+                    return arg1.getParameterTypes().length - arg0.getParameterTypes().length;
                 }
             });
         }
@@ -191,7 +193,7 @@ public class ConstructorInjector extends SingleMemberInjector {
     }
 
     private Constructor[] getConstructors() {
-        return (Constructor[]) AccessController.doPrivileged(new PrivilegedAction() {
+        return (Constructor[]) AccessController.doPrivileged(new PrivilegedAction<Object>() {
             public Object run() {
                 return getComponentImplementation().getDeclaredConstructors();
             }

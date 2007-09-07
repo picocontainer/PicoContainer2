@@ -20,8 +20,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-/** @author Paul Hammant */
-public abstract class SingleMemberInjector extends AbstractInjector {
+/** 
+ * @author Paul Hammant 
+ * 
+ */
+public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
 
     private transient ParanamerProxy paranamer;
 
@@ -82,6 +85,9 @@ public abstract class SingleMemberInjector extends AbstractInjector {
         return new String[0];
     }
 
+    /**
+     * TODO: shall it box everything?  a bit too few for me (konstantin)
+     */
     protected Class box(Class parameterType) {
         if (parameterType.isPrimitive()) {
             if (parameterType == Integer.TYPE) {

@@ -48,10 +48,10 @@ public class PropertiesPicoContainerTestCase extends MockObjectTestCase {
 		PicoContainer parent = (PicoContainer) picoMock.proxy();
 		
 		PropertiesPicoContainer container = new PropertiesPicoContainer(
-				new Properties(),parent);
-		
+				new Properties(),parent);	
 		container.getComponent(unavailableKey);
-
 	}
+	
+
 
 }

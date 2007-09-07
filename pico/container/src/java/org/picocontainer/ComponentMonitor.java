@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
  */
-public interface ComponentMonitor {
+public interface ComponentMonitor<T> {
 
     /**
      * Event thrown as the component is being instantiated using the given constructor
@@ -32,8 +32,8 @@ public interface ComponentMonitor {
      * @param componentAdapter
      * @param constructor the Constructor used to instantiate the addComponent @return the constructor to use in instantiation (nearly always the same one as passed in)
      */
-    Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
-                              Constructor constructor
+    Constructor<T> instantiating(PicoContainer container, ComponentAdapter componentAdapter,
+                              Constructor<T> constructor
     );
 
     /**
