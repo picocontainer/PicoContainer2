@@ -13,6 +13,7 @@ package org.nanocontainer.script.groovy.buildernodes;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.script.NodeBuilderDecorationDelegate;
@@ -58,6 +59,7 @@ public class ComponentNode extends AbstractBuilderNode {
      */
     private static final String PARAMETERS = "parameters";
 
+    private static final String PROPERTIES = "properties";
 
     private final NodeBuilderDecorationDelegate delegate;
 
@@ -72,7 +74,8 @@ public class ComponentNode extends AbstractBuilderNode {
             .addAttribute(CLASS)
             .addAttribute(CLASS_NAME_KEY)
             .addAttribute(INSTANCE)
-            .addAttribute(PARAMETERS);
+            .addAttribute(PARAMETERS)
+            .addAttribute(PROPERTIES);
     }
 
     /**
@@ -89,8 +92,9 @@ public class ComponentNode extends AbstractBuilderNode {
         Object classValue = attributes.remove(CLASS);
         Object instance = attributes.remove(INSTANCE);
         List parameters = (List) attributes.remove(PARAMETERS);
+        List properties = (List) attributes.remove(PROPERTIES);
 
-        return ComponentElementHelper.makeComponent(cnkey, key, getParameters(parameters), classValue, (NanoContainer) current, instance);
+        return ComponentElementHelper.makeComponent(cnkey, key, getParameters(parameters), classValue, (NanoContainer) current, instance, getProperties(properties));
     }
 
     private static Parameter[] getParameters(List paramsList) {
@@ -103,6 +107,18 @@ public class ComponentNode extends AbstractBuilderNode {
             parameters[i] = toParameter(paramsList.get(i));
         }
         return parameters;
+    }
+
+    private static Properties[] getProperties(List propsList) {
+        if (propsList == null) {
+            return new Properties[0];
+        }
+        int n = propsList.size();
+        Properties[] properties = new Properties[n];
+        for (int i = 0; i < n; ++i) {
+            properties[i] = (Properties) propsList.get(i);
+        }
+        return properties;
     }
 
 

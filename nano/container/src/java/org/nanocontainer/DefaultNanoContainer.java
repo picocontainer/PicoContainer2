@@ -23,6 +23,8 @@ import org.picocontainer.PicoException;
 import org.picocontainer.security.CustomPermissionsURLClassLoader;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.ParameterName;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 
@@ -38,6 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Enumeration;
 
 /**
  * This is a MutablePicoContainer that also supports soft composition. i.e. assembly by class name rather that class
@@ -261,15 +264,15 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
     public MutablePicoContainer addComponent(Object key,
                                              Object componentImplementationOrInstance,
                                              Parameter... parameters) {
+        super.addComponent(classNameToClassIfApplicable(key), classNameToClassIfApplicable(componentImplementationOrInstance), parameters);
+        return this;
+    }
+
+    private Object classNameToClassIfApplicable(Object key) {
         if (key instanceof ClassName) {
             key = loadClass(((ClassName)key).getClassName());
         }
-        if (componentImplementationOrInstance instanceof ClassName) {
-            componentImplementationOrInstance =
-                loadClass(((ClassName)componentImplementationOrInstance).getClassName());
-        }
-        super.addComponent(key, componentImplementationOrInstance, parameters);
-        return this;
+        return key;
     }
 
     public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) throws PicoCompositionException {
@@ -350,4 +353,138 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
         super.change(properties);
         return this;
     }
+
+    public MutablePicoContainer as(Properties... properties) {
+        return new AsPropertiesNanoContainer(properties);
+    }
+
+    private class AsPropertiesNanoContainer implements NanoContainer {
+        private MutablePicoContainer delegate;
+
+        public AsPropertiesNanoContainer(Properties... props) {
+            delegate = DefaultNanoContainer.this.getDelegate().as(props);
+        }
+
+        public ClassPathElement addClassLoaderURL(URL url) {
+            return DefaultNanoContainer.this.addClassLoaderURL(url);
+        }
+
+        public ClassLoader getComponentClassLoader() {
+            return DefaultNanoContainer.this.getComponentClassLoader();
+        }
+
+        public MutablePicoContainer makeChildContainer(String name) {
+            return DefaultNanoContainer.this.makeChildContainer(name);
+        }
+
+        public void addChildContainer(String name, PicoContainer child) {
+            DefaultNanoContainer.this.addChildContainer(child);
+
+        }
+
+        public MutablePicoContainer addComponent(Object componentKey,
+                                                 Object componentImplementationOrInstance,
+                                                 Parameter... parameters)
+        {
+            delegate.addComponent(classNameToClassIfApplicable(componentKey), classNameToClassIfApplicable(componentImplementationOrInstance), parameters);
+            return DefaultNanoContainer.this;
+        }
+
+        public MutablePicoContainer addComponent(Object implOrInstance) {
+            delegate.addComponent(classNameToClassIfApplicable(implOrInstance));
+            return DefaultNanoContainer.this;
+        }
+
+        public MutablePicoContainer addConfig(String name, Object val) {
+            delegate.addConfig(name, val);
+            return DefaultNanoContainer.this;
+        }
+
+        public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) {
+            delegate.addAdapter(componentAdapter);
+            return DefaultNanoContainer.this;
+        }
+
+        public ComponentAdapter removeComponent(Object componentKey) {
+            return delegate.removeComponent(componentKey);
+        }
+
+        public ComponentAdapter removeComponentByInstance(Object componentInstance) {
+            return delegate.removeComponentByInstance(componentInstance);
+        }
+
+        public MutablePicoContainer makeChildContainer() {
+            return DefaultNanoContainer.this.makeChildContainer();
+        }
+
+        public MutablePicoContainer addChildContainer(PicoContainer child) {
+            return DefaultNanoContainer.this.addChildContainer(child);
+        }
+
+        public boolean removeChildContainer(PicoContainer child) {
+            return DefaultNanoContainer.this.removeChildContainer(child);
+        }
+
+        public MutablePicoContainer change(Properties... properties) {
+            return DefaultNanoContainer.this.change(properties);
+        }
+
+        public MutablePicoContainer as(Properties... properties) {
+            return new AsPropertiesNanoContainer(properties);
+        }
+
+        public Object getComponent(Object componentKeyOrType) {
+            return DefaultNanoContainer.this.getComponent(componentKeyOrType);
+        }
+
+        public <T> T getComponent(Class<T> componentType) {
+            return DefaultNanoContainer.this.getComponent(componentType);
+        }
+
+        public List getComponents() {
+            return DefaultNanoContainer.this.getComponents();
+        }
+
+        public PicoContainer getParent() {
+            return DefaultNanoContainer.this.getParent();
+        }
+
+        public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
+            return DefaultNanoContainer.this.getComponentAdapter(componentKey);
+        }
+
+        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
+            return DefaultNanoContainer.this.getComponentAdapter(componentType, componentParameterName);
+        }
+
+        public Collection<ComponentAdapter<?>> getComponentAdapters() {
+            return DefaultNanoContainer.this.getComponentAdapters();
+        }
+
+        public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
+            return DefaultNanoContainer.this.getComponentAdapters(componentType);
+        }
+
+        public <T> List<T> getComponents(Class<T> componentType) {
+            return DefaultNanoContainer.this.getComponents();
+        }
+
+        public void accept(PicoVisitor visitor) {
+            DefaultNanoContainer.this.accept(visitor);
+        }
+
+        public void start() {
+
+        }
+
+        public void stop() {
+
+        }
+
+        public void dispose() {
+
+        }
+    }
+
+
 }

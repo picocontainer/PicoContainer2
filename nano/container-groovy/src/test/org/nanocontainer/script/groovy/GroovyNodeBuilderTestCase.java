@@ -208,7 +208,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "nano = builder.container {\n" +
                 "    config(key:'foo', value:'one')\n" +
                 "    config(key:'bar', value:'two')\n" +
-                "    component(class:'"+NeedsString.class.getName()+"')\n" +
+                "    component(class:'"+NeedsString.class.getName()+"', properties:[ org.picocontainer.Characteristics.USE_NAMES ])\n" +
                 "}");
 
         PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
