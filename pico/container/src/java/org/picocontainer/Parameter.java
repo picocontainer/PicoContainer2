@@ -44,9 +44,9 @@ public interface Parameter {
      *
      * @throws PicoCompositionException if a referenced component could not be instantiated.
      */
-    Object resolveInstance(PicoContainer container,
+     <T> T resolveInstance(PicoContainer container,
                            ComponentAdapter adapter,
-                           Class expectedType,
+                           Class<T> expectedType,
                            ParameterName expectedParameterName, boolean useNames);
 
     /**

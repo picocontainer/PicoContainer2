@@ -46,7 +46,7 @@ import java.util.Set;
  */
 @SuppressWarnings("serial")
 public class ConstructorInjector<T> extends SingleMemberInjector<T> {
-    private transient List<Constructor> sortedMatchingConstructors;
+    private transient List<Constructor<T>> sortedMatchingConstructors;
     private transient ThreadLocalCyclicDependencyGuard<T> instantiationGuard;
 
     /**
@@ -72,10 +72,10 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         if (sortedMatchingConstructors == null) {
             sortedMatchingConstructors = getSortedMatchingConstructors();
         }
-        Constructor greediestConstructor = null;
+        Constructor<T> greediestConstructor = null;
         int lastSatisfiableConstructorSize = -1;
         Class unsatisfiedDependencyType = null;
-        for (final Constructor sortedMatchingConstructor : sortedMatchingConstructors) {
+        for (final Constructor<T> sortedMatchingConstructor : sortedMatchingConstructors) {
             boolean failedDependency = false;
             Class[] parameterTypes = sortedMatchingConstructor.getParameterTypes();
             Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
@@ -171,18 +171,17 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         return super.getMemberArguments(container, ctor, ctor.getParameterTypes());
     }
 
-    private List<Constructor> getSortedMatchingConstructors() {
-        List<Constructor> matchingConstructors = new ArrayList<Constructor>();
-        Constructor[] allConstructors = getConstructors();
+    private List<Constructor<T>> getSortedMatchingConstructors() {
+        List<Constructor<T>> matchingConstructors = new ArrayList<Constructor<T>>();
+        Constructor<T>[] allConstructors = getConstructors();
         // filter out all constructors that will definately not match
-        for (Constructor constructor : allConstructors) {
+        for (Constructor<T> constructor : allConstructors) {
             if ((parameters == null || constructor.getParameterTypes().length == parameters.length) && (constructor.getModifiers() & Modifier.PUBLIC) != 0) {
                 matchingConstructors.add(constructor);
             }
         }
         // optimize list of constructors moving the longest at the beginning
-        if (parameters == null) {
-        	
+        if (parameters == null) {        	
             Collections.sort(matchingConstructors, new Comparator<Constructor>() {
                 public int compare(Constructor arg0, Constructor arg1) {
                     return arg1.getParameterTypes().length - arg0.getParameterTypes().length;
@@ -192,9 +191,9 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         return matchingConstructors;
     }
 
-    private Constructor[] getConstructors() {
-        return (Constructor[]) AccessController.doPrivileged(new PrivilegedAction<Object>() {
-            public Object run() {
+    private Constructor<T>[] getConstructors() {
+        return AccessController.doPrivileged(new PrivilegedAction<Constructor<T>[]>() {
+            public Constructor<T>[] run() {
                 return getComponentImplementation().getDeclaredConstructors();
             }
         });

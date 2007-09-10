@@ -73,14 +73,14 @@ public class BasicComponentParameter
         return resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName, useNames) != null;
     }
 
-    public Object resolveInstance(PicoContainer container,
+    public <T> T resolveInstance(PicoContainer container,
                                   ComponentAdapter adapter,
-                                  Class expectedType,
+                                  Class<T> expectedType,
                                   ParameterName expectedParameterName, boolean useNames) {
         final ComponentAdapter componentAdapter =
             resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName, useNames);
         if (componentAdapter != null) {
-            return container.getComponent(componentAdapter.getComponentKey());
+            return (T) container.getComponent(componentAdapter.getComponentKey());
         }
         return null;
     }
