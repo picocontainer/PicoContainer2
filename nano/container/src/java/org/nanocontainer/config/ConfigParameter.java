@@ -37,6 +37,11 @@ public class ConfigParameter extends BasicComponentParameter {
 			ComponentAdapter adapter, Class<T> expectedType,
 			ParameterName expectedParameterName, boolean useNames) {
 		String  result = (String) super.resolveInstance(container,adapter,String.class,expectedParameterName,useNames);
+		// no need to convert it if nothing was found
+		if(result == null) {
+			return null;
+		}
+		
 		SingleValueConverter converter = ConverterUtils.getConverter(expectedType);
 		if(converter == null) {
 			throw new NoConverterAvailableException("unable to find converter from string for class:" + expectedType);
@@ -66,6 +71,10 @@ public class ConfigParameter extends BasicComponentParameter {
 		super.verify(container,adapter,String.class,expectedParameterName,useNames);
 	}
 
+	/**
+	 * exception to be thrown if no suitable parameter was found
+	 * @author k.pribluda
+	 */
 	public static final class NoConverterAvailableException extends PicoCompositionException {
 
 		public NoConverterAvailableException(String message) {

@@ -36,6 +36,7 @@ import com.thoughtworks.xstream.converters.extended.ToStringConverter;
  * utility class to map converters ( stolen from xstream ) to classes. do it
  * dynamically on by case basis.
  * 
+ * TODO: invent a way to make this configurable
  * @author k.pribluda
  * 
  */
@@ -61,9 +62,13 @@ public class ConverterUtils {
 		converters.add(new FileConverter());
 		converters.add(new FloatConverter());
 		converters.add(new IntConverter());
+		// those need additional dependencies
+		// disable them for now
+		/*
 		converters.add(new ISO8601GregorianCalendarConverter());
 		converters.add(new ISO8601DateConverter());
 		converters.add(new ISO8601SqlTimestampConverter());
+		*/
 		converters.add(new JavaClassConverter());
 		converters.add(new LocaleConverter());
 		converters.add(new LongConverter());
@@ -92,6 +97,15 @@ public class ConverterUtils {
 				if(candidate.canConvert(clazz)) {
 					converter = candidate;
 					converterMap.put(clazz,converter);
+				}
+			}
+			// fallback - try to utilize ToString converter
+			if(converter == null) {
+				try {
+					converter = new ToStringConverter(clazz);
+				} catch (NoSuchMethodException e) {
+					// uups, this converter is not suitable
+					// forget about it silently ;) 
 				}
 			}
 		}
