@@ -9,39 +9,26 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
+import java.util.Properties;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoVisitor;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ParameterName;
-
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Properties;
+import org.picocontainer.PicoContainer;
 
 /**
+ * abstract base class for delegating to mutable containers
  * @author Paul Hammant
  */
-public abstract class AbstractDelegatingMutablePicoContainer implements MutablePicoContainer, Serializable {
+public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDelegatingPicoContainer implements MutablePicoContainer {
 
-    private MutablePicoContainer delegate;
-
+ 
     public AbstractDelegatingMutablePicoContainer(MutablePicoContainer delegate) {
-        if (delegate == null) {
-            throw new NullPointerException("MutablePicoContainer delegate must not be null");
-        }
-        this.delegate = delegate;
-    }
+		super(delegate);
+	}
 
-    protected MutablePicoContainer getDelegate() {
-        return delegate;
-    }
-
-    public MutablePicoContainer addComponent(Object componentKey,
+	public MutablePicoContainer addComponent(Object componentKey,
                                              Object componentImplementationOrInstance,
                                              Parameter... parameters) throws PicoCompositionException {
         return delegate.addComponent(componentKey, componentImplementationOrInstance, parameters);
@@ -67,50 +54,6 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
         return delegate.removeComponentByInstance(componentInstance);
     }
 
-    public Object getComponent(Object componentKeyOrType) {
-        return delegate.getComponent(componentKeyOrType);
-    }
-
-    public <T> T getComponent(Class<T> componentType) {
-        return componentType.cast(getComponent((Object)componentType));
-    }
-
-    public List getComponents() {
-        return delegate.getComponents();
-    }
-
-    public PicoContainer getParent() {
-        return delegate.getParent();
-    }
-
-    public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
-        return delegate.getComponentAdapter(componentKey);
-    }
-
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
-        return delegate.getComponentAdapter(componentType, componentParameterName);
-    }
-
-    public Collection<ComponentAdapter<?>> getComponentAdapters() {
-        return delegate.getComponentAdapters();
-    }
-
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
-        return delegate.getComponentAdapters(componentType);
-    }
-
-    public void start() {
-        delegate.start();
-    }
-
-    public void stop() {
-        delegate.stop();
-    }
-
-    public void dispose() {
-        delegate.dispose();
-    }
-
     public MutablePicoContainer addChildContainer(PicoContainer child) {
         return delegate.addChildContainer(child);
     }
@@ -119,24 +62,11 @@ public abstract class AbstractDelegatingMutablePicoContainer implements MutableP
         return delegate.removeChildContainer(child);
     }
 
-    public void accept(PicoVisitor visitor) {
-        delegate.accept(visitor);
-    }
+	public MutablePicoContainer change(Properties... properties) {
+	    return delegate.change(properties);
+	}
 
-    public <T> List<T> getComponents(Class<T> type) throws PicoException {
-        return delegate.getComponents(type);
-    }
-
-    public boolean equals(Object obj) {
-        // required to make it pass on both jdk 1.3 and jdk 1.4. Btw, what about overriding hashCode()? (AH)
-        return delegate.equals(obj) || this == obj;
-    }
-
-    public MutablePicoContainer change(Properties... properties) {
-        return delegate.change(properties);
-    }
-
-    public MutablePicoContainer as(Properties... properties) {
-        return delegate.as(properties);
-    }
+	public MutablePicoContainer as(Properties... properties) {
+	    return delegate.as(properties);
+	}
 }
