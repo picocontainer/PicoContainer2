@@ -19,12 +19,12 @@ import org.picocontainer.PicoVisitor;
  */
 public abstract class AbstractDelegatingPicoContainer implements PicoContainer , Serializable{
 
-	protected MutablePicoContainer delegate;
+	private PicoContainer delegate;
 
-	public AbstractDelegatingPicoContainer(MutablePicoContainer delegate) {
+	public AbstractDelegatingPicoContainer(PicoContainer delegate) {
 		if (delegate == null) {
 			throw new NullPointerException(
-					"MutablePicoContainer delegate must not be null");
+					"PicoContainer delegate must not be null");
 		}
 		this.delegate = delegate;
 	}
@@ -33,9 +33,6 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer ,
 		delegate.accept(visitor);
 	}
 
-	public void dispose() {
-		delegate.dispose();
-	}
 
 	public boolean equals(Object obj) {
 		// required to make it pass on both jdk 1.3 and jdk 1.4. Btw, what about
@@ -78,20 +75,12 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer ,
 		return delegate.getComponents(type);
 	}
 
-	protected MutablePicoContainer getDelegate() {
+	protected PicoContainer getDelegate() {
 		return delegate;
 	}
 
 	public PicoContainer getParent() {
 		return delegate.getParent();
 	}
-
-	public void start() {
-		delegate.start();
-	}
-
-	public void stop() {
-		delegate.stop();
-	}
-
+	
 }

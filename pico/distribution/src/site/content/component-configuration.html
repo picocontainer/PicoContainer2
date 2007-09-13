@@ -104,5 +104,83 @@ Result: DataStore is instantiated with the right &quot;Joe&quot; and &quot;joejo
 </div>
 <p>Not all command line arguments are turned into configuration items, only those separated with an = sign (a second constructor for ArgumentativePicoContainer allows you to specify a different separator). If the value to the right of the = is an int, then the config item will be added as an int (not a String). Likewise for long, and boolean ('true' / 'false'). All else will be left as a String. </p>
 <p>Also not that there are not going to be any accidental injections of the wrong configuration value. If you don't specify enough command line arguments, PicoContainer will <strong>always</strong> throw the <a href="ambiguous-injectable-help.html">'Ambiguous' exception</a> and not inject the first String/int/long/boolean that it finds. </p>
+
+
+<h2>Using ConfigParameter</h2>
+<p>
+    New feature in nanocontainer is "ConfigParameter" this parameter is bound only by explicit config 
+    name, and only against strings. Hiwever, string will be conveted to suitable datatype while
+    injecting component by means of <a href="http://xstream.codehaus.org">XStream value converters</a>.
+</p>
+<p>
+    At the moment following data types are supported:
+    <ul>
+        <li>
+            String
+        </li>
+        <li>
+            All numeric types, boxed as well as primitives
+        </li>
+        <li>
+            java.util.Date
+        </li>
+        <li>
+            java.io.File as well as java.io.URL
+        </li>
+        <li>
+            java.util.Date
+        </li>
+        <li>
+            java.sql.(Date|Time|Timestamp)
+        </li>
+        <li>
+            Any type sporting accessible constructor taking single string parameter. 
+        </li>
+    </ul>
+</p>
+<p>
+    Nanocontainer provides special implementations of pico, which are configured using
+    properties (org.nanocontainer.config.PropertiesPicoContainer and 
+    org.nanocontainer.config.SystemPropertiesPicoContainer). By Chaining those containers
+    with ArgumentedPcioContainer you achioeve really flexible configuration.
+    <div class="source">
+<pre>
+    public static void main(String[] argv) {
+        Properties defaultProperties = new Properties();
+        defaultProperties.load("default.properties");
+        
+        // default properties are taken from here
+        PicoContainer defaults = new PropertiesPicoContainer(defaultProperties);
+        
+        // system properties ( -Dfoo=bar ) override defaults
+        PicoContainer system = new SystemPropertiesPicoContainer(defaults);
+        
+        PicoContainer arguments = new ArgumentativePicoContainer(argv,system);
+        
+        
+        MutablePicoContainer work = new DefaultPicoContainer(arguments);
+        
+        work.addComponent(BigFatUglyComponent.class,new ComponentParameter("webservice.url"),new ComponentParameter("webservice.timeout"));
+    }
+</pre>
+    </div>
+        Our BugFatUglyComponent would receive his parameters from (in order of precendence):
+        <ul>
+            <li>
+                Command line parameters <strong>webservice.url==http://servicehost/service</strong> and <strong>webservice.timeout=50</strong>
+            </li>
+            <li>
+                System properties ( <strong>-Dwebservice.url=http://servicehost/service</strong> and <strong>-Dwebservice.timeout=50</strong>
+            </li>
+            <li>
+                <strong>default.properties</strong> available on classpath. 
+            </li>
+        </ul>
+        By varying order of configuration containers you can control precedence of
+        settings and provide reasonable defaults. 
+        </p>
+        <p>
+            If some of properties is unavailable you will receive <strong>UnsatisfiableDependenciesException</strong>
+        </p>
 </body>
 </html>

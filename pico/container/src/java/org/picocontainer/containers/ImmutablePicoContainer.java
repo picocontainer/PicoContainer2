@@ -19,10 +19,7 @@ import java.util.Collection;
 import java.io.Serializable;
 
 /**
- * Empty pico container serving as recoil damper in situations where you
- * do not like to check whether container reference suplpied to you
- * is null or not
- *
+* wrap pico container to achieve immutability
  * Typically its used to mock a parent container.
  *
  * @author Konstantin Pribluda

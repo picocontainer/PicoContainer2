@@ -10,37 +10,49 @@
 package org.picocontainer.containers;
 
 
-import org.picocontainer.PicoContainer;
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.StringReader;
+import java.util.Collection;
+import java.util.List;
+
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ParameterName;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
 
-import java.io.Serializable;
-import java.io.StringReader;
-import java.io.LineNumberReader;
-import java.io.IOException;
-import java.util.List;
-import java.util.Collection;
-
-public class ArgumentativePicoContainer implements PicoContainer, Serializable {
-
-    private final MutablePicoContainer delegate = new DefaultPicoContainer();
-
-    public ArgumentativePicoContainer(String[] arguments) {
-        this("=", arguments);
+/**
+ * argumentative pico container configured itself from array of strings
+ * which could be coming as commando line arguments
+ * 
+ */
+@SuppressWarnings("serial")
+public class ArgumentativePicoContainer extends AbstractDelegatingPicoContainer {
+    public ArgumentativePicoContainer(String separator, String[] arguments) {
+    	this(separator,arguments,null);
     }
 
-    public ArgumentativePicoContainer(String separator, String[] arguments) {
+    public ArgumentativePicoContainer(String separator, String[] arguments, PicoContainer parent ) {
+    	super(new DefaultPicoContainer(parent));
         for (String argument : arguments) {
             processArgument(argument, separator);
         }
     }
+    public ArgumentativePicoContainer(String separator, StringReader argumentsProps) throws IOException {
+        this(separator, argumentsProps, new String[0]);
+    }
+    
+    public ArgumentativePicoContainer(String separator, StringReader argumentProperties, String[] arguments) throws IOException{
+    	this(separator,argumentProperties,arguments,null);
+    }
 
-    public ArgumentativePicoContainer(String separator, StringReader argumentProperties, String[] arguments)
+    public ArgumentativePicoContainer(String separator, StringReader argumentProperties, String[] arguments, PicoContainer parent)
         throws IOException {
+    	super(new DefaultPicoContainer(parent));
+    	
         LineNumberReader lnr = new LineNumberReader(argumentProperties);
         String line = lnr.readLine();
         while (line != null) {
@@ -51,28 +63,61 @@ public class ArgumentativePicoContainer implements PicoContainer, Serializable {
             processArgument(argument, separator);
         }
     }
+    
+    public ArgumentativePicoContainer(String[] arguments) {
+        this("=", arguments);
+    }
 
-    private void processArgument(String argument, String separator) {
-        String[] kvs = argument.split(separator);
-        if (kvs.length == 2) {
-            addConfig(kvs[0], getValue(kvs[1]));
-        } else if (kvs.length == 1) {
-            addConfig(kvs[0], true);
-        } else if (kvs.length > 2) {
-            throw new PicoCompositionException(
-                "Argument name'"+separator+"'value pair '" + argument + "' has too many '"+separator+"' characters");
-        }
+    public ArgumentativePicoContainer(String[] arguments, PicoContainer parent) {
+    	this("=", arguments,parent);
+    }
+
+    public void accept(PicoVisitor visitor) {
+        getDelegate().accept(visitor);
+
     }
 
     private void addConfig(String key, Object val) {
-        if (delegate.getComponent(key) != null) {
-            delegate.removeComponent(key);
+        if (getDelegate().getComponent(key) != null) {
+            getDelegate().removeComponent(key);
         }
-        delegate.addConfig(key, val);
+        getDelegate().addConfig(key, val);
     }
 
-    public ArgumentativePicoContainer(String separator, StringReader argumentsProps) throws IOException {
-        this(separator, argumentsProps, new String[0]);
+    public <T> T getComponent(Class<T> componentType) {
+        return null;
+    }
+
+    public Object getComponent(Object componentKeyOrType) {
+        return getDelegate().getComponent(componentKeyOrType);
+    }
+
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
+        return getDelegate().getComponentAdapter(componentType, componentParameterName);
+    }
+
+    public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
+        return getDelegate().getComponentAdapter(componentKey);
+    }
+
+    public Collection<ComponentAdapter<?>> getComponentAdapters() {
+        return getDelegate().getComponentAdapters();
+    }
+
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
+        return null;
+    }
+
+    public List getComponents() {
+        return getDelegate().getComponents();
+    }
+
+    public <T> List<T> getComponents(Class<T> componentType) {
+        return getDelegate().getComponents(componentType);
+    }
+
+    public PicoContainer getParent() {
+        return new EmptyPicoContainer();
     }
 
     private Object getValue(String s) {
@@ -88,44 +133,19 @@ public class ArgumentativePicoContainer implements PicoContainer, Serializable {
         return s;
     }
 
-    public Object getComponent(Object componentKeyOrType) {
-        return delegate.getComponent(componentKeyOrType);
+    private void processArgument(String argument, String separator) {
+        String[] kvs = argument.split(separator);
+        if (kvs.length == 2) {
+            addConfig(kvs[0], getValue(kvs[1]));
+        } else if (kvs.length == 1) {
+            addConfig(kvs[0], true);
+        } else if (kvs.length > 2) {
+            throw new PicoCompositionException(
+                "Argument name'"+separator+"'value pair '" + argument + "' has too many '"+separator+"' characters");
+        }
     }
-
-    public <T> T getComponent(Class<T> componentType) {
-        return null;
-    }
-
-    public List getComponents() {
-        return delegate.getComponents();
-    }
-
-    public PicoContainer getParent() {
-        return new EmptyPicoContainer();
-    }
-
-    public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
-        return delegate.getComponentAdapter(componentKey);
-    }
-
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
-        return delegate.getComponentAdapter(componentType, componentParameterName);
-    }
-
-    public Collection<ComponentAdapter<?>> getComponentAdapters() {
-        return delegate.getComponentAdapters();
-    }
-
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
-        return null;
-    }
-
-    public <T> List<T> getComponents(Class<T> componentType) {
-        return delegate.getComponents(componentType);
-    }
-
-    public void accept(PicoVisitor visitor) {
-        delegate.accept(visitor);
-
+    
+    protected MutablePicoContainer getDelegate() {
+    	return (MutablePicoContainer) super.getDelegate();
     }
 }
