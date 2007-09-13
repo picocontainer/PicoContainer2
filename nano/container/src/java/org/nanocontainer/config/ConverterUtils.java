@@ -93,7 +93,7 @@ public class ConverterUtils {
 		SingleValueConverter converter = converterMap.get(clazz);
 		// converter not found. 
 		if(converter == null) {
-			for(SingleValueConverter candidate: converterMap.values()) {
+			for(SingleValueConverter candidate: converters) {
 				if(candidate.canConvert(clazz)) {
 					converter = candidate;
 					converterMap.put(clazz,converter);
