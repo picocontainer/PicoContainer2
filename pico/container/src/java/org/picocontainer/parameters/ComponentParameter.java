@@ -31,6 +31,7 @@ import org.picocontainer.injectors.AbstractInjector;
  * @author J&ouml;rg Schaible
  * @author Thomas Heller
  */
+@SuppressWarnings("serial")
 public class ComponentParameter
         extends BasicComponentParameter {
 

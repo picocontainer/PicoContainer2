@@ -194,7 +194,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
     private Constructor<T>[] getConstructors() {
         return AccessController.doPrivileged(new PrivilegedAction<Constructor<T>[]>() {
             public Constructor<T>[] run() {
-                return getComponentImplementation().getDeclaredConstructors();
+                return (Constructor<T>[]) getComponentImplementation().getDeclaredConstructors();
             }
         });
     }

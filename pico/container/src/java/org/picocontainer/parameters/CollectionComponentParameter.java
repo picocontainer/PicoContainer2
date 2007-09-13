@@ -41,6 +41,7 @@ import java.util.TreeSet;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  */
+@SuppressWarnings("serial")
 public class CollectionComponentParameter
     implements Parameter, Serializable
 {
