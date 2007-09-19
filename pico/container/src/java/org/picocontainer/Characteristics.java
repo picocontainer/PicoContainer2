@@ -30,6 +30,7 @@ public final class Characteristics {
     private static final String _HIDE_IMPL = "hide-impl";
     private static final String _PROPERTY_APPLYING = "property-applying";
     private static final String _AUTOMATIC = "automatic";
+    private static final String _USE_NAMES = "use-parameter-names";    
 
     private static final String FALSE = "false";
     private static final String TRUE = "true";
@@ -61,8 +62,8 @@ public final class Characteristics {
     public static final Properties PROPERTY_APPLYING = immutable(_PROPERTY_APPLYING, TRUE);
 
     public static final Properties AUTOMATIC = immutable(_AUTOMATIC, TRUE);
-    
-    public static final Properties USE_NAMES = immutable("use-parmaeter-names", TRUE);
+
+    public static final Properties USE_NAMES = immutable(_USE_NAMES, TRUE);
 
     private static Properties immutable(String name, String value) {
         return new ImmutableProperties(name, value);
