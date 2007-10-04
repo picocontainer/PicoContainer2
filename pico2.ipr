@@ -590,7 +590,15 @@
       <option name="useAlternate" value="false" />
     </LanguageOptions>
   </component>
-  <component name="libraryTable" />
+  <component name="libraryTable">
+    <library name="paranamer-1.1-SNAPSHOT">
+      <CLASSES>
+        <root url="jar://$M2_REPOSITORY$/com/thoughtworks/paranamer/paranamer/1.1-SNAPSHOT/paranamer-1.1-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+  </component>
   <component name="uidesigner-configuration" />
   <UsedPathMacros>
     <macro name="M2_REPOSITORY" />

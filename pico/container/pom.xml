@@ -11,7 +11,7 @@
   <dependencies>
     <dependency>
       <groupId>com.thoughtworks.paranamer</groupId>
-      <artifactId>paranamer-asm</artifactId>
+      <artifactId>paranamer</artifactId>
     </dependency>
   </dependencies>
 
