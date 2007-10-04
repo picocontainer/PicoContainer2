@@ -1,12 +1,10 @@
-/*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved. *
  * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- * Original code by                                                          *
- *****************************************************************************/
+ * The software in this package is published under the terms of the BSD * style
+ * license a copy of which has been included with this distribution in * the
+ * LICENSE.txt file. * * Original code by *
+ ******************************************************************************/
 package org.picocontainer.behaviors;
 
 import org.picocontainer.ComponentAdapter;
@@ -30,7 +28,7 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
         this.delegate = delegate;
         return this;
     }
-    
+
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
             LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,
             Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
@@ -41,13 +39,11 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
                 componentImplementation, parameters);
     }
 
-
     public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
-                                                LifecycleStrategy lifecycleStrategy,
-                                                Properties componentProperties,
-                                                ComponentAdapter<T> adapter) {        
+            LifecycleStrategy lifecycleStrategy, Properties componentProperties, ComponentAdapter<T> adapter) {
         if (delegate != null && delegate instanceof BehaviorFactory) {
-            return ((BehaviorFactory) delegate).addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
+            return ((BehaviorFactory) delegate).addComponentAdapter(componentMonitor, lifecycleStrategy,
+                    componentProperties, adapter);
         }
         return adapter;
     }
@@ -55,7 +51,7 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
     public static boolean removePropertiesIfPresent(Properties current, Properties present) {
         Enumeration<?> keys = present.keys();
         while (keys.hasMoreElements()) {
-            String key = (String)keys.nextElement();
+            String key = (String) keys.nextElement();
             String presentValue = present.getProperty(key);
             String currentValue = current.getProperty(key);
             if (currentValue == null) {
@@ -71,5 +67,14 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
             current.remove(key);
         }
         return true;
+    }
+
+    protected void mergeProperties(Properties into, Properties from) {
+        Enumeration<?> e = from.propertyNames();
+        while (e.hasMoreElements()) {
+            String s = (String) e.nextElement();
+            into.setProperty(s, from.getProperty(s));
+        }
+
     }
 }
