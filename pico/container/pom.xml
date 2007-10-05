@@ -34,30 +34,30 @@
           </execution>
         </executions>
       </plugin>
-        <!--<plugin>-->
-            <!--<groupId>org.codehaus.mojo</groupId>-->
-            <!--<artifactId>shade-maven-plugin</artifactId>-->
-            <!--<version>1.0-alpha-13-SNAPSHOT</version>-->
-            <!--<executions>-->
-                <!--<execution>-->
-                    <!--<phase>package</phase>-->
-                    <!--<goals>-->
-                        <!--<goal>shade</goal>-->
-                    <!--</goals>-->
-                    <!--<configuration>-->
-                        <!--<shadedArtifactId>picocontainer-shaded</shadedArtifactId>-->
-                        <!--<artifactSet>-->
-                        <!--</artifactSet>-->
-                        <!--<relocations>-->
-                            <!--<relocation>-->
-                                <!--<pattern>com.thoughtworks.paranamer</pattern>-->
-                                <!--<shadedPattern>org.picocontainer.paranamer</shadedPattern>-->
-                            <!--</relocation>-->
-                        <!--</relocations>-->
-                    <!--</configuration>-->
-                <!--</execution>-->
-            <!--</executions>-->
-        <!--</plugin>-->
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>shade-maven-plugin</artifactId>
+            <version>1.0-alpha-13-SNAPSHOT</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    <configuration>
+                        <shadedArtifactId>picocontainer-shaded</shadedArtifactId>
+                        <artifactSet>
+                        </artifactSet>
+                        <relocations>
+                            <relocation>
+                                <pattern>com.thoughtworks.paranamer</pattern>
+                                <shadedPattern>org.picocontainer.paranamer</shadedPattern>
+                            </relocation>
+                        </relocations>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
     </plugins>
   </build>
 
