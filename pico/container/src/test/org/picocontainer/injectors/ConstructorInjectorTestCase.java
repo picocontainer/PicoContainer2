@@ -190,33 +190,21 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
         }
     }
 
-    public class IllegalAccessExceptionThrowing {
-        private IllegalAccessExceptionThrowing() {
-        }
-    }
-
-    // TODO test fails currently, since non accessible ctors are filtered out, because of
-    // PICO-201.
-    // Maybe we can activate it again with some kind of SecurityManager & Policy combination?
-    public void XXXtestIllegalAccessExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
-        DefaultPicoContainer picoContainer = new DefaultPicoContainer();
-        try {
-            picoContainer.addComponent(IllegalAccessExceptionThrowing.class);
-            picoContainer.getComponent(IllegalAccessExceptionThrowing.class);
-            fail();
-        } catch (PicoCompositionException e) {
-            assertTrue(e.getCause().getMessage().indexOf(IllegalAccessExceptionThrowing.class.getName()) > 0);
+    public static class AllConstructorsArePrivate {
+        private AllConstructorsArePrivate() {
         }
     }
 
     public void testPicoInitializationExceptionThrownBecauseOfFilteredConstructors() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         try {
-            picoContainer.addComponent(IllegalAccessExceptionThrowing.class);
-            picoContainer.getComponent(IllegalAccessExceptionThrowing.class);
+            picoContainer.addComponent(AllConstructorsArePrivate.class);
+            picoContainer.getComponent(AllConstructorsArePrivate.class);
             fail();
         } catch (PicoCompositionException e) {
-            assertTrue(e.getMessage().indexOf(IllegalAccessExceptionThrowing.class.getName()) > 0);
+            String s = e.getMessage();
+            assertTrue(s.indexOf("constructors were not accessible") > 0);
+            assertTrue(s.indexOf(AllConstructorsArePrivate.class.getName()) > 0);
         }
     }
 

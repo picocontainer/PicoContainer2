@@ -20,11 +20,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Instantiates components using Method Injection.
- * <em>
- * Note that this class doesn't cache instances. If you want caching,
- * use a {@link Cached} around this one.
- * </em>
+ * Injection will happen through a single method for the component.
+ *
+ * Most likely it is a method called 'inject', though that can be overridden.
  *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
@@ -46,6 +44,8 @@ public class MethodInjector extends SingleMemberInjector {
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
      * @param lifecycleStrategy       the component lifecycle strategy used by this addAdapter
+     * @param methodName              the method name
+     * @param useNames                use argument names when looking up dependencies
      * @throws AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>

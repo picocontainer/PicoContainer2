@@ -16,13 +16,16 @@ import org.picocontainer.ParameterName;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Member;
 import java.lang.reflect.AccessibleObject;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Injection happens after instantiation, and through fields marked as injection points via an Annotation.
+ * The default annotation of org.picocontainer.annotations.@Inject can be overwridden.
+ */
 public class AnnotatedFieldInjector extends IterativeInjector {
 
     private final Class injectionAnnotation;

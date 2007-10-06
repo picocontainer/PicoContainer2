@@ -21,7 +21,9 @@ import java.lang.reflect.Method;
 import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
 
-/** 
+/**
+ * Injection will happen in a single member function on the component.
+ *
  * @author Paul Hammant 
  * 
  */

@@ -23,6 +23,9 @@ import java.util.Set;
 import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
 
+/**
+ * Injection will happen iteratively after component instantiation
+ */
 public abstract class IterativeInjector extends AbstractInjector {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     protected transient List<AccessibleObject> injectionMembers;
@@ -37,6 +40,7 @@ public abstract class IterativeInjector extends AbstractInjector {
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
      * @param lifecycleStrategy       the component lifecycle strategy used by this addAdapter
+     * @param useNames                use argument names when looking up dependencies
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
@@ -78,9 +82,8 @@ public abstract class IterativeInjector extends AbstractInjector {
             final Parameter parameter = currentParameters[i];
             boolean failedDependency = true;
             for (int j = 0; j < injectionTypes.length; j++) {
-                if (matchingParameterList.get(j) == null && parameter.isResolvable(container, this, injectionTypes[j],
-                                                                                   makeParameterNameImpl(injectionMembers.get(i)),
-                                                                                   useNames())) {
+                if (matchingParameterList.get(j) == null &&
+                    parameter.isResolvable(container, this, injectionTypes[j], makeParameterNameImpl(injectionMembers.get(i)), useNames())) {
                     matchingParameterList.set(j, parameter);
                     failedDependency = false;
                     break;

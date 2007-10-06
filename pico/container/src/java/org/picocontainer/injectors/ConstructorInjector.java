@@ -15,7 +15,6 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.behaviors.Cached;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -31,11 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Instantiates components using Constructor Injection.
- * <em>
- * Note that this class doesn't cache instances. If you want caching,
- * use a {@link Cached} around this one.
- * </em>
+ * Injection will happen through a constructor for the component.
  *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
@@ -57,6 +52,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
      * @param lifecycleStrategy       the component lifecycle strategy used by this addAdapter
+     * @param useNames                use argument names when looking up dependencies
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
