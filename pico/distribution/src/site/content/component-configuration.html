@@ -48,34 +48,42 @@ pico.addComponent(new BigFatComponentConfigBean(&quot;http://foo.com/foo.wsdl&qu
 ...
 pico.addComponent(BigFatComponent.class, new ConstParameter(&quot;http://foo.com/foo.wsdl&quot;), new ConstantParameter(120));</pre>
     </div>
-    <h3>Relying on parameter names </h3>
+    <h3>Configuration using parameter names </h3>
     <div class="source">
         <pre>public class BigFatComponent {
   String spellingWebServiceURL;
   int timeout;
-  public BigFatComponent(String spellingWebServiceURL, int timeout) {
+  public BigFatComponent(String <u>spellingWebServiceURL</u>, int <u>timeout</u>) {
     this.spellingWebServiceURL = spellingWebServiceURL;
     this.timeout = timeout;
   }  
+  public String toString() {
+    return &quot;URL=&quot; + spellingWebServiceURL + &quot;, timeout=&quot; + timeout;  
+  }
+
   // other methods
 }
 
 
 ...
-pico.addConfig(&quot;spellingWebServiceURL&quot;, &quot;http://foo.com/foo.wsdl&quot;);
-pico.addConfig(&quot;somethingElse&quot;, &quot;abcde&quot;);
-pico.addConfig(&quot;timeout&quot;, 120);
-pico.addConfig(&quot;123&quot;, 456);
+pico.addConfig(&quot;<u>spellingWebServiceURL</u>&quot;, &quot;http://foo.com/spelling.wsdl&quot;);
+pico.addConfig(&quot;somethingOtherURL&quot;, &quot;http://bar.com/other.wsdl&quot;);
+pico.addConfig(&quot;<u>timeout</u>&quot;, 120);
+pico.addConfig(&quot;timeout2&quot;, 456);
 pico.as(Characteristics.USE_NAMES).addComponent(BigFatComponent.class);
+
 BigFatComponent bfc = pico.getComponent(BigFatComponent.class);
-// bfg has &quot;http://foo.com/foo.wsdl&quot; and 120 as URL and timeout, <strong>not</strong> &quot;abcde&quot; and 456.</pre>
+System.out.println(&quot;bfc: &quot; + bfc.toString());
+// Prints .. &quot;bfg: URL=http://foo.com/spelling.wsdl, timeout=120&quot;</pre>
   </div>
-  <p>This feature of PicoContainer relies on the a non-JDK mechanism of accessing parameter names for methods and constructors. There are two ways for this to work. </p>
+  <p>This feature of PicoContainer relies on the a non-JDK mechanism of <strong>accessing parameter names for methods and constructors</strong>. In this case named parameters <u>spellingWebServiceURL</u> and <u>timeout</u>.</p>
+  <p>There are two ways for this to work. </p>
   <ul>
     <li>adding paranamer 1.0 and ASM 3.0 (or above) to your classpath and ensuring that your component classes have debug info compiled in. </li>
     <li>post-processing component classes with Paranamer before placing them in a jar (no runtime jar dependencies). </li>
   </ul>
   <p>If the parameter name information cannot be accessed at runtime by PicoContainer, then Pico will be unable to differentiate between potential injectable classes of the same type and throws an exception that suggests that there is an ambiguity.</p>
+  <p>This is <strong>not</strong> a global variable facility. Its scoped with the container in question and its child containers.</p>
 </div>
 <h2>Taking configuration from the command line</h2>
 <p>This take the parameter name style a bit further. </p>
@@ -91,7 +99,7 @@ BigFatComponent bfc = pico.getComponent(BigFatComponent.class);
 public static void main(String[] args) {
   ArgumentativePicoContainer argContainer = new ArgumentativePicoContainer(args);
   DefaultPicoContainer appContainer = new DefaultPicoContainer(argContainer);
-  appContainer.addComponent(DataStore.class)
+  appContainer.as(Characteristics.USE_NAMES).addComponent(DataStore.class)
 }
 
 
