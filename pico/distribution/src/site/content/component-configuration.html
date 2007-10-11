@@ -53,7 +53,7 @@ pico.addComponent(BigFatComponent.class, new ConstParameter(&quot;http://foo.com
         <pre>public class BigFatComponent {
   String spellingWebServiceURL;
   int timeout;
-  public BigFatComponent(String <u>spellingWebServiceURL</u>, int <u>timeout</u>) {
+  public BigFatComponent(String spellingWebServiceURL, int timeout) {
     this.spellingWebServiceURL = spellingWebServiceURL;
     this.timeout = timeout;
   }  
@@ -66,9 +66,9 @@ pico.addComponent(BigFatComponent.class, new ConstParameter(&quot;http://foo.com
 
 
 ...
-pico.addConfig(&quot;<u>spellingWebServiceURL</u>&quot;, &quot;http://foo.com/spelling.wsdl&quot;);
+pico.addConfig(&quot;spellingWebServiceURL&quot;, &quot;http://foo.com/spelling.wsdl&quot;);
 pico.addConfig(&quot;somethingOtherURL&quot;, &quot;http://bar.com/other.wsdl&quot;);
-pico.addConfig(&quot;<u>timeout</u>&quot;, 120);
+pico.addConfig(&quot;timeout&quot;, 120);
 pico.addConfig(&quot;timeout2&quot;, 456);
 pico.as(Characteristics.USE_NAMES).addComponent(BigFatComponent.class);
 
@@ -76,7 +76,7 @@ BigFatComponent bfc = pico.getComponent(BigFatComponent.class);
 System.out.println(&quot;bfc: &quot; + bfc.toString());
 // Prints .. &quot;bfg: URL=http://foo.com/spelling.wsdl, timeout=120&quot;</pre>
   </div>
-  <p>This feature of PicoContainer relies on the a non-JDK mechanism of <strong>accessing parameter names for methods and constructors</strong>. In this case named parameters <u>spellingWebServiceURL</u> and <u>timeout</u>.</p>
+  <p>This feature of PicoContainer relies on the a non-JDK mechanism of <strong>accessing parameter names for methods and constructors</strong>. In this case named parameters spellingWebServiceURL and timeout.</p>
   <p>There are two ways for this to work. </p>
   <ul>
     <li>adding paranamer 1.0 and ASM 3.0 (or above) to your classpath and ensuring that your component classes have debug info compiled in. </li>
@@ -116,8 +116,8 @@ Result: DataStore is instantiated with the right &quot;Joe&quot; and &quot;joejo
 
 <h2>Using ConfigParameter</h2>
 <p>
-    New feature in nanocontainer is "ConfigParameter" this parameter is bound only by explicit config 
-    name, and only against strings. Hiwever, string will be conveted to suitable datatype while
+    New feature in NanoContainer is "ConfigParameter" this parameter is bound only by explicit config 
+    name, and only against strings. However, string will be conveted to suitable datatype while
     injecting component by means of <a href="http://xstream.codehaus.org">XStream value converters</a>.
 </p>
 <p>
@@ -145,12 +145,11 @@ Result: DataStore is instantiated with the right &quot;Joe&quot; and &quot;joejo
             Any type sporting accessible constructor taking single string parameter. 
         </li>
     </ul>
-</p>
 <p>
-    Nanocontainer provides special implementations of pico, which are configured using
+    NanoContainer provides special implementations of pico, which are configured using
     properties (org.nanocontainer.config.PropertiesPicoContainer and 
-    org.nanocontainer.config.SystemPropertiesPicoContainer). By Chaining those containers
-    with ArgumentedPcioContainer you achioeve really flexible configuration.
+    org.nanocontainer.config.SystemPropertiesPicoContainer). By chaining those containers
+    with ArgumentativePicoContainer you achieve really flexible configuration.
     <div class="source">
 <pre>
     public static void main(String[] argv) {
@@ -168,12 +167,12 @@ Result: DataStore is instantiated with the right &quot;Joe&quot; and &quot;joejo
         
         MutablePicoContainer work = new DefaultPicoContainer(arguments);
         
-        work.addComponent(BigFatUglyComponent.class,new ComponentParameter("webservice.url"),new ComponentParameter("webservice.timeout"));
+        work.addComponent(BigFatComponent.class,new ConfigParameter("webservice.url"),new ConfigParameter("webservice.timeout"));
     }
 </pre>
     </div>
-        Our BugFatUglyComponent would receive his parameters from (in order of precendence):
-        <ul>
+        Our BugFatComponent would receive his parameters from (in order of precendence):
+<ul>
             <li>
                 Command line parameters <strong>webservice.url==http://servicehost/service</strong> and <strong>webservice.timeout=50</strong>
             </li>
