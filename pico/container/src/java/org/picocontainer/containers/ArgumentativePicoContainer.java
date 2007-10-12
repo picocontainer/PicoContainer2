@@ -13,16 +13,13 @@ package org.picocontainer.containers;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.StringReader;
-import java.util.Collection;
 import java.util.List;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ParameterName;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
 
 /**
  * argumentative pico container configured itself from array of strings
@@ -72,11 +69,6 @@ public class ArgumentativePicoContainer extends AbstractDelegatingPicoContainer 
     	this("=", arguments,parent);
     }
 
-    public void accept(PicoVisitor visitor) {
-        getDelegate().accept(visitor);
-
-    }
-
     private void addConfig(String key, Object val) {
         if (getDelegate().getComponent(key) != null) {
             getDelegate().removeComponent(key);
@@ -88,32 +80,8 @@ public class ArgumentativePicoContainer extends AbstractDelegatingPicoContainer 
         return null;
     }
 
-    public Object getComponent(Object componentKeyOrType) {
-        return getDelegate().getComponent(componentKeyOrType);
-    }
-
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
-        return getDelegate().getComponentAdapter(componentType, componentParameterName);
-    }
-
-    public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
-        return getDelegate().getComponentAdapter(componentKey);
-    }
-
-    public Collection<ComponentAdapter<?>> getComponentAdapters() {
-        return getDelegate().getComponentAdapters();
-    }
-
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
         return null;
-    }
-
-    public List getComponents() {
-        return getDelegate().getComponents();
-    }
-
-    public <T> List<T> getComponents(Class<T> componentType) {
-        return getDelegate().getComponents(componentType);
     }
 
     public PicoContainer getParent() {
