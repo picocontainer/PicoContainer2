@@ -77,7 +77,7 @@ System.out.println(&quot;bfc: &quot; + bfc.toString());
 // Prints .. &quot;bfg: URL=http://foo.com/spelling.wsdl, timeout=120&quot;</pre>
   </div>
   <p>This feature of PicoContainer relies on the a non-JDK mechanism of <strong>accessing parameter names for methods and constructors</strong>. In this case named parameters spellingWebServiceURL and timeout.</p>
-  <p>There are two ways for this to work. </p>
+  <p>There are two ways for this to work: </p>
   <ul>
     <li>relying on the fact that  your component classes have debug info compiled into them. </li>
     <li>post-processing component classes with <a href="http://paranamer.codehaus.org/">Paranamer</a> before placing them in their jar </li>

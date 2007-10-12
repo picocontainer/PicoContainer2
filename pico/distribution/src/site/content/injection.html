@@ -117,9 +117,10 @@ public class Apple {
   // other methods
 }</pre>
 </div>
-<p>The method name needs be 'inject' unless overrriden in the InjectionFactory.</p>
+<p>The method name needs be 'inject' unless overridden in the InjectionFactory.</p>
 <p>The  component factory for this is <strong>MethodInjection</strong>. It only handles method-injection types of components.</p>
 <p>Additionally component factory <strong>AdaptiveInjection</strong> can also handle method-injection types, but only if the METHOD_INJECTION characteristic is specified.</p>
+
 <h2>Using PicoContainer with Injection Types</h2>
 <p>Explicit Constructor Injection:</p>
 <div class="source">
@@ -170,10 +171,17 @@ pico = new DefaultPicoContainer(new AnnotatedMethodInjection(MyInjectAnnotaton.c
 pico.addComponent(Apple.class);
 </pre>
 </div>
-<p>Explicit  Method injection:</p>
+<p>Explicit  Method injection, implicit injection method prefix ('inject'):</p>
 <div class="source">
   <pre>
 pico = new DefaultPicoContainer(new MethodInjection();
+pico.addComponent(Apple.class);
+</pre>
+</div>
+<p>Explicit  Method injection, explicit injection method prefix:</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer(new MethodInjection(&quot;setDependencies&quot;);
 pico.addComponent(Apple.class);
 </pre>
 </div>
@@ -181,12 +189,36 @@ pico.addComponent(Apple.class);
 <div class="source">
   <pre>
 pico = new DefaultPicoContainer();
-pico.as(Characteristic.METHOD_INJECTION).addComponent(Apple.class);
+pico.as(Characteristics.METHOD_INJECTION).addComponent(Apple.class);
 </pre>
 </div>
+<h2> Leveraging Parameter Names </h2>
+<p>This is where the type alone is not enough to indicate which dependency should be put one or more constructor args. The following component has a need for two of the same type, with some subtly different characteristics.</p>
+<div class="source">
+  <pre>
+public class AppleProcessor {
+  private Apple dessertApple;
+  private Apple cookingApple;
 
+  public inject(Apple dessertApple, Apple cookingApple) {
+    this.dessertApple = dessertApple;
+    this.cookingApple = cookingApple;
 
+  }
+  // other methods
+}
 
+pico.addComponent(&quot;dessertApple&quot;, GoldenDeliciousApple.class);
+
+pico.addComponent(&quot;cookingApple&quot;, BramleyApple.class);
+pico.as(Characteristics.USE_NAMES).addComponent(AppleProcessor.class);</pre>
+</div>
+<p>In this case the constructor to AppleProcessor has carefully named parameters - 'dessertApple' and 'cookingApple'. This is picked up on for the two named components GoldenDeliciousApple and BramleyApple also set up in the container.</p>
+<p>There are two ways for this to work:</p>
+<ul>
+  <li>relying on the fact that  your component classes have debug info compiled into them. </li>
+  <li>post-processing component classes with <a href="http://paranamer.codehaus.org/">Paranamer</a> before placing them in their jar </li>
+</ul>
 </body>
 
 
