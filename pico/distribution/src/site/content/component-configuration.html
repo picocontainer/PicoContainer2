@@ -51,10 +51,10 @@ pico.addComponent(BigFatComponent.class, new ConstParameter(&quot;http://foo.com
     <h3>Configuration using parameter names </h3>
     <div class="source">
         <pre>public class BigFatComponent {
-  String spellingWebServiceURL;
+  URL spellWebService;
   int timeout;
-  public BigFatComponent(String spellingWebServiceURL, int timeout) {
-    this.spellingWebServiceURL = spellingWebServiceURL;
+  public BigFatComponent(String spellingWebServiceURL, int timeout) throws MalformedURLExeption {
+    this.spellWebService = new URL(spellingWebServiceURL);
     this.timeout = timeout;
   }  
   public String toString() {
@@ -66,9 +66,9 @@ pico.addComponent(BigFatComponent.class, new ConstParameter(&quot;http://foo.com
 
 
 ...
-pico.addConfig(&quot;spellingWebServiceURL&quot;, &quot;http://foo.com/spelling.wsdl&quot;);
+pico.addConfig(&quot;spellingWebServiceURL&quot;, &quot;http://foo.com/spelling.wsdl&quot;); // matches constructor parameter name
 pico.addConfig(&quot;somethingOtherURL&quot;, &quot;http://bar.com/other.wsdl&quot;);
-pico.addConfig(&quot;timeout&quot;, 120);
+pico.addConfig(&quot;timeout&quot;, 120); // matches constructor parameter name
 pico.addConfig(&quot;timeout2&quot;, 456);
 pico.as(Characteristics.USE_NAMES).addComponent(BigFatComponent.class);
 
@@ -79,8 +79,8 @@ System.out.println(&quot;bfc: &quot; + bfc.toString());
   <p>This feature of PicoContainer relies on the a non-JDK mechanism of <strong>accessing parameter names for methods and constructors</strong>. In this case named parameters spellingWebServiceURL and timeout.</p>
   <p>There are two ways for this to work. </p>
   <ul>
-    <li>adding paranamer 1.0 and ASM 3.0 (or above) to your classpath and ensuring that your component classes have debug info compiled in. </li>
-    <li>post-processing component classes with Paranamer before placing them in a jar (no runtime jar dependencies). </li>
+    <li>relying on the fact that  your component classes have debug info compiled into them. </li>
+    <li>post-processing component classes with <a href="http://paranamer.codehaus.org/">Paranamer</a> before placing them in their jar </li>
   </ul>
   <p>If the parameter name information cannot be accessed at runtime by PicoContainer, then Pico will be unable to differentiate between potential injectable classes of the same type and throws an exception that suggests that there is an ambiguity.</p>
   <p>This is <strong>not</strong> a global variable facility. Its scoped with the container in question and its child containers.</p>
@@ -110,7 +110,7 @@ java -jar myapp.jar JdbcUser=joe JdbcPassword=joejoejoe
 Result: DataStore is instantiated with the right &quot;Joe&quot; and &quot;joejoejoe&quot; as the two strings passed into the constructor.
  </pre>
 </div>
-<p>Not all command line arguments are turned into configuration items, only those separated with an = sign (a second constructor for ArgumentativePicoContainer allows you to specify a different separator). If the value to the right of the = is an int, then the config item will be added as an int (not a String). Likewise for long, and boolean ('true' / 'false'). All else will be left as a String. </p>
+<p>Not all command line arguments are turned into configuration items, only those separated with an = sign (a second constructor parameter for ArgumentativePicoContainer allows you to specify a different separator). If the value to the right of the = is an int, then the config item will be added as an int (not a String). Likewise for long, and boolean ('true' / 'false'). All else will be left as a String. </p>
 <p>Also not that there are not going to be any accidental injections of the wrong configuration value. If you don't specify enough command line arguments, PicoContainer will <strong>always</strong> throw the <a href="ambiguous-injectable-help.html">'Ambiguous' exception</a> and not inject the first String/int/long/boolean that it finds. </p>
 
 
@@ -171,8 +171,8 @@ Result: DataStore is instantiated with the right &quot;Joe&quot; and &quot;joejo
     }
 </pre>
     </div>
-        Our BugFatComponent would receive his parameters from (in order of precendence):
-<ul>
+        Our BigFatComponent would receive its parameters from (in order of precendence):
+        <ul>
             <li>
                 Command line parameters <strong>webservice.url==http://servicehost/service</strong> and <strong>webservice.timeout=50</strong>
             </li>
@@ -187,7 +187,7 @@ Result: DataStore is instantiated with the right &quot;Joe&quot; and &quot;joejo
         settings and provide reasonable defaults. 
         </p>
         <p>
-            If some of properties is unavailable you will receive <strong>UnsatisfiableDependenciesException</strong>
-        </p>
+            If some of properties are unavailable <strong>UnsatisfiableDependenciesException</strong>
+        will be thrown</p>
 </body>
 </html>
