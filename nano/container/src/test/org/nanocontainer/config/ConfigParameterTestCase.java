@@ -6,6 +6,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.gems.parameters.ConfigParameter;
 
 import junit.framework.TestCase;
 
