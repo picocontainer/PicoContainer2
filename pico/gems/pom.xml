@@ -72,5 +72,17 @@
             <version>2.3</version>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.2.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>xpp3</groupId>
+                    <artifactId>xpp3_min</artifactId>
+                </exclusion>
+            </exclusions>
+            <optional>true</optional>
+        </dependency>
 </dependencies>
 </project>
