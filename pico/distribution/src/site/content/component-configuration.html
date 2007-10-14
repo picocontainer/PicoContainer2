@@ -20,10 +20,10 @@
   String getTimeout();
 }
 public class BigFatComponent {
-  String spellingWebServiceURL;
+  URL spellWebService;
   String timeout;
   public BigFatComponent(BigFatComponentConfig config) {
-    this.spellingWebServiceURL = config.getSpellingWebServiceURL();
+    this.spellWebService = new URL(config.getSpellingWebServiceURL());
     this.timeout = config.getTimeout();
   }  
   // other methods
@@ -35,10 +35,10 @@ pico.addComponent(new BigFatComponentConfigBean(&quot;http://foo.com/foo.wsdl&qu
   <h3>Setting config as part of addComponent(..) </h3>
   <div class="source">
       <pre>public class BigFatComponent {
-  String spellingWebServiceURL;
+  URL spellWebService;
   int timeout;
   public BigFatComponent(String spellingWebServiceURL, int timeout) {
-    this.spellingWebServiceURL = spellingWebServiceURL;
+    this.spellWebService = new URL(spellingWebServiceURL);
     this.timeout = timeout;
   }  
   // other methods
@@ -48,7 +48,7 @@ pico.addComponent(new BigFatComponentConfigBean(&quot;http://foo.com/foo.wsdl&qu
 ...
 pico.addComponent(BigFatComponent.class, new ConstParameter(&quot;http://foo.com/foo.wsdl&quot;), new ConstantParameter(120));</pre>
     </div>
-    <h3>Configuration using parameter names </h3>
+  <h3>Configuration using parameter names </h3>
     <div class="source">
         <pre>public class BigFatComponent {
   URL spellWebService;
@@ -58,7 +58,7 @@ pico.addComponent(BigFatComponent.class, new ConstParameter(&quot;http://foo.com
     this.timeout = timeout;
   }  
   public String toString() {
-    return &quot;URL=&quot; + spellingWebServiceURL + &quot;, timeout=&quot; + timeout;  
+    return &quot;URL=&quot; + spellWebService + &quot;, timeout=&quot; + timeout;  
   }
 
   // other methods
