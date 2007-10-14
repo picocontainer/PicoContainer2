@@ -46,7 +46,7 @@
               <goal>shade</goal>
             </goals>
             <configuration>
-              <shadedArtifactId>picocontainer-shaded</shadedArtifactId>
+              <shadedArtifactId>picocontainer</shadedArtifactId>
               <artifactSet></artifactSet>
               <relocations>
                 <relocation>
