@@ -46,7 +46,7 @@ import com.thoughtworks.xstream.converters.extended.ToStringConverter;
 /**
  * Represents parameter out from config entry.
  * config entries are strings ( properties or CL parameters )
- * and this require conversion  to desired type.
+ * and this require conversion to desired type.
  * 
  * 
  * @author k.pribluda

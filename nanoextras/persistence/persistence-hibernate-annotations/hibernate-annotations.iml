@@ -96,7 +96,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/com/thoughtworks/paranamer/paranamer/1.0/paranamer-1.0.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/com/thoughtworks/paranamer/paranamer/1.1/paranamer-1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
