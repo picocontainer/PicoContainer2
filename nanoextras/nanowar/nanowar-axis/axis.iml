@@ -179,7 +179,6 @@
     <orderEntry type="module" module-name="picocontainer" />
     <orderEntry type="module" module-name="nanocontainer" />
     <orderEntry type="library" name="dynaop-1.0" level="project" />
-    <orderEntry type="library" name="paranamer-1.1-SNAPSHOT" level="project" />
     <orderEntryProperties />
   </component>
   <component name="copyright">
