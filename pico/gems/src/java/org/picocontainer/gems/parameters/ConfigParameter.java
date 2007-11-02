@@ -48,6 +48,10 @@ import com.thoughtworks.xstream.converters.extended.ToStringConverter;
  * config entries are strings ( properties or CL parameters )
  * and this require conversion to desired type.
  * 
+ * this class utilizes xstream converters, so all the standarts (primitives/boxed types)
+ * as well as classes providing construction from string ( sigle string
+ * parameter constructor ) can be accessed. 
+ * 
  * 
  * @author k.pribluda
  *
