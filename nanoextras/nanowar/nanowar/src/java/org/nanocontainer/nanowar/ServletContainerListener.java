@@ -54,6 +54,7 @@ import javax.servlet.http.HttpSessionListener;
  * @author Mauro Talevi
  * @author Konstantin Pribluda
  */
+@SuppressWarnings("serial")
 public final class ServletContainerListener implements ServletContextListener, HttpSessionListener, KeyConstants, Serializable {
 
     /**

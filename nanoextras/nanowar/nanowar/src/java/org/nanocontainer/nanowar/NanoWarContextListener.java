@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Enumeration;
+import java.util.Properties;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -32,6 +33,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.references.SimpleReference;
+import org.picocontainer.containers.PropertiesPicoContainer;
+import org.picocontainer.containers.SystemPropertiesPicoContainer;
 import org.picocontainer.parameters.ConstantParameter;
 
 /**
@@ -71,18 +74,37 @@ import org.picocontainer.parameters.ConstantParameter;
  * @author Mauro Talevi
  * @author Konstantin Pribluda
  */
+@SuppressWarnings("serial")
 public class NanoWarContextListener extends AbstractNanoWarListener implements ServletContextListener, KeyConstants {
 
+	/**
+	 * handle context initialisation.  we need to create container 
+	 * and store it into proper reference
+	 */
     public void contextInitialized(ServletContextEvent event) {
         ServletContext context = event.getServletContext();
         try {
             ContainerBuilder containerBuilder = createContainerBuilder(context);
 
-            ObjectReference builderRef = new ApplicationScopeReference(context, BUILDER);
+            ObjectReference<ContainerBuilder> builderRef = new ApplicationScopeReference<ContainerBuilder>(context, BUILDER);
             builderRef.set(containerBuilder);
 
+            SimpleReference<PicoContainer> parentRef = new SimpleReference<PicoContainer>();
+// temporarily diable pending test coverage
+//            // check whether we have to provide system roperties container
+//            if(context.getInitParameter(SYSTEM_PROPERTIES_CONTAINER) != null) {
+//            	parentRef.set(new SystemPropertiesPicoContainer());
+//            }
+//            
+//            // maybe there are properties specified? 
+//            if(context.getInitParameter(PROPERTIES_CONTAINER) != null) {
+//            	Properties properties = new Properties();
+//            	properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(context.getInitParameter(PROPERTIES_CONTAINER)));
+//            	parentRef.set(new PropertiesPicoContainer(properties,parentRef.get()));
+//            }
+            
             ObjectReference containerRef = new ApplicationScopeReference(context, APPLICATION_CONTAINER);
-            containerBuilder.buildContainer(containerRef, new SimpleReference(), context, false);
+            containerBuilder.buildContainer(containerRef, parentRef, context, false);
         // TODO bad catch - PH
         } catch (Exception e) {
             e.printStackTrace();

@@ -9,6 +9,7 @@
 package org.nanocontainer.integrationkit;
 
 import org.picocontainer.ObjectReference;
+import org.picocontainer.PicoContainer;
 
 /**
  * The responsibility of a ContainerBuilder is to <em>instantiate</em> and <em>compose</em> containers.
@@ -28,7 +29,7 @@ public interface ContainerBuilder {
      * @param compositionScope   Hint about the scope for composition.
      * @param addChildToParent   Add the child to the parent
      */
-    void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object compositionScope, boolean addChildToParent);
+    void buildContainer(ObjectReference<PicoContainer> containerRef, ObjectReference<PicoContainer> parentContainerRef, Object compositionScope, boolean addChildToParent);
 
     /**
      * Locate a container at the given reference so it can be stopped,
@@ -36,7 +37,7 @@ public interface ContainerBuilder {
      *
      * @param containerRef Where the container is stored.
      */
-    void killContainer(ObjectReference containerRef);
+    void killContainer(ObjectReference<PicoContainer> containerRef);
 
 }
 

@@ -18,7 +18,7 @@ import javax.servlet.ServletContext;
  *
  * @author Joe Walnes
  */
-public final class ApplicationScopeReference implements ObjectReference {
+public final class ApplicationScopeReference<T> implements ObjectReference<T> {
 
     private final ServletContext context;
     private final String key;
@@ -28,12 +28,12 @@ public final class ApplicationScopeReference implements ObjectReference {
         this.key = key;
     }
 
-    public void set(Object item) {
+    public void set(T item) {
         context.setAttribute(key, item);
     }
 
-    public Object get() {
-        return context.getAttribute(key);
+    public T get() {
+        return (T) context.getAttribute(key);
     }
 
 }
