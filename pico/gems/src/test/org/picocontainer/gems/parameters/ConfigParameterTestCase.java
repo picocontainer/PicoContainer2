@@ -117,6 +117,9 @@ public class ConfigParameterTestCase extends TestCase {
 		
 		assertNotNull(component);
 		assertEquals(239,component.getLongValue());
+		assertEquals("foo.bar",component.getStringParameter());
+		assertEquals(new File("foo.bar"),component.getFileParameter());
+		assertEquals(17.95,component.getDoubleParameter(),0);
 	}
 	/**
 	 * test component to show automatic conversion
