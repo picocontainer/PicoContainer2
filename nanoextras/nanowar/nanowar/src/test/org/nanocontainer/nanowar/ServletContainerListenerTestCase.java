@@ -21,6 +21,8 @@ import javax.servlet.http.HttpSessionEvent;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Invocation;
+import org.jmock.core.Stub;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.DefaultContainerBuilder;
 import org.nanocontainer.integrationkit.PicoCompositionException;
@@ -32,6 +34,8 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.containers.PropertiesPicoContainer;
+import org.picocontainer.containers.SystemPropertiesPicoContainer;
 import org.picocontainer.references.SimpleReference;
 
 /**
@@ -73,6 +77,14 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
                 .method("getInitParameterNames")
                 .withNoArguments()
                 .will(returnValue(initParams.elements()));
+        servletContextMock.expects(once())                
+				.method("getInitParameter")
+				.with(eq(SYSTEM_PROPERTIES_CONTAINER))
+				.will(returnValue(null));
+        servletContextMock.expects(once())                
+				.method("getInitParameter")
+				.with(eq(PROPERTIES_CONTAINER))
+				.will(returnValue(null));
         servletContextMock.expects(once())
                 .method("getInitParameter")
                 .with(eq(scriptName))
@@ -101,6 +113,14 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
                 .method("getInitParameterNames")
                 .withNoArguments()
                 .will(returnValue(initParams.elements()));
+        servletContextMock.expects(once())                
+			.method("getInitParameter")
+			.with(eq(SYSTEM_PROPERTIES_CONTAINER))
+			.will(returnValue(null));
+        servletContextMock.expects(once())                
+			.method("getInitParameter")
+			.with(eq(PROPERTIES_CONTAINER))
+			.will(returnValue(null));
         servletContextMock.expects(once())
                 .method("getInitParameter")
                 .with(eq(scriptName))
@@ -171,6 +191,14 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
                 .method("getInitParameterNames")
                 .withNoArguments()
                 .will(returnValue(initParams.elements()));
+        servletContextMock.expects(once())                
+			.method("getInitParameter")
+			.with(eq(SYSTEM_PROPERTIES_CONTAINER))
+			.will(returnValue(null));
+        servletContextMock.expects(once())                
+			.method("getInitParameter")
+			.with(eq(PROPERTIES_CONTAINER))
+			.will(returnValue(null));
         servletContextMock.expects(once())
                 .method("getInitParameter")
                 .with(eq("nanocontainer.xml"))
@@ -340,7 +368,15 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
                 .method("getInitParameterNames")
                 .withNoArguments()
                 .will(returnValue(initParams.elements()));
-        servletContextMock.expects(once())
+        servletContextMock.expects(once())                
+			.method("getInitParameter")
+			.with(eq(SYSTEM_PROPERTIES_CONTAINER))
+			.will(returnValue(null));
+        servletContextMock.expects(once())                
+			.method("getInitParameter")
+			.with(eq(PROPERTIES_CONTAINER))
+			.will(returnValue(null));
+    	servletContextMock.expects(once())
                 .method("getInitParameter")
                 .with(eq(ServletContainerListener.CONTAINER_COMPOSER))
                 .will(returnValue(ScopedContainerComposer.class.getName()));
@@ -382,6 +418,82 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
         assertScopedContainerComposerIsCreatedWithConfiguration("composer-config.groovy", groovyConfig);        
     }
     
+    
+    /**
+     * configuration containers shall be created and integrated into 
+     * hierarchy. 
+     */
+    public void testThatConfigurationContainersAreCreatedAndSetToParents() {
+    	final ObjectReference<PicoContainer> ref = new SimpleReference<PicoContainer>();
+        String xmlConfig =
+            "<container>" +
+            "</container>";
+        Mock servletContextMock = mock(ServletContext.class);
+        final Vector<String> initParams = new Vector<String>();
+        initParams.add("nanocontainer.xml");
+        servletContextMock.expects(once())
+                .method("getInitParameterNames")
+                .withNoArguments()
+                .will(returnValue(initParams.elements()));
+        servletContextMock.expects(once())                
+			.method("getInitParameter")
+			.with(eq(SYSTEM_PROPERTIES_CONTAINER))
+			.will(returnValue("true"));
+        servletContextMock.expects(once())                
+			.method("getInitParameter")
+			.with(eq(PROPERTIES_CONTAINER))
+			.will(returnValue("nanocontainer.properties"));
+        servletContextMock.expects(once())
+        	.method("getInitParameter")
+        	.with(eq("nanocontainer.xml"))
+        	.will(returnValue(xmlScript));
+        servletContextMock.expects(once())
+        	.method("setAttribute")
+        	.with(eq(BUILDER), isA(XMLContainerBuilder.class));
+        servletContextMock.expects(once())
+        	.method("setAttribute")
+        	.with(eq(APPLICATION_CONTAINER), isA(PicoContainer.class))
+        	.will(new Stub() {
+
+				public Object invoke(Invocation invocation) throws Throwable {
+					ref.set((PicoContainer)invocation.parameterValues.get(1));
+					return null;
+				}
+
+				public StringBuffer describeTo(StringBuffer buffer) {
+					return buffer.append("custom stub stowing away pico container for later inspection");
+				}});
+        
+        listener.contextInitialized(new ServletContextEvent(
+                    (ServletContext) servletContextMock.proxy()));
+        
+        PicoContainer container = ref.get();
+		// container shall be there
+		assertNotNull(container);
+		// properties shall be taken from CP
+		PicoContainer properties = container.getParent();
+		assertNotNull(properties);
+		// and contain defined property
+		assertEquals("glumglem",container.getParent().getComponent("test.value.foo"));
+		
+		// topmost container shall be system properties based
+		PicoContainer system = properties.getParent();
+		assertNotNull(system);
+		assertNull(system.getParent());
+		
+		// iterate through container and see what inside
+		for(Object key: System.getProperties().keySet()) {
+			assertSame(System.getProperties().get(key),system.getComponent(key));
+		}
+		
+		
+
+
+    }
+    
+    
+    
+    
     private void assertScopedContainerComposerIsCreatedWithConfiguration(String scriptName, String script) {
         Mock servletContextMock = mock(ServletContext.class);
         final Vector<String> initParams = new Vector<String>();
@@ -390,7 +502,15 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
                 .method("getInitParameterNames")
                 .withNoArguments()
                 .will(returnValue(initParams.elements()));
-        servletContextMock.expects(once())
+        servletContextMock.expects(once())                
+			.method("getInitParameter")
+			.with(eq(SYSTEM_PROPERTIES_CONTAINER))
+			.will(returnValue(null));
+        servletContextMock.expects(once())                
+			.method("getInitParameter")
+			.with(eq(PROPERTIES_CONTAINER))
+			.will(returnValue(null));
+       	servletContextMock.expects(once())
                 .method("getInitParameter")
                 .with(eq(ServletContainerListener.CONTAINER_COMPOSER))
                 .will(returnValue(ScopedContainerComposer.class.getName()));

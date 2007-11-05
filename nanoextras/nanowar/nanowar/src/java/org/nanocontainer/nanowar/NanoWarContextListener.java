@@ -90,18 +90,19 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
             builderRef.set(containerBuilder);
 
             SimpleReference<PicoContainer> parentRef = new SimpleReference<PicoContainer>();
-// temporarily diable pending test coverage
-//            // check whether we have to provide system roperties container
-//            if(context.getInitParameter(SYSTEM_PROPERTIES_CONTAINER) != null) {
-//            	parentRef.set(new SystemPropertiesPicoContainer());
-//            }
-//            
-//            // maybe there are properties specified? 
-//            if(context.getInitParameter(PROPERTIES_CONTAINER) != null) {
-//            	Properties properties = new Properties();
-//            	properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(context.getInitParameter(PROPERTIES_CONTAINER)));
-//            	parentRef.set(new PropertiesPicoContainer(properties,parentRef.get()));
-//            }
+
+            // check whether we have to provide system roperties container
+            if(context.getInitParameter(SYSTEM_PROPERTIES_CONTAINER) != null) {
+            	parentRef.set(new SystemPropertiesPicoContainer());
+            }
+            
+            // maybe there are properties specified? 
+            String propertiesResource = context.getInitParameter(PROPERTIES_CONTAINER);
+            if(propertiesResource != null) {
+            	Properties properties = new Properties();
+            	properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(propertiesResource));
+            	parentRef.set(new PropertiesPicoContainer(properties,parentRef.get()));
+            }
             
             ObjectReference containerRef = new ApplicationScopeReference(context, APPLICATION_CONTAINER);
             containerBuilder.buildContainer(containerRef, parentRef, context, false);
