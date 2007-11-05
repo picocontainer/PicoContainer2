@@ -1,4 +1,4 @@
-package org.nanocontainer.config;
+package org.picocontainer.gems.parameters;
 
 import java.util.List;
 
