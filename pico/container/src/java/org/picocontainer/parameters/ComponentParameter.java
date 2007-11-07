@@ -108,13 +108,13 @@ public class ComponentParameter
         this.collectionParameter = collectionParameter;
     }
 
-    public Object resolveInstance(PicoContainer container,
+    public  <T> T resolveInstance(PicoContainer container,
                                   ComponentAdapter adapter,
-                                  Class expectedType,
+                                  Class<T> expectedType,
                                   ParameterName expectedParameterName,
                                   boolean useNames) {
         // type check is done in isResolvable
-        Object result = super.resolveInstance(container, adapter, expectedType, expectedParameterName, useNames);
+        T result = super.resolveInstance(container, adapter, expectedType, expectedParameterName, useNames);
         if (result == null && collectionParameter != null) {
             result = collectionParameter.resolveInstance(container, adapter, expectedType, expectedParameterName,
                                                          useNames);
