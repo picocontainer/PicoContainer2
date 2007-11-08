@@ -40,6 +40,21 @@ import javax.servlet.http.HttpSessionListener;
  * </ol>
  * </p>
  * <p>
+ *  To allow external configurability of application (which is quite usefull in 
+ *  and often required in big environments) you can add 2  containers to hierarchy
+ *  <dl>
+ *  	<dt>SystemPropertiesContainer</dt>
+ *  	<dd>
+ *  		System properties container exposes system properties
+ *          obtainable through <code>System.getProperties()</code>
+ *          to components in lower level containers so they have possibility
+ *          to depend on them this allowing external configuration. To
+ *          activate system properties you have to pass any value to 
+ *          {@link KeyConstants#SYSTEM_PROPERTIES_CONTAINER SYSTEM_PROPERTIES_CONTAINER}
+ *      </dd>
+ *  </dl>
+ * </p>
+ * <p>
  * <b>Note:</b> This listener simply delegates to {@link org.nanocontainer.nanowar.NanoWarContextListener} and 
  * {@link org.nanocontainer.nanowar.NanoWarSessionListener}.  The application-level listeners can also be 
  * configured separately in web.xml if one is interested in application-scoped components only or has 
