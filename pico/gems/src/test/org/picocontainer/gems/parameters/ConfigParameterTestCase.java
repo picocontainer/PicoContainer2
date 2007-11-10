@@ -1,14 +1,15 @@
 package org.picocontainer.gems.parameters;
 
-import java.io.File;
-import java.util.List;
-
-import junit.framework.TestCase;
-
+import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
+
+import java.io.File;
+import java.util.List;
+
+import junit.framework.TestCase;
 
 /**
  * test that config parameter does the right job
@@ -121,6 +122,28 @@ public class ConfigParameterTestCase extends TestCase {
 		assertEquals(new File("foo.bar"),component.getFileParameter());
 		assertEquals(17.95,component.getDoubleParameter(),0);
 	}
+
+    public void donot_testComponentInstantiation2() {
+        DefaultPicoContainer properties = new DefaultPicoContainer();
+        properties.addConfig("longValue", "239");
+        properties.addConfig("doubleParameter", "17.95");
+        properties.addConfig("stringParameter", "foo.bar");
+        properties.addConfig("fileParameter", "bar.txt");
+
+        DefaultPicoContainer container = new DefaultPicoContainer(properties);
+        container.as(Characteristics.USE_NAMES).addComponent(ExternallyConfiguredComponent.class);
+
+        ExternallyConfiguredComponent component = container.getComponent(ExternallyConfiguredComponent.class);
+		
+        assertNotNull(component);
+        assertEquals(239,component.getLongValue());
+        assertEquals("foo.bar",component.getStringParameter());
+        assertEquals(new File("foo.txt"),component.getFileParameter());
+        assertEquals(17.95,component.getDoubleParameter(),0);
+    }
+
+
+
 	/**
 	 * test component to show automatic conversion
 	 * 
