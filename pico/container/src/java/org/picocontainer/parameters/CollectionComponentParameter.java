@@ -162,8 +162,7 @@ public class CollectionComponentParameter
     public boolean isResolvable(PicoContainer container,
                                 ComponentAdapter adapter,
                                 Class expectedType,
-                                ParameterName expectedParameterName, boolean useNames)
-    {
+                                ParameterName expectedParameterName, boolean useNames) {
         final Class collectionType = getCollectionType(expectedType);
         final Class valueType = getValueType(expectedType);
         return collectionType != null && (emptyCollection || getMatchingComponentAdapters(container,
