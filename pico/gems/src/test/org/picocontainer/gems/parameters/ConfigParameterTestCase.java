@@ -123,7 +123,7 @@ public class ConfigParameterTestCase extends TestCase {
 		assertEquals(17.95,component.getDoubleParameter(),0);
 	}
 
-    public void donot_testComponentInstantiation2() {
+    public void testComponentInstantiationViaParamNameAssociations() {
         DefaultPicoContainer properties = new DefaultPicoContainer();
         properties.addConfig("longValue", "239");
         properties.addConfig("doubleParameter", "17.95");
@@ -138,7 +138,7 @@ public class ConfigParameterTestCase extends TestCase {
         assertNotNull(component);
         assertEquals(239,component.getLongValue());
         assertEquals("foo.bar",component.getStringParameter());
-        assertEquals(new File("foo.txt"),component.getFileParameter());
+        assertEquals(new File("bar.txt"),component.getFileParameter());
         assertEquals(17.95,component.getDoubleParameter(),0);
     }
 

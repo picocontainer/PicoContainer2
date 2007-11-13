@@ -80,7 +80,7 @@ public class ConfigParameter extends BasicComponentParameter {
 		if(result == null) {
 			return null;
 		}
-		
+
 		SingleValueConverter converter = ConverterUtils.getConverter(expectedType);
 		if(converter == null) {
 			throw new NoConverterAvailableException("unable to find converter from string for class:" + expectedType);
@@ -89,7 +89,7 @@ public class ConfigParameter extends BasicComponentParameter {
 	}
 
 	/**
-	 * whether target adaper can be resolved. 
+	 * whether target adaper can be resolved.
 	 * we explicitely look to string adapters,
 	 * as we will convert it later
 	 */

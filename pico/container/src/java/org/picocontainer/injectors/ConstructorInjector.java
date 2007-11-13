@@ -78,9 +78,11 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
 
             // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {
-                // check wether this constructor is statisfiable
-                if (currentParameters[j].isResolvable(container, this, box(parameterTypes[j]),
-                         new SingleMemberInjectorParameterName(sortedMatchingConstructor,j), useNames())) {
+                // check whether this constructor is statisfiable
+                Class boxed = box(parameterTypes[j]);
+                boolean un = useNames();
+                if (currentParameters[j].isResolvable(container, this, boxed,
+                    new SingleMemberInjectorParameterName(sortedMatchingConstructor, j), un)) {
                     continue;
                 }
                 unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));

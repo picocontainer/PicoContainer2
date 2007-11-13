@@ -16,10 +16,15 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.injectors.AbstractInjector;
 
+import java.io.File;
 import java.io.Serializable;
-import java.lang.reflect.Field;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -35,14 +40,71 @@ import java.util.Set;
  * @author J&ouml;rg Schaible
  * @author Thomas Heller
  */
-public class BasicComponentParameter
-    implements Parameter, Serializable
-{
+public class BasicComponentParameter implements Parameter, Serializable {
+
+    private static interface Converter {
+        Object convert(String paramValue);
+    }
+    private static class ValueOfConverter implements Converter {
+        private Method m;
+        private ValueOfConverter(Class clazz) {
+            try {
+                m = clazz.getMethod("valueOf", String.class);
+            } catch (NoSuchMethodException e) {
+            }
+        }
+
+        public Object convert(String paramValue) {
+            try {
+                return m.invoke(null, paramValue);
+            } catch (IllegalAccessException e) {
+            } catch (InvocationTargetException e) {
+            }
+            return null;
+
+        }
+    }
+    private static class NewInstanceConverter implements Converter {
+        private Constructor c;
+
+        private NewInstanceConverter(Class clazz) {
+            try {
+                c = clazz.getConstructor(String.class);
+            } catch (NoSuchMethodException e) {
+            }
+        }
+
+        public Object convert(String paramValue) {
+            try {
+                return c.newInstance(paramValue);
+            } catch (IllegalAccessException e) {
+            } catch (InvocationTargetException e) {
+            } catch (InstantiationException e) {
+            }
+            return null;
+        }
+    }
 
     /** <code>BASIC_DEFAULT</code> is an instance of BasicComponentParameter using the default constructor. */
     public static final BasicComponentParameter BASIC_DEFAULT = new BasicComponentParameter();
 
     private Object componentKey;
+
+
+    private static final Map<Class, Converter> stringConverters = new HashMap<Class, Converter>();
+    static {
+        stringConverters.put(Integer.class, new ValueOfConverter(Integer.class));
+        stringConverters.put(Double.class, new ValueOfConverter(Double.class));
+        stringConverters.put(Boolean.class, new ValueOfConverter(Boolean.class));
+        stringConverters.put(Long.class, new ValueOfConverter(Long.class));
+        stringConverters.put(Float.class, new ValueOfConverter(Float.class));
+        stringConverters.put(Character.class, new ValueOfConverter(Character.class));
+        stringConverters.put(Byte.class, new ValueOfConverter(Byte.class));
+        stringConverters.put(Byte.class, new ValueOfConverter(Short.class));
+        stringConverters.put(File.class, new NewInstanceConverter(File.class));
+
+    }
+
 
     /**
      * Expect a parameter matching a component of a specific key.
@@ -80,7 +142,12 @@ public class BasicComponentParameter
         final ComponentAdapter componentAdapter =
             resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName, useNames);
         if (componentAdapter != null) {
-            return (T) container.getComponent(componentAdapter.getComponentKey());
+            Object o = container.getComponent(componentAdapter.getComponentKey());
+            if (o instanceof String && expectedType != String.class) {
+                Converter converter = stringConverters.get(expectedType);
+                return (T) converter.convert((String) o);
+            }
+            return (T) o;
         }
         return null;
     }
@@ -112,32 +179,37 @@ public class BasicComponentParameter
                                                    ComponentAdapter adapter,
                                                    Class<T> expectedType,
                                                    ParameterName expectedParameterName, boolean useNames) {
+        Class type = expectedType;
+        if (type.isPrimitive()) {
+            String expectedTypeName = expectedType.getName();
+            if (expectedTypeName == "int") {
+                type = Integer.class;
+            } else if (expectedTypeName == "long") {
+                type = Long.class;
+            } else if (expectedTypeName == "float") {
+                type = Float.class;
+            } else if (expectedTypeName == "double") {
+                type = Double.class;
+            } else if (expectedTypeName == "boolean") {
+                type = Boolean.class;
+            } else if (expectedTypeName == "char") {
+                type = Character.class;
+            } else if (expectedTypeName == "short") {
+                type = Short.class;
+            } else if (expectedTypeName == "byte") {
+                type = Byte.class;
+            }
+        }
 
-        final ComponentAdapter<T> result = getTargetAdapter(container, expectedType, expectedParameterName, adapter, useNames);
+        final ComponentAdapter<T> result = getTargetAdapter(container, type, expectedParameterName, adapter, useNames);
         if (result == null) {
             return null;
         }
 
-        if (!expectedType.isAssignableFrom(result.getComponentImplementation())) {
-            // check for primitive value
-            if (expectedType.isPrimitive()) {
-                try {
-                    final Field field = result.getComponentImplementation().getField("TYPE");
-                    final Class type = (Class)field.get(result.getComponentInstance(null));
-                    if (expectedType.isAssignableFrom(type)) {
-                        return result;
-                    }
-                } catch (NoSuchFieldException e) {
-                    //ignore
-                } catch (IllegalArgumentException e) {
-                    //ignore
-                } catch (IllegalAccessException e) {
-                    //ignore
-                } catch (ClassCastException e) {
-                    //ignore
-                }
+        if (!type.isAssignableFrom(result.getComponentImplementation())) {
+            if (!(result.getComponentImplementation() == String.class && stringConverters.containsKey(type))) {
+                return null;
             }
-            return null;
         }
         return result;
     }
@@ -166,7 +238,7 @@ public class BasicComponentParameter
             if (useNames) {
                 ComponentAdapter found = container.getComponentAdapter(expectedParameterName.getName());
                 if ((found != null)
-                    && expectedType.isAssignableFrom(found.getComponentImplementation())
+                    && areCompatible(expectedType, found)
                     && found != excludeAdapter) {
                     return (ComponentAdapter<T>) found;                    
                 }
@@ -195,5 +267,11 @@ public class BasicComponentParameter
                 throw new AbstractInjector.AmbiguousComponentResolutionException(expectedType, foundClasses);
             }
         }
+    }
+
+    private <T> boolean areCompatible(Class<T> expectedType, ComponentAdapter found) {
+        Class foundImpl = found.getComponentImplementation();
+        return expectedType.isAssignableFrom(foundImpl) ||
+               (foundImpl == String.class && stringConverters.containsKey(expectedType))  ;
     }
 }

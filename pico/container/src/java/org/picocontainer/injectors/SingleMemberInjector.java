@@ -46,10 +46,23 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
      */
     protected Class box(Class parameterType) {
         if (parameterType.isPrimitive()) {
-            if (parameterType == Integer.TYPE) {
+            String parameterTypeName = parameterType.getName();
+            if (parameterTypeName == "int") {
                 return Integer.class;
-            } else if (parameterType == Boolean.TYPE) {
+            } else if (parameterTypeName == "boolean") {
                 return Boolean.class;
+            } else if (parameterTypeName == "long") {
+                return Long.class;
+            } else if (parameterTypeName == "float") {
+                return Float.class;
+            } else if (parameterTypeName == "double") {
+                return Double.class;
+            } else if (parameterTypeName == "char") {
+                return Character.class;
+            } else if (parameterTypeName == "byte") {
+                return Byte.class;
+            } else if (parameterTypeName == "short") {
+                return Short.class;
             }
         }
         return parameterType;

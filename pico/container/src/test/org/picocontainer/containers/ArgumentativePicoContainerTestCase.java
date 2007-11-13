@@ -28,9 +28,9 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
             "foo=bar", "foo2=12", "foo3=true", "foo4="
         });
         assertEquals("bar",apc.getComponent("foo"));
-        assertEquals(12,apc.getComponent("foo2"));
-        assertEquals(true,apc.getComponent("foo3"));
-        assertEquals(true,apc.getComponent("foo4"));
+        assertEquals("12",apc.getComponent("foo2"));
+        assertEquals("true",apc.getComponent("foo3"));
+        assertEquals("true",apc.getComponent("foo4"));
     }
 
     public void testAsParentContainer() {
@@ -38,7 +38,7 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
             "a=aaa", "b=bbb", "d=22"});
         assertEquals("aaa",apc.getComponent("a"));
         assertEquals("bbb",apc.getComponent("b"));
-        assertEquals(22,apc.getComponent("d"));
+        assertEquals("22",apc.getComponent("d"));
 
         DefaultPicoContainer dpc = new DefaultPicoContainer(apc);
         dpc.addComponent(NeedsString.class);
@@ -57,41 +57,41 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
             "foo:bar", "foo2:12", "foo3:true"
         });
         assertEquals("bar",apc.getComponent("foo"));
-        assertEquals(12,apc.getComponent("foo2"));
-        assertEquals(true,apc.getComponent("foo3"));
+        assertEquals("12",apc.getComponent("foo2"));
+        assertEquals("true",apc.getComponent("foo3"));
     }
 
     public void testParsingWithWrongSeparator() {
         ArgumentativePicoContainer apc = new ArgumentativePicoContainer(":", new String[] {
             "foo=bar", "foo2=12", "foo3=true"
         });
-        assertEquals(true,apc.getComponent("foo=bar"));
-        assertEquals(true,apc.getComponent("foo2=12"));
-        assertEquals(true,apc.getComponent("foo3=true"));
+        assertEquals("true",apc.getComponent("foo=bar"));
+        assertEquals("true",apc.getComponent("foo2=12"));
+        assertEquals("true",apc.getComponent("foo3=true"));
     }
 
     public void testParsingOfPropertiesFile() throws IOException {
         ArgumentativePicoContainer apc = new ArgumentativePicoContainer(":",
                                new StringReader("foo:bar\nfoo2:12\nfoo3:true\n"));
         assertEquals("bar",apc.getComponent("foo"));
-        assertEquals(12,apc.getComponent("foo2"));
-        assertEquals(true,apc.getComponent("foo3"));
+        assertEquals("12",apc.getComponent("foo2"));
+        assertEquals("true",apc.getComponent("foo3"));
     }
 
     public void testParsingOfPropertiesFileAndArgs() throws IOException {
         ArgumentativePicoContainer apc = new ArgumentativePicoContainer(":",
                                new StringReader("foo:bar\nfoo2:12\n"), new String[] {"foo3:true"});
         assertEquals("bar",apc.getComponent("foo"));
-        assertEquals(12,apc.getComponent("foo2"));
-        assertEquals(true,apc.getComponent("foo3"));
+        assertEquals("12",apc.getComponent("foo2"));
+        assertEquals("true",apc.getComponent("foo3"));
     }
 
     public void testParsingOfPropertiesFileAndArgsWithClash() throws IOException {
         ArgumentativePicoContainer apc = new ArgumentativePicoContainer(":",
                                new StringReader("foo:bar\nfoo2:99\n"), new String[] {"foo2:12","foo3:true"});
         assertEquals("bar",apc.getComponent("foo"));
-        assertEquals(12,apc.getComponent("foo2"));
-        assertEquals(true,apc.getComponent("foo3"));
+        assertEquals("12",apc.getComponent("foo2"));
+        assertEquals("true",apc.getComponent("foo3"));
     }
 
     public void testbyTypeFailsEvenIfOneOfSameType() {

@@ -88,25 +88,12 @@ public class ArgumentativePicoContainer extends AbstractDelegatingPicoContainer 
         return new EmptyPicoContainer();
     }
 
-    private Object getValue(String s) {
-        if (s.equals("true")) {
-            return true;
-        } else if (s.equals("false")) {
-            return false;
-        }
-        try {
-            return Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-        }
-        return s;
-    }
-
     private void processArgument(String argument, String separator) {
         String[] kvs = argument.split(separator);
         if (kvs.length == 2) {
-            addConfig(kvs[0], getValue(kvs[1]));
+            addConfig(kvs[0], kvs[1]);
         } else if (kvs.length == 1) {
-            addConfig(kvs[0], true);
+            addConfig(kvs[0], "true");
         } else if (kvs.length > 2) {
             throw new PicoCompositionException(
                 "Argument name'"+separator+"'value pair '" + argument + "' has too many '"+separator+"' characters");
