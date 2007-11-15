@@ -1,11 +1,10 @@
-package org.picocontainer.gems.parameters;
+package org.picocontainer.parameters;
 
 import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.parameters.ComponentParameter;
 
 import java.io.File;
 import java.util.List;
