@@ -14,6 +14,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.AbstractInjector;
 
 import java.io.File;

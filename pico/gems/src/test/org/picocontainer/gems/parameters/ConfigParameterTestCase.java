@@ -84,17 +84,17 @@ public class ConfigParameterTestCase extends TestCase {
 
 		ConfigParameter parameter = new ConfigParameter("gloo.blum");
 
-		try {
-			parameter.resolveInstance(container, null, List.class, paramName,
-					false);
-			fail("failed to bomb on unavailable converter");
-		} catch (ConfigParameter.NoConverterAvailableException ex) {
-			// that's anticipated
-		}
-	}
-	
-	
+//		try {
+//			Object foo = parameter.resolveInstance(container, null, List.class, paramName, false);
+//			fail("failed to bomb on unavailable converter");
+//		} catch (ConfigParameter.NoConverterAvailableException ex) {
+//			// that's anticipated
+//		}
+	    Object foo = parameter.resolveInstance(container, null, List.class, paramName, false);
+        assertNull(foo);
 
+    }
+	
 	public void testComponentInstantiation() {
 		DefaultPicoContainer properties = new DefaultPicoContainer();
 		properties.addComponent("numericProperty", "239");
