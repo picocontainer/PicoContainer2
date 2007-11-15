@@ -3,7 +3,6 @@
 <html>
 <head>
 <title>Lifecycle</title>
-
 </head>
 <body>
 <p>Lifecycle with configuration and depenedency injection makes
@@ -16,6 +15,7 @@ reverse order, the same component(s) may require stoping. In fact start
 and stop may happen more than one for the life of an application.
 Disposal may happen once only, before the component is eligible for
 garbage collection.</p>
+<p><strong>Lifecycle is really only going to work for PicoContainers that are also caching component instances. Caching was a default in PicoContainer 1.x, but is not for 2.x - be warned!</strong></p>
 <p>Thus lifecycle implies three methods:</p>
 <ul>
   <li>start</li>

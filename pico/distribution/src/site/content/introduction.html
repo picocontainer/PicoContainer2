@@ -229,12 +229,12 @@ Juicer juicer = (Juicer) y.getComponent(Juicer.class);</pre>
 
 <p>Let's analyse what will happen here:</p>
 <ul>
-    <li>Line 12 will work fine. c will be able to resolve the dependencies for Peeler (which is Fruit) from the parent
+    <li>Line 12 will work fine. z will be able to resolve the dependencies for Peeler (which is Fruit) from the parent
         container.
     </li>
-    <li>Line 14 will return null, as a can't see Peeler.</li>
-    <li>Line 16 will throw an exception, since Juicer's dependency to Peeler can't be satisfied (c can't be seen by
-        b).
+  <li>Line 14 will return null, as x can't see Peeler.</li>
+    <li>Line 16 will throw an exception, since Juicer's dependency to Peeler can't be satisfied (z can't be seen by
+        y).
     </li>
 </ul>
         <p><img class="emoticon"
@@ -266,8 +266,8 @@ Juicer juicer = (Juicer) y.getComponent(Juicer.class);</pre>
 <table>
     <tbody>
         <tr>
-            <th> PicoContainer.start()</th>
-            <th> PicoContainer.stop()</th>
+            <th> MutablePicoContainer.start()</th>
+            <th> MutablePicoContainer.stop()</th>
         </tr>
         <tr>
             <td><img src="images/start-container.png" align="absmiddle" border="0" /></td>
@@ -282,8 +282,8 @@ Juicer juicer = (Juicer) y.getComponent(Juicer.class);</pre>
 <table>
     <tbody>
         <tr>
-            <th> PicoContainer.start()</th>
-            <th> PicoContainer.stop()</th>
+            <th> MutablePicoContainer.start()</th>
+            <th> MutablePicoContainer.stop()</th>
         </tr>
         <tr>
             <td><img src="images/start-hierarchy.png" align="absmiddle" border="0" /></td>
@@ -295,12 +295,11 @@ Juicer juicer = (Juicer) y.getComponent(Juicer.class);</pre>
         border="0" /> In order for hierarchy-aware lifecycle to work, child containers must be registered as components
                       in their parent container. Just creating a container with another one as a parent will <b>not</b>
                       cause the parent container to know about the child container.</p>
-
-<h3>Direct approach</h3>
+<h3>Example</h3>
 
 <div class="source">
     <div>
-                    <pre>MutablePicoContainer parent = new DefaultPicoContainer();
+                    <pre>MutablePicoContainer parent = new DefaultPicoContainer(new Caching());
 MutablePicoContainer child = new DefaultPicoContainer(parent);
 // We must let the parent container know about the child container.
 parent.addComponent(child);
@@ -309,23 +308,12 @@ parent.start();</pre>
     </div>
 </div>
 
-<h3>Indirect approach</h3>
-
-<div class="source">
-    <div>
-                    <pre>MutablePicoContainer parent = new DefaultPicoContainer();
-parent.addComponent("child", DefaultPicoContainer);
-// This will instantiate the child container passing the parent (itself) as parent container.
-// No need to register the child in the parent here.
-MutablePicoContainer child = (MutablePicoContainer ) parent.getComponent("child");
-// This will start the parent, which will start the child.
-parent.start();</pre>
-    </div>
-</div>
+<p><strong><img class="emoticon" src="/images/icons/emoticons/warning.gif" height="16" width="16" align="absmiddle" alt="warning"
+        border="0" /> </strong>Lifecycle is really only going to work for PicoContainers that are also caching component instances. Caching was a default in PicoContainer 1.x, but is not for 2.x - be warned!</p>
 <p><img class="emoticon" src="/images/icons/emoticons/warning.gif" height="16" width="16" align="absmiddle" alt=""
         border="0" /> Calling lifecycle methods on a container that has a parent container will <b>not</b> propagate the
-                      lifecycle to the parent container.</p>
-
+  lifecycle to the parent container. </p>
+<p>Read more about lifecycle <a href="lifecycle.html" title="Lifecycle">here</a>.</p>
 <div id="bodyColumn">
     <div id="contentBox">
         <div class="section">
