@@ -5,6 +5,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.parameters.ComponentParameter;
 
 import java.io.File;
 import java.util.List;
@@ -30,7 +31,7 @@ public class ConfigParameterTestCase extends TestCase {
 
 	public void testThatNoEntryIsWorkingProperly() throws Exception {
 		PicoContainer container = new DefaultPicoContainer();
-		ConfigParameter parameter = new ConfigParameter("gloo.blum");
+		ComponentParameter parameter = new ComponentParameter("gloo.blum");
 
 		// shall be not resolvable
 		assertFalse(parameter.isResolvable(container, null, String.class,
@@ -45,7 +46,7 @@ public class ConfigParameterTestCase extends TestCase {
 		MutablePicoContainer container = new DefaultPicoContainer();
 		container.addComponent("gloo.blum", new Integer(239));
 
-		ConfigParameter parameter = new ConfigParameter("gloo.blum");
+		ComponentParameter parameter = new ComponentParameter("gloo.blum");
 
 		// shall be not resolvable
 		assertFalse(parameter.isResolvable(container, null, String.class,
@@ -66,7 +67,7 @@ public class ConfigParameterTestCase extends TestCase {
 		MutablePicoContainer container = new DefaultPicoContainer();
 		container.addComponent("gloo.blum", "239");
 
-		ConfigParameter parameter = new ConfigParameter("gloo.blum");
+		ComponentParameter parameter = new ComponentParameter("gloo.blum");
 
 		assertEquals(new Integer(239), parameter.resolveInstance(container,
 				null, Integer.class, paramName, false));
@@ -82,7 +83,7 @@ public class ConfigParameterTestCase extends TestCase {
 		MutablePicoContainer container = new DefaultPicoContainer();
 		container.addComponent("gloo.blum", "239");
 
-		ConfigParameter parameter = new ConfigParameter("gloo.blum");
+		ComponentParameter parameter = new ComponentParameter("gloo.blum");
 
 //		try {
 //			Object foo = parameter.resolveInstance(container, null, List.class, paramName, false);
@@ -103,13 +104,13 @@ public class ConfigParameterTestCase extends TestCase {
 
 		DefaultPicoContainer container = new DefaultPicoContainer(properties);
 		container.addComponent("configured", ExternallyConfiguredComponent.class,
-						new ConfigParameter("numericProperty"),
+						new ComponentParameter("numericProperty"),
 						// resolves as string
-						new ConfigParameter("stringProperty"),
+						new ComponentParameter("stringProperty"),
 						// resolves as file
-						new ConfigParameter("stringProperty"),
+						new ComponentParameter("stringProperty"),
 						// resolves as double
-						new ConfigParameter("doubleProperty")
+						new ComponentParameter("doubleProperty")
 					
 				);
 		
