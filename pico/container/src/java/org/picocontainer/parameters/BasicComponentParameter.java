@@ -9,14 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.ParameterName;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.injectors.AbstractInjector;
-
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
@@ -27,6 +19,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.ParameterName;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.injectors.AbstractInjector;
 
 /**
  * A BasicComponentParameter should be used to pass in a particular component as argument to a

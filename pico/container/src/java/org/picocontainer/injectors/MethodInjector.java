@@ -9,15 +9,14 @@
 
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.behaviors.Cached;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 
 /**
  * Injection will happen through a single method for the component.

@@ -69,7 +69,8 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
     }
 
 
-    protected Object[] getMemberArguments(PicoContainer container, final AccessibleObject member, final Class[] parameterTypes) {
+    @SuppressWarnings("unchecked")
+	protected Object[] getMemberArguments(PicoContainer container, final AccessibleObject member, final Class[] parameterTypes) {
         for (int i = 0; i < parameterTypes.length; i++) {
             parameterTypes[i] = box(parameterTypes[i]);
 
