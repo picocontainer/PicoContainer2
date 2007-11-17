@@ -34,6 +34,13 @@
         <page>transparency.html</page>
     </section>
     <section>
+        <name>Containers</name>
+        <page>DefaultPicoContainer.html</page>
+		<page>PropertiesPicoContainer.html</page>
+		<page>SystemPropertiesPicoContainer.html</page>
+		<page>TransientPicoContainer.html</page>
+    </section>
+    <section>
          <name>Applications</name>
          <page>web-frameworks.html</page>
     </section>
