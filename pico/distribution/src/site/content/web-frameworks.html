@@ -7,7 +7,8 @@
 <body>
 <p>This document builds on <a href="scopes.html">scopes</a></p>
 <h2>Web Containers / Web Frameworks</h2>
-<p>There are only about a million for the Java servlet container. There more recent and sophisticated ones try to do Dependency Injection for 'actions' or 'controllers'. If you want to use PicoContainer for a web framework, then you're likely to end up with three container levels. The root container would be common to all and known as the application-level container. One level further would be a session-level one, with the app one marked as its parent. One level further would be a request level one, with the session on marked as its parent. There are two not so subtle varations on how they would be used. One, we poineered with PicoContainer 1.x in 2003, the other inroduced with PicoContainer 2.x in 2007.</p>
+<p>There are only about a million for the Java servlet container. There more recent and sophisticated ones try to do Dependency Injection for 'actions' or 'controllers'. </p>
+<p>If you want to use PicoContainer for a web framework, then you're likely to end up with three container levels. The root container would be common to all and known as the <strong>application scoped</strong> container. Next is a <strong>session-scoped</strong> one, with the app one marked as its parent. Lastly a <strong>request scoped</strong> one, with the session one marked as its parent. There are two not-so-subtle varations on how they would be used. One, we poineered with PicoContainer 1.x in 2003, the other inroduced with PicoContainer 2.x in 2007.</p>
 <h3>PicoContainer and web frameworks - the old way.</h3>
 <p>You make one instance of the app container. For each new HTTP Session you make a new session level container, and put it into the session itself - refer HttpSession.setAttribute(key,val). For each request, you make a new Request level container and discard it at the end of the request. For as long as it lives, the request level container's parent would be the session container.</p>
 <p>There are two downsides of this approach. 1) you have to repeatedly add components to the session and request containers as they are instantiated. 2) the serialization of the session (by Tomcat etc) might cause more things to be serialized than you intend - i.e. the session container refers to the application container.</p>
@@ -24,23 +25,21 @@ public class MyTinyPicoServlet extends HttpServlet {
 
     public void init(ServletConfig cfg) throws ServletException {
 
-        PicoContainer appContainer = new DefaultPicoContainer(new Caching());
+        PicoContainer appContainer = new DefaultPicoContainer(new Caching()); // app scoped components are cached for all users/sessions
 
-        Storing sessionStoreBehavior = new Storing();
+        Storing storingBehavior1 = new Storing();
+        PicoContainer sessionContainer = new DefaultPicoContainer(storingBehavior1, appContainer);
+        sessionStoring = new HttpSessionStoring(storingBehavior1, &quot;sessionStore&quot;);
 
-        PicoContainer sessionContainer = new DefaultPicoContainer(sessionStoreBehavior, appContainer);
-
-        sessionStoring = new HttpSessionStoring(sessionStoreBehavior, &quot;sessionStore&quot;);
-
-        Storing requestStoreBehavior = new Storing();
-        requestContainer = new DefaultPicoContainer(requestStoreBehavior, sessionContainer);
-        requestStoring = new HttpSessionStoring(requestStoreBehavior, &quot;requestStore&quot;);
+        Storing storingBehavior2 = new Storing();
+        requestContainer = new DefaultPicoContainer(storingBehavior2, sessionContainer);
+        requestStoring = new HttpSessionStoring(storingBehavior2, &quot;requestStore&quot;);
 
         // populate app, session and request scoped containers.
-        // appContainer.addComponent(HibernateManager.class, MyHibernateManager.class); // all users/people share one HibernateManager
-        // sessionContainer.addComponent(ShoppingCart.class, FifoCart.class); // a new cart per person
-        // requestContainer.addComponent(&quot;/addToCart.do&quot;, AddToCart.class);
-        // requestContainer.addComponent(&quot;/removeFromCart.do&quot;, RemoveFromCart.class);
+        appContainer.addComponent(HibernateManager.class, MyHibernateManager.class); // all users share one HibernateManager
+        sessionContainer.addComponent(ShoppingCart.class, FifoCart.class); // a new cart per user
+        requestContainer.addComponent(&quot;/addToCart.do&quot;, AddToCart.class); // key crudely maps to URL
+        requestContainer.addComponent(&quot;/removeFromCart.do&quot;, RemoveFromCart.class);
         // etc
 
     }
@@ -48,22 +47,24 @@ public class MyTinyPicoServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
 
-        sessionStoring.retrieveSessionStoreOrCreateNewOne(req.getSession());
-        requestStoring.resetStore();
+        sessionStoring.retrieveSessionStoreOrCreateNewOne(req.getSession()); // associate thread with session, for caching (session scoped components)
+        requestStoring.resetStore(); // cache components per request (request scoped components)
 
         Action action = (Action) requestContainer.getComponent(req.getPathTranslated());
 
-        action.execute(req, resp); // yeah yeah, this is pretty basic
-
-        sessionStoring.invalidateStore();
-        requestStoring.invalidateStore();
+        try {
+            action.execute(req, resp); // yeah yeah, this is pretty basic
+        } finally {
+            sessionStoring.invalidateStore();
+            requestStoring.invalidateStore();
+        }
         // trying to retrieve components from at session or request scopes from here on will result in an UnsupportedOperationException
     }
 
 }
 </pre>
 </div>
-<p>HttpSessionStoring is not in the core jar, its in the 'gems' one.</p>
+<p>The HttpSessionStoring class is not in the core jar, its in the 'gems' one. If you don't want a second jar - copy the class (it's real simple) to your web framework's codebase.</p>
 <h2>Real Web Frameworks</h2>
 <p><a href="http://waffle.codehaus.org">Waffle</a> - hopefully the pinnacle of Java action/controller web-frameworks.</p>
 <p>&nbsp;</p>
