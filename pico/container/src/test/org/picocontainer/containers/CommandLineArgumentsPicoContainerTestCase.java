@@ -21,10 +21,10 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 
-public class ArgumentativePicoContainerTestCase extends TestCase {
+public class CommandLineArgumentsPicoContainerTestCase extends TestCase {
 
     public void testBasicParsing() {
-        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {
+        CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(new String[] {
             "foo=bar", "foo2=12", "foo3=true", "foo4="
         });
         assertEquals("bar",apc.getComponent("foo"));
@@ -34,7 +34,7 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
     }
 
     public void testAsParentContainer() {
-        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {
+        CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(new String[] {
             "a=aaa", "b=bbb", "d=22"});
         assertEquals("aaa",apc.getComponent("a"));
         assertEquals("bbb",apc.getComponent("b"));
@@ -53,7 +53,7 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
     }
 
     public void testParsingWithDiffSeparator() {
-        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(":", new String[] {
+        CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(":", new String[] {
             "foo:bar", "foo2:12", "foo3:true"
         });
         assertEquals("bar",apc.getComponent("foo"));
@@ -62,7 +62,7 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
     }
 
     public void testParsingWithWrongSeparator() {
-        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(":", new String[] {
+        CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(":", new String[] {
             "foo=bar", "foo2=12", "foo3=true"
         });
         assertEquals("true",apc.getComponent("foo=bar"));
@@ -71,7 +71,7 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
     }
 
     public void testParsingOfPropertiesFile() throws IOException {
-        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(":",
+        CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(":",
                                new StringReader("foo:bar\nfoo2:12\nfoo3:true\n"));
         assertEquals("bar",apc.getComponent("foo"));
         assertEquals("12",apc.getComponent("foo2"));
@@ -79,7 +79,7 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
     }
 
     public void testParsingOfPropertiesFileAndArgs() throws IOException {
-        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(":",
+        CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(":",
                                new StringReader("foo:bar\nfoo2:12\n"), new String[] {"foo3:true"});
         assertEquals("bar",apc.getComponent("foo"));
         assertEquals("12",apc.getComponent("foo2"));
@@ -87,7 +87,7 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
     }
 
     public void testParsingOfPropertiesFileAndArgsWithClash() throws IOException {
-        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(":",
+        CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(":",
                                new StringReader("foo:bar\nfoo2:99\n"), new String[] {"foo2:12","foo3:true"});
         assertEquals("bar",apc.getComponent("foo"));
         assertEquals("12",apc.getComponent("foo2"));
@@ -95,14 +95,14 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
     }
 
     public void testbyTypeFailsEvenIfOneOfSameType() {
-        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {
+        CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(new String[] {
             "foo=bar"});
         assertEquals("bar",apc.getComponent("foo"));
         assertNull(apc.getComponent(String.class));
     }
 
     public void testUnsatisfiableIfNoSuitableTyesForInjection() {
-        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {"zz=zz"});
+        CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(new String[] {"zz=zz"});
         DefaultPicoContainer pico = new DefaultPicoContainer(apc);
         pico.as(Characteristics.USE_NAMES).addComponent(NeedsAFew.class);
         try {
@@ -124,7 +124,7 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
     }
 
     public void testConstructorInjectionComponentCanDependOnConfig() {
-        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {"a=a", "b=2", "c=true"});
+        CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(new String[] {"a=a", "b=2", "c=true"});
         DefaultPicoContainer pico = new DefaultPicoContainer(apc);
         pico.addConfig("zzz","zzz");
         pico.as(Characteristics.USE_NAMES).addComponent(NeedsAFew.class);
@@ -154,7 +154,7 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
     }
 
     public void testSetterInjectionComponentCanDependOnConfig() {
-        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {"a=a", "b=2", "c=true"});
+        CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(new String[] {"a=a", "b=2", "c=true"});
         DefaultPicoContainer pico = new DefaultPicoContainer(new SetterInjection(), apc);
         pico.addConfig("zzz","zzz");
         pico.as(Characteristics.USE_NAMES).addComponent(NeedsAFew2.class);
@@ -175,7 +175,7 @@ public class ArgumentativePicoContainerTestCase extends TestCase {
     }
 
     public void testAnnotatedFieldInjectionComponentCanDependOnConfig() {
-        ArgumentativePicoContainer apc = new ArgumentativePicoContainer(new String[] {"a=a", "b=2", "c=true"});
+        CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(new String[] {"a=a", "b=2", "c=true"});
         DefaultPicoContainer pico = new DefaultPicoContainer(new AnnotatedFieldInjection(), apc);
         pico.addConfig("zzz","zzz");
         pico.as(Characteristics.USE_NAMES).addComponent(NeedsAFew3.class);

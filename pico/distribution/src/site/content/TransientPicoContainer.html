@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<title>TransientPicoContainer</title>
+</head>
+<body>
+<p>
+TransientPicoContainer is a for short term needs for object instantion, where the container is going to be de-referenced shortly after use.
+<p>Here is an example of use:
+<div class="source">
+<pre>public Foo makeSuitableFoo() {
+    MutablePicoContainer temp = new TransientPicoContainer(someParentContainer);
+    temp.addComponent(somethingElseThatMightBeNeeded);  // by instance
+    temp.addComponent(Foo.class, FooImpleThatNeedsTheAbove.class); // by type
+    return temo.getComponent(Foo.class);
+}
+</pre>
+</div>
+</body>
+
+
+</html>

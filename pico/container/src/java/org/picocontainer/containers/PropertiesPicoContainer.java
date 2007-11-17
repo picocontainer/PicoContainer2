@@ -24,8 +24,6 @@ import org.picocontainer.PicoContainer;
 @SuppressWarnings("serial")
 public class PropertiesPicoContainer extends AbstractDelegatingPicoContainer {
 
-	
-	
 	/**
 	 * create with parent container and populate from properties
 	 * @param properties

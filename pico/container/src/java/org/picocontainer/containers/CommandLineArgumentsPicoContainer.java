@@ -9,7 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
-
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.StringReader;
@@ -22,31 +21,31 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 
 /**
- * argumentative pico container configured itself from array of strings
- * which could be coming as commando line arguments
+ * CommandLineArgumentsPicoContainer configured itself from array of strings
+ * which are most likely coming in as command line arguments
  * 
  */
 @SuppressWarnings("serial")
-public class ArgumentativePicoContainer extends AbstractDelegatingPicoContainer {
-    public ArgumentativePicoContainer(String separator, String[] arguments) {
+public class CommandLineArgumentsPicoContainer extends AbstractDelegatingPicoContainer {
+    public CommandLineArgumentsPicoContainer(String separator, String[] arguments) {
     	this(separator,arguments,null);
     }
 
-    public ArgumentativePicoContainer(String separator, String[] arguments, PicoContainer parent ) {
+    public CommandLineArgumentsPicoContainer(String separator, String[] arguments, PicoContainer parent ) {
     	super(new DefaultPicoContainer(parent));
         for (String argument : arguments) {
             processArgument(argument, separator);
         }
     }
-    public ArgumentativePicoContainer(String separator, StringReader argumentsProps) throws IOException {
+    public CommandLineArgumentsPicoContainer(String separator, StringReader argumentsProps) throws IOException {
         this(separator, argumentsProps, new String[0]);
     }
     
-    public ArgumentativePicoContainer(String separator, StringReader argumentProperties, String[] arguments) throws IOException{
+    public CommandLineArgumentsPicoContainer(String separator, StringReader argumentProperties, String[] arguments) throws IOException{
     	this(separator,argumentProperties,arguments,null);
     }
 
-    public ArgumentativePicoContainer(String separator, StringReader argumentProperties, String[] arguments, PicoContainer parent)
+    public CommandLineArgumentsPicoContainer(String separator, StringReader argumentProperties, String[] arguments, PicoContainer parent)
         throws IOException {
     	super(new DefaultPicoContainer(parent));
     	
@@ -61,11 +60,11 @@ public class ArgumentativePicoContainer extends AbstractDelegatingPicoContainer 
         }
     }
     
-    public ArgumentativePicoContainer(String[] arguments) {
+    public CommandLineArgumentsPicoContainer(String[] arguments) {
         this("=", arguments);
     }
 
-    public ArgumentativePicoContainer(String[] arguments, PicoContainer parent) {
+    public CommandLineArgumentsPicoContainer(String[] arguments, PicoContainer parent) {
     	this("=", arguments,parent);
     }
 
