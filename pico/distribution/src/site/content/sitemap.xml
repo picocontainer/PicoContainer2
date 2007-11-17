@@ -36,6 +36,7 @@
     <section>
         <name>Containers</name>
         <page>DefaultPicoContainer.html</page>
+	    <page>CommandLineArgumentsPicoContainer.html</page>
 		<page>PropertiesPicoContainer.html</page>
 		<page>SystemPropertiesPicoContainer.html</page>
 		<page>TransientPicoContainer.html</page>

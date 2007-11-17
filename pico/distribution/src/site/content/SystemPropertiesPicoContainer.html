@@ -13,15 +13,15 @@ SystemPropertiesPicoContainer is a special type of PicoContainer that is populat
                 
 MutablePicoContainer mpc = new DefaultPicoContainer(propsContainer);
                 
-mpc.as(Characteristics.USE_NAMES).addComponent(ComponentThatThatNeedsThingsProvidedByTheSysPropsContainer.class);
+mpc.as(Characteristics.USE_NAMES).addComponent(ComponentThatThatNeedsThingsProvidedByParentContainer.class);
 </pre>
 </div>
-        <p>Set in a more manual way, forcing an association between system properties file, and the relative position of a parameter in the constructor:</p>
+<p>Set in a more manual way, forcing an association between system properties file, and the relative position of a parameter in the constructor:</p>
 <div class="source">
-<pre>mpc.addComponent(ComponentThatThatNeedsThingsProvidedByTheSysPropsContainer.class, 
+<pre>mpc.addComponent(ComponentThatThatNeedsThingsProvidedByParentContainer.class, 
         ConfigParameter(&quot;user.name&quot;), ConfigParameter(&quot;user.dir&quot;));</pre>
 </div>
-        <p>Type conversion is automatic in many cases. Properties in a properties file are clearly strings. Parameters can be any of:</p>
+<p>Type conversion is automatic in many cases. Properties in a properties file are clearly strings. Parameters can be any of:</p>
 <ul>
           <li> String </li>
           <li> All numeric types, boxed as well as primitives </li>
