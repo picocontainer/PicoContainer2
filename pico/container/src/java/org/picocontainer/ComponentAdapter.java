@@ -14,7 +14,7 @@ package org.picocontainer;
  * instance. Each <code>ComponentAdapter</code> instance has to have a key
  * which is unique within that container. The key itself is either a class type
  * (normally an interface) or an identifier.
- * 
+ *
  * @author Jon Tirs&eacute;n
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
@@ -44,7 +44,6 @@ public interface ComponentAdapter<T> {
      *
      * @param container the {@link PicoContainer}, that is used to resolve any possible dependencies of the instance.
      * @return the component instance.
-     * @throws PicoCompositionException if the component could not be instantiated.
      * @throws PicoCompositionException  if the component has dependencies which could not be resolved, or
      *                                     instantiation of the component lead to an ambigous situation within the
      *                                     container.
