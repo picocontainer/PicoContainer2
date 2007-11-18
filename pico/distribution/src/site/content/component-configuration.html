@@ -49,8 +49,9 @@ pico.addComponent(new BigFatComponentConfigBean(&quot;http://foo.com/foo.wsdl&qu
 pico.addComponent(BigFatComponent.class, new ConstParameter(&quot;http://foo.com/foo.wsdl&quot;), new ConstantParameter(120));</pre>
     </div>
   <h3>Configuration using parameter names </h3>
-    <div class="source">
-        <pre>public class BigFatComponent {
+  <p>Consider this component ...</p>
+  <div class="source">
+    <pre>public class BigFatComponent {
   URL spellWebService;
   int timeout;
   public BigFatComponent(String spellingWebServiceURL, int timeout) throws MalformedURLExeption {
@@ -64,8 +65,11 @@ pico.addComponent(BigFatComponent.class, new ConstParameter(&quot;http://foo.com
   // other methods
 }
 
-
-...
+</pre>
+  </div>
+  <p>And this composition ...</p>
+<div class="source">
+        <pre>
 pico.addConfig(&quot;spellingWebServiceURL&quot;, &quot;http://foo.com/spelling.wsdl&quot;); // matches constructor parameter name
 pico.addConfig(&quot;somethingOtherURL&quot;, &quot;http://bar.com/other.wsdl&quot;);
 pico.addConfig(&quot;timeout&quot;, 120); // matches constructor parameter name

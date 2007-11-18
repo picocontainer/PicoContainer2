@@ -15,9 +15,9 @@ CommandLineArgumentsPicoContainer is a special type of PicoContainer that proces
 <p>Where this is the applicable main method:</p>
 <div class="source">
 <pre>public static void main(String[] args) {
-    PicoContainer propsContainer = new CommandLineArgumentsPicoContainer(args);
+    PicoContainer argsContainer = new CommandLineArgumentsPicoContainer(args);
                 
-    MutablePicoContainer mpc = new DefaultPicoContainer(propsContainer);
+    MutablePicoContainer mpc = new DefaultPicoContainer(argsContainer);
                 
     mpc.as(Characteristics.USE_NAMES).addComponent(ComponentThatThatNeedsThingsProvidedByParentContainer.class);
    
@@ -29,7 +29,7 @@ CommandLineArgumentsPicoContainer is a special type of PicoContainer that proces
 <p>Here is another manual use forcing an association between a item in the properties file, and the relative position of a parameter in the constructor:</p>
 <div class="source">
 <pre>    mpc.addComponent(ComponentThatThatNeedsThingsProvidedByParentContainer.class, 
-            ConfigParameter(&quot;arg1&quot;), ConfigParameter(&quot;arg2&quot;));</pre>
+            ConfigParameter(&quot;config1&quot;), ConfigParameter(&quot;moreConfig&quot;));</pre>
 </div>
 <p>Type conversion is automatic in many cases. Properties in a properties file are clearly strings. Parameters can be any of:</p>
         <ul>
