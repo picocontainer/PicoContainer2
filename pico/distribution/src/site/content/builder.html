@@ -2,13 +2,12 @@
 
 <html>
 <head>
-<title>PicoBuilder</title>
+<title>Building Containers</title>
 </head>
 <body>
-<p>PicoBuilder is a conveniece way of making a PicoContainer
-instance with the right behaviors for you. Refer to Martin's <a
+<p>Rather than new up a PicoContainer instance with the right ComponentFactory, LifecycleStategy and ComponentMonitor, your can use  PicoBuilder for conveniece. Refer to Martin's <a
   href="http://www.martinfowler.com/bliki/FluentInterface.html">'Fluent
-Interface'</a> article.</p>
+Interface'</a> article, for some of the motivation behing this class.</p>
 <p>Some simple examples :</p>
     <div class="source"><pre>
 pico = new PicoBuilder().build();
