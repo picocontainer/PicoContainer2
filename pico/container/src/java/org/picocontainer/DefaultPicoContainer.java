@@ -13,13 +13,13 @@ import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.HiddenImplementation;
-import org.picocontainer.behaviors.Adapting;
+import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.AdaptiveInjection;
+import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -146,18 +146,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Creates a new container with the AdaptiveInjection using a
+     * Creates a new container with the AdaptingInjection using a
      * custom ComponentMonitor
      *
      * @param monitor the ComponentMonitor to use
      * @param parent  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentMonitor monitor, PicoContainer parent) {
-        this(new Adapting(), new StartableLifecycleStrategy(monitor), parent, monitor);
+        this(new AdaptingBehavior(), new StartableLifecycleStrategy(monitor), parent, monitor);
     }
 
     /**
-     * Creates a new container with the AdaptiveInjection using a
+     * Creates a new container with the AdaptingInjection using a
      * custom ComponentMonitor and lifecycle strategy
      *
      * @param monitor           the ComponentMonitor to use
@@ -165,11 +165,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent            the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(new Adapting(), lifecycleStrategy, parent, monitor);
+        this(new AdaptingBehavior(), lifecycleStrategy, parent, monitor);
     }
 
     /**
-     * Creates a new container with the AdaptiveInjection using a
+     * Creates a new container with the AdaptingInjection using a
      * custom lifecycle strategy
      *
      * @param lifecycleStrategy the lifecycle strategy to use.
@@ -190,7 +190,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Creates a new container with the AdaptiveInjection using a
+     * Creates a new container with the AdaptingInjection using a
      * custom ComponentMonitor
      *
      * @param monitor the ComponentMonitor to use
@@ -200,18 +200,18 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     /**
-     * Creates a new container with a (caching) {@link AdaptiveInjection}
+     * Creates a new container with a (caching) {@link AdaptingInjection}
      * and a parent container.
      *
      * @param parent the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(PicoContainer parent) {
-        this(new Adapting(), parent);
+        this(new AdaptingBehavior(), parent);
     }
 
-    /** Creates a new container with a {@link Adapting} and no parent container. */
+    /** Creates a new container with a {@link AdaptingBehavior} and no parent container. */
     public DefaultPicoContainer() {
-        this(new Adapting(), null);
+        this(new AdaptingBehavior(), null);
     }
 
     public Collection<ComponentAdapter<?>> getComponentAdapters() {

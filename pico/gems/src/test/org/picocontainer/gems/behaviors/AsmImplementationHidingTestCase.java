@@ -14,7 +14,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.injectors.AdaptiveInjection;
+import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Characteristics;
@@ -34,7 +34,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public final class AsmImplementationHidingTestCase extends AbstractComponentFactoryTestCase {
 
-    private final ComponentFactory implementationHidingComponentFactory = new AsmImplementationHiding().wrap(new AdaptiveInjection());
+    private final ComponentFactory implementationHidingComponentFactory = new AsmImplementationHiding().wrap(new AdaptingInjection());
 
     public void testAddComponentUsesImplementationHidingBehavior() {
         DefaultPicoContainer pico =

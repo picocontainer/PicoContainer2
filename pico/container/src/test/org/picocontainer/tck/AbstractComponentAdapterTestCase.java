@@ -21,7 +21,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.injectors.AdaptiveInjection;
+import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.parameters.ConstantParameter;
@@ -29,7 +29,6 @@ import org.picocontainer.references.SimpleReference;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.behaviors.Cached;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ObjectReference;
@@ -70,7 +69,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
     }
 
     protected ComponentFactory createDefaultComponentFactory() {
-        return new AdaptiveInjection();
+        return new AdaptingInjection();
     }
 
     // ============================================

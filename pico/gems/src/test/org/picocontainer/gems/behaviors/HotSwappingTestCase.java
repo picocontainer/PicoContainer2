@@ -16,7 +16,7 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.gems.behaviors.HotSwapping;
 import org.picocontainer.gems.behaviors.HotSwappable;
-import org.picocontainer.injectors.AdaptiveInjection;
+import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
@@ -28,7 +28,7 @@ import java.util.HashMap;
 
 
 public final class HotSwappingTestCase extends AbstractComponentFactoryTestCase {
-    private final ComponentFactory implementationHidingComponentFactory = new HotSwapping().wrap(new AdaptiveInjection());
+    private final ComponentFactory implementationHidingComponentFactory = new HotSwapping().wrap(new AdaptingInjection());
 
     // START SNIPPET: man
     public static interface Man {

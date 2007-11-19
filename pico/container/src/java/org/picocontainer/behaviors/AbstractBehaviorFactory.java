@@ -14,7 +14,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.BehaviorFactory;
-import org.picocontainer.injectors.AdaptiveInjection;
+import org.picocontainer.injectors.AdaptingInjection;
 
 import java.io.Serializable;
 import java.util.Properties;
@@ -33,7 +33,7 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
             LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,
             Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
         if (delegate == null) {
-            delegate = new AdaptiveInjection();
+            delegate = new AdaptingInjection();
         }
         return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, componentKey,
                 componentImplementation, parameters);

@@ -20,7 +20,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.AdaptiveInjection;
+import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.AnnotatedMethodInjectorTestCase;
 import org.picocontainer.injectors.AnnotatedMethodInjector;
 import org.picocontainer.injectors.AnnotatedFieldInjector;
@@ -40,7 +40,7 @@ import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 
-public class AdaptiveInjectionTestCase extends AbstractComponentFactoryTestCase {
+public class AdaptingInjectionTestCase extends AbstractComponentFactoryTestCase {
 
     XStream xs;
 
@@ -76,7 +76,7 @@ public class AdaptiveInjectionTestCase extends AbstractComponentFactoryTestCase 
     }
 
     protected ComponentFactory createComponentFactory() {
-        return new AdaptiveInjection();
+        return new AdaptingInjection();
     }
 
     public void testInstantiateComponentWithNoDependencies() throws PicoCompositionException {

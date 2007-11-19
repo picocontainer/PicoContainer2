@@ -43,7 +43,7 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  * @see MethodInjection
  * @see ConstructorInjection
  */
-public class AdaptiveInjection implements InjectionFactory, Serializable {
+public class AdaptingInjection implements InjectionFactory, Serializable {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,

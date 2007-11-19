@@ -35,7 +35,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.gems.behaviors.AsmImplementationHiding\n" +
-                "    delegate=org.picocontainer.injectors.AdaptiveInjection\n" +
+                "    delegate=org.picocontainer.injectors.AdaptingInjection\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -46,7 +46,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(Log4JComponentMonitor.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AdaptiveInjection\n" +
+                "  componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.gems.monitors.Log4JComponentMonitor\n" +
@@ -58,7 +58,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(LOG4J()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AdaptiveInjection\n" +
+                "  componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.gems.monitors.Log4JComponentMonitor\n" +
@@ -70,7 +70,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(CommonsLoggingComponentMonitor.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AdaptiveInjection\n" +
+                "  componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.gems.monitors.CommonsLoggingComponentMonitor\n" +

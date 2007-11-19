@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.injectors.AdaptiveInjection;
+import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.AnnotatedMethodInjection;
@@ -18,7 +18,7 @@ import org.picocontainer.InjectionFactory;
 public class Injectors {
 
     public static InjectionFactory adaptiveDI() {
-        return new AdaptiveInjection();
+        return new AdaptingInjection();
     }
 
     public static InjectionFactory SDI() {

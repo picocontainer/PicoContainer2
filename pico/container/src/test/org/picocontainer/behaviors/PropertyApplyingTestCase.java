@@ -28,7 +28,7 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.behaviors.PropertyApplicator;
 import org.picocontainer.behaviors.PropertyApplying;
-import org.picocontainer.injectors.AdaptiveInjection;
+import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
@@ -153,7 +153,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
     }
 
     protected ComponentFactory createComponentFactory() {
-        return new PropertyApplying().wrap(new AdaptiveInjection());
+        return new PropertyApplying().wrap(new AdaptingInjection());
     }
 
     public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {
