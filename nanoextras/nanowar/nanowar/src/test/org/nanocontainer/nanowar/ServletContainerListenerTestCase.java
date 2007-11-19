@@ -34,8 +34,6 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.containers.PropertiesPicoContainer;
-import org.picocontainer.containers.SystemPropertiesPicoContainer;
 import org.picocontainer.references.SimpleReference;
 
 /**
@@ -283,7 +281,7 @@ public final class ServletContainerListenerTestCase extends MockObjectTestCase i
     
     public void testGroovyContainerBuilderCanBeScopedWithInlineScriptsUsingPicoSyntax() throws Exception{
       String picoScript =
-          "componentFactory = new org.picocontainer.injectors.AdaptiveInjection()\n"+
+          "componentFactory = new org.picocontainer.injectors.AdaptingInjection()\n"+
           "pico = new org.picocontainer.DefaultPicoContainer(componentFactory, parent)\n"+
           "   if ( assemblyScope instanceof javax.servlet.ServletContext ){ \n" +
           "      System.out.println('Application scope parent '+parent)\n "+

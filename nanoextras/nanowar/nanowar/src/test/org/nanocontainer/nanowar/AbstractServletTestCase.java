@@ -75,7 +75,7 @@ public class AbstractServletTestCase extends MockObjectTestCase {
                 "<context-param>\n" +
                 "  <param-name>nanocontainer.groovy</param-name>\n" +
                 "  <param-value>" + //<![CDATA[\n" +
-                "    componentFactory = new org.picocontainer.injectors.AdaptiveInjection()\n" +
+                "    componentFactory = new org.picocontainer.injectors.AdaptingInjection()\n" +
                 "    pico = new org.picocontainer.DefaultPicoContainer(componentFactory, parent)\n" +
                 "    if(assemblyScope instanceof javax.servlet.ServletContext) {\n" +
                 ctxScope +
