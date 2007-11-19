@@ -5,7 +5,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.injectors.AdaptiveInjection;
+import org.picocontainer.injectors.AdaptingInjection;
 
 import java.util.Properties;
 
@@ -13,7 +13,7 @@ import java.util.Properties;
  * @author Paul Hammant
  * @version $Revision$
  */
-public final class TestInjection extends AdaptiveInjection {
+public final class TestInjection extends AdaptingInjection {
 
     public final StringBuffer sb;
 

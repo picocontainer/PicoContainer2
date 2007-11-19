@@ -77,7 +77,7 @@ public interface AspectablePicoContainerFactory {
      * Creates a new <code>AspectablePicoContainer</code>. Uses
      * <code>org.picocontainer.DefaultPicoContainer</code> as the
      * delegate container. Uses
-     * <code>org.picocontainer.injectors.AdaptiveInjection</code>
+     * <code>org.picocontainer.injectors.AdaptingInjection</code>
      * as the delegate component factory.
      *
      * @param parent the parent container.
@@ -89,7 +89,7 @@ public interface AspectablePicoContainerFactory {
      * Creates a new <code>AspectablePicoContainer</code>. Uses
      * <code>org.picocontainer.DefaultPicoContainer</code> as the
      * delegate container. Uses
-     * <code>org.picocontainer.injectors.AdaptiveInjection</code>
+     * <code>org.picocontainer.injectors.AdaptingInjection</code>
      * as the delegate component factory.
      *
      * @return a new <code>AspectablePicoContainer</code>.

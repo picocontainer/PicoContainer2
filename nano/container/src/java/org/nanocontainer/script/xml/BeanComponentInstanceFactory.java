@@ -13,7 +13,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.injectors.AdaptiveInjection;
+import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.behaviors.PropertyApplicator;
 import org.picocontainer.ComponentFactory;
 
@@ -53,7 +53,7 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
 
     private ComponentAdapter createComponentAdapter(String className, ClassLoader classLoader)  {
         Class implementation = loadClass(classLoader, className);
-        ComponentFactory factory = new AdaptiveInjection();
+        ComponentFactory factory = new AdaptingInjection();
         return factory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), className, implementation);
     }
 
