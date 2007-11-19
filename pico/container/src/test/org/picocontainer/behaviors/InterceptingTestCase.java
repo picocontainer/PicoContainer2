@@ -39,7 +39,7 @@ public class InterceptingTestCase extends TestCase {
 
     public void testPreAndPostObservation() {
         final StringBuilder sb = new StringBuilder();
-        DefaultPicoContainer pico = new DefaultPicoContainer(new Interception());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
         pico.addComponent(StringBuilder.class, sb);
         pico.addComponent(Foo.class, FooImpl.class);
 
@@ -75,7 +75,7 @@ public class InterceptingTestCase extends TestCase {
 
     public void testPreCanBlockInvocationWithAlternateReturnValue() {
         final StringBuilder sb = new StringBuilder();
-        DefaultPicoContainer pico = new DefaultPicoContainer(new Interception());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
         pico.addComponent(Foo.class, FooImpl.class);
         pico.addComponent(StringBuilder.class, sb);
 
@@ -104,7 +104,7 @@ public class InterceptingTestCase extends TestCase {
 
     public void testOverrideOfReturnValue() {
         final StringBuilder sb = new StringBuilder();
-        DefaultPicoContainer pico = new DefaultPicoContainer(new Interception());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
         pico.addComponent(Foo.class, FooImpl.class);
         pico.addComponent(StringBuilder.class, sb);
         Intercepted intercepted = pico.getComponentAdapter(Foo.class).findAdapterOfType(Intercepted.class);
@@ -142,7 +142,7 @@ public class InterceptingTestCase extends TestCase {
 
     public void testNothingHappensIfNoPreOrPost() {
         final StringBuilder sb = new StringBuilder();
-        DefaultPicoContainer pico = new DefaultPicoContainer(new Interception());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
         pico.addComponent(Foo.class, FooImpl.class);
         pico.addComponent(StringBuilder.class, sb);
         Foo foo = pico.getComponent(Foo.class);

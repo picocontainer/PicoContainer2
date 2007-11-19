@@ -47,7 +47,7 @@ public class Behaviors {
     }
 
     public static BehaviorFactory automatic() {
-        return new Automatic();
+        return new Automating();
     }
 
 }

@@ -19,7 +19,7 @@ import org.picocontainer.Characteristics;
 import java.io.Serializable;
 import java.util.Properties;
 
-public class Automatic extends AbstractBehaviorFactory implements Serializable {
+public class Automating extends AbstractBehaviorFactory implements Serializable {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,

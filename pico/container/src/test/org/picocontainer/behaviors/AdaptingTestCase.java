@@ -26,10 +26,10 @@ import java.util.Enumeration;
 import junit.framework.TestCase;
 import com.thoughtworks.xstream.XStream;
 
-public class AdaptiveBehaviorTestCase extends TestCase {
+public class AdaptingTestCase extends TestCase {
 
     public void testCachingBehaviorCanBeAddedByCharacteristics() {
-        AdaptiveBehavior abf = new AdaptiveBehavior();
+        Adapting abf = new Adapting();
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
@@ -43,7 +43,7 @@ public class AdaptiveBehaviorTestCase extends TestCase {
     }
 
     public void testCachingBehaviorCanBeAddedByAnnotation() {
-        AdaptiveBehavior abf = new AdaptiveBehavior();
+        Adapting abf = new Adapting();
         Properties cc = new Properties();
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, MyHashMap.class);
         assertTrue(ca instanceof Cached);
@@ -72,7 +72,7 @@ public class AdaptiveBehaviorTestCase extends TestCase {
     }
 
     public void testImplementationHidingBehaviorCanBeAddedByCharacteristics() {
-        AdaptiveBehavior abf = new AdaptiveBehavior();
+        Adapting abf = new Adapting();
         Properties cc = new Properties();
         mergeInto(Characteristics.HIDE_IMPL,cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
@@ -87,7 +87,7 @@ public class AdaptiveBehaviorTestCase extends TestCase {
     }
 
     public void testPropertyApplyingBehaviorCanBeAddedByCharacteristics() {
-        AdaptiveBehavior abf = new AdaptiveBehavior();
+        Adapting abf = new Adapting();
         Properties cc = new Properties();
         mergeInto(Characteristics.PROPERTY_APPLYING,cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, MyHashMap2.class);
@@ -106,7 +106,7 @@ public class AdaptiveBehaviorTestCase extends TestCase {
     }
 
     public void testSetterInjectionCanBeTriggereedMeaningAdaptiveInjectorIsUsed() {
-        AdaptiveBehavior abf = new AdaptiveBehavior();
+        Adapting abf = new Adapting();
         Properties cc = new Properties();
         mergeInto(Characteristics.SDI,cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
@@ -119,7 +119,7 @@ public class AdaptiveBehaviorTestCase extends TestCase {
     }
 
     public void testCachingAndImplHidingAndThreadSafetySetupCorrectly() {
-        AdaptiveBehavior abf = new AdaptiveBehavior();
+        Adapting abf = new Adapting();
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
         mergeInto(Characteristics.HIDE_IMPL,cc);
@@ -151,7 +151,7 @@ public class AdaptiveBehaviorTestCase extends TestCase {
 
     public void testCachingAndImplHidingAndThreadSafetySetupCorrectlyForExtraCaching() {
         Caching cbf = new Caching();
-        AdaptiveBehavior abf = new AdaptiveBehavior();
+        Adapting abf = new Adapting();
         cbf.wrap(abf);
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
@@ -174,7 +174,7 @@ public class AdaptiveBehaviorTestCase extends TestCase {
 
     public void testCachingAndImplHidingAndThreadSafetySetupCorrectlyForExtraCachingForAdapter() {
         Caching cbf = new Caching();
-        AdaptiveBehavior abf = new AdaptiveBehavior();
+        Adapting abf = new Adapting();
         cbf.wrap(abf);
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);

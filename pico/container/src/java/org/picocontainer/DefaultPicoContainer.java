@@ -13,7 +13,7 @@ import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.HiddenImplementation;
-import org.picocontainer.behaviors.AdaptiveBehavior;
+import org.picocontainer.behaviors.Adapting;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
@@ -153,7 +153,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent  the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentMonitor monitor, PicoContainer parent) {
-        this(new AdaptiveBehavior(), new StartableLifecycleStrategy(monitor), parent, monitor);
+        this(new Adapting(), new StartableLifecycleStrategy(monitor), parent, monitor);
     }
 
     /**
@@ -165,7 +165,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent            the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
-        this(new AdaptiveBehavior(), lifecycleStrategy, parent, monitor);
+        this(new Adapting(), lifecycleStrategy, parent, monitor);
     }
 
     /**
@@ -206,12 +206,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param parent the parent container (used for component dependency lookups).
      */
     public DefaultPicoContainer(PicoContainer parent) {
-        this(new AdaptiveBehavior(), parent);
+        this(new Adapting(), parent);
     }
 
-    /** Creates a new container with a {@link AdaptiveBehavior} and no parent container. */
+    /** Creates a new container with a {@link Adapting} and no parent container. */
     public DefaultPicoContainer() {
-        this(new AdaptiveBehavior(), null);
+        this(new Adapting(), null);
     }
 
     public Collection<ComponentAdapter<?>> getComponentAdapters() {

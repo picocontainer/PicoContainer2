@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class AdaptiveBehavior implements BehaviorFactory, Serializable {
+public class Adapting implements BehaviorFactory, Serializable {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
@@ -129,7 +129,7 @@ public class AdaptiveBehavior implements BehaviorFactory, Serializable {
     protected void processAutomatic(Properties componentProperties,
                                              List<BehaviorFactory> list) {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC)) {
-            list.add(new Automatic());
+            list.add(new Automating());
         }
     }
 

@@ -21,7 +21,7 @@ import java.io.Serializable;
 
 
 /** @author Paul Hammant */
-public class Interception extends AbstractBehaviorFactory {
+public class Intercepting extends AbstractBehaviorFactory {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                           LifecycleStrategy lifecycleStrategy,
@@ -30,10 +30,7 @@ public class Interception extends AbstractBehaviorFactory {
                                                           Class<T> componentImplementation,
                                                           Parameter... parameters) throws PicoCompositionException {
         return new Intercepted(super.createComponentAdapter(componentMonitor,
-				lifecycleStrategy, componentProperties, componentKey,
-				componentImplementation, parameters));
+                                                            lifecycleStrategy, componentProperties, componentKey,
+                                                            componentImplementation, parameters));
     }
-
-
-
 }
