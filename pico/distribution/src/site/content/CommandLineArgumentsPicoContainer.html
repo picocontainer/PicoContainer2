@@ -7,29 +7,48 @@
 <body>
 <p>
 CommandLineArgumentsPicoContainer is a special type of PicoContainer that processes the arguments passed into from the command line, and sets them up as configuration for other components. 
-<p>Here is an example of use where the arguments map to the parameter names for the component. Consider this command line, usage of a application:
+<p>Here is an example of how to use CommandLineArgumentsPicoContainer to map command line arguments as configuration for a component, with parameter names as the bindings.
+<p>Consider this component:
 <div class="source">
-<pre>java myapp.class config1=hello moreConfig=144</pre>
-    </div>
+    <pre>public class BigFatComponent {
+  URL spellWebService;
+  int timeout;
+  public BigFatComponent(String spellingWebServiceURL, int timeout) throws MalformedURLExeption {
+    this.spellWebService = new URL(spellingWebServiceURL);
+    this.timeout = timeout;
+  }  
+  public String toString() {
+    return &quot;URL=&quot; + spellWebService + &quot;, timeout=&quot; + timeout;  
+  }
 
-<p>Where this is the applicable main method:</p>
+  // other methods
+}
+
+</pre>
+</div>
+<p>For automatic binding of command line arguments to parameter names of the component:</p>
 <div class="source">
 <pre>public static void main(String[] args) {
     PicoContainer argsContainer = new CommandLineArgumentsPicoContainer(args);
                 
     MutablePicoContainer mpc = new DefaultPicoContainer(argsContainer);
                 
-    mpc.as(Characteristics.USE_NAMES).addComponent(ComponentThatThatNeedsThingsProvidedByParentContainer.class);
+    mpc.as(Characteristics.USE_NAMES).addComponent(BigFatComponent.class);
    
-    Object o = mpc.getComponent(ComponentThatThatNeedsThingsProvidedByParentContainer.class);
+    Object o = mpc.getComponent(BigFatComponent.class);
 
 }
-</pre>
+
+...
+
+java -jar myAppJar.jar -cp picocontainer-2.0.jar timeout=100 spellingWebServiceURL=http://ws.com/someService.wsdl</pre>
 </div>
 <p>Here is another manual use forcing an association between a item in the properties file, and the relative position of a parameter in the constructor:</p>
 <div class="source">
-<pre>    mpc.addComponent(ComponentThatThatNeedsThingsProvidedByParentContainer.class, 
-            ConfigParameter(&quot;config1&quot;), ConfigParameter(&quot;moreConfig&quot;));</pre>
+<pre>mpc.addComponent(BigFatComponent.class, ConfigParameter(&quot;config1&quot;), ConfigParameter(&quot;moreConfig&quot;));
+...
+
+java -jar myAppJar.jar -cp picocontainer-2.0.jar config1=http://ws.com/someService.wsd moreConfig=100 </pre>
 </div>
 <p>Type conversion is automatic in many cases. Properties in a properties file are clearly strings. Parameters can be any of:</p>
         <ul>

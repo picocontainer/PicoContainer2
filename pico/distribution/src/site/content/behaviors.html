@@ -311,19 +311,20 @@ pico.addComponent(Apple.class);</pre>
   <pre>
 pico = new DefaultPicoContainer(new Storing());
 pico.addComponent(Apple.class);
+Apple a1, a2, a3
 
 new Thread() {
   public void run() {
 
-    Apple a1 = pico.getComponent(Apple.class);
+    a1 = pico.getComponent(Apple.class);
 
-    Apple a2 = pico.getComponent(Apple.class);
+    a2 = pico.getComponent(Apple.class);
 
   }
 }).start();
 new Thread() {
   public void run() {
-    Apple a3 = pico.getComponent(Apple.class);
+    a3 = pico.getComponent(Apple.class);
   }
 }).start();
 // a1 and a2 are the same instance

@@ -7,7 +7,8 @@
 <body>
 <p>
 SystemPropertiesPicoContainer is a special type of PicoContainer that is populated from the <a href="http://www.mindspring.com/~mgrand/java-system-properties.htm">System Properties</a> passed into the Java application when it started. 
-<p>Here is an example of use where the system properties map to the parameter names for the component:<p>Consider this component:
+<p>Here is an example of how to use SystemPropertiesPicoContainer to map system properties  as configuration for a component, with parameter names as the bindings.
+<p>Consider this component:
 
 <div class="source">
   <pre>public class BigFatComponent {
@@ -39,6 +40,11 @@ mpc.as(Characteristics.USE_NAMES).addComponent(BigFatComponent.class);
 <p>Here is another manual use forcing an association between a system properties, and the relative position of a parameter in the constructor. It is most useful when there is not a tie-up between the parameter names and the system properties. In this case the arg passed in to the ConfigParameter (varargs list) is the one that matches the syst property name:</p>
 <div class="source">
   <pre>mpc.addComponent(BigFatComponent.class, ConfigParameter(&quot;wsURL&quot;), ConfigParameter(&quot;serviceTimeout&quot;));</pre>
+</div>
+<p> System properties can be set for the scope of the application only, as you start the application: </p>
+<div class="source">
+<pre>
+java -Dwebservice.url=http://servicehost/service -Dwebservice.timeout=50 -jar myAppJar.jar -cp picocontainer-2.0.jar</pre>
 </div>
 <p>Type conversion is automatic in many cases. Properties in a properties file are clearly strings. Parameters can be any of:</p>
 <ul>

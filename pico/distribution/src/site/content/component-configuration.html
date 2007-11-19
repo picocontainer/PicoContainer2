@@ -89,108 +89,12 @@ System.out.println(&quot;bfc: &quot; + bfc.toString());
   <p>If the parameter name information cannot be accessed at runtime by PicoContainer, then Pico will be unable to differentiate between potential injectable classes of the same type and throws an exception that suggests that there is an ambiguity.</p>
   <p>This is <strong>not</strong> a global variable facility. Its scoped with the container in question and its child containers.</p>
 </div>
-<h2>Taking configuration from the command line</h2>
-<p>This take the parameter name style a bit further. </p>
-<p>CommandLineArgumentsPicoContainer can be used in a main method to take arguments from the command line and set them up as configuration for components to use elsewhere in the tree of PicoContainers. </p>
-<div class="source">
-  <pre>public class DataStore {
-  public DataStore(String JdbcUser, String JdbcPassword) {
-    // etc
-  }  
-}
-
-...
-public static void main(String[] args) {
-  CommandLineArgumentsPicoContainer argContainer = new CommandLineArgumentsPicoContainer(args);
-  DefaultPicoContainer appContainer = new DefaultPicoContainer(argContainer);
-  appContainer.as(Characteristics.USE_NAMES).addComponent(DataStore.class)
-}
-
-
-...
-java -jar myapp.jar JdbcUser=joe JdbcPassword=joejoejoe
-
-...
-Result: DataStore is instantiated with the right &quot;Joe&quot; and &quot;joejoejoe&quot; as the two strings passed into the constructor.
- </pre>
-</div>
-<p>Not all command line arguments are turned into configuration items, only those separated with an = sign (a second constructor parameter for CommandLineArgumentsPicoContainer allows you to specify a different separator). There is some automatic type conversion that applies. </p>
-<p>Also not that there are not going to be any accidental injections of the wrong configuration value. If you don't specify enough command line arguments, PicoContainer will <strong>always</strong> throw the <a href="ambiguous-injectable-help.html">'Ambiguous' exception</a> and not inject the first String/int/long/boolean that it finds. </p>
-
-
-<h2>Explicit configuration using ConfigParameter</h2>
-<p>
-    Class ConfigParameter binds  explicit config 
-    names to parameters. So-named components if strings can be automatically conveted in to suitable data types during
-    injecting.<a href="http://xstream.codehaus.org"></a></p>
-<p>
-    At the moment following data types are supported:
-    <ul>
-        <li>
-            String
-        </li>
-        <li>
-            All numeric types, boxed as well as primitives
-        </li>
-        <li>
-            java.util.Date
-        </li>
-        <li>
-            java.io.File as well as java.io.URL
-        </li>
-        <li>
-            java.util.Date
-        </li>
-        <li>
-            java.sql.(Date|Time|Timestamp)
-        </li>
-        <li>
-            Any type sporting accessible constructor taking single string parameter. 
-        </li>
-    </ul>
-<p>
-    PicoContainer provides special implementations of pico, which are configured using
-    properties (org.nanocontainer.config.PropertiesPicoContainer and 
-    org.nanocontainer.config.SystemPropertiesPicoContainer). By chaining those containers
-    with CommandLineArgumentsPicoContainer you achieve really flexible configuration.
-    <div class="source">
-<pre>
-    public static void main(String[] argv) {
-        Properties defaultProperties = new Properties();
-        defaultProperties.load("default.properties");
-        
-        // default properties are taken from here
-        PicoContainer defaults = new PropertiesPicoContainer(defaultProperties);
-        
-        // system properties ( -Dfoo=bar ) override defaults
-        PicoContainer system = new SystemPropertiesPicoContainer(defaults);
-        
-        PicoContainer arguments = new CommandLineArgumentsPicoContainer(argv,system);
-        
-        
-        MutablePicoContainer work = new DefaultPicoContainer(arguments);
-        
-        work.addComponent(BigFatComponent.class,new ConfigParameter("webservice.url"),new ConfigParameter("webservice.timeout"));
-    }
-</pre>
-    </div>
-        Our BigFatComponent would receive its parameters from (in order of precendence):
-        <ul>
-            <li>
-                Command line parameters <strong>webservice.url==http://servicehost/service</strong> and <strong>webservice.timeout=50</strong>
-            </li>
-            <li>
-                System properties ( <strong>-Dwebservice.url=http://servicehost/service</strong> and <strong>-Dwebservice.timeout=50</strong>
-            </li>
-            <li>
-                <strong>default.properties</strong> available on classpath. 
-            </li>
-        </ul>
-        By varying order of configuration containers you can control precedence of
-        settings and provide reasonable defaults. 
-        </p>
-        <p>
-            If some of properties are unavailable <strong>UnsatisfiableDependenciesException</strong>
-        will be thrown</p>
+<h2>Taking configuration from the elsewhere</h2>
+<p>Configuration can also be bound to components with :</p>
+<blockquote>
+  <p><a href="CommandLineArgumentsPicoContainer.html">CommandLineArgumentsPicoContainer</a></p>
+  <p><a href="PropertiesPicoContainer.html">PropertiesPicoContainer</a></p>
+  <p><a href="SystemPropertiesPicoContainer.html">SystemPropertiesPicoContainer</a></p>
+</blockquote>
 </body>
 </html>

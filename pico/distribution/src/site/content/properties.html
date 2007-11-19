@@ -2,21 +2,18 @@
 
 <html>
 <head>
-    <title>Properties</title>
+    <title>Component Properties</title>
 </head>
 <body>
 <p>DefaultPicoContainer allows for some properties to be set
-   per component at the time each is added. There is a convenience class on
-   which supplied properties are specified. It is called
-   Characteristics. You can use them via static imports or long-name
-   them.</p>
+   per component at the time each is added. A convenience class called Characteristics lists the supplied properties. </p>
 
 <p>Properties can be set for a component in a method 'as' on
    MutablePicoContainer. If that is the case then the properties will
-   affect the next component added only.</p>
+   affect the <strong>next</strong> component added only.</p>
 
 <p>They can also be set in a more persistent manner for the
-   MutablePicoContainer in question. If so, they will affect all subsequent
+   MutablePicoContainer in question, using the 'change' method. If so, they will affect all subsequent
    additions of component.</p>
 
 <p>Some examples :</p>
@@ -66,8 +63,24 @@ pico.change(Characteristics.SDI).addComponent(Pear.class);</pre>
    BehaviorFactory/InjectionFactory combination that is unaware of the
    characteristics you subsequently use, Pico will object by way of an
    exception as you add the component to the container. See <a href="unprocessed-properties-help.html">Unprocessed Properties</a>. </p>
-   
+<p>Supplied properties (from org.picocontainer.Characteristics) -</p>
+<ul>
+  <li>CDI - added components will be Constructor Dependency Injection.</li>
+  <li>SDI  - added components will be Setter Dependency Injection.</li>
+  <li>METHOD_INJECTION - added components will be Method Injection (a method called inject will list the dependencies).</li>
+  <li>NO_CACHE - no caching for the component to be added (in the case of Caching being the container's default).</li>
+  <li>CACHE - cache the component to be added.</li>
+  <li>NO_JMX - JMX is not to be published for the component.</li>
+  <li>SYNCHRONIZE - ensure that the component to be added will be created only once, even if multiple threads are seeking the component simultaneously.</li>
+  <li>LOCK - an alternate to SYNCHRONIZE that leverages java.lang.concurrent.Lock for the same purpose.</li>
+  <li>SINGLE - synonym for CACHE.</li>
+  <li>HIDE_IMPL - hide the implementation of the component to be added.</li>
+  <li>NO_HIDE_IMPL - don't hide the implementation of the component to be added (in the case of ImplementationHiding being the container's default).</li>
+  <li>PROPERTY_APPLYING - allow for the application of properties for the component in question.</li>
+  <li>AUTOMATIC - instantiate the component when start() is called on the container even if component is not Startable nor depended on.</li>
+  <li>USE_NAMES - use the parameter names of the component's constructor (or injection method) for the binding of configuration or components.</li>
+</ul>
 <h3>Custom Properties</h3>
-<p>You can make your own properties quite easily - check out the source to <a href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/pico/container/src/java/org/picocontainer/Characteristics.java">Characteristics.java</a>. Each will need to have a ComponentFactory that can process it. </p>
+<p>You can make your own properties quite easily - check out the source to <a href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/pico/container/src/java/org/picocontainer/Characteristics.java">Characteristics.java</a> and the classes that refer to it in PicoContainer (various implementations of ComponentFactory and ComponentAdapter). </p>
 </body>
 </html>
