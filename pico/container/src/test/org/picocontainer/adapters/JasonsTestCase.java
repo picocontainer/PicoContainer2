@@ -16,10 +16,10 @@ public class JasonsTestCase extends TestCase {
     public void testJasonsNeed() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
         mpc.addComponent(FruitBasket.class);
-        mpc.addComponent(bindKey(Apple.class, "one"), new AppleImpl(1));
-        mpc.addComponent(bindKey(Apple.class, "two"), new AppleImpl(2));
-        mpc.addComponent(bindKey(Apple.class, "three"), new AppleImpl(3));
-        mpc.addComponent(bindKey(Apple.class, "four"), new AppleImpl(4));
+        mpc.addComponent(bindKey(Apple.class, "one"), AppleImpl1.class);
+        mpc.addComponent(bindKey(Apple.class, "two"), AppleImpl2.class);
+        mpc.addComponent(bindKey(Apple.class, "three"), AppleImpl3.class);
+        mpc.addComponent(bindKey(Apple.class, "four"), AppleImpl4.class);
         FruitBasket fb = mpc.getComponent(FruitBasket.class);
 //        assertEquals(fb.one.getX(), 1);
 //        assertEquals(fb.two.getX(), 2);
@@ -30,14 +30,24 @@ public class JasonsTestCase extends TestCase {
     public interface Apple {
         int getX();
     }
-    public static class AppleImpl implements Apple {
-        int x;
-        public AppleImpl(int x) {
-            this.x = x;
-        }
-
+    public static class AppleImpl1 implements Apple {
         public int getX() {
-            return x;
+            return 1;
+        }
+    }
+    public static class AppleImpl2 implements Apple {
+        public int getX() {
+            return 2;
+        }
+    }
+    public static class AppleImpl3 implements Apple {
+        public int getX() {
+            return 3;
+        }
+    }
+    public static class AppleImpl4 implements Apple {
+        public int getX() {
+            return 4;
         }
     }
 
