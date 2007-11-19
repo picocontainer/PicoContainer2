@@ -46,7 +46,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultPicoContainer(parent);
     }
-
+    
     protected Properties[] getProperties() {
         return new Properties[0];
     }
