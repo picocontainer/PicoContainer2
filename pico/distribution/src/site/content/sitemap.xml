@@ -18,6 +18,7 @@
         <page>monitors.html</page>
         <page>scopes.html</page>
         <page>builder.html</page>
+        <page>interception.html</page>
         <page>properties.html</page>
         <page>component-configuration.html</page>
     </section>

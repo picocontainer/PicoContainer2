@@ -4,6 +4,11 @@
 <head>
     <title>Modifying Behaviors</title>
 
+    <style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, monospace}
+-->
+    </style>
 </head>
 <body>
 <p>Components as managed by PicoContainer can have behaviors added
@@ -11,7 +16,7 @@
 
 <p>Behaviors are deleivered by passing a BehaviorFactory reference into the PicoContainer instance on construction. For
    the most part BehaviorFactories are completely stateless.</p>
-
+<h2>Cashing and Singletons</h2>
 <h3>Caching</h3>
 
 <p>This is where a component has a single instance in the container
@@ -48,202 +53,33 @@ Apple a2 = pico.getComponent(Apple.class);
 // both the same instance
 </pre>
 </div>
-<div class="source"><pre>pico = new PicoBuilder().withBehaviors(caching()).build();
-pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
-</div>
-<h3>Implementation Hiding</h3>
-
-<p>This is where the implementation of the component is hidden from
-   other components using it. The instance cannot be cast back to the implementation. It only works if the type has an
-   interface
-   that it implements.</p>
-
-<div class="source"><pre>
-pico = new DefaultPicoContainer(new ImplementationHiding());
-pico.addComponent(Apple.class, AppleImpl.class);
-Apple a1 = pico.getComponent(Apple.class);
-// cannot cast back to AppleImpl
-</pre>
-</div>
-<div class="source"><pre>
-pico = new DefaultPicoContainer();
-pico.as(HIDE).addComponent(Apple.class, AppleImpl.class);
-Apple a1 = pico.getComponent(Apple.class);
-// cannot cast back to AppleImpl
-</pre>
-</div>
-<div class="source"><pre>pico = new PicoBuilder().withImplementationHiding().build();
-pico.addComponent(Apple.class, AppleImpl.class);
-Apple a1 = pico.getComponent(Apple.class);
-// cannot cast back to AppleImpl
-</pre>
-</div>
-<div class="source"><pre>pico = new PicoBuilder().withBehaviors(Behaviours.implementationHiding()).build();
-pico.addComponent(Apple.class, AppleImpl.class);
-Apple a1 = pico.getComponent(Apple.class);
-// cannot cast back to AppleImpl
-</pre>
-</div>
-
-<p>This Behavior leverages Reflection's dynamic proxy capability.
-   There's another implementation hiding behavior in Pico Gems that
-   leverages ASM to make 'more concrete' hidden implementations. AsmImplemenationHiding is the BehaviorFactory
-   class.</p>
-
-<h3>Thread Safety</h3>
-
-<p>When components are created by two threads concurrently, with the intention of the instance being cached, it is
-   possible in a small percentage of cases for the first instance into the cache to be replaced with a second instance.
-   To prevent this, you may want to try one of two behaviors to make the operation thread safe:</p>
-
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer(new Synchronizing().wrap(new Caching()));
-pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
-</div>
-<div class="source">
-  <pre>
-pico = new DefaultPicoContainer();
-pico.as(SYNCHRONIZE, CACHE).addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
-</div>
-<div class="source">
-    <pre>pico = new PicoBuilder().withSynchronizing().withCaching().build();
-pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
-</div>
-<div class="source">
-  <pre>pico = new PicoBuilder().withBehaviors(synchronizing(), caching()).build();
-pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
-</div>
-<p>The second behavior leverages JDK 1.5's ReentrantLock functionality. To use that, replace SYNCHRONIZE with LOCK, or
-   Syncronizing() with Locking(), withSynchronizing() with withLocking() and synchronizing() with locking() for above
-   code fragments as appicable.</p>
-
-<h3>Property Applying</h3>
-
-<p>This is where there are a number of setters for a component that will be could be set after instantiation. A way of
-   handing in some configuration if you like.</p>
-
-<div class="source">
-  <pre>
-class Foo {
-  String message;
-  public void setMessage(String message) {
-     this.message = message;
-  }
-  public String toString() {
-      return message;
-  }
-}
+  <pre>import static org.picocontainer.behaviors.Behaviors.caching;
 ...
-pico = new DefaultPicoContainer(new PropertyApplying());
-pico.addComponent(Foo.class);
-PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
-pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
-System.out.println(pico.getComponent(Foo.class)); // prints hello
+pico = new PicoBuilder().withBehaviors(caching()).build();
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
 </pre>
 </div>
+<h3>Opt in Caching</h3>
+<p>This is caching as above, but only when that property is set.</p>
 <div class="source">
   <pre>
+pico = new DefaultPicoContainer(new Caching());
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// different instances
+</pre>
+</div>
+<div class="source"><pre>
 pico = new DefaultPicoContainer();
-pico.as(APPLY_PROPERTIES).addComponent(Foo.class);
-PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
-pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
-System.out.println(pico.getComponent(Foo.class)); // prints hello
-</pre>
-</div>
-<div class="source">
-    <pre>pico = new PicoBuilder().withProperties().build();
-pico.addComponent(Foo.class);
-PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
-pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
-System.out.println(pico.getComponent(Foo.class)); // prints hello
-</pre>
-</div>
-<div class="source">
-    <pre>pico = new PicoBuilder().withBehaviors(propertyApplying()).build();
-pico.addComponent(Foo.class);
-PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
-pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
-System.out.println(pico.getComponent(Foo.class)); // prints hello
-</pre>
-</div>
-<div class="source">
-    <pre>pico = new PicoBuilder().withBehaviors(caching(), propertyApplying()).build();
-pico.addComponent(Foo.class);
-Cached cached = (Cached) pico.getAdapter(Foo.class);
-PropertyApplicator pa = (PropertyApplicator) getDelegate(PropertyApplicator.class);
-pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
-System.out.println(pico.getComponent(Foo.class)); // prints hello
-</pre>
-</div>
-<h3>Automatic</h3>
-
-<p>This is where a component is going to be instantiated regardless of whether:</p>
-<ul>
-    <li> it is looked up</li>
-    <li> any component that needs it is looked up</li>
-    <li>it is Startable</li>
-</ul>
-<p>It is most likely that you're doing this because the component in question is self contained and doing something once
-   only. Alternatively, you're cutting a legacy codebase over from nest-of-singletons to dependency injection in
-   stages.</p>
-
-<div class="source">
-  <pre>
-class Foo {
-
-  public Foo() {
-      System.out.println(&quot;Foo was instantiated&quot;);
-  }
-}
-
-...
-pico = new DefaultPicoContainer(new Automatic());
-pico.addComponent(Foo.class);
-pico.addComponent(&quot;bar&quot;, String.class);
-pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
-</pre>
-</div>
-<div class="source">
-  <pre>
-pico = new DefaultPicoContainer();
-pico.as(AUTOMATIC).addComponent(Foo.class);
-pico.addComponent(&quot;bar&quot;, String.class);
-pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
-</pre>
-</div>
-<div class="source">
-    <pre>pico = new PicoBuilder().withAutomatic().build();
-pico.addComponent(Foo.class);
-pico.addComponent(&quot;bar&quot;, String.class);
-pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
-</pre>
-</div>
-<div class="source">
-    <pre>pico = new PicoBuilder().withBehaviors(automatic()).build();
-pico.addComponent(Foo.class);
-pico.addComponent(&quot;bar&quot;, String.class);
-pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
+pico.as(CACHE).addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
 </pre>
 </div>
 <h3>Thread Caching</h3>
@@ -289,11 +125,6 @@ pico.as(THREAD_CACHE).addComponent(Apple.class);
     <pre>pico = new PicoBuilder().withThreadCaching().build();
 pico.addComponent(Apple.class);</pre>
 </div>
-<div class="source">
-    <pre>pico = new PicoBuilder().withBehaviors(threadCaching()).build();
-pico.addComponent(Apple.class);</pre>
-</div>
-
 <h3>Storing</h3>
 
 <p>This is where a component has a single instance in the container
@@ -343,111 +174,252 @@ storing.putCacheForThread(httpRequest.getSession().getAttribute(&quot;sessionCom
 httpRequest.getSession().setAttribute(&quot;sessionComponentStore&quot;, sc.getCacheForThread());</pre></div>
 
 <p>See <a href="scopes.html">scopes</a> for another example for a web framework</p>
-<h3>Interception</h3>
-<p>This is a rudimentary Aspect Orientated Programing (AOP) capability. With respect to the methods of a component, both
-   before and after invocation, control can be handed to an interceptor. You can intercept a method call:</p>
-<ul>
-    <li> before it is invoked (and optionally veto its invocation, with an alternate return value).</li>
-    <li> after it is invoked (and optionally override the return value).</li>
-</ul>
-<p>There are some limitations:</p>
-<ul>
-    <li>it will only work for interface/impl separated components</li>
-    <li>it needs a class that implements the interface in question
-        <ul>
-            <li>all of the methods need null implementations, even if not intended to be intercepted</li>
-        </ul>
-    </li>
-    <li>will (likely) break if there's deep recursion into Intercepted instances</li>
-    <li>you can't intercept an implementation's static methods</li>
-    <li>it is not possible to modify a method's arguments</li>
-    <li>the constructor's invocation for the component is not interceptable</li>
-    <li>the component's fields are not interceptable</li>
-    <li>only one component invoking the methods on another component will be intercepted.
-      <ul>
-        <li>components and related classes calling their own methods will not be intercepted</li>
-      </ul>
-    </li>
-</ul>
+
+<h2>Hiding and Swapping Implementations</h2>
+<h3>Implementation Hiding</h3>
+<p>This is where the implementation of the component is hidden from
+   other components using it. The instance cannot be cast back to the implementation. It only works if the type has an
+   interface
+   that it implements.</p>
+
+<div class="source"><pre>
+pico = new DefaultPicoContainer(new ImplementationHiding());
+pico.addComponent(Apple.class, AppleImpl.class);
+Apple a1 = pico.getComponent(Apple.class);
+// cannot cast back to AppleImpl
+</pre>
+</div>
 <div class="source">
-      <pre>public static class BiteReporter implements Apple {
-    private Intercepted.Controller controller;
+  <pre>
+pico = new DefaultPicoContainer();
+pico.as(HIDE_IMPL).addComponent(Apple.class, AppleImpl.class);
+Apple a1 = pico.getComponent(Apple.class);
+// cannot cast back to AppleImpl
+</pre>
+</div>
+<div class="source"><pre>pico = new PicoBuilder().withImplementationHiding().build();
+pico.addComponent(Apple.class, AppleImpl.class);
+Apple a1 = pico.getComponent(Apple.class);
+// cannot cast back to AppleImpl
+</pre>
+</div>
+<div class="source">
+  <pre>import static org.picocontainer.behaviors.Behaviors.implementationHiding;
+...
+pico = new PicoBuilder().withBehaviors(implementationHiding()).build();
+pico.addComponent(Apple.class, AppleImpl.class);
+Apple a1 = pico.getComponent(Apple.class);
+// cannot cast back to AppleImpl
+</pre>
+</div>
 
-    public BiteReporter(Intercepted.Controller controller) {
-        this.controller = controller;
+<p>This behavior leverages Reflection's dynamic proxy capability.   </p>
+<p>There's another implementation hiding behavior in Pico Gems called <span class="style1">AsmImplemenationHiding</span> that
+  leverages ASM to make 'more concrete' hidden implementations than is possible via reflection. It generates real classes using <a href="http://asm.objectweb.org/">ASM</a></p>
+<h3>Hot Swapping</h3>
+<p>This builds on the <span class="style1">ASMImplementationHiding</span> behavior above, but also allows the hot swapping of component implementations during use.</p>
 
-    } 
-    public boolean takeBite(int grams) {
-        System.out.println(&quot;Bite of &quot; + grams + &quot; grams of apple '&quot; + controller.instance().getName() + &quot;'&quot;);
-        return false; // ignored, but necessary.
-    }
+<div class="source"><pre>DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwapping());<br />pico.addComponent(Map.class, HashMap.class);<br />Map firstMap = pico.getComponent(Map.class);<br />firstMap.put(&quot;foo&quot;, &quot;bar&quot;);<br />HotSwappable hs = (HotSwappable) pico.getComponentAdapter(Map.class);<br />Object oldMap = hs.getSwappable().swap(new HashMap());<br />Map secondMap = pico.getComponent(Map.class);<br />secondMap.put(&quot;apple&quot;, &quot;orange&quot;);<br />
+// first map and second map are the same
+// 'foo' is not a key in the map, wereas 'apple' is</pre>
+</div>
+<h2>Thread Safety</h2>
+<p>When components are created by two threads concurrently, with the intention of the instance being cached, it is
+   possible in a small percentage of cases for the first instance into the cache to be replaced with a second instance.
+   To prevent this, you may want to try one of two behaviors to make the operation thread safe.</p>
+<h3>Synchronizing</h3>
+<p>Synchronizing wraps object creation in Java's classic <span class="style1">synchronize</span> facility</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer(new Synchronizing().wrap(new Caching()));
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer();
+pico.as(SYNCHRONIZE, CACHE).addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<div class="source">
+    <pre>pico = new PicoBuilder().withSynchronizing().withCaching().build();
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<div class="source">
+  <pre>import static org.picocontainer.behaviors.Behaviors.synchronizing;
+import static org.picocontainer.behaviors.Behaviors.caching;
+...
+pico = new PicoBuilder().withBehaviors(synchronizing(), caching()).build();
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<h3>Locking</h3>
+<p>Locking wraps object creation in JDK 1.5's ReentrantLock facility.</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer(new Locking().wrap(new Caching()));
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer();
+pico.as(LOCK, CACHE).addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<div class="source">
+  <pre>pico = new PicoBuilder().withLocking().withCaching().build();
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+<div class="source">
+  <pre>import static org.picocontainer.behaviors.Behaviors.locking;
+import static org.picocontainer.behaviors.Behaviors.caching;
+...
+pico = new PicoBuilder().withBehaviors(synchronizing(), caching()).build();
+pico.addComponent(Apple.class);
+Apple a1 = pico.getComponent(Apple.class);
+Apple a2 = pico.getComponent(Apple.class);
+// both the same instance
+</pre>
+</div>
+
+<h2>Others</h2>
+<h3>Property Applying</h3>
+<p>This is where there are a number of setters for a component that will be could be set after instantiation. A way of
+   handing in some configuration if you like.</p>
+
+<div class="source">
+  <pre>
+class Foo {
+  String message;
+  public void setMessage(String message) {
+     this.message = message;
+  }
+  public String toString() {
+      return message;
+  }
 }
 ...
-pico = new DefaultPicoContainer(new Interception());
-pico.addComponent(Apple.class, BraeburnApple.class);
-Intercpeted intercepted = pico.getComponentAdapter(Apple.class).findAdapterOfType(Intercpeted.class);
-intercepted.pre(Apple.class, new BiteReporter(intercepted.getController()));
-// see also Intercpeted.post(...) method.
-Apple a1 = pico.getComponent(Apple.class);
-a1.takeBite(100); 
-// prints Bite of 100 grams of apple 'Braeburn' 
-// ... irrespective of what else Braeburn.takeBite(int) does.
-  </pre>
-</div>
-<div class="source">
-    <pre>pico = new DefaultPicoContainer();
-pico.as(INTERCEPT).addComponent(Apple.class, BraeburnApple.class);
-// etc</pre>
-</div>
-<div class="source">
-    <pre>pico = new PicoBuilder.withInterception().build();
-pico.addComponent(Apple.class, BraeburnApple.class);
-// etc</pre>
-</div>
-<div class="source">
-    <pre>pico = new PicoBuilder.withBehaviors(interception()).build();
-pico.addComponent(Apple.class, BraeburnApple.class);
-// etc</pre>
-</div>
-<p><b>Fine grained participation in interception</b><br/>Assuming you're passing in the Interceptor to the classes you're using for interception of a component, you can
-   participate in the fate of the method call. For a 'pre' invocation, you can veto the calling of the 'real'
-   method. </p>
-
-<div class="source">
-    <pre>    public boolean takeBite(int grams) {
-        if (grams &gt; 50) {
-             controller.veto();
-
-        }
-        return false; // will be passed back to the caller.
-    }
+pico = new DefaultPicoContainer(new PropertyApplying());
+pico.addComponent(Foo.class);
+PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
+pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
+System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
 </div>
-<p>For a 'post' invocation, you can override the return value of the 'real' method. </p>
-
 <div class="source">
-    <pre>    public boolean takeBite(int grams) {        
-
-        if (grams &gt; 50) {
-             controller.override();
-             (Apple) realApple = (Apple) controller.instance();
-             realApple.takeBite(-1 * grams); // undo !
-        }
-        return false; // will be passed back to the caller.
-    }
+  <pre>
+pico = new DefaultPicoContainer();
+pico.as(APPLY_PROPERTIES).addComponent(Foo.class);
+PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
+pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
+System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
 </div>
-<p>Also for a 'post' invocation, you can access the return value of the 'real' method. </p>
+<div class="source">
+    <pre>pico = new PicoBuilder().withProperties().build();
+pico.addComponent(Foo.class);
+PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
+pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
+System.out.println(pico.getComponent(Foo.class)); // prints hello
+</pre>
+</div>
+<div class="source">
+    <pre>import static org.picocontainer.behaviors.Behaviors.propertyApplying;
+...
+pico = new PicoBuilder().withBehaviors(propertyApplying()).build();
+pico.addComponent(Foo.class);
+PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
+pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
+System.out.println(pico.getComponent(Foo.class)); // prints hello
+</pre>
+</div>
+<div class="source">
+    <pre>import static org.picocontainer.behaviors.Behaviors.caching;
+import static org.picocontainer.behaviors.Behaviors.propertyApplying;
+...
+pico = new PicoBuilder().withBehaviors(caching(), propertyApplying()).build();
+pico.addComponent(Foo.class);
+Cached cached = (Cached) pico.getAdapter(Foo.class);
+PropertyApplicator pa = (PropertyApplicator) getDelegate(PropertyApplicator.class);
+pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
+System.out.println(pico.getComponent(Foo.class)); // prints hello
+</pre>
+</div>
+<h3>Automatic</h3>
+
+<p>This is where a component is going to be instantiated regardless of whether:</p>
+<ul>
+    <li> it is looked up</li>
+    <li> any component that needs it is looked up</li>
+    <li>it is Startable</li>
+</ul>
+<p>It is most likely that you're doing this because the component in question is self contained and doing something once
+   only. Alternatively, you're cutting a legacy codebase over from nest-of-singletons to dependency injection in
+   stages.</p>
 
 <div class="source">
-    <pre>    public boolean takeBite(int grams) {        
+  <pre>
+class Foo {
 
-        boolean rv = (boolean) controller.getOriginalRetVal();
-        if (rv == false) {
-             // do something !
-        }
-        return true; // ignored as no 'override'
-    }
+  public Foo() {
+      System.out.println(&quot;Foo was instantiated&quot;);
+  }
+}
+
+...
+pico = new DefaultPicoContainer(new Automatic());
+pico.addComponent(Foo.class);
+pico.addComponent(&quot;bar&quot;, String.class);
+pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
+</pre>
+</div>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer();
+pico.as(AUTOMATIC).addComponent(Foo.class);
+pico.addComponent(&quot;bar&quot;, String.class);
+pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
+</pre>
+</div>
+<div class="source">
+  <pre>
+pico = new PicoBuilder().withAutomatic().build();
+pico.addComponent(Foo.class);
+pico.addComponent(&quot;bar&quot;, String.class);
+pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
+</pre>
+</div>
+<div class="source">
+    <pre>import static org.picocontainer.behaviors.Behaviors.automatic;
+...
+pico = new PicoBuilder().withBehaviors(automatic()).build();
+pico.addComponent(Foo.class);
+pico.addComponent(&quot;bar&quot;, String.class);
+pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
 </pre>
 </div>
 </body>
