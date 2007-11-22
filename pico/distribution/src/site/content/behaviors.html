@@ -67,15 +67,16 @@ Apple a2 = pico.getComponent(Apple.class);
 <p>This is caching as above, but only when that property is set.</p>
 <div class="source">
   <pre>
-pico = new DefaultPicoContainer(new Caching());
+pico = new DefaultPicoContainer(new OptinCaching());
 pico.addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
 // different instances
 </pre>
 </div>
-<div class="source"><pre>
-pico = new DefaultPicoContainer();
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer(new OptinCaching());
 pico.as(CACHE).addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
