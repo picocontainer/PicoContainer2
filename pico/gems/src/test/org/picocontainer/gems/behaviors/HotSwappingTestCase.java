@@ -67,8 +67,24 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTestCase 
         Map firstMap = pico.getComponent(Map.class);
         Map secondMap = pico.getComponent(Map.class);
         assertSame(firstMap, secondMap);
+    }
+
+    public void testHotSwappingNaturaelyCaches2() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwapping());
+        pico.addComponent(Map.class, HashMap.class);
+        Map firstMap = pico.getComponent(Map.class);
+        firstMap.put("foo", "bar");
+        HotSwappable hsca = (HotSwappable) pico.getComponentAdapter(Map.class);
+        hsca.getSwappable().swap(new HashMap());
+        Map secondMap = pico.getComponent(Map.class);
+        secondMap.put("apple", "orange");
+        assertSame(firstMap, secondMap);
+        assertNull(firstMap.get("foo"));
+        assertNotNull(firstMap.get("apple"));
 
     }
+
+
 
 
     public void testSwappingViaSwappableInterface() {
