@@ -16,7 +16,42 @@
 
 <p>Behaviors are deleivered by passing a BehaviorFactory reference into the PicoContainer instance on construction. For
    the most part BehaviorFactories are completely stateless.</p>
-<h2>Cashing and Singletons</h2>
+<p>See below for details on <a href="#cns">Caching and Singletons</a>, <a href="#hasi">Implementation Hiding and Hot Swapping</a>, as well as <a href="#o">Other</a>  behaviors</p>
+<h3>General use</h3>
+<p>DefaultPicoContainer can take a behavior factory instance in its constructor:</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer(new BehaviorClass());
+
+pico.addComponent(Foo.class); // the behavior will affect Foo's instance</pre>
+</div>
+<p>Or it can take behaviours that wrap each other:</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer(new BehaviorClass().wrap(new AnotherBehaviorClass())); 
+pico.addComponent(Foo.class);  // both behaviors will affect Foo's instance
+</pre>
+</div>
+<p>Behaviors can be signalled by properties per component:</p>
+<div class="source">
+  <pre>
+pico = new DefaultPicoContainer();
+pico.as(SOME_BEHAVIOR).addComponent(Foo.class);  // the behavior has a property marking it, and the default 
+                                                    component facory understands that property</pre>
+</div>
+<p>You can build a container with the applicable property:</p>
+<div class="source">
+  <pre>pico = new PicoBuilder().withXxxxxxxx().build();
+pico.addComponent(Foo.class); // the behavior will affect Foo's instance</pre>
+</div>
+<p>Behaviors can be chained together by PicoBuilder:</p>
+<div class="source">
+  <pre>import static org.picocontainer.behaviors.Behaviors.xxxxxxx;
+...
+pico = new PicoBuilder().withBehaviors(xxxxxxx(), yyyyyyy()).build();
+pico.addComponent(Foo.class); // both behaviors will affect Foo's instance</pre>
+</div>
+<h2><a name="cns" id="cns"></a>Cashing and Singletons</h2>
 <h3>Caching</h3>
 
 <p>This is where a component has a single instance in the container
@@ -176,12 +211,12 @@ httpRequest.getSession().setAttribute(&quot;sessionComponentStore&quot;, sc.getC
 
 <p>See <a href="scopes.html">scopes</a> for another example for a web framework</p>
 
-<h2>Hiding and Swapping Implementations</h2>
+<h2><a name="hasi" id="hasi"></a>Hiding and Swapping of Implementations</h2>
 <h3>Implementation Hiding</h3>
 <p>This is where the implementation of the component is hidden from
    other components using it. The instance cannot be cast back to the implementation. It only works if the type has an
    interface
-   that it implements.</p>
+   that it implements. </p>
 
 <div class="source"><pre>
 pico = new DefaultPicoContainer(new ImplementationHiding());
@@ -218,7 +253,7 @@ Apple a1 = pico.getComponent(Apple.class);
 <p>There's another implementation hiding behavior in Pico Gems called <span class="style1">AsmImplemenationHiding</span> that
   leverages ASM to make 'more concrete' hidden implementations than is possible via reflection. It generates real classes using <a href="http://asm.objectweb.org/">ASM</a></p>
 <h3>Hot Swapping</h3>
-<p>This builds on the <span class="style1">ASMImplementationHiding</span> behavior above, but also allows the hot swapping of component implementations during use.</p>
+<p>This builds on the <span class="style1">ASMImplementationHiding</span> behavior above, but also allows the hot swapping of component implementations during use. It has implicit caching behavior too.</p>
 
 <div class="source"><pre>DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwapping());<br />pico.addComponent(Map.class, HashMap.class);<br />Map firstMap = pico.getComponent(Map.class);<br />firstMap.put(&quot;foo&quot;, &quot;bar&quot;);<br />HotSwappable hs = (HotSwappable) pico.getComponentAdapter(Map.class);<br />Object oldMap = hs.getSwappable().swap(new HashMap());<br />Map secondMap = pico.getComponent(Map.class);<br />secondMap.put(&quot;apple&quot;, &quot;orange&quot;);<br />
 // first map and second map are the same
@@ -229,7 +264,7 @@ Apple a1 = pico.getComponent(Apple.class);
    possible in a small percentage of cases for the first instance into the cache to be replaced with a second instance.
    To prevent this, you may want to try one of two behaviors to make the operation thread safe.</p>
 <h3>Synchronizing</h3>
-<p>Synchronizing wraps object creation in Java's classic <span class="style1">synchronize</span> facility</p>
+<p>Synchronizing wraps object creation in Java's classic <span class="style1">synchronize</span> feature:</p>
 <div class="source">
   <pre>
 pico = new DefaultPicoContainer(new Synchronizing().wrap(new Caching()));
@@ -268,7 +303,7 @@ Apple a2 = pico.getComponent(Apple.class);
 </pre>
 </div>
 <h3>Locking</h3>
-<p>Locking wraps object creation in JDK 1.5's ReentrantLock facility.</p>
+<p>Locking wraps object creation in JDK 1.5's ReentrantLock facility. It is suggested that this is a more efficient alternative to the <span class="style1">Synchronizing</span> behaviour above:</p>
 <div class="source">
   <pre>
 pico = new DefaultPicoContainer(new Locking().wrap(new Caching()));
@@ -307,7 +342,7 @@ Apple a2 = pico.getComponent(Apple.class);
 </pre>
 </div>
 
-<h2>Others</h2>
+<h2><a name="o" id="o"></a>Others</h2>
 <h3>Property Applying</h3>
 <p>This is where there are a number of setters for a component that will be could be set after instantiation. A way of
    handing in some configuration if you like.</p>
