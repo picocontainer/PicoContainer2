@@ -8,8 +8,8 @@
 package org.picocontainer;
 
 /**
- * An interface which specifies the lifecyle strategy on the component instance.
- * Lifecycle strategies are used by component adapters to delegate the lifecyle
+ * An interface which specifies the lifecycle strategy on the component instance.
+ * Lifecycle strategies are used by component adapters to delegate the lifecycle
  * operations on the component instances.
  *
  * @author Paul Hammant

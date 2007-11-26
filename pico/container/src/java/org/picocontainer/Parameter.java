@@ -32,7 +32,7 @@ public interface Parameter {
     Parameter[] DEFAULT = new Parameter[]{ ComponentParameter.DEFAULT };
 
     /**
-     * Retrieve the object from the Parameter that statisfies the expected type.
+     * Retrieve the object from the Parameter that satisfies the expected type.
      *
      * @param container             the container from which dependencies are resolved.
      * @param adapter               the {@link ComponentAdapter} that is asking for the instance
@@ -50,7 +50,7 @@ public interface Parameter {
                            ParameterName expectedParameterName, boolean useNames);
 
     /**
-     * Check if the Parameter can statisfy the expected type using the container.
+     * Check if the Parameter can satisfy the expected type using the container.
      *
      * @param container             the container from which dependencies are resolved.
      * @param adapter               the {@link ComponentAdapter} that is asking for the instance
@@ -67,7 +67,7 @@ public interface Parameter {
                          ParameterName expectedParameterName, boolean useNames);
 
     /**
-     * Verify that the Parameter can statisfied the expected type using the container
+     * Verify that the Parameter can satisfy the expected type using the container
      *
      * @param container             the container from which dependencies are resolved.
      * @param adapter               the {@link ComponentAdapter} that is asking for the verification
