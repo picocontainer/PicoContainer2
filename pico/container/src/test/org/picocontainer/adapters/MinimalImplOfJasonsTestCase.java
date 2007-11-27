@@ -14,7 +14,6 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.parameters.ComponentParameter;
 
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
@@ -32,32 +31,7 @@ import java.util.Properties;
 public class MinimalImplOfJasonsTestCase extends TestCase {
 
     public void testJasonsNeed() {
-        MutablePicoContainer mpc = new DefaultPicoContainer(new FieldInjection()) {
-
-            @Override
-            public MutablePicoContainer addComponent(Object implOrInstance) {
-                final Class<?> type;
-                if (implOrInstance instanceof Class) {
-                    type = (Class<?>)implOrInstance;
-                } else {
-                    type = implOrInstance.getClass();
-                }
-                Field[] declaredFields = type.getDeclaredFields();
-                ComponentParameter[] parameters = new ComponentParameter[declaredFields.length];
-                for (int i = 0; i < declaredFields.length; i++ ) {
-                    final Field field = declaredFields[i];
-                    Bind bindAnnotation = field.getAnnotation(Bind.class);
-                    if (bindAnnotation != null) {
-                        parameters[i] = new ComponentParameter(bindKey(
-                            field.getClass(), bindAnnotation.id()));
-                    } else {
-                        parameters[i] = ComponentParameter.DEFAULT;
-                    }
-                }
-                return super.addComponent(type, implOrInstance, parameters);
-            }
-
-        };
+        MutablePicoContainer mpc = new DefaultPicoContainer(new FieldInjection());
         mpc.addComponent(FruitBasket.class);
         mpc.addComponent(bindKey(Apple.class, "one"), AppleImpl1.class);
         mpc.addComponent(bindKey(Apple.class, "two"), AppleImpl2.class);
