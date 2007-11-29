@@ -333,7 +333,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private MutablePicoContainer addComponent(Object implOrInstance, Properties props) {
         Class clazz;
         if (implOrInstance instanceof String) {
-            addComponent((String) implOrInstance, implOrInstance);
+            return addComponent((String) implOrInstance, implOrInstance);
         }
         if (implOrInstance instanceof Class) {
             clazz = (Class)implOrInstance;
