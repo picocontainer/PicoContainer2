@@ -36,6 +36,12 @@ public interface PicoContainer {
      */
     Object getComponent(Object componentKeyOrType);
 
+    /**
+     * Retrieve a component keyed by the component type.
+     * @param <T> the type of the component.
+     * @param componentType the type of the component
+     * @return the typed resulting object instance or null if the object does not exist.
+     */
     <T> T getComponent(Class<T> componentType);
 
 
@@ -46,7 +52,7 @@ public interface PicoContainer {
      * @return all the components.
      * @throws PicoException if the instantiation of the component fails
      */
-    List getComponents();
+    List<Object> getComponents();
 
     /**
      * Retrieve the parent container of this container.

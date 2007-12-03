@@ -94,7 +94,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *
      * @throws PicoCompositionException if registration fails.
      */
-    MutablePicoContainer addAdapter(ComponentAdapter componentAdapter);
+    MutablePicoContainer addAdapter(ComponentAdapter<?> componentAdapter);
 
     /**
      * Unregister a component by key.

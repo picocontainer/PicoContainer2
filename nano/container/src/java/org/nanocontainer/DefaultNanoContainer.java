@@ -40,7 +40,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Enumeration;
 
 /**
  * This is a MutablePicoContainer that also supports soft composition. i.e. assembly by class name rather that class
@@ -56,7 +55,15 @@ import java.util.Enumeration;
 public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer implements NanoContainer, Serializable,
                                                                                             ComponentMonitorStrategy {
 
-    private static final transient Map<String, String> primitiveNameToBoxedName = new HashMap<String, String>();
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = -1781615587796107858L;
+	
+	/**
+	 * Conversion Map to allow for primitives to be boxed to Object types.
+	 */
+	private static final transient Map<String, String> primitiveNameToBoxedName = new HashMap<String, String>();
 
     static {
         primitiveNameToBoxedName.put("int", Integer.class.getName());
@@ -168,13 +175,13 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
             return instance;
         }
 
-        ComponentAdapter componentAdapter = null;
+        ComponentAdapter<?> componentAdapter = null;
         if (componentKeyOrType.toString().startsWith("*")) {
             String candidateClassName = componentKeyOrType.toString().substring(1);
             Collection<ComponentAdapter<?>> cas = getComponentAdapters();
-            for (ComponentAdapter ca : cas) {
+            for (ComponentAdapter<?> ca : cas) {
                 Object key = ca.getComponentKey();
-                if (key instanceof Class && candidateClassName.equals(((Class)key).getName())) {
+                if (key instanceof Class && candidateClassName.equals(((Class<?>)key).getName())) {
                     componentAdapter = ca;
                     break;
                 }
@@ -236,7 +243,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
         return result;
     }
 
-    protected final Map getNamedContainers() {
+    protected final Map<String, PicoContainer>  getNamedContainers() {
         return namedChildContainers;
     }
 
@@ -275,7 +282,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
         return key;
     }
 
-    public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) throws PicoCompositionException {
+    public MutablePicoContainer addAdapter(ComponentAdapter<?> componentAdapter) throws PicoCompositionException {
         super.addAdapter(componentAdapter);
         return this;
     }
@@ -307,7 +314,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
         namedChildContainers.put(name, child);
     }
 
-    private Class loadClass(final String className) {
+    private Class<?> loadClass(final String className) {
         ClassLoader classLoader = getComponentClassLoader();
         String cn = getClassName(className);
         try {
@@ -400,7 +407,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
             return DefaultNanoContainer.this;
         }
 
-        public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) {
+        public MutablePicoContainer addAdapter(ComponentAdapter<?> componentAdapter) {
             delegate.addAdapter(componentAdapter);
             return DefaultNanoContainer.this;
         }
@@ -441,7 +448,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
             return DefaultNanoContainer.this.getComponent(componentType);
         }
 
-        public List getComponents() {
+        public List<Object> getComponents() {
             return DefaultNanoContainer.this.getComponents();
         }
 
@@ -466,7 +473,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
         }
 
         public <T> List<T> getComponents(Class<T> componentType) {
-            return DefaultNanoContainer.this.getComponents();
+            return DefaultNanoContainer.this.getComponents(componentType);
         }
 
         public void accept(PicoVisitor visitor) {

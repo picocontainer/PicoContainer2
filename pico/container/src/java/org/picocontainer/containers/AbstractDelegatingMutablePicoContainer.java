@@ -42,7 +42,7 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
         return getDelegate().addConfig(name, val); 
     }
 
-    public MutablePicoContainer addAdapter(ComponentAdapter componentAdapter) throws PicoCompositionException {
+    public MutablePicoContainer addAdapter(ComponentAdapter<?> componentAdapter) throws PicoCompositionException {
         return getDelegate().addAdapter(componentAdapter);
     }
 

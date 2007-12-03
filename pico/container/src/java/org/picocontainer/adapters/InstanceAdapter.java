@@ -35,7 +35,20 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * @author Mauro Talevi
  */
 public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Behavior<T>, LifecycleStrategy {
-    private final T componentInstance;
+    
+	/**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 481566707826011226L;
+
+	/**
+	 * The actual instance of the component.
+	 */
+	private final T componentInstance;
+	
+	/**
+	 * Lifecycle Strategy for the component adpater.
+	 */
     private final LifecycleStrategy lifecycleStrategy;
 
     

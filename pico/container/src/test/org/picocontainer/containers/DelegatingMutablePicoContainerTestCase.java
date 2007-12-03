@@ -27,7 +27,8 @@ public class DelegatingMutablePicoContainerTestCase extends AbstractPicoContaine
         return new Properties[] { Characteristics.NO_CACHE, Characteristics.NO_HIDE_IMPL};
     }
 
-    private static class MyDelegatingMutablePicoContainer extends AbstractDelegatingMutablePicoContainer {
+    @SuppressWarnings("serial")
+	private static class MyDelegatingMutablePicoContainer extends AbstractDelegatingMutablePicoContainer {
         public MyDelegatingMutablePicoContainer(MutablePicoContainer parent) {
             super(parent);
         }

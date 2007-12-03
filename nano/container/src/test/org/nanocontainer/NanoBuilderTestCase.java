@@ -146,7 +146,8 @@ public class NanoBuilderTestCase extends TestCase {
                 foo);
     }
 
-    public static class CustomParentcontainer extends EmptyPicoContainer {
+    @SuppressWarnings("serial")
+	public static class CustomParentcontainer extends EmptyPicoContainer {
     }
 
     public void testWithCustomParentContainer() throws IOException {
@@ -265,7 +266,8 @@ public class NanoBuilderTestCase extends TestCase {
     }
 
 
-    public static class TestNanoContainer extends DefaultNanoContainer {
+    @SuppressWarnings("serial")
+	public static class TestNanoContainer extends DefaultNanoContainer {
         public TestNanoContainer(ClassLoader classLoader, MutablePicoContainer delegate) {
             super(classLoader, delegate);
         }
@@ -283,7 +285,8 @@ public class NanoBuilderTestCase extends TestCase {
                 foo);
     }
 
-    public static class TestPicoContainer extends DefaultPicoContainer {
+    @SuppressWarnings("serial")
+	public static class TestPicoContainer extends DefaultPicoContainer {
         public TestPicoContainer(ComponentFactory componentFactory, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
             super(componentFactory, lifecycleStrategy, parent, monitor);
         }

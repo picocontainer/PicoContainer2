@@ -17,7 +17,7 @@ import org.picocontainer.PicoVisitor;
  * @author k.pribluda
  * 
  */
-public abstract class AbstractDelegatingPicoContainer implements PicoContainer , Serializable{
+public abstract class AbstractDelegatingPicoContainer implements PicoContainer, Serializable{
 
 	private PicoContainer delegate;
 
@@ -67,7 +67,7 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer ,
 		return delegate.getComponentAdapters(componentType);
 	}
 
-	public List getComponents() {
+	public List<Object> getComponents() {
 		return delegate.getComponents();
 	}
 
