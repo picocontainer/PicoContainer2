@@ -48,14 +48,14 @@ public class WriterComponentMonitor implements ComponentMonitor {
         this.delegate = delegate;
     }
 
-    public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
-                                     Constructor constructor) {
+    public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                                     Constructor<T> constructor) {
         out.println(format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)));
         return delegate.instantiating(container, componentAdapter, constructor);
     }
 
-    public void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
-                             Constructor constructor,
+    public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                             Constructor<T> constructor,
                              Object instantiated,
                              Object[] injected,
                              long duration) {
@@ -63,16 +63,16 @@ public class WriterComponentMonitor implements ComponentMonitor {
         delegate.instantiated(container, componentAdapter, constructor, instantiated, injected, duration);
     }
 
-    public void instantiationFailed(PicoContainer container,
-                                    ComponentAdapter componentAdapter,
-                                    Constructor constructor,
+    public <T> void instantiationFailed(PicoContainer container,
+                                    ComponentAdapter<T> componentAdapter,
+                                    Constructor<T> constructor,
                                     Exception cause) {
         out.println(format(ComponentMonitorHelper.INSTANTIATION_FAILED, ctorToString(constructor), cause.getMessage()));
         delegate.instantiationFailed(container, null, constructor, cause);
     }
 
     public void invoking(PicoContainer container,
-                         ComponentAdapter componentAdapter,
+                         ComponentAdapter<?> componentAdapter,
                          Member member,
                          Object instance) {
         out.println(format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));
@@ -80,7 +80,7 @@ public class WriterComponentMonitor implements ComponentMonitor {
     }
 
     public void invoked(PicoContainer container,
-                        ComponentAdapter componentAdapter,
+                        ComponentAdapter<?> componentAdapter,
                         Method method,
                         Object instance,
                         long duration) {
@@ -94,7 +94,7 @@ public class WriterComponentMonitor implements ComponentMonitor {
     }
 
     public void lifecycleInvocationFailed(MutablePicoContainer container,
-                                          ComponentAdapter componentAdapter, Method method,
+                                          ComponentAdapter<?> componentAdapter, Method method,
                                           Object instance,
                                           RuntimeException cause) {
         out.println(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, methodToString(method), instance, cause.getMessage()));

@@ -134,7 +134,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                         e.setComponent(getComponentImplementation());
                         throw e;
                     }
-                    ComponentMonitor<T> componentMonitor = currentMonitor();
+                    ComponentMonitor componentMonitor = currentMonitor();
                     try {
                         Object[] parameters = getMemberArguments(guardedContainer, constructor);
                         constructor = componentMonitor.instantiating(container, ConstructorInjector.this, constructor);

@@ -35,34 +35,62 @@ import org.picocontainer.PicoContainer;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
+ * @todo  After serialization, the output printstream is null.  
  */
 public final class ConsoleComponentMonitor implements ComponentMonitor, Serializable {
 
+	/**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = -2541584067664868659L;
+
+	/**
+	 * The outgoing print stream.
+	 */
     private final transient PrintStream out;
+    
+    /**
+     * Delegate component monitor (for component monitor chains).
+     */
     private final ComponentMonitor delegate;
 
+    /**
+     * Constructs a console component monitor that sends output to <tt>System.out</tt>.
+     */
     public ConsoleComponentMonitor() {
         this(System.out);
     }
 
+    /**
+     * Constructs a console component monitor that sends output to the specified output stream.
+     * 
+     * @param out  the designated output stream.  Options include System.out, Socket streams, File streams,
+     * etc.
+     */
     public ConsoleComponentMonitor(OutputStream out) {
         this(out, new NullComponentMonitor());
     }
 
+    /**
+     * Constructs a console component monitor chain that sends output to the specified output stream
+     * and then sends all events to the delegate component monitor.
+     * @param out the output stream of choice.
+     * @param delegate the next monitor in the component monitor chain to receive event information.
+     */
     public ConsoleComponentMonitor(OutputStream out, ComponentMonitor delegate) {
         this.out = new PrintStream(out);
         this.delegate = delegate;
     }
 
-    public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
-                                     Constructor constructor
+    public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                                     Constructor<T> constructor
     ) {
         out.println(format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)));
         return delegate.instantiating(container, componentAdapter, constructor);
     }
 
-    public void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
-                             Constructor constructor,
+    public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                             Constructor<T> constructor,
                              Object instantiated,
                              Object[] parameters,
                              long duration) {
@@ -70,16 +98,16 @@ public final class ConsoleComponentMonitor implements ComponentMonitor, Serializ
         delegate.instantiated(container, componentAdapter, constructor, instantiated, parameters, duration);
     }
 
-    public void instantiationFailed(PicoContainer container,
-                                    ComponentAdapter componentAdapter,
-                                    Constructor constructor,
+    public <T> void instantiationFailed(PicoContainer container,
+                                    ComponentAdapter<T> componentAdapter,
+                                    Constructor<T> constructor,
                                     Exception cause) {
         out.println(format(ComponentMonitorHelper.INSTANTIATION_FAILED, ctorToString(constructor), cause.getMessage()));
         delegate.instantiationFailed(container, componentAdapter, constructor, cause);
     }
 
     public void invoking(PicoContainer container,
-                         ComponentAdapter componentAdapter,
+                         ComponentAdapter<?> componentAdapter,
                          Member member,
                          Object instance) {
         out.println(format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));
@@ -87,7 +115,7 @@ public final class ConsoleComponentMonitor implements ComponentMonitor, Serializ
     }
 
     public void invoked(PicoContainer container,
-                        ComponentAdapter componentAdapter,
+                        ComponentAdapter<?> componentAdapter,
                         Method method,
                         Object instance,
                         long duration) {
@@ -101,7 +129,7 @@ public final class ConsoleComponentMonitor implements ComponentMonitor, Serializ
     }
 
     public void lifecycleInvocationFailed(MutablePicoContainer container,
-                                          ComponentAdapter componentAdapter, Method method,
+                                          ComponentAdapter<?> componentAdapter, Method method,
                                           Object instance,
                                           RuntimeException cause) {
         out.println(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, methodToString(method), instance, cause.getMessage()));

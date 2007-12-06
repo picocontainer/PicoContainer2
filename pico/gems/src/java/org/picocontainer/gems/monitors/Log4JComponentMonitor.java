@@ -42,7 +42,16 @@ import org.picocontainer.PicoContainer;
  */
 public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
 
+	/**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 6974859796813059085L;
+
+	/**
+	 * Log4j Logger.
+	 */
     private Logger logger;
+    
     private final ComponentMonitor delegate;
 
     /**
@@ -60,7 +69,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
      *
      * @param loggerClass the class of the Logger
      */
-    public Log4JComponentMonitor(Class loggerClass) {
+    public Log4JComponentMonitor(Class<?> loggerClass) {
         this(loggerClass.getName());
     }
 
@@ -91,7 +100,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
      * @param loggerClass the class of the Logger
      * @param delegate the delegate
      */
-    public Log4JComponentMonitor(Class loggerClass, ComponentMonitor delegate) {
+    public Log4JComponentMonitor(Class<?> loggerClass, ComponentMonitor delegate) {
         this(loggerClass.getName(), delegate);
     }
 
@@ -121,8 +130,8 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
         this.delegate = delegate;
     }
 
-    public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
-                                     Constructor constructor
+    public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                                     Constructor<T> constructor
     ) {
         Logger logger = getLogger(constructor);
         if (logger.isDebugEnabled()) {
@@ -131,8 +140,8 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
         return delegate.instantiating(container, componentAdapter, constructor);
     }
 
-    public void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
-                             Constructor constructor,
+    public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                             Constructor<T> constructor,
                              Object instantiated,
                              Object[] parameters,
                              long duration) {
@@ -143,9 +152,9 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
         delegate.instantiated(container, componentAdapter, constructor, instantiated, parameters, duration);
     }
 
-    public void instantiationFailed(PicoContainer container,
-                                    ComponentAdapter componentAdapter,
-                                    Constructor constructor,
+    public <T> void instantiationFailed(PicoContainer container,
+                                    ComponentAdapter<T> componentAdapter,
+                                    Constructor<T> constructor,
                                     Exception cause) {
         Logger logger = getLogger(constructor);
         if (logger.isEnabledFor(Priority.WARN)) {
@@ -155,7 +164,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     public void invoking(PicoContainer container,
-                         ComponentAdapter componentAdapter,
+                         ComponentAdapter<?> componentAdapter,
                          Member member,
                          Object instance) {
         Logger logger = getLogger(member);
@@ -166,7 +175,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     public void invoked(PicoContainer container,
-                        ComponentAdapter componentAdapter,
+                        ComponentAdapter<?> componentAdapter,
                         Method method,
                         Object instance,
                         long duration) {
@@ -186,7 +195,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     public void lifecycleInvocationFailed(MutablePicoContainer container,
-                                          ComponentAdapter componentAdapter, Method method,
+                                          ComponentAdapter<?> componentAdapter, Method method,
                                           Object instance,
                                           RuntimeException cause) {
         Logger logger = getLogger(method);

@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
  */
-public interface ComponentMonitor<T> {
+public interface ComponentMonitor {
 
     /**
      * Event thrown as the component is being instantiated using the given constructor
@@ -32,7 +32,7 @@ public interface ComponentMonitor<T> {
      * @param componentAdapter
      * @param constructor the Constructor used to instantiate the addComponent @return the constructor to use in instantiation (nearly always the same one as passed in)
      */
-    Constructor<T> instantiating(PicoContainer container, ComponentAdapter componentAdapter,
+    <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
                               Constructor<T> constructor
     );
 
@@ -45,11 +45,11 @@ public interface ComponentMonitor<T> {
      * @param constructor the Constructor used to instantiate the addComponent
      * @param instantiated the component that was instantiated by PicoContainer
      * @param injected the components during instantiation.
-     * @param duration the duration in millis of the instantiation
+     * @param duration the duration in milliseconds of the instantiation
      */
 
-    void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
-                      Constructor constructor,
+    <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                      Constructor<T> constructor,
                       Object instantiated,
                       Object[] injected,
                       long duration);
@@ -62,9 +62,9 @@ public interface ComponentMonitor<T> {
      * @param constructor the Constructor used to instantiate the addComponent
      * @param cause the Exception detailing the cause of the failure
      */
-    void instantiationFailed(PicoContainer container,
-                             ComponentAdapter componentAdapter,
-                             Constructor constructor,
+    <T> void instantiationFailed(PicoContainer container,
+                             ComponentAdapter<T> componentAdapter,
+                             Constructor<T> constructor,
                              Exception cause);
 
     /**
@@ -75,7 +75,7 @@ public interface ComponentMonitor<T> {
      * @param member
      * @param instance the component instance
      */
-    void invoking(PicoContainer container, ComponentAdapter componentAdapter, Member member, Object instance);
+    void invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance);
 
     /**
      * Event thrown after the component method has been invoked on the given instance
@@ -87,7 +87,7 @@ public interface ComponentMonitor<T> {
      * @param duration the duration in millis of the invocation
      */
     void invoked(PicoContainer container,
-                 ComponentAdapter componentAdapter,
+                 ComponentAdapter<?> componentAdapter,
                  Method method,
                  Object instance,
                  long duration);
@@ -111,8 +111,8 @@ public interface ComponentMonitor<T> {
      * @param instance the component instance
      * @param cause the RuntimeException detailing the cause of the failure
      */
-    void lifecycleInvocationFailed(MutablePicoContainer container,
-                                   ComponentAdapter componentAdapter, Method method,
+     void lifecycleInvocationFailed(MutablePicoContainer container,
+                                   ComponentAdapter<?> componentAdapter, Method method,
                                    Object instance,
                                    RuntimeException cause);
 

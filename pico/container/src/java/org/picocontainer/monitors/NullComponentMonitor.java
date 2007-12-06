@@ -29,34 +29,34 @@ import org.picocontainer.PicoContainer;
  * @author Obie Fernandez
  */
 @SuppressWarnings("serial")
-public class NullComponentMonitor<T> implements ComponentMonitor<T>, Serializable {
+public class NullComponentMonitor implements ComponentMonitor, Serializable {
 
-    public Constructor<T> instantiating(PicoContainer container, ComponentAdapter componentAdapter,
+    public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
                                      Constructor<T> constructor) {
         return constructor;
     }
 
-    public void instantiationFailed(PicoContainer container,
-                                    ComponentAdapter componentAdapter,
-                                    Constructor constructor,
+    public <T> void instantiationFailed(PicoContainer container,
+                                    ComponentAdapter<T> componentAdapter,
+                                    Constructor<T> constructor,
                                     Exception e) {
     }
 
-    public void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
-                             Constructor constructor,
+    public <T> void instantiated(PicoContainer container, ComponentAdapter<T>  componentAdapter,
+                             Constructor<T>  constructor,
                              Object instantiated,
                              Object[] injected,
                              long duration) {
     }
 
     public void invoking(PicoContainer container,
-                         ComponentAdapter componentAdapter,
+                         ComponentAdapter<?> componentAdapter,
                          Member member,
                          Object instance) {
     }
 
     public void invoked(PicoContainer container,
-                        ComponentAdapter componentAdapter,
+                        ComponentAdapter<?> componentAdapter,
                         Method method,
                         Object instance,
                         long duration) {
@@ -66,7 +66,7 @@ public class NullComponentMonitor<T> implements ComponentMonitor<T>, Serializabl
     }
 
     public void lifecycleInvocationFailed(MutablePicoContainer container,
-                                          ComponentAdapter componentAdapter, Method method,
+                                          ComponentAdapter<?> componentAdapter, Method method,
                                           Object instance,
                                           RuntimeException cause) {
         throw new PicoLifecycleException(method, instance, cause);

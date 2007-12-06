@@ -14,7 +14,6 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Member;
-import java.lang.reflect.AccessibleObject;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
@@ -38,7 +37,15 @@ import org.picocontainer.monitors.NullComponentMonitor;
  */
 public class AbstractComponentMonitor implements ComponentMonitor, ComponentMonitorStrategy, Serializable {
 
-    private  ComponentMonitor delegate;
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 4978870257460414077L;
+	
+	/**
+	 * Delegate monitor to allow for component monitor chaining.
+	 */
+	private  ComponentMonitor delegate;
     
     /**
      * Creates a AbstractComponentMonitor with a given delegate
@@ -57,36 +64,36 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
         this(new NullComponentMonitor());
     }
     
-    public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
-                                     Constructor constructor
+    public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                                     Constructor<T> constructor
     ) {
         return delegate.instantiating(container, componentAdapter, constructor);
     }
 
-    public void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
-                             Constructor constructor,
+    public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                             Constructor<T> constructor,
                              Object instantiated,
                              Object[] injected,
                              long duration) {
         delegate.instantiated(container, componentAdapter, constructor, instantiated, injected, duration);
     }
 
-    public void instantiationFailed(PicoContainer container,
-                                    ComponentAdapter componentAdapter,
-                                    Constructor constructor,
+    public <T> void instantiationFailed(PicoContainer container,
+                                    ComponentAdapter<T> componentAdapter,
+                                    Constructor<T> constructor,
                                     Exception e) {
         delegate.instantiationFailed(container, componentAdapter, constructor, e);
     }
 
     public void invoking(PicoContainer container,
-                         ComponentAdapter componentAdapter,
+                         ComponentAdapter<?> componentAdapter,
                          Member member,
                          Object instance) {
         delegate.invoking(container, componentAdapter, member, instance);
     }
 
     public void invoked(PicoContainer container,
-                        ComponentAdapter componentAdapter,
+                        ComponentAdapter<?> componentAdapter,
                         Method method,
                         Object instance,
                         long duration) {
@@ -98,7 +105,7 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
     }
 
     public void lifecycleInvocationFailed(MutablePicoContainer container,
-                                          ComponentAdapter componentAdapter, Method method,
+                                          ComponentAdapter<?> componentAdapter, Method method,
                                           Object instance,
                                           RuntimeException cause) {
         delegate.lifecycleInvocationFailed(container, componentAdapter, method,instance, cause);

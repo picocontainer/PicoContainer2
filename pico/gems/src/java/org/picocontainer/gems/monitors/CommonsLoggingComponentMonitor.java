@@ -40,7 +40,19 @@ import org.picocontainer.monitors.NullComponentMonitor;
  */
 public class CommonsLoggingComponentMonitor implements ComponentMonitor, Serializable {
 
-    private Log log;
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 5863003718112457388L;
+
+	/**
+	 * Commons Logger.
+	 */
+	private Log log;
+    
+	/**
+	 * Delegate for component monitor chains.
+	 */
     private final ComponentMonitor delegate;
 
     /**
@@ -58,7 +70,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
      * 
      * @param logClass the class of the Log
      */
-    public CommonsLoggingComponentMonitor(Class logClass) {
+    public CommonsLoggingComponentMonitor(Class<?> logClass) {
         this(logClass.getName());
     }
 
@@ -89,7 +101,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
      * @param logClass the class of the Log
      * @param delegate the delegate
      */
-    public CommonsLoggingComponentMonitor(Class logClass, ComponentMonitor delegate) {
+    public CommonsLoggingComponentMonitor(Class<?> logClass, ComponentMonitor delegate) {
         this(logClass.getName(), delegate);
     }
 
@@ -116,8 +128,8 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
 
-    public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
-                                     Constructor constructor
+    public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                                     Constructor<T> constructor
     ) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
@@ -126,8 +138,8 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
         return delegate.instantiating(container, componentAdapter, constructor);
     }
 
-    public void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
-                             Constructor constructor,
+    public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                             Constructor<T> constructor,
                              Object instantiated,
                              Object[] parameters,
                              long duration) {
@@ -138,9 +150,9 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
         delegate.instantiated(container, componentAdapter, constructor, instantiated, parameters, duration);
     }
 
-    public void instantiationFailed(PicoContainer container,
-                                    ComponentAdapter componentAdapter,
-                                    Constructor constructor,
+    public <T> void instantiationFailed(PicoContainer container,
+                                    ComponentAdapter<T>  componentAdapter,
+                                    Constructor<T>  constructor,
                                     Exception cause) {
         Log log = getLog(constructor);
         if (log.isWarnEnabled()) {
@@ -150,7 +162,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     public void invoking(PicoContainer container,
-                         ComponentAdapter componentAdapter,
+                         ComponentAdapter<?> componentAdapter,
                          Member member,
                          Object instance) {
         Log log = getLog(member);
@@ -161,7 +173,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     public void invoked(PicoContainer container,
-                        ComponentAdapter componentAdapter,
+                        ComponentAdapter<?> componentAdapter,
                         Method method,
                         Object instance,
                         long duration) {
@@ -181,7 +193,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     public void lifecycleInvocationFailed(MutablePicoContainer container,
-                                          ComponentAdapter componentAdapter, Method method,
+                                          ComponentAdapter<?> componentAdapter, Method method,
                                           Object instance,
                                           RuntimeException cause) {
         Log log = getLog(method);

@@ -25,18 +25,24 @@ import org.picocontainer.PicoContainer;
  */
 public final class ComponentDependencyMonitor extends AbstractComponentMonitor {
 
-    private final ComponentDependencyListener listener;
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 9104656171384560235L;
+	
+	
+	private final ComponentDependencyListener listener;
 
     public ComponentDependencyMonitor(ComponentDependencyListener listener) {
         this.listener = listener;
     }
 
-    public void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
-                             Constructor constructor,
+    public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                             Constructor<T> constructor,
                              Object instantiated,
                              Object[] injected,
                              long duration) {
-        Class componentType = instantiated.getClass();
+        Class<?> componentType = instantiated.getClass();
         int count = injected.length;
 
         if (count == 0) {
@@ -58,16 +64,16 @@ public final class ComponentDependencyMonitor extends AbstractComponentMonitor {
      */
     public static final class Dependency {
 
-        private final Class componentType;
+        private final Class<?> componentType;
 
-        private final Class dependencyType;
+        private final Class<?> dependencyType;
 
-        public Dependency(Class componentType, Class dependencyType) {
+        public Dependency(Class<?> componentType, Class<?> dependencyType) {
             this.componentType = componentType;
             this.dependencyType = dependencyType;
         }
 
-        public boolean dependsOn(Class type) {
+        public boolean dependsOn(Class<?> type) {
             return (type != null) && type.equals(dependencyType);
         }
 
@@ -80,11 +86,11 @@ public final class ComponentDependencyMonitor extends AbstractComponentMonitor {
             return false;
         }
 
-        public Class getComponentType() {
+        public Class<?> getComponentType() {
             return componentType;
         }
 
-        public Class getDependencyType() {
+        public Class<?> getDependencyType() {
             return dependencyType;
         }
 
@@ -92,7 +98,7 @@ public final class ComponentDependencyMonitor extends AbstractComponentMonitor {
             return componentType + " depends on " + dependencyType;
         }
 
-        private static boolean areEqualOrNull(Class type, Class otherType) {
+        private static boolean areEqualOrNull(Class<?> type, Class<?> otherType) {
             if (type != null) {
                 return type.equals(otherType);
             }

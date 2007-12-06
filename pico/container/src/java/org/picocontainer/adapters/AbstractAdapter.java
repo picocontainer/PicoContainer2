@@ -32,7 +32,7 @@ import java.io.Serializable;
 public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, ComponentMonitorStrategy, Serializable {
     private Object componentKey;
     private Class<T> componentImplementation;
-    private ComponentMonitor<T> componentMonitor;
+    private ComponentMonitor componentMonitor;
 
 
     /**
@@ -42,7 +42,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
      */
     public AbstractAdapter(Object componentKey, Class componentImplementation) {
         this(componentKey, componentImplementation, new AbstractComponentMonitor());
-        this.componentMonitor = new NullComponentMonitor<T>();
+        this.componentMonitor = new NullComponentMonitor();
     }
 
     /**
@@ -112,7 +112,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
      * Returns the monitor currently used
      * @return The ComponentMonitor currently used
      */
-    public ComponentMonitor<T> currentMonitor(){
+    public ComponentMonitor currentMonitor(){
         return componentMonitor;
     }
 

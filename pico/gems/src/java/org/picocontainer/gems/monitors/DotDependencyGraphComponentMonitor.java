@@ -10,17 +10,26 @@
 
 package org.picocontainer.gems.monitors;
 
-import org.picocontainer.ComponentMonitor;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 
-import java.lang.reflect.Constructor;
-import java.util.*;
-
 public final class DotDependencyGraphComponentMonitor extends AbstractComponentMonitor implements ComponentMonitor {
 
-    final ArrayList allInstantiated = new ArrayList();
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 2220639049409365618L;
+	
+	final List<Instantiation> allInstantiated = new ArrayList<Instantiation>();
 
     public DotDependencyGraphComponentMonitor(ComponentMonitor delegate) {
         super(delegate);
@@ -29,8 +38,8 @@ public final class DotDependencyGraphComponentMonitor extends AbstractComponentM
     public DotDependencyGraphComponentMonitor() {
     }
 
-    public void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
-                             Constructor constructor,
+    public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                             Constructor<T> constructor,
                              Object instantiated,
                              Object[] injected,
                              long duration) {
@@ -43,7 +52,7 @@ public final class DotDependencyGraphComponentMonitor extends AbstractComponentM
 
     public String getClassDependencyGraph() {
 
-        HashSet lines = new HashSet();
+        Set<String> lines = new HashSet<String>();
 
         for (Object anAllInstantiated : allInstantiated) {
             Instantiation instantiation = (Instantiation)anAllInstantiated;
@@ -58,8 +67,8 @@ public final class DotDependencyGraphComponentMonitor extends AbstractComponentM
         return sortLines(lines);
     }
 
-    private String sortLines(HashSet lines) {
-        ArrayList list = new ArrayList(lines);
+    private String sortLines(Set<String> lines) {
+        List<String> list = new ArrayList<String>(lines);
         Collections.sort(list);
 
         String dependencies = "";
@@ -71,13 +80,13 @@ public final class DotDependencyGraphComponentMonitor extends AbstractComponentM
     }
 
     public String getInterfaceDependencyGraph() {
-        HashSet lines = new HashSet();
+        Set<String> lines = new HashSet<String>();
 
         for (Object anAllInstantiated : allInstantiated) {
             Instantiation instantiation = (Instantiation)anAllInstantiated;
             for (int j = 0; j < instantiation.getInjected().length; j++) {
                 Object injected = instantiation.getInjected()[j];
-                Class injectedType = instantiation.getConstructor().getParameterTypes()[j];
+                Class<?> injectedType = instantiation.getConstructor().getParameterTypes()[j];
                 Object instantiated = instantiation.getInstantiated();
                 if (injected.getClass() != injectedType) {
                     lines.add("  '" + instantiated.getClass().getName() + "' -> '" + injectedType.getName() +
@@ -99,25 +108,26 @@ public final class DotDependencyGraphComponentMonitor extends AbstractComponentM
         return sortLines(lines);
     }
 
-    private String printClassName(Class clazz) {
+    private String printClassName(Class<?> clazz) {
         String className = clazz.getName();
         return "'" + className.substring(className.lastIndexOf(".")+1) + "\\n" + clazz.getPackage().getName() + "'";
 
     }
 
     private static final class Instantiation {
-        final Constructor constructor;
+        final Constructor<?> constructor;
         final Object instantiated;
         final Object[] injected;
         final long duration;
-        public Instantiation(Constructor constructor, Object instantiated, Object[] injected, long duration) {
+        
+        public Instantiation(Constructor<?> constructor, Object instantiated, Object[] injected, long duration) {
             this.constructor = constructor;
             this.instantiated = instantiated;
             this.injected = injected;
             this.duration = duration;
         }
 
-        public Constructor getConstructor() {
+        public Constructor<?> getConstructor() {
             return constructor;
         }
 

@@ -67,7 +67,13 @@ import java.util.Collection;
  */
 public class DefaultPicoContainer implements MutablePicoContainer, ComponentMonitorStrategy, Serializable {
 
-    private final Map<Object, ComponentAdapter<?>> componentKeyToAdapterCache = new HashMap<Object, ComponentAdapter<?> >();
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = -8987815732600681148L;
+	
+	
+	private final Map<Object, ComponentAdapter<?>> componentKeyToAdapterCache = new HashMap<Object, ComponentAdapter<?> >();
     private final List<ComponentAdapter<?>> componentAdapters = new ArrayList<ComponentAdapter<?>>();
     // Keeps track of instantiation order.
     private final List<ComponentAdapter<?>> orderedComponentAdapters = new ArrayList<ComponentAdapter<?>>();

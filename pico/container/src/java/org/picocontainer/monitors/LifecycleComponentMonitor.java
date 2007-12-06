@@ -32,8 +32,12 @@ import org.picocontainer.PicoContainer;
  */
 public final class LifecycleComponentMonitor implements ComponentMonitor {
 
+	/**
+	 * Delegate for chained component monitors.
+	 */
     private final ComponentMonitor delegate;
-    private final List lifecycleFailures = new ArrayList();
+    
+    private final List<RuntimeException> lifecycleFailures = new ArrayList<RuntimeException>();
 
     public LifecycleComponentMonitor(ComponentMonitor delegate) {
         this.delegate = delegate;
@@ -43,35 +47,35 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
         this(new NullComponentMonitor());
     }
 
-    public Constructor instantiating(PicoContainer container, ComponentAdapter componentAdapter,
-                                     Constructor constructor) {
+    public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                                     Constructor<T> constructor) {
         return delegate.instantiating(container, componentAdapter, constructor);
     }
 
-    public void instantiated(PicoContainer container, ComponentAdapter componentAdapter,
-                             Constructor constructor,
+    public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                             Constructor<T> constructor,
                              Object instantiated,
                              Object[] parameters,
                              long duration) {
         delegate.instantiated(container, componentAdapter, constructor, instantiated, parameters, duration);
     }
 
-    public void instantiationFailed(PicoContainer container,
-                                    ComponentAdapter componentAdapter,
-                                    Constructor constructor,
+    public <T> void instantiationFailed(PicoContainer container,
+                                    ComponentAdapter<T> componentAdapter,
+                                    Constructor<T> constructor,
                                     Exception cause) {
         delegate.instantiationFailed(container, componentAdapter, constructor, cause);
     }
 
     public void invoking(PicoContainer container,
-                         ComponentAdapter componentAdapter,
+                         ComponentAdapter<?> componentAdapter,
                          Member member,
                          Object instance) {
         delegate.invoking(container, componentAdapter, member, instance);
     }
 
     public void invoked(PicoContainer container,
-                        ComponentAdapter componentAdapter,
+                        ComponentAdapter<?> componentAdapter,
                         Method method,
                         Object instance,
                         long duration) {
@@ -83,7 +87,7 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
     }
 
     public void lifecycleInvocationFailed(MutablePicoContainer container,
-                                          ComponentAdapter componentAdapter, Method method,
+                                          ComponentAdapter<?> componentAdapter, Method method,
                                           Object instance,
                                           RuntimeException cause) {
         lifecycleFailures.add(cause);
@@ -112,9 +116,14 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
      */
     public final class LifecycleFailuresException extends PicoException {
 
-        private final List lifecycleFailures;
+        /**
+		 * Serialization UUID. 
+		 */
+		private static final long serialVersionUID = -5627971463694211121L;
+		
+		private final List<RuntimeException> lifecycleFailures;
 
-        public LifecycleFailuresException(List lifecycleFailures) {
+        public LifecycleFailuresException(List<RuntimeException> lifecycleFailures) {
             this.lifecycleFailures = lifecycleFailures;
         }
 
@@ -127,7 +136,7 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
             return message.toString();
         }
 
-        public Collection getFailures() {
+        public Collection<RuntimeException> getFailures() {
             return lifecycleFailures;
         }
     }
