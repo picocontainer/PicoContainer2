@@ -113,7 +113,7 @@ public class MethodInjector extends SingleMemberInjector {
     }
 
     protected Object[] getMemberArguments(PicoContainer container, final Method method) {
-        return super.getMemberArguments(container, method, method.getParameterTypes());
+        return super.getMemberArguments(container, method, method.getParameterTypes(), getBindings(method.getParameterAnnotations()));
     }
 
 
@@ -126,7 +126,8 @@ public class MethodInjector extends SingleMemberInjector {
                     final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
                     for (int i = 0; i < currentParameters.length; i++) {
                         currentParameters[i].verify(container, MethodInjector.this, parameterTypes[i],
-                                                    new SingleMemberInjectorParameterName(method, i), useNames());
+                                                    new SingleMemberInjectorParameterName(method, i), useNames(),
+                                                    getBindings(method.getParameterAnnotations())[i]);
                     }
                     return null;
                 }

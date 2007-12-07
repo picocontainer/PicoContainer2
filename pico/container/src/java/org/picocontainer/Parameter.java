@@ -12,6 +12,8 @@ package org.picocontainer;
 
 import org.picocontainer.parameters.ComponentParameter;
 
+import java.lang.annotation.Annotation;
+
 /**
  * This class provides control over the arguments that will be passed to a constructor. It can be used for finer control over
  * what arguments are passed to a particular constructor.
@@ -40,6 +42,7 @@ public interface Parameter {
      * @param expectedParameterName Expected parameter name
      *
      * @param useNames
+     * @param binding
      * @return the instance or <code>null</code> if no suitable instance can be found.
      *
      * @throws PicoCompositionException if a referenced component could not be instantiated.
@@ -47,7 +50,7 @@ public interface Parameter {
      <T> T resolveInstance(PicoContainer container,
                            ComponentAdapter adapter,
                            Class<T> expectedType,
-                           ParameterName expectedParameterName, boolean useNames);
+                           ParameterName expectedParameterName, boolean useNames, Annotation binding);
 
     /**
      * Check if the Parameter can satisfy the expected type using the container.
@@ -58,13 +61,14 @@ public interface Parameter {
      * @param expectedParameterName Expected parameter name
      *
      * @param useNames
+     * @param binding
      * @return <code>true</code> if the component parameter can be resolved.
      *
      */
     boolean isResolvable(PicoContainer container,
                          ComponentAdapter adapter,
                          Class expectedType,
-                         ParameterName expectedParameterName, boolean useNames);
+                         ParameterName expectedParameterName, boolean useNames, Annotation binding);
 
     /**
      * Verify that the Parameter can satisfy the expected type using the container
@@ -75,12 +79,13 @@ public interface Parameter {
      * @param expectedParameterName Expected parameter name
      *
      * @param useNames
+     * @param binding
      * @throws PicoCompositionException if parameter and its dependencies cannot be resolved
      */
     void verify(PicoContainer container,
                 ComponentAdapter adapter,
                 Class expectedType,
-                ParameterName expectedParameterName, boolean useNames);
+                ParameterName expectedParameterName, boolean useNames, Annotation binding);
 
     /**
      * Accepts a visitor for this Parameter. The method is normally called by visiting a {@link ComponentAdapter}, that

@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
+import java.lang.annotation.Annotation;
 
 import org.apache.log4j.Logger;
 
@@ -228,6 +229,22 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
         return delegate.getComponentAdapters(componentType);
     }
 
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Grabbing all component adapters for container: " + delegate + " of type: "
+                         + componentType.getName() + ", binding:" + binding.getName());
+        }
+        return delegate.getComponentAdapters(componentType, binding);
+    }
+
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Grabbing component adapter for container: " + delegate + " of type: "
+                         + componentType.getName() + ", binding:" + binding.getName());
+        }
+        return delegate.getComponentAdapter(componentType, binding);
+    }
+
     /**
      * {@inheritDoc}
      *
@@ -261,6 +278,19 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 
     public <T> T getComponent(Class<T> componentType) {
         return componentType.cast(getComponent((Object)componentType));
+    }
+
+    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Attempting to load component instance with "
+                         + "type"
+                         + ": "
+                         + componentType.getName()
+                         + " for container "
+                         + delegate);
+
+        }
+        return delegate.getComponent(componentType, binding);
     }
 
     /**

@@ -20,6 +20,7 @@ import org.picocontainer.ParameterName;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.annotation.Annotation;
 
 
 /**
@@ -45,7 +46,7 @@ public class ConstantParameter
                                   ComponentAdapter adapter,
                                   Class expectedType,
                                   ParameterName expectedParameterName,
-                                  boolean useNames) {
+                                  boolean useNames, Annotation binding) {
         return value;
     }
 
@@ -53,9 +54,9 @@ public class ConstantParameter
                                 ComponentAdapter adapter,
                                 Class expectedType,
                                 ParameterName expectedParameterName,
-                                boolean useNames) {
+                                boolean useNames, Annotation binding) {
         try {
-            verify(container, adapter, expectedType, expectedParameterName, useNames);
+            verify(container, adapter, expectedType, expectedParameterName, useNames, binding);
             return true;
         } catch(final PicoCompositionException e) {
             return false;
@@ -65,13 +66,13 @@ public class ConstantParameter
     /**
      * {@inheritDoc}
      *
-     * @see Parameter#verify(PicoContainer,ComponentAdapter,Class,ParameterName,boolean)
+     * @see Parameter#verify(PicoContainer, ComponentAdapter, Class, ParameterName,boolean, Annotation)
      */
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
                        Class expectedType,
                        ParameterName expectedParameterName,
-                       boolean useNames) throws PicoException {
+                       boolean useNames, Annotation binding) throws PicoException {
         if (!checkPrimitive(expectedType) && !expectedType.isInstance(value)) {
             throw new PicoCompositionException(expectedType.getClass().getName() + " is not assignable from " +
                                                  (value != null ? value.getClass().getName() : "null"));

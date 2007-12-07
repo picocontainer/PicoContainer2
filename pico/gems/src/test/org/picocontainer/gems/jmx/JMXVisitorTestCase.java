@@ -23,6 +23,7 @@ import org.picocontainer.gems.jmx.testmodel.Person;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.ParameterName;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceAdapter;
@@ -77,7 +78,7 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
 
         // parameter fixes coverage of visitParameter !!
         final ComponentAdapter componentAdapter = picoContainer.addComponent(
-                Person.class, Person.class, new ConstantParameter("John Doe")).getComponentAdapter(Person.class, null);
+                Person.class, Person.class, new ConstantParameter("John Doe")).getComponentAdapter(Person.class, (ParameterName) null);
 
         dynamicMBeanProviderMock.expects(once()).method("provide").with(same(picoContainer), same(componentAdapter))
                 .will(returnValue(registrationInfo));
@@ -101,9 +102,9 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
                 new ObjectName(":type=JUnit"), (DynamicMBean)dynamicMBeanMock.proxy());
 
         final ComponentAdapter componentAdapter1 = picoContainer.addComponent(this).getComponentAdapter(this.getClass(),
-                                                                                                        null);
+                                                                                                        (ParameterName) null);
         final ComponentAdapter componentAdapter2 = picoContainer.addComponent(Person.class).getComponentAdapter(Person.class,
-                                                                                                                null);
+                                                                                                                (ParameterName) null);
 
         dynamicMBeanProviderMock.expects(once()).method("provide").with(same(picoContainer), same(componentAdapter1))
                 .will(returnValue(null));
@@ -126,7 +127,7 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
         picoContainer.addChildContainer(child);
 
         final ComponentAdapter componentAdapter = child.addComponent(Person.class).getComponentAdapter(Person.class,
-                                                                                                       null);
+                                                                                                       (ParameterName) null);
 
         dynamicMBeanProviderMock.expects(once()).method("provide").with(same(child), same(componentAdapter)).will(
                 returnValue(null));
@@ -185,7 +186,7 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
 
         // parameter fixes coverage of visitParameter !!
         final ComponentAdapter componentAdapter = picoContainer.addComponent(Person.class).getComponentAdapter(Person.class,
-                                                                                                               null);
+                                                                                                               (ParameterName) null);
 
         dynamicMBeanProviderMock.expects(once()).method("provide").with(same(picoContainer), same(componentAdapter))
                 .will(returnValue(registrationInfo));

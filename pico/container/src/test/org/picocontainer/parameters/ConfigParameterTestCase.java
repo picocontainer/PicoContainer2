@@ -34,11 +34,11 @@ public class ConfigParameterTestCase extends TestCase {
 
 		// shall be not resolvable
 		assertFalse(parameter.isResolvable(container, null, String.class,
-				paramName, false));
+				paramName, false, null));
 
 		// shall resolve instance as null
 		assertNull(parameter.resolveInstance(container, null, String.class,
-				paramName, false));
+				paramName, false, null));
 	}
 
 	public void testThatNotStringEntryIsNotResolved() throws Exception {
@@ -49,11 +49,11 @@ public class ConfigParameterTestCase extends TestCase {
 
 		// shall be not resolvable
 		assertFalse(parameter.isResolvable(container, null, String.class,
-				paramName, false));
+				paramName, false, null));
 
 		// shall resolve instance as null
 		assertNull(parameter.resolveInstance(container, null, String.class,
-				paramName, false));
+				paramName, false, null));
 
 	}
 
@@ -69,9 +69,9 @@ public class ConfigParameterTestCase extends TestCase {
 		ComponentParameter parameter = new ComponentParameter("gloo.blum");
 
 		assertEquals(new Integer(239), parameter.resolveInstance(container,
-				null, Integer.class, paramName, false));
+				null, Integer.class, paramName, false, null));
 		assertEquals("239", parameter.resolveInstance(container, null,
-				String.class, paramName, false));
+				String.class, paramName, false, null));
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class ConfigParameterTestCase extends TestCase {
 //		} catch (ConfigParameter.NoConverterAvailableException ex) {
 //			// that's anticipated
 //		}
-	    Object foo = parameter.resolveInstance(container, null, List.class, paramName, false);
+	    Object foo = parameter.resolveInstance(container, null, List.class, paramName, false, null);
         assertNull(foo);
 
     }

@@ -65,7 +65,7 @@ public class CollectionComponentParameterTestCase
         Collections.sort(expected);
         List actual = Arrays.asList((Object[]) ccp.resolveInstance(
                 (PicoContainer) containerMock.proxy(), (ComponentAdapter) componentAdapterMock.proxy(), String[].class, null,
-                false));
+                false, null));
         Collections.sort(actual);
         assertEquals(expected, actual);
     }
@@ -308,16 +308,16 @@ public class CollectionComponentParameterTestCase
         MutablePicoContainer pico = new DefaultPicoContainer();
         CollectionComponentParameter parameterNonEmpty = CollectionComponentParameter.ARRAY;
         pico.addComponent(Shark.class);
-        parameterNonEmpty.verify(pico, null, Fish[].class, null, false);
+        parameterNonEmpty.verify(pico, null, Fish[].class, null, false, null);
         try {
-            parameterNonEmpty.verify(pico, null, Cod[].class, null, false);
+            parameterNonEmpty.verify(pico, null, Cod[].class, null, false, null);
             fail("(PicoCompositionException expected");
         } catch (PicoCompositionException e) {
             assertTrue(e.getMessage().indexOf(Cod.class.getName())>0);
         }
         CollectionComponentParameter parameterEmpty = CollectionComponentParameter.ARRAY_ALLOW_EMPTY;
-        parameterEmpty.verify(pico, null, Fish[].class, null, false);
-        parameterEmpty.verify(pico, null, Cod[].class, null, false);
+        parameterEmpty.verify(pico, null, Fish[].class, null, false, null);
+        parameterEmpty.verify(pico, null, Cod[].class, null, false, null);
     }
 
     // PICO-243 : this test will fail if executed on jdk1.3 without commons-collections

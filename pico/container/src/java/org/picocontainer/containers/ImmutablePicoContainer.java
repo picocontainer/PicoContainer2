@@ -17,6 +17,7 @@ import org.picocontainer.ParameterName;
 import java.util.List;
 import java.util.Collection;
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 
 /**
 * wrap pico container to achieve immutability
@@ -43,6 +44,10 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
         return delegate.getComponent(componentType);
     }
 
+    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
+        return delegate.getComponent(componentType, binding);
+    }
+
     public List getComponents() {
         return delegate.getComponents();
     }
@@ -59,12 +64,20 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
         return delegate.getComponentAdapter(componentType, componentParameterName);  
     }
 
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+        return delegate.getComponentAdapter(componentType, binding);
+    }
+
     public Collection<ComponentAdapter<?>> getComponentAdapters() {
         return delegate.getComponentAdapters();
     }
 
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
         return delegate.getComponentAdapters(componentType);
+    }
+
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
+        return delegate.getComponentAdapters(componentType, binding);
     }
 
     public <T> List<T> getComponents(Class<T> componentType) {

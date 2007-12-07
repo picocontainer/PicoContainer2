@@ -1,15 +1,17 @@
 package org.nanocontainer.script.xml.issues;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ParameterName;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.gems.behaviors.HotSwappable;
+
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.gems.behaviors.HotSwappable;
 
 //http://jira.codehaus.org/browse/NANO-170
 public class Issue0170TestCase extends AbstractScriptedContainerBuilderTestCase {
@@ -35,7 +37,7 @@ public class Issue0170TestCase extends AbstractScriptedContainerBuilderTestCase 
         List list = pico.getComponent(List.class);
         assertNotNull(list);
 
-        ComponentAdapter listCA = pico.getComponentAdapter(List.class, null);
+        ComponentAdapter listCA = pico.getComponentAdapter(List.class, (ParameterName) null);
 
         assertTrue(listCA instanceof HotSwappable);
         HotSwappable hsca = (HotSwappable) listCA;

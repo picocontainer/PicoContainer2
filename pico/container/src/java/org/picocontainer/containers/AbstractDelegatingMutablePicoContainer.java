@@ -10,6 +10,7 @@
 package org.picocontainer.containers;
 
 import java.util.Properties;
+import java.lang.annotation.Annotation;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;

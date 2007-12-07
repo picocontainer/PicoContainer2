@@ -13,9 +13,12 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.annotations.Bind;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
 import com.thoughtworks.paranamer.CachingParanamer;
@@ -70,7 +73,7 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
 
 
     @SuppressWarnings("unchecked")
-	protected Object[] getMemberArguments(PicoContainer container, final AccessibleObject member, final Class[] parameterTypes) {
+    protected Object[] getMemberArguments(PicoContainer container, final AccessibleObject member, final Class[] parameterTypes, final Annotation[] bindings) {
         for (int i = 0; i < parameterTypes.length; i++) {
             parameterTypes[i] = box(parameterTypes[i]);
 
@@ -81,11 +84,25 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
         for (int i = 0; i < currentParameters.length; i++) {
             result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i],
                                                              new SingleMemberInjectorParameterName(member, i),
-                                                             useNames());
+                                                             useNames(), bindings[i]);
         }
         return result;
     }
 
+    protected Annotation[] getBindings(Annotation[][] annotationss) {
+        Annotation[] retVal = new Annotation[annotationss.length];
+        for (int i = 0; i < annotationss.length; i++) {
+            Annotation[] annotations = annotationss[i];
+            for (int j = 0; j < annotations.length; j++) {
+                Annotation annotation = annotations[j];
+                if (annotation.annotationType().getAnnotation(Bind.class) != null) {
+                    retVal[i] = annotation;
+                    break;
+                }
+            }
+        }
+        return retVal;
+    }
 
 
     protected class SingleMemberInjectorParameterName implements ParameterName {

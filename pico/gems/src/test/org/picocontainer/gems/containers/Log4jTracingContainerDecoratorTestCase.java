@@ -9,6 +9,20 @@
 
 package org.picocontainer.gems.containers;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.ParameterName;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.ConstantParameter;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -27,18 +41,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
-import org.picocontainer.adapters.InstanceAdapter;
 
 public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 	
@@ -140,12 +142,12 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 		picoMock.expects(once()).method("getComponentAdapter").with(same(Map.class), same(null)).will(this.returnValue(null));
 		
-		ComponentAdapter ca = tracingDecorator.getComponentAdapter(String.class, null);
+		ComponentAdapter ca = tracingDecorator.getComponentAdapter(String.class, (ParameterName) null);
 		assertNotNull(ca);
 
 		verifyLog("Locating component adapter with type ");
 
-		ca = tracingDecorator.getComponentAdapter(Map.class, null);
+		ca = tracingDecorator.getComponentAdapter(Map.class, (ParameterName) null);
 		assertNull(ca);
 
 		verifyKeyNotFound();
@@ -168,12 +170,12 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 		picoMock.expects(once()).method("getComponentAdapter").with(same(Map.class), same(null)).will(this.returnValue(null));
 		
-		ComponentAdapter ca = tracingDecorator.getComponentAdapter(String.class, null);
+		ComponentAdapter ca = tracingDecorator.getComponentAdapter(String.class, (ParameterName) null);
 		assertNotNull(ca);
 
 		verifyLog("Locating component adapter with type ");
 
-		ca = tracingDecorator.getComponentAdapter(Map.class, null);
+		ca = tracingDecorator.getComponentAdapter(Map.class, (ParameterName) null);
 		assertNull(ca);
 
 		verifyKeyNotFound();
@@ -274,7 +276,7 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 		picoMock.expects(once()).method("addAdapter").with(same(testAdapter)).will(returnValue(picoMock.proxy()));
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 		
-		ComponentAdapter result = tracingDecorator.addAdapter(testAdapter).getComponentAdapter(String.class, null);
+		ComponentAdapter result = tracingDecorator.addAdapter(testAdapter).getComponentAdapter(String.class, (ParameterName) null);
 		assertEquals(testAdapter, result);
 		verifyLog("Registering component adapter ");
 	}
@@ -284,7 +286,7 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 		picoMock.expects(once()).method("addComponent").with(same(String.class)).will(returnValue(picoMock.proxy()));
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 
-		ComponentAdapter result = tracingDecorator.addComponent(String.class).getComponentAdapter(String.class, null);
+		ComponentAdapter result = tracingDecorator.addComponent(String.class).getComponentAdapter(String.class, (ParameterName) null);
 		assertEquals(testAdapter, result);
 		verifyLog("Registering component impl or instance ");
 	}
@@ -295,7 +297,7 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 
 		ComponentAdapter result = tracingDecorator.addComponent(String.class, String.class, Parameter.ZERO).getComponentAdapter(String.class,
-                                                                                                                                null);
+                                                                                                                                (ParameterName) null);
 		assertEquals(testAdapter, result);
 		verifyLog("Registering component implementation ");
 	}
@@ -308,7 +310,7 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 
 		ComponentAdapter result = tracingDecorator.addComponent(String.class, testString, Parameter.ZERO).getComponentAdapter(String.class,
-                                                                                                                              null);
+                                                                                                                              (ParameterName) null);
 
 		assertTrue(result instanceof InstanceAdapter);
 		verifyLog("Registering component instance with key ");
@@ -322,7 +324,7 @@ public class Log4jTracingContainerDecoratorTestCase extends MockObjectTestCase {
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 
 		ComponentAdapter result = tracingDecorator.addComponent(String.class, String.class, params).getComponentAdapter(String.class,
-                                                                                                                        null);
+                                                                                                                        (ParameterName) null);
 		assertEquals(testAdapter, result);
 		
 		verifyLog("Registering component implementation with key ");

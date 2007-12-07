@@ -3,9 +3,9 @@ package org.picocontainer.containers;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.lang.annotation.Annotation;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
@@ -44,7 +44,11 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
 		return componentType.cast(getComponent((Object) componentType));
 	}
 
-	public Object getComponent(Object componentKeyOrType) {
+    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
+        return delegate.getComponent(componentType, binding);
+    }
+
+    public Object getComponent(Object componentKeyOrType) {
 		return delegate.getComponent(componentKeyOrType);
 	}
 
@@ -54,7 +58,11 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
 				componentParameterName);
 	}
 
-	public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+        return delegate.getComponentAdapter(componentType, binding);
+    }
+
+    public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
 		return delegate.getComponentAdapter(componentKey);
 	}
 
@@ -67,7 +75,11 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
 		return delegate.getComponentAdapters(componentType);
 	}
 
-	public List<Object> getComponents() {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
+        return delegate.getComponentAdapters(componentType, binding);
+    }    
+
+    public List<Object> getComponents() {
 		return delegate.getComponents();
 	}
 

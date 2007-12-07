@@ -11,6 +11,7 @@ package org.picocontainer;
 
 import java.util.Collection;
 import java.util.List;
+import java.lang.annotation.Annotation;
 
 
 /**
@@ -44,6 +45,7 @@ public interface PicoContainer {
      */
     <T> T getComponent(Class<T> componentType);
 
+    <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding);
 
     /**
      * Retrieve all the registered component instances in the container, (not including those in the parent container).
@@ -83,6 +85,8 @@ public interface PicoContainer {
 
     <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName);
 
+    <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding);
+
     /**
      * Retrieve all the component adapters inside this container. The component adapters from the parent container are
      * not returned.
@@ -103,6 +107,8 @@ public interface PicoContainer {
      *         the specified type. Changes to this collection will not be reflected in the container itself.
      */
     <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType);
+
+    <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding);
 
     /**
      * Returns a List of components of a certain componentType. The list is ordered by instantiation order, starting

@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -126,21 +127,21 @@ public class BasicComponentParameter implements Parameter, Serializable {
      *
      * @throws org.picocontainer.PicoCompositionException
      *          {@inheritDoc}
-     * @see Parameter#isResolvable(PicoContainer,ComponentAdapter,Class,ParameterName,boolean)
+     * @see Parameter#isResolvable(PicoContainer, ComponentAdapter, Class, ParameterName,boolean, Annotation)
      */
     public boolean isResolvable(PicoContainer container,
                                 ComponentAdapter adapter,
                                 Class expectedType,
-                                ParameterName expectedParameterName, boolean useNames) {
-        return resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName, useNames) != null;
+                                ParameterName expectedParameterName, boolean useNames, Annotation binding) {
+        return resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName, useNames, binding) != null;
     }
 
     public <T> T resolveInstance(PicoContainer container,
-                                  ComponentAdapter adapter,
-                                  Class<T> expectedType,
-                                  ParameterName expectedParameterName, boolean useNames) {
+                                 ComponentAdapter adapter,
+                                 Class<T> expectedType,
+                                 ParameterName expectedParameterName, boolean useNames, Annotation binding) {
         final ComponentAdapter componentAdapter =
-            resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName, useNames);
+            resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName, useNames, binding);
         if (componentAdapter != null) {
             Object o = container.getComponent(componentAdapter.getComponentKey());
             if (o instanceof String && expectedType != String.class) {
@@ -155,9 +156,9 @@ public class BasicComponentParameter implements Parameter, Serializable {
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
                        Class expectedType,
-                       ParameterName expectedParameterName, boolean useNames) {
+                       ParameterName expectedParameterName, boolean useNames, Annotation binding) {
         final ComponentAdapter componentAdapter =
-            resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName, useNames);
+            resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName, useNames, binding);
         if (componentAdapter == null) {
             final Set<Class> set = new HashSet<Class>();
             set.add(expectedType);
@@ -178,7 +179,7 @@ public class BasicComponentParameter implements Parameter, Serializable {
     private <T> ComponentAdapter<T> resolveAdapter(PicoContainer container,
                                                    ComponentAdapter adapter,
                                                    Class<T> expectedType,
-                                                   ParameterName expectedParameterName, boolean useNames) {
+                                                   ParameterName expectedParameterName, boolean useNames, Annotation binding) {
         Class type = expectedType;
         if (type.isPrimitive()) {
             String expectedTypeName = expectedType.getName();
@@ -201,7 +202,8 @@ public class BasicComponentParameter implements Parameter, Serializable {
             }
         }
 
-        final ComponentAdapter<T> result = getTargetAdapter(container, type, expectedParameterName, adapter, useNames);
+        final ComponentAdapter<T> result = getTargetAdapter(container, type, expectedParameterName, adapter, useNames,
+                                                            binding);
         if (result == null) {
             return null;
         }
@@ -222,12 +224,12 @@ public class BasicComponentParameter implements Parameter, Serializable {
     private <T> ComponentAdapter<T> getTargetAdapter(PicoContainer container,
                                                      Class<T> expectedType,
                                                      ParameterName expectedParameterName,
-                                                     ComponentAdapter excludeAdapter, boolean useNames) {
+                                                     ComponentAdapter excludeAdapter, boolean useNames, Annotation binding) {
         if (componentKey != null) {
             // key tells us where to look so we follow
             return typeComponentAdapter(container.getComponentAdapter(componentKey));
         } else if (excludeAdapter == null) {
-            return container.getComponentAdapter(expectedType, null);
+            return container.getComponentAdapter(expectedType, (ParameterName) null);
         } else {
 
             Object excludeKey = excludeAdapter.getComponentKey();
@@ -243,7 +245,8 @@ public class BasicComponentParameter implements Parameter, Serializable {
                     return (ComponentAdapter<T>) found;                    
                 }
             }
-            List<ComponentAdapter<T>> found = container.getComponentAdapters(expectedType);
+            List<ComponentAdapter<T>> found = binding == null ? container.getComponentAdapters(expectedType) :
+                                              container.getComponentAdapters(expectedType, binding.annotationType());
             ComponentAdapter exclude = null;
             for (ComponentAdapter work : found) {
                 if (work.getComponentKey().equals(excludeKey)) {

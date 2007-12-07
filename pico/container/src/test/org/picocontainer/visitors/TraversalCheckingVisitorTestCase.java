@@ -20,6 +20,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.ParameterName;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.injectors.ConstructorInjector;
@@ -47,10 +48,10 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
         SetterInjector componentAdapter = new SetterInjector(StringBuffer.class, StringBuffer.class,
                                                              null, new NullComponentMonitor(), new NullLifecycleStrategy(),
                                                              "set", false);
-        parentAdapter = pico.addAdapter(componentAdapter).getComponentAdapter(StringBuffer.class, null);
+        parentAdapter = pico.addAdapter(componentAdapter).getComponentAdapter(StringBuffer.class, (ParameterName) null);
         child = pico.makeChildContainer();
         ConstructorInjector adapter = new ConstructorInjector(ArrayList.class, ArrayList.class, new Parameter[] {new ConstantParameter(3)}, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
-        childAdapter = child.addAdapter(adapter).getComponentAdapter(ArrayList.class, null);
+        childAdapter = child.addAdapter(adapter).getComponentAdapter(ArrayList.class, (ParameterName) null);
     }
 
     protected void tearDown() throws Exception {
@@ -130,9 +131,9 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
 
         assertTrue(allParameters.size() == 1);
         assertTrue(allParameters.get(0) instanceof ConstantParameter);
-        assertTrue( ( (ConstantParameter) allParameters.get(0)).resolveInstance(null, null, null, null, false) instanceof Integer);
+        assertTrue( ( (ConstantParameter) allParameters.get(0)).resolveInstance(null, null, null, null, false, null) instanceof Integer);
         assertEquals(3, ( (Integer) ( (ConstantParameter) allParameters.get(0)).resolveInstance(null, null,
-            null, null, false)).intValue());
+            null, null, false, null)).intValue());
     }
 
 }    

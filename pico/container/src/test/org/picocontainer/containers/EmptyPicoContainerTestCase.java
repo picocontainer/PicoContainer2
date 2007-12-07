@@ -13,6 +13,7 @@ package org.picocontainer.containers;
 import junit.framework.TestCase;
 
 import org.picocontainer.PicoContainer;
+import org.picocontainer.ParameterName;
 import org.picocontainer.containers.EmptyPicoContainer;
 
 /**
@@ -22,8 +23,8 @@ public class EmptyPicoContainerTestCase extends TestCase {
 
     public void testReturnValues() {
         PicoContainer pico = new EmptyPicoContainer();
-        assertNull(pico.getComponentAdapter(null, null));
-        assertNull(pico.getComponentAdapter(null, null));
+        assertNull(pico.getComponentAdapter(null, (ParameterName) null));
+        assertNull(pico.getComponentAdapter(null, (ParameterName) null));
         assertTrue(pico.getComponentAdapters().isEmpty());
         assertTrue(pico.getComponentAdapters(null).isEmpty());
         assertNull(pico.getComponent(null));

@@ -34,6 +34,7 @@ import java.util.Set;
 import java.util.Properties;
 import java.util.Enumeration;
 import java.util.Collection;
+import java.lang.annotation.Annotation;
 
 /**
  * <p/>
@@ -233,13 +234,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
+        return getComponentAdapter(componentType, componentParameterName, null);
+    }
+
+    private <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName, Class<? extends Annotation> binding) {
         // See http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-115
         ComponentAdapter<?> adapterByKey = getComponentAdapter((Object)componentType);
         if (adapterByKey != null) {
             return typeComponentAdapter(adapterByKey);
         }
 
-        List<ComponentAdapter<T>> found = getComponentAdapters(componentType);
+        List<ComponentAdapter<T>> found = binding == null ? getComponentAdapters(componentType) : getComponentAdapters(componentType, binding);
 
         if (found.size() == 1) {
             return found.get(0);
@@ -268,15 +273,26 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
     }
 
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+        return getComponentAdapter(componentType, null, binding);
+    }
+
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
+        return getComponentAdapters(componentType,  null);
+    }
+
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
         if (componentType == null) {
             return Collections.emptyList();
         }
         List<ComponentAdapter<T>> found = new ArrayList<ComponentAdapter<T>>();
         for (ComponentAdapter<?> componentAdapter : getComponentAdapters()) {
-            if (componentType.isAssignableFrom(componentAdapter.getComponentImplementation())) {
-                ComponentAdapter<T> typedComponentAdapter = typeComponentAdapter(componentAdapter);
-                found.add(typedComponentAdapter);
+            Object k = componentAdapter.getComponentKey();
+
+            if (componentType.isAssignableFrom(componentAdapter.getComponentImplementation()) &&
+                (!(k instanceof BindKey) || (k instanceof BindKey && (((BindKey)k).getAnnotation() == null || binding == null ||
+                                                                      ((BindKey)k).getAnnotation() == binding)))) {
+                found.add((ComponentAdapter<T>)typeComponentAdapter(componentAdapter));
             }
         }
         return found;
@@ -448,9 +464,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public Object getComponent(Object componentKeyOrType) {
+        return getComponent(componentKeyOrType, null);
+    }
+
+    public Object getComponent(Object componentKeyOrType, Class<? extends Annotation> annotation) {
         Object retVal;
-        if (componentKeyOrType instanceof Class) {
-            final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, null);
+        if (annotation != null) {
+            final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class)componentKeyOrType, annotation);
+            retVal = componentAdapter == null ? null : getInstance(componentAdapter);
+        } else if (componentKeyOrType instanceof Class) {
+            final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, (ParameterName) null);
             retVal = componentAdapter == null ? null : getInstance(componentAdapter);
         } else {
             ComponentAdapter<?> componentAdapter = getComponentAdapter(componentKeyOrType);
@@ -463,9 +486,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public <T> T getComponent(Class<T> componentType) {
-        Object o = getComponent((Object)componentType);
+        Object o = getComponent((Object)componentType, null);
         return componentType.cast(o);
     }
+
+    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
+         Object o = getComponent((Object)componentType, binding);
+        return componentType.cast(o);
+    }
+
 
     private Object getInstance(ComponentAdapter<?> componentAdapter) {
         // check wether this is our adapter

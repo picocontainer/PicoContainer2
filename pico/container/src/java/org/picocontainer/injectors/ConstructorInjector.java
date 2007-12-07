@@ -11,14 +11,15 @@
 package org.picocontainer.injectors;
 
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.lang.annotation.Annotation;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -74,6 +75,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         for (final Constructor<T> sortedMatchingConstructor : sortedMatchingConstructors) {
             boolean failedDependency = false;
             Class[] parameterTypes = sortedMatchingConstructor.getParameterTypes();
+            Annotation[] bindings = getBindings(sortedMatchingConstructor.getParameterAnnotations());
             Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
             // remember: all constructors with less arguments than the given parameters are filtered out already
@@ -82,7 +84,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                 Class boxed = box(parameterTypes[j]);
                 boolean un = useNames();
                 if (currentParameters[j].isResolvable(container, this, boxed,
-                    new SingleMemberInjectorParameterName(sortedMatchingConstructor, j), un)) {
+                    new SingleMemberInjectorParameterName(sortedMatchingConstructor, j), un, bindings[j])) {
                     continue;
                 }
                 unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
@@ -122,6 +124,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         }
         return greediestConstructor;
     }
+
 
     public T getComponentInstance(final PicoContainer container) throws PicoCompositionException {
         if (instantiationGuard == null) {
@@ -166,7 +169,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
     }
 
     protected Object[] getMemberArguments(PicoContainer container, final Constructor ctor) {
-        return super.getMemberArguments(container, ctor, ctor.getParameterTypes());
+        return super.getMemberArguments(container, ctor, ctor.getParameterTypes(), getBindings(ctor.getParameterAnnotations()));
     }
 
     private List<Constructor<T>> getSortedMatchingConstructors() {
@@ -206,7 +209,8 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                     final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
                     for (int i = 0; i < currentParameters.length; i++) {
                         currentParameters[i].verify(container, ConstructorInjector.this, box(parameterTypes[i]),
-                                                    new SingleMemberInjectorParameterName(constructor, i), useNames());
+                                                    new SingleMemberInjectorParameterName(constructor, i), useNames(),
+                                                    getBindings(constructor.getParameterAnnotations())[i]);
                     }
                     return null;
                 }

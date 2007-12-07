@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.lang.annotation.Annotation;
 
 /**
  * empty pico container serving as recoil damper in situations where you
@@ -33,6 +34,10 @@ public class EmptyPicoContainer implements PicoContainer, Serializable {
     }
 
     public <T> T getComponent(Class<T> componentType) {
+        return null;
+    }
+
+    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
         return null;
     }
 
@@ -52,11 +57,19 @@ public class EmptyPicoContainer implements PicoContainer, Serializable {
         return null;
     }
 
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+        return null;
+    }
+
     public Collection<ComponentAdapter<?>> getComponentAdapters() {
         return Collections.emptyList();
     }
 
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
+        return Collections.emptyList();
+    }
+
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
         return Collections.emptyList();
     }
 

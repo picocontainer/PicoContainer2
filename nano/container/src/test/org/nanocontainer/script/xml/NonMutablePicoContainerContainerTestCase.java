@@ -22,6 +22,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collection;
 import java.util.List;
+import java.lang.annotation.Annotation;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.nanocontainer.integrationkit.PicoCompositionException;
@@ -43,6 +44,10 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
         }
 
         public <T> T getComponent(Class<T> componentType) {
+            return null;
+        }
+
+        public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
             return null;
         }
 
@@ -77,6 +82,14 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
         }
 
         public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
+            return null;
+        }
+
+        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+            return null;
+        }
+
+        public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
             return null;
         }
 

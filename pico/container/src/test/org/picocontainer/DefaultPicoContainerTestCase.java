@@ -11,6 +11,7 @@ package org.picocontainer;
 
 import static org.picocontainer.Characteristics.CDI;
 import static org.picocontainer.Characteristics.SDI;
+import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
@@ -33,8 +34,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author Aslak Helles&oslash;y

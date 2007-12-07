@@ -16,6 +16,8 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.ParameterName;
 import org.picocontainer.injectors.AbstractInjector;
 
+import java.lang.annotation.Annotation;
+
 
 /**
  * A ComponentParameter should be used to pass in a particular component as argument to a
@@ -112,12 +114,12 @@ public class ComponentParameter
                                   ComponentAdapter adapter,
                                   Class<T> expectedType,
                                   ParameterName expectedParameterName,
-                                  boolean useNames) {
+                                  boolean useNames, Annotation binding) {
         // type check is done in isResolvable
-        T result = super.resolveInstance(container, adapter, expectedType, expectedParameterName, useNames);
+        T result = super.resolveInstance(container, adapter, expectedType, expectedParameterName, useNames, binding);
         if (result == null && collectionParameter != null) {
             result = collectionParameter.resolveInstance(container, adapter, expectedType, expectedParameterName,
-                                                         useNames);
+                                                         useNames, binding);
         }
         return result;
     }
@@ -126,11 +128,11 @@ public class ComponentParameter
                                 ComponentAdapter adapter,
                                 Class expectedType,
                                 ParameterName expectedParameterName,
-                                boolean useNames) {
-        if (!super.isResolvable(container, adapter, expectedType, expectedParameterName, useNames)) {
+                                boolean useNames, Annotation binding) {
+        if (!super.isResolvable(container, adapter, expectedType, expectedParameterName, useNames, binding)) {
             if (collectionParameter != null) {
                 return collectionParameter.isResolvable(container, adapter, expectedType, expectedParameterName,
-                                                        useNames);
+                                                        useNames, binding);
             }
             return false;
         }
@@ -141,12 +143,12 @@ public class ComponentParameter
                        ComponentAdapter adapter,
                        Class expectedType,
                        ParameterName expectedParameterName,
-                       boolean useNames) {
+                       boolean useNames, Annotation binding) {
         try {
-            super.verify(container, adapter, expectedType, expectedParameterName, useNames);
+            super.verify(container, adapter, expectedType, expectedParameterName, useNames, binding);
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             if (collectionParameter != null) {
-                collectionParameter.verify(container, adapter, expectedType, expectedParameterName, useNames);
+                collectionParameter.verify(container, adapter, expectedType, expectedParameterName, useNames, binding);
                 return;
             }
             throw e;

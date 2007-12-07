@@ -6,12 +6,14 @@ import org.picocontainer.Parameter;
 import org.picocontainer.ParameterName;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.annotations.Bind;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.annotation.Annotation;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public abstract class IterativeInjector extends AbstractInjector {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     protected transient List<AccessibleObject> injectionMembers;
     protected transient Class[] injectionTypes;
+    protected transient Annotation[] bindings;
     private transient CachingParanamer paranamer = new CachingParanamer();
 
     /**
@@ -82,8 +85,15 @@ public abstract class IterativeInjector extends AbstractInjector {
             final Parameter parameter = currentParameters[i];
             boolean failedDependency = true;
             for (int j = 0; j < injectionTypes.length; j++) {
-                if (matchingParameterList.get(j) == null &&
-                    parameter.isResolvable(container, this, injectionTypes[j], makeParameterNameImpl(injectionMembers.get(i)), useNames())) {
+                Object o = matchingParameterList.get(j);
+                AccessibleObject member = injectionMembers.get(i);
+                boolean b = parameter.isResolvable(container,
+                                                   this,
+                                                   injectionTypes[j],
+                                                   makeParameterNameImpl(member),
+                                                   useNames(),
+                                                   bindings[j]);
+                if (o == null && b) {
                     matchingParameterList.set(j, parameter);
                     failedDependency = false;
                     break;
@@ -137,7 +147,8 @@ public abstract class IterativeInjector extends AbstractInjector {
                             }
                             Object toInject = matchingParameters[i].resolveInstance(guardedContainer, IterativeInjector.this, injectionTypes[i],
                                                                                     makeParameterNameImpl(injectionMembers.get(i)),
-                                                                                    useNames());
+                                                                                    useNames(),
+                                                                                    bindings[i]);
                             injectIntoMember(member, componentInstance, toInject);
                             injected[i] = toInject;
                         }
@@ -198,7 +209,7 @@ public abstract class IterativeInjector extends AbstractInjector {
                     final Parameter[] currentParameters = getMatchingParameterListForSetters(guardedContainer);
                     for (int i = 0; i < currentParameters.length; i++) {
                         currentParameters[i].verify(container, IterativeInjector.this, injectionTypes[i],
-                                                    makeParameterNameImpl(injectionMembers.get(i)), useNames());
+                                                    makeParameterNameImpl(injectionMembers.get(i)), useNames(), bindings[i]);
                     }
                     return null;
                 }
@@ -210,6 +221,7 @@ public abstract class IterativeInjector extends AbstractInjector {
 
     protected void initializeInjectionMembersAndTypeLists() {
         injectionMembers = new ArrayList<AccessibleObject>();
+        List<Annotation> bingingIds = new ArrayList<Annotation>();
         final List<Class> typeList = new ArrayList<Class>();
         final Method[] methods = getMethods();
         for (final Method method : methods) {
@@ -220,10 +232,33 @@ public abstract class IterativeInjector extends AbstractInjector {
                 if (isInjector) {
                     injectionMembers.add(method);
                     typeList.add(box(parameterTypes[0]));
+                    bingingIds.add(getBindings(method, 0));
                 }
             }
         }
         injectionTypes = typeList.toArray(new Class[0]);
+        bindings = bingingIds.toArray(new Annotation[0]);
+    }
+
+    private Annotation getBindings(Method method, int i) {
+        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+        if (parameterAnnotations.length >= i +1 ) {
+            Annotation[] o = parameterAnnotations[i];
+            for (int j = 0; j < o.length; j++) {
+                Annotation annotation = o[j];
+                if (o[j].annotationType().getAnnotation(Bind.class) != null) {
+                    return o[j];
+                }
+            }
+            return null;
+
+        }
+        if (parameterAnnotations != null) {
+            //return ((Bind) method.getAnnotation(Bind.class)).id();
+            System.out.println("");
+        }
+        return null;
+
     }
 
     protected boolean isInjectorMethod(Method method) {

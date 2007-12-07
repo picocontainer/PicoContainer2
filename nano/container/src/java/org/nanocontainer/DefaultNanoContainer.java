@@ -29,6 +29,7 @@ import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -448,6 +449,10 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
             return DefaultNanoContainer.this.getComponent(componentType);
         }
 
+        public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
+            return DefaultNanoContainer.this.getComponent(componentType, binding);
+        }        
+
         public List<Object> getComponents() {
             return DefaultNanoContainer.this.getComponents();
         }
@@ -464,6 +469,10 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
             return DefaultNanoContainer.this.getComponentAdapter(componentType, componentParameterName);
         }
 
+        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+            return DefaultNanoContainer.this.getComponentAdapter(componentType, binding);
+        }
+
         public Collection<ComponentAdapter<?>> getComponentAdapters() {
             return DefaultNanoContainer.this.getComponentAdapters();
         }
@@ -471,6 +480,11 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
         public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
             return DefaultNanoContainer.this.getComponentAdapters(componentType);
         }
+
+        public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
+            return DefaultNanoContainer.this.getComponentAdapters(componentType, binding);
+        }
+
 
         public <T> List<T> getComponents(Class<T> componentType) {
             return DefaultNanoContainer.this.getComponents(componentType);

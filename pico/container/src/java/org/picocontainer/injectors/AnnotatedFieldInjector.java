@@ -13,10 +13,12 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.ParameterName;
+import org.picocontainer.annotations.Bind;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.AccessibleObject;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -42,15 +44,28 @@ public class AnnotatedFieldInjector extends IterativeInjector {
 
     protected void initializeInjectionMembersAndTypeLists() {
         injectionMembers = new ArrayList<AccessibleObject>();
+        List<Annotation> bindingIds = new ArrayList<Annotation>();
         final List<Class> typeList = new ArrayList<Class>();
         final Field[] fields = getFields();
         for (final Field field : fields) {
             if (isAnnotatedForInjection(field)) {
                 injectionMembers.add(field);
                 typeList.add(box(field.getType()));
+                bindingIds.add(getBinding(field));
             }
         }
         injectionTypes = typeList.toArray(new Class[0]);
+        bindings = bindingIds.toArray(new Annotation[0]);
+    }
+
+    private Annotation getBinding(Field field) {
+        Annotation[] annotations = field.getAnnotations();
+        for (Annotation annotation : annotations) {
+            if (annotation.annotationType().isAnnotationPresent(Bind.class)) {
+                return annotation;
+            }
+        }
+        return null;
     }
 
     protected boolean isAnnotatedForInjection(Field field) {

@@ -3,16 +3,17 @@ package org.nanocontainer.script.jruby;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.ParameterName;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.SetterInjection;
+import org.picocontainer.injectors.SetterInjector;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.io.File;
 import java.io.IOException;
@@ -422,7 +423,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         Reader script = new StringReader(scriptValue);
         NanoContainer parent = new DefaultNanoContainer(
             buildContainer(script, null, new ParentAssemblyScope()));
-        assertNotNull(parent.getComponentAdapter(A.class, null));
+        assertNotNull(parent.getComponentAdapter(A.class, (ParameterName) null));
 
         script = new StringReader(scriptValue);
         PicoContainer pico = buildContainer(script, parent, new SomeAssemblyScope());
@@ -435,7 +436,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, parent, ASSEMBLY_SCOPE);
         // Should be able to get instance that was registered in the parent container
-        ComponentAdapter componentAdapter = pico.addComponent(String.class).getComponentAdapter(String.class, null);
+        ComponentAdapter componentAdapter = pico.addComponent(String.class).getComponentAdapter(String.class, (ParameterName) null);
         assertTrue("ComponentAdapter should be originally defined by parent",
                    componentAdapter instanceof SetterInjector);
     }

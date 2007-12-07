@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -204,6 +205,22 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
         return delegate.getComponentAdapters(componentType);
     }
 
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
+        if (log.isDebugEnabled()) {
+            log.debug("Grabbing all component adapters for container: "
+                      + delegate + " of type: " + componentType.getName() + ", binding:" + binding.getName());
+        }
+        return delegate.getComponentAdapters(componentType, binding);
+    }
+
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+        if (log.isDebugEnabled()) {
+            log.debug("Grabbing component adapter for container: "
+                      + delegate + " of type: " + componentType.getName() + ", binding:" + binding.getName());
+        }
+        return delegate.getComponentAdapter(componentType, binding);
+    }
+
     /**
      * {@inheritDoc}
      *
@@ -232,6 +249,14 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 
     public <T> T getComponent(Class<T> componentType) {
         return componentType.cast(getComponent((Object)componentType));
+    }
+
+    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
+        if (log.isDebugEnabled()) {
+            log.debug("Grabbing component for container: "
+                      + delegate + " of type: " + componentType.getName() + ", binding:" + binding.getName());
+        }
+        return delegate.getComponent(componentType, binding);
     }
 
     /**

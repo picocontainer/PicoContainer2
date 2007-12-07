@@ -227,7 +227,7 @@ public class StoringTestCase extends TestCase {
             Foo three = child.getComponent(Foo.class);
             fail("should have barfed");
         } catch (UnsupportedOperationException e) {
-            e.printStackTrace();
+            // expected
         }
     }
 

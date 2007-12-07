@@ -1,10 +1,14 @@
 package org.picocontainer.adapters;
 
+import static org.picocontainer.BindKey.bindKey;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.annotations.Bind;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AnnotatedFieldInjection;
+import org.picocontainer.injectors.MethodInjection;
+import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.parameters.ComponentParameter;
 
 import java.lang.annotation.ElementType;
@@ -29,33 +33,73 @@ public class JasonsTestCase extends TestCase {
         mpc.addComponent(Apple.class.getName()+ "three", AppleImpl3.class);
         mpc.addComponent(Apple.class.getName()+ "four", AppleImpl4.class);
         FruitBasket fb = mpc.getComponent(FruitBasket.class);
+        assertFourMemberApplesAreRight(fb);
+    }
+
+    public void testJasonsFieldInjectionWithBindingsNeed() {
+        MutablePicoContainer mpc = new DefaultPicoContainer(new AnnotatedFieldInjection());
+
+        addFiveComponents(mpc);
+        FruitBasket fb = mpc.getComponent(FruitBasket.class);
+        assertFourMemberApplesAreRight(fb);
+        assertGettingOfAppleOneWorks(mpc);
+    }
+
+    private void assertGettingOfAppleOneWorks(MutablePicoContainer mpc) {
+        try {
+            mpc.getComponent(Apple.class);
+            fail("should have barfed");
+        } catch (AbstractInjector.AmbiguousComponentResolutionException e) {
+            System.out.println("");
+            // expected
+        }
+        assertNotNull(mpc.getComponent(Apple.class, BindOne.class));
+    }
+
+    public void testBindingAnnotationsWithConstructorInjection() {
+        MutablePicoContainer mpc = new DefaultPicoContainer();
+
+        addFiveComponents(mpc);
+        FruitBasket fb = mpc.getComponent(FruitBasket.class);
+        assertFourMemberApplesAreRight(fb);
+        assertGettingOfAppleOneWorks(mpc);
+    }
+
+    private void assertFourMemberApplesAreRight(FruitBasket fb) {
+        assertNotNull(fb);
         assertEquals(fb.one.getX(), 1);
         assertEquals(fb.two.getX(), 2);
         assertEquals(fb.three.getX(), 3);
         assertEquals(fb.four.getX(), 4);
     }
 
-    public void testJasonsNeed() {
-        MutablePicoContainer mpc = new DefaultPicoContainer(new AnnotatedFieldInjection());
-        mpc.addComponent(FruitBasket.class);
-        mpc.addComponent(bindKey(Apple.class, "one"), AppleImpl1.class);
-        mpc.addComponent(bindKey(Apple.class, "two"), AppleImpl2.class);
-        mpc.addComponent(bindKey(Apple.class, "three"), AppleImpl3.class);
-        mpc.addComponent(bindKey(Apple.class, "four"), AppleImpl4.class);
-        try {
-            // this level of terseness is the other way ....
-            // this should not be barfing if if we can get binding to annotations working
-            FruitBasket fb = mpc.getComponent(FruitBasket.class);
-            assertEquals(fb.one.getX(), 1);
-            assertEquals(fb.two.getX(), 2);
-            assertEquals(fb.three.getX(), 3);
-            assertEquals(fb.four.getX(), 4);
-            fail();
-        } catch (AbstractInjector.AmbiguousComponentResolutionException e) {
-            // which Apple to inject into which apple field ?
-        }
+    public void testBindingAnnotationsWithMethodInjection() {
+        MutablePicoContainer mpc = new DefaultPicoContainer(new MethodInjection("foo"));
+        addFiveComponents(mpc);
+        FruitBasket fb = mpc.getComponent(FruitBasket.class);
+        assertFourMemberApplesAreRight(fb);
+        assertGettingOfAppleOneWorks(mpc);
+
     }
 
+    public void testBindingAnnotationsWithSetterInjection() {
+        MutablePicoContainer mpc = new DefaultPicoContainer(new SetterInjection());
+        addFiveComponents(mpc);
+        FruitBasket fb = mpc.getComponent(FruitBasket.class);
+        assertFourMemberApplesAreRight(fb);
+        assertGettingOfAppleOneWorks(mpc);
+
+    }
+
+
+
+    private void addFiveComponents(MutablePicoContainer mpc) {
+        mpc.addComponent(FruitBasket.class);
+        mpc.addComponent(bindKey(Apple.class, BindOne.class), AppleImpl1.class);
+        mpc.addComponent(bindKey(Apple.class, BindTwo.class), AppleImpl2.class);
+        mpc.addComponent(bindKey(Apple.class, BindThree.class), AppleImpl3.class);
+        mpc.addComponent(bindKey(Apple.class, BindFour.class), AppleImpl4.class);
+    }
 
     public interface Apple {
         int getX();
@@ -81,40 +125,71 @@ public class JasonsTestCase extends TestCase {
         }
     }
 
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.FIELD, ElementType.PARAMETER})
+    @Bind
+    public static @interface BindOne {}
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.FIELD, ElementType.PARAMETER})
+    @Bind
+    public static @interface BindTwo {}
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.FIELD, ElementType.PARAMETER})
+    @Bind
+    public static @interface BindThree {}
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.FIELD, ElementType.PARAMETER})
+    @Bind
+    public static @interface BindFour {}
+
     public static class FruitBasket {
         @Inject
-        private @Bind(id = "one") Apple one;
+        private @BindOne Apple one;
         @Inject
-        private @Bind(id = "two") Apple two;
+        private @BindTwo Apple two;
         @Inject
-        private @Bind(id = "three") Apple three;
+        private @BindThree Apple three;
         @Inject
-        private @Bind(id = "four") Apple four;
+        private @BindFour Apple four;
 
         public FruitBasket() {
         }
-    }
 
-    // to become an annotation
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target({ElementType.FIELD, ElementType.PARAMETER})
-    public @interface Bind {
-        String id();
-    }
+        // used in testBindingAnnotationsWithConstructorInjection()
+        public FruitBasket(@BindOne Apple one, @BindTwo Apple two, @BindThree Apple three, @BindFour Apple four) {
+            this.one = one;
+            this.two = two;
+            this.three = three;
+            this.four = four;
+        }
 
-    // implicitly this goes into the jar somewhere
-    public static class BindKey {
-      private Class type;
-      private String bindingId;
-        public BindKey(Class type, String bindingId) {
-            this.type = type;
-            this.bindingId = bindingId;
+        // used in testBindingAnnotationsWithMethodInjection()
+        public void foo(@BindOne Apple one, @BindTwo Apple two, @BindThree Apple three, @BindFour Apple four) {
+            this.one = one;
+            this.two = two;
+            this.three = three;
+            this.four = four;
+        }
+
+        public void setOne(@BindOne Apple one) {
+            this.one = one;
+        }
+
+        public void setTwo(@BindTwo Apple two) {
+            this.two = two;
+        }
+
+        public void setThree(@BindThree Apple three) {
+            this.three = three;
+        }
+
+        public void setFour(@BindFour Apple four) {
+            this.four = four;
         }
     }
 
-    // implicitly this function goes into DPC
-    public static BindKey bindKey(Class type, String bindingId) {
-        return new BindKey(type, bindingId);
-    }
 
 }
