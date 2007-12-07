@@ -13,7 +13,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.injectors.AbstractInjector;
 
 import java.lang.annotation.Annotation;
@@ -113,12 +113,12 @@ public class ComponentParameter
     public  <T> T resolveInstance(PicoContainer container,
                                   ComponentAdapter adapter,
                                   Class<T> expectedType,
-                                  ParameterName expectedParameterName,
+                                  NameBinding expectedNameBinding,
                                   boolean useNames, Annotation binding) {
         // type check is done in isResolvable
-        T result = super.resolveInstance(container, adapter, expectedType, expectedParameterName, useNames, binding);
+        T result = super.resolveInstance(container, adapter, expectedType, expectedNameBinding, useNames, binding);
         if (result == null && collectionParameter != null) {
-            result = collectionParameter.resolveInstance(container, adapter, expectedType, expectedParameterName,
+            result = collectionParameter.resolveInstance(container, adapter, expectedType, expectedNameBinding,
                                                          useNames, binding);
         }
         return result;
@@ -127,11 +127,11 @@ public class ComponentParameter
     public boolean isResolvable(PicoContainer container,
                                 ComponentAdapter adapter,
                                 Class expectedType,
-                                ParameterName expectedParameterName,
+                                NameBinding expectedNameBinding,
                                 boolean useNames, Annotation binding) {
-        if (!super.isResolvable(container, adapter, expectedType, expectedParameterName, useNames, binding)) {
+        if (!super.isResolvable(container, adapter, expectedType, expectedNameBinding, useNames, binding)) {
             if (collectionParameter != null) {
-                return collectionParameter.isResolvable(container, adapter, expectedType, expectedParameterName,
+                return collectionParameter.isResolvable(container, adapter, expectedType, expectedNameBinding,
                                                         useNames, binding);
             }
             return false;
@@ -142,13 +142,13 @@ public class ComponentParameter
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
                        Class expectedType,
-                       ParameterName expectedParameterName,
+                       NameBinding expectedNameBinding,
                        boolean useNames, Annotation binding) {
         try {
-            super.verify(container, adapter, expectedType, expectedParameterName, useNames, binding);
+            super.verify(container, adapter, expectedType, expectedNameBinding, useNames, binding);
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             if (collectionParameter != null) {
-                collectionParameter.verify(container, adapter, expectedType, expectedParameterName, useNames, binding);
+                collectionParameter.verify(container, adapter, expectedType, expectedNameBinding, useNames, binding);
                 return;
             }
             throw e;

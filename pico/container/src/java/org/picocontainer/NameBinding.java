@@ -9,6 +9,6 @@
  *****************************************************************************/
 package org.picocontainer;
 
-public interface ParameterName {
+public interface NameBinding {
     String getName();
 }

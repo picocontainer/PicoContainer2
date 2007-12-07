@@ -11,14 +11,13 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Bind;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
 import com.thoughtworks.paranamer.CachingParanamer;
@@ -83,7 +82,7 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
 
         for (int i = 0; i < currentParameters.length; i++) {
             result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i],
-                                                             new SingleMemberInjectorParameterName(member, i),
+                                                             new ParameterNameBinding(member, i),
                                                              useNames(), bindings[i]);
         }
         return result;
@@ -105,12 +104,12 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
     }
 
 
-    protected class SingleMemberInjectorParameterName implements ParameterName {
+    protected class ParameterNameBinding implements NameBinding {
         private final AccessibleObject member;
         private final int index;
         private String name;
 
-        public SingleMemberInjectorParameterName(AccessibleObject member, int index) {
+        public ParameterNameBinding(AccessibleObject member, int index) {
             this.member = member;
             this.index = index;
         }

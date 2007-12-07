@@ -18,7 +18,7 @@ import org.picocontainer.gems.jmx.testmodel.PersonMBean;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -55,7 +55,7 @@ public class ComponentKeyConventionMBeanInfoProviderTest extends MockObjectTestC
 
     public void testMBeanInfoIsDeterminedIfKeyIsManagementInterface() {
         final ComponentAdapter componentAdapter = pico.addComponent(PersonMBean.class, Person.class).getComponentAdapter(PersonMBean.class,
-                                                                                                                         (ParameterName) null);
+                                                                                                                         (NameBinding) null);
         pico.addComponent(PersonMBean.class.getName() + "Info", Person.createMBeanInfo());
 
         final MBeanInfo info = mBeanProvider.provide(pico, componentAdapter);

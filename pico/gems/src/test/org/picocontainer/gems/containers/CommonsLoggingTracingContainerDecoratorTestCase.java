@@ -36,7 +36,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -154,12 +154,12 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 		picoMock.expects(once()).method("getComponentAdapter").with(same(Map.class), same(null)).will(this.returnValue(null));
 		
-		ComponentAdapter ca = tracingDecorator.getComponentAdapter(String.class, (ParameterName) null);
+		ComponentAdapter ca = tracingDecorator.getComponentAdapter(String.class, (NameBinding) null);
 		assertNotNull(ca);
 
 		verifyLog("Locating component adapter with type ");
 
-		ca = tracingDecorator.getComponentAdapter(Map.class, (ParameterName) null);
+		ca = tracingDecorator.getComponentAdapter(Map.class, (NameBinding) null);
 		assertNull(ca);
 
 		verifyKeyNotFound();
@@ -182,12 +182,12 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 		picoMock.expects(once()).method("getComponentAdapter").with(same(Map.class), same(null)).will(this.returnValue(null));
 		
-		ComponentAdapter ca = tracingDecorator.getComponentAdapter(String.class, (ParameterName) null);
+		ComponentAdapter ca = tracingDecorator.getComponentAdapter(String.class, (NameBinding) null);
 		assertNotNull(ca);
 
 		verifyLog("Locating component adapter with type ");
 
-		ca = tracingDecorator.getComponentAdapter(Map.class, (ParameterName) null);
+		ca = tracingDecorator.getComponentAdapter(Map.class, (NameBinding) null);
 		assertNull(ca);
 
 		verifyKeyNotFound();
@@ -298,7 +298,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		picoMock.expects(once()).method("addComponent").with(same(String.class)).will(returnValue(picoMock.proxy()));
         picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 
-        ComponentAdapter result = tracingDecorator.addComponent(String.class).getComponentAdapter(String.class, (ParameterName) null);
+        ComponentAdapter result = tracingDecorator.addComponent(String.class).getComponentAdapter(String.class, (NameBinding) null);
 		assertEquals(testAdapter, result);
 		verifyLog("Registering component impl or instance ");
 	}
@@ -309,7 +309,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
         picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 
         ComponentAdapter result = tracingDecorator.addComponent(String.class, String.class, Parameter.ZERO).getComponentAdapter(String.class,
-                                                                                                                                (ParameterName) null);
+                                                                                                                                (NameBinding) null);
 		assertEquals(testAdapter, result);
 		verifyLog("Registering component implementation ");
 	}
@@ -322,7 +322,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 		picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 
 		ComponentAdapter result = tracingDecorator.addComponent(String.class, testString, Parameter.ZERO).getComponentAdapter(String.class,
-                                                                                                                              (ParameterName) null);
+                                                                                                                              (NameBinding) null);
 
 		assertTrue(result instanceof InstanceAdapter);
 		verifyLog("Registering component instance with key ");
@@ -336,7 +336,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends MockObjectT
 	    picoMock.expects(once()).method("getComponentAdapter").with(same(String.class), same(null)).will(returnValue(testAdapter));
 
         ComponentAdapter result = tracingDecorator.addComponent(String.class, String.class, params).getComponentAdapter(String.class,
-                                                                                                                        (ParameterName) null);
+                                                                                                                        (NameBinding) null);
 		assertEquals(testAdapter, result);
 		
 		verifyLog("Registering component implementation with key ");

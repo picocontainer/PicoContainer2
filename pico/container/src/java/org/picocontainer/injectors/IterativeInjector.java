@@ -3,7 +3,7 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Bind;
@@ -118,8 +118,8 @@ public abstract class IterativeInjector extends AbstractInjector {
         return matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
     }
 
-    protected ParameterName makeParameterNameImpl(AccessibleObject member) {
-        return new IterativeInjectorParameterName(member);
+    protected NameBinding makeParameterNameImpl(AccessibleObject member) {
+        return new ParameterNameBinding(member);
     }
 
     protected void unsatisfiedDependencies(PicoContainer container, Set<Class> unsatisfiableDependencyTypes) {
@@ -273,11 +273,11 @@ public abstract class IterativeInjector extends AbstractInjector {
         });
     }
 
-    private class IterativeInjectorParameterName implements ParameterName {
+    private class ParameterNameBinding implements NameBinding {
         private final AccessibleObject member;
         private String name;
 
-        public IterativeInjectorParameterName(AccessibleObject member) {
+        public ParameterNameBinding(AccessibleObject member) {
             this.member = member;
         }
 

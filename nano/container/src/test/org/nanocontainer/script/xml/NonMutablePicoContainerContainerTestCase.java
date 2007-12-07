@@ -15,7 +15,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -63,7 +63,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
             return null;
         }
 
-        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
+        public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {
             return null;  
         }
 

@@ -16,7 +16,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -45,7 +45,7 @@ public class ConstantParameter
     public Object resolveInstance(PicoContainer container,
                                   ComponentAdapter adapter,
                                   Class expectedType,
-                                  ParameterName expectedParameterName,
+                                  NameBinding expectedNameBinding,
                                   boolean useNames, Annotation binding) {
         return value;
     }
@@ -53,10 +53,10 @@ public class ConstantParameter
     public boolean isResolvable(PicoContainer container,
                                 ComponentAdapter adapter,
                                 Class expectedType,
-                                ParameterName expectedParameterName,
+                                NameBinding expectedNameBinding,
                                 boolean useNames, Annotation binding) {
         try {
-            verify(container, adapter, expectedType, expectedParameterName, useNames, binding);
+            verify(container, adapter, expectedType, expectedNameBinding, useNames, binding);
             return true;
         } catch(final PicoCompositionException e) {
             return false;
@@ -66,12 +66,12 @@ public class ConstantParameter
     /**
      * {@inheritDoc}
      *
-     * @see Parameter#verify(PicoContainer, ComponentAdapter, Class, ParameterName,boolean, Annotation)
+     * @see Parameter#verify(PicoContainer, ComponentAdapter, Class, NameBinding ,boolean, Annotation)
      */
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
                        Class expectedType,
-                       ParameterName expectedParameterName,
+                       NameBinding expectedNameBinding,
                        boolean useNames, Annotation binding) throws PicoException {
         if (!checkPrimitive(expectedType) && !expectedType.isInstance(value)) {
             throw new PicoCompositionException(expectedType.getClass().getName() + " is not assignable from " +

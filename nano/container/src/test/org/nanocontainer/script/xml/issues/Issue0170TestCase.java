@@ -1,7 +1,7 @@
 package org.nanocontainer.script.xml.issues;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.gems.behaviors.HotSwappable;
 
@@ -37,7 +37,7 @@ public class Issue0170TestCase extends AbstractScriptedContainerBuilderTestCase 
         List list = pico.getComponent(List.class);
         assertNotNull(list);
 
-        ComponentAdapter listCA = pico.getComponentAdapter(List.class, (ParameterName) null);
+        ComponentAdapter listCA = pico.getComponentAdapter(List.class, (NameBinding) null);
 
         assertTrue(listCA instanceof HotSwappable);
         HotSwappable hsca = (HotSwappable) listCA;

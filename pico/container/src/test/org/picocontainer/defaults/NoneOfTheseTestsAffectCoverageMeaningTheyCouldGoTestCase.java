@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -32,10 +32,10 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
     public void testGetComponentSpecification() throws PicoCompositionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
-        assertNull(pico.getComponentAdapter(Touchable.class, (ParameterName) null));
+        assertNull(pico.getComponentAdapter(Touchable.class, (NameBinding) null));
         pico.addComponent(SimpleTouchable.class);
-        assertNotNull(pico.getComponentAdapter(SimpleTouchable.class, (ParameterName) null));
-        assertNotNull(pico.getComponentAdapter(Touchable.class,(ParameterName)  null));
+        assertNotNull(pico.getComponentAdapter(SimpleTouchable.class, (NameBinding) null));
+        assertNotNull(pico.getComponentAdapter(Touchable.class,(NameBinding)  null));
     }
 
 

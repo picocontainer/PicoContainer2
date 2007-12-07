@@ -15,7 +15,7 @@ import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.WebServerImpl;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.Cached;
 
@@ -87,7 +87,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
                 "</container>");
 
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
-        Cached ca = (Cached) pico.getComponentAdapter(TestAdapter.class, (ParameterName) null);
+        Cached ca = (Cached) pico.getComponentAdapter(TestAdapter.class, (NameBinding) null);
 
         assertNotNull((TestAdapter)ca.getDelegate());
     }

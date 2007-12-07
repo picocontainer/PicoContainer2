@@ -233,11 +233,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return adapter;
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName) {
-        return getComponentAdapter(componentType, componentParameterName, null);
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {
+        return getComponentAdapter(componentType, componentNameBinding, null);
     }
 
-    private <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, ParameterName componentParameterName, Class<? extends Annotation> binding) {
+    private <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding, Class<? extends Annotation> binding) {
         // See http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-115
         ComponentAdapter<?> adapterByKey = getComponentAdapter((Object)componentType);
         if (adapterByKey != null) {
@@ -250,13 +250,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             return found.get(0);
         } else if (found.isEmpty()) {
             if (parent != null) {
-                return parent.getComponentAdapter(componentType, componentParameterName);
+                return parent.getComponentAdapter(componentType, componentNameBinding);
             } else {
                 return null;
             }
         } else {
-            if (componentParameterName != null) {
-                String parameterName = componentParameterName.getName();
+            if (componentNameBinding != null) {
+                String parameterName = componentNameBinding.getName();
                 if (parameterName != null) {
                     ComponentAdapter<?> ca = getComponentAdapter(parameterName);
                     if (ca != null && componentType.isAssignableFrom(ca.getComponentImplementation())) {
@@ -473,7 +473,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class)componentKeyOrType, annotation);
             retVal = componentAdapter == null ? null : getInstance(componentAdapter);
         } else if (componentKeyOrType instanceof Class) {
-            final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, (ParameterName) null);
+            final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, (NameBinding) null);
             retVal = componentAdapter == null ? null : getInstance(componentAdapter);
         } else {
             ComponentAdapter<?> componentAdapter = getComponentAdapter(componentKeyOrType);

@@ -8,7 +8,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Behavior;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.gems.behaviors.Pooled;
@@ -272,7 +272,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTestCase {
         picoContainer.addComponent(RecordingLifecycle.One.class);
         Pooled poolingBehavior = new Pooled(new ConstructorInjector(
                 RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false), new Pooled.DefaultContext());
-        return picoContainer.addAdapter(poolingBehavior).getComponentAdapter(RecordingLifecycle.One.class, (ParameterName) null);
+        return picoContainer.addAdapter(poolingBehavior).getComponentAdapter(RecordingLifecycle.One.class, (NameBinding) null);
     }
 
     public void testDEF_lifecycleManagerSupport() {
@@ -308,7 +308,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTestCase {
         picoContainer.addComponent(RecordingLifecycle.One.class);
         Pooled poolingBehavior = new Pooled(new ConstructorInjector(
                 RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false), new Pooled.DefaultContext());
-        return picoContainer.addAdapter(poolingBehavior).getComponentAdapter(RecordingLifecycle.Two.class, (ParameterName) null);
+        return picoContainer.addAdapter(poolingBehavior).getComponentAdapter(RecordingLifecycle.Two.class, (NameBinding) null);
     }
 
     public void testRES_lifecycleManagerHonorsInstantiationSequence() {

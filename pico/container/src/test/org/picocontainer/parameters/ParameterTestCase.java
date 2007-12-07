@@ -15,7 +15,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.parameters.ComponentParameter;
@@ -30,18 +30,18 @@ import org.picocontainer.testmodel.Touchable;
  */
 public final class ParameterTestCase extends TestCase {
 
-    public static class FooParameterName implements ParameterName {
+    public static class FooNameBinding implements NameBinding {
         public String getName() {
             return "";
         }
     }
 
-    final ParameterName pn = new FooParameterName();
+    final NameBinding pn = new FooNameBinding();
 
     public void testComponentParameterFetches() throws PicoCompositionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         ComponentAdapter adapter = pico.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class,
-                                                                                                                 (ParameterName) null);
+                                                                                                                 (NameBinding) null);
         assertNotNull(adapter);
         assertNotNull(pico.getComponent(Touchable.class));
         Touchable touchable = (Touchable) ComponentParameter.DEFAULT.resolveInstance(pico, null, Touchable.class, pn,
@@ -52,7 +52,7 @@ public final class ParameterTestCase extends TestCase {
     public void testComponentParameterExcludesSelf() throws PicoCompositionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         ComponentAdapter adapter = pico.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class,
-                                                                                                                 (ParameterName) null);
+                                                                                                                 (NameBinding) null);
 
         assertNotNull(pico.getComponent(Touchable.class));
         Touchable touchable = (Touchable) ComponentParameter.DEFAULT.resolveInstance(pico, adapter, Touchable.class, pn,
@@ -78,7 +78,7 @@ public final class ParameterTestCase extends TestCase {
     public void testComponentParameterRespectsExpectedType() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         ComponentAdapter adapter = picoContainer.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class,
-                                                                                                                          (ParameterName) null);
+                                                                                                                          (NameBinding) null);
         assertNull(ComponentParameter.DEFAULT.resolveInstance(picoContainer, adapter, TestCase.class, pn, false, null));
     }
 	
@@ -95,7 +95,7 @@ public final class ParameterTestCase extends TestCase {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         Parameter parameter = new ConstantParameter(new SimpleTouchable());
         ComponentAdapter adapter = picoContainer.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class,
-                                                                                                                          (ParameterName) null);
+                                                                                                                          (NameBinding) null);
         assertFalse(parameter.isResolvable(picoContainer, adapter, TestCase.class, pn, false, null));
     }
 
@@ -105,7 +105,7 @@ public final class ParameterTestCase extends TestCase {
         assertFalse(parameter.isResolvable(picoContainer, null, TestCase.class, pn, false, null));
 
         ComponentAdapter adapter = picoContainer.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class,
-                                                                                                                          (ParameterName) null);
+                                                                                                                          (NameBinding) null);
 
         assertNull(ComponentParameter.DEFAULT.resolveInstance(picoContainer, adapter, TestCase.class, pn, false, null));
     }

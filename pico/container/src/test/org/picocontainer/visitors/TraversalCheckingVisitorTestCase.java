@@ -20,7 +20,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.injectors.ConstructorInjector;
@@ -48,10 +48,10 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
         SetterInjector componentAdapter = new SetterInjector(StringBuffer.class, StringBuffer.class,
                                                              null, new NullComponentMonitor(), new NullLifecycleStrategy(),
                                                              "set", false);
-        parentAdapter = pico.addAdapter(componentAdapter).getComponentAdapter(StringBuffer.class, (ParameterName) null);
+        parentAdapter = pico.addAdapter(componentAdapter).getComponentAdapter(StringBuffer.class, (NameBinding) null);
         child = pico.makeChildContainer();
         ConstructorInjector adapter = new ConstructorInjector(ArrayList.class, ArrayList.class, new Parameter[] {new ConstantParameter(3)}, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
-        childAdapter = child.addAdapter(adapter).getComponentAdapter(ArrayList.class, (ParameterName) null);
+        childAdapter = child.addAdapter(adapter).getComponentAdapter(ArrayList.class, (NameBinding) null);
     }
 
     protected void tearDown() throws Exception {

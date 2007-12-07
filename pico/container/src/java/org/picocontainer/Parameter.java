@@ -39,7 +39,7 @@ public interface Parameter {
      * @param container             the container from which dependencies are resolved.
      * @param adapter               the {@link ComponentAdapter} that is asking for the instance
      * @param expectedType          the type that the returned instance needs to match.
-     * @param expectedParameterName Expected parameter name
+     * @param expectedNameBinding Expected parameter name
      *
      * @param useNames
      * @param binding
@@ -50,7 +50,7 @@ public interface Parameter {
      <T> T resolveInstance(PicoContainer container,
                            ComponentAdapter adapter,
                            Class<T> expectedType,
-                           ParameterName expectedParameterName, boolean useNames, Annotation binding);
+                           NameBinding expectedNameBinding, boolean useNames, Annotation binding);
 
     /**
      * Check if the Parameter can satisfy the expected type using the container.
@@ -58,7 +58,7 @@ public interface Parameter {
      * @param container             the container from which dependencies are resolved.
      * @param adapter               the {@link ComponentAdapter} that is asking for the instance
      * @param expectedType          the required type
-     * @param expectedParameterName Expected parameter name
+     * @param expectedNameBinding Expected parameter name
      *
      * @param useNames
      * @param binding
@@ -68,7 +68,7 @@ public interface Parameter {
     boolean isResolvable(PicoContainer container,
                          ComponentAdapter adapter,
                          Class expectedType,
-                         ParameterName expectedParameterName, boolean useNames, Annotation binding);
+                         NameBinding expectedNameBinding, boolean useNames, Annotation binding);
 
     /**
      * Verify that the Parameter can satisfy the expected type using the container
@@ -76,7 +76,7 @@ public interface Parameter {
      * @param container             the container from which dependencies are resolved.
      * @param adapter               the {@link ComponentAdapter} that is asking for the verification
      * @param expectedType          the required type
-     * @param expectedParameterName Expected parameter name
+     * @param expectedNameBinding Expected parameter name
      *
      * @param useNames
      * @param binding
@@ -85,7 +85,7 @@ public interface Parameter {
     void verify(PicoContainer container,
                 ComponentAdapter adapter,
                 Class expectedType,
-                ParameterName expectedParameterName, boolean useNames, Annotation binding);
+                NameBinding expectedNameBinding, boolean useNames, Annotation binding);
 
     /**
      * Accepts a visitor for this Parameter. The method is normally called by visiting a {@link ComponentAdapter}, that

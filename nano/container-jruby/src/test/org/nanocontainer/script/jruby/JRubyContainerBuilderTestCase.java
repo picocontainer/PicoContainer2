@@ -6,7 +6,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.AbstractInjector;
@@ -423,7 +423,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         Reader script = new StringReader(scriptValue);
         NanoContainer parent = new DefaultNanoContainer(
             buildContainer(script, null, new ParentAssemblyScope()));
-        assertNotNull(parent.getComponentAdapter(A.class, (ParameterName) null));
+        assertNotNull(parent.getComponentAdapter(A.class, (NameBinding) null));
 
         script = new StringReader(scriptValue);
         PicoContainer pico = buildContainer(script, parent, new SomeAssemblyScope());
@@ -436,7 +436,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, parent, ASSEMBLY_SCOPE);
         // Should be able to get instance that was registered in the parent container
-        ComponentAdapter componentAdapter = pico.addComponent(String.class).getComponentAdapter(String.class, (ParameterName) null);
+        ComponentAdapter componentAdapter = pico.addComponent(String.class).getComponentAdapter(String.class, (NameBinding) null);
         assertTrue("ComponentAdapter should be originally defined by parent",
                    componentAdapter instanceof SetterInjector);
     }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.lang.annotation.Annotation;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.PicoVisitor;
@@ -53,9 +53,9 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
 	}
 
 	public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType,
-			ParameterName componentParameterName) {
+			NameBinding componentNameBinding) {
 		return delegate.getComponentAdapter(componentType,
-				componentParameterName);
+                                            componentNameBinding);
 	}
 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {

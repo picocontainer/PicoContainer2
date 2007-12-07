@@ -14,7 +14,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -38,7 +38,7 @@ public class ImmutablePicoContainerTestCase extends MockObjectTestCase {
     public void testVisitingOfImmutableContainerWorks() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         Object foo = new Object();
-        ComponentAdapter componentAdapter = pico.addComponent(foo).getComponentAdapter(foo.getClass(), (ParameterName) null);
+        ComponentAdapter componentAdapter = pico.addComponent(foo).getComponentAdapter(foo.getClass(), (NameBinding) null);
 
         Mock fooVisitor = new Mock(PicoVisitor.class);
         fooVisitor.expects(once()).method("visitContainer").with(same(pico));

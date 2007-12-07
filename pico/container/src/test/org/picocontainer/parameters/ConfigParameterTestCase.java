@@ -3,7 +3,7 @@ package org.picocontainer.parameters;
 import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 
 import java.io.File;
@@ -21,7 +21,7 @@ public class ConfigParameterTestCase extends TestCase {
 
 
 	// defaultparameter name, just for convenience
-	ParameterName paramName = new ParameterName() {
+	NameBinding paramNameBinding = new NameBinding() {
 		public String getName() {
 			return "gloo.blum";
 		}
@@ -34,11 +34,11 @@ public class ConfigParameterTestCase extends TestCase {
 
 		// shall be not resolvable
 		assertFalse(parameter.isResolvable(container, null, String.class,
-				paramName, false, null));
+                                           paramNameBinding, false, null));
 
 		// shall resolve instance as null
 		assertNull(parameter.resolveInstance(container, null, String.class,
-				paramName, false, null));
+                                             paramNameBinding, false, null));
 	}
 
 	public void testThatNotStringEntryIsNotResolved() throws Exception {
@@ -49,11 +49,11 @@ public class ConfigParameterTestCase extends TestCase {
 
 		// shall be not resolvable
 		assertFalse(parameter.isResolvable(container, null, String.class,
-				paramName, false, null));
+                                           paramNameBinding, false, null));
 
 		// shall resolve instance as null
 		assertNull(parameter.resolveInstance(container, null, String.class,
-				paramName, false, null));
+                                             paramNameBinding, false, null));
 
 	}
 
@@ -69,9 +69,9 @@ public class ConfigParameterTestCase extends TestCase {
 		ComponentParameter parameter = new ComponentParameter("gloo.blum");
 
 		assertEquals(new Integer(239), parameter.resolveInstance(container,
-				null, Integer.class, paramName, false, null));
+				null, Integer.class, paramNameBinding, false, null));
 		assertEquals("239", parameter.resolveInstance(container, null,
-				String.class, paramName, false, null));
+				String.class, paramNameBinding, false, null));
 	}
 
 	/**
@@ -85,12 +85,12 @@ public class ConfigParameterTestCase extends TestCase {
 		ComponentParameter parameter = new ComponentParameter("gloo.blum");
 
 //		try {
-//			Object foo = parameter.resolveInstance(container, null, List.class, paramName, false);
+//			Object foo = parameter.resolveInstance(container, null, List.class, paramNameBinding, false);
 //			fail("failed to bomb on unavailable converter");
 //		} catch (ConfigParameter.NoConverterAvailableException ex) {
 //			// that's anticipated
 //		}
-	    Object foo = parameter.resolveInstance(container, null, List.class, paramName, false, null);
+	    Object foo = parameter.resolveInstance(container, null, List.class, paramNameBinding, false, null);
         assertNull(foo);
 
     }

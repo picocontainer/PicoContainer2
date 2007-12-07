@@ -22,7 +22,7 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Characteristics;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.AbstractInjector;
@@ -80,20 +80,20 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
     public void testBasicInstantiationAndContainment() throws PicoException {
         PicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
         assertTrue("Component should be instance of Touchable",
-                   Touchable.class.isAssignableFrom(pico.getComponentAdapter(Touchable.class, (ParameterName) null).getComponentImplementation()));
+                   Touchable.class.isAssignableFrom(pico.getComponentAdapter(Touchable.class, (NameBinding) null).getComponentImplementation()));
     }
 
     public void testRegisteredComponentsExistAndAreTheCorrectTypes() throws PicoException {
         PicoContainer pico = createPicoContainerWithTouchableAndDependsOnTouchable();
         assertNotNull("Container should have Touchable addComponent",
-                      pico.getComponentAdapter(Touchable.class, (ParameterName) null));
+                      pico.getComponentAdapter(Touchable.class, (NameBinding) null));
         assertNotNull("Container should have DependsOnTouchable addComponent",
-                      pico.getComponentAdapter(DependsOnTouchable.class, (ParameterName) null));
+                      pico.getComponentAdapter(DependsOnTouchable.class, (NameBinding) null));
         assertTrue("Component should be instance of Touchable",
                    pico.getComponent(Touchable.class) != null);
         assertTrue("Component should be instance of DependsOnTouchable",
                    pico.getComponent(DependsOnTouchable.class) != null);
-        assertNull("should not have non existent addComponent", pico.getComponentAdapter(Map.class, (ParameterName) null));
+        assertNull("should not have non existent addComponent", pico.getComponentAdapter(Map.class, (NameBinding) null));
     }
 
     public void testRegistersSingleInstance() throws PicoException {
@@ -147,7 +147,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
             picoContainer.getComponent(DependsOnTouchable.class);
             fail("should need a Touchable");
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            assertSame(picoContainer.getComponentAdapter(DependsOnTouchable.class, (ParameterName) null).getComponentImplementation(),
+            assertSame(picoContainer.getComponentAdapter(DependsOnTouchable.class, (NameBinding) null).getComponentImplementation(),
                        e.getUnsatisfiableComponentAdapter().getComponentImplementation());
             final Set unsatisfiableDependencies = e.getUnsatisfiableDependencies();
             assertEquals(1, unsatisfiableDependencies.size());
@@ -731,22 +731,22 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         final MutablePicoContainer child = parent.makeChildContainer();
         ComponentAdapter hashMapAdapter =
             parent.as(getProperties()).addAdapter(new ConstructorInjector(HashMap.class, HashMap.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false))
-                .getComponentAdapter(HashMap.class, (ParameterName) null);
+                .getComponentAdapter(HashMap.class, (NameBinding) null);
         ComponentAdapter hashSetAdapter =
             parent.as(getProperties()).addAdapter(new ConstructorInjector(HashSet.class, HashSet.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false))
-                .getComponentAdapter(HashSet.class, (ParameterName) null);
+                .getComponentAdapter(HashSet.class, (NameBinding) null);
         InstanceAdapter instanceAdapter = new InstanceAdapter(String.class, "foo",
                                                               new NullLifecycleStrategy(),
                                                               new NullComponentMonitor());
         ComponentAdapter stringAdapter = parent.as(getProperties()).addAdapter(instanceAdapter).getComponentAdapter(instanceAdapter.getComponentKey());
         ComponentAdapter arrayListAdapter =
             child.as(getProperties()).addAdapter(new ConstructorInjector(ArrayList.class, ArrayList.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false))
-                .getComponentAdapter(ArrayList.class, (ParameterName) null);
+                .getComponentAdapter(ArrayList.class, (NameBinding) null);
         Parameter componentParameter = BasicComponentParameter.BASIC_DEFAULT;
         Parameter throwableParameter = new ConstantParameter(new Throwable("bar"));
         ConstructorInjector ci = new ConstructorInjector(Exception.class, Exception.class, new Parameter[] {componentParameter,
                                                          throwableParameter}, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
-        ComponentAdapter exceptionAdapter = child.as(getProperties()).addAdapter(ci).getComponentAdapter(Exception.class, (ParameterName) null);
+        ComponentAdapter exceptionAdapter = child.as(getProperties()).addAdapter(ci).getComponentAdapter(Exception.class, (NameBinding) null);
 
         List expectedList = Arrays.asList(parent,
                                           hashMapAdapter,

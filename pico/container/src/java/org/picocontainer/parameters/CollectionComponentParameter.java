@@ -11,7 +11,7 @@ package org.picocontainer.parameters;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVisitor;
@@ -113,7 +113,7 @@ public class CollectionComponentParameter
      * @param container             {@inheritDoc}
      * @param adapter               {@inheritDoc}
      * @param expectedType          {@inheritDoc}
-     * @param expectedParameterName {@inheritDoc}
+     * @param expectedNameBinding {@inheritDoc}
      *
      * @param useNames
      * @param binding
@@ -125,7 +125,7 @@ public class CollectionComponentParameter
     public Object resolveInstance(PicoContainer container,
                                   ComponentAdapter adapter,
                                   Class expectedType,
-                                  ParameterName expectedParameterName, boolean useNames, Annotation binding)
+                                  NameBinding expectedNameBinding, boolean useNames, Annotation binding)
     {
         // type check is done in isResolvable
         Object result = null;
@@ -155,7 +155,7 @@ public class CollectionComponentParameter
      * @param container             {@inheritDoc}
      * @param adapter               {@inheritDoc}
      * @param expectedType          {@inheritDoc}
-     * @param expectedParameterName {@inheritDoc}
+     * @param expectedNameBinding {@inheritDoc}
      *
      * @param useNames
      * @param binding
@@ -165,7 +165,7 @@ public class CollectionComponentParameter
     public boolean isResolvable(PicoContainer container,
                                 ComponentAdapter adapter,
                                 Class expectedType,
-                                ParameterName expectedParameterName, boolean useNames, Annotation binding) {
+                                NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         final Class collectionType = getCollectionType(expectedType);
         final Class valueType = getValueType(expectedType);
         return collectionType != null && (emptyCollection || getMatchingComponentAdapters(container,
@@ -183,7 +183,7 @@ public class CollectionComponentParameter
      * @param container             {@inheritDoc}
      * @param adapter               {@inheritDoc}
      * @param expectedType          {@inheritDoc}
-     * @param expectedParameterName {@inheritDoc}
+     * @param expectedNameBinding {@inheritDoc}
      *
      * @param useNames
      * @param binding
@@ -192,7 +192,7 @@ public class CollectionComponentParameter
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
                        Class expectedType,
-                       ParameterName expectedParameterName, boolean useNames, Annotation binding)
+                       NameBinding expectedNameBinding, boolean useNames, Annotation binding)
     {
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {

@@ -23,7 +23,7 @@ import java.util.Set;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.ParameterName;
+import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.injectors.AbstractInjector;
@@ -127,21 +127,21 @@ public class BasicComponentParameter implements Parameter, Serializable {
      *
      * @throws org.picocontainer.PicoCompositionException
      *          {@inheritDoc}
-     * @see Parameter#isResolvable(PicoContainer, ComponentAdapter, Class, ParameterName,boolean, Annotation)
+     * @see Parameter#isResolvable(PicoContainer, ComponentAdapter, Class, NameBinding ,boolean, Annotation)
      */
     public boolean isResolvable(PicoContainer container,
                                 ComponentAdapter adapter,
                                 Class expectedType,
-                                ParameterName expectedParameterName, boolean useNames, Annotation binding) {
-        return resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName, useNames, binding) != null;
+                                NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+        return resolveAdapter(container, adapter, (Class<?>)expectedType, expectedNameBinding, useNames, binding) != null;
     }
 
     public <T> T resolveInstance(PicoContainer container,
                                  ComponentAdapter adapter,
                                  Class<T> expectedType,
-                                 ParameterName expectedParameterName, boolean useNames, Annotation binding) {
+                                 NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         final ComponentAdapter componentAdapter =
-            resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName, useNames, binding);
+            resolveAdapter(container, adapter, (Class<?>)expectedType, expectedNameBinding, useNames, binding);
         if (componentAdapter != null) {
             Object o = container.getComponent(componentAdapter.getComponentKey());
             if (o instanceof String && expectedType != String.class) {
@@ -156,9 +156,9 @@ public class BasicComponentParameter implements Parameter, Serializable {
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
                        Class expectedType,
-                       ParameterName expectedParameterName, boolean useNames, Annotation binding) {
+                       NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         final ComponentAdapter componentAdapter =
-            resolveAdapter(container, adapter, (Class<?>)expectedType, expectedParameterName, useNames, binding);
+            resolveAdapter(container, adapter, (Class<?>)expectedType, expectedNameBinding, useNames, binding);
         if (componentAdapter == null) {
             final Set<Class> set = new HashSet<Class>();
             set.add(expectedType);
@@ -179,7 +179,7 @@ public class BasicComponentParameter implements Parameter, Serializable {
     private <T> ComponentAdapter<T> resolveAdapter(PicoContainer container,
                                                    ComponentAdapter adapter,
                                                    Class<T> expectedType,
-                                                   ParameterName expectedParameterName, boolean useNames, Annotation binding) {
+                                                   NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         Class type = expectedType;
         if (type.isPrimitive()) {
             String expectedTypeName = expectedType.getName();
@@ -202,7 +202,7 @@ public class BasicComponentParameter implements Parameter, Serializable {
             }
         }
 
-        final ComponentAdapter<T> result = getTargetAdapter(container, type, expectedParameterName, adapter, useNames,
+        final ComponentAdapter<T> result = getTargetAdapter(container, type, expectedNameBinding, adapter, useNames,
                                                             binding);
         if (result == null) {
             return null;
@@ -223,13 +223,13 @@ public class BasicComponentParameter implements Parameter, Serializable {
 
     private <T> ComponentAdapter<T> getTargetAdapter(PicoContainer container,
                                                      Class<T> expectedType,
-                                                     ParameterName expectedParameterName,
+                                                     NameBinding expectedNameBinding,
                                                      ComponentAdapter excludeAdapter, boolean useNames, Annotation binding) {
         if (componentKey != null) {
             // key tells us where to look so we follow
             return typeComponentAdapter(container.getComponentAdapter(componentKey));
         } else if (excludeAdapter == null) {
-            return container.getComponentAdapter(expectedType, (ParameterName) null);
+            return container.getComponentAdapter(expectedType, (NameBinding) null);
         } else {
 
             Object excludeKey = excludeAdapter.getComponentKey();
@@ -238,7 +238,7 @@ public class BasicComponentParameter implements Parameter, Serializable {
                 return typeComponentAdapter(byKey);
             }
             if (useNames) {
-                ComponentAdapter found = container.getComponentAdapter(expectedParameterName.getName());
+                ComponentAdapter found = container.getComponentAdapter(expectedNameBinding.getName());
                 if ((found != null)
                     && areCompatible(expectedType, found)
                     && found != excludeAdapter) {
@@ -256,7 +256,7 @@ public class BasicComponentParameter implements Parameter, Serializable {
             found.remove(exclude);
             if (found.size() == 0) {
                 if (container.getParent() != null) {
-                    return container.getParent().getComponentAdapter(expectedType, expectedParameterName);
+                    return container.getParent().getComponentAdapter(expectedType, expectedNameBinding);
                 } else {
                     return null;
                 }
