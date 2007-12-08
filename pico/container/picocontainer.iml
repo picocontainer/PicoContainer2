@@ -23,15 +23,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/jmock/jmock/1.1.0/jmock-1.1.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$M2_REPOSITORY$/com/thoughtworks/xstream/xstream/1.2.1/xstream-1.2.1.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -59,10 +50,21 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/com/thoughtworks/paranamer/paranamer/1.1-SNAPSHOT/paranamer-1.1-SNAPSHOT.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/jmock/jmock/1.2.0/jmock-1.2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/com/thoughtworks/paranamer/paranamer/1.1/paranamer-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../../../paranamer/trunk/paranamer/src/java" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntryProperties />

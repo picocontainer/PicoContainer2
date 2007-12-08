@@ -84,7 +84,8 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                 Class boxed = box(parameterTypes[j]);
                 boolean un = useNames();
                 if (currentParameters[j].isResolvable(container, this, boxed,
-                    new ParameterNameBinding(sortedMatchingConstructor, j), un, bindings[j])) {
+                    new ParameterNameBinding(getParanamer(), getComponentImplementation(),  sortedMatchingConstructor, j),
+                        un, bindings[j])) {
                     continue;
                 }
                 unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
@@ -209,8 +210,8 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                     final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
                     for (int i = 0; i < currentParameters.length; i++) {
                         currentParameters[i].verify(container, ConstructorInjector.this, box(parameterTypes[i]),
-                                                    new ParameterNameBinding(constructor, i), useNames(),
-                                                    getBindings(constructor.getParameterAnnotations())[i]);
+                            new ParameterNameBinding(getParanamer(), getComponentImplementation(),  constructor, i),
+                                useNames(), getBindings(constructor.getParameterAnnotations())[i]);
                     }
                     return null;
                 }

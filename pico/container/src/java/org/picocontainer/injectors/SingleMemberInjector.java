@@ -41,6 +41,9 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
     }
 
+    protected CachingParanamer getParanamer() {
+        return paranamer;
+    }
 
 
     /**
@@ -82,8 +85,7 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
 
         for (int i = 0; i < currentParameters.length; i++) {
             result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i],
-                                                             new ParameterNameBinding(member, i),
-                                                             useNames(), bindings[i]);
+                new ParameterNameBinding(paranamer, getComponentImplementation(), member, i), useNames(), bindings[i]);
         }
         return result;
     }
@@ -104,31 +106,4 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
     }
 
 
-    protected class ParameterNameBinding implements NameBinding {
-        private final AccessibleObject member;
-        private final int index;
-        private String name;
-
-        public ParameterNameBinding(AccessibleObject member, int index) {
-            this.member = member;
-            this.index = index;
-        }
-
-        public String getName() {
-            if (name != null) {
-                return name;
-            }
-            String[] strings = null;
-            if(paranamer.areParameterNamesAvailable(getComponentImplementation(),"<init>") != Paranamer.PARAMETER_NAMES_FOUND) {
-                paranamer.switchtoAsm();
-            }
-            if (member instanceof Constructor) {
-                strings = paranamer.lookupParameterNames((Constructor)member);
-            } else {
-                strings = paranamer.lookupParameterNames((Method)member);
-            }
-            name = strings.length == 0 ? "" : strings[index];
-            return name;
-        }
-    }
 }

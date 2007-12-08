@@ -33,6 +33,8 @@ public abstract class IterativeInjector extends AbstractInjector {
     protected transient List<AccessibleObject> injectionMembers;
     protected transient Class[] injectionTypes;
     protected transient Annotation[] bindings;
+
+
     private transient CachingParanamer paranamer = new CachingParanamer();
 
     /**
@@ -53,6 +55,9 @@ public abstract class IterativeInjector extends AbstractInjector {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
     }
 
+    protected CachingParanamer getParanamer() {
+        return paranamer;
+    }
 
     protected Constructor getConstructor()  {
         Object retVal = AccessController.doPrivileged(new PrivilegedAction() {
@@ -119,7 +124,7 @@ public abstract class IterativeInjector extends AbstractInjector {
     }
 
     protected NameBinding makeParameterNameImpl(AccessibleObject member) {
-        return new ParameterNameBinding(member);
+        return new ParameterNameBinding(paranamer, getComponentImplementation(),  member, 0);
     }
 
     protected void unsatisfiedDependencies(PicoContainer container, Set<Class> unsatisfiableDependencyTypes) {
@@ -271,28 +276,6 @@ public abstract class IterativeInjector extends AbstractInjector {
                 return getComponentImplementation().getMethods();
             }
         });
-    }
-
-    private class ParameterNameBinding implements NameBinding {
-        private final AccessibleObject member;
-        private String name;
-
-        public ParameterNameBinding(AccessibleObject member) {
-            this.member = member;
-        }
-
-        public String getName() {
-            if (name != null) {
-                return name;
-            }
-            if(paranamer.areParameterNamesAvailable(getComponentImplementation(),"<init>") != Paranamer.PARAMETER_NAMES_FOUND) {
-                paranamer.switchtoAsm();
-            }
-            
-            String[] strings = paranamer.lookupParameterNames(member);
-            name = strings.length == 0 ? "" : strings[0];
-            return name;
-        }
     }
 
 
