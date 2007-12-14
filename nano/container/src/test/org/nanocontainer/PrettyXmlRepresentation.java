@@ -1,6 +1,7 @@
 package org.nanocontainer;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.lifecycle.LifecycleState;
 
 import java.util.HashSet;
 import java.util.ArrayList;
@@ -76,6 +77,10 @@ public class PrettyXmlRepresentation {
         foo = foo.replaceAll(" class=","=");
         foo = foo.replaceAll("setterMethodPrefix","");
         foo = foo.replaceAll("injectionAnnotation","");
+        foo = foo.replaceAll("lifecycleState","");
+        for (LifecycleState eachState : LifecycleState.values()) {
+            foo = foo.replaceAll("\n    " + eachState.name(), "");        	
+        }
         foo = foo.replaceAll("\"","");
 
         return foo;

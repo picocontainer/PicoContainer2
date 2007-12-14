@@ -47,11 +47,11 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
         return getDelegate().addAdapter(componentAdapter);
     }
 
-    public ComponentAdapter removeComponent(Object componentKey) {
+    public <T> ComponentAdapter<T> removeComponent(Object componentKey) {
         return getDelegate().removeComponent(componentKey);
     }
 
-    public ComponentAdapter removeComponentByInstance(Object componentInstance) {
+    public <T> ComponentAdapter<T> removeComponentByInstance(T componentInstance) {
         return getDelegate().removeComponentByInstance(componentInstance);
     }
 

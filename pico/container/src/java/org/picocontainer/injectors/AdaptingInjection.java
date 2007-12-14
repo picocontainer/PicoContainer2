@@ -45,7 +45,12 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  */
 public class AdaptingInjection implements InjectionFactory, Serializable {
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 8660775238892763896L;
+
+	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties,
                                                    Object componentKey,

@@ -26,17 +26,23 @@ import java.util.List;
 
 /**
  * Injection happens after instantiation, and through fields marked as injection points via an Annotation.
- * The default annotation of org.picocontainer.annotations.@Inject can be overwridden.
+ * The default annotation of org.picocontainer.annotations.@Inject can be overridden.
  */
 public class AnnotatedFieldInjector extends IterativeInjector {
 
-    private final Class injectionAnnotation;
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = -1995850745951708186L;
+	
+	private final Class<? extends Annotation> injectionAnnotation;
 
     public AnnotatedFieldInjector(Object key,
-                                  Class impl,
+                                  Class<?> impl,
                                   Parameter[] parameters,
                                   ComponentMonitor componentMonitor,
-                                  LifecycleStrategy lifecycleStrategy, Class injectionAnnotation, boolean useNames) {
+                                  LifecycleStrategy lifecycleStrategy, 
+                                  Class<? extends Annotation> injectionAnnotation, boolean useNames) {
 
         super(key, impl, parameters, componentMonitor, lifecycleStrategy, useNames);
         this.injectionAnnotation = injectionAnnotation;

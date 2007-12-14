@@ -14,12 +14,18 @@ import org.picocontainer.ComponentAdapter;
 
 import java.io.Serializable;
 
-public class Automated extends AbstractBehavior implements Behavior, Serializable {
-    public Automated(ComponentAdapter delegate) {
+public class Automated<T> extends AbstractBehavior<T> implements Behavior<T>, Serializable {
+
+	/**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 36709276463500305L;
+
+	public Automated(ComponentAdapter<T> delegate) {
         super(delegate);
     }
 
-    public boolean hasLifecycle(Class type) {
+    public boolean hasLifecycle(Class<?> type) {
         return true;
     }
 

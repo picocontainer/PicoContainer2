@@ -9,19 +9,25 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 
 /** @author Paul Hammant */
-public class BindKey {
-    private final Class type;
+public class BindKey<T> implements Serializable {
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 563408828534240087L;
+	
+	private final Class<T> type;
     private final Class<? extends Annotation> annotation;
 
-    public BindKey(Class type, Class<? extends Annotation> annotation) {
+    public BindKey(Class<T> type, Class<? extends Annotation> annotation) {
         this.type = type;
         this.annotation = annotation;
     }
 
-    public Class getType() {
+    public Class<T> getType() {
         return type;
     }
 
@@ -37,7 +43,7 @@ public class BindKey {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BindKey bindKey = (BindKey)o;
+        BindKey<?> bindKey = (BindKey<?>)o;
 
         if (!annotation.equals(bindKey.annotation)) return false;
         if (!type.equals(bindKey.type)) return false;
@@ -52,8 +58,8 @@ public class BindKey {
         return result;
     }
 
-    public static BindKey bindKey(Class type, Class<? extends Annotation> annotation) {
-        return new BindKey(type, annotation);
+    public static <T> BindKey<T> bindKey(Class<T> type, Class<? extends Annotation> annotation) {
+        return new BindKey<T>(type, annotation);
     }
 
 }

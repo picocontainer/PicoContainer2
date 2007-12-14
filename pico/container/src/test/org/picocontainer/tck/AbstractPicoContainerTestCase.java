@@ -548,21 +548,21 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
             child.start();
             fail("IllegalStateException expected");
         } catch (IllegalStateException e) {
-            assertEquals("child already started", "Already started", e.getMessage());
+            assertEquals("child already started", "Cannot start.  Current container state was: STARTED", e.getMessage());
         }
         parent.stop();
         try {
             child.stop();
             fail("IllegalStateException expected");
         } catch (IllegalStateException e) {
-            assertEquals("child not started", "Not started", e.getMessage());
+            assertEquals("child not started", "Cannot stop.  Current container state was: STOPPED", e.getMessage());
         }
         parent.dispose();
         try {
             child.dispose();
             fail("IllegalStateException expected");
         } catch (IllegalStateException e) {
-            assertEquals("child already disposed", "Already disposed", e.getMessage());
+            assertEquals("child already disposed", "Cannot dispose.  Current lifecycle state is: DISPOSED", e.getMessage());
         }
 
     }
@@ -583,7 +583,7 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         try {
             child.start();
         } catch (IllegalStateException e) {
-            assertEquals("child already started", "Already started", e.getMessage());
+            assertEquals("child already started", "Cannot start.  Current container state was: STARTED", e.getMessage());
         }
         //TODO - The Behavior reference in child containers is not used. Thus is is almost pointless
         // The reason is because DefaultPicoContainer's accept() method visits child containers' on its own.
@@ -663,21 +663,21 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
             child.start();
             fail("IllegalStateException expected");
         } catch (IllegalStateException e) {
-            assertEquals("child already started", "Already started", e.getMessage());
+            assertEquals("child already started", "Cannot start.  Current container state was: STARTED", e.getMessage());
         }
         parent.stop();
         try {
             child.stop();
             fail("IllegalStateException expected");
         } catch (IllegalStateException e) {
-            assertEquals("child not started", "Not started", e.getMessage());
+            assertEquals("child not started", "Cannot stop.  Current container state was: STOPPED", e.getMessage());
         }
         parent.dispose();
         try {
             child.dispose();
             fail("IllegalStateException expected");
         } catch (IllegalStateException e) {
-            assertEquals("child already disposed", "Already disposed", e.getMessage());
+            assertEquals("child already disposed", "Cannot dispose.  Current lifecycle state is: DISPOSED", e.getMessage());
         }
     }
 

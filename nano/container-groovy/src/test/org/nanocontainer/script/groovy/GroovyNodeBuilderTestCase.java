@@ -60,9 +60,10 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, null, ASSEMBLY_SCOPE);
         // LifecyleContainerBuilder starts the container
 
+        //Stop should be called by dispose since start is running.
         pico.dispose();
 
-        assertEquals("Should match the expression", "<A!A", X.componentRecorder);
+        assertEquals("Should match the expression", "<AA>!A", X.componentRecorder);
     }
 
     public void testComponentInstances() throws PicoCompositionException {
@@ -290,7 +291,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, null, ASSEMBLY_SCOPE);
         pico.dispose();
-        assertEquals("Should match the expression", "<A!A", X.componentRecorder);
+        assertEquals("Should match the expression", "<AA>!A", X.componentRecorder);
     }
 
     public void testCustomComponentFactoryCanBeSpecified() {

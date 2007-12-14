@@ -21,6 +21,7 @@ import org.picocontainer.annotations.Inject;
 
 import java.util.Properties;
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 
 /**
  * A {@link org.picocontainer.InjectionFactory} for Guice-style annotated fields.
@@ -30,9 +31,14 @@ import java.io.Serializable;
  */
 public class AnnotatedFieldInjection implements InjectionFactory, Serializable {
 
-    private final Class injectionAnnotation;
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = -7470345740391531008L;
+	
+	private final Class<? extends Annotation> injectionAnnotation;
 
-    public AnnotatedFieldInjection(Class injectionAnnotation) {
+    public AnnotatedFieldInjection(Class<? extends Annotation> injectionAnnotation) {
         this.injectionAnnotation = injectionAnnotation;
     }
 

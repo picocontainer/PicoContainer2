@@ -41,17 +41,17 @@ import org.picocontainer.parameters.ComponentParameter;
  * @author Mauro Talevi
  */
 public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements LifecycleStrategy {
-    /** The cycle guard for the verification. */ 
+    /** The cycle guard for the verification. */
     protected transient ThreadLocalCyclicDependencyGuard verifyingGuard;
-    /** The parameters to use for initialization. */ 
+    /** The parameters to use for initialization. */
     protected transient Parameter[] parameters;
- 
+
     /** The strategy used to control the lifecycle */
     protected LifecycleStrategy lifecycleStrategy;
     private final boolean useNames;
 
     /**
-     * Constructs a new ComponentAdapter for the given key and implementation. 
+     * Constructs a new ComponentAdapter for the given key and implementation.
      * @param componentKey the search key for this implementation
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
@@ -60,8 +60,8 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
-    protected AbstractInjector(Object componentKey, Class componentImplementation, Parameter[] parameters,
-                                            ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, boolean useNames) {
+    protected AbstractInjector(final Object componentKey, final Class<?> componentImplementation, final Parameter[] parameters,
+                                            final ComponentMonitor monitor, final LifecycleStrategy lifecycleStrategy, final boolean useNames) {
         super(componentKey, componentImplementation, monitor);
         this.useNames = useNames;
         checkConcrete();
@@ -94,7 +94,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @param parameters the parameter types
      * @return the array with the default parameters.
      */
-    protected Parameter[] createDefaultParameters(Class[] parameters) {
+    protected Parameter[] createDefaultParameters(final Class[] parameters) {
         Parameter[] componentParameters = new Parameter[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
             componentParameters[i] = ComponentParameter.DEFAULT;
@@ -104,7 +104,8 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 
     public abstract void verify(PicoContainer container) throws PicoCompositionException;
 
-    public void accept(PicoVisitor visitor) {
+    @Override
+	public void accept(final PicoVisitor visitor) {
         super.accept(visitor);
         if (parameters != null) {
             for (Parameter parameter : parameters) {
@@ -112,33 +113,33 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
             }
         }
     }
-    public void start(Object component) {
+    public void start(final Object component) {
         lifecycleStrategy.start(component);
     }
 
-    public void stop(Object component) {
+    public void stop(final Object component) {
         lifecycleStrategy.stop(component);
     }
 
-    public void dispose(Object component) {
+    public void dispose(final Object component) {
         lifecycleStrategy.dispose(component);
     }
 
-    public boolean hasLifecycle(Class type) {
+    public boolean hasLifecycle(final Class<?> type) {
         return lifecycleStrategy.hasLifecycle(type);
     }
 
     /**
      * Instantiate an object with given parameters and respect the accessible flag.
-     * 
+     *
      * @param constructor the constructor to use
-     * @param parameters the parameters for the constructor 
+     * @param parameters the parameters for the constructor
      * @return the new object.
      * @throws InstantiationException
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    protected T newInstance(Constructor<T> constructor, Object[] parameters) throws InstantiationException, IllegalAccessException, InvocationTargetException {
+    protected T newInstance(final Constructor<T> constructor, final Object[] parameters) throws InstantiationException, IllegalAccessException, InvocationTargetException {
         return constructor.newInstance(parameters);
     }
     /**
@@ -149,9 +150,9 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @param container
      * @return
      */
-    protected T caughtInstantiationException(ComponentMonitor componentMonitor,
-                                                Constructor constructor,
-                                                InstantiationException e, PicoContainer container) {
+    protected T caughtInstantiationException(final ComponentMonitor componentMonitor,
+                                                final Constructor<T> constructor,
+                                                final InstantiationException e, final PicoContainer container) {
         // can't get here because checkConcrete() will catch it earlier, but see PICO-191
         componentMonitor.instantiationFailed(container, this, constructor, e);
         throw new PicoCompositionException("Should never get here");
@@ -165,9 +166,9 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @param container
      * @return
      */
-    protected T caughtIllegalAccessException(ComponentMonitor componentMonitor,
-                                                Constructor constructor,
-                                                IllegalAccessException e, PicoContainer container) {
+    protected T caughtIllegalAccessException(final ComponentMonitor componentMonitor,
+                                                final Constructor<T> constructor,
+                                                final IllegalAccessException e, final PicoContainer container) {
         // can't get here because either filtered or access mode set
         componentMonitor.instantiationFailed(container, this, constructor, e);
         throw new PicoCompositionException(e);
@@ -181,9 +182,9 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @param e
      * @return
      */
-    protected T caughtInvocationTargetException(ComponentMonitor componentMonitor,
-                                                   Member member,
-                                                   Object componentInstance, InvocationTargetException e) {
+    protected T caughtInvocationTargetException(final ComponentMonitor componentMonitor,
+                                                   final Member member,
+                                                   final Object componentInstance, final InvocationTargetException e) {
         componentMonitor.invocationFailed(member, componentInstance, e);
         if (e.getTargetException() instanceof RuntimeException) {
             throw (RuntimeException) e.getTargetException();
@@ -193,14 +194,14 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         throw new PicoCompositionException(e.getTargetException());
     }
 
-    protected Object caughtIllegalAccessException(ComponentMonitor componentMonitor,
-                                                Member member,
-                                                Object componentInstance, IllegalAccessException e) {
+    protected Object caughtIllegalAccessException(final ComponentMonitor componentMonitor,
+                                                final Member member,
+                                                final Object componentInstance, final IllegalAccessException e) {
         componentMonitor.invocationFailed(member, componentInstance, e);
         throw new PicoCompositionException(e);
     }
 
-    protected Class box(Class parameterType) {
+    protected Class<?> box(final Class<?> parameterType) {
         if (parameterType.isPrimitive()) {
             if (parameterType == Integer.TYPE) {
                 return Integer.class;
@@ -224,7 +225,8 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 
         protected PicoContainer guardedContainer;
 
-        protected Boolean initialValue() {
+        @Override
+		protected Boolean initialValue() {
             return Boolean.FALSE;
         }
 
@@ -245,7 +247,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
          * @param stackFrame the current stack frame
          * @return the result of the <code>run</code> method
          */
-        public final T observe(Class stackFrame) {
+        public final T observe(final Class<?> stackFrame) {
             if (Boolean.TRUE.equals(get())) {
                 throw new CyclicDependencyException(stackFrame);
             }
@@ -262,7 +264,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
             return result;
         }
 
-        public void setGuardedContainer(PicoContainer container) {
+        public void setGuardedContainer(final PicoContainer container) {
             this.guardedContainer = container;
         }
 
@@ -275,7 +277,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         /**
          * @param element
          */
-        public CyclicDependencyException(Class element) {
+        public CyclicDependencyException(final Class<?> element) {
             super((Throwable)null);
             this.stack = new LinkedList<Class>();
             push(element);
@@ -284,7 +286,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         /**
          * @param element
          */
-        public void push(Class element) {
+        public void push(final Class<?> element) {
             stack.add(element);
         }
 
@@ -292,7 +294,8 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
             return stack.toArray(new Class[stack.size()]);
         }
 
-        public String getMessage() {
+        @Override
+		public String getMessage() {
             return "Cyclic dependency: " + stack.toString();
         }
     }
@@ -307,8 +310,12 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @author Jon Tirs&eacute;n
      */
     public static final class AmbiguousComponentResolutionException extends PicoCompositionException {
-        private Class component;
-        private final Class ambiguousDependency;
+        /**
+		 *
+		 */
+		private static final long serialVersionUID = 646859644465924465L;
+		private Class<?> component;
+        private final Class<?> ambiguousDependency;
         private final Object[] ambiguousComponentKeys;
 
 
@@ -318,7 +325,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
          * @param ambiguousDependency the unresolved dependency type
          * @param componentKeys the ambiguous keys.
          */
-        public AmbiguousComponentResolutionException(Class ambiguousDependency, Object[] componentKeys) {
+        public AmbiguousComponentResolutionException(final Class<?> ambiguousDependency, final Object[] componentKeys) {
             super("");
             this.ambiguousDependency = ambiguousDependency;
             this.ambiguousComponentKeys = new Class[componentKeys.length];
@@ -328,7 +335,8 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         /**
          * @return Returns a string containing the unresolved class type and the ambiguous keys.
          */
-        public String getMessage() {
+        @Override
+		public String getMessage() {
             StringBuffer msg = new StringBuffer();
             msg.append(component);
             msg.append(" needs a '");
@@ -346,7 +354,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
             return ambiguousComponentKeys;
         }
 
-        public void setComponent(Class component) {
+        public void setComponent(final Class<?> component) {
             this.component = component;
         }
     }
@@ -359,14 +367,23 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      */
     public static class UnsatisfiableDependenciesException extends PicoCompositionException {
 
-        private final ComponentAdapter instantiatingComponentAdapter;
+        /**
+		 * Serialization UUID.
+		 */
+		private static final long serialVersionUID = -8652053427387751791L;
+		
+		private final ComponentAdapter<?> instantiatingComponentAdapter;
         private final Set unsatisfiableDependencies;
-        private final Class unsatisfiedDependencyType;
+        private final Class<?> unsatisfiedDependencyType;
+        
+        /**
+         * The original container requesting the instantiation of the component.
+         */
         private final PicoContainer leafContainer;
 
-        public UnsatisfiableDependenciesException(ComponentAdapter instantiatingComponentAdapter,
-                                                  Class unsatisfiedDependencyType, Set unsatisfiableDependencies,
-                                                  PicoContainer leafContainer) {
+        public UnsatisfiableDependenciesException(final ComponentAdapter<?> instantiatingComponentAdapter,
+                                                  final Class<?> unsatisfiedDependencyType, final Set unsatisfiableDependencies,
+                                                  final PicoContainer leafContainer) {
             super(instantiatingComponentAdapter.getComponentImplementation().getName() + " has unsatisfied dependency: " + unsatisfiedDependencyType
                     +" among unsatisfiable dependencies: "+unsatisfiableDependencies + " where " + leafContainer
                     + " was the leaf container being asked for dependencies.");
@@ -376,7 +393,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
             this.leafContainer = leafContainer;
         }
 
-        public ComponentAdapter getUnsatisfiableComponentAdapter() {
+        public ComponentAdapter<?> getUnsatisfiableComponentAdapter() {
             return instantiatingComponentAdapter;
         }
 
@@ -384,7 +401,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
             return unsatisfiableDependencies;
         }
 
-        public Class getUnsatisfiedDependencyType() {
+        public Class<?> getUnsatisfiedDependencyType() {
             return unsatisfiedDependencyType;
         }
 
@@ -398,14 +415,19 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @author Aslak Hellesoy
      */
     public static class NotConcreteRegistrationException extends PicoCompositionException {
-        private final Class componentImplementation;
+        /**
+		 * Serialization UUID.
+		 */
+		private static final long serialVersionUID = 6310754082738087791L;
+		
+		private final Class<?> componentImplementation;
 
-        public NotConcreteRegistrationException(Class componentImplementation) {
+        public NotConcreteRegistrationException(final Class<?> componentImplementation) {
             super("Bad Access: '" + componentImplementation.getName() + "' is not instantiable");
             this.componentImplementation = componentImplementation;
         }
 
-        public Class getComponentImplementation() {
+        public Class<?> getComponentImplementation() {
             return componentImplementation;
         }
     }

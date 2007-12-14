@@ -19,6 +19,7 @@ import org.picocontainer.InjectionFactory;
 import org.picocontainer.annotations.Inject;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 import java.util.Properties;
 
 
@@ -30,10 +31,15 @@ import java.util.Properties;
  */
 public class AnnotatedMethodInjection implements InjectionFactory, Serializable {
 
-    private final Class injectionAnnotation;
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 6225372552727902003L;
+	
+	private final Class<? extends Annotation> injectionAnnotation;
     private final boolean useNames;
 
-    public AnnotatedMethodInjection(Class injectionAnnotation, boolean useNames) {
+    public AnnotatedMethodInjection(Class<? extends Annotation> injectionAnnotation, boolean useNames) {
         this.injectionAnnotation = injectionAnnotation;
         this.useNames = useNames;
     }

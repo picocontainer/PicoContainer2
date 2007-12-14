@@ -30,14 +30,16 @@ import java.lang.reflect.Constructor;
 public class ComponentAdapterTestCase
         extends TestCase {
 
-    private static class TestAdapter extends AbstractAdapter {
-        TestAdapter(Object componentKey, Class componentImplementation, ComponentMonitor componentMonitor) {
+    @SuppressWarnings("serial")
+	private static class TestAdapter<T> extends AbstractAdapter<T> {
+    	
+        TestAdapter(Object componentKey, Class<T> componentImplementation, ComponentMonitor componentMonitor) {
             super(componentKey, componentImplementation, componentMonitor);
         }
-        TestAdapter(Object componentKey, Class componentImplementation) {
+        TestAdapter(Object componentKey, Class<T> componentImplementation) {
             super(componentKey, componentImplementation);
         }
-        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
+        public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
             return null;
         }
         public void verify(PicoContainer container) throws PicoVerificationException {
@@ -48,11 +50,12 @@ public class ComponentAdapterTestCase
         }
     }
 
-    private static class TestMonitoringComponentAdapter extends AbstractAdapter {
+    @SuppressWarnings("serial")
+	private static class TestMonitoringComponentAdapter<T> extends AbstractAdapter<T> {
         TestMonitoringComponentAdapter(ComponentMonitor componentMonitor) {
             super(null, null, componentMonitor);
         }
-        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
+        public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
             return null;
         }
         public void verify(PicoContainer container) throws PicoVerificationException {
@@ -60,7 +63,7 @@ public class ComponentAdapterTestCase
         public Object getComponentKey() {
             return null;
         }
-        public Class getComponentImplementation() {
+        public Class<T> getComponentImplementation() {
             return null;
         }
         public void accept(PicoVisitor visitor) {
@@ -71,18 +74,19 @@ public class ComponentAdapterTestCase
         }
     }
     
-    private static class TestInstantiatingAdapter extends AbstractInjector {
-        TestInstantiatingAdapter(Object componentKey, Class componentImplementation, Parameter... parameters) {
+    @SuppressWarnings("serial")
+	private static class TestInstantiatingAdapter<T> extends AbstractInjector<T> {
+        TestInstantiatingAdapter(Object componentKey, Class<T> componentImplementation, Parameter... parameters) {
             super(componentKey, componentImplementation, parameters, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
         }
-        protected Constructor getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
+        protected Constructor<T> getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
             return null;
         }
 
         public void verify(PicoContainer container) throws PicoCompositionException {
         }
 
-        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
+        public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
             return null;
         }
 
@@ -93,7 +97,7 @@ public class ComponentAdapterTestCase
     
     public void testComponentImplementationMayNotBeNull() {
         try {
-            new TestAdapter("Key", null);
+            new TestAdapter<Object>("Key", null);
             fail("NullPointerException expected");
         } catch (NullPointerException e) {
             assertEquals("componentImplementation", e.getMessage());
@@ -101,7 +105,7 @@ public class ComponentAdapterTestCase
     }
 
     public void testComponentKeyCanBeNullButNotRequested() {
-        ComponentAdapter componentAdapter = new TestAdapter(null, String.class);
+        ComponentAdapter<String> componentAdapter = new TestAdapter<String>(null, String.class);
         try {
             componentAdapter.getComponentKey();
             fail("NullPointerException expected");
@@ -112,13 +116,13 @@ public class ComponentAdapterTestCase
 
     public void testComponentMonitorMayNotBeNull() {
         try {
-            new TestAdapter("Key", String.class, null);
+            new TestAdapter<String>("Key", String.class, null);
             fail("NullPointerException expected");
         } catch (NullPointerException e) {
             assertEquals("ComponentMonitor==null", e.getMessage());
         }
         try {
-            new TestMonitoringComponentAdapter(null);
+            new TestMonitoringComponentAdapter<Object>(null);
             fail("NullPointerException expected");
         } catch (NullPointerException e) {
             assertEquals("ComponentMonitor==null", e.getMessage());
@@ -127,7 +131,7 @@ public class ComponentAdapterTestCase
 
     public void testParameterMayNotBeNull() throws Exception {
         try {
-            new TestInstantiatingAdapter("Key", String.class, new Parameter[]{new ConstantParameter("Value"), null});
+            new TestInstantiatingAdapter<String>("Key", String.class, new Parameter[]{new ConstantParameter("Value"), null});
             fail("Thrown " + NullPointerException.class.getName() + " expected");
         } catch (final NullPointerException e) {
             assertTrue(e.getMessage().endsWith("1 is null"));
@@ -135,7 +139,7 @@ public class ComponentAdapterTestCase
     }
     
     public void testStringRepresentation() {
-        ComponentAdapter componentAdapter = new TestAdapter("Key", Integer.class);
+        ComponentAdapter<Integer> componentAdapter = new TestAdapter<Integer>("Key", Integer.class);
         assertEquals(TestAdapter.class.getName() + ":Key", componentAdapter.toString());
     }
 }

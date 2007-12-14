@@ -31,30 +31,35 @@ import org.picocontainer.behaviors.AbstractBehavior;
  * @author Paul Hammant
  * @see org.picocontainer.gems.adapters.HotSwappingComponentAdapter for a more feature-rich version of this class.
  */
-public class HiddenImplementation extends AbstractBehavior {
+public class HiddenImplementation<T> extends AbstractBehavior<T> {
 
     /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = -9025725365839103497L;
+
+	/**
      * Creates an ImplementationHidingComponentAdapter with a delegate 
      * @param delegate the component adapter to which this adapter delegates
      */
-    public HiddenImplementation(ComponentAdapter delegate) {
+    public HiddenImplementation(ComponentAdapter<T> delegate) {
         super(delegate);
     }
 
-    public Object getComponentInstance(final PicoContainer container) throws PicoCompositionException {
+    public T getComponentInstance(final PicoContainer container) throws PicoCompositionException {
 
-        ComponentAdapter delegate = getDelegate();
+        ComponentAdapter<T> delegate = getDelegate();
         Object componentKey = delegate.getComponentKey();
-        Class[] classes;
-        if (componentKey instanceof Class && ((Class) delegate.getComponentKey()).isInterface()) {
-            classes = new Class[]{(Class) delegate.getComponentKey()};
+        Class<?>[] classes;
+        if (componentKey instanceof Class && ((Class<?>) delegate.getComponentKey()).isInterface()) {
+            classes = new Class[]{(Class<?>) delegate.getComponentKey()};
         } else if (componentKey instanceof Class[]) {
             classes = (Class[]) componentKey;
         } else {
             return delegate.getComponentInstance(container);
         }
 
-        Class[] interfaces = verifyInterfacesOnly(classes);
+        Class<?>[] interfaces = verifyInterfacesOnly(classes);
         return createProxy(interfaces, container, delegate.getComponentImplementation().getClassLoader());
     }
 
@@ -62,8 +67,10 @@ public class HiddenImplementation extends AbstractBehavior {
         return "Hidden";
     }
 
-    private Object createProxy(Class[] interfaces, final PicoContainer container, final ClassLoader classLoader) {
-        return Proxy.newProxyInstance(classLoader,
+    
+    @SuppressWarnings("unchecked")
+	private T createProxy(Class[] interfaces, final PicoContainer container, final ClassLoader classLoader) {
+        return (T) Proxy.newProxyInstance(classLoader,
                 interfaces, new InvocationHandler() {
                     public Object invoke(final Object proxy, final Method method,
                                          final Object[] args)
@@ -90,8 +97,8 @@ public class HiddenImplementation extends AbstractBehavior {
         }
     }
 
-    private Class[] verifyInterfacesOnly(Class[] classes) {
-        for (Class clazz : classes) {
+    private Class<?>[] verifyInterfacesOnly(Class<?>[] classes) {
+        for (Class<?> clazz : classes) {
             if (!clazz.isInterface()) {
                 throw new PicoCompositionException(
                     "Class keys must be interfaces. " + clazz + " is not an interface.");

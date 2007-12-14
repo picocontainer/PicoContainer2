@@ -20,15 +20,23 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * @author Paul Hammant
  */
-public class Locked extends AbstractBehavior {
-    private Lock lock = new ReentrantLock();
+public class Locked<T> extends AbstractBehavior<T> {
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 2355716085957171021L;
+	
+	/**
+	 * Reentrant lock.
+	 */
+	private Lock lock = new ReentrantLock();
 
-    public Locked(ComponentAdapter delegate) {
+    public Locked(ComponentAdapter<T> delegate) {
         super(delegate);
     }
 
-    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
-        Object retVal = null;
+    public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
+        T retVal = null;
         lock.lock();
         try {
           retVal = super.getComponentInstance(container);

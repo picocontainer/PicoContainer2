@@ -29,7 +29,7 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTestCa
         DefaultPicoContainer pico =
             new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()));
         pico.addComponent("foo", String.class);
-        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(HiddenImplementation.class, foo.getClass());
         assertEquals(ConstructorInjector.class, ((AbstractBehavior) foo).getDelegate().getClass());
     }
@@ -38,7 +38,7 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTestCa
         DefaultPicoContainer pico =
             new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()));
         pico.change(Characteristics.HIDE_IMPL).addComponent("foo", String.class);
-        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(HiddenImplementation.class, foo.getClass());
         assertEquals(ConstructorInjector.class, ((AbstractBehavior) foo).getDelegate().getClass());
     }
@@ -47,7 +47,7 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTestCa
         DefaultPicoContainer pico =
             new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()));
         pico.change(Characteristics.NO_HIDE_IMPL).addComponent("foo", String.class);
-        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(ConstructorInjector.class, foo.getClass());
     }
 
@@ -55,7 +55,7 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTestCa
         DefaultPicoContainer pico =
             new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()));
         pico.addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
-        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(HiddenImplementation.class, foo.getClass());
         assertEquals(InstanceAdapter.class, ((AbstractBehavior) foo).getDelegate().getClass());
     }
@@ -64,7 +64,7 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTestCa
         DefaultPicoContainer pico =
             new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()));
         pico.change(Characteristics.HIDE_IMPL).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
-        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(HiddenImplementation.class, foo.getClass());
         assertEquals(InstanceAdapter.class, ((AbstractBehavior) foo).getDelegate().getClass());
     }
@@ -73,7 +73,7 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTestCa
         DefaultPicoContainer pico =
             new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()));
         pico.change(Characteristics.NO_HIDE_IMPL).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
-        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(InstanceAdapter.class, foo.getClass());
     }
 

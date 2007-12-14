@@ -19,6 +19,11 @@ import org.picocontainer.PicoException;
 public class ReflectionLifecycleException extends PicoException {
 
     /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = -4443264969618172775L;
+
+	/**
      * Construct a new exception with the specified cause and the specified detail message.
      *
      * @param message the message detailing the exception.

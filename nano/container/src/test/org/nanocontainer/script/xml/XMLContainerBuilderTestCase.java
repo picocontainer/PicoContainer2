@@ -668,6 +668,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                      "  componentFactory=org.picocontainer.behaviors.Caching\n" +
                      "    delegate=org.picocontainer.injectors.ConstructorInjection\n" +
                      "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
+                     "  STARTED\n" + 
                      "  lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
                      "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                      "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/org.picocontainer.DefaultPicoContainer/lifecycleStrategy/componentMonitor\n",

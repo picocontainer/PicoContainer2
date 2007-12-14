@@ -68,7 +68,8 @@ public abstract class AbstractBehavior<T> implements Behavior<T>, ComponentMonit
         return delegate;
     }
 
-    public final <U extends ComponentAdapter> U findAdapterOfType(Class<U> componentAdapterType) {
+    @SuppressWarnings("unchecked")
+	public final <U extends ComponentAdapter> U findAdapterOfType(Class<U> componentAdapterType) {
         if (componentAdapterType.isAssignableFrom(this.getClass())) {
             return (U) this;
         } else if (componentAdapterType.isAssignableFrom(delegate.getClass())) {
@@ -184,7 +185,7 @@ public abstract class AbstractBehavior<T> implements Behavior<T>, ComponentMonit
      * Invokes delegate hasLifecycle(Class) method if the delegate is a LifecycleStrategy
      * {@inheritDoc}
      */
-    public boolean hasLifecycle(Class type) {
+    public boolean hasLifecycle(Class<?> type) {
         return delegate instanceof LifecycleStrategy && ((LifecycleStrategy) delegate).hasLifecycle(type);
     }
 

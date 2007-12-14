@@ -79,7 +79,7 @@ public final class UserQuestionTestCase extends TestCase {
     }
 
     public void testOmeletteCanHaveDifferentCheeseWithAFunnyComponentAdapter() {
-        Map cheeseMap = new HashMap();
+        Map<String,Cheese> cheeseMap = new HashMap<String,Cheese>();
 
         MutablePicoContainer pico = new DefaultPicoContainer(new ConstructorInjection());
         pico.addComponent(Omelette.class);
@@ -146,7 +146,7 @@ public final class UserQuestionTestCase extends TestCase {
 
     public void testMoreWeirdness() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        Map map = new HashMap();
+        Map<String,String> map = new HashMap<String,String>();
         pico.addComponent(map);
         // See class level javadoc in DefaultPicoContainer - about precedence. 
         pico.addComponent(InterfaceX.class, Something.class);

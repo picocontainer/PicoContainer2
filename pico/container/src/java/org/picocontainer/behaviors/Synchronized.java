@@ -16,15 +16,21 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
 
 /**
+ * Component Adapter that uses java synchronized around getComponentInstance().
  * @author Aslak Helles&oslash;y
  * @author Manish Shah
  */
-public class Synchronized extends AbstractBehavior {
-    public Synchronized(ComponentAdapter delegate) {
+public class Synchronized<T> extends AbstractBehavior<T> {
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = -3984071461712339652L;
+
+	public Synchronized(ComponentAdapter<T> delegate) {
         super(delegate);
     }
 
-    public synchronized Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
+    public synchronized T getComponentInstance(PicoContainer container) throws PicoCompositionException {
         return super.getComponentInstance(container);
     }
 

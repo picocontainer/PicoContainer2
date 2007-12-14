@@ -103,7 +103,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *
      * @return the ComponentAdapter that was associated with this component.
      */
-    ComponentAdapter removeComponent(Object componentKey);
+    <T> ComponentAdapter<T> removeComponent(Object componentKey);
 
     /**
      * Unregister a component by instance.
@@ -112,7 +112,7 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      *
      * @return the same instance of MutablePicoContainer
      */
-    ComponentAdapter removeComponentByInstance(Object componentInstance);
+    <T> ComponentAdapter<T> removeComponentByInstance(T componentInstance);
 
     /**
      * Make a child container, using the same implementation of MutablePicoContainer as the parent.

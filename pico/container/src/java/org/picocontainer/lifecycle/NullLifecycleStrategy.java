@@ -9,22 +9,38 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
-import org.picocontainer.LifecycleStrategy;
-
 import java.io.Serializable;
 
+import org.picocontainer.LifecycleStrategy;
+
+/**
+ * Lifecycle strategy that does nothing.
+ *
+ */
 public class NullLifecycleStrategy implements LifecycleStrategy, Serializable {
 
-    public void start(Object component) {
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = -626149098386614685L;
+
+    /** {@inheritDoc} **/
+	public void start(final Object component) {
+		//Does nothing
     }
 
-    public void stop(Object component) {
+    /** {@inheritDoc} **/
+    public void stop(final Object component) {
+		//Does nothing
     }
 
-    public void dispose(Object component) {
+    /** {@inheritDoc} **/
+    public void dispose(final Object component) {
+		//Does nothing
     }
 
-    public boolean hasLifecycle(Class type) {
+    /** {@inheritDoc} **/
+    public boolean hasLifecycle(final Class<?> type) {
         return false;
     }
 }

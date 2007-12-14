@@ -7,11 +7,11 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
+import java.lang.reflect.Method;
+
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
-
-import java.lang.reflect.Method;
 
 /**
  * Startable lifecycle strategy.  Starts and stops component if Startable,
@@ -27,9 +27,15 @@ import java.lang.reflect.Method;
  */
 public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
 
-    private transient Method start, stop, dispose;
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 4967544912924651398L;
 
-    public StartableLifecycleStrategy(ComponentMonitor monitor) {
+
+	private transient Method start, stop, dispose;
+
+    public StartableLifecycleStrategy(final ComponentMonitor monitor) {
         super(monitor);
     }
 
@@ -48,20 +54,33 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         }
     }
 
+    /**
+     * Retrieve the lifecycle method name that represents the dispose method.
+     * @return the dispose method name. ('dispose')
+     */
     protected String getDisposeMethodName() {
         return "dispose";
     }
 
+    /**
+     * Retrieve the lifecycle method name that represents the stop method. 
+     * @return the stop method name ('stop')
+     */
     protected String getStopMethodName() {
         return "stop";
     }
 
+    /**
+     * Retrieve the lifecycle method name that represents the start method. 
+     * @return the stop method name ('start')
+     */
     protected String getStartMethodName() {
         return "start";
     }
 
 
-    public void start(Object component) {
+    /** {@inheritDoc} **/
+    public void start(final Object component) {
         doMethodsIfNotDone();
         if (component != null && getStartableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
@@ -75,17 +94,18 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         }
     }
 
-    protected void startComponent(Object component) {
+    protected void startComponent(final Object component) {
         ((Startable) component).start();
     }
-    protected void stopComponent(Object component) {
+    protected void stopComponent(final Object component) {
         ((Startable) component).stop();
     }
-    protected void disposeComponent(Object component) {
+    protected void disposeComponent(final Object component) {
         ((Disposable) component).dispose();
     }
 
-    public void stop(Object component) {
+    /** {@inheritDoc} **/
+    public void stop(final Object component) {
         doMethodsIfNotDone();
         if (component != null && getStartableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
@@ -99,7 +119,8 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         }
     }
 
-    public void dispose(Object component) {
+    /** {@inheritDoc} **/
+    public void dispose(final Object component) {
         doMethodsIfNotDone();
         if (component != null && getDisposableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
@@ -113,7 +134,8 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         }
     }
 
-    public boolean hasLifecycle(Class type) {
+    /** {@inheritDoc} **/
+    public boolean hasLifecycle(final Class<?> type) {
         return getStartableInterface().isAssignableFrom(type) || getDisposableInterface().isAssignableFrom(type);
     }
 
@@ -121,7 +143,7 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         return Disposable.class;
     }
 
-    protected Class getStartableInterface() {
+    protected Class<Startable> getStartableInterface() {
         return Startable.class;
     }
 }

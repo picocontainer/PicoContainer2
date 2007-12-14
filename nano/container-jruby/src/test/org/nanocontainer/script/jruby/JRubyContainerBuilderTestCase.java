@@ -76,7 +76,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         // LifecyleContainerBuilder starts the container
         pico.dispose();
 
-        assertEquals("Should match the expression", "<A!A", X.componentRecorder);
+        assertEquals("Should match the expression", "<AA>!A", X.componentRecorder);
     }
 
     public void testContainerCanBeBuiltWithComponentInstance() {
@@ -222,7 +222,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, null, ASSEMBLY_SCOPE);
         pico.dispose();
-        assertEquals("Should match the expression", "<A!A", X.componentRecorder);
+        assertEquals("Should match the expression", "<AA>!A", X.componentRecorder);
     }
 
     public void testCustomComponentFactoryCanBeSpecified() {

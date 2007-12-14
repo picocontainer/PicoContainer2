@@ -37,6 +37,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
                 "  componentFactory=org.picocontainer.gems.behaviors.AsmImplementationHiding\n" +
                 "    delegate=org.picocontainer.injectors.AdaptingInjection\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
+                "  CONSTRUCTED\n" + 
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
                 "PICO",foo);
@@ -48,6 +49,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
+                "  CONSTRUCTED\n" + 
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.gems.monitors.Log4JComponentMonitor\n" +
                 "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -60,6 +62,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
+                "  CONSTRUCTED\n" + 
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.gems.monitors.Log4JComponentMonitor\n" +
                 "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -72,6 +75,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         assertEquals("PICO\n" +
                 "  componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
                 "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
+                "  CONSTRUCTED\n" + 
                 "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
                 "  componentMonitor=org.picocontainer.gems.monitors.CommonsLoggingComponentMonitor\n" +
                 "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
@@ -109,6 +113,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
         foo = foo.replaceAll("\n  componentFactory\n","\n");
         foo = foo.replaceAll("\n  componentMonitor\n","\n");
         foo = foo.replaceAll("\n  lifecycleManager","");
+        foo = foo.replaceAll("lifecycleState","");
         foo = foo.replaceAll("class=\"org.picocontainer.DefaultPicoContainer_1\"","");
         foo = foo.replaceAll("class=","=");
         foo = foo.replaceAll("\"","");

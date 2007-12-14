@@ -40,9 +40,13 @@ import java.util.Set;
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
  */
-@SuppressWarnings("serial")
 public class ConstructorInjector<T> extends SingleMemberInjector<T> {
-    private transient List<Constructor<T>> sortedMatchingConstructors;
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 3663020107106785481L;
+	
+	private transient List<Constructor<T>> sortedMatchingConstructors;
     private transient ThreadLocalCyclicDependencyGuard<T> instantiationGuard;
 
     /**
@@ -71,7 +75,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         }
         Constructor<T> greediestConstructor = null;
         int lastSatisfiableConstructorSize = -1;
-        Class unsatisfiedDependencyType = null;
+        Class<?> unsatisfiedDependencyType = null;
         for (final Constructor<T> sortedMatchingConstructor : sortedMatchingConstructors) {
             boolean failedDependency = false;
             Class[] parameterTypes = sortedMatchingConstructor.getParameterTypes();
@@ -81,7 +85,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {
                 // check whether this constructor is statisfiable
-                Class boxed = box(parameterTypes[j]);
+                Class<?> boxed = box(parameterTypes[j]);
                 boolean un = useNames();
                 if (currentParameters[j].isResolvable(container, this, boxed,
                     new ParameterNameBinding(getParanamer(), getComponentImplementation(),  sortedMatchingConstructor, j),

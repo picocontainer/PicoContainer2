@@ -51,6 +51,6 @@ public interface LifecycleStrategy {
      * 
      * @return <code>true</code> if the component has a lifecycle
      */
-    boolean hasLifecycle(Class type);
+    boolean hasLifecycle(Class<?> type);
 
 }
