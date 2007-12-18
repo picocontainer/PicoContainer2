@@ -28,9 +28,9 @@ import java.util.Properties;
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
  */
-public class MinimalImplOfJasonsTestCase extends TestCase {
+public class SimpleNamedBindingAnnotationTestCase extends TestCase {
 
-    public void testJasonsNeed() {
+    public void testNamedBinding() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new FieldInjection());
         mpc.addComponent(FruitBasket.class);
         mpc.addComponent(bindKey(Apple.class, "one"), AppleImpl1.class);
@@ -75,13 +75,13 @@ public class MinimalImplOfJasonsTestCase extends TestCase {
     }
 
     public static class FruitBasket {
-        private @Bind(id = "one")
+        private @Named("one")
         Apple one;
-        private @Bind(id = "two")
+        private @Named("two")
         Apple two;
-        private @Bind(id = "three")
+        private @Named("three")
         Apple three;
-        private @Bind(id = "four")
+        private @Named("four")
         Apple four;
 
         public FruitBasket() {
@@ -91,8 +91,8 @@ public class MinimalImplOfJasonsTestCase extends TestCase {
     // to become an annotation
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
-    public @interface Bind {
-        String id();
+    public @interface Named {
+    	String value();
     }
 
     // implicitly this function goes into DPC
@@ -137,11 +137,11 @@ public class MinimalImplOfJasonsTestCase extends TestCase {
                 Field[] declaredFields = getComponentImplementation().getDeclaredFields();
                 for (int i = 0; i < declaredFields.length; i++ ) {
                     final Field field = declaredFields[i];
-                    Bind bindAnnotation = field.getAnnotation(Bind.class);
+                    Named bindAnnotation = field.getAnnotation(Named.class);
                     Object value;
                     if (bindAnnotation != null) {
                         value = container.getComponent(bindKey(field.getType(), bindAnnotation
-                            .id()));
+                            .value()));
                     } else {
                         value = container.getComponent(field.getType());
                     }

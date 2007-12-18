@@ -19,7 +19,7 @@ import org.picocontainer.injectors.MethodInjection;
 import org.picocontainer.injectors.SetterInjection;
 
 /** @author Paul Hammant */
-public class BindingAnnotationTestCase extends TestCase {
+public class TypedBindingAnnotationTestCase extends TestCase {
 
 	public void testFieldInjectionWithBindings() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new AnnotatedFieldInjection());
