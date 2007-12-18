@@ -1,15 +1,6 @@
 package org.picocontainer.adapters;
 
 import static org.picocontainer.BindKey.bindKey;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.annotations.Bind;
-import org.picocontainer.annotations.Inject;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.AnnotatedFieldInjection;
-import org.picocontainer.injectors.MethodInjection;
-import org.picocontainer.injectors.SetterInjection;
-import org.picocontainer.parameters.ComponentParameter;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -18,25 +9,19 @@ import java.lang.annotation.Target;
 
 import junit.framework.TestCase;
 
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.annotations.Bind;
+import org.picocontainer.annotations.Inject;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.AnnotatedFieldInjection;
+import org.picocontainer.injectors.MethodInjection;
+import org.picocontainer.injectors.SetterInjection;
+
 /** @author Paul Hammant */
-public class JasonsTestCase extends TestCase {
+public class BindingAnnotationTestCase extends TestCase {
 
-    public void testNotQuiteJasonsNeed() {
-        MutablePicoContainer mpc = new DefaultPicoContainer(new AnnotatedFieldInjection());
-        // this level of verbosity is one way, not the way ....
-        mpc.addComponent(FruitBasket.class, FruitBasket.class, new ComponentParameter(Apple.class.getName()+ "one"),
-                         new ComponentParameter(Apple.class.getName()+ "two"), 
-                         new ComponentParameter(Apple.class.getName()+ "three"),
-                         new ComponentParameter(Apple.class.getName()+ "four"));
-        mpc.addComponent(Apple.class.getName()+ "one", AppleImpl1.class);
-        mpc.addComponent(Apple.class.getName()+ "two", AppleImpl2.class);
-        mpc.addComponent(Apple.class.getName()+ "three", AppleImpl3.class);
-        mpc.addComponent(Apple.class.getName()+ "four", AppleImpl4.class);
-        FruitBasket fb = mpc.getComponent(FruitBasket.class);
-        assertFourMemberApplesAreRight(fb);
-    }
-
-    public void testJasonsFieldInjectionWithBindingsNeed() {
+	public void testFieldInjectionWithBindings() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new AnnotatedFieldInjection());
 
         addFiveComponents(mpc);
