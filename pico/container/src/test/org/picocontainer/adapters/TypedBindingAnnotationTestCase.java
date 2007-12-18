@@ -38,7 +38,7 @@ public class TypedBindingAnnotationTestCase extends TestCase {
             System.out.println("");
             // expected
         }
-        assertNotNull(mpc.getComponent(Apple.class, BindOne.class));
+        assertNotNull(mpc.getComponent(Apple.class, Bramley.class));
     }
 
     public void testBindingAnnotationsWithConstructorInjection() {
@@ -52,10 +52,10 @@ public class TypedBindingAnnotationTestCase extends TestCase {
 
     private void assertFourMemberApplesAreRight(FruitBasket fb) {
         assertNotNull(fb);
-        assertEquals(fb.one.getX(), 1);
-        assertEquals(fb.two.getX(), 2);
-        assertEquals(fb.three.getX(), 3);
-        assertEquals(fb.four.getX(), 4);
+        assertEquals(fb.bramley.getX(), 1);
+        assertEquals(fb.cox.getX(), 2);
+        assertEquals(fb.granny.getX(), 3);
+        assertEquals(fb.braeburn.getX(), 4);
     }
 
     public void testBindingAnnotationsWithMethodInjection() {
@@ -80,10 +80,10 @@ public class TypedBindingAnnotationTestCase extends TestCase {
 
     private void addFiveComponents(MutablePicoContainer mpc) {
         mpc.addComponent(FruitBasket.class);
-        mpc.addComponent(bindKey(Apple.class, BindOne.class), AppleImpl1.class);
-        mpc.addComponent(bindKey(Apple.class, BindTwo.class), AppleImpl2.class);
-        mpc.addComponent(bindKey(Apple.class, BindThree.class), AppleImpl3.class);
-        mpc.addComponent(bindKey(Apple.class, BindFour.class), AppleImpl4.class);
+        mpc.addComponent(bindKey(Apple.class, Bramley.class), AppleImpl1.class);
+        mpc.addComponent(bindKey(Apple.class, Cox.class), AppleImpl2.class);
+        mpc.addComponent(bindKey(Apple.class, Granny.class), AppleImpl3.class);
+        mpc.addComponent(bindKey(Apple.class, Braeburn.class), AppleImpl4.class);
     }
 
     public interface Apple {
@@ -113,66 +113,66 @@ public class TypedBindingAnnotationTestCase extends TestCase {
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Bind
-    public static @interface BindOne {}
+    public static @interface Bramley {}
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Bind
-    public static @interface BindTwo {}
+    public static @interface Cox {}
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Bind
-    public static @interface BindThree {}
+    public static @interface Granny {}
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Bind
-    public static @interface BindFour {}
+    public static @interface Braeburn {}
 
     public static class FruitBasket {
         @Inject
-        private @BindOne Apple one;
+        private @Bramley Apple bramley;
         @Inject
-        private @BindTwo Apple two;
+        private @Cox Apple cox;
         @Inject
-        private @BindThree Apple three;
+        private @Granny Apple granny;
         @Inject
-        private @BindFour Apple four;
+        private @Braeburn Apple braeburn;
 
         public FruitBasket() {
         }
 
         // used in testBindingAnnotationsWithConstructorInjection()
-        public FruitBasket(@BindOne Apple one, @BindTwo Apple two, @BindThree Apple three, @BindFour Apple four) {
-            this.one = one;
-            this.two = two;
-            this.three = three;
-            this.four = four;
+        public FruitBasket(@Bramley Apple bramley, @Cox Apple cox, @Granny Apple granny, @Braeburn Apple braeburn) {
+            this.bramley = bramley;
+            this.cox = cox;
+            this.granny = granny;
+            this.braeburn = braeburn;
         }
 
         // used in testBindingAnnotationsWithMethodInjection()
-        public void foo(@BindOne Apple one, @BindTwo Apple two, @BindThree Apple three, @BindFour Apple four) {
-            this.one = one;
-            this.two = two;
-            this.three = three;
-            this.four = four;
+        public void foo(@Bramley Apple bramley, @Cox Apple cox, @Granny Apple granny, @Braeburn Apple braeburn) {
+            this.bramley = bramley;
+            this.cox = cox;
+            this.granny = granny;
+            this.braeburn = braeburn;
         }
 
-        public void setOne(@BindOne Apple one) {
-            this.one = one;
+        public void setOne(@Bramley Apple bramley) {
+            this.bramley = bramley;
         }
 
-        public void setTwo(@BindTwo Apple two) {
-            this.two = two;
+        public void setTwo(@Cox Apple cox) {
+            this.cox = cox;
         }
 
-        public void setThree(@BindThree Apple three) {
-            this.three = three;
+        public void setThree(@Granny Apple granny) {
+            this.granny = granny;
         }
 
-        public void setFour(@BindFour Apple four) {
-            this.four = four;
+        public void setFour(@Braeburn Apple braeburn) {
+            this.braeburn = braeburn;
         }
     }
 
