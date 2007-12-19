@@ -14,13 +14,13 @@
             <artifactId>picocontainer</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>jmock</groupId>
+            <artifactId>jmock</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>jmock</groupId>
-            <artifactId>jmock</artifactId>
+            <groupId>org.jmock</groupId>
+            <artifactId>jmock-junit4</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>
