@@ -17,6 +17,7 @@ import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AnnotatedFieldInjection;
 import org.picocontainer.injectors.MethodInjection;
 import org.picocontainer.injectors.SetterInjection;
+import org.picocontainer.injectors.ConstructorInjection;
 
 /** @author Paul Hammant */
 public class TypedBindingAnnotationTestCase extends TestCase {
@@ -42,10 +43,10 @@ public class TypedBindingAnnotationTestCase extends TestCase {
     }
 
     public void testBindingAnnotationsWithConstructorInjection() {
-        MutablePicoContainer mpc = new DefaultPicoContainer();
+        MutablePicoContainer mpc = new DefaultPicoContainer(new ConstructorInjection());
 
-        addFiveComponents(mpc);
-        FruitBasket fb = mpc.getComponent(FruitBasket.class);
+        addFiveComponents(mpc, FruitBasketConstructor.class);
+        FruitBasket fb = mpc.getComponent(FruitBasketConstructor.class);
         assertFourMemberApplesAreRight(fb);
         assertGettingOfAppleOneWorks(mpc);
     }
@@ -76,10 +77,12 @@ public class TypedBindingAnnotationTestCase extends TestCase {
 
     }
 
-
-
     private void addFiveComponents(MutablePicoContainer mpc) {
-        mpc.addComponent(FruitBasket.class);
+        addFiveComponents(mpc, FruitBasket.class);
+    }
+
+    private void addFiveComponents(MutablePicoContainer mpc, Class clazz) {
+        mpc.addComponent(clazz);
         mpc.addComponent(bindKey(Apple.class, Bramley.class), AppleImpl1.class);
         mpc.addComponent(bindKey(Apple.class, Cox.class), AppleImpl2.class);
         mpc.addComponent(bindKey(Apple.class, Granny.class), AppleImpl3.class);
@@ -130,6 +133,13 @@ public class TypedBindingAnnotationTestCase extends TestCase {
     @Bind
     public static @interface Braeburn {}
 
+    public static class FruitBasketConstructor extends FruitBasket {
+        // used in testBindingAnnotationsWithConstructorInjection()
+        public FruitBasketConstructor(@Bramley Apple bramley, @Cox Apple cox, @Granny Apple granny, @Braeburn Apple braeburn) {
+            foo(bramley, cox, granny, braeburn);
+        }
+
+    }
     public static class FruitBasket {
         @Inject
         private @Bramley Apple bramley;
@@ -143,13 +153,6 @@ public class TypedBindingAnnotationTestCase extends TestCase {
         public FruitBasket() {
         }
 
-        // used in testBindingAnnotationsWithConstructorInjection()
-        public FruitBasket(@Bramley Apple bramley, @Cox Apple cox, @Granny Apple granny, @Braeburn Apple braeburn) {
-            this.bramley = bramley;
-            this.cox = cox;
-            this.granny = granny;
-            this.braeburn = braeburn;
-        }
 
         // used in testBindingAnnotationsWithMethodInjection()
         public void foo(@Bramley Apple bramley, @Cox Apple cox, @Granny Apple granny, @Braeburn Apple braeburn) {

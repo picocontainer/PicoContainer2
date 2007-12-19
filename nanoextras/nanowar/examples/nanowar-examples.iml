@@ -9,6 +9,17 @@
         <webroots>
           <root url="file://$MODULE_DIR$/nanowar-jsf-webapp/src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/nanowar-jsf-webapp/src/main/java" />
+          <root url="file://$MODULE_DIR$/nanowar-nanoweb-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork2-webapp/src/java" />
+        </sourceRoots>
         <building>
           <setting name="EXPLODED_URL" value="file://" />
           <setting name="EXPLODED_ENABLED" value="false" />
@@ -36,6 +47,17 @@
         <webroots>
           <root url="file://$MODULE_DIR$/nanowar-nanoweb-webapp/src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/nanowar-jsf-webapp/src/main/java" />
+          <root url="file://$MODULE_DIR$/nanowar-nanoweb-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork2-webapp/src/java" />
+        </sourceRoots>
         <building>
           <setting name="EXPLODED_URL" value="file://" />
           <setting name="EXPLODED_ENABLED" value="false" />
@@ -72,6 +94,17 @@
         <webroots>
           <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/nanowar-jsf-webapp/src/main/java" />
+          <root url="file://$MODULE_DIR$/nanowar-nanoweb-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork2-webapp/src/java" />
+        </sourceRoots>
         <building>
           <setting name="EXPLODED_URL" value="file://" />
           <setting name="EXPLODED_ENABLED" value="false" />
@@ -99,6 +132,17 @@
         <webroots>
           <root url="file://$MODULE_DIR$/nanowar-struts-webapp/target/nanowar-struts-webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/nanowar-jsf-webapp/src/main/java" />
+          <root url="file://$MODULE_DIR$/nanowar-nanoweb-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork2-webapp/src/java" />
+        </sourceRoots>
         <building>
           <setting name="EXPLODED_URL" value="file://" />
           <setting name="EXPLODED_ENABLED" value="false" />
@@ -126,6 +170,17 @@
         <webroots>
           <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/nanowar-jsf-webapp/src/main/java" />
+          <root url="file://$MODULE_DIR$/nanowar-nanoweb-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork2-webapp/src/java" />
+        </sourceRoots>
         <building>
           <setting name="EXPLODED_URL" value="file://" />
           <setting name="EXPLODED_ENABLED" value="false" />
@@ -153,6 +208,17 @@
         <webroots>
           <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/target/nanowar-webwork-webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/nanowar-jsf-webapp/src/main/java" />
+          <root url="file://$MODULE_DIR$/nanowar-nanoweb-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork2-webapp/src/java" />
+        </sourceRoots>
         <building>
           <setting name="EXPLODED_URL" value="file://" />
           <setting name="EXPLODED_ENABLED" value="false" />
@@ -180,6 +246,17 @@
         <webroots>
           <root url="file://$MODULE_DIR$/nanowar-webwork2-webapp/src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/nanowar-jsf-webapp/src/main/java" />
+          <root url="file://$MODULE_DIR$/nanowar-nanoweb-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork2-webapp/src/java" />
+        </sourceRoots>
         <building>
           <setting name="EXPLODED_URL" value="file://" />
           <setting name="EXPLODED_ENABLED" value="false" />
@@ -207,6 +284,17 @@
         <webroots>
           <root url="file://$MODULE_DIR$/nanowar-webwork2-webapp/target/nanowar-webwork2-webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/nanowar-jsf-webapp/src/main/java" />
+          <root url="file://$MODULE_DIR$/nanowar-nanoweb-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-sample/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-struts-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/java" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork-webapp/src/test" />
+          <root url="file://$MODULE_DIR$/nanowar-webwork2-webapp/src/java" />
+        </sourceRoots>
         <building>
           <setting name="EXPLODED_URL" value="file://" />
           <setting name="EXPLODED_ENABLED" value="false" />
