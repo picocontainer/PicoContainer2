@@ -17,8 +17,8 @@ public class Pico2ServletExample extends HttpServlet {
 
     private DefaultPicoContainer requestContainer;
 
-    private HttpSessionStoring sessionStoring;
-    private HttpSessionStoring requestStoring;
+    private HttpSessionStoringAdapter sessionStoringAdapter;
+    private HttpSessionStoringAdapter requestStoringAdapter;
 
     public void init(ServletConfig cfg) throws ServletException {
 
@@ -26,11 +26,11 @@ public class Pico2ServletExample extends HttpServlet {
 
         Storing sessionStore = new Storing();
         PicoContainer sessionContainer = new DefaultPicoContainer(sessionStore, appContainer);
-        sessionStoring = new HttpSessionStoring(sessionStore, "sessionStore");
+        sessionStoringAdapter = new HttpSessionStoringAdapter(sessionStore, "sessionStore");
 
         Storing requestStore = new Storing();
         requestContainer = new DefaultPicoContainer(requestStore, sessionContainer);
-        requestStoring = new HttpSessionStoring(requestStore, "requestStore");
+        requestStoringAdapter = new HttpSessionStoringAdapter(requestStore, "requestStore");
 
         // populate app, session and request scoped containers.
         // appContainer.addComponent(HibernateManager.class, MyHibernateManager.class);
@@ -44,15 +44,15 @@ public class Pico2ServletExample extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
 
-        sessionStoring.retrieveSessionStoreOrCreateNewOne(req.getSession());
-        requestStoring.resetStore();
+        sessionStoringAdapter.retrieveOrCreateStore(req.getSession());
+        requestStoringAdapter.resetStore();
 
         Action action = (Action) requestContainer.getComponent(req.getPathTranslated());
 
         action.execute(req, resp);
 
-        sessionStoring.invalidateStore();
-        requestStoring.invalidateStore();
+        sessionStoringAdapter.invalidateStore();
+        requestStoringAdapter.invalidateStore();
     }
 
     public static class Action {

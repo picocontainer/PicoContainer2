@@ -221,7 +221,7 @@ public class StoringTestCase extends TestCase {
         assertNotNull(two);
         assertSame(one,two);
 
-        storeCaching.invalidateCache();
+        storeCaching.invalidateCacheForThread();
 
         try {
             Foo three = child.getComponent(Foo.class);

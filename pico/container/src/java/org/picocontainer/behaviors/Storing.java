@@ -78,7 +78,7 @@ public class Storing extends AbstractBehaviorFactory {
         return map;
     }
 
-    public void invalidateCache() {
+    public void invalidateCacheForThread() {
         mapThreadLocalObjectReference.set(Collections.unmodifiableMap(Collections.emptyMap()));
     }
 
