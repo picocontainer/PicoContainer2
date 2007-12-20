@@ -41,7 +41,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/junit/junit-dep/4.4/junit-dep-4.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
