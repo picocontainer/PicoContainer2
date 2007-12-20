@@ -11,6 +11,7 @@ package org.picocontainer;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -99,7 +100,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     /** 
      * Keeps track of child containers started status.
      */
-    private final Set<Integer> childrenStarted = new HashSet<Integer>();
+    private final Set<WeakReference<PicoContainer>> childrenStarted = new HashSet<WeakReference<PicoContainer>>();
 
     /**
      * Lifecycle strategy instance.
@@ -114,9 +115,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private ComponentMonitor componentMonitor;
 
     /** List collecting the CAs which have been successfully started */
-    private final List<Integer> startedComponentAdapters = new ArrayList<Integer>();
+    private final List<WeakReference<ComponentAdapter<?>>> startedComponentAdapters = new ArrayList<WeakReference<ComponentAdapter<?>>>();
 
 
+    /**
+     * Map used for looking up component adapters by their key.
+     */
 	private final Map<Object, ComponentAdapter<?>> componentKeyToAdapterCache = new HashMap<Object, ComponentAdapter<?> >();
 
 
@@ -252,10 +256,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         this(new AdaptingBehavior(), null);
     }
 
+    /** {@inheritDoc} **/
     public Collection<ComponentAdapter<?>> getComponentAdapters() {
         return Collections.unmodifiableList(getModifiableComponentAdapterList());
     }
 
+    /** {@inheritDoc} **/
     public final ComponentAdapter<?> getComponentAdapter(final Object componentKey) {
         ComponentAdapter<?> adapter = getComponentKeyToAdapterCache().get(componentKey);
         if (adapter == null && parent != null) {
@@ -264,10 +270,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return adapter;
     }
 
+    /** {@inheritDoc} **/
     public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final NameBinding componentNameBinding) {
         return getComponentAdapter(componentType, componentNameBinding, null);
     }
 
+    /** {@inheritDoc} **/
     private <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final NameBinding componentNameBinding, final Class<? extends Annotation> binding) {
         // See http://jira.codehaus.org/secure/ViewIssue.jspa?key=PICO-115
         ComponentAdapter<?> adapterByKey = getComponentAdapter(componentType);
@@ -601,7 +609,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         startAdapters();
         childrenStarted.clear();
         for (PicoContainer child : children) {
-            childrenStarted.add(child.hashCode());
+            childrenStarted.add(new WeakReference<PicoContainer>(child));
             if (child instanceof Startable) {
                 ((Startable)child).start();
             }
@@ -648,7 +656,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @return A boolean, <code>true</code> if the container is started
      */
     private boolean childStarted(final PicoContainer child) {
-        return childrenStarted.contains(new Integer(child.hashCode()));
+    	for (WeakReference<PicoContainer> eachChild : childrenStarted) {
+    		PicoContainer ref = eachChild.get();
+    		if (ref == null) {
+    			continue;
+    		}
+    		
+    		if (child.equals(ref)) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
 
     /**
@@ -692,7 +710,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (children.add(child)) {
             // @todo Should only be added if child container has also be started
             if (lifecycleState == STARTED) {
-                childrenStarted.add(child.hashCode());
+                childrenStarted.add(new WeakReference<PicoContainer>(child));
             }
         }
         return this;
@@ -700,7 +718,19 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     public boolean removeChildContainer(final PicoContainer child) {
         final boolean result = children.remove(child);
-        childrenStarted.remove(new Integer(child.hashCode()));
+        WeakReference<PicoContainer> foundRef = null;
+        for (WeakReference<PicoContainer> eachChild : childrenStarted) {
+        	PicoContainer ref = eachChild.get();
+        	if (ref.equals(child)) {
+        		foundRef = eachChild;
+        		break;
+        	}
+        }
+        
+        if (foundRef != null) {
+        	childrenStarted.remove(foundRef);
+        }
+        
         return result;
     }
 
@@ -790,7 +820,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             if (adapter instanceof Behavior) {
                 Behavior<?> manager = (Behavior<?>)adapter;
                 manager.start(DefaultPicoContainer.this);
-                startedComponentAdapters.add(adaptersClone.indexOf(adapter));
+                startedComponentAdapters.add(new WeakReference<ComponentAdapter<?>>(adapter));
             }
         }
     }
@@ -802,7 +832,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      */
     private void stopAdapters() {
         for (int i = startedComponentAdapters.size() - 1; 0 <= i; i--) {
-            ComponentAdapter<?> adapter = getOrderedComponentAdapters().get(startedComponentAdapters.get(i));
+            ComponentAdapter<?> adapter = startedComponentAdapters.get(i).get();
+            if (adapter == null) {
+            	//Weak reference -- may be null
+            	continue;
+            }
             if (adapter instanceof Behavior) {
                 Behavior<?> manager = (Behavior<?>)adapter;
                 manager.stop(DefaultPicoContainer.this);
