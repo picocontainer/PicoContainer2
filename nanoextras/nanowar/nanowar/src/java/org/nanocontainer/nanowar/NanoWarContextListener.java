@@ -62,7 +62,7 @@ import org.picocontainer.parameters.ConstantParameter;
  * </ol>
  * </p>
  * <p><b>Note:</b> if one is interested in both application-scoped and session-scoped components, the 
- * {@link org.nanocontainer.nanowar.ServletContextListener} should be configured in the web.xml.
+ * {@link org.nanocontainer.nanowar.ServletContainerListener} should be configured in the web.xml.
  * </p>
  * @see org.nanocontainer.nanowar.NanoWarSessionListener
  * @see org.nanocontainer.nanowar.ServletContainerListener
@@ -85,7 +85,6 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
         ServletContext context = event.getServletContext();
         try {
             ContainerBuilder containerBuilder = createContainerBuilder(context);
-
             ObjectReference<ContainerBuilder> builderRef = new ApplicationScopeReference<ContainerBuilder>(context, BUILDER);
             builderRef.set(containerBuilder);
 
@@ -116,6 +115,11 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
         }
     }
 
+    /**
+     * TODO: this is kind of scary and has   big confusion  potential ( i.e.: collision with properties specification  )
+     * @param context
+     * @return
+     */
     private ContainerBuilder createContainerBuilder(ServletContext context) {
         Enumeration initParameters = context.getInitParameterNames();
         while (initParameters.hasMoreElements()) {
