@@ -26,6 +26,12 @@ public class DefaultContainerBuilder extends AbstractContainerBuilder {
         composer.composeContainer(container, assemblyScope);
     }
 
+    /**
+     * TODO better solution cuold be found to activate default caching
+     * @param parentContainer
+     * @param assemblyScope
+     * @return
+     */
     protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
         return (new DefaultPicoContainer(parentContainer)).change(Characteristics.CACHE);
     }
