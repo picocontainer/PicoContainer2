@@ -13,6 +13,7 @@ package org.nanocontainer.integrationkit;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Characteristics;
 
 public class DefaultContainerBuilder extends AbstractContainerBuilder {
     private final ContainerComposer composer;
@@ -26,6 +27,6 @@ public class DefaultContainerBuilder extends AbstractContainerBuilder {
     }
 
     protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
-        return new DefaultPicoContainer(parentContainer);
+        return (new DefaultPicoContainer(parentContainer)).change(Characteristics.CACHE);
     }
 }
