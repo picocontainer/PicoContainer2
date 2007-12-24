@@ -13,195 +13,195 @@
     <orderEntry type="module-library" exported="">
       <library name="cglib:cglib-nodep:2.1_3">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/cglib/cglib-nodep/2.1_3/cglib-nodep-2.1_3-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="com.thoughtworks.paranamer:paranamer:1.1">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/com/thoughtworks/paranamer/paranamer/1.1/paranamer-1.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/com/thoughtworks/paranamer/paranamer/1.1/paranamer-1.1.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/com/thoughtworks/paranamer/paranamer/1.1/paranamer-1.1-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/com/thoughtworks/paranamer/paranamer/1.1/paranamer-1.1-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/com/thoughtworks/paranamer/paranamer/1.1/paranamer-1.1-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/com/thoughtworks/paranamer/paranamer/1.1/paranamer-1.1-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="com.thoughtworks.xstream:xstream:1.2.2">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/com/thoughtworks/xstream/xstream/1.2.2/xstream-1.2.2.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/com/thoughtworks/xstream/xstream/1.2.2/xstream-1.2.2.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/com/thoughtworks/xstream/xstream/1.2.2/xstream-1.2.2-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/com/thoughtworks/xstream/xstream/1.2.2/xstream-1.2.2-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/com/thoughtworks/xstream/xstream/1.2.2/xstream-1.2.2-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/com/thoughtworks/xstream/xstream/1.2.2/xstream-1.2.2-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="commons-collections:commons-collections:2.1">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/commons-collections/commons-collections/2.1/commons-collections-2.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/commons-collections/commons-collections/2.1/commons-collections-2.1.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/commons-collections/commons-collections/2.1/commons-collections-2.1-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/commons-collections/commons-collections/2.1/commons-collections-2.1-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/commons-collections/commons-collections/2.1/commons-collections-2.1-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/commons-collections/commons-collections/2.1/commons-collections-2.1-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="commons-dbcp:commons-dbcp:1.2">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/commons-dbcp/commons-dbcp/1.2/commons-dbcp-1.2.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/commons-dbcp/commons-dbcp/1.2/commons-dbcp-1.2.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/commons-dbcp/commons-dbcp/1.2/commons-dbcp-1.2-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/commons-dbcp/commons-dbcp/1.2/commons-dbcp-1.2-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/commons-dbcp/commons-dbcp/1.2/commons-dbcp-1.2-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/commons-dbcp/commons-dbcp/1.2/commons-dbcp-1.2-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="commons-pool:commons-pool:1.2">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/commons-pool/commons-pool/1.2/commons-pool-1.2.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/commons-pool/commons-pool/1.2/commons-pool-1.2.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/commons-pool/commons-pool/1.2/commons-pool-1.2-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/commons-pool/commons-pool/1.2/commons-pool-1.2-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/commons-pool/commons-pool/1.2/commons-pool-1.2-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/commons-pool/commons-pool/1.2/commons-pool-1.2-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="hsqldb:hsqldb:1.7.3.0">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/hsqldb/hsqldb/1.7.3.0/hsqldb-1.7.3.0.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/hsqldb/hsqldb/1.7.3.0/hsqldb-1.7.3.0.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/hsqldb/hsqldb/1.7.3.0/hsqldb-1.7.3.0-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/hsqldb/hsqldb/1.7.3.0/hsqldb-1.7.3.0-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/hsqldb/hsqldb/1.7.3.0/hsqldb-1.7.3.0-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/hsqldb/hsqldb/1.7.3.0/hsqldb-1.7.3.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="jmock:jmock:1.0.1">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/jmock/jmock/1.0.1/jmock-1.0.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/jmock/jmock/1.0.1/jmock-1.0.1.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/jmock/jmock/1.0.1/jmock-1.0.1-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/jmock/jmock/1.0.1/jmock-1.0.1-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/jmock/jmock/1.0.1/jmock-1.0.1-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/jmock/jmock/1.0.1/jmock-1.0.1-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="junit:junit-dep:4.4">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/junit/junit-dep/4.4/junit-dep-4.4.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/junit/junit-dep/4.4/junit-dep-4.4.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/junit/junit-dep/4.4/junit-dep-4.4-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/junit/junit-dep/4.4/junit-dep-4.4-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/junit/junit-dep/4.4/junit-dep-4.4-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/junit/junit-dep/4.4/junit-dep-4.4-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="junit:junit:3.8.1">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/junit/junit/3.8.1/junit-3.8.1-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/junit/junit/3.8.1/junit-3.8.1-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.0">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/org/apache/geronimo/specs/geronimo-jta_1.1_spec/1.0/geronimo-jta_1.1_spec-1.0.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/apache/geronimo/specs/geronimo-jta_1.1_spec/1.0/geronimo-jta_1.1_spec-1.0.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/org/apache/geronimo/specs/geronimo-jta_1.1_spec/1.0/geronimo-jta_1.1_spec-1.0-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/apache/geronimo/specs/geronimo-jta_1.1_spec/1.0/geronimo-jta_1.1_spec-1.0-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/org/apache/geronimo/specs/geronimo-jta_1.1_spec/1.0/geronimo-jta_1.1_spec-1.0-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/apache/geronimo/specs/geronimo-jta_1.1_spec/1.0/geronimo-jta_1.1_spec-1.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="org.hamcrest:hamcrest-core:1.1">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="org.hamcrest:hamcrest-library:1.1">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/hamcrest/hamcrest-library/1.1/hamcrest-library-1.1-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="org.jmock:jmock-junit4:2.4.0">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/org/jmock/jmock-junit4/2.4.0/jmock-junit4-2.4.0.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/jmock/jmock-junit4/2.4.0/jmock-junit4-2.4.0.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/org/jmock/jmock-junit4/2.4.0/jmock-junit4-2.4.0-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/jmock/jmock-junit4/2.4.0/jmock-junit4-2.4.0-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/org/jmock/jmock-junit4/2.4.0/jmock-junit4-2.4.0-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/jmock/jmock-junit4/2.4.0/jmock-junit4-2.4.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="org.jmock:jmock:2.4.0">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/org/jmock/jmock/2.4.0/jmock-2.4.0.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/jmock/jmock/2.4.0/jmock-2.4.0.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/org/jmock/jmock/2.4.0/jmock-2.4.0-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/jmock/jmock/2.4.0/jmock-2.4.0-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/org/jmock/jmock/2.4.0/jmock-2.4.0-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/org/jmock/jmock/2.4.0/jmock-2.4.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
@@ -210,52 +210,52 @@
     <orderEntry type="module-library" exported="">
       <library name="proxytoys:proxytoys:0.2.1">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/proxytoys/proxytoys/0.2.1/proxytoys-0.2.1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/proxytoys/proxytoys/0.2.1/proxytoys-0.2.1.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/proxytoys/proxytoys/0.2.1/proxytoys-0.2.1-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/proxytoys/proxytoys/0.2.1/proxytoys-0.2.1-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/proxytoys/proxytoys/0.2.1/proxytoys-0.2.1-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/proxytoys/proxytoys/0.2.1/proxytoys-0.2.1-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="xerces:xercesImpl:2.0.2">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/xerces/xercesImpl/2.0.2/xercesImpl-2.0.2.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/xerces/xercesImpl/2.0.2/xercesImpl-2.0.2.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/xerces/xercesImpl/2.0.2/xercesImpl-2.0.2-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/xerces/xercesImpl/2.0.2/xercesImpl-2.0.2-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/xerces/xercesImpl/2.0.2/xercesImpl-2.0.2-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/xerces/xercesImpl/2.0.2/xercesImpl-2.0.2-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="xml-apis:xml-apis:1.0.b2">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="xpp3:xpp3_min:1.1.3.4.O">
         <CLASSES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/xpp3/xpp3_min/1.1.3.4.O/xpp3_min-1.1.3.4.O.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/xpp3/xpp3_min/1.1.3.4.O/xpp3_min-1.1.3.4.O.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/xpp3/xpp3_min/1.1.3.4.O/xpp3_min-1.1.3.4.O-javadoc.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/xpp3/xpp3_min/1.1.3.4.O/xpp3_min-1.1.3.4.O-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Dokumente und Einstellungen/k.pribluda/.m2/repository/xpp3/xpp3_min/1.1.3.4.O/xpp3_min-1.1.3.4.O-sources.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/xpp3/xpp3_min/1.1.3.4.O/xpp3_min-1.1.3.4.O-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
