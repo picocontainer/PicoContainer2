@@ -312,14 +312,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
     }
 
+    /** {@inheritDoc} **/
     public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final Class<? extends Annotation> binding) {
         return getComponentAdapter(componentType, null, binding);
     }
 
+    /** {@inheritDoc} **/
     public <T> List<ComponentAdapter<T>> getComponentAdapters(final Class<T> componentType) {
         return getComponentAdapters(componentType,  null);
     }
 
+    /** {@inheritDoc} **/
     public <T> List<ComponentAdapter<T>> getComponentAdapters(final Class<T> componentType, final Class<? extends Annotation> binding) {
         if (componentType == null) {
             return Collections.emptyList();
@@ -356,6 +359,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return addAdapter(componentAdapter,  this.componentProperties);
     }
 
+    /** {@inheritDoc} **/
     public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter, final Properties properties) {
         Properties tmpProperties = (Properties)properties.clone();
         if (AbstractBehaviorFactory.removePropertiesIfPresent(tmpProperties, Characteristics.NONE) == false && componentFactory instanceof BehaviorFactory) {
@@ -373,6 +377,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
 
+    /** {@inheritDoc} **/
     public <T> ComponentAdapter<T> removeComponent(final Object componentKey) {
         if (lifecycleState == STARTED) {
             throw new PicoCompositionException("Cannot remove components after the container has started");
@@ -384,7 +389,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         
         ComponentAdapter<T> adapter = (ComponentAdapter<T>) getComponentKeyToAdapterCache().remove(componentKey);
         getModifiableComponentAdapterList().remove(adapter);
-        getOrderedComponentAdapters().remove(adapter);
+        getOrderedComponentAdapters().remove(adapter);    	
         return adapter;
     }
 
@@ -514,7 +519,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public Object getComponent(final Object componentKeyOrType, final Class<? extends Annotation> annotation) {
         Object retVal;
         if (annotation != null) {
-            final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class)componentKeyOrType, annotation);
+            final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, annotation);
             retVal = componentAdapter == null ? null : getInstance(componentAdapter);
         } else if (componentKeyOrType instanceof Class) {
             final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, (NameBinding) null);
@@ -569,10 +574,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
 
+    /** {@inheritDoc} **/
     public PicoContainer getParent() {
         return parent;
     }
 
+    /** {@inheritDoc} **/
     public <T> ComponentAdapter<T> removeComponentByInstance(final T componentInstance) {
         for (ComponentAdapter<?> componentAdapter : getModifiableComponentAdapterList()) {
             if (getLocalInstance(componentAdapter).equals(componentInstance)) {
