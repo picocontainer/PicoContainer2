@@ -16,6 +16,11 @@ import org.picocontainer.PicoContainer;
 public class Stored<T> extends AbstractBehavior<T> {
 
 	    
+	/**
+	 * Serialization UUID. 
+	 */
+	private static final long serialVersionUID = -155678172730744032L;
+	
 	protected final boolean delegateHasLifecylce;
 	protected boolean disposed;
 	protected final ObjectReference<T> instanceReference;
@@ -48,6 +53,16 @@ public class Stored<T> extends AbstractBehavior<T> {
 	    }
 	}
 
+	/**
+	 * Retrieves the stored reference.  May be null if it has
+	 * never been set, or possibly if the reference has been
+	 * flushed.
+	 * @return the stored object or null.
+	 */
+	public T getStoredObject() {
+		return instanceReference.get();
+	}
+	
 	/**
 	 * Flushes the cache.
 	 * If the component instance is started is will stop and dispose it before
