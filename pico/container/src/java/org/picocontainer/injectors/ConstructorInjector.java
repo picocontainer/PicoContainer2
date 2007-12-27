@@ -146,6 +146,10 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                     try {
                         Object[] parameters = getMemberArguments(guardedContainer, constructor);
                         constructor = componentMonitor.instantiating(container, ConstructorInjector.this, constructor);
+                        if(constructor == null) {
+                            throw new NullPointerException("Component Monitor " + componentMonitor 
+                                            + " returned a null constructor from method 'instantiating' after passing in " + constructor);
+                        }
                         long startTime = System.currentTimeMillis();
                         T inst = newInstance(constructor, parameters);
                         componentMonitor.instantiated(container,
