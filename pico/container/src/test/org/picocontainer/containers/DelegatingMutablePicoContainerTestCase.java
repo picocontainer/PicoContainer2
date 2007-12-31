@@ -9,13 +9,14 @@
 
 package org.picocontainer.containers;
 
-import org.picocontainer.tck.AbstractPicoContainerTestCase;
+import java.util.Properties;
+
+import org.junit.Test;
+import org.picocontainer.Characteristics;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Characteristics;
-
-import java.util.Properties;
+import org.picocontainer.tck.AbstractPicoContainerTestCase;
 
 public class DelegatingMutablePicoContainerTestCase extends AbstractPicoContainerTestCase {
 
@@ -39,7 +40,7 @@ public class DelegatingMutablePicoContainerTestCase extends AbstractPicoContaine
     }
 
 
-    public void testAcceptImplementsBreadthFirstStrategy() {
+    @Test public void testAcceptImplementsBreadthFirstStrategy() {
         // don't run this one.
     }
 

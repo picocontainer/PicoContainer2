@@ -9,21 +9,22 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-import org.picocontainer.DefaultPicoContainer;
-
-import junit.framework.TestCase;
 
 /**
  * @author Thomas Heller
  * @author Aslak Helles&oslash;y
  */
 public class ComponentKeysTestCase extends TestCase {
-    public void testComponensRegisteredWithClassKeyTakePrecedenceOverOthersWhenThereAreMultipleImplementations() throws Exception {
+    @Test public void testComponensRegisteredWithClassKeyTakePrecedenceOverOthersWhenThereAreMultipleImplementations() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent("default", SimpleTouchable.class);
 
@@ -36,7 +37,7 @@ public class ComponentKeysTestCase extends TestCase {
         assertEquals(DecoratedTouchable.class, touchable.getClass());
     }
 
-    public void testComponentAdapterResolutionIsFirstLookedForByClassKeyToTheTopOfTheContainerHierarchy() {
+    @Test public void testComponentAdapterResolutionIsFirstLookedForByClassKeyToTheTopOfTheContainerHierarchy() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent("default", SimpleTouchable.class);
 
@@ -50,7 +51,7 @@ public class ComponentKeysTestCase extends TestCase {
 
     }
 
-    public void testComponentKeysFromParentCannotConfuseTheChild() throws Exception {
+    @Test public void testComponentKeysFromParentCannotConfuseTheChild() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent("test", SimpleTouchable.class);
 

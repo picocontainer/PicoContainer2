@@ -9,21 +9,22 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Characteristics;
-import org.picocontainer.annotations.Inject;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.SetterInjection;
-import org.picocontainer.injectors.AnnotatedFieldInjection;
-
-import java.io.StringReader;
 import java.io.IOException;
+import java.io.StringReader;
 
 import junit.framework.TestCase;
 
+import org.junit.Test;
+import org.picocontainer.Characteristics;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.annotations.Inject;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.AnnotatedFieldInjection;
+import org.picocontainer.injectors.SetterInjection;
+
 public class CommandLineArgumentsPicoContainerTestCase extends TestCase {
 
-    public void testBasicParsing() {
+    @Test public void testBasicParsing() {
         CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(new String[] {
             "foo=bar", "foo2=12", "foo3=true", "foo4="
         });
@@ -33,7 +34,7 @@ public class CommandLineArgumentsPicoContainerTestCase extends TestCase {
         assertEquals("true",apc.getComponent("foo4"));
     }
 
-    public void testAsParentContainer() {
+    @Test public void testAsParentContainer() {
         CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(new String[] {
             "a=aaa", "b=bbb", "d=22"});
         assertEquals("aaa",apc.getComponent("a"));
@@ -52,7 +53,7 @@ public class CommandLineArgumentsPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testParsingWithDiffSeparator() {
+    @Test public void testParsingWithDiffSeparator() {
         CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(":", new String[] {
             "foo:bar", "foo2:12", "foo3:true"
         });
@@ -61,7 +62,7 @@ public class CommandLineArgumentsPicoContainerTestCase extends TestCase {
         assertEquals("true",apc.getComponent("foo3"));
     }
 
-    public void testParsingWithWrongSeparator() {
+    @Test public void testParsingWithWrongSeparator() {
         CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(":", new String[] {
             "foo=bar", "foo2=12", "foo3=true"
         });
@@ -70,7 +71,7 @@ public class CommandLineArgumentsPicoContainerTestCase extends TestCase {
         assertEquals("true",apc.getComponent("foo3=true"));
     }
 
-    public void testParsingOfPropertiesFile() throws IOException {
+    @Test public void testParsingOfPropertiesFile() throws IOException {
         CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(":",
                                new StringReader("foo:bar\nfoo2:12\nfoo3:true\n"));
         assertEquals("bar",apc.getComponent("foo"));
@@ -78,7 +79,7 @@ public class CommandLineArgumentsPicoContainerTestCase extends TestCase {
         assertEquals("true",apc.getComponent("foo3"));
     }
 
-    public void testParsingOfPropertiesFileAndArgs() throws IOException {
+    @Test public void testParsingOfPropertiesFileAndArgs() throws IOException {
         CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(":",
                                new StringReader("foo:bar\nfoo2:12\n"), new String[] {"foo3:true"});
         assertEquals("bar",apc.getComponent("foo"));
@@ -86,7 +87,7 @@ public class CommandLineArgumentsPicoContainerTestCase extends TestCase {
         assertEquals("true",apc.getComponent("foo3"));
     }
 
-    public void testParsingOfPropertiesFileAndArgsWithClash() throws IOException {
+    @Test public void testParsingOfPropertiesFileAndArgsWithClash() throws IOException {
         CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(":",
                                new StringReader("foo:bar\nfoo2:99\n"), new String[] {"foo2:12","foo3:true"});
         assertEquals("bar",apc.getComponent("foo"));
@@ -94,14 +95,14 @@ public class CommandLineArgumentsPicoContainerTestCase extends TestCase {
         assertEquals("true",apc.getComponent("foo3"));
     }
 
-    public void testbyTypeFailsEvenIfOneOfSameType() {
+    @Test public void testbyTypeFailsEvenIfOneOfSameType() {
         CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(new String[] {
             "foo=bar"});
         assertEquals("bar",apc.getComponent("foo"));
         assertNull(apc.getComponent(String.class));
     }
 
-    public void testUnsatisfiableIfNoSuitableTyesForInjection() {
+    @Test public void testUnsatisfiableIfNoSuitableTyesForInjection() {
         CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(new String[] {"zz=zz"});
         DefaultPicoContainer pico = new DefaultPicoContainer(apc);
         pico.as(Characteristics.USE_NAMES).addComponent(NeedsAFew.class);
@@ -123,7 +124,7 @@ public class CommandLineArgumentsPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testConstructorInjectionComponentCanDependOnConfig() {
+    @Test public void testConstructorInjectionComponentCanDependOnConfig() {
         CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(new String[] {"a=a", "b=2", "c=true"});
         DefaultPicoContainer pico = new DefaultPicoContainer(apc);
         pico.addConfig("zzz","zzz");
@@ -153,7 +154,7 @@ public class CommandLineArgumentsPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testSetterInjectionComponentCanDependOnConfig() {
+    @Test public void testSetterInjectionComponentCanDependOnConfig() {
         CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(new String[] {"a=a", "b=2", "c=true"});
         DefaultPicoContainer pico = new DefaultPicoContainer(new SetterInjection(), apc);
         pico.addConfig("zzz","zzz");
@@ -174,7 +175,7 @@ public class CommandLineArgumentsPicoContainerTestCase extends TestCase {
         private boolean c;
     }
 
-    public void testAnnotatedFieldInjectionComponentCanDependOnConfig() {
+    @Test public void testAnnotatedFieldInjectionComponentCanDependOnConfig() {
         CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(new String[] {"a=a", "b=2", "c=true"});
         DefaultPicoContainer pico = new DefaultPicoContainer(new AnnotatedFieldInjection(), apc);
         pico.addConfig("zzz","zzz");

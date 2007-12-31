@@ -9,9 +9,9 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.injectors.AbstractInjector;
-
 import junit.framework.TestCase;
+
+import org.junit.Test;
 
 /**
  * Test the CyclicDependecy.
@@ -79,7 +79,7 @@ public final class ThreadLocalCyclicDependencyGuardTestCase
         }
     }
     
-    public void testCyclicDependencyWithThreadSafeGuard() throws InterruptedException {
+    @Test public void testCyclicDependencyWithThreadSafeGuard() throws InterruptedException {
         for(int i = 0; i < runner.length; ++i) {
             runner[i] = new ThreadLocalRunner();
         }
@@ -91,7 +91,7 @@ public final class ThreadLocalCyclicDependencyGuardTestCase
         }
     }
 
-    public void testCyclicDependencyException() {
+    @Test public void testCyclicDependencyException() {
         final AbstractInjector.CyclicDependencyException cdEx = new AbstractInjector.CyclicDependencyException(getClass());
         cdEx.push(String.class);
         final Class[] classes = cdEx.getDependencies();

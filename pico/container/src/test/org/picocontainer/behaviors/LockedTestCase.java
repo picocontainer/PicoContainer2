@@ -9,8 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.BehaviorFactory;
+import org.picocontainer.ComponentAdapter;
 
 /** @author Paul Hammant */
 public final class LockedTestCase extends SynchronizedTestCase {

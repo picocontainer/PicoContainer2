@@ -9,32 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.tck;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
-import com.thoughtworks.xstream.io.xml.XppDriver;
-
-import junit.framework.Assert;
-import junit.framework.AssertionFailedError;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.injectors.AdaptingInjection;
-import org.picocontainer.visitors.AbstractPicoVisitor;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.references.SimpleReference;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ObjectReference;
-
-import org.jmock.MockObjectTestCase;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -48,6 +22,32 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import junit.framework.Assert;
+import junit.framework.AssertionFailedError;
+
+import org.jmock.MockObjectTestCase;
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.ObjectReference;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.AdaptingInjection;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.references.SimpleReference;
+import org.picocontainer.visitors.AbstractPicoVisitor;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
+import com.thoughtworks.xstream.io.xml.XppDriver;
 
 
 /**
@@ -85,7 +85,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      */
     protected abstract ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer);
 
-    final public void testDEF_verifyWithoutDependencyWorks() {
+    final @Test public void testDEF_verifyWithoutDependencyWorks() {
         final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
         final ComponentAdapter componentAdapter = prepDEF_verifyWithoutDependencyWorks(picoContainer);
         assertSame(getComponentAdapterType(), componentAdapter.getClass());
@@ -101,7 +101,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      */
     protected abstract ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer);
 
-    final public void testDEF_verifyDoesNotInstantiate() {
+    final @Test public void testDEF_verifyDoesNotInstantiate() {
         final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
         final ComponentAdapter componentAdapter = prepDEF_verifyDoesNotInstantiate(picoContainer);
         assertSame(getComponentAdapterType(), componentAdapter.getClass());
@@ -120,7 +120,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
      */
     protected abstract ComponentAdapter prepDEF_visitable();
 
-    final public void testDEF_visitable() {
+    final @Test public void testDEF_visitable() {
         final ComponentAdapter componentAdapter = prepDEF_visitable();
         final Class type = getComponentAdapterType();
         assertSame(type, componentAdapter.getClass());
@@ -155,7 +155,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         return null;
     }
 
-    final public void testDEF_isAbleToTakeParameters() {
+    final @Test public void testDEF_isAbleToTakeParameters() {
         final Class type = getComponentAdapterType();
         boolean hasParameters = supportsParameters(type);
         if (hasParameters) {
@@ -192,7 +192,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final public void testSER_isSerializable() throws IOException, ClassNotFoundException {
+    final @Test public void testSER_isSerializable() throws IOException, ClassNotFoundException {
         if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepSER_isSerializable(picoContainer);
@@ -225,7 +225,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final public void testSER_isXStreamSerializableWithPureReflection() {
+    final @Test public void testSER_isXStreamSerializableWithPureReflection() {
         if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepSER_isXStreamSerializable(picoContainer);
@@ -242,7 +242,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         }
     }
 
-    final public void testSER_isXStreamSerializable() {
+    final @Test public void testSER_isXStreamSerializable() {
         if ((getComponentAdapterNature() & SERIALIZABLE) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepSER_isXStreamSerializable(picoContainer);
@@ -275,7 +275,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final public void testVER_verificationFails() {
+    final @Test public void testVER_verificationFails() {
         if ((getComponentAdapterNature() & VERIFYING) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer();
             final ComponentAdapter componentAdapter = prepVER_verificationFails(picoContainer);
@@ -313,7 +313,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final public void testINS_createsNewInstances() {
+    final @Test public void testINS_createsNewInstances() {
         if ((getComponentAdapterNature() & INSTANTIATING) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepINS_createsNewInstances(picoContainer);
@@ -336,7 +336,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final public void testINS_errorIsRethrown() {
+    final @Test public void testINS_errorIsRethrown() {
         if ((getComponentAdapterNature() & INSTANTIATING) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepINS_errorIsRethrown(picoContainer);
@@ -362,7 +362,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final public void testINS_runtimeExceptionIsRethrown() {
+    final @Test public void testINS_runtimeExceptionIsRethrown() {
         if ((getComponentAdapterNature() & INSTANTIATING) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepINS_runtimeExceptionIsRethrown(picoContainer);
@@ -390,7 +390,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final public void testINS_normalExceptionIsRethrownInsidePicoInitializationException() {
+    final @Test public void testINS_normalExceptionIsRethrownInsidePicoInitializationException() {
         if ((getComponentAdapterNature() & INSTANTIATING) > 0) {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepINS_normalExceptionIsRethrownInsidePicoInitializationException(picoContainer);
@@ -421,7 +421,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final public void testRES_dependenciesAreResolved() {
+    final @Test public void testRES_dependenciesAreResolved() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final List dependencies = new LinkedList();
             final Object[] wrapperDependencies = new Object[]{dependencies};
@@ -450,7 +450,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final public void testRES_failingVerificationWithCyclicDependencyException() {
+    final @Test public void testRES_failingVerificationWithCyclicDependencyException() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final Set cycleInstances = new HashSet();
             final ObjectReference cycleCheck = new SimpleReference();
@@ -484,7 +484,7 @@ public abstract class AbstractComponentAdapterTestCase extends MockObjectTestCas
         throw new AssertionFailedError("You have to overwrite this method for a useful test");
     }
 
-    final public void testRES_failingInstantiationWithCyclicDependencyException() {
+    final @Test public void testRES_failingInstantiationWithCyclicDependencyException() {
         if ((getComponentAdapterNature() & RESOLVING) > 0) {
             final Set cycleInstances = new HashSet();
             final ObjectReference cycleCheck = new SimpleReference();

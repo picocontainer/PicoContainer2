@@ -9,9 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.DefaultPicoContainer;
-
 import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 
 public class StoringTestCase extends TestCase {
 
@@ -29,7 +30,7 @@ public class StoringTestCase extends TestCase {
         }
     }
 
-    public void testThatForASingleThreadTheBehaviorIsTheSameAsPlainCaching() {
+    @Test public void testThatForASingleThreadTheBehaviorIsTheSameAsPlainCaching() {
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         Storing storeCaching = new Storing();
@@ -48,7 +49,7 @@ public class StoringTestCase extends TestCase {
         assertEquals("Stored:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testThatTwoThreadsHaveSeparatedCacheValues() {
+    @Test public void testThatTwoThreadsHaveSeparatedCacheValues() {
 
         final Foo[] foos = new Foo[4];
 
@@ -82,7 +83,7 @@ public class StoringTestCase extends TestCase {
         assertEquals("Stored:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testThatTwoThreadsHaveSeparatedCacheValuesForThreeScopeScenario() {
+    @Test public void testThatTwoThreadsHaveSeparatedCacheValuesForThreeScopeScenario() {
 
         final Foo[] foos = new Foo[4];
         final Bar[] bars = new Bar[4];
@@ -123,7 +124,7 @@ public class StoringTestCase extends TestCase {
         assertEquals("Stored:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", sessionScope.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testThatCacheMapCanBeReUsedOnASubsequentThreadSimulatingASessionConcept() {
+    @Test public void testThatCacheMapCanBeReUsedOnASubsequentThreadSimulatingASessionConcept() {
 
         final Foo[] foos = new Foo[4];
 
@@ -170,7 +171,7 @@ public class StoringTestCase extends TestCase {
         assertEquals("Stored:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testThatCacheMapCanBeResetOnASubsequentThreadSimulatingASessionConcept() {
+    @Test public void testThatCacheMapCanBeResetOnASubsequentThreadSimulatingASessionConcept() {
 
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
@@ -203,7 +204,7 @@ public class StoringTestCase extends TestCase {
         assertEquals("Stored:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testThatCacheMapCanBeDisabledSimulatingAnEndedRequest() {
+    @Test public void testThatCacheMapCanBeDisabledSimulatingAnEndedRequest() {
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         final Storing storeCaching = new Storing();

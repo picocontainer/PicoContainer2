@@ -9,23 +9,24 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Parameter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.containers.EmptyPicoContainer;
-
-import java.util.Map;
-import java.util.HashMap;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
+import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 public class AbstractInjectorTestCase extends TestCase {
 
@@ -39,7 +40,7 @@ public class AbstractInjectorTestCase extends TestCase {
         ctor = HashMap.class.getConstructor();
     }
 
-    public void testCaughtIllegalAccessExceptionInvokesMonitorAndThrows() {
+    @Test public void testCaughtIllegalAccessExceptionInvokesMonitorAndThrows() {
         final EmptyPicoContainer epc = new EmptyPicoContainer();
         final IllegalAccessException iae = new IllegalAccessException("foo");
         NullComponentMonitor ncm = new NullComponentMonitor() {
@@ -60,7 +61,7 @@ public class AbstractInjectorTestCase extends TestCase {
         }
     }
 
-    public void testCaughtInstantiationExceptionInvokesMonitorAndThrows() {
+    @Test public void testCaughtInstantiationExceptionInvokesMonitorAndThrows() {
         final EmptyPicoContainer epc = new EmptyPicoContainer();
         final InstantiationException ie = new InstantiationException("foo");
         NullComponentMonitor ncm = new NullComponentMonitor() {
@@ -81,7 +82,7 @@ public class AbstractInjectorTestCase extends TestCase {
         }
     }
 
-    public void testCaughtInvocationTargetExceptionInvokesMonitorAndReThrowsRuntimeIfRuntimeInTheFirstPlace() {
+    @Test public void testCaughtInvocationTargetExceptionInvokesMonitorAndReThrowsRuntimeIfRuntimeInTheFirstPlace() {
         final InvocationTargetException ite = new InvocationTargetException(new RuntimeException("foo"));
         NullComponentMonitor ncm = new NullComponentMonitor() {
             public void invocationFailed(Member member, Object instance, Exception e) {
@@ -97,7 +98,7 @@ public class AbstractInjectorTestCase extends TestCase {
         }
     }
 
-    public void testCaughtInvocationTargetExceptionInvokesMonitorAndReThrowsErrorIfErrorInTheFirstPlace() {
+    @Test public void testCaughtInvocationTargetExceptionInvokesMonitorAndReThrowsErrorIfErrorInTheFirstPlace() {
         final InvocationTargetException ite = new InvocationTargetException(new Error("foo"));
         NullComponentMonitor ncm = new NullComponentMonitor() {
             public void invocationFailed(Member member, Object instance, Exception e) {
@@ -113,7 +114,7 @@ public class AbstractInjectorTestCase extends TestCase {
         }
     }
 
-    public void testCaughtInvocationTargetExceptionInvokesMonitorAndReThrowsAsCompositionIfNotRuntimeOrError() {
+    @Test public void testCaughtInvocationTargetExceptionInvokesMonitorAndReThrowsAsCompositionIfNotRuntimeOrError() {
         final InvocationTargetException ite = new InvocationTargetException(new Exception("foo"));
         NullComponentMonitor ncm = new NullComponentMonitor() {
             public void invocationFailed(Member member, Object instance, Exception e) {

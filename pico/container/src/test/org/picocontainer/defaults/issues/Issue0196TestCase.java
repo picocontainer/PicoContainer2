@@ -11,8 +11,10 @@ package org.picocontainer.defaults.issues;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import org.picocontainer.MutablePicoContainer;
+
+import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 
 public class Issue0196TestCase extends TestCase {
     public static class Descriptor {
@@ -28,7 +30,7 @@ public class Issue0196TestCase extends TestCase {
         }
     }
 
-    public void testShouldAllowRegistrationOfArrayAsInstance() {
+    @Test public void testShouldAllowRegistrationOfArrayAsInstance() {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         Descriptor.DescriptorData[] datas = new Descriptor.DescriptorData[3];

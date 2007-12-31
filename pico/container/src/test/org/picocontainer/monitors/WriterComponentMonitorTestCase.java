@@ -52,14 +52,12 @@ public class WriterComponentMonitorTestCase  {
         componentMonitor = new WriterComponentMonitor(out);
     }
 
-    @Test
-    public void testShouldTraceInstantiating() {
+    @Test public void testShouldTraceInstantiating() {
         componentMonitor.instantiating(null, null, constructor);
         assertEquals(format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)) +NL,  out.toString());
     }
 
-    @Test
-    public void testShouldTraceInstantiatedWithInjected() {
+    @Test public void testShouldTraceInstantiatedWithInjected() {
         Object[] injected = new Object[0];
         Object instantiated = new Object();
         componentMonitor.instantiated(null, null, constructor, instantiated, injected, 543);
@@ -69,38 +67,32 @@ public class WriterComponentMonitorTestCase  {
                                                    instantiated.getClass().getName(), parmsToString(injected)) +NL,  out.toString());
     }
 
-
-    @Test
-    public void testShouldTraceInstantiationFailed() {
+    @Test public void testShouldTraceInstantiationFailed() {
         componentMonitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
         Assert.assertEquals(format(ComponentMonitorHelper.INSTANTIATION_FAILED,
                                                    ctorToString(constructor), "doh") +NL,  out.toString());
     }
 
-    @Test
-    public void testShouldTraceInvoking() {
+    @Test public void testShouldTraceInvoking() {
         componentMonitor.invoking(null, null, method, this);
         Assert.assertEquals(format(ComponentMonitorHelper.INVOKING,
                                                    methodToString(method), this) +NL,  out.toString());
     }
 
-    @Test
-    public void testShouldTraceInvoked() {
+    @Test public void testShouldTraceInvoked() {
         componentMonitor.invoked(null, null, method, this, 543);
         Assert.assertEquals(format(ComponentMonitorHelper.INVOKED,
                                                    methodToString(method), this,
                                                    (long)543) +NL,  out.toString());
     }
 
-    @Test
-    public void testShouldTraceInvocatiationFailed() {
+    @Test public void testShouldTraceInvocatiationFailed() {
         componentMonitor.invocationFailed(method, this, new RuntimeException("doh"));
         Assert.assertEquals(format(ComponentMonitorHelper.INVOCATION_FAILED,
                                                    methodToString(method), this, "doh") +NL,  out.toString());
     }
 
-    @Test
-    public void testShouldTraceLifecycleInvocationFailed() {
+    @Test public void testShouldTraceLifecycleInvocationFailed() {
         try {
             componentMonitor.lifecycleInvocationFailed(new TransientPicoContainer(),
                                                        new AbstractAdapter(Map.class, HashMap.class) {
@@ -129,8 +121,7 @@ public class WriterComponentMonitorTestCase  {
                      out.toString());
     }
 
-    @Test
-    public void testNoComponent() {
+    @Test public void testNoComponent() {
         
         componentMonitor.noComponentFound(new TransientPicoContainer(), "foo");
         Assert.assertEquals(format(ComponentMonitorHelper.NO_COMPONENT,

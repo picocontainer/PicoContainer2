@@ -9,30 +9,28 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.monitors.ConsoleComponentMonitor;
-import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
-import org.picocontainer.Parameter;
-import org.picocontainer.ComponentAdapter;
-
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.annotation.ElementType;
 
 import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
+import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
+import org.picocontainer.monitors.ConsoleComponentMonitor;
+
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 public class AnnotatedFieldInjectionTestCase extends TestCase {
 
-    public void testFactoryMakesAnnotationInjector() {
+    @Test public void testFactoryMakesAnnotationInjector() {
 
         AnnotatedFieldInjection injectionFactory = new AnnotatedFieldInjection();
 

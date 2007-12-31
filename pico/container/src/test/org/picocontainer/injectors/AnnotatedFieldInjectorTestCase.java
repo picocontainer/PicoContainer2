@@ -9,18 +9,19 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.annotations.Inject;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
-
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.annotation.ElementType;
 
 import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.annotations.Inject;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 public class AnnotatedFieldInjectorTestCase extends TestCase {
 
@@ -42,7 +43,7 @@ public class AnnotatedFieldInjectorTestCase extends TestCase {
     public static class PogoStick {
     }
 
-    public void testFieldInjection() {
+    @Test public void testFieldInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedFieldInjector(Helicopter.class, Helicopter.class, null,
                                                     new NullComponentMonitor(), new NullLifecycleStrategy(), Inject.class, false));
@@ -52,7 +53,7 @@ public class AnnotatedFieldInjectorTestCase extends TestCase {
         assertNotNull(chopper.pogo);
     }
 
-    public void testFieldInjectionWithoutAnnotationDoesNotWork() {
+    @Test public void testFieldInjectionWithoutAnnotationDoesNotWork() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedFieldInjector(Helicopter2.class, Helicopter2.class, null,
                                                     new NullComponentMonitor(), new NullLifecycleStrategy(), Inject.class, false));
@@ -62,7 +63,7 @@ public class AnnotatedFieldInjectorTestCase extends TestCase {
         assertNull(chopper.pogo);
     }
 
-    public void testFieldDeosNotHappenWithoutRightInjectorDoesNotWork() {
+    @Test public void testFieldDeosNotHappenWithoutRightInjectorDoesNotWork() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new SetterInjector(Helicopter.class, Helicopter.class, null,
                                                     new NullComponentMonitor(), new NullLifecycleStrategy(),
@@ -86,7 +87,7 @@ public class AnnotatedFieldInjectorTestCase extends TestCase {
         }
     }
 
-    public void testFieldInjectionWithAlternativeInjectionAnnotation() {
+    @Test public void testFieldInjectionWithAlternativeInjectionAnnotation() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedFieldInjector(Helicopter3.class, Helicopter3.class, null,
                                                     new NullComponentMonitor(), new NullLifecycleStrategy(), AlternativeInject.class, false));

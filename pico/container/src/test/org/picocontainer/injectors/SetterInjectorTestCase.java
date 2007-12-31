@@ -9,18 +9,23 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static org.picocontainer.parameters.ComponentParameter.DEFAULT;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
 import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
-import static org.picocontainer.parameters.ComponentParameter.DEFAULT;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.NullLifecycle;
@@ -28,9 +33,6 @@ import org.picocontainer.testmodel.PersonBean;
 import org.picocontainer.testmodel.PurseBean;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class SetterInjectorTestCase
@@ -251,7 +253,7 @@ public class SetterInjectorTestCase
     public static class B {
     }
 
-    public void testAllUnsatisfiableDependenciesAreSignalled() {
+    @Test public void testAllUnsatisfiableDependenciesAreSignalled() {
         SetterInjector aAdapter = new SetterInjector("a", A.class, Parameter.DEFAULT, new NullComponentMonitor(), new NullLifecycleStrategy(),
                                                      "set", false);
         SetterInjector bAdapter = new SetterInjector("b", B.class, Parameter.DEFAULT, new NullComponentMonitor(), new NullLifecycleStrategy(),
@@ -269,7 +271,7 @@ public class SetterInjectorTestCase
         }
     }
 
-    public void testAllUnsatisfiableDependenciesAreSignalled2() {
+    @Test public void testAllUnsatisfiableDependenciesAreSignalled2() {
         SetterInjector aAdapter = new SetterInjector(A2.class, A2.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(),
                                                      "set", false);
         SetterInjector bAdapter = new SetterInjector("b", B.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(),
@@ -312,7 +314,7 @@ public class SetterInjectorTestCase
 
     }
 
-    public void testSetterMethodInjectionToContrastWithThatBelow() {
+    @Test public void testSetterMethodInjectionToContrastWithThatBelow() {
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new SetterInjector(SetterBurp.class, SetterBurp.class, Parameter.DEFAULT, new NullComponentMonitor(), new NullLifecycleStrategy(),
@@ -323,7 +325,7 @@ public class SetterInjectorTestCase
         assertNotNull(burp.wind);
     }
 
-    public void testNonSetterMethodInjection() {
+    @Test public void testNonSetterMethodInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new SetterInjector(InitBurp.class, InitBurp.class, Parameter.DEFAULT, new NullComponentMonitor(), new NullLifecycleStrategy(),
                                            "set", false) {
@@ -337,7 +339,7 @@ public class SetterInjectorTestCase
         assertNotNull(burp.wind);
     }
 
-    public void testNonSetterMethodInjectionWithoutOverridingSetterPrefix() {
+    @Test public void testNonSetterMethodInjectionWithoutOverridingSetterPrefix() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new SetterInjector(InitBurp.class, InitBurp.class, Parameter.ZERO, new NullComponentMonitor(), new NullLifecycleStrategy(),
                                            "set", false));
@@ -384,7 +386,7 @@ public class SetterInjectorTestCase
         }
     }
 
-    public void testHybridBeans() {
+    @Test public void testHybridBeans() {
         SetterInjector bAdapter = new SetterInjector("b", B.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(),
                                                      "set", false);
         SetterInjector cAdapter = new SetterInjector("c", C.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(),
@@ -443,7 +445,7 @@ public class SetterInjectorTestCase
         assertSame(yang, yin.getYang());
     }
     
-    public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
+    @Test public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         SetterInjector sica = new SetterInjector(
                 NullLifecycle.class, NullLifecycle.class, new Parameter[0],

@@ -9,22 +9,22 @@
  *****************************************************************************/
 package org.picocontainer.adapters;
 
+import java.util.Map;
+
+import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Disposable;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-
-import java.util.Map;
 
 /**
  * Test the InstanceAdapter.
@@ -34,14 +34,14 @@ import java.util.Map;
 public final class InstanceAdapterTestCase
     extends AbstractComponentAdapterTestCase {
 
-    public void testComponentAdapterReturnsSame() {
+    @Test public void testComponentAdapterReturnsSame() {
         final Touchable touchable = new SimpleTouchable();
         final ComponentAdapter componentAdapter = new InstanceAdapter(Touchable.class, touchable, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
         assertSame(touchable, componentAdapter.getComponentInstance(null));
     }
 
-    public void testDefaultLifecycleStrategy() {
+    @Test public void testDefaultLifecycleStrategy() {
         LifecycleComponent component = new LifecycleComponent();
         InstanceAdapter adapter =
             new InstanceAdapter(LifecycleComponent.class, component, new StartableLifecycleStrategy(new NullComponentMonitor()),
@@ -73,7 +73,7 @@ public final class InstanceAdapterTestCase
         }
     }
 
-    public void testCustomLifecycleCanBeInjected() {
+    @Test public void testCustomLifecycleCanBeInjected() {
         NullLifecycle component = new NullLifecycle();
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         InstanceAdapter adapter = new InstanceAdapter(NullLifecycle.class, component, strategy, new NullComponentMonitor());
@@ -88,7 +88,7 @@ public final class InstanceAdapterTestCase
         assertEquals("<start<stop<dispose<start<stop<dispose", strategy.recording());
     }
 
-    public void testComponentAdapterCanIgnoreLifecycle() {
+    @Test public void testComponentAdapterCanIgnoreLifecycle() {
         final Touchable touchable = new SimpleTouchable();
         InstanceAdapter adapter = new InstanceAdapter(Touchable.class, touchable, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
@@ -101,7 +101,7 @@ public final class InstanceAdapterTestCase
         adapter.dispose(touchable);
     }
 
-    public void testGuardAgainstNullInstance() {
+    @Test public void testGuardAgainstNullInstance() {
         try {
             new InstanceAdapter(Map.class, null, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());

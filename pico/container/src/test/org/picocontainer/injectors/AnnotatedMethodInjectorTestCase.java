@@ -9,20 +9,20 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import junit.framework.TestCase;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.annotations.Inject;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.injectors.AnnotatedMethodInjector;
-import org.picocontainer.injectors.SetterInjector;
-
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.annotation.ElementType;
+
+import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.annotations.Inject;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 public class AnnotatedMethodInjectorTestCase extends TestCase {
 
@@ -48,7 +48,7 @@ public class AnnotatedMethodInjectorTestCase extends TestCase {
     public static class Wind {
     }
 
-    public void testSetterMethodInjectionToContrastWithThatBelow() {
+    @Test public void testSetterMethodInjectionToContrastWithThatBelow() {
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new SetterInjector(SetterBurp.class, SetterBurp.class, Parameter.DEFAULT, new NullComponentMonitor(), new NullLifecycleStrategy(),
@@ -59,7 +59,7 @@ public class AnnotatedMethodInjectorTestCase extends TestCase {
         assertNotNull(burp.wind);
     }
 
-    public void testNonSetterMethodInjection() {
+    @Test public void testNonSetterMethodInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedMethodInjector(AnnotatedBurp.class, AnnotatedBurp.class, Parameter.DEFAULT,
                                                new NullComponentMonitor(), new NullLifecycleStrategy(),
@@ -84,7 +84,7 @@ public class AnnotatedMethodInjectorTestCase extends TestCase {
     }
 
     
-    public void testNonSetterMethodInjectionWithAlternativeAnnotation() {
+    @Test public void testNonSetterMethodInjectionWithAlternativeAnnotation() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedMethodInjector(AnotherAnnotatedBurp.class, AnotherAnnotatedBurp.class, Parameter.DEFAULT,
                                                new NullComponentMonitor(), new NullLifecycleStrategy(),

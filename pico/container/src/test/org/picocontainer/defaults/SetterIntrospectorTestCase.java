@@ -9,9 +9,11 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import java.beans.IntrospectionException;
+
 import junit.framework.TestCase;
 
-import java.beans.IntrospectionException;
+import org.junit.Test;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -55,7 +57,7 @@ public class SetterIntrospectorTestCase extends TestCase {
         }
     }
 
-    public void testShouldConvertPropertyNamesInSameWayAsBeanInfo() throws IntrospectionException {
+    @Test public void testShouldConvertPropertyNamesInSameWayAsBeanInfo() throws IntrospectionException {
 
 // TODO - to test via SetterInjectionComponentAdaptor with mock/expects.
 

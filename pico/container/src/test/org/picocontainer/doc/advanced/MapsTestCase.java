@@ -15,9 +15,10 @@ import java.util.TreeMap;
 
 import junit.framework.TestCase;
 
+import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.parameters.CollectionComponentParameter;
 import org.picocontainer.parameters.ComponentParameter;
@@ -57,7 +58,7 @@ public class MapsTestCase
 
     // END SNIPPET: bowl
 
-    public void testShouldCreateBowlWithFishCollection() {
+    @Test public void testShouldCreateBowlWithFishCollection() {
 
         //      START SNIPPET: usage
 
@@ -83,7 +84,7 @@ public class MapsTestCase
         assertTrue(cods.contains(cod));
     }
     
-    public void testShouldCreateBowlWithNamedFishesOnly() {
+    @Test public void testShouldCreateBowlWithNamedFishesOnly() {
 
         //      START SNIPPET: useKeyType
 
@@ -107,7 +108,7 @@ public class MapsTestCase
         //      END SNIPPET: ensureKeyType
     }
     
-    public void testShouldCreateBowlWithFishesFromParent() {
+    @Test public void testShouldCreateBowlWithFishesFromParent() {
 
         // START SNIPPET: scope
 
@@ -125,7 +126,7 @@ public class MapsTestCase
         // END SNIPPET: scope
     }
     
-    public void testShouldCreateBowlWith2CodsOnly() {
+    @Test public void testShouldCreateBowlWith2CodsOnly() {
 
         // START SNIPPET: scopeOverlay
 
@@ -144,7 +145,7 @@ public class MapsTestCase
         // END SNIPPET: scopeOverlay
     }
     
-    public void testShouldCreateBowlWithoutTom() {
+    @Test public void testShouldCreateBowlWithoutTom() {
 
         // START SNIPPET: individualSelection
 

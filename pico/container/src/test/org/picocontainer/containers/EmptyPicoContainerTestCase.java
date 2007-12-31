@@ -12,16 +12,16 @@ package org.picocontainer.containers;
 
 import junit.framework.TestCase;
 
-import org.picocontainer.PicoContainer;
+import org.junit.Test;
 import org.picocontainer.NameBinding;
-import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.PicoContainer;
 
 /**
  * @author Mauro Talevi
  */
 public class EmptyPicoContainerTestCase extends TestCase {
 
-    public void testReturnValues() {
+    @Test public void testReturnValues() {
         PicoContainer pico = new EmptyPicoContainer();
         assertNull(pico.getComponentAdapter(null, (NameBinding) null));
         assertNull(pico.getComponentAdapter(null, (NameBinding) null));

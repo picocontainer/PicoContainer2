@@ -11,16 +11,17 @@ package org.picocontainer.alternatives.issues;
 
 import junit.framework.TestCase;
 
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.visitors.VerifyingVisitor;
 import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.visitors.VerifyingVisitor;
 
 public class Issue0214TestCase extends TestCase {
 
     // This bug as described in the bug report, http://jira.codehaus.org/browse/PICO-214, cannot be reproduced.
-    public void testTheBug() {
+    @Test public void testTheBug() {
         final MutablePicoContainer pico = new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()));
         pico.addComponent(A.class);
 

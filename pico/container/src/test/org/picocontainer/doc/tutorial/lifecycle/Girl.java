@@ -9,8 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.doc.tutorial.lifecycle;
 
-import org.picocontainer.doc.tutorial.interfaces.Kissable;
 import org.picocontainer.Startable;
+import org.picocontainer.doc.tutorial.interfaces.Kissable;
 
 // START SNIPPET: girl
 

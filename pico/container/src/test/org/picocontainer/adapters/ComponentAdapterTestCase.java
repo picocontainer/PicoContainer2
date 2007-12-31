@@ -7,21 +7,22 @@
  *****************************************************************************/
 package org.picocontainer.adapters;
 
+import java.lang.reflect.Constructor;
+
 import junit.framework.TestCase;
+
+import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.adapters.AbstractAdapter;
-import org.picocontainer.injectors.AbstractInjector;
-
-import java.lang.reflect.Constructor;
 
 /**
  * Test AbstractAdapter behaviour
@@ -95,7 +96,7 @@ public class ComponentAdapterTestCase
         }
     }
     
-    public void testComponentImplementationMayNotBeNull() {
+    @Test public void testComponentImplementationMayNotBeNull() {
         try {
             new TestAdapter<Object>("Key", null);
             fail("NullPointerException expected");
@@ -104,7 +105,7 @@ public class ComponentAdapterTestCase
         }
     }
 
-    public void testComponentKeyCanBeNullButNotRequested() {
+    @Test public void testComponentKeyCanBeNullButNotRequested() {
         ComponentAdapter<String> componentAdapter = new TestAdapter<String>(null, String.class);
         try {
             componentAdapter.getComponentKey();
@@ -114,7 +115,7 @@ public class ComponentAdapterTestCase
         }
     }
 
-    public void testComponentMonitorMayNotBeNull() {
+    @Test public void testComponentMonitorMayNotBeNull() {
         try {
             new TestAdapter<String>("Key", String.class, null);
             fail("NullPointerException expected");
@@ -129,7 +130,7 @@ public class ComponentAdapterTestCase
         }
     }
 
-    public void testParameterMayNotBeNull() throws Exception {
+    @Test public void testParameterMayNotBeNull() throws Exception {
         try {
             new TestInstantiatingAdapter<String>("Key", String.class, new Parameter[]{new ConstantParameter("Value"), null});
             fail("Thrown " + NullPointerException.class.getName() + " expected");
@@ -138,7 +139,7 @@ public class ComponentAdapterTestCase
         }
     }
     
-    public void testStringRepresentation() {
+    @Test public void testStringRepresentation() {
         ComponentAdapter<Integer> componentAdapter = new TestAdapter<Integer>("Key", Integer.class);
         assertEquals(TestAdapter.class.getName() + ":Key", componentAdapter.toString());
     }

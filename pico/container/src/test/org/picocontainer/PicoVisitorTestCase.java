@@ -7,16 +7,11 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.visitors.VerifyingVisitor;
-import org.picocontainer.visitors.AbstractPicoVisitor;
-
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.junit.Test;
+import org.picocontainer.visitors.AbstractPicoVisitor;
+import org.picocontainer.visitors.VerifyingVisitor;
 
 
 /**
@@ -26,7 +21,7 @@ import org.jmock.MockObjectTestCase;
 public class PicoVisitorTestCase
         extends MockObjectTestCase {
 
-    public void testVisitorThatMustBeInvokedUsingTraverse() {
+    @Test public void testVisitorThatMustBeInvokedUsingTraverse() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         try {
             pico.accept(new VerifyingVisitor());
@@ -44,13 +39,13 @@ public class PicoVisitorTestCase
         }
     }
 
-    public void testUnusualTraverseNode() {
+    @Test public void testUnusualTraverseNode() {
         UnusualNode node = new UnusualNode();
         new VerifyingVisitor().traverse(node);
         assertTrue(node.visited);
     }
 
-    public void testIllegalTraverseNode() {
+    @Test public void testIllegalTraverseNode() {
         try {
             new VerifyingVisitor().traverse("Gosh!");
             fail("IllegalArgumentException expected");
@@ -59,7 +54,7 @@ public class PicoVisitorTestCase
         }
     }
 
-    public void testThrownRuntimeExceptionIsUnwrapped() {
+    @Test public void testThrownRuntimeExceptionIsUnwrapped() {
         Mock mockPico = mock(PicoContainer.class);
         PicoVisitor visitor = new VerifyingVisitor();
         Error exception = new Error("junit");
@@ -74,7 +69,7 @@ public class PicoVisitorTestCase
         }
     }
 
-    public void testThrownErrorIsUnwrapped() {
+    @Test public void testThrownErrorIsUnwrapped() {
         Mock mockPico = mock(PicoContainer.class);
         PicoVisitor visitor = new VerifyingVisitor();
         Error error = new InternalError("junit");

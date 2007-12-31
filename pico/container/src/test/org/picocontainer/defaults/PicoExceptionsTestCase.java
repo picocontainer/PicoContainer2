@@ -9,15 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.monitors.AbstractComponentMonitor;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -27,6 +18,16 @@ import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoException;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.AbstractComponentMonitor;
 
 /**
  * Unit tests for the several PicoException classes.
@@ -73,11 +74,11 @@ public class PicoExceptionsTestCase
         assertSame(THROWABLE, exception.getCause());
     }
 
-    public void testPicoInitializationException() {
+    @Test public void testPicoInitializationException() {
         executeTestOfStandardException(PicoCompositionException.class);
     }
 
-    public void testPicoInitializationExceptionWithDefaultConstructor() {
+    @Test public void testPicoInitializationExceptionWithDefaultConstructor() {
         TestException e = new TestException(null);
         assertNull(e.getMessage());
         assertNull(e.getCause());
@@ -89,7 +90,7 @@ public class PicoExceptionsTestCase
         }
     }
 
-    public void testPrintStackTrace() throws IOException {
+    @Test public void testPrintStackTrace() throws IOException {
         PicoException nestedException = new PicoException("Outer", new Exception("Inner")) {
         };
         PicoException simpleException = new PicoException("Outer") {

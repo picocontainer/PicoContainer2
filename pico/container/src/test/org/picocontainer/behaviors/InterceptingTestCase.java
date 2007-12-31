@@ -9,9 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.DefaultPicoContainer;
-
 import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 
 public class InterceptingTestCase extends TestCase {
 
@@ -37,7 +38,7 @@ public class InterceptingTestCase extends TestCase {
         }
     }
 
-    public void testPreAndPostObservation() {
+    @Test public void testPreAndPostObservation() {
         final StringBuilder sb = new StringBuilder();
         DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
         pico.addComponent(StringBuilder.class, sb);
@@ -73,7 +74,7 @@ public class InterceptingTestCase extends TestCase {
         assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testPreCanBlockInvocationWithAlternateReturnValue() {
+    @Test public void testPreCanBlockInvocationWithAlternateReturnValue() {
         final StringBuilder sb = new StringBuilder();
         DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
         pico.addComponent(Foo.class, FooImpl.class);
@@ -102,7 +103,7 @@ public class InterceptingTestCase extends TestCase {
         assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testOverrideOfReturnValue() {
+    @Test public void testOverrideOfReturnValue() {
         final StringBuilder sb = new StringBuilder();
         DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
         pico.addComponent(Foo.class, FooImpl.class);
@@ -140,7 +141,7 @@ public class InterceptingTestCase extends TestCase {
         assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testNothingHappensIfNoPreOrPost() {
+    @Test public void testNothingHappensIfNoPreOrPost() {
         final StringBuilder sb = new StringBuilder();
         DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
         pico.addComponent(Foo.class, FooImpl.class);

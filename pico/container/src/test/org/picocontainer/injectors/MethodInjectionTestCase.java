@@ -9,14 +9,15 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.PicoBuilder;
-import org.picocontainer.MutablePicoContainer;
+import junit.framework.TestCase;
+
+import org.junit.Test;
 import org.picocontainer.Characteristics;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoBuilder;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-
-import junit.framework.TestCase;
 
 public class MethodInjectionTestCase extends TestCase {
 
@@ -33,7 +34,7 @@ public class MethodInjectionTestCase extends TestCase {
     public static class Bar {
     }
 
-    public void testMethodInjection() {
+    @Test public void testMethodInjection() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection());
         pico.addComponent("hello");
         pico.addComponent(Foo.class);
@@ -44,7 +45,7 @@ public class MethodInjectionTestCase extends TestCase {
         assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testMethodInjectionViaCharacteristics() {
+    @Test public void testMethodInjectionViaCharacteristics() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent("hello");
         pico.as(Characteristics.METHOD_INJECTION).addComponent(Foo.class);
@@ -55,7 +56,7 @@ public class MethodInjectionTestCase extends TestCase {
         assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testMethodInjectionViaAdapter() {
+    @Test public void testMethodInjectionViaAdapter() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection());
         pico.addComponent("hello");
         pico.addAdapter(new MethodInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), "inject", false));
@@ -66,7 +67,7 @@ public class MethodInjectionTestCase extends TestCase {
         assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testMethodInjectionByBuilder() {
+    @Test public void testMethodInjectionByBuilder() {
         MutablePicoContainer pico = new PicoBuilder().withMethodInjection().build();
         pico.addComponent("hello");
         pico.addComponent(Foo.class);

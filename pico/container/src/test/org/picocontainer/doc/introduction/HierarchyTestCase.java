@@ -10,15 +10,17 @@
 package org.picocontainer.doc.introduction;
 
 import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.DefaultPicoContainer;
 
 /**
  * @author Aslak Helles&oslash;y
  */
 public class HierarchyTestCase extends TestCase {
-    public void testHierarchy() {
+    @Test public void testHierarchy() {
         try {
             // START SNIPPET: wontwork
             // Create x hierarchy of containers

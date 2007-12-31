@@ -9,15 +9,22 @@
  *****************************************************************************/
 package org.picocontainer.tck;
 
-import org.picocontainer.PicoException;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Characteristics;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.io.IOException;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.Test;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoException;
+
 
 /**
  * @author Paul Hammant
@@ -25,7 +32,7 @@ import java.awt.event.ActionEvent;
 public abstract class AbstractImplementationHidingPicoContainerTestCase extends AbstractPicoContainerTestCase {
 
 
-    public void testInstanceIsNotAutomaticallyHidden() {
+    @Test public void testInstanceIsNotAutomaticallyHidden() {
         MutablePicoContainer pc = createImplementationHidingPicoContainer();
         pc.as(this.getProperties()).addComponent(Map.class, new HashMap());
         Map map = pc.getComponent(Map.class);
@@ -36,7 +43,7 @@ public abstract class AbstractImplementationHidingPicoContainerTestCase extends 
     protected abstract MutablePicoContainer createImplementationHidingPicoContainer();
 
 
-    public void testImplementaionIsAutomaticallyHidden() {
+    @Test public void testImplementaionIsAutomaticallyHidden() {
         MutablePicoContainer pc = createImplementationHidingPicoContainer();
         pc.addComponent(Map.class, HashMap.class);
         Map map = pc.getComponent(Map.class);
@@ -44,7 +51,7 @@ public abstract class AbstractImplementationHidingPicoContainerTestCase extends 
         assertFalse(map instanceof HashMap);
     }
 
-    public void testNonInterfaceImplementaionIsAutomaticallyHidden() {
+    @Test public void testNonInterfaceImplementaionIsAutomaticallyHidden() {
         MutablePicoContainer pc = createImplementationHidingPicoContainer();
         pc.addComponent(HashMap.class, HashMap.class);
         Map map = pc.getComponent(HashMap.class);
@@ -52,7 +59,7 @@ public abstract class AbstractImplementationHidingPicoContainerTestCase extends 
         assertTrue(map instanceof HashMap);
     }
 
-    public void testNonInterfaceImplementaionWithParametersIsAutomaticallyHidden() {
+    @Test public void testNonInterfaceImplementaionWithParametersIsAutomaticallyHidden() {
         MutablePicoContainer pc = createImplementationHidingPicoContainer();
         pc.addComponent(HashMap.class, HashMap.class);
         Map map = pc.getComponent(HashMap.class);
@@ -61,7 +68,7 @@ public abstract class AbstractImplementationHidingPicoContainerTestCase extends 
     }
 
 
-    public void testImplementaionWithParametersIsAutomaticallyHidden() {
+    @Test public void testImplementaionWithParametersIsAutomaticallyHidden() {
         MutablePicoContainer pc = createImplementationHidingPicoContainer();
         pc.addComponent(Map.class, HashMap.class);
         Map map = pc.getComponent(Map.class);
@@ -69,7 +76,7 @@ public abstract class AbstractImplementationHidingPicoContainerTestCase extends 
         assertFalse(map instanceof HashMap);
     }
 
-    public void testSerializedContainerCanRetrieveImplementation() throws PicoException,
+    @Test public void testSerializedContainerCanRetrieveImplementation() throws PicoException,
                                                                           IOException, ClassNotFoundException {
         try {
             super.testSerializedContainerCanRetrieveImplementation();
@@ -79,7 +86,7 @@ public abstract class AbstractImplementationHidingPicoContainerTestCase extends 
         }
     }
 
-    public void testExceptionThrowingFromHiddenComponent() {
+    @Test public void testExceptionThrowingFromHiddenComponent() {
         MutablePicoContainer pc = createImplementationHidingPicoContainer();
         pc.addComponent(ActionListener.class, Burp.class);
         try {

@@ -8,18 +8,19 @@
  * Original code by                                                          *
  *****************************************************************************/
 package org.picocontainer.defaults.issues;
+import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.DefaultPicoContainer;
-
-import junit.framework.TestCase;
 
 /**
  * Test case for issue http://jira.codehaus.org/browse/PICO-280
  */
 public class Issue0280TestCase extends TestCase
 {
-    public void testShouldFailIfInstantiationInChildContainerFails()
+    @Test public void testShouldFailIfInstantiationInChildContainerFails()
     {
         MutablePicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = new DefaultPicoContainer(parent);

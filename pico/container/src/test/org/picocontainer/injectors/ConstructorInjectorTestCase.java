@@ -16,17 +16,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.AbstractButton;
+
 import org.jmock.Mock;
 import org.jmock.core.Constraint;
+import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
@@ -36,8 +37,6 @@ import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-
-import javax.swing.*;
 
 
 public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCase {
@@ -162,7 +161,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
         return componentAdapter;
     }
 
-    public void testNormalExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
+    @Test public void testNormalExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         picoContainer.addComponent(NormalExceptionThrowing.class);
         try {
@@ -179,7 +178,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
         }
     }
 
-    public void testInstantiationExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
+    @Test public void testInstantiationExceptionThrownInCtorIsRethrownInsideInvocationTargetExeption() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         try {
             picoContainer.addComponent(InstantiationExceptionThrowing.class);
@@ -195,7 +194,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
         }
     }
 
-    public void testPicoInitializationExceptionThrownBecauseOfFilteredConstructors() {
+    @Test public void testPicoInitializationExceptionThrownBecauseOfFilteredConstructors() {
         DefaultPicoContainer picoContainer = new DefaultPicoContainer();
         try {
             picoContainer.addComponent(AllConstructorsArePrivate.class);
@@ -208,7 +207,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
         }
     }
 
-    public void testRegisterInterfaceShouldFail() throws PicoCompositionException {
+    @Test public void testRegisterInterfaceShouldFail() throws PicoCompositionException {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         try {
@@ -220,7 +219,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
         }
     }
 
-    public void testRegisterAbstractShouldFail() throws PicoCompositionException {
+    @Test public void testRegisterAbstractShouldFail() throws PicoCompositionException {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         try {
@@ -253,7 +252,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
     }
 
     // http://jira.codehaus.org/browse/PICO-201
-    public void testShouldNotConsiderNonPublicConstructors() {
+    @Test public void testShouldNotConsiderNonPublicConstructors() {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Component201.class);
         pico.addComponent(new Integer(2));
@@ -262,7 +261,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
         assertNotNull(pico.getComponent(Component201.class));
     }
 
-    public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
+    @Test public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
         Mock monitor = mock(ComponentMonitor.class);
         Constructor emptyHashMapCtor = HashMap.class.getConstructor();
         monitor.expects(once()).method("instantiating").with(NULL, isA(ConstructorInjector.class),eq(emptyHashMapCtor)).will(returnValue(emptyHashMapCtor));
@@ -303,7 +302,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
         cica.getComponentInstance(null);
     }
 
-    public void testMonitoringHappensBeforeAndOnFailOfImpossibleComponentsInstantiation() throws NoSuchMethodException {
+    @Test public void testMonitoringHappensBeforeAndOnFailOfImpossibleComponentsInstantiation() throws NoSuchMethodException {
         Mock monitor = mock(ComponentMonitor.class);
         Constructor barfingActionListenerCtor = BarfingActionListener.class.getConstructor();
         monitor.expects(once()).method("instantiating").with(new Constraint[] {NULL,isA(ComponentAdapter.class), eq(barfingActionListenerCtor)}).will(returnValue(barfingActionListenerCtor));
@@ -339,7 +338,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
         }
     }
 
-    public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
+    @Test public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         ConstructorInjector cica = new ConstructorInjector(
                 NullLifecycle.class, NullLifecycle.class, new Parameter[0],

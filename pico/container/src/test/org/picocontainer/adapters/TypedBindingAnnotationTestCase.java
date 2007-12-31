@@ -15,15 +15,14 @@ import org.picocontainer.annotations.Bind;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AnnotatedFieldInjection;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.MethodInjection;
 import org.picocontainer.injectors.SetterInjection;
-import org.picocontainer.injectors.ConstructorInjection;
 
 /** @author Paul Hammant */
 public class TypedBindingAnnotationTestCase  {
 
-	@Test
-	public void testFieldInjectionWithBindings() {
+	@Test public void testFieldInjectionWithBindings() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new AnnotatedFieldInjection());
 
         addFiveComponents(mpc);
@@ -43,8 +42,7 @@ public class TypedBindingAnnotationTestCase  {
         Assert.assertNotNull(mpc.getComponent(Apple.class, Bramley.class));
     }
 
-	@Test
-    public void testBindingAnnotationsWithConstructorInjection() {
+    @Test public void testBindingAnnotationsWithConstructorInjection() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new ConstructorInjection());
 
         addFiveComponents(mpc, FruitBasketConstructor.class);
@@ -61,8 +59,7 @@ public class TypedBindingAnnotationTestCase  {
         Assert.assertEquals(fb.braeburn.getX(), 4);
     }
 
-	@Test
-    public void testBindingAnnotationsWithMethodInjection() {
+    @Test public void testBindingAnnotationsWithMethodInjection() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new MethodInjection("foo"));
         addFiveComponents(mpc);
         FruitBasket fb = mpc.getComponent(FruitBasket.class);
@@ -71,8 +68,7 @@ public class TypedBindingAnnotationTestCase  {
 
     }
 
-	@Test
-    public void testBindingAnnotationsWithSetterInjection() {
+    @Test public void testBindingAnnotationsWithSetterInjection() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new SetterInjection());
         addFiveComponents(mpc);
         FruitBasket fb = mpc.getComponent(FruitBasket.class);

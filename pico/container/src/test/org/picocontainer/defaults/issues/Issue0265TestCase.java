@@ -9,21 +9,21 @@
  *****************************************************************************/
 package org.picocontainer.defaults.issues;
 
-import org.jmock.MockObjectTestCase;
-import org.jmock.Mock;
-import org.jmock.core.Constraint;
+import java.lang.reflect.Method;
 
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
+import org.junit.Test;
+import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Startable;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.DefaultPicoContainerTestCase;
-import org.picocontainer.Characteristics;
-
-import java.lang.reflect.Method;
+import org.picocontainer.Startable;
 
 public class Issue0265TestCase extends MockObjectTestCase {
 
-    public void testCanReallyChangeMonitor() throws SecurityException, NoSuchMethodException {
+    @Test public void testCanReallyChangeMonitor() throws SecurityException, NoSuchMethodException {
         Method start = Startable.class.getMethod("start");
         Method stop = Startable.class.getMethod("stop");
         Mock mockMonitor1 = mock(ComponentMonitor.class, "Monitor1");

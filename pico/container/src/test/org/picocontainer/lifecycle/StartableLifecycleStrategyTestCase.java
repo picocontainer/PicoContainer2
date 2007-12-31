@@ -11,9 +11,9 @@ import java.io.Serializable;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.junit.Test;
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
-import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
@@ -28,18 +28,18 @@ public class StartableLifecycleStrategyTestCase extends MockObjectTestCase {
         strategy = new StartableLifecycleStrategy(new NullComponentMonitor());
     }
 
-    public void testStartable(){
+    @Test public void testStartable(){
         Object startable = mockComponent(true, false);
         strategy.start(startable);
         strategy.stop(startable);
     }
 
-    public void testDisposable(){
+    @Test public void testDisposable(){
         Object startable = mockComponent(false, true);
         strategy.dispose(startable);
     }
 
-    public void testSerializable(){
+    @Test public void testSerializable(){
         Object serializable = mockComponent(false, false);
         strategy.start(serializable);
         strategy.stop(serializable);

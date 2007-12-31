@@ -9,6 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import java.lang.reflect.Constructor;
+import java.util.Collection;
+import java.util.Vector;
+
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
@@ -18,13 +22,10 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 
-import java.lang.reflect.Constructor;
-import java.util.*;
-
 /**
  * @author Mauro Talevi
  */
-public class AbstractComponentMonitorTestCase extends MockObjectTestCase {
+public class AbstractComponentMonitorTestCase extends MockObjectTestCase  {
 
     public void testDelegatingMonitorThrowsExpectionWhenConstructionWithNullDelegate(){
         try {

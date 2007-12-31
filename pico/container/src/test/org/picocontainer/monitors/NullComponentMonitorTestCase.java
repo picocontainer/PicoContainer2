@@ -9,18 +9,18 @@
  *****************************************************************************/
 package org.picocontainer.monitors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoLifecycleException;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import org.jmock.MockObjectTestCase;
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoLifecycleException;
 
 public class NullComponentMonitorTestCase extends MockObjectTestCase {
 
-    public void testItAll() throws NoSuchMethodException {
+    @Test public void testItAll() throws NoSuchMethodException {
 
         NullComponentMonitor ncm = new NullComponentMonitor();
         ncm.instantiated(makePico(), makeCA(), makeConstructor(), "foo", new Object[0], 10);

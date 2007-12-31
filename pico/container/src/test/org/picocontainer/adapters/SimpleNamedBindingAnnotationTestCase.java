@@ -1,7 +1,16 @@
 package org.picocontainer.adapters;
 
+import java.io.Serializable;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Field;
+import java.util.Properties;
+
 import junit.framework.TestCase;
 
+import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -15,14 +24,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.injectors.AbstractInjector;
 
-import java.io.Serializable;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Field;
-import java.util.Properties;
-
 
 /**
  * @author Paul Hammant
@@ -30,7 +31,7 @@ import java.util.Properties;
  */
 public class SimpleNamedBindingAnnotationTestCase extends TestCase {
 
-    public void testNamedBinding() {
+    @Test public void testNamedBinding() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new FieldInjection());
         mpc.addComponent(FruitBasket.class);
         mpc.addComponent(bindKey(Apple.class, "one"), AppleImpl1.class);

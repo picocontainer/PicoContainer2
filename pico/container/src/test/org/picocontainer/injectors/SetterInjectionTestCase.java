@@ -9,19 +9,18 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.PicoCompositionException;
+import java.util.Properties;
+
+import org.junit.Test;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.injectors.SetterInjection;
-import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.SetterInjector;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.RecordingLifecycle;
 import org.picocontainer.testmodel.RecordingLifecycle.One;
-
-import java.util.Properties;
 
 /**
  * @author J&ouml;rg Schaible
@@ -72,14 +71,14 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTestCase {
         }
     }
 
-    public void testContainerUsesStandardConstructor() {
+    @Test public void testContainerUsesStandardConstructor() {
         picoContainer.addComponent(Bean.class, NamedBeanWithPossibleDefault.class);
         picoContainer.addComponent("Tom");
         NamedBeanWithPossibleDefault bean = (NamedBeanWithPossibleDefault) picoContainer.getComponent(Bean.class);
         assertFalse(bean.getByDefault());
     }
 
-    public void testContainerUsesOnlyStandardConstructor() {
+    @Test public void testContainerUsesOnlyStandardConstructor() {
         picoContainer.addComponent(Bean.class, NoBean.class);
         picoContainer.addComponent("Tom");
         try {
@@ -89,7 +88,7 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTestCase {
         }
     }
 
-    public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
+    @Test public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         SetterInjection componentFactory = new SetterInjection();
         SetterInjector sica = (SetterInjector)componentFactory.createComponentAdapter(new NullComponentMonitor(), strategy, new Properties(), NullLifecycle.class, NullLifecycle.class);
@@ -112,7 +111,7 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTestCase {
         }
     }
 
-    public void testAlternatePrefixWorks() {
+    @Test public void testAlternatePrefixWorks() {
         picoContainer = new DefaultPicoContainer(new SetterInjection("init"));
         picoContainer.addComponent(Bean.class, AnotherNamedBean.class);
         picoContainer.addComponent("Tom");

@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 
 import junit.framework.TestCase;
 
+import org.junit.Test;
 import org.picocontainer.ComponentMonitor;
 
 /**
@@ -33,27 +34,27 @@ public class ConsoleComponentMonitorTestCase extends TestCase {
         componentMonitor = new ConsoleComponentMonitor(out);
     }
 
-    public void testShouldTraceInstantiating() {
+    @Test public void testShouldTraceInstantiating() {
         componentMonitor.instantiating(null, null, constructor);
     }
 
-    public void testShouldTraceInstantiatedWithInjected() {
+    @Test public void testShouldTraceInstantiatedWithInjected() {
         componentMonitor.instantiated(null, null, constructor, new Object(), new Object[0], 543);
     }
 
-    public void testShouldTraceInstantiationFailed() {
+    @Test public void testShouldTraceInstantiationFailed() {
         componentMonitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
     }
 
-    public void testShouldTraceInvoking() {
+    @Test public void testShouldTraceInvoking() {
         componentMonitor.invoking(null, null, method, this);
     }
 
-    public void testShouldTraceInvoked() {
+    @Test public void testShouldTraceInvoked() {
         componentMonitor.invoked(null, null, method, this, 543);
     }
 
-    public void testShouldTraceInvocatiationFailed() {
+    @Test public void testShouldTraceInvocatiationFailed() {
         componentMonitor.invocationFailed(method, this, new RuntimeException("doh"));
     }
 

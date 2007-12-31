@@ -9,26 +9,28 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import junit.framework.TestCase;
+
+import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.annotations.Cache;
-import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.injectors.SetterInjector;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Properties;
-import java.util.Enumeration;
-
-import junit.framework.TestCase;
 import com.thoughtworks.xstream.XStream;
 
 public class AdaptingBehaviorTestCase extends TestCase {
 
-    public void testCachingBehaviorCanBeAddedByCharacteristics() {
+    @Test public void testCachingBehaviorCanBeAddedByCharacteristics() {
         AdaptingBehavior abf = new AdaptingBehavior();
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
@@ -42,7 +44,7 @@ public class AdaptingBehaviorTestCase extends TestCase {
         assertEquals("Cached:ConstructorInjector-interface java.util.Map",ca.toString());
     }
 
-    public void testCachingBehaviorCanBeAddedByAnnotation() {
+    @Test public void testCachingBehaviorCanBeAddedByAnnotation() {
         AdaptingBehavior abf = new AdaptingBehavior();
         Properties cc = new Properties();
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, MyHashMap.class);
@@ -71,7 +73,7 @@ public class AdaptingBehaviorTestCase extends TestCase {
         }
     }
 
-    public void testImplementationHidingBehaviorCanBeAddedByCharacteristics() {
+    @Test public void testImplementationHidingBehaviorCanBeAddedByCharacteristics() {
         AdaptingBehavior abf = new AdaptingBehavior();
         Properties cc = new Properties();
         mergeInto(Characteristics.HIDE_IMPL,cc);
@@ -86,7 +88,7 @@ public class AdaptingBehaviorTestCase extends TestCase {
 
     }
 
-    public void testPropertyApplyingBehaviorCanBeAddedByCharacteristics() {
+    @Test public void testPropertyApplyingBehaviorCanBeAddedByCharacteristics() {
         AdaptingBehavior abf = new AdaptingBehavior();
         Properties cc = new Properties();
         mergeInto(Characteristics.PROPERTY_APPLYING,cc);
@@ -105,7 +107,7 @@ public class AdaptingBehaviorTestCase extends TestCase {
 
     }
 
-    public void testSetterInjectionCanBeTriggereedMeaningAdaptiveInjectorIsUsed() {
+    @Test public void testSetterInjectionCanBeTriggereedMeaningAdaptiveInjectorIsUsed() {
         AdaptingBehavior abf = new AdaptingBehavior();
         Properties cc = new Properties();
         mergeInto(Characteristics.SDI,cc);
@@ -118,7 +120,7 @@ public class AdaptingBehaviorTestCase extends TestCase {
 
     }
 
-    public void testCachingAndImplHidingAndThreadSafetySetupCorrectly() {
+    @Test public void testCachingAndImplHidingAndThreadSafetySetupCorrectly() {
         AdaptingBehavior abf = new AdaptingBehavior();
         Properties cc = new Properties();
         mergeInto(Characteristics.CACHE,cc);
@@ -149,7 +151,7 @@ public class AdaptingBehaviorTestCase extends TestCase {
 
     }
 
-    public void testCachingAndImplHidingAndThreadSafetySetupCorrectlyForExtraCaching() {
+    @Test public void testCachingAndImplHidingAndThreadSafetySetupCorrectlyForExtraCaching() {
         Caching cbf = new Caching();
         AdaptingBehavior abf = new AdaptingBehavior();
         cbf.wrap(abf);
@@ -172,7 +174,7 @@ public class AdaptingBehaviorTestCase extends TestCase {
 
     }
 
-    public void testCachingAndImplHidingAndThreadSafetySetupCorrectlyForExtraCachingForAdapter() {
+    @Test public void testCachingAndImplHidingAndThreadSafetySetupCorrectlyForExtraCachingForAdapter() {
         Caching cbf = new Caching();
         AdaptingBehavior abf = new AdaptingBehavior();
         cbf.wrap(abf);

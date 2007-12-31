@@ -7,17 +7,16 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Disposable;
-import org.picocontainer.Startable;
-import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
+import java.io.Serializable;
+import java.lang.reflect.Method;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
-
-import java.io.Serializable;
-import java.lang.reflect.Method;
+import org.junit.Test;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Disposable;
+import org.picocontainer.Startable;
 
 /**
  * @author Paul Hammant
@@ -34,21 +33,21 @@ public class ReflectionLifecycleStrategyTestCase extends MockObjectTestCase {
         strategy = new ReflectionLifecycleStrategy((ComponentMonitor)componentMonitorMock.proxy());
     }
 
-    public void testStartable(){
+    @Test public void testStartable(){
         Object startable = mockComponent(true, false);
         strategy.start(startable);
         strategy.stop(startable);
         strategy.dispose(startable);
     }
 
-    public void testDisposable(){
+    @Test public void testDisposable(){
         Object disposable = mockComponent(false, true);
         strategy.start(disposable);
         strategy.stop(disposable);
         strategy.dispose(disposable);
     }
 
-    public void testNotStartableNorDisposable(){
+    @Test public void testNotStartableNorDisposable(){
         Object serializable = mock(Serializable.class);
         assertFalse(strategy.hasLifecycle(serializable.getClass()));
         strategy.start(serializable);
@@ -56,7 +55,7 @@ public class ReflectionLifecycleStrategyTestCase extends MockObjectTestCase {
         strategy.dispose(serializable);
     }
     
-    public void testMonitorChanges() {
+    @Test public void testMonitorChanges() {
         Mock componentMonitorMock2 = mock(ComponentMonitor.class);
         Mock mock = mock(Disposable.class);
         Object disposable = mock.proxy();
@@ -77,7 +76,7 @@ public class ReflectionLifecycleStrategyTestCase extends MockObjectTestCase {
         void dispose();
     }
     
-    public void testWithDifferentTypes() {
+    @Test public void testWithDifferentTypes() {
         Mock anotherStartableMock = mock(MyLifecylce.class);
         anotherStartableMock.expects(once()).method("start");
         anotherStartableMock.expects(once()).method("stop");

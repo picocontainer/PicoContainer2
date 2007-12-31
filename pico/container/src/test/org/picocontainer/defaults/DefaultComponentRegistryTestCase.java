@@ -11,13 +11,14 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
+
+import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -29,20 +30,20 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         picoContainer = new DefaultPicoContainer();
     }
 
-    public void testRegisterComponent() throws PicoCompositionException {
+    @Test public void testRegisterComponent() throws PicoCompositionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         assertTrue(picoContainer.getComponentAdapters().contains(componentAdapter));
     }
 
-    public void testUnregisterComponent() throws PicoCompositionException {
+    @Test public void testUnregisterComponent() throws PicoCompositionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.removeComponent(Touchable.class);
         assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));
     }
 
-    public void testCannotInstantiateAnUnregisteredComponent() throws PicoCompositionException {
+    @Test public void testCannotInstantiateAnUnregisteredComponent() throws PicoCompositionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();
@@ -51,7 +52,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         assertTrue(picoContainer.getComponents().isEmpty());
     }
 
-    public void testCanInstantiateReplacedComponent() throws PicoCompositionException {
+    @Test public void testCanInstantiateReplacedComponent() throws PicoCompositionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();
@@ -63,7 +64,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
                 1, picoContainer.getComponents().size());
     }
 
-    public void testUnregisterAfterInstantiateComponents() throws PicoCompositionException {
+    @Test public void testUnregisterAfterInstantiateComponents() throws PicoCompositionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();
@@ -71,7 +72,7 @@ public class DefaultComponentRegistryTestCase extends TestCase {
         assertNull(picoContainer.getComponent(Touchable.class));
     }
 
-    public void testReplacedInstantiatedComponentHasCorrectClass() throws PicoCompositionException {
+    @Test public void testReplacedInstantiatedComponentHasCorrectClass() throws PicoCompositionException {
         ComponentAdapter componentAdapter = createComponentAdapter();
         picoContainer.addAdapter(componentAdapter);
         picoContainer.getComponents();

@@ -13,26 +13,28 @@ import static org.picocontainer.lifecycle.LifecycleState.STARTED;
 import static org.picocontainer.lifecycle.LifecycleState.STOPPED;
 import junit.framework.TestCase;
 
+import org.junit.Test;
+
 /**
  * @author Michael Rimov
  */
 public class LifecycleStateTestCase extends TestCase {
 
-	public void testIsStartAllowedOptions() {
+	@Test public void testIsStartAllowedOptions() {
 		assertTrue(CONSTRUCTED.isStartAllowed());
 		assertFalse(STARTED.isStartAllowed());
 		assertTrue(STOPPED.isStartAllowed());
 		assertFalse(DISPOSED.isStartAllowed());
 	}
 
-	public void testIsStopAllowedOptions() {
+	@Test public void testIsStopAllowedOptions() {
 		assertFalse(CONSTRUCTED.isStopAllowed());
 		assertTrue(STARTED.isStopAllowed());
 		assertFalse(STOPPED.isStopAllowed());
 		assertFalse(DISPOSED.isStopAllowed());
 	}
 
-	public void testIsDisposeAllowedOptions() {
+	@Test public void testIsDisposeAllowedOptions() {
 		assertTrue(CONSTRUCTED.isDisposedAllowed());
 		assertFalse(STARTED.isDisposedAllowed());
 		assertTrue(STOPPED.isDisposedAllowed());

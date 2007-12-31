@@ -1,15 +1,16 @@
 package org.picocontainer.parameters;
 
+import java.io.File;
+import java.util.List;
+
+import junit.framework.TestCase;
+
+import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
-
-import java.io.File;
-import java.util.List;
-
-import junit.framework.TestCase;
 
 /**
  * test that config parameter does the right job
@@ -28,7 +29,7 @@ public class ConfigParameterTestCase extends TestCase {
 
 	};
 
-	public void testThatNoEntryIsWorkingProperly() throws Exception {
+	@Test public void testThatNoEntryIsWorkingProperly() throws Exception {
 		PicoContainer container = new DefaultPicoContainer();
 		ComponentParameter parameter = new ComponentParameter("gloo.blum");
 
@@ -41,7 +42,7 @@ public class ConfigParameterTestCase extends TestCase {
                                              paramNameBinding, false, null));
 	}
 
-	public void testThatNotStringEntryIsNotResolved() throws Exception {
+	@Test public void testThatNotStringEntryIsNotResolved() throws Exception {
 		MutablePicoContainer container = new DefaultPicoContainer();
 		container.addComponent("gloo.blum", new Integer(239));
 
@@ -62,7 +63,7 @@ public class ConfigParameterTestCase extends TestCase {
 	 * 
 	 * @throws Exception
 	 */
-	public void testThatResolvedSuccessfully() throws Exception {
+	@Test public void testThatResolvedSuccessfully() throws Exception {
 		MutablePicoContainer container = new DefaultPicoContainer();
 		container.addComponent("gloo.blum", "239");
 
@@ -78,7 +79,7 @@ public class ConfigParameterTestCase extends TestCase {
 	 * shall bomb properly if no suitable converter found
 	 * 
 	 */
-	public void testThatUnavailableConverterProducesCorrectException() {
+	@Test public void testThatUnavailableConverterProducesCorrectException() {
 		MutablePicoContainer container = new DefaultPicoContainer();
 		container.addComponent("gloo.blum", "239");
 
@@ -95,7 +96,7 @@ public class ConfigParameterTestCase extends TestCase {
 
     }
 	
-	public void testComponentInstantiation() {
+	@Test public void testComponentInstantiation() {
 		DefaultPicoContainer properties = new DefaultPicoContainer();
 		properties.addComponent("numericProperty", "239");
 		properties.addComponent("doubleProperty", "17.95");
@@ -123,7 +124,7 @@ public class ConfigParameterTestCase extends TestCase {
 		assertEquals(17.95,component.getDoubleParameter(),0);
 	}
 
-    public void testComponentInstantiationViaParamNameAssociations() {
+    @Test public void testComponentInstantiationViaParamNameAssociations() {
         DefaultPicoContainer properties = new DefaultPicoContainer();
         properties.addConfig("longValue", "239");
         properties.addConfig("doubleParameter", "17.95");

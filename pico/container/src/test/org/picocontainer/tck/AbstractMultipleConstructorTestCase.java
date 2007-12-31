@@ -10,10 +10,12 @@
 package org.picocontainer.tck;
 
 import junit.framework.TestCase;
+
+import org.junit.Test;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoException;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoException;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 
@@ -70,13 +72,13 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
     }
 
 
-    public void testStringWorks() throws PicoException {
+    @Test public void testStringWorks() throws PicoException {
         MutablePicoContainer pico = createPicoContainer();
         pico.addComponent(String.class);
         assertEquals("", pico.getComponent(String.class));
     }
 
-    public void testMultiWithOnlySmallSatisfiedDependencyWorks() throws PicoException {
+    @Test public void testMultiWithOnlySmallSatisfiedDependencyWorks() throws PicoException {
         MutablePicoContainer pico = createPicoContainer();
         pico.addComponent(Multi.class);
         pico.addComponent(One.class);
@@ -86,7 +88,7 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
         assertEquals("three one", multi.message);
     }
 
-    public void testMultiWithBothSatisfiedDependencyWorks() throws PicoException {
+    @Test public void testMultiWithBothSatisfiedDependencyWorks() throws PicoException {
         MutablePicoContainer pico = createPicoContainer();
         pico.addComponent(Multi.class);
         pico.addComponent(One.class);
@@ -97,7 +99,7 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
         assertEquals("one two three", multi.message);
     }
 
-    public void testMultiWithTwoEquallyBigSatisfiedDependenciesFails() throws PicoException {
+    @Test public void testMultiWithTwoEquallyBigSatisfiedDependenciesFails() throws PicoException {
         MutablePicoContainer pico = createPicoContainer();
         pico.addComponent(Multi.class);
         pico.addComponent(One.class);
@@ -112,7 +114,7 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
         }
     }
 
-    public void testMultiWithSatisfyingDependencyAndParametersWorks() throws PicoException {
+    @Test public void testMultiWithSatisfyingDependencyAndParametersWorks() throws PicoException {
         MutablePicoContainer pico = createPicoContainer();
         pico.addComponent("MultiOneTwo", Multi.class, ComponentParameter.DEFAULT,
                 new ComponentParameter("Two"));

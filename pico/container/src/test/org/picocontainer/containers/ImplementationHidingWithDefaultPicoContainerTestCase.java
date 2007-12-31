@@ -8,18 +8,21 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.ImplementationHiding;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Characteristics;
-import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTestCase;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
 
 import junit.framework.AssertionFailedError;
+
+import org.junit.Test;
+import org.picocontainer.Characteristics;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.behaviors.ImplementationHiding;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTestCase;
 
 /**
  *
@@ -39,7 +42,7 @@ public class ImplementationHidingWithDefaultPicoContainerTestCase extends Abstra
         return new DefaultPicoContainer(new Caching().wrap(new ImplementationHiding().wrap(new ConstructorInjection())), parent);
     }
     
-    public void testSameInstanceCanBeUsedAsDifferentTypeWhenCaching() {
+    @Test public void testSameInstanceCanBeUsedAsDifferentTypeWhenCaching() {
         // we're choosing a CAF for DPC, thus Caching (a default) not enabled.
         try {
             super.testSameInstanceCanBeUsedAsDifferentTypeWhenCaching();
@@ -50,7 +53,7 @@ public class ImplementationHidingWithDefaultPicoContainerTestCase extends Abstra
 
     }
 
-    public void testAcceptImplementsBreadthFirstStrategy() {
+    @Test public void testAcceptImplementsBreadthFirstStrategy() {
         super.testAcceptImplementsBreadthFirstStrategy();
     }
 

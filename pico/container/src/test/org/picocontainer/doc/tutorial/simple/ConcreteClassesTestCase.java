@@ -10,12 +10,14 @@
 package org.picocontainer.doc.tutorial.simple;
 
 import junit.framework.TestCase;
-import org.picocontainer.MutablePicoContainer;
+
+import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 
 public class ConcreteClassesTestCase extends TestCase {
 
-    public void testAssembleComponentsAndInstantiateAndUseThem() {
+    @Test public void testAssembleComponentsAndInstantiateAndUseThem() {
         // START SNIPPET: assemble
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Boy.class);

@@ -9,25 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.parameters.CollectionComponentParameter;
-import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,6 +19,25 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.CollectionComponentParameter;
+import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
+
 
 /**
  * @author Aslak Helles&oslash;y
@@ -46,7 +46,7 @@ import java.util.SortedSet;
 public class CollectionComponentParameterTestCase
         extends MockObjectTestCase {
 
-    public void testShouldInstantiateArrayOfStrings() {
+    @Test public void testShouldInstantiateArrayOfStrings() {
         CollectionComponentParameter ccp = new CollectionComponentParameter();
 
         Mock componentAdapterMock = mock(ComponentAdapter.class);
@@ -105,7 +105,7 @@ public class CollectionComponentParameterTestCase
         return mpc;
     }
 
-    public void testNativeArrays() {
+    @Test public void testNativeArrays() {
         MutablePicoContainer mpc = getDefaultPicoContainer();
         Cod cod = mpc.getComponent(Cod.class);
         Bowl bowl = mpc.getComponent(Bowl.class);
@@ -115,7 +115,7 @@ public class CollectionComponentParameterTestCase
         assertNotSame(bowl.fishes[0], bowl.fishes[1]);
     }
 
-    public void testCollectionsAreGeneratedOnTheFly() {
+    @Test public void testCollectionsAreGeneratedOnTheFly() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
         mpc.addAdapter(new ConstructorInjector(Bowl.class, Bowl.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
         mpc.addComponent(Cod.class);
@@ -137,7 +137,7 @@ public class CollectionComponentParameterTestCase
         }
     }
 
-    public void testCollections() {
+    @Test public void testCollections() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new Caching());
         mpc.addComponent(CollectedBowl.class, CollectedBowl.class,
                          new ComponentParameter(Cod.class, false), new ComponentParameter(Fish.class, false));
@@ -160,7 +160,7 @@ public class CollectionComponentParameterTestCase
         }
     }
 
-    public void testMaps() {
+    @Test public void testMaps() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
         mpc.addComponent(MappedBowl.class, MappedBowl.class, new ComponentParameter(
                 Fish.class, false));
@@ -176,7 +176,7 @@ public class CollectionComponentParameterTestCase
         }
     }
 
-    public void testShouldNotInstantiateCollectionForUngenericCollectionParameters() {
+    @Test public void testShouldNotInstantiateCollectionForUngenericCollectionParameters() {
         MutablePicoContainer pico = getDefaultPicoContainer();
         pico.addComponent(UngenericCollectionBowl.class);
         try {
@@ -199,7 +199,7 @@ public class CollectionComponentParameterTestCase
         }
     }
 
-    public void testShouldFailWhenThereAreNoComponentsToPutInTheArray() {
+    @Test public void testShouldFailWhenThereAreNoComponentsToPutInTheArray() {
         MutablePicoContainer pico = getDefaultPicoContainer();
         pico.addComponent(AnotherGenericCollectionBowl.class);
         try {
@@ -210,7 +210,7 @@ public class CollectionComponentParameterTestCase
         }
     }
 
-    public void testAllowsEmptyArraysIfEspeciallySet() {
+    @Test public void testAllowsEmptyArraysIfEspeciallySet() {
         MutablePicoContainer pico = getDefaultPicoContainer();
         pico.addComponent(
                 AnotherGenericCollectionBowl.class, AnotherGenericCollectionBowl.class,
@@ -237,7 +237,7 @@ public class CollectionComponentParameterTestCase
         }
     }
 
-    public void testWillOmitSelfFromCollection() {
+    @Test public void testWillOmitSelfFromCollection() {
         MutablePicoContainer pico = getDefaultPicoContainer();
         pico.addComponent(SimpleTouchable.class);
         pico.addComponent(TouchableObserver.class);
@@ -248,7 +248,7 @@ public class CollectionComponentParameterTestCase
         assertTrue(touchable.wasTouched);
     }
 
-    public void testWillRemoveComponentsWithMatchingKeyFromParent() {
+    @Test public void testWillRemoveComponentsWithMatchingKeyFromParent() {
         MutablePicoContainer parent = new DefaultPicoContainer();
         parent.addComponent("Tom", Cod.class);
         parent.addComponent("Dick", Cod.class);
@@ -261,7 +261,7 @@ public class CollectionComponentParameterTestCase
         assertEquals(2, bowl.cods.length);
     }
 
-    public void testBowlWithoutTom() {
+    @Test public void testBowlWithoutTom() {
         MutablePicoContainer mpc = new DefaultPicoContainer();
         mpc.addComponent("Tom", Cod.class);
         mpc.addComponent("Dick", Cod.class);
@@ -296,7 +296,7 @@ public class CollectionComponentParameterTestCase
         }
     }
 
-    public void testDifferentCollectiveTypesAreResolved() {
+    @Test public void testDifferentCollectiveTypesAreResolved() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         CollectionComponentParameter parameter = new CollectionComponentParameter(Fish.class, true);
         pico.addComponent(DependsOnAll.class, DependsOnAll.class,
@@ -304,7 +304,7 @@ public class CollectionComponentParameterTestCase
         assertNotNull(pico.getComponent(DependsOnAll.class));
     }
 
-    public void testVerify() {
+    @Test public void testVerify() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         CollectionComponentParameter parameterNonEmpty = CollectionComponentParameter.ARRAY;
         pico.addComponent(Shark.class);
@@ -321,7 +321,7 @@ public class CollectionComponentParameterTestCase
     }
 
     // PICO-243 : this test will fail if executed on jdk1.3 without commons-collections
-    public void testOrderOfElementsOfAnArrayDependencyIsPreserved() {
+    @Test public void testOrderOfElementsOfAnArrayDependencyIsPreserved() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addComponent("first", "first");
         pico.addComponent("second", "second");

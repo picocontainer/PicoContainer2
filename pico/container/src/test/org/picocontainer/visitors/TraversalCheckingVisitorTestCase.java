@@ -14,19 +14,19 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.NameBinding;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.visitors.TraversalCheckingVisitor;
-import org.picocontainer.injectors.SetterInjector;
 
 /**
  * @author Michael Rimov
@@ -62,7 +62,7 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
         childAdapter = null;
     }
 
-    public void testVisitComponentAdapter() {
+    @Test public void testVisitComponentAdapter() {
         final int numExpectedComponentAdapters = 2;
         final List<ComponentAdapter> allAdapters = new ArrayList<ComponentAdapter>();
 
@@ -88,7 +88,7 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
         assertTrue("All adapters should match known adapters.", knownAdapters.size() == 0);
     }
 
-    public void testVisitContainer() {
+    @Test public void testVisitContainer() {
         final List<PicoContainer> allContainers = new ArrayList<PicoContainer>();
         final int expectedNumberOfContainers = 2;
 
@@ -117,7 +117,7 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
     }
 
 
-    public void testVisitParameter() {
+    @Test public void testVisitParameter() {
         final List allParameters = new ArrayList();
 
         PicoVisitor containerCollector = new TraversalCheckingVisitor() {

@@ -10,8 +10,9 @@
 package org.picocontainer.parameters;
 
 import junit.framework.TestCase;
+
+import org.junit.Test;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.parameters.ConstantParameter;
 
 /**
  * test that constant parameter behaves well.
@@ -23,7 +24,7 @@ public class ConstantParameterTestCase extends TestCase {
     *  constant parameter with instance type shall verify for expected primitives
      * @throws Exception
      */
-    public void testThatInstaceTypeAcceptedForPrimitives() throws Exception {
+    @Test public void testThatInstaceTypeAcceptedForPrimitives() throws Exception {
         ConstantParameter param = new ConstantParameter(239);
         try{
             param.verify(null,null,Integer.TYPE, null, false, null);

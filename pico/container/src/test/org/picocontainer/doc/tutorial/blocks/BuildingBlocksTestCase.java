@@ -11,22 +11,23 @@ package org.picocontainer.doc.tutorial.blocks;
 
 import junit.framework.TestCase;
 
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.behaviors.Cached;
-import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.injectors.SetterInjection;
+import org.picocontainer.behaviors.Cached;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Synchronized;
 import org.picocontainer.behaviors.Synchronizing;
 import org.picocontainer.doc.introduction.Apple;
 import org.picocontainer.doc.introduction.Juicer;
 import org.picocontainer.doc.introduction.Peeler;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.injectors.SetterInjection;
+import org.picocontainer.injectors.SetterInjector;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 
 /**
@@ -35,7 +36,7 @@ import org.picocontainer.doc.introduction.Peeler;
  * @author J&ouml;rg Schaible
  */
 public class BuildingBlocksTestCase extends TestCase {
-    public void testRegisterConvenient() {
+    @Test public void testRegisterConvenient() {
         // START SNIPPET: register-convenient
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         picoContainer.addComponent(Juicer.class);
@@ -48,14 +49,14 @@ public class BuildingBlocksTestCase extends TestCase {
         // END SNIPPET: register-direct
     }
 
-    public void testRegisterEquivalentConvenient() {
+    @Test public void testRegisterEquivalentConvenient() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         // START SNIPPET: register-equivalent-convenient
         picoContainer.addComponent(Juicer.class);
         // END SNIPPET: register-equivalent-convenient
     }
 
-    public void testRegisterEquivalentAtLength() {
+    @Test public void testRegisterEquivalentAtLength() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         // START SNIPPET: register-equivalent-at-length
         picoContainer.addAdapter(
@@ -64,7 +65,7 @@ public class BuildingBlocksTestCase extends TestCase {
         // END SNIPPET: register-equivalent-at-length
     }
 
-    public void testRegisterDifferentComponentFactory() {
+    @Test public void testRegisterDifferentComponentFactory() {
 
         // START SNIPPET: register-different-componentFactory
         MutablePicoContainer picoContainer = new DefaultPicoContainer(
@@ -72,7 +73,7 @@ public class BuildingBlocksTestCase extends TestCase {
         // END SNIPPET: register-different-componentFactory
     }
 
-    public void testRegisterEquivalentAtLength2() {
+    @Test public void testRegisterEquivalentAtLength2() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         // START SNIPPET: register-equivalent-at-length2
         picoContainer.addAdapter(

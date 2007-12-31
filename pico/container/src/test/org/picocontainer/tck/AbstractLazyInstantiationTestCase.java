@@ -10,9 +10,11 @@
 package org.picocontainer.tck;
 
 import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.Characteristics;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.Characteristics;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -35,7 +37,7 @@ public abstract class AbstractLazyInstantiationTestCase extends TestCase {
         }
     }
 
-    public void testLazyInstantiation() throws PicoException {
+    @Test public void testLazyInstantiation() throws PicoException {
         MutablePicoContainer pico = createPicoContainer();
 
         pico.as(Characteristics.CACHE).addComponent(Kilroy.class);

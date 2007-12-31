@@ -9,10 +9,11 @@
  *****************************************************************************/
 package org.picocontainer.defaults.issues;
 
+import junit.framework.TestCase;
+
+import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.visitors.VerifyingVisitor;
-
-import junit.framework.TestCase;
 
 
 public class Issue0229TestCase extends TestCase {
@@ -39,7 +40,7 @@ public class Issue0229TestCase extends TestCase {
         }
     }
 
-    public void testArrayDependenciesAndVerification() {
+    @Test public void testArrayDependenciesAndVerification() {
         DefaultPicoContainer container = new DefaultPicoContainer();
         container.addComponent(new MockRunnable());
         container.addComponent(new OtherRunnable());

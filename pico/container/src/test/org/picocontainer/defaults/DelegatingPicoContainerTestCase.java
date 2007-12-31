@@ -11,9 +11,11 @@
 package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -27,7 +29,7 @@ public class DelegatingPicoContainerTestCase extends TestCase {
         child = new DefaultPicoContainer(parent);
     }
 
-    public void testChildGetsFromParent() {
+    @Test public void testChildGetsFromParent() {
         parent.addComponent(SimpleTouchable.class);
         child.addComponent(DependsOnTouchable.class);
         DependsOnTouchable dependsOnTouchable = child.getComponent(DependsOnTouchable.class);
@@ -35,7 +37,7 @@ public class DelegatingPicoContainerTestCase extends TestCase {
         assertNotNull(dependsOnTouchable);
     }
 
-    public void testParentDoesntGetFromChild() {
+    @Test public void testParentDoesntGetFromChild() {
         child.addComponent(SimpleTouchable.class);
         parent.addComponent(DependsOnTouchable.class);
         try {
@@ -45,7 +47,7 @@ public class DelegatingPicoContainerTestCase extends TestCase {
         }
     }
 
-    public void testChildOverridesParent() {
+    @Test public void testChildOverridesParent() {
         parent.addComponent(SimpleTouchable.class);
         child.addComponent(SimpleTouchable.class);
 

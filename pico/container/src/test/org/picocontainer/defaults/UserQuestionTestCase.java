@@ -9,17 +9,19 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import junit.framework.TestCase;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Characteristics;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.adapters.AbstractAdapter;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.Characteristics;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.adapters.AbstractAdapter;
+import org.picocontainer.injectors.ConstructorInjection;
 
 /**
  * This class can be used to test out various things asked on the mailing list.
@@ -78,7 +80,7 @@ public final class UserQuestionTestCase extends TestCase {
         }
     }
 
-    public void testOmeletteCanHaveDifferentCheeseWithAFunnyComponentAdapter() {
+    @Test public void testOmeletteCanHaveDifferentCheeseWithAFunnyComponentAdapter() {
         Map<String,Cheese> cheeseMap = new HashMap<String,Cheese>();
 
         MutablePicoContainer pico = new DefaultPicoContainer(new ConstructorInjection());
@@ -144,7 +146,7 @@ public final class UserQuestionTestCase extends TestCase {
         }
     }
 
-    public void testMoreWeirdness() {
+    @Test public void testMoreWeirdness() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         Map<String,String> map = new HashMap<String,String>();
         pico.addComponent(map);
@@ -177,7 +179,7 @@ public final class UserQuestionTestCase extends TestCase {
         }
     }
 
-    public void testJohnTalOne() {
+    @Test public void testJohnTalOne() {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
 
         picoContainer.addComponent("ABC", ABCImpl.class);
@@ -219,7 +221,7 @@ public final class UserQuestionTestCase extends TestCase {
         }
     }
 
-    public void testShouldBeAbleShareSameReferenceForDifferentTypes() {
+    @Test public void testShouldBeAbleShareSameReferenceForDifferentTypes() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.as(Characteristics.CACHE).addComponent(FooBar.class);
         pico.addComponent(NeedsFoo.class);
@@ -229,7 +231,7 @@ public final class UserQuestionTestCase extends TestCase {
         assertSame(needsFoo.getFoo(), needsBar.getBar());
     }
 
-    public void testSeveralDifferentInstancesCanBeCreatedWithOnePreconfiguredContainer() {
+    @Test public void testSeveralDifferentInstancesCanBeCreatedWithOnePreconfiguredContainer() {
         // create a container that doesn't cache instances
         MutablePicoContainer container = new DefaultPicoContainer(new ConstructorInjection());
         container.addComponent(NeedsBar.class);

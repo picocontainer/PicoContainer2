@@ -9,18 +9,19 @@
  *****************************************************************************/
 package org.picocontainer.doc.advanced;
 
-import junit.framework.TestCase;
-
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.parameters.CollectionComponentParameter;
-import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.behaviors.Caching;
-
 import java.util.Arrays;
 import java.util.List;
+
+import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.parameters.CollectionComponentParameter;
+import org.picocontainer.parameters.ComponentParameter;
 
 
 /**
@@ -71,7 +72,7 @@ public class ArraysTestCase
 
     // END SNIPPET: bowl
 
-    public void testShouldCreateBowlWithFishCollection() {
+    @Test public void testShouldCreateBowlWithFishCollection() {
 
         //      START SNIPPET: usage
 
@@ -95,7 +96,7 @@ public class ArraysTestCase
         assertTrue(cods.contains(cod));
     }
 
-    public void testShouldCreateBowlWithCodsOnly() {
+    @Test public void testShouldCreateBowlWithCodsOnly() {
 
         //      START SNIPPET: directUsage
 
@@ -121,7 +122,7 @@ public class ArraysTestCase
         assertTrue(cods.contains(cod));
     }
 
-    public void testShouldCreateBowlWithFishCollectionAnyway() {
+    @Test public void testShouldCreateBowlWithFishCollectionAnyway() {
 
         //      START SNIPPET: ensureArray
 
@@ -152,7 +153,7 @@ public class ArraysTestCase
         assertTrue(cods.contains(cod));
     }
 
-    public void testShouldCreateBowlWithNoFishAtAll() {
+    @Test public void testShouldCreateBowlWithNoFishAtAll() {
 
         //      START SNIPPET: emptyArray
 
@@ -168,7 +169,7 @@ public class ArraysTestCase
         assertEquals(0, cods.size());
     }
 
-    public void testShouldCreateBowlWithNamedFishesOnly() {
+    @Test public void testShouldCreateBowlWithNamedFishesOnly() {
 
         //      START SNIPPET: useKeyType
 

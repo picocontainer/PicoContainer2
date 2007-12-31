@@ -9,11 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.PicoCompositionException;
+import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.AnnotatedMethodInjection;
-import org.picocontainer.injectors.AnnotatedMethodInjector;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;
@@ -69,14 +68,14 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
         }
     }
 
-    public void testContainerUsesStandardConstructor() {
+    @Test public void testContainerUsesStandardConstructor() {
         picoContainer.addComponent(Bean.class, NamedBeanWithPossibleDefault.class);
         picoContainer.addComponent("Tom");
         NamedBeanWithPossibleDefault bean = (NamedBeanWithPossibleDefault) picoContainer.getComponent(Bean.class);
         assertFalse(bean.getByDefault());
     }
 
-    public void testContainerUsesOnlyStandardConstructor() {
+    @Test public void testContainerUsesOnlyStandardConstructor() {
         picoContainer.addComponent(Bean.class, NoBean.class);
         picoContainer.addComponent("Tom");
         try {
@@ -86,7 +85,7 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
         }
     }
 
-    public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
+    @Test public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         AnnotatedMethodInjection componentFactory = new AnnotatedMethodInjection();
         AnnotatedMethodInjector aica = (AnnotatedMethodInjector)componentFactory.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);

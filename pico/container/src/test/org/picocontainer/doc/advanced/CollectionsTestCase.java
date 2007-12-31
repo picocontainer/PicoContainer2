@@ -9,18 +9,19 @@
  *****************************************************************************/
 package org.picocontainer.doc.advanced;
 
-import junit.framework.TestCase;
-
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.parameters.CollectionComponentParameter;
-import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.Caching;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
+
+import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.parameters.CollectionComponentParameter;
+import org.picocontainer.parameters.ComponentParameter;
 
 
 /**
@@ -57,7 +58,7 @@ public class CollectionsTestCase
 
     // END SNIPPET: bowl
 
-    public void testShouldCreateBowlWithFishCollection() {
+    @Test public void testShouldCreateBowlWithFishCollection() {
 
         //      START SNIPPET: usage
 
@@ -81,7 +82,7 @@ public class CollectionsTestCase
         assertTrue(cods.contains(cod));
     }
 
-    public void testShouldCreateBowlWithFishesOnly() {
+    @Test public void testShouldCreateBowlWithFishesOnly() {
 
         //      START SNIPPET: directUsage
 
@@ -112,7 +113,7 @@ public class CollectionsTestCase
         assertTrue(fishes.contains(shark));
     }
 
-    public void testShouldCreateBowlWithFishCollectionAnyway() {
+    @Test public void testShouldCreateBowlWithFishCollectionAnyway() {
 
         //      START SNIPPET: ensureCollection
 
@@ -139,7 +140,7 @@ public class CollectionsTestCase
         assertTrue(cods.contains(cod));
     }
 
-    public void testShouldCreateBowlWithNoFishAtAll() {
+    @Test public void testShouldCreateBowlWithNoFishAtAll() {
 
         //      START SNIPPET: emptyCollection
 

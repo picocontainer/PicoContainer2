@@ -9,18 +9,17 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.DefaultPicoContainer;
+import java.util.Properties;
+
+import org.junit.Test;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.RecordingLifecycle;
 import org.picocontainer.testmodel.RecordingLifecycle.One;
-
-import java.util.Properties;
 
 /**
  * @author Mauro Talevi
@@ -34,7 +33,7 @@ public class ConstructorInjectionTestCase extends AbstractComponentFactoryTestCa
         return new ConstructorInjection();
     }
 
-    public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
+    @Test public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
         RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
         ConstructorInjection componentFactory =
             new ConstructorInjection();

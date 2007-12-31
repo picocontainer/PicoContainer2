@@ -10,26 +10,27 @@
 
 package org.picocontainer.defaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.TestCase;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoCompositionException;
+import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
-import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.Webster;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends TestCase {
 
     //TODO - move to AbstractComponentRegistryTestCase
-    public void testGetComponentSpecification() throws PicoCompositionException {
+    @Test public void testGetComponentSpecification() throws PicoCompositionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
         assertNull(pico.getComponentAdapter(Touchable.class, (NameBinding) null));
@@ -40,7 +41,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
 
 
     //TODO move
-    public void testMultipleImplementationsAccessedThroughKey()
+    @Test public void testMultipleImplementationsAccessedThroughKey()
             throws PicoCompositionException
     {
         SimpleTouchable Touchable1 = new SimpleTouchable();
@@ -60,7 +61,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
     }
 
     //TODO - move
-    public void testRegistrationByName() throws Exception {
+    @Test public void testRegistrationByName() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
         Webster one = new Webster(new ArrayList());
@@ -80,7 +81,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
         assertEquals("Lookup of unknown key should return null", null, pico.getComponent("unknown"));
     }
 
-    public void testRegistrationByNameAndClassWithResolving() throws Exception {
+    @Test public void testRegistrationByNameAndClassWithResolving() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
         pico.addComponent(List.class, new ArrayList());
@@ -95,7 +96,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
         assertNull("Lookup of unknown key should return null", pico.getComponent("unknown"));
     }
 
-    public void testDuplicateRegistrationWithTypeAndObject() throws PicoCompositionException {
+    @Test public void testDuplicateRegistrationWithTypeAndObject() throws PicoCompositionException {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
         pico.addComponent(SimpleTouchable.class);
@@ -110,7 +111,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
     }
 
 
-    public void testComponentRegistrationMismatch() throws PicoCompositionException {
+    @Test public void testComponentRegistrationMismatch() throws PicoCompositionException {
         MutablePicoContainer pico = new DefaultPicoContainer();
 
         try {
@@ -158,7 +159,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
         }
     }
 
-    public void testParameterCanBePassedToConstructor() throws Exception {
+    @Test public void testParameterCanBePassedToConstructor() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Animal.class,
                 Dino.class,
@@ -169,7 +170,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
         assertEquals("bones", animal.getFood());
     }
 
-    public void testParameterCanBePrimitive() throws Exception {
+    @Test public void testParameterCanBePrimitive() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Animal.class, Dino2.class, new ConstantParameter(22));
 
@@ -178,7 +179,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
         assertEquals("22", animal.getFood());
     }
 
-    public void testMultipleParametersCanBePassed() throws Exception {
+    @Test public void testMultipleParametersCanBePassed() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Animal.class, Dino3.class, new ConstantParameter("a"),
                 new ConstantParameter("b"));
@@ -189,7 +190,7 @@ public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase exte
 
     }
 
-    public void testParametersCanBeMixedWithComponentsCanBePassed() throws Exception {
+    @Test public void testParametersCanBeMixedWithComponentsCanBePassed() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Touchable.class, SimpleTouchable.class);
         pico.addComponent(Animal.class, Dino4.class, new ConstantParameter("a"),

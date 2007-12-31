@@ -20,18 +20,16 @@ import java.util.Properties;
 
 import javax.swing.JLabel;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
+import org.junit.Test;
 import org.picocontainer.Characteristics;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.behaviors.PropertyApplicator;
-import org.picocontainer.behaviors.PropertyApplying;
-import org.picocontainer.injectors.AdaptingInjection;
-import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.injectors.AdaptingInjection;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -136,14 +134,14 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
     public static class B {
     }
 
-    public void testSetProperties() {
+    @Test public void testSetProperties() {
         ComponentAdapter adapter = createAdapterCallingSetMessage(Foo.class);
         Foo foo = (Foo)adapter.getComponentInstance(null);
         assertNotNull(foo);
         assertEquals("hello", foo.message);
     }
 
-    public void testFailingSetter() {
+    @Test public void testFailingSetter() {
         ComponentAdapter adapter = createAdapterCallingSetMessage(Failing.class);
         try {
             adapter.getComponentInstance(null);
@@ -156,7 +154,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
         return new PropertyApplying().wrap(new AdaptingInjection());
     }
 
-    public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {
+    @Test public void testPropertiesSetAfterAdapterCreationShouldBeTakenIntoAccount() {
         PropertyApplying factory = (PropertyApplying)createComponentFactory();
 
         PropertyApplicator adapter =
@@ -177,7 +175,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
         assertEquals("hello", foo.message);
     }
 
-    public void testPropertySetAfterAdapterCreationShouldBeTakenIntoAccount() {
+    @Test public void testPropertySetAfterAdapterCreationShouldBeTakenIntoAccount() {
         PropertyApplying factory = (PropertyApplying)createComponentFactory();
 
         PropertyApplicator adapter =
@@ -196,14 +194,14 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
     }
 
 
-    public void testPropertiesTidiedUpAfterPicoUsage() {
+    @Test public void testPropertiesTidiedUpAfterPicoUsage() {
         DefaultPicoContainer pico = new DefaultPicoContainer(createComponentFactory());
         pico.as(Characteristics.PROPERTY_APPLYING).addComponent("foo", Foo.class);
         Foo foo = (Foo) pico.getComponent("foo");
     }
 
 
-    public void testDelegateIsAccessible() {
+    @Test public void testDelegateIsAccessible() {
         AbstractBehavior componentAdapter =
             (AbstractBehavior)createComponentFactory().createComponentAdapter(new NullComponentMonitor(),
                                                                               new NullLifecycleStrategy(),
@@ -234,7 +232,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
         return adapter;
     }
 
-    public void testAllJavaPrimitiveAttributesShouldBeSetByTheAdapter() throws MalformedURLException {
+    @Test public void testAllJavaPrimitiveAttributesShouldBeSetByTheAdapter() throws MalformedURLException {
         PropertyApplying factory = (PropertyApplying)createComponentFactory();
         Map properties = new HashMap();
         properties.put("byte_", "1");
@@ -275,7 +273,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
         assertEquals(JLabel.class, primitives.class_);
     }
 
-    public void testSetDependenComponentWillBeSetByTheAdapter() {
+    @Test public void testSetDependenComponentWillBeSetByTheAdapter() {
         picoContainer.addComponent("b", B.class);
         PropertyApplying factory = (PropertyApplying)createComponentFactory();
         Map properties = new HashMap();
@@ -298,7 +296,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
         assertNotNull(a.b);
     }
 
-    public void testPropertySetAfterWrappedAdapterCreationShouldBeTakenIntoAccount() {
+    @Test public void testPropertySetAfterWrappedAdapterCreationShouldBeTakenIntoAccount() {
         Caching factory = (Caching) new Caching().wrap(createComponentFactory());
 
         ComponentAdapter<?> adapter =
@@ -320,7 +318,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
         assertEquals("hello", foo.message);
     }
 
-    public void testSetBeanPropertiesWithValueObjects() {
+    @Test public void testSetBeanPropertiesWithValueObjects() {
         PropertyApplying factory = (PropertyApplying)createComponentFactory();
 
         Map properties = new HashMap();
@@ -347,7 +345,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
 
 
     /** todo Is this test duplicated elsewhere?  --MR */
-    public void testSetBeanPropertiesWithWrongNumberOfParametersThrowsPicoInitializationException() {
+    @Test public void testSetBeanPropertiesWithWrongNumberOfParametersThrowsPicoInitializationException() {
         Object testBean = new Object() {
             public void setMultiValues(String val1, String Val2) {
                 throw new IllegalStateException("Setter should never have been called");
@@ -388,7 +386,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
     }
 
 
-    public void testSetBeanPropertiesWithInvalidValueTypes() {
+    @Test public void testSetBeanPropertiesWithInvalidValueTypes() {
         PropertyApplying factory = (PropertyApplying)createComponentFactory();
 
 

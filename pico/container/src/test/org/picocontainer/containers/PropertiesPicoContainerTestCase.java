@@ -2,9 +2,10 @@ package org.picocontainer.containers;
 
 import java.util.Properties;
 
-import org.picocontainer.DefaultPicoContainer;
-
 import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 
 /**
  * test that properties container works properly
@@ -17,7 +18,7 @@ public class PropertiesPicoContainerTestCase extends TestCase {
 	 * placed into container as strings
 	 *
 	 */
-	public void testThatAllPropertiesAreAdded() {
+	@Test public void testThatAllPropertiesAreAdded() {
 		Properties properties = new Properties();
 		
 		properties.put("foo","bar");
@@ -32,7 +33,7 @@ public class PropertiesPicoContainerTestCase extends TestCase {
 	/**
 	 * inquiry shall be delegated to parent container
 	 */
-	public void testThatParentDelegationWorks() {
+	@Test public void testThatParentDelegationWorks() {
 		DefaultPicoContainer parent = new DefaultPicoContainer();
 		String stored = new String("glam");
 		parent.addComponent("glam",stored);

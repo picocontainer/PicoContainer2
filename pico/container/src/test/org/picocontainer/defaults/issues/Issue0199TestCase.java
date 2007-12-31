@@ -9,15 +9,16 @@
  *****************************************************************************/
 package org.picocontainer.defaults.issues;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.TestCase;
 
-import java.util.List;
-import java.util.ArrayList;
-
-import org.picocontainer.PicoContainer;
+import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Synchronizing;
+import org.picocontainer.injectors.ConstructorInjection;
 
 public final class Issue0199TestCase extends TestCase {
 
@@ -67,7 +68,7 @@ public final class Issue0199TestCase extends TestCase {
         }
     }
 
-    public void testPicoContainerCausesDeadlock() throws InterruptedException {
+    @Test public void testPicoContainerCausesDeadlock() throws InterruptedException {
         DefaultPicoContainer container = createContainer();
         container.addComponent("A", A.class);
         container.addComponent("B", B.class);

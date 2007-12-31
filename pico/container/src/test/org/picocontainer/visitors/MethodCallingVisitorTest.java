@@ -7,19 +7,18 @@
  *****************************************************************************/
 package org.picocontainer.visitors;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.visitors.MethodCallingVisitor;
-import org.picocontainer.testmodel.Touchable;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.jmock.Mock;
+import org.jmock.MockObjectTestCase;
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.testmodel.Touchable;
 
 
 /**
@@ -36,7 +35,7 @@ public class MethodCallingVisitorTest extends MockObjectTestCase {
         touch = Touchable.class.getMethod("touch", (Class[])null);
     }
 
-    public void testVisitorWillTraverseAndCall() throws Exception {
+    @Test public void testVisitorWillTraverseAndCall() throws Exception {
         MutablePicoContainer parent = new DefaultPicoContainer(new Caching());
         MutablePicoContainer child = new DefaultPicoContainer(new Caching());
         parent.addChildContainer(child);
@@ -55,7 +54,7 @@ public class MethodCallingVisitorTest extends MockObjectTestCase {
         assertEquals(1, childList.size());
     }
 
-    public void testVisitsInInstantiationOrder() throws Exception {
+    @Test public void testVisitsInInstantiationOrder() throws Exception {
         Mock mockTouchable1 = mock(Touchable.class);
         Mock mockTouchable2 = mock(Touchable.class);
 
@@ -72,7 +71,7 @@ public class MethodCallingVisitorTest extends MockObjectTestCase {
         visitor.traverse(parent);
     }
 
-    public void testVisitsInReverseInstantiationOrder() throws Exception {
+    @Test public void testVisitsInReverseInstantiationOrder() throws Exception {
         Mock mockTouchable1 = mock(Touchable.class);
         Mock mockTouchable2 = mock(Touchable.class);
 

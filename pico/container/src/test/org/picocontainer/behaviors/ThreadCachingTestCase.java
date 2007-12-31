@@ -9,9 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.DefaultPicoContainer;
-
 import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 
 public class ThreadCachingTestCase extends TestCase {
 
@@ -29,7 +30,7 @@ public class ThreadCachingTestCase extends TestCase {
         }
     }
 
-    public void testThatForASingleThreadTheBehaviorIsTheSameAsPlainCaching() {
+    @Test public void testThatForASingleThreadTheBehaviorIsTheSameAsPlainCaching() {
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         DefaultPicoContainer child = new DefaultPicoContainer(new ThreadCaching(), parent);
@@ -47,7 +48,7 @@ public class ThreadCachingTestCase extends TestCase {
         assertEquals("ThreadCached:ConstructorInjector-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testThatTwoThreadsHaveSeparatedCacheValues() {
+    @Test public void testThatTwoThreadsHaveSeparatedCacheValues() {
 
         final Foo[] foos = new Foo[4];
 
@@ -84,7 +85,7 @@ public class ThreadCachingTestCase extends TestCase {
         assertEquals("ThreadCached:ConstructorInjector-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
-    public void testThatTwoThreadsHaveSeparatedCacheValuesForThreeScopeScenario() {
+    @Test public void testThatTwoThreadsHaveSeparatedCacheValuesForThreeScopeScenario() {
 
         final Foo[] foos = new Foo[4];
         final Bar[] bars = new Bar[4];

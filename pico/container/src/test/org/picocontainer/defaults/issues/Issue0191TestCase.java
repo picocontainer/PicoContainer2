@@ -10,9 +10,11 @@
 package org.picocontainer.defaults.issues;
 
 import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.DefaultPicoContainer;
 
 public final class Issue0191TestCase extends TestCase {
 
@@ -22,7 +24,7 @@ public final class Issue0191TestCase extends TestCase {
     /*
       This bug as descripbed in the bug report, cannot be reproduced. Needs work.
     */
-    public void testTheBug()
+    @Test public void testTheBug()
     {
         MutablePicoContainer pico = new DefaultPicoContainer( ) ;
         pico.addComponent(Shark.class);

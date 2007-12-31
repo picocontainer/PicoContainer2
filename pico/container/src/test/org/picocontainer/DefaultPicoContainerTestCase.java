@@ -9,9 +9,27 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.picocontainer.Characteristics.CDI;
 import static org.picocontainer.Characteristics.SDI;
-import org.picocontainer.adapters.InstanceAdapter;
+
+import java.io.Serializable;
+import java.io.StringWriter;
+import java.lang.reflect.Member;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import org.junit.Test;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
@@ -25,17 +43,6 @@ import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-
-import java.io.Serializable;
-import java.io.StringWriter;
-import java.lang.reflect.Member;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -53,7 +60,7 @@ public final class DefaultPicoContainerTestCase extends
 		return new Properties[0];
 	}
 
-	public void testInstantiationWithNullComponentFactory() {
+	@Test public void testInstantiationWithNullComponentFactory() {
 		try {
 			new DefaultPicoContainer((ComponentFactory) null, null);
 			fail("NPE expected");
@@ -62,7 +69,7 @@ public final class DefaultPicoContainerTestCase extends
 		}
 	}
 
-	public void testUpDownDependenciesCannotBeFollowed() {
+	@Test public void testUpDownDependenciesCannotBeFollowed() {
 		MutablePicoContainer parent = createPicoContainer(null);
 		MutablePicoContainer child = createPicoContainer(parent);
 
@@ -82,7 +89,7 @@ public final class DefaultPicoContainerTestCase extends
 		}
 	}
 
-	public void testComponentsCanBeRemovedByInstance() {
+	@Test public void testComponentsCanBeRemovedByInstance() {
 		MutablePicoContainer pico = createPicoContainer(null);
 		pico.addComponent(HashMap.class);
 		pico.addComponent(ArrayList.class);
@@ -94,14 +101,14 @@ public final class DefaultPicoContainerTestCase extends
 				.getClass());
 	}
 
-	public void testComponentInstancesListIsReturnedForNullType() {
+	@Test public void testComponentInstancesListIsReturnedForNullType() {
 		MutablePicoContainer pico = createPicoContainer(null);
 		List componentInstances = pico.getComponents(null);
 		assertNotNull(componentInstances);
 		assertEquals(0, componentInstances.size());
 	}
 
-	public void testComponentsWithCommonSupertypeWhichIsAConstructorArgumentCanBeLookedUpByConcreteType() {
+	@Test public void testComponentsWithCommonSupertypeWhichIsAConstructorArgumentCanBeLookedUpByConcreteType() {
 		MutablePicoContainer pico = createPicoContainer(null);
 		pico.addComponent(LinkedList.class, LinkedList.class, Parameter.ZERO);
 		pico.addComponent(ArrayList.class);
@@ -116,7 +123,7 @@ public final class DefaultPicoContainerTestCase extends
 	 * 
 	 * JS fixed it ( PICO-222 ) KP
 	 */
-	public void testUnambiguouSelfDependency() {
+	@Test public void testUnambiguouSelfDependency() {
 		MutablePicoContainer pico = createPicoContainer(null);
 		pico.addComponent(SimpleTouchable.class);
 		pico.addComponent(DecoratedTouchable.class);
@@ -125,7 +132,7 @@ public final class DefaultPicoContainerTestCase extends
 		assertNotNull(t);
 	}
 
-	public void testPicoUsedInBuilderStyle() {
+	@Test public void testPicoUsedInBuilderStyle() {
 		MutablePicoContainer pico = createPicoContainer(null);
 		Touchable t = pico.change(Characteristics.CACHE).addComponent(
 				SimpleTouchable.class).addComponent(DecoratedTouchable.class)
@@ -143,14 +150,14 @@ public final class DefaultPicoContainerTestCase extends
 		}
 	}
 
-	public void testThangCanBeInstantiatedWithArrayList() {
+	@Test public void testThangCanBeInstantiatedWithArrayList() {
 		MutablePicoContainer pico = new DefaultPicoContainer();
 		pico.addComponent(Thingie.class);
 		pico.addComponent(ArrayList.class);
 		assertNotNull(pico.getComponent(Thingie.class));
 	}
 
-	public void testGetComponentAdaptersOfTypeNullReturnsEmptyList() {
+	@Test public void testGetComponentAdaptersOfTypeNullReturnsEmptyList() {
 		DefaultPicoContainer pico = new DefaultPicoContainer();
 		List adapters = pico.getComponentAdapters(null);
 		assertNotNull(adapters);
@@ -168,7 +175,7 @@ public final class DefaultPicoContainerTestCase extends
 		}
 	}
 
-	public void testDefaultPicoContainerReturnsNewInstanceForEachCallWhenUsingTransientComponentAdapter() {
+	@Test public void testDefaultPicoContainerReturnsNewInstanceForEachCallWhenUsingTransientComponentAdapter() {
 
 		DefaultPicoContainer picoContainer = new DefaultPicoContainer(
 				new Caching().wrap(new ConstructorInjection()));
@@ -192,7 +199,7 @@ public final class DefaultPicoContainerTestCase extends
 		}
 	}
 
-	public void testShouldProvideInfoAboutDependingWhenAmbiguityHappens() {
+	@Test public void testShouldProvideInfoAboutDependingWhenAmbiguityHappens() {
 		MutablePicoContainer pico = this.createPicoContainer(null);
 		pico.addComponent(new ArrayList());
 		pico.addComponent(new LinkedList());
@@ -210,7 +217,7 @@ public final class DefaultPicoContainerTestCase extends
 		}
 	}
 
-	public void testInstantiationWithMonitorAndParent() {
+	@Test public void testInstantiationWithMonitorAndParent() {
 		StringWriter writer = new StringWriter();
 		ComponentMonitor monitor = new WriterComponentMonitor(writer);
 		DefaultPicoContainer parent = new DefaultPicoContainer();
@@ -222,7 +229,7 @@ public final class DefaultPicoContainerTestCase extends
 		assertTrue("writer not empty", writer.toString().length() > 0);
 	}
 
-	public void testStartCapturedByMonitor() {
+	@Test public void testStartCapturedByMonitor() {
 		final StringBuffer sb = new StringBuffer();
 		DefaultPicoContainer dpc = new DefaultPicoContainer(
 				new NullComponentMonitor() {
@@ -254,7 +261,7 @@ public final class DefaultPicoContainerTestCase extends
 
 	}
 
-	public void testListComponentsOnStart() {
+	@Test public void testListComponentsOnStart() {
 
 		// This is really discouraged. Breaks basic principals of IoC -
 		// components should not refer
@@ -270,7 +277,7 @@ public final class DefaultPicoContainerTestCase extends
 		dpc.start();
 	}
 
-	public void testCanChangeMonitor() {
+	@Test public void testCanChangeMonitor() {
 		StringWriter writer1 = new StringWriter();
 		ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
 		DefaultPicoContainer pico = new DefaultPicoContainer(monitor1);
@@ -296,7 +303,7 @@ public final class DefaultPicoContainerTestCase extends
 				.toString().length());
 	}
 
-	public void testCanChangeMonitorOfChildContainers() {
+	@Test public void testCanChangeMonitorOfChildContainers() {
 		StringWriter writer1 = new StringWriter();
 		ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
 		DefaultPicoContainer parent = new DefaultPicoContainer();
@@ -323,7 +330,7 @@ public final class DefaultPicoContainerTestCase extends
 				.toString().length());
 	}
 
-	public void testChangeMonitorIsIgnoredIfNotSupportingStrategy() {
+	@Test public void testChangeMonitorIsIgnoredIfNotSupportingStrategy() {
 		StringWriter writer = new StringWriter();
 		ComponentMonitor monitor = new WriterComponentMonitor(writer);
 		DefaultPicoContainer parent = new DefaultPicoContainer(
@@ -335,7 +342,7 @@ public final class DefaultPicoContainerTestCase extends
 		assertTrue("writer empty", writer.toString().length() == 0);
 	}
 
-	public void testCanReturnCurrentMonitorFromComponentFactory() {
+	@Test public void testCanReturnCurrentMonitorFromComponentFactory() {
 		StringWriter writer1 = new StringWriter();
 		ComponentMonitor monitor1 = new WriterComponentMonitor(writer1);
 		DefaultPicoContainer pico = new DefaultPicoContainer(monitor1);
@@ -406,7 +413,7 @@ public final class DefaultPicoContainerTestCase extends
 
 	}
 
-	public void testMakeChildContainer() {
+	@Test public void testMakeChildContainer() {
 		MutablePicoContainer parent = new DefaultPicoContainer();
 		parent.addComponent("t1", SimpleTouchable.class);
 		MutablePicoContainer child = parent.makeChildContainer();
@@ -415,7 +422,7 @@ public final class DefaultPicoContainerTestCase extends
 		assertTrue(t1 instanceof SimpleTouchable);
 	}
 
-	public void testCanUseCustomLifecycleStrategyForClassRegistrations() {
+	@Test public void testCanUseCustomLifecycleStrategyForClassRegistrations() {
 		DefaultPicoContainer dpc = new DefaultPicoContainer(
 				new FailingLifecycleStrategy(), null);
 		dpc.as(Characteristics.CACHE).addComponent(Startable.class,
@@ -428,7 +435,7 @@ public final class DefaultPicoContainerTestCase extends
 		}
 	}
 
-	public void testCanUseCustomLifecycleStrategyForInstanceRegistrations() {
+	@Test public void testCanUseCustomLifecycleStrategyForInstanceRegistrations() {
 		DefaultPicoContainer dpc = new DefaultPicoContainer(
 				new FailingLifecycleStrategy(), null);
 		Startable myStartable = new MyStartable();
@@ -485,7 +492,7 @@ public final class DefaultPicoContainerTestCase extends
 		}
 	}
 
-	public void testCanRegisterTwoComponentsImplementingSameInterfaceOneWithInterfaceAsKey()
+	@Test public void testCanRegisterTwoComponentsImplementingSameInterfaceOneWithInterfaceAsKey()
 			throws Exception {
 		MutablePicoContainer container = createPicoContainer(null);
 
@@ -498,7 +505,7 @@ public final class DefaultPicoContainerTestCase extends
 				.getClass());
 	}
 
-	public void testCanRegisterTwoComponentsWithSameImplementionAndDifferentKey()
+	@Test public void testCanRegisterTwoComponentsWithSameImplementionAndDifferentKey()
 			throws Exception {
 		MutablePicoContainer container = createPicoContainer(null);
 
@@ -513,7 +520,7 @@ public final class DefaultPicoContainerTestCase extends
 				.getComponent(SimpleA.class));
 	}
 
-	public void testPicoCanDifferentiateBetweenNamedStringsThatWouldOtherwiseBeAmbiguous() {
+	@Test public void testPicoCanDifferentiateBetweenNamedStringsThatWouldOtherwiseBeAmbiguous() {
 		MutablePicoContainer mpc = createPicoContainer(null);
 		mpc.addComponent("greeting", "1");
 		mpc.addComponent("message", "2");
@@ -523,7 +530,7 @@ public final class DefaultPicoContainerTestCase extends
 				.getMessage());
 	}
 
-	public void testPicoCanDifferentiateBetweenNamedObjectsThatWouldOtherwiseBeAmbiguous() {
+	@Test public void testPicoCanDifferentiateBetweenNamedObjectsThatWouldOtherwiseBeAmbiguous() {
 		MutablePicoContainer mpc = createPicoContainer(null);
 		Horse dobbin = new Horse();
 		Horse redRum = new Horse();
@@ -533,7 +540,7 @@ public final class DefaultPicoContainerTestCase extends
 		assertEquals(redRum, mpc.getComponent(CdiTurtle.class).horse);
 	}
 
-	public void testPicoCanDifferentiateBetweenNamedIntsThatWouldOtherwiseBeAmbiguous() {
+	@Test public void testPicoCanDifferentiateBetweenNamedIntsThatWouldOtherwiseBeAmbiguous() {
 		MutablePicoContainer mpc = createPicoContainer(null);
 		mpc.addComponent("one", 1);
 		mpc.addComponent("two", 2);
@@ -558,7 +565,7 @@ public final class DefaultPicoContainerTestCase extends
 	/**
 	 * JIRA: PICO-295 reported by Erik Putrycz
 	 */
-	public void testListComponentsInStart() {
+	@Test public void testListComponentsInStart() {
 		DefaultPicoContainer dpc = new DefaultPicoContainer();
 		dpc.addComponent(SimpleTouchable.class);
 		ListComponentsInStartClass cl = new ListComponentsInStartClass();
@@ -602,7 +609,7 @@ public final class DefaultPicoContainerTestCase extends
 		}
 	}
 
-	public void testMixingOfSDIandCDI() {
+	@Test public void testMixingOfSDIandCDI() {
 
 		MutablePicoContainer container = createPicoContainer(null).change(
 				Characteristics.CACHE);
@@ -620,7 +627,7 @@ public final class DefaultPicoContainerTestCase extends
 		assertions(donkey, rabbit, turtle);
 	}
 
-	public void testMixingOfSDIandCDIDifferently() {
+	@Test public void testMixingOfSDIandCDIDifferently() {
 
 		MutablePicoContainer container = createPicoContainer(null).change(
 				Characteristics.CACHE);
@@ -637,7 +644,7 @@ public final class DefaultPicoContainerTestCase extends
 		assertions(donkey, rabbit, turtle);
 	}
 
-	public void testMixingOfSDIandCDIInBuilderStyle() {
+	@Test public void testMixingOfSDIandCDIInBuilderStyle() {
 
 		MutablePicoContainer container = createPicoContainer(null).change(
 				Characteristics.CACHE);
@@ -663,7 +670,7 @@ public final class DefaultPicoContainerTestCase extends
 		assertSame(rabbit.horse, turtle.horse);
 	}
 
-	public void testMixingOfSDIandCDIWithTemporaryCharacterizations() {
+	@Test public void testMixingOfSDIandCDIWithTemporaryCharacterizations() {
 
 		MutablePicoContainer container = createPicoContainer(null).change(
 				Characteristics.CACHE);
@@ -679,7 +686,7 @@ public final class DefaultPicoContainerTestCase extends
 		assertions(donkey, rabbit, turtle);
 	}
 
-	public void testMixingOfSDIandCDIWithTemporaryCharacterizationsDifferently() {
+	@Test public void testMixingOfSDIandCDIWithTemporaryCharacterizationsDifferently() {
 
 		MutablePicoContainer container = createPicoContainer(null).change(
 				Characteristics.CACHE);
@@ -695,7 +702,7 @@ public final class DefaultPicoContainerTestCase extends
 		assertions(donkey, rabbit, turtle);
 	}
 
-	public void testNoComponentIsMonitoredAndPotentiallyLateProvided() {
+	@Test public void testNoComponentIsMonitoredAndPotentiallyLateProvided() {
 		final String[] missingKey = new String[1];
 
 		String foo = (String) new DefaultPicoContainer(
@@ -713,7 +720,7 @@ public final class DefaultPicoContainerTestCase extends
 
 	}
 
-	public void testThatComponentCannotBeRemovedFromStartedContainer() {
+	@Test public void testThatComponentCannotBeRemovedFromStartedContainer() {
 		MutablePicoContainer container = createPicoContainer(null);
 		container.addComponent(Map.class, HashMap.class);
 		container.start();
@@ -724,7 +731,7 @@ public final class DefaultPicoContainerTestCase extends
 		}
 	}
 
-	public void testThatSimpleStringComponentIsAddedOnlyOnce() {
+	@Test public void testThatSimpleStringComponentIsAddedOnlyOnce() {
 		MutablePicoContainer container = createPicoContainer(null);
 		container.addComponent("foo bar");
 		assertEquals(1, container.getComponentAdapters().size());

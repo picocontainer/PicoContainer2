@@ -9,20 +9,20 @@
  *****************************************************************************/
 package org.picocontainer.tck;
 
+import java.util.Properties;
+
 import junit.framework.TestCase;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoCompositionException;
+import org.junit.Test;
 import org.picocontainer.Characteristics;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-
-import java.util.Properties;
-import java.util.Collection;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -37,7 +37,7 @@ public abstract class AbstractComponentFactoryTestCase extends TestCase {
         picoContainer = new DefaultPicoContainer();
     }
 
-    public void testEquals() throws PicoCompositionException {
+    @Test public void testEquals() throws PicoCompositionException {
         ComponentAdapter componentAdapter = createComponentFactory().createComponentAdapter(new NullComponentMonitor(),
                                                                                             new NullLifecycleStrategy(),
                                                                                             new Properties(
@@ -50,7 +50,7 @@ public abstract class AbstractComponentFactoryTestCase extends TestCase {
         assertTrue(!componentAdapter.equals("blah"));
     }
 
-    public void testRegisterComponent() throws PicoCompositionException {
+    @Test public void testRegisterComponent() throws PicoCompositionException {
         ComponentAdapter componentAdapter =
             createComponentFactory().createComponentAdapter(new NullComponentMonitor(),
                                                             new NullLifecycleStrategy(),
@@ -65,7 +65,7 @@ public abstract class AbstractComponentFactoryTestCase extends TestCase {
         assertSame(componentAdapter.getComponentKey(), adapter.getComponentKey());
     }
 
-    public void testUnregisterComponent() throws PicoCompositionException {
+    @Test public void testUnregisterComponent() throws PicoCompositionException {
         ComponentAdapter componentAdapter =
             createComponentFactory().createComponentAdapter(new NullComponentMonitor(),
                                                             new NullLifecycleStrategy(),

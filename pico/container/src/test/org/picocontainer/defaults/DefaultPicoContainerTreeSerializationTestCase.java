@@ -10,6 +10,8 @@
 
 package org.picocontainer.defaults;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,12 +19,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Properties;
 
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Characteristics;
 import org.picocontainer.tck.AbstractPicoContainerTestCase;
+
 
 /**
  * @author Thomas Heller
@@ -37,7 +40,7 @@ public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoC
         return new Properties[0];
     }
     
-    public void testContainerIsDeserializableWithParent() throws PicoException,
+    @Test public void testContainerIsDeserializableWithParent() throws PicoException,
                                                                  IOException, ClassNotFoundException {
 
         PicoContainer parent = createPicoContainer(null);

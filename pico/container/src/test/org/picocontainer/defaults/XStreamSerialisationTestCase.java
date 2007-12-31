@@ -9,15 +9,18 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.JVM;
 import com.thoughtworks.xstream.io.xml.XppDriver;
-import junit.framework.TestCase;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.SimpleTouchable;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -25,7 +28,7 @@ import org.picocontainer.testmodel.SimpleTouchable;
 public final class XStreamSerialisationTestCase extends TestCase {
     private final XStream xStream = new XStream(new XppDriver());
 
-    public void testShouldBeAbleToSerialiseEmptyPico() {
+    @Test public void testShouldBeAbleToSerialiseEmptyPico() {
         if (JVM.is14()) {
             MutablePicoContainer pico = new DefaultPicoContainer();
             String picoXml = xStream.toXML(pico);
@@ -35,7 +38,7 @@ public final class XStreamSerialisationTestCase extends TestCase {
         }
     }
 
-    public void testShouldBeAbleToSerialisePicoWithUninstantiatedComponents() {
+    @Test public void testShouldBeAbleToSerialisePicoWithUninstantiatedComponents() {
         if (JVM.is14()) {
             MutablePicoContainer pico = new DefaultPicoContainer();
             pico.addComponent(SimpleTouchable.class);
@@ -47,7 +50,7 @@ public final class XStreamSerialisationTestCase extends TestCase {
         }
     }
 
-    public void testShouldBeAbleToSerialisePicoWithInstantiatedComponents() {
+    @Test public void testShouldBeAbleToSerialisePicoWithInstantiatedComponents() {
         if (JVM.is14()) {
             MutablePicoContainer pico = new DefaultPicoContainer();
             pico.addComponent(SimpleTouchable.class);

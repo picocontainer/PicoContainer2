@@ -12,18 +12,21 @@ package org.picocontainer;
 import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implementationHiding;
 import static org.picocontainer.behaviors.Behaviors.synchronizing;
-import org.picocontainer.behaviors.ImplementationHiding;
-import org.picocontainer.containers.EmptyPicoContainer;
 import static org.picocontainer.injectors.Injectors.SDI;
-
-import org.picocontainer.lifecycle.LifecycleState;
-import org.picocontainer.monitors.ConsoleComponentMonitor;
-import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Properties;
+
+import junit.framework.TestCase;
+
+import org.junit.Test;
+import org.picocontainer.behaviors.ImplementationHiding;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.lifecycle.LifecycleState;
+import org.picocontainer.monitors.ConsoleComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
@@ -31,7 +34,6 @@ import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import junit.framework.TestCase;
 
 public class PicoBuilderTestCase extends TestCase {
 
@@ -59,7 +61,7 @@ public class PicoBuilderTestCase extends TestCase {
         xs.setMode(XStream.XPATH_ABSOLUTE_REFERENCES);
     }
 
-    public void testBasic() {
+    @Test public void testBasic() {
         MutablePicoContainer mpc = new PicoBuilder().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -70,7 +72,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithStartableLifecycle() {
+    @Test public void testWithStartableLifecycle() {
 
         new NullComponentMonitor();
 
@@ -85,7 +87,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithReflectionLifecycle() {
+    @Test public void testWithReflectionLifecycle() {
         MutablePicoContainer mpc = new PicoBuilder().withReflectionLifecycle().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -103,7 +105,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
 
-    public void testWithConsoleMonitor() {
+    @Test public void testWithConsoleMonitor() {
         MutablePicoContainer mpc = new PicoBuilder().withConsoleMonitor().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -115,7 +117,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithConsoleMonitorAndLifecycleUseTheSameUltimateMonitor() {
+    @Test public void testWithConsoleMonitorAndLifecycleUseTheSameUltimateMonitor() {
         MutablePicoContainer mpc = new PicoBuilder().withLifecycle().withConsoleMonitor().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -129,7 +131,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
 
-    public void testWithCustomMonitorByClass() {
+    @Test public void testWithCustomMonitorByClass() {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(ConsoleComponentMonitor.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -142,7 +144,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     @SuppressWarnings({ "unchecked" })
-    public void testWithBogusCustomMonitorByClass() {
+    @Test public void testWithBogusCustomMonitorByClass() {
         // We do unchecked assignment so we test what its really doing, and smart IDE's don't complain
         try {
             Class aClass = HashMap.class;
@@ -153,7 +155,7 @@ public class PicoBuilderTestCase extends TestCase {
         }
     }
 
-    public void testWithImplementationHiding() {
+    @Test public void testWithImplementationHiding() {
         MutablePicoContainer mpc = new PicoBuilder().withHiddenImplementations().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -165,7 +167,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithImplementationHidingInstance() {
+    @Test public void testWithImplementationHidingInstance() {
         MutablePicoContainer mpc = new PicoBuilder().withComponentFactory(new ImplementationHiding()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -177,7 +179,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithCafsListChainThingy() {
+    @Test public void testWithCafsListChainThingy() {
         MutablePicoContainer mpc = new PicoBuilder(SDI()).withBehaviors(caching(), synchronizing(), implementationHiding()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -195,7 +197,7 @@ public class PicoBuilderTestCase extends TestCase {
 
     public static class CustomParentcontainer extends EmptyPicoContainer {}
 
-    public void testWithCustomParentContainer() {
+    @Test public void testWithCustomParentContainer() {
         MutablePicoContainer mpc = new PicoBuilder(new CustomParentcontainer()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -206,7 +208,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithBogusParentContainerBehavesAsIfNotSet() {
+    @Test public void testWithBogusParentContainerBehavesAsIfNotSet() {
         MutablePicoContainer mpc = new PicoBuilder((PicoContainer)null).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -218,7 +220,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
 
-    public void testWithSetterDI() {
+    @Test public void testWithSetterDI() {
         MutablePicoContainer mpc = new PicoBuilder().withSetterInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -230,7 +232,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithAnnotatedMethodDI() {
+    @Test public void testWithAnnotatedMethodDI() {
             MutablePicoContainer mpc = new PicoBuilder().withAnnotatedMethodInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -242,7 +244,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithAnnotatedFieldDI() {
+    @Test public void testWithAnnotatedFieldDI() {
             MutablePicoContainer mpc = new PicoBuilder().withAnnotatedFieldInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -254,7 +256,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithCtorDI() {
+    @Test public void testWithCtorDI() {
         MutablePicoContainer mpc = new PicoBuilder().withConstructorInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -265,7 +267,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithImplementationHidingAndSetterDI() {
+    @Test public void testWithImplementationHidingAndSetterDI() {
         MutablePicoContainer mpc = new PicoBuilder().withHiddenImplementations().withSetterInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -278,7 +280,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithCachingImplementationHidingAndSetterDI() {
+    @Test public void testWithCachingImplementationHidingAndSetterDI() {
         MutablePicoContainer mpc = new PicoBuilder().withCaching().withHiddenImplementations().withSetterInjection().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -292,7 +294,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithSynchronizing() {
+    @Test public void testWithSynchronizing() {
         MutablePicoContainer mpc = new PicoBuilder().withSynchronizing().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -304,7 +306,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithLocking() {
+    @Test public void testWithLocking() {
         MutablePicoContainer mpc = new PicoBuilder().withLocking().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -316,7 +318,7 @@ public class PicoBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithPropertyApplier() {
+    @Test public void testWithPropertyApplier() {
         MutablePicoContainer mpc = new PicoBuilder().withPropertyApplier().build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -329,7 +331,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
     //TODO - fix up to refer to SomeContainerDependency
-    public void testWithCustomComponentFactory() {
+    @Test public void testWithCustomComponentFactory() {
         MutablePicoContainer mpc = new PicoBuilder().withCustomContainerComponent(new SomeContainerDependency()).withComponentFactory(CustomComponentFactory.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -359,7 +361,7 @@ public class PicoBuilderTestCase extends TestCase {
     }
 
 
-    public void testWithCustomPicoContainer() {
+    @Test public void testWithCustomPicoContainer() {
         MutablePicoContainer mpc = new PicoBuilder().implementedBy(TestPicoContainer.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("org.picocontainer.PicoBuilderTestCase_-TestPicoContainer\n" +

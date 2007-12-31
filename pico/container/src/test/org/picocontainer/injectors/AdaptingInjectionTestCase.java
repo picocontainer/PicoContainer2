@@ -10,35 +10,31 @@
 
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import org.junit.Test;
 import org.picocontainer.Characteristics;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.monitors.ConsoleComponentMonitor;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.injectors.AdaptingInjection;
-import org.picocontainer.injectors.AnnotatedMethodInjectorTestCase;
-import org.picocontainer.injectors.AnnotatedMethodInjector;
-import org.picocontainer.injectors.AnnotatedFieldInjector;
-import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
+import org.picocontainer.monitors.ConsoleComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTestCase;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Properties;
-
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 public class AdaptingInjectionTestCase extends AbstractComponentFactoryTestCase {
 
@@ -79,7 +75,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTestCase 
         return new AdaptingInjection();
     }
 
-    public void testInstantiateComponentWithNoDependencies() throws PicoCompositionException {
+    @Test public void testInstantiateComponentWithNoDependencies() throws PicoCompositionException {
         ComponentAdapter componentAdapter =
             createComponentFactory().createComponentAdapter(new NullComponentMonitor(),
                                                             new NullLifecycleStrategy(),
@@ -93,7 +89,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTestCase 
         assertTrue(comp instanceof SimpleTouchable);
     }
 
-    public void testSingleUsecanBeInstantiatedByDefaultComponentAdapter() {
+    @Test public void testSingleUsecanBeInstantiatedByDefaultComponentAdapter() {
         ComponentAdapter componentAdapter = createComponentFactory().createComponentAdapter(new NullComponentMonitor(),
                                                                                             new NullLifecycleStrategy(),
                                                                                             new Properties(
@@ -106,7 +102,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTestCase 
     }
 
 
-    public void testFactoryMakesConstructorInjector() {
+    @Test public void testFactoryMakesConstructorInjector() {
 
         ComponentFactory cf = createComponentFactory();
 
@@ -127,7 +123,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTestCase 
 
     }
 
-    public void testFactoryMakesFieldAnnotationInjector() {
+    @Test public void testFactoryMakesFieldAnnotationInjector() {
 
         ComponentFactory cf = createComponentFactory();
 
@@ -153,7 +149,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTestCase 
 
     }
 
-    public void testFactoryMakesMethodAnnotationInjector() {
+    @Test public void testFactoryMakesMethodAnnotationInjector() {
 
         ComponentFactory cf = createComponentFactory();
 

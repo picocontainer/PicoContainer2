@@ -11,6 +11,8 @@ package org.picocontainer.defaults;
 
 import junit.framework.TestCase;
 
+import org.junit.Test;
+
 /**
  * Uncomment all the tests in this class (as well as the obvious places in
  * ConstructorInjectionComponentAdapter) in order to run with generics support
@@ -19,7 +21,7 @@ import junit.framework.TestCase;
  * @author Aslak Helles&oslash;y
  */
 public class GenericsTestCase extends TestCase {
-    public void testDummy() {
+    @Test public void testDummy() {
 
     }
 
@@ -81,7 +83,7 @@ public class GenericsTestCase extends TestCase {
         }
     }
 
-    public void testShouldCreateBowlWithFishCollection() {
+    @Test public void testShouldCreateBowlWithFishCollection() {
         Collection<Fish> fishes = bowl.getFishes();
         assertEquals(2, fishes.size());
         assertTrue(fishes.contains(shark));
@@ -92,13 +94,13 @@ public class GenericsTestCase extends TestCase {
         assertTrue(cods.contains(cod));
     }
 
-    public void testShouldFilterMapByKeyType() {
+    @Test public void testShouldFilterMapByKeyType() {
         Map<String, Fish> fishMap = bowl.getStringFishMap();
         assertEquals(1, fishMap.size());
         assertSame(shark, fishMap.get("shark"));
     }
 
-    public void testShouldFilterMapByValueType() {
+    @Test public void testShouldFilterMapByValueType() {
         Map<Object, Shark> fishMap = bowl.getObjectSharkMap();
         assertEquals(1, fishMap.size());
         assertSame(shark, fishMap.get("shark"));
@@ -109,7 +111,7 @@ public class GenericsTestCase extends TestCase {
         }
     }
 
-    public void testShouldNotInstantiateCollectionForUngenericCollectionParameters() {
+    @Test public void testShouldNotInstantiateCollectionForUngenericCollectionParameters() {
         pico.addAdapter(UngenericCollectionBowl.class);
         try {
             pico.getComponent(UngenericCollectionBowl.class);
@@ -124,7 +126,7 @@ public class GenericsTestCase extends TestCase {
         }
     }
 
-    public void testShouldNotInstantiateMapForUngenericMapParameters() {
+    @Test public void testShouldNotInstantiateMapForUngenericMapParameters() {
         pico.addAdapter(UngenericMapBowl.class);
         try {
             pico.getComponent(UngenericMapBowl.class);
@@ -146,7 +148,7 @@ public class GenericsTestCase extends TestCase {
         }
     }
 
-    public void testShouldInstantiateAmptyCollectionForAnotherGenericCollection() {
+    @Test public void testShouldInstantiateAmptyCollectionForAnotherGenericCollection() {
         pico.addAdapter(AnotherGenericCollectionBowl.class);
         AnotherGenericCollectionBowl anotherGenericCollectionBowl = (AnotherGenericCollectionBowl) pico.getComponent(AnotherGenericCollectionBowl.class);
         assertEquals(0, anotherGenericCollectionBowl.getStrings().size());
