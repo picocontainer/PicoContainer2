@@ -20,7 +20,8 @@
         <page>builder.html</page>
         <page>interception.html</page>
         <page>properties.html</page>
-        <page>component-configuration.html</page>
+        <page>disambiguation.html</page>
+       <page>component-configuration.html</page>
     </section>
     <section>
         <name>Architecture</name>

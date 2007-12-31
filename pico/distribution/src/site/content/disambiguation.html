@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Disambiguation</title>
+
+</head>
+
+
+<body>
+<h2>Overview</h2>
+You may have a component that has a dependency on something that the
+container could ordinarily satisfy more than one. &nbsp;By default,
+when PicoContainer is presented with such a situation, it will throw an
+exception suggesting the depency resolution is ambiguous.
+<h2>Disambiguation using parameter names<span style="text-decoration: underline;"></span></h2>
+With PicoContainer 2.0 we are able to leverage the parameter names of
+constructors and methods in order to remove the ambiguity on
+dependancies.<br />
+<div class="source">
+<pre>public class Store {<br /> public Store(StockManager workingDayStockManager, StockManager afterHoursStockManager) {<br /> // etc<br /> }<br />}</pre>
+</div>
+If Store is added to the container appropriately, then its parameter
+names <span style="font-family: monospace;">'</span>workingHoursStockManager'
+and 'afterHoursStockManager
+' can be used in conjunction with similarly named components inject the
+right dependency in the right way:<br />
+<div class="source">
+<pre>pico.as(Characteristics.USE_NAMES).addComponent(Store.class);&nbsp;<br /></pre>
+</div>
+
+Access to parameter names was dropped from JDK 6.0 and it is uncertain
+whether it will be added as a feature in another release, so
+PicoContainer relies on another open source library called <a href="http://paranamer.codehaus.org">Paranamer</a>,
+without requiring a dependency on its Jar. &nbsp;In other words,
+PicoContainer has the same classes from Paranamer in its jar.<br />
+<br />
+See <a href="CommandLineArgumentsPicoContainer.html">CommandLineArgumentsPicoContainer</a>,
+<a href="PropertiesPicoContainer.html">PropertiesPicoContainer</a>
+and <a href="SystemPropertiesPicoContainer.html">SystemPropertiesPicoContainer</a>
+for implementations of PicoContainer that set up components for
+subsequent parameter name binding.<br />
+<br />
+Page <a href="component-configuration.html">component-configuration</a>
+also shows parameter names being used for binding as does <a href="injection.html">injection.</a><br />
+<br />
+Usage of parameter names is available for all types of
+Dependency-Injection where parameter names are present.<br />
+<span style="text-decoration: underline;"></span>
+<h3>Disambiguation using Binding Annotations
+</h3>
+<p>This worls the same as Guice. &nbsp;Namely you make an
+annotation that extends our 'Bind' annotation and mark it in your&nbsp;constructor or method's signature like so.</p>
+<div class="source">
+<div>
+<pre>@Retention(RetentionPolicy.RUNTIME)<br />@Target({ElementType.FIELD, ElementType.PARAMETER})<br />@Bind<br />public static @interface WorkingDayStockManager {}<br /><br />@Retention(RetentionPolicy.RUNTIME)<br />@Target({ElementType.FIELD, ElementType.PARAMETER})<br />@Bind<br />public static @interface AfterHoursStockManager {}<br /><br />public class Store {<br /> public Store(@WorkingDayStockManager StockManager workingDayStockManager, <br /> @AfterHoursStockManager StockManager afterHoursStockManager) {<br /> // etc<br /> }<br />}</pre>
+</div>
+</div>
+Making PicoContainer leverage binding annotations if present is
+automatic.<br /><br />Biniding
+annotations specified for constructor parameters (as shown above),
+method injection parameters as well as field injection.<br />
+</body></html>
