@@ -1,19 +1,15 @@
 package org.picocontainer;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-public class CharacteristicsTestCase extends TestCase {
+public class CharacteristicsTestCase  {
 
-    @Test public void testCharacteristicsAreImmutable() {
-        String b4 = Characteristics.CDI.toString();
-        try {
-            Characteristics.CDI.remove("injection");
-            fail();
-        } catch (UnsupportedOperationException e) {
-            // expected
-        }
+    @Test(expected=UnsupportedOperationException.class)    
+    public void testCharacteristicsAreImmutable() {
+        assertNotNull(Characteristics.CDI.toString());
+        Characteristics.CDI.remove("injection");
     }
 
 }

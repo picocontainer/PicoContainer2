@@ -7,9 +7,18 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.Sequence;
+import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.tck.MockFactory;
 import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.visitors.VerifyingVisitor;
 
@@ -17,10 +26,13 @@ import org.picocontainer.visitors.VerifyingVisitor;
 /**
  * Test general PicoVisitor behaviour.
  * @author J&ouml;rg Schaible
+ * @author Mauro Talevi
  */
-public class PicoVisitorTestCase
-        extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class PicoVisitorTestCase {
 
+	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+	
     @Test public void testVisitorThatMustBeInvokedUsingTraverse() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         try {
@@ -55,13 +67,15 @@ public class PicoVisitorTestCase
     }
 
     @Test public void testThrownRuntimeExceptionIsUnwrapped() {
-        Mock mockPico = mock(PicoContainer.class);
-        PicoVisitor visitor = new VerifyingVisitor();
-        Error exception = new Error("junit");
-        mockPico.expects(once()).method("accept").with(same(visitor)).will(
-                throwException(new PicoCompositionException("message", exception)));
+    	final PicoContainer pico = mockery.mock(PicoContainer.class);
+        final PicoVisitor visitor = new VerifyingVisitor();
+        final Error exception = new Error("junit");
+        mockery.checking(new Expectations() {{
+            one(pico).accept(with(same(visitor)));
+            will(throwException(new PicoCompositionException("message", exception)));
+        }});
         try {
-            visitor.traverse(mockPico.proxy());
+            visitor.traverse(pico);
             fail("PicoCompositionException expected");
         } catch (RuntimeException e) {
             assertEquals("message", e.getMessage());
@@ -70,14 +84,18 @@ public class PicoVisitorTestCase
     }
 
     @Test public void testThrownErrorIsUnwrapped() {
-        Mock mockPico = mock(PicoContainer.class);
-        PicoVisitor visitor = new VerifyingVisitor();
-        Error error = new InternalError("junit");
-        mockPico.expects(once()).method("accept").with(same(visitor)).id("1");
-        mockPico.expects(once()).method("accept").with(same(visitor)).after("1").will(throwException(error));
-        visitor.traverse(mockPico.proxy());
+    	final PicoContainer pico = mockery.mock(PicoContainer.class);
+        final PicoVisitor visitor = new VerifyingVisitor();
+        final Error error = new InternalError("junit");
+        final Sequence sequence = mockery.sequence("accepting");
+        mockery.checking(new Expectations() {{
+            one(pico).accept(with(same(visitor))); inSequence(sequence);
+            one(pico).accept(with(same(visitor))); inSequence(sequence);
+            will(throwException(error));
+        }});
+        visitor.traverse(pico);
         try {
-            visitor.traverse(mockPico.proxy());
+            visitor.traverse(pico);
             fail("UndeclaredThrowableException expected");
         } catch(InternalError e) {
             assertEquals("junit", e.getMessage());

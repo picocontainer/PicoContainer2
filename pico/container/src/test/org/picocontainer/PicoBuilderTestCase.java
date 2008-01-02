@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implementationHiding;
 import static org.picocontainer.behaviors.Behaviors.synchronizing;
@@ -19,8 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Properties;
 
-import junit.framework.TestCase;
-
+import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.containers.EmptyPicoContainer;
@@ -35,11 +36,12 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-public class PicoBuilderTestCase extends TestCase {
+public class PicoBuilderTestCase {
 
     private XStream xs;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         xs = new XStream();
         xs.alias("PICO", DefaultPicoContainer.class);
         xs.registerConverter(new Converter() {
