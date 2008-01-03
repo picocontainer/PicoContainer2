@@ -27,8 +27,8 @@ import java.util.Properties;
 import java.util.Set;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
+import org.jmock.MockObjectTestCase;
 import org.junit.Test;
 import org.picocontainer.Behavior;
 import org.picocontainer.Characteristics;
@@ -61,7 +61,7 @@ import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.visitors.VerifyingVisitor;
 
 /** This test tests (at least it should) all the methods in MutablePicoContainer. */
-public abstract class AbstractPicoContainerTestCase extends TestCase {
+public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
 
     protected abstract MutablePicoContainer createPicoContainer(PicoContainer parent);
 
