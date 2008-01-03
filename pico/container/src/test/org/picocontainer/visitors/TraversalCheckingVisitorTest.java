@@ -7,13 +7,16 @@
  *****************************************************************************/
 package org.picocontainer.visitors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
@@ -31,7 +34,7 @@ import org.picocontainer.parameters.ConstantParameter;
 /**
  * @author Michael Rimov
  */
-public class TraversalCheckingVisitorTestCase extends TestCase {
+public class TraversalCheckingVisitorTest {
 
     private MutablePicoContainer pico;
 
@@ -41,8 +44,8 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
 
     private ComponentAdapter childAdapter;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
 
         pico = new DefaultPicoContainer();
         SetterInjector componentAdapter = new SetterInjector(StringBuffer.class, StringBuffer.class,
@@ -54,8 +57,8 @@ public class TraversalCheckingVisitorTestCase extends TestCase {
         childAdapter = child.addAdapter(adapter).getComponentAdapter(ArrayList.class, (NameBinding) null);
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         child = null;
         pico = null;
         parentAdapter = null;

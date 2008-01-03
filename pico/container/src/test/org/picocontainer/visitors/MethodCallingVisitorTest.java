@@ -7,30 +7,41 @@
  *****************************************************************************/
 package org.picocontainer.visitors;
 
+import static org.junit.Assert.assertEquals;
+
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.Sequence;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.behaviors.Caching;
+import org.picocontainer.tck.MockFactory;
 import org.picocontainer.testmodel.Touchable;
 
 
 /**
  * @author J&ouml;rg Schaible
+ * @author Mauro Talevi
  */
-public class MethodCallingVisitorTest extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class MethodCallingVisitorTest {
 
+	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+	
     private Method add;
     private Method touch;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         add = List.class.getMethod("add", Object.class);
         touch = Touchable.class.getMethod("touch", (Class[])null);
     }
@@ -55,34 +66,40 @@ public class MethodCallingVisitorTest extends MockObjectTestCase {
     }
 
     @Test public void testVisitsInInstantiationOrder() throws Exception {
-        Mock mockTouchable1 = mock(Touchable.class);
-        Mock mockTouchable2 = mock(Touchable.class);
-
+    	final Touchable touchable1 = mockery.mock(Touchable.class);
+    	final Touchable touchable2 = mockery.mock(Touchable.class);
+    	
+    	final Sequence sequence = mockery.sequence("touching");
+        mockery.checking(new Expectations() {{
+            one(touchable1).touch(); inSequence(sequence);
+            one(touchable2).touch(); inSequence(sequence);
+        }});
+    	
         MutablePicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = new DefaultPicoContainer();
         parent.addChildContainer(child);
-        parent.addComponent(mockTouchable1.proxy());
-        child.addComponent(mockTouchable2.proxy());
-
-        mockTouchable1.expects(once()).method("touch").id("1");
-        mockTouchable2.expects(once()).method("touch").after(mockTouchable1, "1");
+        parent.addComponent(touchable1);
+        child.addComponent(touchable2);
 
         PicoVisitor visitor = new MethodCallingVisitor(touch, Touchable.class, null);
         visitor.traverse(parent);
     }
 
     @Test public void testVisitsInReverseInstantiationOrder() throws Exception {
-        Mock mockTouchable1 = mock(Touchable.class);
-        Mock mockTouchable2 = mock(Touchable.class);
+    	final Touchable touchable1 = mockery.mock(Touchable.class);
+    	final Touchable touchable2 = mockery.mock(Touchable.class);
+    	
+    	final Sequence sequence = mockery.sequence("touching");
+        mockery.checking(new Expectations() {{
+            one(touchable2).touch(); inSequence(sequence);
+            one(touchable1).touch(); inSequence(sequence);
+        }});
 
         MutablePicoContainer parent = new DefaultPicoContainer();
         MutablePicoContainer child = new DefaultPicoContainer();
         parent.addChildContainer(child);
-        parent.addComponent(mockTouchable1.proxy());
-        child.addComponent(mockTouchable2.proxy());
-
-        mockTouchable2.expects(once()).method("touch").id("1");
-        mockTouchable1.expects(once()).method("touch").after(mockTouchable2, "1");
+        parent.addComponent(touchable1);
+        child.addComponent(touchable2);
 
         PicoVisitor visitor = new MethodCallingVisitor(touch, Touchable.class, null, false);
         visitor.traverse(parent);
