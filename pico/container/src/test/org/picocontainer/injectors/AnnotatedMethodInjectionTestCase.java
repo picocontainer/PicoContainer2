@@ -9,12 +9,17 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.tck.AbstractComponentFactoryTestCase;
+import org.picocontainer.tck.AbstractComponentFactoryTest;
 import org.picocontainer.tck.AbstractComponentAdapterTestCase.RecordingLifecycleStrategy;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.RecordingLifecycle.One;
@@ -22,8 +27,10 @@ import org.picocontainer.testmodel.RecordingLifecycle.One;
 /**
  * @author J&ouml;rg Schaible
  */
-public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTestCase {
-    protected void setUp() throws Exception {
+public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTest {
+	
+	@Before
+    public void setUp() throws Exception {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
     }
 

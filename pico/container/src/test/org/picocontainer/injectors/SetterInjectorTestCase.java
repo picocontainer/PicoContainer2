@@ -9,6 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.picocontainer.parameters.ComponentParameter.DEFAULT;
 
 import java.util.ArrayList;
@@ -27,7 +31,7 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.tck.AbstractComponentAdapterTestCase;
+import org.picocontainer.tck.AbstractComponentAdapterTest;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.PersonBean;
 import org.picocontainer.testmodel.PurseBean;
@@ -35,8 +39,9 @@ import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 
+
 public class SetterInjectorTestCase
-    extends AbstractComponentAdapterTestCase {
+    extends AbstractComponentAdapterTest {
 
     protected Class getComponentAdapterType() {
         return SetterInjector.class;

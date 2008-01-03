@@ -9,6 +9,11 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Constructor;
@@ -18,8 +23,11 @@ import java.util.Map;
 
 import javax.swing.AbstractButton;
 
-import org.jmock.Mock;
-import org.jmock.core.Constraint;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -27,20 +35,24 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.tck.AbstractComponentAdapterTestCase;
+import org.picocontainer.tck.AbstractComponentAdapterTest;
+import org.picocontainer.tck.MockFactory;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 
-public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCase {
+public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 
+	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+	
     protected Class getComponentAdapterType() {
         return ConstructorInjector.class;
     }
@@ -262,65 +274,77 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTestCas
     }
 
     @Test public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
-        Mock monitor = mock(ComponentMonitor.class);
-        Constructor emptyHashMapCtor = HashMap.class.getConstructor();
-        monitor.expects(once()).method("instantiating").with(NULL, isA(ConstructorInjector.class),eq(emptyHashMapCtor)).will(returnValue(emptyHashMapCtor));
-        Constraint durationIsGreaterThanOrEqualToZero = new Constraint() {
-            public boolean eval(Object o) {
-                Long duration = (Long)o;
+    	final ComponentMonitor monitor = mockery.mock(ComponentMonitor.class);
+        final Constructor emptyHashMapCtor = HashMap.class.getConstructor();
+        final Matcher<Long> durationIsGreaterThanOrEqualToZero = new BaseMatcher<Long>() {
+        	public boolean matches(Object item) {
+                Long duration = (Long)item;
                 return 0 <= duration;
-            }
+			}
 
-            public StringBuffer describeTo(StringBuffer stringBuffer) {
-                return stringBuffer.append("The endTime wasn't after the startTime");
-            }
+			public void describeTo(Description description) {
+                description.appendText("The endTime wasn't after the startTime");				
+			}
         };
-        Constraint isAHashMapThatWozCreated = new Constraint() {
-            public boolean eval(Object o) {
-                return o instanceof HashMap;
+        
+        final Matcher<Object> isAHashMapThatWozCreated = new BaseMatcher<Object>() {
+        	public boolean matches(Object item) {
+                return item instanceof HashMap;
             }
 
-            public StringBuffer describeTo(StringBuffer stringBuffer) {
-                return stringBuffer.append("Should have been a hashmap");
-            }
+			public void describeTo(Description description) {
+                description.appendText("Should have been a hashmap");				
+			}
         };
 
-        Constraint injectedIsEmptyArray = new Constraint() {
-            public boolean eval(Object o) {
-                Object[] injected = (Object[])o;
+        final Matcher<Object[]> injectedIsEmptyArray = new BaseMatcher<Object[]>() {
+        	public boolean matches(Object item) {
+                Object[] injected = (Object[])item;
                 return 0 == injected.length;
             }
-
-            public StringBuffer describeTo(StringBuffer stringBuffer) {
-                return stringBuffer.append("Should have had nothing injected into it");
+        	public void describeTo(Description description) {
+                description.appendText("Should have had nothing injected into it");
             }
         };
 
-        monitor.expects(once()).method("instantiated").with(new Constraint[] {NULL, isA(ComponentAdapter.class), eq(emptyHashMapCtor), isAHashMapThatWozCreated, injectedIsEmptyArray, durationIsGreaterThanOrEqualToZero});
+        mockery.checking(new Expectations(){{
+        	one(monitor).instantiating(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjector.class)), with(equal(emptyHashMapCtor)));
+        	will(returnValue(emptyHashMapCtor));
+        	one(monitor).instantiated(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjector.class)), with(equal(emptyHashMapCtor)), 
+        			with(isAHashMapThatWozCreated), with(injectedIsEmptyArray), 
+        			with(durationIsGreaterThanOrEqualToZero));
+        }});
+
         ConstructorInjector cica = new ConstructorInjector(
-                Map.class, HashMap.class, new Parameter[0], (ComponentMonitor)monitor.proxy(), new NullLifecycleStrategy(), false);
+                Map.class, HashMap.class, new Parameter[0], monitor, new NullLifecycleStrategy(), false);
         cica.getComponentInstance(null);
     }
 
     @Test public void testMonitoringHappensBeforeAndOnFailOfImpossibleComponentsInstantiation() throws NoSuchMethodException {
-        Mock monitor = mock(ComponentMonitor.class);
-        Constructor barfingActionListenerCtor = BarfingActionListener.class.getConstructor();
-        monitor.expects(once()).method("instantiating").with(new Constraint[] {NULL,isA(ComponentAdapter.class), eq(barfingActionListenerCtor)}).will(returnValue(barfingActionListenerCtor));
+    	final ComponentMonitor monitor = mockery.mock(ComponentMonitor.class);
+        final Constructor barfingActionListenerCtor = BarfingActionListener.class.getConstructor();
 
-        Constraint isITE = new Constraint() {
-            public boolean eval(Object o) {
-                Exception ex = (Exception)o;
-                return ex instanceof InvocationTargetException;
+        final Matcher<Exception> isITE = new BaseMatcher<Exception>() {
+        	public boolean matches(Object item) {
+        		 Exception ex = (Exception)item;
+                 return ex instanceof InvocationTargetException;
             }
 
-            public StringBuffer describeTo(StringBuffer stringBuffer) {
-                return stringBuffer.append("Should have been unable to instantiate");
-            }
+			public void describeTo(Description description) {
+                description.appendText("Should have been unable to instantiate");				
+			}
         };
 
-        monitor.expects(once()).method("instantiationFailed").with(NULL,isA(ComponentAdapter.class), eq(barfingActionListenerCtor), isITE);
+        mockery.checking(new Expectations(){{
+        	one(monitor).instantiating(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjector.class)), with(equal(barfingActionListenerCtor)));
+        	will(returnValue(barfingActionListenerCtor));
+        	one(monitor).instantiationFailed(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjector.class)), with(equal(barfingActionListenerCtor)),
+        			with(isITE));
+        }});
+
+
         ConstructorInjector cica = new ConstructorInjector(
-                ActionListener.class, BarfingActionListener.class, new Parameter[0], (ComponentMonitor)monitor.proxy(), new NullLifecycleStrategy(), false);
+                ActionListener.class, BarfingActionListener.class, new Parameter[0], monitor, new NullLifecycleStrategy(), false);
         try {
             cica.getComponentInstance(null);
             fail("Should barf");

@@ -10,10 +10,15 @@
 
 package org.picocontainer.injectors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -25,7 +30,7 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.tck.AbstractComponentFactoryTestCase;
+import org.picocontainer.tck.AbstractComponentFactoryTest;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
@@ -36,11 +41,12 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-public class AdaptingInjectionTestCase extends AbstractComponentFactoryTestCase {
+public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
     XStream xs;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         xs = new XStream();
         xs.alias("RLS", ReflectionLifecycleStrategy.class);
