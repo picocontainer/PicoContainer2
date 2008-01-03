@@ -9,21 +9,29 @@ package org.picocontainer.lifecycle;
 
 import java.io.Serializable;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.tck.MockFactory;
 
 /**
  * 
  * @author Mauro Talevi
  */
-public class StartableLifecycleStrategyTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class StartableLifecycleStrategyTestCase {
 
+	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+	
     private StartableLifecycleStrategy strategy;
     
+    @Before
     public void setUp(){
         strategy = new StartableLifecycleStrategy(new NullComponentMonitor());
     }
@@ -47,16 +55,21 @@ public class StartableLifecycleStrategyTestCase extends MockObjectTestCase {
     }
     
     private Object mockComponent(boolean startable, boolean disposeable) {
-        Mock mock = mock(Serializable.class);
         if ( startable ) {
-            mock = mock(Startable.class);
-            mock.expects(atLeastOnce()).method("start");
-            mock.expects(atLeastOnce()).method("stop");
+        	 final Startable mock = mockery.mock(Startable.class);
+        	 mockery.checking(new Expectations() {{
+                 one(mock).start(); 
+                 one(mock).stop(); 
+             }});
+        	 return mock;
         }
         if ( disposeable ) {
-            mock = mock(Disposable.class);
-            mock.expects(atLeastOnce()).method("dispose");
+       	 final Disposable mock = mockery.mock(Disposable.class);
+    	 mockery.checking(new Expectations() {{
+             one(mock).dispose(); 
+         }});
+    	 return mock;
         }
-        return mock.proxy();
+        return mockery.mock(Serializable.class);
     }
 }

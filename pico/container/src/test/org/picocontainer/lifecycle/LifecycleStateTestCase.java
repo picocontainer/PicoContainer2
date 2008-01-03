@@ -7,18 +7,19 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.picocontainer.lifecycle.LifecycleState.CONSTRUCTED;
 import static org.picocontainer.lifecycle.LifecycleState.DISPOSED;
 import static org.picocontainer.lifecycle.LifecycleState.STARTED;
 import static org.picocontainer.lifecycle.LifecycleState.STOPPED;
-import junit.framework.TestCase;
 
 import org.junit.Test;
 
 /**
  * @author Michael Rimov
  */
-public class LifecycleStateTestCase extends TestCase {
+public class LifecycleStateTestCase {
 
 	@Test public void testIsStartAllowedOptions() {
 		assertTrue(CONSTRUCTED.isStartAllowed());

@@ -1,9 +1,12 @@
 package org.picocontainer.parameters;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.io.File;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.picocontainer.Characteristics;
@@ -18,7 +21,7 @@ import org.picocontainer.PicoContainer;
  * @author k.pribluda
  * 
  */
-public class ConfigParameterTestCase extends TestCase {
+public class ConfigParameterTestCase {
 
 
 	// defaultparameter name, just for convenience

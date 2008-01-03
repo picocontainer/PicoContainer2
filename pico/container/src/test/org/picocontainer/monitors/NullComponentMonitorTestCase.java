@@ -9,17 +9,26 @@
  *****************************************************************************/
 package org.picocontainer.monitors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-import org.jmock.MockObjectTestCase;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoLifecycleException;
+import org.picocontainer.tck.MockFactory;
 
-public class NullComponentMonitorTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class NullComponentMonitorTestCase {
 
+	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+	
     @Test public void testItAll() throws NoSuchMethodException {
 
         NullComponentMonitor ncm = new NullComponentMonitor();
@@ -41,11 +50,11 @@ public class NullComponentMonitorTestCase extends MockObjectTestCase {
     }
 
     private MutablePicoContainer makePico() {
-        return (MutablePicoContainer)mock(MutablePicoContainer.class).proxy();
+        return mockery.mock(MutablePicoContainer.class);
     }
 
     private ComponentAdapter makeCA() {
-        return (ComponentAdapter)mock(ComponentAdapter.class).proxy();
+        return mockery.mock(ComponentAdapter.class);
     }
 
     private Constructor makeConstructor() {

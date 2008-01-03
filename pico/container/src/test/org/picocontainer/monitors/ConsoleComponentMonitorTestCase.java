@@ -13,8 +13,7 @@ import java.io.PrintStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-import junit.framework.TestCase;
-
+import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentMonitor;
 
@@ -22,12 +21,13 @@ import org.picocontainer.ComponentMonitor;
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
  */
-public class ConsoleComponentMonitorTestCase extends TestCase {
+public class ConsoleComponentMonitorTestCase {
     private ComponentMonitor componentMonitor;
     private Constructor constructor;
     private Method method;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         PrintStream out = System.out;
         constructor = getClass().getConstructor((Class[])null);
         method = getClass().getDeclaredMethod("setUp", (Class[])null);

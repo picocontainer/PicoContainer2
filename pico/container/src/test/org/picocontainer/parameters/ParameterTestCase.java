@@ -9,6 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -27,7 +33,7 @@ import org.picocontainer.visitors.VerifyingVisitor;
 /**
  * @author Jon Tirsen (tirsen@codehaus.org)
  */
-public final class ParameterTestCase extends TestCase {
+public final class ParameterTestCase {
 
     public static class FooNameBinding implements NameBinding {
         public String getName() {

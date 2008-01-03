@@ -9,16 +9,17 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.picocontainer.PicoCompositionException;
+
 
 /**
  * test that constant parameter behaves well.
  * @author Konstantin Pribluda
  */
-public class ConstantParameterTestCase extends TestCase {
+public class ConstantParameterTestCase {
     
     /**
     *  constant parameter with instance type shall verify for expected primitives
