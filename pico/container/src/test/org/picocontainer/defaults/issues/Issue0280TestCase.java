@@ -8,7 +8,9 @@
  * Original code by                                                          *
  *****************************************************************************/
 package org.picocontainer.defaults.issues;
-import junit.framework.TestCase;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -18,45 +20,38 @@ import org.picocontainer.PicoCompositionException;
 /**
  * Test case for issue http://jira.codehaus.org/browse/PICO-280
  */
-public class Issue0280TestCase extends TestCase
-{
-    @Test public void testShouldFailIfInstantiationInChildContainerFails()
-    {
-        MutablePicoContainer parent = new DefaultPicoContainer();
-        MutablePicoContainer child = new DefaultPicoContainer(parent);
+public class Issue0280TestCase {
 
-        parent.addComponent(CommonInterface.class, ParentImplementation.class);
-        child.addComponent(CommonInterface.class, ChildImplementation.class);
+	@Test
+	public void testShouldFailIfInstantiationInChildContainerFails() {
+		MutablePicoContainer parent = new DefaultPicoContainer();
+		MutablePicoContainer child = new DefaultPicoContainer(parent);
 
-        parent.start();
-        
-        try
-        {
-            Object result = child.getComponent(CommonInterface.class);
-            
-            // should never get here
-            assertFalse(result.getClass() == ParentImplementation.class);
-        }
-        catch (Exception e)
-        {
-            assertTrue(e.getClass() == PicoCompositionException.class);
-        }
+		parent.addComponent(CommonInterface.class, ParentImplementation.class);
+		child.addComponent(CommonInterface.class, ChildImplementation.class);
 
-    }
+		parent.start();
 
-	public interface CommonInterface
-	{
-		
-	}
-	
-	public static class ParentImplementation implements CommonInterface
-	{
+		try {
+			Object result = child.getComponent(CommonInterface.class);
+
+			// should never get here
+			assertFalse(result.getClass() == ParentImplementation.class);
+		} catch (Exception e) {
+			assertTrue(e.getClass() == PicoCompositionException.class);
+		}
+
 	}
 
-	public static class ChildImplementation implements CommonInterface
-	{
-		public ChildImplementation()
-		{
+	public interface CommonInterface {
+
+	}
+
+	public static class ParentImplementation implements CommonInterface {
+	}
+
+	public static class ChildImplementation implements CommonInterface {
+		public ChildImplementation() {
 			throw new PicoCompositionException("Problem during initialization");
 		}
 	}

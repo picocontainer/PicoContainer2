@@ -9,14 +9,14 @@
  *****************************************************************************/
 package org.picocontainer.defaults.issues;
 
+import static org.junit.Assert.assertNotNull;
 import junit.framework.Assert;
-import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 
-public class Issue0196TestCase extends TestCase {
+public class Issue0196TestCase {
     public static class Descriptor {
         public static class DescriptorData {
         }

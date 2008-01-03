@@ -10,8 +10,12 @@
 
 package org.picocontainer.defaults;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.fail;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
@@ -20,10 +24,11 @@ import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 
-public class DelegatingPicoContainerTestCase extends TestCase {
+public class DelegatingPicoContainerTestCase {
     private MutablePicoContainer parent;
     private DefaultPicoContainer child;
 
+    @Before
     public void setUp() throws PicoCompositionException {
         parent = new DefaultPicoContainer();
         child = new DefaultPicoContainer(parent);

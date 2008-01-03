@@ -9,8 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import junit.framework.TestCase;
-
 import org.junit.Test;
 
 /**
@@ -20,7 +18,7 @@ import org.junit.Test;
  * 
  * @author Aslak Helles&oslash;y
  */
-public class GenericsTestCase extends TestCase {
+public class GenericsTestCase {
     @Test public void testDummy() {
 
     }

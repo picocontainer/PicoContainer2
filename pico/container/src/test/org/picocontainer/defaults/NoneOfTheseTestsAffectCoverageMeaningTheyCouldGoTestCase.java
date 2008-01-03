@@ -10,10 +10,16 @@
 
 package org.picocontainer.defaults;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -27,7 +33,7 @@ import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.Webster;
 
-public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase extends TestCase {
+public final class NoneOfTheseTestsAffectCoverageMeaningTheyCouldGoTestCase {
 
     //TODO - move to AbstractComponentRegistryTestCase
     @Test public void testGetComponentSpecification() throws PicoCompositionException {

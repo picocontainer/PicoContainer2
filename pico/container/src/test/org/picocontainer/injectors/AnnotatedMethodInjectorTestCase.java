@@ -9,12 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -24,7 +24,7 @@ import org.picocontainer.annotations.Inject;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-public class AnnotatedMethodInjectorTestCase extends TestCase {
+public class AnnotatedMethodInjectorTestCase  {
 
     public static class AnnotatedBurp {
 

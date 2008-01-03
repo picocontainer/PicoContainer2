@@ -1,8 +1,9 @@
 package org.picocontainer.containers;
 
-import java.util.Properties;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
-import junit.framework.TestCase;
+import java.util.Properties;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -11,8 +12,7 @@ import org.picocontainer.DefaultPicoContainer;
  * test that properties container works properly
  * @author k.pribluda
  */
-public class PropertiesPicoContainerTestCase extends TestCase {
-
+public class PropertiesPicoContainerTestCase {
 	/**
 	 * all properties specified in constructor shall be
 	 * placed into container as strings

@@ -9,10 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.picocontainer.Characteristics;
@@ -29,7 +31,7 @@ import org.picocontainer.injectors.ConstructorInjection;
  *
  * @author Aslak Helles&oslash;y
  */
-public final class UserQuestionTestCase extends TestCase {
+public final class UserQuestionTestCase {
 
     // From Scott Farquahsr
     public static final class CheeseAdapter extends AbstractAdapter {

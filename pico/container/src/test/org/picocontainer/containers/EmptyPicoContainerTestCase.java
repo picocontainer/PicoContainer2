@@ -10,7 +10,8 @@
 
 package org.picocontainer.containers;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.picocontainer.NameBinding;
@@ -19,7 +20,7 @@ import org.picocontainer.PicoContainer;
 /**
  * @author Mauro Talevi
  */
-public class EmptyPicoContainerTestCase extends TestCase {
+public class EmptyPicoContainerTestCase {
 
     @Test public void testReturnValues() {
         PicoContainer pico = new EmptyPicoContainer();

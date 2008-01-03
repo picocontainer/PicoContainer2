@@ -1,5 +1,7 @@
 package org.picocontainer.adapters;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.Serializable;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,8 +9,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.util.Properties;
-
-import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.picocontainer.Characteristics;
@@ -29,7 +29,7 @@ import org.picocontainer.injectors.AbstractInjector;
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
  */
-public class SimpleNamedBindingAnnotationTestCase extends TestCase {
+public class SimpleNamedBindingAnnotationTestCase {
 
     @Test public void testNamedBinding() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new FieldInjection());

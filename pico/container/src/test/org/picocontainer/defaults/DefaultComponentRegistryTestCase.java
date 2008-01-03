@@ -10,8 +10,12 @@
 
 package org.picocontainer.defaults;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
@@ -23,10 +27,11 @@ import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-public class DefaultComponentRegistryTestCase extends TestCase {
+public class DefaultComponentRegistryTestCase {
     private DefaultPicoContainer picoContainer;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         picoContainer = new DefaultPicoContainer();
     }
 

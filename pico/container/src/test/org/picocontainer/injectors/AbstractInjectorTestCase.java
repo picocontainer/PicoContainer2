@@ -9,14 +9,15 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static org.junit.Assert.assertSame;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
+import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -28,11 +29,12 @@ import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-public class AbstractInjectorTestCase extends TestCase {
+public class AbstractInjectorTestCase {
 
     private AbstractInjector ai;
     Constructor<HashMap> ctor;
 
+    @Before
     public void setUp() throws NoSuchMethodException {
         ai = new MyAbstractInjector(Map.class, HashMap.class, new Parameter[0],
                                                      new NullComponentMonitor(),

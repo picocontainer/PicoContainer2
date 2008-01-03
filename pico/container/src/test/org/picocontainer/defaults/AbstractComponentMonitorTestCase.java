@@ -16,6 +16,7 @@ import java.util.Vector;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
+import org.junit.Test;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.DefaultPicoContainer;
@@ -27,7 +28,7 @@ import org.picocontainer.monitors.AbstractComponentMonitor;
  */
 public class AbstractComponentMonitorTestCase extends MockObjectTestCase  {
 
-    public void testDelegatingMonitorThrowsExpectionWhenConstructionWithNullDelegate(){
+    @Test public void testDelegatingMonitorThrowsExpectionWhenConstructionWithNullDelegate(){
         try {
             new AbstractComponentMonitor(null);
             fail("NPE expected");
@@ -36,7 +37,7 @@ public class AbstractComponentMonitorTestCase extends MockObjectTestCase  {
         }
     }
 
-    public void testDelegatingMonitorThrowsExpectionWhenChangingToNullMonitor(){
+    @Test public void testDelegatingMonitorThrowsExpectionWhenChangingToNullMonitor(){
         AbstractComponentMonitor dcm = new AbstractComponentMonitor();
         try {
             dcm.changeMonitor(null);
@@ -46,7 +47,7 @@ public class AbstractComponentMonitorTestCase extends MockObjectTestCase  {
         }
     }
 
-    public void testDelegatingMonitorCanChangeMonitorInDelegateThatDoesSupportMonitorStrategy() {
+    @Test public void testDelegatingMonitorCanChangeMonitorInDelegateThatDoesSupportMonitorStrategy() {
         ComponentMonitor monitor = mockMonitorWithNoExpectedMethods();
         AbstractComponentMonitor dcm = new AbstractComponentMonitor(mockMonitorThatSupportsStrategy(monitor));
         dcm.changeMonitor(monitor);
@@ -54,7 +55,7 @@ public class AbstractComponentMonitorTestCase extends MockObjectTestCase  {
         dcm.instantiating(null, null, null);
     }
 
-    public void testDelegatingMonitorChangesDelegateThatDoesNotSupportMonitorStrategy() {
+    @Test public void testDelegatingMonitorChangesDelegateThatDoesNotSupportMonitorStrategy() {
         ComponentMonitor delegate = mockMonitorWithNoExpectedMethods();
         AbstractComponentMonitor dcm = new AbstractComponentMonitor(delegate);
         ComponentMonitor monitor = mockMonitorWithNoExpectedMethods();
@@ -63,7 +64,7 @@ public class AbstractComponentMonitorTestCase extends MockObjectTestCase  {
         assertEquals(monitor, dcm.currentMonitor());
     }
 
-    public void testDelegatingMonitorReturnsDelegateThatDoesNotSupportMonitorStrategy() {
+    @Test public void testDelegatingMonitorReturnsDelegateThatDoesNotSupportMonitorStrategy() {
         ComponentMonitor delegate = mockMonitorWithNoExpectedMethods();
         AbstractComponentMonitor dcm = new AbstractComponentMonitor(delegate);
         assertEquals(delegate, dcm.currentMonitor());
@@ -82,7 +83,7 @@ public class AbstractComponentMonitorTestCase extends MockObjectTestCase  {
         return (ComponentMonitor)mock.proxy();
     }
 
-    public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
+    @Test public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
         final Vector ourIntendedInjectee0 = new Vector();
         final String ourIntendedInjectee1 = "hullo";
         DefaultPicoContainer parent = new DefaultPicoContainer();

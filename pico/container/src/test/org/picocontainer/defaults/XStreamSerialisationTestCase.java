@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -25,7 +25,7 @@ import com.thoughtworks.xstream.io.xml.XppDriver;
 /**
  * @author Aslak Helles&oslash;y
  */
-public final class XStreamSerialisationTestCase extends TestCase {
+public final class XStreamSerialisationTestCase {
     private final XStream xStream = new XStream(new XppDriver());
 
     @Test public void testShouldBeAbleToSerialiseEmptyPico() {

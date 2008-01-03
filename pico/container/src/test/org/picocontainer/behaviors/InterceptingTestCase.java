@@ -9,12 +9,13 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 
-public class InterceptingTestCase extends TestCase {
+public class InterceptingTestCase {
 
     public static interface Foo {
         void one();

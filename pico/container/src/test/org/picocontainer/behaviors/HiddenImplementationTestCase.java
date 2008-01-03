@@ -9,12 +9,14 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
@@ -23,7 +25,7 @@ import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-public class HiddenImplementationTestCase extends TestCase {
+public class HiddenImplementationTestCase {
 
     @Test public void testMultipleInterfacesCanBeHidden() {
         ComponentAdapter ca = new ConstructorInjector(new Class[]{ActionListener.class, MouseListener.class}, Footle.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);

@@ -9,12 +9,16 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.picocontainer.Characteristics;
@@ -28,7 +32,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 
 import com.thoughtworks.xstream.XStream;
 
-public class AdaptingBehaviorTestCase extends TestCase {
+public class AdaptingBehaviorTestCase {
 
     @Test public void testCachingBehaviorCanBeAddedByCharacteristics() {
         AdaptingBehavior abf = new AdaptingBehavior();

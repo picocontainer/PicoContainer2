@@ -9,10 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.defaults.issues;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -20,7 +20,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Synchronizing;
 import org.picocontainer.injectors.ConstructorInjection;
 
-public final class Issue0199TestCase extends TestCase {
+public final class Issue0199TestCase {
 
     public static class A {
         public A(C c) {}

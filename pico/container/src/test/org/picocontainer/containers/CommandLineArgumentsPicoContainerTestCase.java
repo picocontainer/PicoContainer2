@@ -9,10 +9,13 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.io.StringReader;
-
-import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.picocontainer.Characteristics;
@@ -22,7 +25,7 @@ import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AnnotatedFieldInjection;
 import org.picocontainer.injectors.SetterInjection;
 
-public class CommandLineArgumentsPicoContainerTestCase extends TestCase {
+public class CommandLineArgumentsPicoContainerTestCase {
 
     @Test public void testBasicParsing() {
         CommandLineArgumentsPicoContainer apc = new CommandLineArgumentsPicoContainer(new String[] {

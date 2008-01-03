@@ -9,15 +9,18 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 /**
  * Test the CyclicDependecy.
  */
-public final class ThreadLocalCyclicDependencyGuardTestCase
-        extends TestCase {
+public final class ThreadLocalCyclicDependencyGuardTestCase {
+      
     private final Runnable[] runner = new Runnable[3];
     
     class ThreadLocalRunner implements Runnable {

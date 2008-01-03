@@ -11,14 +11,12 @@ package org.picocontainer.defaults;
 
 import java.beans.IntrospectionException;
 
-import junit.framework.TestCase;
-
 import org.junit.Test;
 
 /**
  * @author Aslak Helles&oslash;y
  */
-public class SetterIntrospectorTestCase extends TestCase {
+public class SetterIntrospectorTestCase {
     public static class TestBean {
         public void setPublicMethod(int i) {
         }

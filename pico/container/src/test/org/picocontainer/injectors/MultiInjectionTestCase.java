@@ -8,7 +8,8 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -17,7 +18,7 @@ import org.picocontainer.annotations.Inject;
 /**
  * @author Paul Hammant
  */
-public class MultiInjectionTestCase extends TestCase {
+public class MultiInjectionTestCase {
 
     public static class Bar {
     }

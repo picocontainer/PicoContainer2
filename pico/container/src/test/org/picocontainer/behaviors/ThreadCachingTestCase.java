@@ -9,12 +9,15 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 
-public class ThreadCachingTestCase extends TestCase {
+public class ThreadCachingTestCase {
 
     public static class Foo {
         public Foo(StringBuilder sb) {

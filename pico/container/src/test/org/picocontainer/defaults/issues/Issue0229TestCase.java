@@ -9,14 +9,14 @@
  *****************************************************************************/
 package org.picocontainer.defaults.issues;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.visitors.VerifyingVisitor;
 
 
-public class Issue0229TestCase extends TestCase {
+public class Issue0229TestCase {
     
     public static class MockRunnable implements Runnable {
         public void run() {

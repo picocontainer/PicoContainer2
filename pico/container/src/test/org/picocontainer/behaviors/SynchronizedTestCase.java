@@ -9,12 +9,16 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.picocontainer.BehaviorFactory;
@@ -31,7 +35,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  */
-public class SynchronizedTestCase extends TestCase {
+public class SynchronizedTestCase {
     private final Runner[] runner = new Runner[3];
     private int blockerCounter = 0;
 

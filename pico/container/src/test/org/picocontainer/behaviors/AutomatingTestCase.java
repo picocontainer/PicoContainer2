@@ -9,10 +9,11 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.picocontainer.Characteristics.AUTOMATIC;
 import static org.picocontainer.behaviors.Behaviors.automatic;
 import static org.picocontainer.behaviors.Behaviors.caching;
-import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -22,7 +23,7 @@ import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-public class AutomatingTestCase extends TestCase {
+public class AutomatingTestCase {
 
     private static String MESSAGE =
         "Foo was instantiated, even though it was not required to be given it was not depended on by anything looked up";

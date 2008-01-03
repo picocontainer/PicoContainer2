@@ -9,7 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.picocontainer.Characteristics;
@@ -19,7 +20,7 @@ import org.picocontainer.PicoBuilder;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-public class MethodInjectionTestCase extends TestCase {
+public class MethodInjectionTestCase {
 
     public static class Foo {
         private Bar bar;

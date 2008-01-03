@@ -9,12 +9,17 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 
-public class StoringTestCase extends TestCase {
+public class StoringTestCase {
 
     public static class Foo {
         public Foo(StringBuilder sb) {

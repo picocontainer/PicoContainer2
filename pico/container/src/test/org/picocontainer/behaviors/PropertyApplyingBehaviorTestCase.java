@@ -9,7 +9,9 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.picocontainer.testmodel.CoupleBean;
@@ -18,7 +20,7 @@ import org.picocontainer.testmodel.CoupleBean;
  *
  * @author greg
  */
-public class PropertyApplyingBehaviorTestCase extends TestCase {
+public class PropertyApplyingBehaviorTestCase {
     @Test public void testBeanPropertyComponentAdapterCanUsePropertyEditors() {
         Object c = PropertyApplicator.convert(CoupleBean.class.getName(), "a's name:Camilla;b's name:Charles;", this.getClass().getClassLoader());
         assertNotNull(c);

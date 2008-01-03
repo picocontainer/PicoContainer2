@@ -1,6 +1,6 @@
 package org.picocontainer.containers;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
@@ -9,7 +9,7 @@ import org.junit.Test;
  * @author k.pribluda
  *
  */
-public class SystemPropertiesPicoContainerTestCase extends TestCase {
+public class SystemPropertiesPicoContainerTestCase {
 
 	
 	/**

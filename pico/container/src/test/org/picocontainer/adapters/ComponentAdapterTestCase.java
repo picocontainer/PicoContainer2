@@ -7,9 +7,11 @@
  *****************************************************************************/
 package org.picocontainer.adapters;
 
-import java.lang.reflect.Constructor;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import junit.framework.TestCase;
+import java.lang.reflect.Constructor;
 
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
@@ -28,8 +30,7 @@ import org.picocontainer.parameters.ConstantParameter;
  * Test AbstractAdapter behaviour
  * @author J&ouml;rg Schaible
  */
-public class ComponentAdapterTestCase
-        extends TestCase {
+public class ComponentAdapterTestCase {
 
     @SuppressWarnings("serial")
 	private static class TestAdapter<T> extends AbstractAdapter<T> {

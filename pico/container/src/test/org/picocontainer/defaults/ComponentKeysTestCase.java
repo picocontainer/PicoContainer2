@@ -9,7 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -23,7 +24,8 @@ import org.picocontainer.testmodel.Touchable;
  * @author Thomas Heller
  * @author Aslak Helles&oslash;y
  */
-public class ComponentKeysTestCase extends TestCase {
+public class ComponentKeysTestCase {
+	
     @Test public void testComponensRegisteredWithClassKeyTakePrecedenceOverOthersWhenThereAreMultipleImplementations() throws Exception {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent("default", SimpleTouchable.class);

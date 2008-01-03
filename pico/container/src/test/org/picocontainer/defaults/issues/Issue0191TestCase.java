@@ -9,14 +9,14 @@
  *****************************************************************************/
 package org.picocontainer.defaults.issues;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 
-public final class Issue0191TestCase extends TestCase {
+public final class Issue0191TestCase {
 
     static int sharkCount = 0 ;
     static int codCount = 0 ;

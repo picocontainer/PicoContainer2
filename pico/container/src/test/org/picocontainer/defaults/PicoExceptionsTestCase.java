@@ -9,6 +9,11 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -16,8 +21,6 @@ import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
@@ -32,8 +35,7 @@ import org.picocontainer.monitors.AbstractComponentMonitor;
 /**
  * Unit tests for the several PicoException classes.
  */
-public class PicoExceptionsTestCase
-        extends TestCase {
+public class PicoExceptionsTestCase {
 
     final static public String MESSAGE = "Message of the exception";
     final static public Throwable THROWABLE = new Throwable();

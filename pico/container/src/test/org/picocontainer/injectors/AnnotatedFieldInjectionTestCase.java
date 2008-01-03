@@ -9,11 +9,11 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
@@ -28,7 +28,7 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-public class AnnotatedFieldInjectionTestCase extends TestCase {
+public class AnnotatedFieldInjectionTestCase {
 
     @Test public void testFactoryMakesAnnotationInjector() {
 

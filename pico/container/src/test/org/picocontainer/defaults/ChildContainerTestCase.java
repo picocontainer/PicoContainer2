@@ -9,7 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -25,7 +26,7 @@ import org.picocontainer.testmodel.Touchable;
  * @author Aslak Helles&oslash;y
  * @author Rafal Krzewski
  */
-public class ChildContainerTestCase extends TestCase {
+public class ChildContainerTestCase {
 
     @Test public void testParentContainerWithComponentWithEqualKeyShouldBeShadowedByChild() throws Exception {
         DefaultPicoContainer parent = new DefaultPicoContainer();
