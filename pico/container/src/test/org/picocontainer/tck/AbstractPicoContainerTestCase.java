@@ -9,15 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.tck;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -36,6 +27,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import junit.framework.Assert;
+import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.picocontainer.Behavior;
@@ -69,7 +61,7 @@ import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.visitors.VerifyingVisitor;
 
 /** This test tests (at least it should) all the methods in MutablePicoContainer. */
-public abstract class AbstractPicoContainerTestCase {
+public abstract class AbstractPicoContainerTestCase extends TestCase {
 
     protected abstract MutablePicoContainer createPicoContainer(PicoContainer parent);
 
@@ -77,7 +69,6 @@ public abstract class AbstractPicoContainerTestCase {
         MutablePicoContainer pico = createPicoContainer(null);
         pico.addComponent(DependsOnTouchable.class);
         return pico;
-
     }
 
     protected final MutablePicoContainer createPicoContainerWithTouchableAndDependsOnTouchable() throws PicoCompositionException {
