@@ -7,138 +7,265 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
+import static org.junit.Assert.assertFalse;
+
 import java.io.Serializable;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Disposable;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
+import org.picocontainer.tck.MockFactory;
 
 /**
  * @author Paul Hammant
  * @author Mauro Talevi
  * @author J&ouml;rg Schaible
  */
-public class ReflectionLifecycleStrategyTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class ReflectionLifecycleStrategyTestCase {
 
-    private ReflectionLifecycleStrategy strategy;
-    private Mock componentMonitorMock;
-    
-    public void setUp(){
-        componentMonitorMock = mock(ComponentMonitor.class);
-        strategy = new ReflectionLifecycleStrategy((ComponentMonitor)componentMonitorMock.proxy());
-    }
+	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
 
-    @Test public void testStartable(){
-        Object startable = mockComponent(true, false);
-        strategy.start(startable);
-        strategy.stop(startable);
-        strategy.dispose(startable);
-    }
+	private ReflectionLifecycleStrategy strategy;
+	private ComponentMonitor componentMonitor;
 
-    @Test public void testDisposable(){
-        Object disposable = mockComponent(false, true);
-        strategy.start(disposable);
-        strategy.stop(disposable);
-        strategy.dispose(disposable);
-    }
+	@Before
+	public void setUp() {
+		componentMonitor = mockery.mock(ComponentMonitor.class);
+		strategy = new ReflectionLifecycleStrategy(componentMonitor);
+	}
 
-    @Test public void testNotStartableNorDisposable(){
-        Object serializable = mock(Serializable.class);
-        assertFalse(strategy.hasLifecycle(serializable.getClass()));
-        strategy.start(serializable);
-        strategy.stop(serializable);
-        strategy.dispose(serializable);
-    }
-    
-    @Test public void testMonitorChanges() {
-        Mock componentMonitorMock2 = mock(ComponentMonitor.class);
-        Mock mock = mock(Disposable.class);
-        Object disposable = mock.proxy();
-        mock.expects(once()).method("dispose");
-        componentMonitorMock.expects(once()).method("invoking").with(NULL, NULL, method("dispose"), same(mock.proxy()));
-        componentMonitorMock.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("dispose"), same(mock.proxy()), ANYTHING});
-        strategy.dispose(disposable);
-        strategy.changeMonitor((ComponentMonitor)componentMonitorMock2.proxy());
-        mock.expects(once()).method("dispose");
-        componentMonitorMock2.expects(once()).method("invoking").with(NULL, NULL, method("dispose"), same(mock.proxy()));
-        componentMonitorMock2.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("dispose"), same(mock.proxy()), ANYTHING});
-        strategy.dispose(disposable);
-    }
-    
-    static interface MyLifecylce {
-        void start();
-        void stop();
-        void dispose();
-    }
-    
-    @Test public void testWithDifferentTypes() {
-        Mock anotherStartableMock = mock(MyLifecylce.class);
-        anotherStartableMock.expects(once()).method("start");
-        anotherStartableMock.expects(once()).method("stop");
-        anotherStartableMock.expects(once()).method("dispose");
-        componentMonitorMock.expects(once()).method("invoking").with(NULL, NULL, method("start"), same(anotherStartableMock.proxy()));
-        componentMonitorMock.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("start"), same(anotherStartableMock.proxy()), ANYTHING});
-        componentMonitorMock.expects(once()).method("invoking").with(NULL, NULL, method("stop"), same(anotherStartableMock.proxy()));
-        componentMonitorMock.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("stop"), same(anotherStartableMock.proxy()), ANYTHING});
-        componentMonitorMock.expects(once()).method("invoking").with(NULL, NULL, method("dispose"), same(anotherStartableMock.proxy()));
-        componentMonitorMock.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("dispose"), same(anotherStartableMock.proxy()), ANYTHING});
+	 @Test
+	public void testStartable() {
+		Object startable = mockComponent(true, false);
+		strategy.start(startable);
+		strategy.stop(startable);
+		strategy.dispose(startable);
+	}
 
-        Object startable = mockComponent(true, false);
-        strategy.start(startable);
-        strategy.stop(startable);
-        strategy.dispose(startable);
-        startable = anotherStartableMock.proxy();
-        strategy.start(startable);
-        strategy.stop(startable);
-        strategy.dispose(startable);
-    }
-    
-    private Object mockComponent(boolean startable, boolean disposable) {
-        Mock mock = mock(Serializable.class);
-        if ( startable ) {
-            mock = mock(Startable.class);
-            mock.expects(atLeastOnce()).method("start");
-            mock.expects(atLeastOnce()).method("stop");
-            componentMonitorMock.expects(once()).method("invoking").with(NULL, NULL, method("start"), same(mock.proxy()));
-            componentMonitorMock.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("start"), same(mock.proxy()), ANYTHING});
-            componentMonitorMock.expects(once()).method("invoking").with(NULL, NULL, method("stop"), same(mock.proxy()));
-            componentMonitorMock.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("stop"), same(mock.proxy()), ANYTHING});
-        }
-        if ( disposable ) {
-            mock = mock(Disposable.class);
-            mock.expects(atLeastOnce()).method("dispose");
-            componentMonitorMock.expects(once()).method("invoking").with(NULL, NULL, method("dispose"), same(mock.proxy()));
-            componentMonitorMock.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, method("dispose"), same(mock.proxy()), ANYTHING});
-        }
-        return mock.proxy();
-    }
-    
-    MethodNameIsEqual method(String name) {
-        return new MethodNameIsEqual(name);
-    }
-    
-    static class MethodNameIsEqual implements Constraint {
+	@Test
+	public void testDisposable() {
+		Object disposable = mockComponent(false, true);
+		strategy.start(disposable);
+		strategy.stop(disposable);
+		strategy.dispose(disposable);
+	}
 
-        private final String name;
+	@Test
+	public void testNotStartableNorDisposable() {
+		Object serializable = mockery.mock(Serializable.class);
+		assertFalse(strategy.hasLifecycle(serializable.getClass()));
+		strategy.start(serializable);
+		strategy.stop(serializable);
+		strategy.dispose(serializable);
+	}
 
-        public MethodNameIsEqual(String name) {
-            this.name = name;
-        }
-        
-        public boolean eval(Object o) {
-            return o instanceof Method && ((Method)o).getName().equals(name);
-        }
+	@Test
+	public void testMonitorChanges() {
+		final ComponentMonitor componentMonitor2 = mockery
+				.mock(ComponentMonitor.class);
+		final Disposable disposable = mockery.mock(Disposable.class);
+		final Matcher<Member> isDisposeMember = new IsMember("dispose");
+		final Matcher<Method> isDisposeMethod = new IsMethod("dispose");
+		final Matcher<Long> isLong = new IsLong();
+		mockery.checking(new Expectations() {
+			{
+				atLeast(1).of(disposable).dispose();
+				one(componentMonitor).invoking(
+						with(aNull(PicoContainer.class)),
+						with(aNull(ComponentAdapter.class)),
+						with(isDisposeMember), with(same(disposable)));
+				one(componentMonitor).invoked(with(aNull(PicoContainer.class)),
+						with(aNull(ComponentAdapter.class)),
+						with(isDisposeMethod), with(same(disposable)),
+						with(isLong));
+				one(componentMonitor2).invoking(
+						with(aNull(PicoContainer.class)),
+						with(aNull(ComponentAdapter.class)),
+						with(isDisposeMember), with(same(disposable)));
+				one(componentMonitor2).invoked(
+						with(aNull(PicoContainer.class)),
+						with(aNull(ComponentAdapter.class)),
+						with(isDisposeMethod), with(same(disposable)),
+						with(isLong));
+			}
+		});
+		strategy.dispose(disposable);
+		strategy.changeMonitor(componentMonitor2);
+		strategy.dispose(disposable);
+	}
 
-        public StringBuffer describeTo(StringBuffer buffer) {
-            buffer.append("a method with name <");
-            buffer.append(name);
-            return buffer.append('>');
-        }
-        
-    }
+	@Test
+	public void testWithDifferentTypes() {
+		final MyLifecycle lifecycle = mockery.mock(MyLifecycle.class);
+		final Matcher<Member> isStartMember = new IsMember("start");
+		final Matcher<Method> isStartMethod = new IsMethod("start");
+		final Matcher<Member> isStopMember = new IsMember("stop");
+		final Matcher<Method> isStopMethod = new IsMethod("stop");
+		final Matcher<Member> isDisposeMember = new IsMember("dispose");
+		final Matcher<Method> isDisposeMethod = new IsMethod("dispose");
+		final Matcher<Long> isLong = new IsLong();
+		mockery.checking(new Expectations() {
+			{
+				one(lifecycle).start();
+				one(lifecycle).stop();
+				one(lifecycle).dispose();
+				one(componentMonitor).invoking(
+						with(aNull(PicoContainer.class)),
+						with(aNull(ComponentAdapter.class)),
+						with(isStartMember), with(same(lifecycle)));
+				one(componentMonitor).invoked(with(aNull(PicoContainer.class)),
+						with(aNull(ComponentAdapter.class)),
+						with(isStartMethod), with(same(lifecycle)),
+						with(isLong));
+				one(componentMonitor).invoking(
+						with(aNull(PicoContainer.class)),
+						with(aNull(ComponentAdapter.class)),
+						with(isStopMember), with(same(lifecycle)));
+				one(componentMonitor).invoked(with(aNull(PicoContainer.class)),
+						with(aNull(ComponentAdapter.class)),
+						with(isStopMethod), with(same(lifecycle)),
+						with(isLong));
+				one(componentMonitor).invoking(
+						with(aNull(PicoContainer.class)),
+						with(aNull(ComponentAdapter.class)),
+						with(isDisposeMember), with(same(lifecycle)));
+				one(componentMonitor).invoked(with(aNull(PicoContainer.class)),
+						with(aNull(ComponentAdapter.class)),
+						with(isDisposeMethod), with(same(lifecycle)),
+						with(isLong));
+			}
+		});
+
+		Object startable = mockComponent(true, false);
+		strategy.start(startable);
+		strategy.stop(startable);
+		strategy.dispose(startable);
+		startable = lifecycle;
+		strategy.start(startable);
+		strategy.stop(startable);
+		strategy.dispose(startable);
+	}
+
+	private Object mockComponent(boolean startable, boolean disposable) {
+		final Matcher<Member> isStartMember = new IsMember("start");
+		final Matcher<Method> isStartMethod = new IsMethod("start");
+		final Matcher<Member> isStopMember = new IsMember("stop");
+		final Matcher<Method> isStopMethod = new IsMethod("stop");
+		final Matcher<Member> isDisposeMember = new IsMember("dispose");
+		final Matcher<Method> isDisposeMethod = new IsMethod("dispose");
+		final Matcher<Long> isLong = new IsLong();
+		if (startable) {
+			final Startable mock = mockery.mock(Startable.class);
+			mockery.checking(new Expectations() {
+				{
+					atLeast(1).of(mock).start();
+					atLeast(1).of(mock).stop();
+					one(componentMonitor).invoking(
+							with(aNull(PicoContainer.class)),
+							with(aNull(ComponentAdapter.class)),
+							with(isStartMember), with(same(mock)));
+					one(componentMonitor)
+							.invoked(with(aNull(PicoContainer.class)),
+									with(aNull(ComponentAdapter.class)),
+									with(isStartMethod), with(same(mock)),
+									with(isLong));
+					one(componentMonitor).invoking(
+							with(aNull(PicoContainer.class)),
+							with(aNull(ComponentAdapter.class)),
+							with(isStopMember), with(same(mock)));
+					one(componentMonitor).invoked(
+							with(aNull(PicoContainer.class)),
+							with(aNull(ComponentAdapter.class)),
+							with(isStopMethod), with(same(mock)), with(isLong));
+				}
+			});
+			return mock;
+		}
+		if (disposable) {
+			final Disposable mock = mockery.mock(Disposable.class);
+			mockery.checking(new Expectations() {
+				{
+					atLeast(1).of(mock).dispose();
+					one(componentMonitor).invoking(
+							with(aNull(PicoContainer.class)),
+							with(aNull(ComponentAdapter.class)),
+							with(isDisposeMember), with(same(mock)));
+					one(componentMonitor)
+							.invoked(with(aNull(PicoContainer.class)),
+									with(aNull(ComponentAdapter.class)),
+									with(isDisposeMethod), with(same(mock)),
+									with(isLong));
+				}
+			});
+			return mock;
+		}
+		return mockery.mock(Serializable.class);
+	}
+
+	public static interface MyLifecycle {
+		void start();
+
+		void stop();
+
+		void dispose();
+	}
+
+	static class IsMember extends BaseMatcher<Member> {
+		private String name;
+
+		public IsMember(String name) {
+			this.name = name;
+		}
+
+		public boolean matches(Object item) {
+			return ((Member) item).getName().equals(name);
+		}
+
+		public void describeTo(Description description) {
+			description.appendText("Should have been a member of name ");
+			description.appendText(name);
+		}
+	};
+
+	static class IsMethod extends BaseMatcher<Method> {
+		private String name;
+
+		public IsMethod(String name) {
+			this.name = name;
+		}
+
+		public boolean matches(Object item) {
+			return ((Method) item).getName().equals(name);
+		}
+
+		public void describeTo(Description description) {
+			description.appendText("Should have been a method of name ");
+			description.appendText(name);
+		}
+	};
+
+	static class IsLong extends BaseMatcher<Long> {
+		public boolean matches(Object item) {
+			return true;
+		}
+
+		public void describeTo(Description description) {
+			description.appendText("Should have been a long");
+		}
+	};
+
 }
