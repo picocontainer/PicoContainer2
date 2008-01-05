@@ -10,93 +10,100 @@
 
 package org.picocontainer.gems.jmx;
 
-import junit.framework.TestCase;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.picocontainer.gems.jmx.testmodel.DynamicMBeanPerson;
-import org.picocontainer.gems.jmx.testmodel.Person;
-import org.picocontainer.gems.jmx.testmodel.PersonMBean;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.adapters.InstanceAdapter;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import javax.management.DynamicMBean;
 import javax.management.InstanceAlreadyExistsException;
+import javax.management.InstanceNotFoundException;
 import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
+import junit.framework.TestCase;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.gems.jmx.testmodel.DynamicMBeanPerson;
+import org.picocontainer.gems.jmx.testmodel.Person;
+import org.picocontainer.gems.jmx.testmodel.PersonMBean;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
+
 
 /**
  * @author J&ouml;rg Schaible
  */
-public class JMXExposedTestCase extends MockObjectTestCase {
+public class JMXExposedTestCase {
 
-    private Mock mockMBeanServer;
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+    private final MBeanServer mBeanServer = mockery. mock(MBeanServer.class);
 
-    protected void setUp() throws Exception {
-        super.setUp();
-        mockMBeanServer = mock(MBeanServer.class);
-    }
-
-    public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException {
-        final PersonMBean person = new DynamicMBeanPerson();
+    @Test public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
+        final DynamicMBeanPerson person = new DynamicMBeanPerson();
         final ComponentAdapter componentAdapter = new JMXExposed(new InstanceAdapter(
-                PersonMBean.class, person, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor()), (MBeanServer)mockMBeanServer.proxy());
-
-        mockMBeanServer.expects(once()).method("registerMBean").with(same(person), isA(ObjectName.class));
-
+                PersonMBean.class, person, new NullLifecycleStrategy(), new NullComponentMonitor()), mBeanServer);
+        mockery.checking(new Expectations(){{
+        	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
+        }});
+        
         assertSame(person, componentAdapter.getComponentInstance(null));
     }
 
-    public void testWillRegisterAndUnRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException {
-        final PersonMBean person = new DynamicMBeanPerson();
+    @Test public void testWillRegisterAndUnRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException, InstanceNotFoundException {
+        final DynamicMBeanPerson person = new DynamicMBeanPerson();
         final JMXExposed componentAdapter = new JMXExposed(new InstanceAdapter(
-                PersonMBean.class, person, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor()), (MBeanServer)mockMBeanServer.proxy());
-
-        mockMBeanServer.expects(once()).method("registerMBean").with(same(person), isA(ObjectName.class));
-        mockMBeanServer.expects(once()).method("unregisterMBean").with(isA(ObjectName.class));
-
+                PersonMBean.class, person, new NullLifecycleStrategy(), new NullComponentMonitor()), mBeanServer);
+        mockery.checking(new Expectations(){{
+        	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
+        	one(mBeanServer).unregisterMBean(with(any(ObjectName.class)));
+        }});
+        
         assertSame(person, componentAdapter.getComponentInstance(null));
         componentAdapter.dispose( person );
     }
 
-    public void testWillTryAnyDynamicMBeanProvider() throws MalformedObjectNameException, NotCompliantMBeanException {
+    @Test public void testWillTryAnyDynamicMBeanProvider() throws MalformedObjectNameException, NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
         final Person person = new Person();
-        final Mock mockProvider1 = mock(DynamicMBeanProvider.class);
-        final Mock mockProvider2 = mock(DynamicMBeanProvider.class);
+        final DynamicMBeanProvider provider1 = mockery.mock(DynamicMBeanProvider.class);
+        final DynamicMBeanProvider provider2 = mockery.mock(DynamicMBeanProvider.class);
         final ObjectName objectName = new ObjectName(":type=Person");
         final DynamicMBean mBean = new DynamicMBeanPerson();
         final JMXRegistrationInfo info = new JMXRegistrationInfo(objectName, mBean);
 
         final ComponentAdapter componentAdapter = new JMXExposed(new InstanceAdapter(
-                PersonMBean.class, person, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor()), (MBeanServer)mockMBeanServer.proxy(), new DynamicMBeanProvider[]{
-                (DynamicMBeanProvider)mockProvider1.proxy(), (DynamicMBeanProvider)mockProvider2.proxy()});
-
-        mockProvider1.expects(once()).method("provide").with(NULL, isA(ComponentAdapter.class)).will(returnValue(null));
-        mockProvider2.expects(once()).method("provide").with(NULL, isA(ComponentAdapter.class)).will(returnValue(info));
-        mockMBeanServer.expects(once()).method("registerMBean").with(same(mBean), eq(objectName));
+                PersonMBean.class, person, new NullLifecycleStrategy(), new NullComponentMonitor()), mBeanServer, new DynamicMBeanProvider[]{
+                provider1, provider2});
+        mockery.checking(new Expectations(){{
+        	one(provider1).provide(with(aNull(PicoContainer.class)), with(any(ComponentAdapter.class)));
+        	will(returnValue(null));
+        	one(provider2).provide(with(aNull(PicoContainer.class)), with(any(ComponentAdapter.class)));
+        	will(returnValue(info));
+        	one(mBeanServer).registerMBean(with(same(mBean)), with(equal(objectName)));
+        }});
 
         assertSame(person, componentAdapter.getComponentInstance(null));
     }
 
-    public void testThrowsPicoInitializationExceptionIfMBeanIsAlreadyRegistered() throws NotCompliantMBeanException {
+    @Test public void testThrowsPicoInitializationExceptionIfMBeanIsAlreadyRegistered() throws NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
         final PersonMBean person = new DynamicMBeanPerson();
         final Exception exception = new InstanceAlreadyExistsException("JUnit");
         final ComponentAdapter componentAdapter = new JMXExposed(new InstanceAdapter(
-                PersonMBean.class, person, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor()), (MBeanServer)mockMBeanServer.proxy());
-
-        mockMBeanServer.expects(once()).method("registerMBean").with(same(person), isA(ObjectName.class)).will(
-                throwException(exception));
-
+                PersonMBean.class, person, new NullLifecycleStrategy(), new NullComponentMonitor()), mBeanServer);
+        mockery.checking(new Expectations(){{
+        	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
+        	will(throwException(exception));
+        }});
+        
         try {
             assertSame(person, componentAdapter.getComponentInstance(null));
             fail("PicoCompositionException expected");
@@ -105,16 +112,17 @@ public class JMXExposedTestCase extends MockObjectTestCase {
         }
     }
 
-    public void testThrowsPicoInitializationExceptionIfMBeanCannotBeRegistered() throws NotCompliantMBeanException {
+    @Test public void testThrowsPicoInitializationExceptionIfMBeanCannotBeRegistered() throws NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
         final PersonMBean person = new DynamicMBeanPerson();
         final Exception exception = new MBeanRegistrationException(new Exception(), "JUnit");
         final ComponentAdapter componentAdapter = new JMXExposed(new InstanceAdapter(
                 PersonMBean.class, person, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor()), (MBeanServer)mockMBeanServer.proxy());
-
-        mockMBeanServer.expects(once()).method("registerMBean").with(same(person), isA(ObjectName.class)).will(
-                throwException(exception));
-
+                                                                        new NullComponentMonitor()), mBeanServer);
+        mockery.checking(new Expectations(){{
+        	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
+        	will(throwException(exception));
+        }});
+        
         try {
             assertSame(person, componentAdapter.getComponentInstance(null));
             fail("PicoCompositionException expected");
@@ -123,16 +131,18 @@ public class JMXExposedTestCase extends MockObjectTestCase {
         }
     }
 
-    public void testThrowsPicoInitializationExceptionIfMBeanNotCompliant() throws NotCompliantMBeanException {
+    @Test public void testThrowsPicoInitializationExceptionIfMBeanNotCompliant() throws NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
         final PersonMBean person = new DynamicMBeanPerson();
         final Exception exception = new NotCompliantMBeanException("JUnit");
         final ComponentAdapter componentAdapter = new JMXExposed(new InstanceAdapter(
                 PersonMBean.class, person, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor()), (MBeanServer)mockMBeanServer.proxy());
+                                                                        new NullComponentMonitor()), mBeanServer);
 
-        mockMBeanServer.expects(once()).method("registerMBean").with(same(person), isA(ObjectName.class)).will(
-                throwException(exception));
-
+        mockery.checking(new Expectations(){{
+        	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
+        	will(throwException(exception));
+        }});
+        
         try {
             assertSame(person, componentAdapter.getComponentInstance(null));
             fail("PicoCompositionException expected");
@@ -141,20 +151,20 @@ public class JMXExposedTestCase extends MockObjectTestCase {
         }
     }
 
-    public void testConstructorThrowsNPE() {
+    @Test public void testConstructorThrowsNPE() {
         try {
-            new JMXExposed(
-                    new InstanceAdapter(TestCase.class, this, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor()), null, new DynamicMBeanProvider[]{});
-            fail("NullPointerException expected");
-        } catch (final NullPointerException e) {
-        }
-        try {
-            new JMXExposed(
-                    new InstanceAdapter(TestCase.class, this, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor()), (MBeanServer)mockMBeanServer.proxy(), null);
-            fail("NullPointerException expected");
-        } catch (final NullPointerException e) {
-        }
+			new JMXExposed(new InstanceAdapter(JMXExposedTestCase.class, this,
+					new NullLifecycleStrategy(), new NullComponentMonitor()),
+					null, new DynamicMBeanProvider[] {});
+			fail("NullPointerException expected");
+		} catch (final NullPointerException e) {
+		}
+		try {
+			new JMXExposed(new InstanceAdapter(JMXExposedTestCase.class, this,
+					new NullLifecycleStrategy(), new NullComponentMonitor()),
+					mBeanServer, null);
+			fail("NullPointerException expected");
+		} catch (final NullPointerException e) {
+		}
     }
 }

@@ -9,43 +9,50 @@
  *****************************************************************************/
 package org.picocontainer.gems.jmx;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
+import java.util.Properties;
+
+import javax.management.InstanceAlreadyExistsException;
+import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.gems.jmx.testmodel.DynamicMBeanPerson;
 import org.picocontainer.gems.jmx.testmodel.PersonMBean;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Characteristics;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-import java.util.Properties;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-
 
 /**
  * @author J&ouml;rg Schaible
+ * @author Mauro Talevi
  */
-public class JMXExposingTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class JMXExposingTestCase  {
 
-    private Mock mockMBeanServer;
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+    private MBeanServer mBeanServer = mockery.mock(MBeanServer.class);
 
-    protected void setUp() throws Exception {
-        super.setUp();
-        mockMBeanServer = mock(MBeanServer.class);
-    }
-
-    public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException {
+    @Test public void testWillRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
         final JMXExposing componentFactory = new JMXExposing(
-                (MBeanServer)mockMBeanServer.proxy());
+                mBeanServer);
         componentFactory.wrap(new ConstructorInjection());
-
-        mockMBeanServer.expects(once()).method("registerMBean").with(
-                isA(DynamicMBeanPerson.class), isA(ObjectName.class));
+        mockery.checking(new Expectations(){{
+        	one(mBeanServer).registerMBean(with(any(DynamicMBeanPerson.class)), with(any(ObjectName.class)));
+        }});
 
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
                 new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, PersonMBean.class, DynamicMBeanPerson.class, null);
@@ -53,9 +60,9 @@ public class JMXExposingTestCase extends MockObjectTestCase {
         assertNotNull(componentAdapter.getComponentInstance(null));
     }
 
-    public void testWillRegisterByDefaultComponentsThatAreMBeansUnlessNOJMX() throws NotCompliantMBeanException {
+    @Test public void testWillRegisterByDefaultComponentsThatAreMBeansUnlessNOJMX() throws NotCompliantMBeanException {
         final JMXExposing componentFactory = new JMXExposing(
-                (MBeanServer)mockMBeanServer.proxy());
+                mBeanServer);
         componentFactory.wrap(new ConstructorInjection());
 
         final Properties rc = new Properties(Characteristics.NO_JMX);
@@ -66,7 +73,7 @@ public class JMXExposingTestCase extends MockObjectTestCase {
         assertNotNull(componentAdapter.getComponentInstance(null));
     }
 
-    public void testConstructorThrowsNPE() {
+    @Test public void testConstructorThrowsNPE() {
         try {
             new JMXExposing(
                     null, new DynamicMBeanProvider[]{});
@@ -75,7 +82,7 @@ public class JMXExposingTestCase extends MockObjectTestCase {
         }
         try {
             new JMXExposing(
-                    (MBeanServer)mockMBeanServer.proxy(), null);
+                    mBeanServer, null);
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {
         }
