@@ -9,25 +9,38 @@
  *****************************************************************************/
 package org.picocontainer.defaults;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Vector;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 
 /**
  * @author Mauro Talevi
  */
-public class AbstractComponentMonitorTestCase extends MockObjectTestCase  {
+@RunWith(JMock.class)
+public class AbstractComponentMonitorTestCase {
 
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
     @Test public void testDelegatingMonitorThrowsExpectionWhenConstructionWithNullDelegate(){
         try {
             new AbstractComponentMonitor(null);
@@ -71,56 +84,60 @@ public class AbstractComponentMonitorTestCase extends MockObjectTestCase  {
     }
 
     private ComponentMonitor mockMonitorWithNoExpectedMethods() {
-        Mock mock = mock(ComponentMonitor.class);
-        return (ComponentMonitor)mock.proxy();
+        return mockery.mock(ComponentMonitor.class);
     }
 
-    private ComponentMonitor mockMonitorThatSupportsStrategy(ComponentMonitor currentMonitor) {
-        Mock mock = mock(TestMonitorThatSupportsStrategy.class);
-        mock.expects(once()).method("changeMonitor").with(eq(currentMonitor));
-        mock.expects(once()).method("currentMonitor").withAnyArguments().will(returnValue(currentMonitor));
-        mock.expects(once()).method("instantiating").withAnyArguments();
-        return (ComponentMonitor)mock.proxy();
+    private ComponentMonitor mockMonitorThatSupportsStrategy(final ComponentMonitor currentMonitor) {
+    	final TestMonitorThatSupportsStrategy monitor = mockery.mock(TestMonitorThatSupportsStrategy.class);
+    	mockery.checking(new Expectations(){{
+            one(monitor).changeMonitor(with(equal(currentMonitor)));
+            one(monitor).currentMonitor();
+            will(returnValue(currentMonitor));
+            one(monitor).instantiating(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(any(Constructor.class)));
+    	}});
+        return monitor;
     }
 
     @Test public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
         final Vector ourIntendedInjectee0 = new Vector();
         final String ourIntendedInjectee1 = "hullo";
         DefaultPicoContainer parent = new DefaultPicoContainer();
-        Mock monitor = mock(ComponentMonitor.class);
-        DefaultPicoContainer child = new DefaultPicoContainer(new AbstractComponentMonitor((ComponentMonitor) monitor.proxy()), parent);
-
-        Constructor nacotCtor = NeedsACoupleOfThings.class.getConstructors()[0];
-        monitor.expects(once()).method("instantiating").with(same(child), isA(ConstructorInjector.class), eq(nacotCtor)).will(returnValue(nacotCtor));
-        Constraint durationIsGreaterThanOrEqualToZero = new Constraint() {
-            public boolean eval(Object o) {
-                Long duration = (Long)o;
+        final ComponentMonitor monitor = mockery.mock(ComponentMonitor.class);
+        final DefaultPicoContainer child = new DefaultPicoContainer(new AbstractComponentMonitor(monitor), parent);
+        final Constructor needsACoupleOfThings = NeedsACoupleOfThings.class.getConstructors()[0];
+        final Matcher<Long> durationIsGreaterThanOrEqualToZero = new BaseMatcher<Long>() {
+			public boolean matches(Object item) {
+                Long duration = (Long)item;
                 return 0 <= duration;
-            }
+			}
 
-            public StringBuffer describeTo(StringBuffer stringBuffer) {
-                return stringBuffer.append("The endTime wasn't after the startTime");
-            }
+			public void describeTo(Description description) {
+				description.appendText("The endTime wasn't after the startTime");
+			}
         };
-        Constraint isANACOTThatWozCreated = new Constraint() {
-            public boolean eval(Object o) {
-                return o instanceof NeedsACoupleOfThings;
-            }
+        final Matcher<Object> isANACOTThatWozCreated = new BaseMatcher<Object>() {
+			public boolean matches(Object item) {
+                return item instanceof NeedsACoupleOfThings;
+			}
 
-            public StringBuffer describeTo(StringBuffer stringBuffer) {
-                return stringBuffer.append("Should have been a hashmap");
-            }
+			public void describeTo(Description description) {
+				description.appendText("Should have been a NeedsACoupleOfThings");
+			}
         };
-        Constraint collectionAndStringWereInjected = new Constraint() {
-            public boolean eval(Object o) {
-                Object[] ctorArgs = (Object[]) o;
-                return ctorArgs.length == 2 && ctorArgs[0] == ourIntendedInjectee0 && ctorArgs[1] == ourIntendedInjectee1;
-            }
-            public StringBuffer describeTo(StringBuffer stringBuffer) {
-                return stringBuffer.append("Should have injected our intended vector and string");
-            }
+        final Matcher<Object[]> collectionAndStringWereInjected = new BaseMatcher<Object[]>() {
+			public boolean matches(Object item) {
+				 Object[] args = (Object[]) item;
+				 return args.length == 2 && args[0] == ourIntendedInjectee0 && args[1] == ourIntendedInjectee1;
+			}
+			public void describeTo(Description description) {
+				description.appendText("Should have injected our intended vector and string");
+			}
         };
-        monitor.expects(once()).method("instantiated").with(new Constraint[] {same(child), isA(ConstructorInjector.class),eq(nacotCtor), isANACOTThatWozCreated, collectionAndStringWereInjected, durationIsGreaterThanOrEqualToZero});
+        mockery.checking(new Expectations(){{
+        	one(monitor).instantiating(with(same(child)), with(any(ConstructorInjector.class)), with(equal(needsACoupleOfThings)));
+        	will(returnValue(needsACoupleOfThings));
+        	one(monitor).instantiated(with(same(child)), with(any(ConstructorInjector.class)), with(equal(needsACoupleOfThings)), with(isANACOTThatWozCreated), with(collectionAndStringWereInjected), with(durationIsGreaterThanOrEqualToZero));
+        }});
         parent.addComponent(ourIntendedInjectee0);
         parent.addComponent(ourIntendedInjectee1);
         child.addComponent(NeedsACoupleOfThings.class);

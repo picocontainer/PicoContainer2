@@ -9,32 +9,42 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.Behavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Behavior;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 /**
  * @author Mauro Talevi
  */
-public class BehaviorAdapterTestCase extends MockObjectTestCase {
-
-    public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesSupportStrategy() {
+@RunWith(JMock.class)
+public class BehaviorAdapterTestCase {
+	
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+    @Test public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesSupportStrategy() {
         AbstractBehavior adapter = new FooAbstractBehavior(mockComponentAdapterThatDoesSupportStrategy());
         adapter.changeMonitor(mockMonitorWithNoExpectedMethods());
         assertNotNull(adapter.currentMonitor());
     }
     
-    public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesNotSupportStrategy() {
+    @Test public void testDecoratingComponentAdapterDelegatesToMonitorThatDoesNotSupportStrategy() {
         AbstractBehavior adapter = new FooAbstractBehavior(mockComponentAdapter());
         adapter.changeMonitor(mockMonitorWithNoExpectedMethods());
         try {
@@ -45,7 +55,7 @@ public class BehaviorAdapterTestCase extends MockObjectTestCase {
         }
     }
     
-    public void testDecoratingComponentAdapterDelegatesLifecycleManagement() {
+    @Test public void testDecoratingComponentAdapterDelegatesLifecycleManagement() {
         AbstractBehavior adapter = new FooAbstractBehavior(mockComponentAdapterThatCanManageLifecycle());
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -57,7 +67,7 @@ public class BehaviorAdapterTestCase extends MockObjectTestCase {
         adapter.dispose(touchable);
     }
 
-    public void testDecoratingComponentAdapterIgnoresLifecycleManagementIfDelegateDoesNotSupportIt() {
+    @Test public void testDecoratingComponentAdapterIgnoresLifecycleManagementIfDelegateDoesNotSupportIt() {
         AbstractBehavior adapter = new FooAbstractBehavior(mockComponentAdapter());
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
@@ -70,37 +80,40 @@ public class BehaviorAdapterTestCase extends MockObjectTestCase {
     }
     
     ComponentMonitor mockMonitorWithNoExpectedMethods() {
-        Mock mock = mock(ComponentMonitor.class);
-        return (ComponentMonitor)mock.proxy();
+        return mockery.mock(ComponentMonitor.class);
     }
 
     private ComponentAdapter mockComponentAdapterThatDoesSupportStrategy() {
-        Mock mock = mock(ComponentAdapterThatSupportsStrategy.class);
-        mock.expects(once()).method("changeMonitor").withAnyArguments();
-        mock.expects(once()).method("currentMonitor").will(returnValue(mockMonitorWithNoExpectedMethods()));
-        return (ComponentAdapter)mock.proxy();
+    	final ComponentAdapterThatSupportsStrategy ca = mockery.mock(ComponentAdapterThatSupportsStrategy.class);
+    	mockery.checking(new Expectations(){{
+    		one(ca).changeMonitor(with(any(ComponentMonitor.class)));
+    		one(ca).currentMonitor();
+    		will(returnValue(mockMonitorWithNoExpectedMethods()));
+    	}});
+        return ca;
     }
 
     private ComponentAdapter mockComponentAdapter() {
-        Mock mock = mock(ComponentAdapter.class);
-        return (ComponentAdapter)mock.proxy();
+    	 return mockery.mock(ComponentAdapter.class);
     }
     
-    static interface ComponentAdapterThatSupportsStrategy extends ComponentAdapter, ComponentMonitorStrategy {
+    public static interface ComponentAdapterThatSupportsStrategy extends ComponentAdapter, ComponentMonitorStrategy {
     }
 
     private ComponentAdapter mockComponentAdapterThatCanManageLifecycle() {
-        Mock mock = mock(ComponentAdapterThatCanManageLifecycle.class);
-        mock.expects(once()).method("start").with(isA(PicoContainer.class));
-        mock.expects(once()).method("stop").with(isA(PicoContainer.class));
-        mock.expects(once()).method("dispose").with(isA(PicoContainer.class));
-        mock.expects(once()).method("start").with(isA(Touchable.class));
-        mock.expects(once()).method("stop").with(isA(Touchable.class));
-        mock.expects(once()).method("dispose").with(isA(Touchable.class));
-        return (ComponentAdapter)mock.proxy();
+    	final ComponentAdapterThatCanManageLifecycle ca = mockery.mock(ComponentAdapterThatCanManageLifecycle.class);
+    	mockery.checking(new Expectations(){{
+    		one(ca).start(with(any(PicoContainer.class)));
+    		one(ca).stop(with(any(PicoContainer.class)));
+    		one(ca).dispose(with(any(PicoContainer.class)));
+    		one(ca).start(with(any(Touchable.class)));
+    		one(ca).stop(with(any(Touchable.class)));
+    		one(ca).dispose(with(any(Touchable.class)));
+    	}});
+        return ca;
     }
 
-    static interface ComponentAdapterThatCanManageLifecycle extends ComponentAdapter, Behavior, LifecycleStrategy {
+    public static interface ComponentAdapterThatCanManageLifecycle extends ComponentAdapter, Behavior, LifecycleStrategy {
     }
 
     static class FooAbstractBehavior extends AbstractBehavior {

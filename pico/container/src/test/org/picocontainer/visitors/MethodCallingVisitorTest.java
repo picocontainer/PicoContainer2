@@ -8,6 +8,7 @@
 package org.picocontainer.visitors;
 
 import static org.junit.Assert.assertEquals;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -24,7 +25,6 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.tck.MockFactory;
 import org.picocontainer.testmodel.Touchable;
 
 
@@ -35,7 +35,7 @@ import org.picocontainer.testmodel.Touchable;
 @RunWith(JMock.class)
 public class MethodCallingVisitorTest {
 
-	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+	private Mockery mockery = mockeryWithCountingNamingScheme();
 	
     private Method add;
     private Method touch;

@@ -13,6 +13,7 @@ package org.picocontainer.containers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -24,7 +25,6 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.tck.MockFactory;
 
 
 /**
@@ -34,7 +34,7 @@ import org.picocontainer.tck.MockFactory;
 @RunWith(JMock.class)
 public class ImmutablePicoContainerTestCase {
 
-	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+	private Mockery mockery = mockeryWithCountingNamingScheme();
 	
     @Test public void testImmutingOfNullBarfs() {
         try {

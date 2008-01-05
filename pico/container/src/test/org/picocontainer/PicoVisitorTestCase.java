@@ -11,6 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -18,7 +19,6 @@ import org.jmock.Sequence;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picocontainer.tck.MockFactory;
 import org.picocontainer.visitors.AbstractPicoVisitor;
 import org.picocontainer.visitors.VerifyingVisitor;
 
@@ -31,7 +31,7 @@ import org.picocontainer.visitors.VerifyingVisitor;
 @RunWith(JMock.class)
 public class PicoVisitorTestCase {
 
-	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+	private Mockery mockery = mockeryWithCountingNamingScheme();
 	
     @Test public void testVisitorThatMustBeInvokedUsingTraverse() {
         MutablePicoContainer pico = new DefaultPicoContainer();

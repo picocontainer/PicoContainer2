@@ -11,6 +11,7 @@ package org.picocontainer.monitors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -22,12 +23,11 @@ import org.junit.runner.RunWith;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoLifecycleException;
-import org.picocontainer.tck.MockFactory;
 
 @RunWith(JMock.class)
 public class NullComponentMonitorTestCase {
 
-	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+	private Mockery mockery = mockeryWithCountingNamingScheme();
 	
     @Test public void testItAll() throws NoSuchMethodException {
 

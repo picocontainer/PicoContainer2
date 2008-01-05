@@ -7,6 +7,8 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import java.io.Serializable;
 
 import org.jmock.Expectations;
@@ -18,7 +20,6 @@ import org.junit.runner.RunWith;
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.tck.MockFactory;
 
 /**
  * 
@@ -27,7 +28,7 @@ import org.picocontainer.tck.MockFactory;
 @RunWith(JMock.class)
 public class StartableLifecycleStrategyTestCase {
 
-	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+	private Mockery mockery = mockeryWithCountingNamingScheme();
 	
     private StartableLifecycleStrategy strategy;
     

@@ -8,6 +8,7 @@
 package org.picocontainer.lifecycle;
 
 import static org.junit.Assert.assertFalse;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import java.io.Serializable;
 import java.lang.reflect.Member;
@@ -27,7 +28,6 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Disposable;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
-import org.picocontainer.tck.MockFactory;
 
 /**
  * @author Paul Hammant
@@ -37,7 +37,7 @@ import org.picocontainer.tck.MockFactory;
 @RunWith(JMock.class)
 public class ReflectionLifecycleStrategyTestCase {
 
-	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+	private Mockery mockery = mockeryWithCountingNamingScheme();
 
 	private ReflectionLifecycleStrategy strategy;
 	private ComponentMonitor componentMonitor;
@@ -80,7 +80,6 @@ public class ReflectionLifecycleStrategyTestCase {
 		final Disposable disposable = mockery.mock(Disposable.class);
 		final Matcher<Member> isDisposeMember = new IsMember("dispose");
 		final Matcher<Method> isDisposeMethod = new IsMethod("dispose");
-		final Matcher<Long> isLong = new IsLong();
 		mockery.checking(new Expectations() {
 			{
 				atLeast(1).of(disposable).dispose();
@@ -91,7 +90,7 @@ public class ReflectionLifecycleStrategyTestCase {
 				one(componentMonitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isDisposeMethod), with(same(disposable)),
-						with(isLong));
+						with(any(Long.class)));
 				one(componentMonitor2).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
@@ -100,7 +99,7 @@ public class ReflectionLifecycleStrategyTestCase {
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isDisposeMethod), with(same(disposable)),
-						with(isLong));
+						with(any(Long.class)));
 			}
 		});
 		strategy.dispose(disposable);
@@ -117,7 +116,6 @@ public class ReflectionLifecycleStrategyTestCase {
 		final Matcher<Method> isStopMethod = new IsMethod("stop");
 		final Matcher<Member> isDisposeMember = new IsMember("dispose");
 		final Matcher<Method> isDisposeMethod = new IsMethod("dispose");
-		final Matcher<Long> isLong = new IsLong();
 		mockery.checking(new Expectations() {
 			{
 				one(lifecycle).start();
@@ -130,7 +128,7 @@ public class ReflectionLifecycleStrategyTestCase {
 				one(componentMonitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isStartMethod), with(same(lifecycle)),
-						with(isLong));
+						with(any(Long.class)));
 				one(componentMonitor).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
@@ -138,7 +136,7 @@ public class ReflectionLifecycleStrategyTestCase {
 				one(componentMonitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isStopMethod), with(same(lifecycle)),
-						with(isLong));
+						with(any(Long.class)));
 				one(componentMonitor).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
@@ -146,7 +144,7 @@ public class ReflectionLifecycleStrategyTestCase {
 				one(componentMonitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isDisposeMethod), with(same(lifecycle)),
-						with(isLong));
+						with(any(Long.class)));
 			}
 		});
 
@@ -167,7 +165,6 @@ public class ReflectionLifecycleStrategyTestCase {
 		final Matcher<Method> isStopMethod = new IsMethod("stop");
 		final Matcher<Member> isDisposeMember = new IsMember("dispose");
 		final Matcher<Method> isDisposeMethod = new IsMethod("dispose");
-		final Matcher<Long> isLong = new IsLong();
 		if (startable) {
 			final Startable mock = mockery.mock(Startable.class);
 			mockery.checking(new Expectations() {
@@ -182,7 +179,7 @@ public class ReflectionLifecycleStrategyTestCase {
 							.invoked(with(aNull(PicoContainer.class)),
 									with(aNull(ComponentAdapter.class)),
 									with(isStartMethod), with(same(mock)),
-									with(isLong));
+									with(any(Long.class)));
 					one(componentMonitor).invoking(
 							with(aNull(PicoContainer.class)),
 							with(aNull(ComponentAdapter.class)),
@@ -190,7 +187,7 @@ public class ReflectionLifecycleStrategyTestCase {
 					one(componentMonitor).invoked(
 							with(aNull(PicoContainer.class)),
 							with(aNull(ComponentAdapter.class)),
-							with(isStopMethod), with(same(mock)), with(isLong));
+							with(isStopMethod), with(same(mock)), with(any(Long.class)));
 				}
 			});
 			return mock;
@@ -208,7 +205,7 @@ public class ReflectionLifecycleStrategyTestCase {
 							.invoked(with(aNull(PicoContainer.class)),
 									with(aNull(ComponentAdapter.class)),
 									with(isDisposeMethod), with(same(mock)),
-									with(isLong));
+									with(any(Long.class)));
 				}
 			});
 			return mock;
@@ -255,16 +252,6 @@ public class ReflectionLifecycleStrategyTestCase {
 		public void describeTo(Description description) {
 			description.appendText("Should have been a method of name ");
 			description.appendText(name);
-		}
-	};
-
-	static class IsLong extends BaseMatcher<Long> {
-		public boolean matches(Object item) {
-			return true;
-		}
-
-		public void describeTo(Description description) {
-			description.appendText("Should have been a long");
 		}
 	};
 

@@ -9,42 +9,66 @@
  *****************************************************************************/
 package org.picocontainer.defaults.issues;
 
+import static org.junit.Assert.assertNotNull;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.DefaultPicoContainerTestCase;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
 
-public class Issue0265TestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class Issue0265TestCase {
 
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
     @Test public void testCanReallyChangeMonitor() throws SecurityException, NoSuchMethodException {
-        Method start = Startable.class.getMethod("start");
-        Method stop = Startable.class.getMethod("stop");
-        Mock mockMonitor1 = mock(ComponentMonitor.class, "Monitor1");
-        Mock mockMonitor2 = mock(ComponentMonitor.class, "Monitor2");
-        DefaultPicoContainer pico = new DefaultPicoContainer((ComponentMonitor) mockMonitor1.proxy());
+        final Method start = Startable.class.getMethod("start");
+        final Method stop = Startable.class.getMethod("stop");
+        final ComponentMonitor monitor1 = mockery.mock(ComponentMonitor.class, "Monitor1");
+        final ComponentMonitor monitor2 = mockery.mock(ComponentMonitor.class, "Monitor2");
+        DefaultPicoContainer pico = new DefaultPicoContainer(monitor1);
         pico.as(Characteristics.CACHE).addComponent(DefaultPicoContainerTestCase.MyStartable.class);
-        mockMonitor1.expects(once()).method("instantiating").will(returnValue(DefaultPicoContainerTestCase.MyStartable.class.getConstructor()));
-        mockMonitor1.expects(once()).method("instantiated");
-        mockMonitor1.expects(once()).method("invoking").with(NULL, NULL, eq(start), ANYTHING);
-        mockMonitor1.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, eq(start), ANYTHING, ANYTHING});
-        mockMonitor1.expects(once()).method("invoking").with(NULL, NULL, eq(stop), ANYTHING);
-        mockMonitor1.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, eq(stop), ANYTHING, ANYTHING});
+        mockery.checking(new Expectations(){{
+            one(monitor1).instantiating(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(any(Constructor.class)));
+            will(returnValue(DefaultPicoContainerTestCase.MyStartable.class.getConstructor()));
+            one(monitor1).instantiated(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(any(Constructor.class)), 
+            		with(any(Object.class)), with(any(Object[].class)), with(any(Long.class)));
+            one(monitor1).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)), 
+            		with(any(Object.class)));
+            one(monitor1).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)), 
+            		with(any(Object.class)), with(any(Long.class)));
+            one(monitor1).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)), 
+            		with(any(Object.class)));
+            one(monitor1).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)), 
+            		with(any(Object.class)), with(any(Long.class)));        	
+        }});
         pico.start();
         pico.stop();
         Startable startable = pico.getComponent(DefaultPicoContainerTestCase.MyStartable.class);
         assertNotNull(startable);
-        pico.changeMonitor((ComponentMonitor) mockMonitor2.proxy());
-        mockMonitor2.expects(once()).method("invoking").with(NULL, NULL, eq(start), ANYTHING);
-        mockMonitor2.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, eq(start), ANYTHING, ANYTHING});
-        mockMonitor2.expects(once()).method("invoking").with(NULL, NULL, eq(stop), ANYTHING);
-        mockMonitor2.expects(once()).method("invoked").with(new Constraint[] {NULL, NULL, eq(stop), ANYTHING, ANYTHING});
+        pico.changeMonitor(monitor2);
+        mockery.checking(new Expectations(){{
+            one(monitor2).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)), 
+            		with(any(Object.class)));
+            one(monitor2).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)), 
+            		with(any(Object.class)), with(any(Long.class)));
+            one(monitor2).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)), 
+            		with(any(Object.class)));
+            one(monitor2).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)), 
+            		with(any(Object.class)), with(any(Long.class)));        	
+        }});
         pico.start();
         pico.stop();
     }
