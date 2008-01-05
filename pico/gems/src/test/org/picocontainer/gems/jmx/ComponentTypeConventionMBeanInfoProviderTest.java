@@ -10,33 +10,44 @@
 
 package org.picocontainer.gems.jmx;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import javax.management.MBeanInfo;
 
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.gems.jmx.testmodel.Person;
 import org.picocontainer.gems.jmx.testmodel.PersonMBeanInfo;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.DefaultPicoContainer;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 
 /**
  * @author J&ouml;rg Schaible
+ * @author Mauro Talevi
  */
-public class ComponentTypeConventionMBeanInfoProviderTest extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class ComponentTypeConventionMBeanInfoProviderTest {
 
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
     private MutablePicoContainer pico;
     private MBeanInfoProvider mBeanProvider;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {  
         pico = new DefaultPicoContainer();
         mBeanProvider = new ComponentTypeConventionMBeanInfoProvider();
     }
 
-    public void testMBeanInfoIsDeterminedFromComponentType() {
+    @Test public void testMBeanInfoIsDeterminedFromComponentType() {
         final ComponentAdapter componentAdapter = pico.addComponent("JUnit", Person.class).getComponentAdapter("JUnit");
         pico.addComponent(Person.class.getName() + "MBeanInfo", Person.createMBeanInfo());
 
@@ -45,17 +56,21 @@ public class ComponentTypeConventionMBeanInfoProviderTest extends MockObjectTest
         assertEquals(Person.createMBeanInfo().getDescription(), info.getDescription());
     }
 
-    public void testSpecificMBeanInfoIsFoundByType() {
+    @Test public void testSpecificMBeanInfoIsFoundByType() {
         final Person person = new Person();
 
-        final Mock mockComponentAdapter = mock(ComponentAdapter.class);
-        mockComponentAdapter.stubs().method("getComponentKey").will(returnValue(Person.class));
-        mockComponentAdapter.stubs().method("getComponentImplementation").will(returnValue(person.getClass()));
+        final ComponentAdapter componentAdapter = mockery.mock(ComponentAdapter.class);
+        mockery.checking(new Expectations(){{
+        	atLeast(1).of(componentAdapter).getComponentKey();
+        	will(returnValue(Person.class));
+        	atLeast(1).of(componentAdapter).getComponentImplementation();
+        	will(returnValue(person.getClass()));
+        }});
 
-        pico.addAdapter((ComponentAdapter)mockComponentAdapter.proxy());
+        pico.addAdapter(componentAdapter);
         pico.addComponent(PersonMBeanInfo.class);
 
-        final MBeanInfo info = mBeanProvider.provide(pico, (ComponentAdapter)mockComponentAdapter.proxy());
+        final MBeanInfo info = mBeanProvider.provide(pico, componentAdapter);
         assertNotNull(info);
         assertEquals(Person.createMBeanInfo().getDescription(), info.getDescription());
     }

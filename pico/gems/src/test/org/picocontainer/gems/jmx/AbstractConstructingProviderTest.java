@@ -10,31 +10,44 @@
 
 package org.picocontainer.gems.jmx;
 
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.NameBinding;
 import org.picocontainer.gems.jmx.testmodel.OtherPerson;
 import org.picocontainer.gems.jmx.testmodel.Person;
 import org.picocontainer.gems.jmx.testmodel.PersonMBean;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.NameBinding;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.jmock.util.Dummy;
 
 
 /**
  * @author J&ouml;rg Schaible
+ * @author Mauro Talevi
  */
-public class AbstractConstructingProviderTest extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class AbstractConstructingProviderTest {
 
-    private Mock mockObjectNameFactory;
-    private Mock mockDynamicMBeanFactory;
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+    private final ObjectNameFactory objectNameFactory = mockery.mock(ObjectNameFactory.class);
+    private final DynamicMBeanFactory dynamicMBeanFactory = mockery.mock(DynamicMBeanFactory.class);
     private MBeanInfoProvider[] mBeanInfoProviders;
     private ObjectName objectName;
     private MutablePicoContainer pico;
@@ -42,7 +55,7 @@ public class AbstractConstructingProviderTest extends MockObjectTestCase {
     private class ConstructingProvider extends AbstractConstructingProvider {
 
         protected ObjectNameFactory getObjectNameFactory() {
-            return (ObjectNameFactory)mockObjectNameFactory.proxy();
+            return objectNameFactory;
         }
 
         protected MBeanInfoProvider[] getMBeanInfoProviders() {
@@ -50,7 +63,7 @@ public class AbstractConstructingProviderTest extends MockObjectTestCase {
         }
 
         protected DynamicMBeanFactory getMBeanFactory() {
-            return (DynamicMBeanFactory)mockDynamicMBeanFactory.proxy();
+            return dynamicMBeanFactory;
         }
 
         protected Class getManagementInterface(final Class implementation, final MBeanInfo mBeanInfo)
@@ -63,59 +76,59 @@ public class AbstractConstructingProviderTest extends MockObjectTestCase {
 
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-        mockObjectNameFactory = mock(ObjectNameFactory.class);
-        mockDynamicMBeanFactory = mock(DynamicMBeanFactory.class);
+    @Before
+    public void setUp() throws Exception {        
         objectName = new ObjectName(":type=JUnit");
         pico = new DefaultPicoContainer();
         mBeanInfoProviders = new MBeanInfoProvider[0];
     }
 
-    public void testCanCreateMBean() {
+    @Test public void testCanCreateMBean() throws MalformedObjectNameException {
         final Person person = new Person();
         final ComponentAdapter componentAdapter = pico.addComponent(person).getComponentAdapter(person.getClass(), (NameBinding) null);
-        final DynamicMBean dynamicMBean = (DynamicMBean)Dummy.newDummy(DynamicMBean.class);
-        final Mock mockMBeanInfoProvider = mock(MBeanInfoProvider.class);
-        mBeanInfoProviders = new MBeanInfoProvider[]{(MBeanInfoProvider)mockMBeanInfoProvider.proxy()};
-
-        mockMBeanInfoProvider.expects(once()).method("provide").with(same(pico), same(componentAdapter)).will(
-                returnValue(Person.createMBeanInfo()));
-        mockDynamicMBeanFactory.expects(once()).method("create").with(
-                same(person), same(PersonMBean.class), eq(Person.createMBeanInfo())).will(returnValue(dynamicMBean));
-        mockObjectNameFactory.expects(once()).method("create").with(same(Person.class), isA(DynamicMBean.class)).will(
-                returnValue(objectName));
-
+        final DynamicMBean dynamicMBean = mockery.mock(DynamicMBean.class);
+        final MBeanInfoProvider mBeanInfoProvider = mockery.mock(MBeanInfoProvider.class);
+        mBeanInfoProviders = new MBeanInfoProvider[]{mBeanInfoProvider};
+        mockery.checking(new Expectations(){{
+        	one(mBeanInfoProvider).provide(with(same(pico)), with(same(componentAdapter)));
+        	will(returnValue(Person.createMBeanInfo()));
+            one(dynamicMBeanFactory).create(with(same(person)), with(same(PersonMBean.class)), with(equal(Person.createMBeanInfo())));
+            will(returnValue(dynamicMBean));
+            one(objectNameFactory).create(with(same(Person.class)), with(any(DynamicMBean.class)));
+            will(returnValue(objectName));
+        }});
         final DynamicMBeanProvider provider = new ConstructingProvider();
         final JMXRegistrationInfo info = provider.provide(pico, componentAdapter);
         assertNotNull(info);
 
     }
 
-    public void testNoInstanceIsCreatedIfManagementInterfaceIsMissing() {
+    @Test public void testNoInstanceIsCreatedIfManagementInterfaceIsMissing() {
         final ComponentAdapter componentAdapter = pico.addComponent(OtherPerson.class).getComponentAdapter(OtherPerson.class,
                                                                                                            (NameBinding) null);
         final DynamicMBeanProvider provider = new ConstructingProvider();
         assertNull(provider.provide(pico, componentAdapter));
     }
 
-    public void testObjectNameMustBeGiven() {
-        mockDynamicMBeanFactory.expects(once()).method("create").with(isA(Person.class), same(PersonMBean.class), NULL)
-                .will(returnValue(Dummy.newDummy(DynamicMBean.class)));
-        mockObjectNameFactory.expects(once()).method("create").with(same(Person.class), isA(DynamicMBean.class)).will(
-                returnValue(null));
-
+    @Test public void testObjectNameMustBeGiven() throws MalformedObjectNameException {
+    	 mockery.checking(new Expectations(){{
+             one(dynamicMBeanFactory).create(with(any(Person.class)), with(same(PersonMBean.class)), with(aNull(MBeanInfo.class)));
+             will(returnValue(mockery.mock(DynamicMBean.class)));
+             one(objectNameFactory).create(with(same(Person.class)), with(any(DynamicMBean.class)));
+             will(returnValue(null));
+         }});
         final ComponentAdapter componentAdapter = pico.addComponent(Person.class).getComponentAdapter(Person.class, (NameBinding) null);
         final DynamicMBeanProvider provider = new ConstructingProvider();
         assertNull(provider.provide(pico, componentAdapter));
     }
 
-    public void testMalformedObjectNameThrowsJMXRegistrationException() {
-        mockDynamicMBeanFactory.expects(once()).method("create").with(isA(Person.class), same(PersonMBean.class), NULL)
-                .will(returnValue(Dummy.newDummy(DynamicMBean.class)));
-        mockObjectNameFactory.expects(once()).method("create").with(same(Person.class), isA(DynamicMBean.class)).will(
-                throwException(new MalformedObjectNameException("JUnit")));
-
+    @Test public void testMalformedObjectNameThrowsJMXRegistrationException() throws MalformedObjectNameException {
+    	 mockery.checking(new Expectations(){{
+             one(dynamicMBeanFactory).create(with(any(Person.class)), with(same(PersonMBean.class)), with(aNull(MBeanInfo.class)));
+             will(returnValue(mockery.mock(DynamicMBean.class)));
+             one(objectNameFactory).create(with(same(Person.class)), with(any(DynamicMBean.class)));
+             will(throwException(new MalformedObjectNameException("JUnit")));
+         }});
         final ComponentAdapter componentAdapter = pico.addComponent(Person.class).getComponentAdapter(Person.class, (NameBinding) null);
         final DynamicMBeanProvider provider = new ConstructingProvider();
         try {
