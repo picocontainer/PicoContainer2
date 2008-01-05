@@ -8,10 +8,23 @@
 
 package org.picocontainer.gems.constraints;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoVisitor;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.Sequence;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.testmodel.AlternativeTouchable;
@@ -20,22 +33,22 @@ import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-
 /**
  * Test some <code>Constraint</code>s.
  *
  * @author Nick Sieger
  * @author J&ouml;rg Schaible
+ * @author Mauro Talevi
  */
-public class ConstraintsTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class ConstraintsTestCase {
 
-    MutablePicoContainer container;
+	private Mockery mockery = mockeryWithCountingNamingScheme();
 
-    protected void setUp() throws Exception {
-        super.setUp();
-        
+	private MutablePicoContainer container;
+
+	@Before
+    public void setUp() throws Exception {        
         container = new DefaultPicoContainer(new Caching());
         container.addComponent(SimpleTouchable.class);
         container.addComponent(DecoratedTouchable.class);
@@ -43,7 +56,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
         container.addComponent(DependsOnTouchable.class);
     }
 
-    public void testIsKeyConstraint() {
+    @Test public void testIsKeyConstraint() {
         Constraint c = new IsKey(SimpleTouchable.class);
 
         Object object = c.resolveInstance(container, 
@@ -52,7 +65,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
         assertEquals(SimpleTouchable.class, object.getClass());
     }
 
-    public void testIsTypeConstraint() {
+    @Test public void testIsTypeConstraint() {
         Constraint c = new IsType(AlternativeTouchable.class);
 
         Object object = c.resolveInstance(container, 
@@ -61,7 +74,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
         assertEquals(AlternativeTouchable.class, object.getClass());
     }
 
-    public void testIsKeyTypeConstraint() {
+    @Test public void testIsKeyTypeConstraint() {
         container.addComponent("Simple", SimpleTouchable.class);
         container.addComponent(5, SimpleTouchable.class);
         container.addComponent(Boolean.TRUE, SimpleTouchable.class);
@@ -74,7 +87,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
                 Touchable.class, null, false, null));
     }
 
-    public void testConstraintTooBroadThrowsAmbiguityException() {
+    @Test public void testConstraintTooBroadThrowsAmbiguityException() {
         Constraint c = new IsType(Touchable.class);
 
         try {
@@ -87,7 +100,7 @@ public class ConstraintsTestCase extends MockObjectTestCase {
         }
     }
 
-    public void testFindCandidateConstraintsExcludingOneImplementation() {
+    @Test public void testFindCandidateConstraintsExcludingOneImplementation() {
         Constraint c = 
             new CollectionConstraint(
                 new And(new IsType(Touchable.class),
@@ -101,19 +114,15 @@ public class ConstraintsTestCase extends MockObjectTestCase {
         }
     }
     
-    public void testCollectionChildIdVisitedBreadthFirst() {
-        Mock             mockVisior = mock(PicoVisitor.class);
-        PicoVisitor     visitor = (PicoVisitor) mockVisior.proxy();
-
-        Mock       mockC1 = mock(Constraint.class, "constraint 1");
-        Constraint c1     = (Constraint) mockC1.proxy();
-
-        Constraint c = new CollectionConstraint(c1);
-        
-        mockVisior.expects(once()).method("visitParameter")
-            .with(same(c)).id("v");
-        mockC1.expects(once()).method("accept")
-            .with(same(visitor)).after(mockVisior, "v");
+    @Test public void testCollectionChildIdVisitedBreadthFirst() {
+        final Constraint c1  = mockery.mock(Constraint.class, "constraint 1");
+        final Constraint c = new CollectionConstraint(c1);
+        final PicoVisitor visitor = mockery.mock(PicoVisitor.class);
+        final Sequence sequence = mockery.sequence("contraints");
+        mockery.checking(new Expectations(){{
+        	one(visitor).visitParameter(with(same(c))); inSequence(sequence);
+        	one(c1).accept(visitor);  inSequence(sequence);
+        }});
         
         c.accept(visitor);
     }

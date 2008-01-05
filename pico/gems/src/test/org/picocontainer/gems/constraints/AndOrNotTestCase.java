@@ -8,148 +8,151 @@
 
 package org.picocontainer.gems.constraints;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.Sequence;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.gems.constraints.And;
-import org.picocontainer.gems.constraints.Constraint;
-import org.picocontainer.gems.constraints.Not;
-import org.picocontainer.gems.constraints.Or;
 
 /**
  * Test the <code>And, Or, Not</code> constraints.
  *
  * @author Nick Sieger
  * @author J&ouml;rg Schaible
+ * @author Mauro Talevi
  */
-public final class AndOrNotTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public final class AndOrNotTestCase  {
 
-    final Mock             mockAdapter = mock(ComponentAdapter.class);
-    final ComponentAdapter adapter     = (ComponentAdapter) mockAdapter.proxy();
-    final Mock             mockVisior = mock(PicoVisitor.class);
-    final PicoVisitor     visitor = (PicoVisitor) mockVisior.proxy();
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+    final ComponentAdapter adapter = mockery.mock(ComponentAdapter.class);
+    final PicoVisitor      visitor =  mockery.mock(PicoVisitor.class);
 
-    final Mock       mockC1 = mock(Constraint.class, "constraint 1");
-    final Mock       mockC2 = mock(Constraint.class, "constraint 2");
-    final Mock       mockC3 = mock(Constraint.class, "constraint 3");
-    final Constraint c1     = (Constraint) mockC1.proxy();
-    final Constraint c2     = (Constraint) mockC2.proxy();
-    final Constraint c3     = (Constraint) mockC3.proxy();
+    final Constraint       c1 = mockery.mock(Constraint.class, "constraint 1");
+    final Constraint       c2 = mockery.mock(Constraint.class, "constraint 2");
+    final Constraint       c3 = mockery.mock(Constraint.class, "constraint 3");
 
-    public void testAndAllChildrenConstraintsTrueGivesTrue() {
+    @Test public void testAndAllChildrenConstraintsTrueGivesTrue() {
         Constraint c = new And(c1, c2, c3);
-
-        mockC1.expects(once()).method("evaluate")
-            .with(same(adapter))
-            .will(returnValue(Boolean.TRUE)).id("c1");
-        mockC2.expects(once()).method("evaluate")
-            .with(same(adapter)).after(mockC1, "c1")
-            .will(returnValue(Boolean.TRUE)).id("c2");
-        mockC3.expects(once()).method("evaluate")
-            .with(same(adapter)).after(mockC2, "c2")
-            .will(returnValue(Boolean.TRUE));
+        final Sequence sequence = mockery.sequence("contraints");
+        mockery.checking(new Expectations(){{
+        	one(c1).evaluate(with(same(adapter)));
+        	will(returnValue(true)); inSequence(sequence);
+        	one(c2).evaluate(with(same(adapter)));
+        	will(returnValue(true)); inSequence(sequence);
+        	one(c3).evaluate(with(same(adapter)));
+        	will(returnValue(true)); inSequence(sequence);
+        }});        
 
         assertTrue(c.evaluate(adapter));
     }
     
-    public void testAndAllChildrenAreVisitedBreadthFirst() {
-        Constraint c = new And(c1, c2, c3);
+    @Test public void testAndAllChildrenAreVisitedBreadthFirst() {
+        final Constraint c = new And(c1, c2, c3);
         
-        mockVisior.expects(once()).method("visitParameter")
-            .with(same(c)).id("v");
-        mockC1.expects(once()).method("accept")
-            .with(same(visitor)).after(mockVisior, "v");
-        mockC2.expects(once()).method("accept")
-            .with(same(visitor)).after(mockVisior, "v");
-        mockC3.expects(once()).method("accept")
-            .with(same(visitor)).after(mockVisior, "v");
+        final Sequence sequence = mockery.sequence("contraints");
+        mockery.checking(new Expectations(){{
+        	one(visitor).visitParameter(with(same(c))); inSequence(sequence);
+        	one(c1).accept(with(same(visitor))); inSequence(sequence);
+        	one(c2).accept(with(same(visitor))); inSequence(sequence);
+        	one(c3).accept(with(same(visitor))); inSequence(sequence);
+        }});        
         
         c.accept(visitor);
     }
 
-    public void testAndAllChildrenConstraintsTrueGivesTrueUsingAlternateConstructor() {
+    @Test public void testAndAllChildrenConstraintsTrueGivesTrueUsingAlternateConstructor() {
         Constraint c = new And(new Constraint[] {c1, c2, c3});
 
-        mockC1.expects(once()).method("evaluate")
-            .with(same(adapter))
-            .will(returnValue(Boolean.TRUE)).id("c1");
-        mockC2.expects(once()).method("evaluate")
-            .with(same(adapter)).after(mockC1, "c1")
-            .will(returnValue(Boolean.TRUE)).id("c2");
-        mockC3.expects(once()).method("evaluate")
-            .with(same(adapter)).after(mockC2, "c2")
-            .will(returnValue(Boolean.TRUE));
+        final Sequence sequence = mockery.sequence("contraints");
+        mockery.checking(new Expectations(){{
+        	one(c1).evaluate(with(same(adapter)));
+        	will(returnValue(true)); inSequence(sequence);
+        	one(c2).evaluate(with(same(adapter)));
+        	will(returnValue(true)); inSequence(sequence);
+        	one(c3).evaluate(with(same(adapter)));
+        	will(returnValue(true)); inSequence(sequence);
+        }});        
 
         assertTrue(c.evaluate(adapter));
     }
 
-    public void testAndShortCircuitGivesFalse() {
+    @Test public void testAndShortCircuitGivesFalse() {
         Constraint c = new And(c1, c2, c3);
 
-        mockC1.expects(once()).method("evaluate")
-            .with(same(adapter))
-            .will(returnValue(Boolean.TRUE)).id("c1");
-        mockC2.expects(once()).method("evaluate")
-            .with(same(adapter)).after(mockC1, "c1")
-            .will(returnValue(Boolean.FALSE));
-        mockC3.expects(never()).method("evaluate");
-
+        final Sequence sequence = mockery.sequence("contraints");
+        mockery.checking(new Expectations(){{
+        	one(c1).evaluate(with(same(adapter)));
+        	will(returnValue(true)); inSequence(sequence);
+        	one(c2).evaluate(with(same(adapter)));
+        	will(returnValue(false)); inSequence(sequence);
+        	never(c3).evaluate(with(same(adapter)));
+        }});        
+        
         assertFalse(c.evaluate(adapter));
     }
 
-    public void testOrAllChildrenConstraintsFalseGivesFalse() {
+    @Test public void testOrAllChildrenConstraintsFalseGivesFalse() {
         Constraint c = new Or(c1, c2, c3);
 
-        mockC1.expects(once()).method("evaluate")
-            .with(same(adapter))
-            .will(returnValue(Boolean.FALSE)).id("c1");
-        mockC2.expects(once()).method("evaluate")
-            .with(same(adapter)).after(mockC1, "c1")
-            .will(returnValue(Boolean.FALSE)).id("c2");
-        mockC3.expects(once()).method("evaluate")
-            .with(same(adapter)).after(mockC2, "c2")
-            .will(returnValue(Boolean.FALSE));
+        final Sequence sequence = mockery.sequence("contraints");
+        mockery.checking(new Expectations(){{
+        	one(c1).evaluate(with(same(adapter)));
+        	will(returnValue(false)); inSequence(sequence);
+        	one(c2).evaluate(with(same(adapter)));
+        	will(returnValue(false)); inSequence(sequence);
+        	one(c3).evaluate(with(same(adapter)));
+        	will(returnValue(false)); inSequence(sequence);
+        }});        
 
         assertFalse(c.evaluate(adapter));
     }
     
-    public void testOrAllChildrenAreVisitedBreadthFirst() {
-        Constraint c = new Or(c1, c2, c3);
+    @Test public void testOrAllChildrenAreVisitedBreadthFirst() {
+        final Constraint c = new Or(c1, c2, c3);
         
-        mockVisior.expects(once()).method("visitParameter")
-            .with(same(c)).id("v");
-        mockC1.expects(once()).method("accept")
-            .with(same(visitor)).after(mockVisior, "v");
-        mockC2.expects(once()).method("accept")
-            .with(same(visitor)).after(mockVisior, "v");
-        mockC3.expects(once()).method("accept")
-            .with(same(visitor)).after(mockVisior, "v");
+        final Sequence sequence = mockery.sequence("contraints");
+        mockery.checking(new Expectations(){{
+        	one(visitor).visitParameter(with(same(c))); inSequence(sequence);
+        	one(c1).accept(with(same(visitor))); inSequence(sequence);
+        	one(c2).accept(with(same(visitor))); inSequence(sequence);
+        	one(c3).accept(with(same(visitor))); inSequence(sequence);
+        }});        
         
         c.accept(visitor);
     }
 
-    public void testMixingOrAndNot() {
+    @Test public void testMixingOrAndNot() {
         Constraint c = new Or(c1, new Not(c2), c3);
 
-        mockC1.expects(once()).method("evaluate")
-            .with(same(adapter))
-            .will(returnValue(Boolean.FALSE)).id("c1");
-        mockC2.expects(once()).method("evaluate")
-            .with(same(adapter)).after(mockC1, "c1")
-            .will(returnValue(Boolean.FALSE));
-        mockC3.expects(never()).method("evaluate");
+        final Sequence sequence = mockery.sequence("contraints");
+        mockery.checking(new Expectations(){{
+        	one(c1).evaluate(with(same(adapter)));
+        	will(returnValue(false)); inSequence(sequence);
+        	one(c2).evaluate(with(same(adapter)));
+        	will(returnValue(false)); inSequence(sequence);
+        	never(c3).evaluate(with(same(adapter)));
+        }});        
 
         assertTrue(c.evaluate(adapter));
     }
     
-    public void testNotChildIdVisitedBreadthFirst() {
-        Constraint c = new Not(c1);
+    @Test public void testNotChildIdVisitedBreadthFirst() {
+        final Constraint c = new Not(c1);
         
-        mockVisior.expects(once()).method("visitParameter")
-            .with(same(c)).id("v");
-        mockC1.expects(once()).method("accept")
-            .with(same(visitor)).after(mockVisior, "v");
+        final Sequence sequence = mockery.sequence("contraints");
+        mockery.checking(new Expectations(){{
+        	one(visitor).visitParameter(with(same(c))); inSequence(sequence);
+        	one(c1).accept(with(same(visitor))); inSequence(sequence);
+        }});        
         
         c.accept(visitor);
     }
