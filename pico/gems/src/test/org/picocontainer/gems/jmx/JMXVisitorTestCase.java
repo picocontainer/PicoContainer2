@@ -10,81 +10,90 @@
 
 package org.picocontainer.gems.jmx;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import java.util.Set;
 
 import javax.management.DynamicMBean;
+import javax.management.InstanceAlreadyExistsException;
 import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
+import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
 
-import org.picocontainer.gems.jmx.testmodel.Person;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.gems.jmx.testmodel.Person;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 
 
 /**
  * @author Michael Ward
  * @author J&ouml;rg Schaible
- * @version $Revision$
+ * @author Mauro Talevi
  */
-public class JMXVisitorTestCase extends MockObjectTestCase {
-
+@RunWith(JMock.class)
+public class JMXVisitorTestCase  {
+	
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
     private MutablePicoContainer picoContainer;
-    private Mock mBeanServerMock;
-    private Mock dynamicMBeanProviderMock;
-    private Mock dynamicMBeanMock;
+    private MBeanServer mBeanServer =  mockery.mock(MBeanServer.class);
+    private DynamicMBeanProvider dynamicMBeanProvider = mockery.mock(DynamicMBeanProvider.class);
+    private DynamicMBean dynamicMBean = mockery.mock(DynamicMBean.class);
 
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        picoContainer = new DefaultPicoContainer();
-        mBeanServerMock = mock(MBeanServer.class);
-        dynamicMBeanProviderMock = mock(DynamicMBeanProvider.class);
-        dynamicMBeanMock = mock(DynamicMBean.class);
+    @Before
+    public void setUp() throws Exception {
+        picoContainer = new DefaultPicoContainer();        
     }
 
     private JMXVisitor createVisitor(final int providerCount) {
         final DynamicMBeanProvider[] providers = new DynamicMBeanProvider[providerCount];
         for (int i = 0; i < providers.length; i++) {
-            providers[i] = (DynamicMBeanProvider)dynamicMBeanProviderMock.proxy();
+            providers[i] = dynamicMBeanProvider;
         }
-        return new JMXVisitor((MBeanServer)mBeanServerMock.proxy(), providers);
+        return new JMXVisitor(mBeanServer, providers);
     }
 
     /**
      * Test visit with registration.
      * @throws MalformedObjectNameException
+     * @throws NotCompliantMBeanException 
+     * @throws MBeanRegistrationException 
+     * @throws InstanceAlreadyExistsException 
      */
-    public void testVisitWithRegistration() throws MalformedObjectNameException {
+    @Test public void testVisitWithRegistration() throws MalformedObjectNameException, InstanceAlreadyExistsException, MBeanRegistrationException, NotCompliantMBeanException {
         final JMXVisitor jmxVisitor = createVisitor(1);
         final ObjectName objectName = new ObjectName(":type=JUnit");
-        final JMXRegistrationInfo registrationInfo = new JMXRegistrationInfo(objectName, (DynamicMBean)dynamicMBeanMock
-                .proxy());
+        final JMXRegistrationInfo registrationInfo = new JMXRegistrationInfo(objectName, dynamicMBean);
         final ObjectInstance objectInstance = new ObjectInstance(objectName, Person.class.getName());
 
         // parameter fixes coverage of visitParameter !!
         final ComponentAdapter componentAdapter = picoContainer.addComponent(
                 Person.class, Person.class, new ConstantParameter("John Doe")).getComponentAdapter(Person.class, (NameBinding) null);
 
-        dynamicMBeanProviderMock.expects(once()).method("provide").with(same(picoContainer), same(componentAdapter))
-                .will(returnValue(registrationInfo));
-        mBeanServerMock.expects(once()).method("registerMBean").with(
-                same(registrationInfo.getMBean()), same(registrationInfo.getObjectName())).will(
-                returnValue(objectInstance));
+        mockery.checking(new Expectations(){{
+        	one(dynamicMBeanProvider).provide(with(same(picoContainer)), with(same(componentAdapter)));
+        	will(returnValue(registrationInfo));
+        	one(mBeanServer).registerMBean(with(same(registrationInfo.getMBean())), with(same(registrationInfo.getObjectName())));
+        	will(returnValue(objectInstance));
+        }});
 
         final Set set = (Set)jmxVisitor.traverse(picoContainer);
         assertEquals(1, set.size());
@@ -95,33 +104,36 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
      * Test the trial of multiple providers and ensure, that the first provider delivering a JMXRegistrationInfo is
      * used.
      * @throws MalformedObjectNameException
+     * @throws NotCompliantMBeanException 
+     * @throws MBeanRegistrationException 
+     * @throws InstanceAlreadyExistsException 
      */
-    public void testVisitWithMultipleProviders() throws MalformedObjectNameException {
+    @Test public void testVisitWithMultipleProviders() throws MalformedObjectNameException, InstanceAlreadyExistsException, MBeanRegistrationException, NotCompliantMBeanException {
         final JMXVisitor jmxVisitor = createVisitor(2);
         final JMXRegistrationInfo registrationInfo = new JMXRegistrationInfo(
-                new ObjectName(":type=JUnit"), (DynamicMBean)dynamicMBeanMock.proxy());
+                new ObjectName(":type=JUnit"), dynamicMBean);
 
         final ComponentAdapter componentAdapter1 = picoContainer.addComponent(this).getComponentAdapter(this.getClass(),
                                                                                                         (NameBinding) null);
         final ComponentAdapter componentAdapter2 = picoContainer.addComponent(Person.class).getComponentAdapter(Person.class,
-                                                                                                                (NameBinding) null);
+                                                                                                        (NameBinding) null);
 
-        dynamicMBeanProviderMock.expects(once()).method("provide").with(same(picoContainer), same(componentAdapter1))
-                .will(returnValue(null));
-        dynamicMBeanProviderMock.expects(once()).method("provide").with(same(picoContainer), same(componentAdapter1))
-                .will(returnValue(null));
-        dynamicMBeanProviderMock.expects(once()).method("provide").with(same(picoContainer), same(componentAdapter2))
-                .will(returnValue(registrationInfo));
-        mBeanServerMock.expects(once()).method("registerMBean").with(
-                same(registrationInfo.getMBean()), same(registrationInfo.getObjectName()));
-
+        mockery.checking(new Expectations(){{
+        	one(dynamicMBeanProvider).provide(with(same(picoContainer)), with(same(componentAdapter1)));
+        	will(returnValue(null));
+        	one(dynamicMBeanProvider).provide(with(same(picoContainer)), with(same(componentAdapter1)));
+        	will(returnValue(null));
+        	one(dynamicMBeanProvider).provide(with(same(picoContainer)), with(same(componentAdapter2)));
+        	will(returnValue(registrationInfo));
+        	one(mBeanServer).registerMBean(with(same(registrationInfo.getMBean())), with(same(registrationInfo.getObjectName())));
+        }});
         jmxVisitor.traverse(picoContainer);
     }
 
     /**
      * Test the traversal of the visitor.
      */
-    public void testTraversal() {
+    @Test public void testTraversal() {
         final JMXVisitor jmxVisitor = createVisitor(1);
         final MutablePicoContainer child = new DefaultPicoContainer();
         picoContainer.addChildContainer(child);
@@ -129,30 +141,32 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
         final ComponentAdapter componentAdapter = child.addComponent(Person.class).getComponentAdapter(Person.class,
                                                                                                        (NameBinding) null);
 
-        dynamicMBeanProviderMock.expects(once()).method("provide").with(same(child), same(componentAdapter)).will(
-                returnValue(null));
-
+        mockery.checking(new Expectations(){{
+        	one(dynamicMBeanProvider).provide(with(same(child)), with(same(componentAdapter)));
+        	will(returnValue(null));
+        }});
+        
         jmxVisitor.traverse(picoContainer);
     }
 
     /**
      * Test ctor.
      */
-    public void testInvalidConstructorArguments() {
+    @Test public void testInvalidConstructorArguments() {
         try {
-            new JMXVisitor(null, new DynamicMBeanProvider[]{(DynamicMBeanProvider)dynamicMBeanProviderMock.proxy()});
+            new JMXVisitor(null, new DynamicMBeanProvider[]{dynamicMBeanProvider});
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {
             // fine
         }
         try {
-            new JMXVisitor((MBeanServer)mBeanServerMock.proxy(), null);
+            new JMXVisitor(mBeanServer, null);
             fail("NullPointerException expected");
         } catch (final NullPointerException e) {
             // fine
         }
         try {
-            new JMXVisitor((MBeanServer)mBeanServerMock.proxy(), new DynamicMBeanProvider[]{});
+            new JMXVisitor(mBeanServer, new DynamicMBeanProvider[]{});
             fail("IllegalArgumentException expected");
         } catch (final IllegalArgumentException e) {
             // fine
@@ -162,7 +176,7 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
     /**
      * Test illegal call of visitComponentAdapter
      */
-    public void testIllegalVisit() {
+    @Test public void testIllegalVisit() {
         final JMXVisitor jmxVisitor = createVisitor(1);
         final ComponentAdapter componentAdapter = new InstanceAdapter(this, this, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
@@ -177,22 +191,26 @@ public class JMXVisitorTestCase extends MockObjectTestCase {
     /**
      * Test failing registration.
      * @throws MalformedObjectNameException
+     * @throws NotCompliantMBeanException 
+     * @throws MBeanRegistrationException 
+     * @throws InstanceAlreadyExistsException 
      */
-    public void testFailingMBeanRegistration() throws MalformedObjectNameException {
+    @Test public void testFailingMBeanRegistration() throws MalformedObjectNameException, InstanceAlreadyExistsException, MBeanRegistrationException, NotCompliantMBeanException {
         final JMXVisitor jmxVisitor = createVisitor(1);
         final JMXRegistrationInfo registrationInfo = new JMXRegistrationInfo(
-                new ObjectName(":type=JUnit"), (DynamicMBean)dynamicMBeanMock.proxy());
+                new ObjectName(":type=JUnit"), dynamicMBean);
         final Exception exception = new MBeanRegistrationException(null, "JUnit");
 
         // parameter fixes coverage of visitParameter !!
         final ComponentAdapter componentAdapter = picoContainer.addComponent(Person.class).getComponentAdapter(Person.class,
                                                                                                                (NameBinding) null);
 
-        dynamicMBeanProviderMock.expects(once()).method("provide").with(same(picoContainer), same(componentAdapter))
-                .will(returnValue(registrationInfo));
-        mBeanServerMock.expects(once()).method("registerMBean").with(
-                same(registrationInfo.getMBean()), same(registrationInfo.getObjectName())).will(
-                throwException(exception));
+        mockery.checking(new Expectations(){{
+        	one(dynamicMBeanProvider).provide(with(same(picoContainer)), with(same(componentAdapter)));
+        	will(returnValue(registrationInfo));
+        	one(mBeanServer).registerMBean(with(same(registrationInfo.getMBean())), with(same(registrationInfo.getObjectName())));
+        	will(throwException(exception));
+        }});
 
         try {
             jmxVisitor.traverse(picoContainer);

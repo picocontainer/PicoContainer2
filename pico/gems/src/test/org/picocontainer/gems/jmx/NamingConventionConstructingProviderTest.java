@@ -10,26 +10,33 @@
 
 package org.picocontainer.gems.jmx;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.picocontainer.gems.jmx.testmodel.OtherPerson;
 import org.picocontainer.gems.jmx.testmodel.Person;
 import org.picocontainer.gems.jmx.testmodel.PersonMBean;
-
-import org.jmock.MockObjectTestCase;
-import org.jmock.util.Dummy;
 
 
 /**
  * @author J&ouml;rg Schaible
  */
-public class NamingConventionConstructingProviderTest extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class NamingConventionConstructingProviderTest {
 
-    private ObjectNameFactory nameFactory;
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+    private ObjectNameFactory nameFactory = mockery.mock(ObjectNameFactory.class);
 
-    protected void setUp() throws Exception {
-        nameFactory = (ObjectNameFactory)Dummy.newDummy(ObjectNameFactory.class);
-    }
-
-    public void testObjectNameFactoryMustNotBeNull() {
+    @Test public void testObjectNameFactoryMustNotBeNull() {
         try {
             new NamingConventionConstructingProvider(null);
             fail("NullPointerException expected");
@@ -37,19 +44,19 @@ public class NamingConventionConstructingProviderTest extends MockObjectTestCase
         }
     }
 
-    public void testGivenObjectNameFactoryIsProvided() {
+    @Test public void testGivenObjectNameFactoryIsProvided() {
         final NamingConventionConstructingProvider provider = new NamingConventionConstructingProvider(nameFactory);
         assertSame(nameFactory, provider.getObjectNameFactory());
     }
 
-    public void testReusesMBeanFactory() {
+    @Test public void testReusesMBeanFactory() {
         final NamingConventionConstructingProvider provider = new NamingConventionConstructingProvider(nameFactory);
         final DynamicMBeanFactory beanFactory = provider.getMBeanFactory();
         assertNotNull(beanFactory);
         assertSame(beanFactory, provider.getMBeanFactory());
     }
 
-    public void testUsesNamingConventionMBeanInfoProvidersInRightSequence() {
+    @Test public void testUsesNamingConventionMBeanInfoProvidersInRightSequence() {
         final NamingConventionConstructingProvider provider = new NamingConventionConstructingProvider(nameFactory);
         final MBeanInfoProvider[] infoProviders = provider.getMBeanInfoProviders();
         assertNotNull(infoProviders);
@@ -59,12 +66,12 @@ public class NamingConventionConstructingProviderTest extends MockObjectTestCase
         assertSame(infoProviders, provider.getMBeanInfoProviders());
     }
 
-    public void testFindsManagementInterfaceAccordingNamingConventions() throws ClassNotFoundException {
+    @Test public void testFindsManagementInterfaceAccordingNamingConventions() throws ClassNotFoundException {
         final NamingConventionConstructingProvider provider = new NamingConventionConstructingProvider(nameFactory);
         assertSame(PersonMBean.class, provider.getManagementInterface(Person.class, null));
     }
 
-    public void testThrowsClassNotFoundExceptionIfNoManagementInterfaceCanBeFound() {
+    @Test public void testThrowsClassNotFoundExceptionIfNoManagementInterfaceCanBeFound() {
         final NamingConventionConstructingProvider provider = new NamingConventionConstructingProvider(nameFactory);
         try {
             provider.getManagementInterface(OtherPerson.class, null);

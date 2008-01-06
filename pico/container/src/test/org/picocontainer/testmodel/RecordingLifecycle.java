@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.testmodel;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertNotNull;
 
 import org.picocontainer.Disposable;
 import org.picocontainer.PicoContainer;
@@ -58,31 +58,31 @@ public abstract class RecordingLifecycle implements Startable, Disposable {
     public static class Two extends RecordingLifecycle {
         public Two(StringBuffer sb, One one) {
             super(sb);
-            TestCase.assertNotNull(one);
+            assertNotNull(one);
         }
     }
 
     public static class Three extends RecordingLifecycle {
         public Three(StringBuffer sb, One one, Two two) {
             super(sb);
-            TestCase.assertNotNull(one);
-            TestCase.assertNotNull(two);
+            assertNotNull(one);
+            assertNotNull(two);
         }
     }
 
     public static class Four extends RecordingLifecycle {
         public Four(StringBuffer sb, Two two, Three three, One one) {
             super(sb);
-            TestCase.assertNotNull(one);
-            TestCase.assertNotNull(two);
-            TestCase.assertNotNull(three);
+            assertNotNull(one);
+            assertNotNull(two);
+            assertNotNull(three);
         }
     }
 
     public static class FiveTriesToBeMalicious extends RecordingLifecycle {
         public FiveTriesToBeMalicious(StringBuffer sb, PicoContainer pc) {
             super(sb);
-            TestCase.assertNotNull(pc);
+            assertNotNull(pc);
             sb.append("Whao! Should not get instantiated!!");
         }
     }

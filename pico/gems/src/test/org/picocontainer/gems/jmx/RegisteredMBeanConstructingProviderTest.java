@@ -10,100 +10,119 @@
 
 package org.picocontainer.gems.jmx;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import javax.management.MBeanInfo;
 import javax.management.ObjectName;
 
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.gems.jmx.testmodel.Person;
 import org.picocontainer.gems.jmx.testmodel.PersonMBean;
-import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 
 
 /**
  * @author J&ouml;rg Schaible
+ * @author Mauro Talevi
  */
-public class RegisteredMBeanConstructingProviderTest extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class RegisteredMBeanConstructingProviderTest {
 
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
     private ObjectName objectName;
-    private Mock dynamicMBeanFactory;
+    private DynamicMBeanFactory dynamicMBeanFactory = mockery.mock(DynamicMBeanFactory.class);
 
-    protected void setUp() throws Exception {
-        super.setUp();
-        objectName = new ObjectName(":type=JUnit");
-        dynamicMBeanFactory = mock(DynamicMBeanFactory.class);
+    @Before
+    public void setUp() throws Exception {       
+        objectName = new ObjectName(":type=JUnit");      
     }
 
-    public void testRegisterWithoutComponentKey() {
+    @Test public void testRegisterWithoutComponentKey() {
         final MBeanInfo mBeanInfo = Person.createMBeanInfo();
         final Person person = new Person();
 
-        dynamicMBeanFactory.expects(once()).method("create").with(same(person), same(Person.class), same(mBeanInfo));
+        mockery.checking(new Expectations(){{
+        	one(dynamicMBeanFactory).create(with(same(person)), with(same(Person.class)), with(same(mBeanInfo)));
+        }});
 
         final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider(
-                (DynamicMBeanFactory)dynamicMBeanFactory.proxy());
+                dynamicMBeanFactory);
         provider.register(objectName, mBeanInfo);
         assertNotNull(provider.provide(null, new InstanceAdapter(Person.class, person, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor())));
     }
 
-    public void testRegisterWithArbitraryComponentKey() {
+    @Test public void testRegisterWithArbitraryComponentKey() {
         final MBeanInfo mBeanInfo = Person.createMBeanInfo();
         final Person person = new Person();
 
-        dynamicMBeanFactory.expects(once()).method("create").with(same(person), same(Person.class), same(mBeanInfo));
+        mockery.checking(new Expectations(){{
+        	one(dynamicMBeanFactory).create(with(same(person)), with(same(Person.class)), with(same(mBeanInfo)));
+        }});
 
         final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider(
-                (DynamicMBeanFactory)dynamicMBeanFactory.proxy());
+                dynamicMBeanFactory);
         provider.register("JUnit", objectName, mBeanInfo);
         assertNotNull(provider.provide(null, new InstanceAdapter("JUnit", person, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor())));
     }
 
-    public void testRegisterWithArbitraryComponentKeyAndManagementInterface() {
+    @Test public void testRegisterWithArbitraryComponentKeyAndManagementInterface() {
         final MBeanInfo mBeanInfo = Person.createMBeanInfo();
         final Touchable touchable = new SimpleTouchable();
 
-        dynamicMBeanFactory.expects(once()).method("create").with(
-                same(touchable), same(Touchable.class), same(mBeanInfo));
+        mockery.checking(new Expectations(){{
+        	one(dynamicMBeanFactory).create(with(same(touchable)), with(same(Touchable.class)), with(same(mBeanInfo)));
+        }});
 
         final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider(
-                (DynamicMBeanFactory)dynamicMBeanFactory.proxy());
+                dynamicMBeanFactory);
         provider.register("JUnit", objectName, Touchable.class, mBeanInfo);
         assertNotNull(provider.provide(null, new InstanceAdapter("JUnit", touchable, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor())));
     }
 
-    public void testRegisterWithTypedComponentKeyButWithoutMBeanInfo() {
+    @Test public void testRegisterWithTypedComponentKeyButWithoutMBeanInfo() {
         final Person person = new Person();
 
-        dynamicMBeanFactory.expects(once()).method("create").with(same(person), same(PersonMBean.class), NULL);
+        mockery.checking(new Expectations(){{
+        	one(dynamicMBeanFactory).create(with(same(person)), with(same(PersonMBean.class)), with(aNull(MBeanInfo.class)));
+        }});
 
         final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider(
-                (DynamicMBeanFactory)dynamicMBeanFactory.proxy());
+                dynamicMBeanFactory);
         provider.register(PersonMBean.class, objectName);
         assertNotNull(provider.provide(null, new InstanceAdapter(PersonMBean.class, person, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor())));
     }
 
-    public void testRegisterWithArbitraryComponentKeyButWithoutMBeanInfo() {
+    @Test public void testRegisterWithArbitraryComponentKeyButWithoutMBeanInfo() {
         final Person person = new Person();
 
-        dynamicMBeanFactory.expects(once()).method("create").with(same(person), same(Person.class), NULL);
+        mockery.checking(new Expectations(){{
+        	one(dynamicMBeanFactory).create(with(same(person)), with(same(Person.class)), with(aNull(MBeanInfo.class)));
+        }});
 
         final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider(
-                (DynamicMBeanFactory)dynamicMBeanFactory.proxy());
+                dynamicMBeanFactory);
         provider.register("JUnit", objectName);
         assertNotNull(provider.provide(null, new InstanceAdapter("JUnit", person, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor())));
     }
 
-    public void testUsageOfStandardMBeanFactory() {
+    @Test public void testUsageOfStandardMBeanFactory() {
         final RegisteredMBeanConstructingProvider provider = new RegisteredMBeanConstructingProvider();
         provider.register(PersonMBean.class, objectName);
         final JMXRegistrationInfo info = provider.provide(null, new InstanceAdapter(
