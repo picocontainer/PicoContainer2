@@ -87,7 +87,7 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
 		return delegate.getComponents(type);
 	}
 
-	protected PicoContainer getDelegate() {
+	public PicoContainer getDelegate() {
 		return delegate;
 	}
 

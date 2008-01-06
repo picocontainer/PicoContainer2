@@ -99,7 +99,7 @@ public class CommandLineArgumentsPicoContainer extends AbstractDelegatingPicoCon
         }
     }
     
-    protected MutablePicoContainer getDelegate() {
+    public MutablePicoContainer getDelegate() {
     	return (MutablePicoContainer) super.getDelegate();
     }
 }

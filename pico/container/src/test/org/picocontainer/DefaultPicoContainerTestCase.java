@@ -50,8 +50,7 @@ import org.picocontainer.testmodel.Touchable;
  * @author Ward Cunningham
  * @author Mauro Talevi
  */
-public final class DefaultPicoContainerTestCase extends
-		AbstractPicoContainerTestCase {
+public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase {
 	protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
 		return new DefaultPicoContainer(parent);
 	}

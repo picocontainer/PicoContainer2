@@ -33,6 +33,17 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.List;
 
+/**
+ * Helps assembles the myriad items available to a picocontainer.
+ * <p>Simple Example:</p>
+ * <pre>
+ * MutablePicoContainer mpc = new PicoBuilder()
+ * &nbsp;&nbsp;.withCaching()
+ * &nbsp;&nbsp;.withLifecycle()
+ * &nbsp;&nbsp;.build();
+ * </pre>
+ * @author Paul Hammant
+ */
 public class PicoBuilder {
 
     private PicoContainer parentContainer;

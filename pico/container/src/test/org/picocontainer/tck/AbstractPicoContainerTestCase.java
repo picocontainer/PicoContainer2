@@ -46,6 +46,7 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.Startable;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -186,6 +187,40 @@ public abstract class AbstractPicoContainerTestCase extends MockObjectTestCase {
         } catch (AbstractInjector.AmbiguousComponentResolutionException e) {
             assertTrue(e.getMessage().indexOf("java.lang.String") != -1);
         }
+    }
+    
+    @SuppressWarnings("serial")
+	private static class SimpleDelegatingMutablePicoContainer extends AbstractDelegatingMutablePicoContainer {
+        public SimpleDelegatingMutablePicoContainer(MutablePicoContainer delegate) {
+            super(delegate);
+        }
+
+        public MutablePicoContainer makeChildContainer() {
+            return new SimpleDelegatingMutablePicoContainer(this.getDelegate().makeChildContainer());
+        }
+    }
+    
+    @Test public void testCircularChildRegistrationResultsInIllegalArgumentException() {
+        MutablePicoContainer pico = createPicoContainer(null);
+        try {
+	        pico.addChildContainer(pico);
+	        fail("Should have thrown IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        	//a-ok
+        	assertNotNull(e.getMessage());
+        }
+        
+        //Test delegates are sniffed out as well.
+        pico = createPicoContainer(null);
+        SimpleDelegatingMutablePicoContainer delegate = new SimpleDelegatingMutablePicoContainer(pico);
+        try {
+	        pico.addChildContainer(delegate);
+	        fail("Should have thrown IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        	//a-ok
+        	assertNotNull(e.getMessage());
+        }        
+        
     }
 
     @Test public void testLookupWithUnregisteredKeyReturnsNull() throws PicoCompositionException {

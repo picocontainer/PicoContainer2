@@ -30,6 +30,7 @@ import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.HiddenImplementation;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
+import org.picocontainer.containers.AbstractDelegatingPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
@@ -712,9 +713,42 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         addChildContainer(pc);
         return pc;
     }
+    
+    /**
+     * Checks for identical references in the child container.  It doesn't
+     * traverse an entire hierarchy, namely it simply checks for child containers
+     * that are equal to the current container.
+     * @param child
+     */
+    private void checkCircularChildDependencies(PicoContainer child) {
+    	final String MESSAGE = "Cannot have circular dependency between parent " 
+			+ this + " and child: " + child;
+    	if (child == this) {
+    		throw new IllegalArgumentException(MESSAGE);
+    	}
+    	
+    	//Todo: Circular Import Dependency on AbstractDelegatingPicoContainer
+    	if (child instanceof AbstractDelegatingPicoContainer) {
+    		AbstractDelegatingPicoContainer delegateChild = (AbstractDelegatingPicoContainer) child;
+    		while(delegateChild != null) {
+    			PicoContainer delegateInstance = delegateChild.getDelegate();
+    			if (this == delegateInstance) {
+					throw new IllegalArgumentException(MESSAGE);
+    			}
+    			if (delegateInstance instanceof AbstractDelegatingPicoContainer) {
+    				delegateChild = (AbstractDelegatingPicoContainer) delegateInstance;
+    			} else {
+    				delegateChild = null;
+    			}
+    			
+    		}
+    	}
+    	
+    }
 
     public MutablePicoContainer addChildContainer(final PicoContainer child) {
-        if (children.add(child)) {
+    	checkCircularChildDependencies(child);
+    	if (children.add(child)) {
             // @todo Should only be added if child container has also be started
             if (lifecycleState == STARTED) {
                 childrenStarted.add(new WeakReference<PicoContainer>(child));

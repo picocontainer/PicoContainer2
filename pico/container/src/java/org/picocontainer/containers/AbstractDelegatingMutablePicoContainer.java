@@ -88,7 +88,7 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
 		getDelegate().stop();
 	}
 
-	protected MutablePicoContainer getDelegate() {
+	public MutablePicoContainer getDelegate() {
 		return (MutablePicoContainer) super.getDelegate();
 	}
 }
