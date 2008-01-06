@@ -12,7 +12,6 @@
     <module>container</module>
     <module>tck</module>
     <module>gems</module>
-    <module>distribution</module>
   </modules>
   <organization>
     <name>Codehaus</name>
@@ -279,7 +278,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.0</version>
+          <version>2.2</version>
           <executions>
             <execution>
               <id>attach-javadocs</id>
@@ -327,7 +326,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>cobertura-maven-plugin</artifactId>
-          <version>2.0</version>
+          <version>2.2</version>
           <executions>
             <execution>
               <goals>
@@ -364,7 +363,6 @@
         </plugin>
       </plugins>
     </pluginManagement>
-
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -372,23 +370,7 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
       </plugin>
     </plugins>
     <extensions>
@@ -399,45 +381,71 @@
       </extension>
     </extensions>
   </build>
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>javadoc</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </reporting>
   <profiles>
     <profile>
-      <id>release-profile</id>
-      <activation>
-        <property>
-          <name>release-mode</name>
-        </property>
-      </activation>
+      <!-- No-test profile:  equivalent to -Dmaven.test.skip=true -->
+      <id>nt</id>
       <build>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
+            <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
-              <optimize>true</optimize>
-              <debug>false</debug>
+              <skip>true</skip>
             </configuration>
           </plugin>
         </plugins>
       </build>
     </profile>
+    <profile>
+      <!-- reporting profile -->
+      <id>reporting</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+      <reporting>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-project-info-reports-plugin</artifactId>
+            <reportSets>
+              <reportSet>
+                <reports>
+                  <report>dependencies</report>
+                  <report>project-team</report>
+                  <report>license</report>
+                  <report>mailing-list</report>
+                  <!--<report>scm</report>-->
+                </reports>
+              </reportSet>
+            </reportSets>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-report-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>cobertura-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </reporting>
+    </profile>
+    <profile>
+      <!-- Distribution profile -->
+      <id>distribution</id>
+      <modules>
+        <module>distribution</module>
+      </modules>
+    </profile>    
   </profiles>
 </project>
