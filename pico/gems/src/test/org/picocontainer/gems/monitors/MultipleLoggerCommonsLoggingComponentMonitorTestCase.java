@@ -17,11 +17,6 @@ public class MultipleLoggerCommonsLoggingComponentMonitorTestCase extends Compon
 
     String logPrefixName = String.class.getName();
 
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
     protected ComponentMonitor makeComponentMonitor() {
         return new CommonsLoggingComponentMonitor();
     }

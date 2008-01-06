@@ -14,10 +14,6 @@ import org.picocontainer.ComponentMonitor;
 
 public class SingleLoggerCommonsLoggingComponentMonitorTestCase extends ComponentMonitorHelperTestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
     protected ComponentMonitor makeComponentMonitor() {
         return new CommonsLoggingComponentMonitor(CommonsLoggingComponentMonitor.class);
     }
@@ -27,7 +23,7 @@ public class SingleLoggerCommonsLoggingComponentMonitorTestCase extends Componen
     }
 
     protected Method getMethod() throws NoSuchMethodException {
-        return getClass().getDeclaredMethod("setUp", (Class[])null);
+        return getClass().getDeclaredMethod("makeComponentMonitor", (Class[])null);
     }
 
     protected String getLogPrefix() {

@@ -21,11 +21,6 @@ public class MultipleLoggerLog4JComponentMonitorTestCase extends ComponentMonito
 
     String logPrefixName = String.class.getName();
 
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
     protected ComponentMonitor makeComponentMonitor() {
         return new Log4JComponentMonitor();
     }

@@ -9,28 +9,32 @@
 
 package org.picocontainer.gems;
 
-import junit.framework.TestCase;
-import com.thoughtworks.xstream.XStream;
+import static org.junit.Assert.assertEquals;
+import static org.picocontainer.gems.PicoGemsBuilder.IMPL_HIDING;
+import static org.picocontainer.gems.PicoGemsBuilder.LOG4J;
+
+import org.junit.Before;
+import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
-
-import static org.picocontainer.gems.PicoGemsBuilder.IMPL_HIDING;
-import static org.picocontainer.gems.PicoGemsBuilder.LOG4J;
-import org.picocontainer.gems.monitors.Log4JComponentMonitor;
 import org.picocontainer.gems.monitors.CommonsLoggingComponentMonitor;
+import org.picocontainer.gems.monitors.Log4JComponentMonitor;
 
-public class PicoGemsBuilderTestCase extends TestCase {
+import com.thoughtworks.xstream.XStream;
+
+public class PicoGemsBuilderTestCase {
 
     XStream xs;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         xs = new XStream();
         xs.alias("PICO", DefaultPicoContainer.class);
         xs.setMode(XStream.XPATH_ABSOLUTE_REFERENCES);
     }
 
-    public void testWithImplementationHiding() {
+    @Test public void testWithImplementationHiding() {
         MutablePicoContainer mpc = new PicoBuilder().withBehaviors(IMPL_HIDING()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -43,7 +47,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithLog4JComponentMonitor() {
+    @Test public void testWithLog4JComponentMonitor() {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(Log4JComponentMonitor.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -56,7 +60,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithLog4JComponentMonitorByInstance() {
+    @Test public void testWithLog4JComponentMonitorByInstance() {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(LOG4J()).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +
@@ -69,7 +73,7 @@ public class PicoGemsBuilderTestCase extends TestCase {
                 "PICO",foo);
     }
 
-    public void testWithCommonsLoggingComponentMonitor() {
+    @Test public void testWithCommonsLoggingComponentMonitor() {
         MutablePicoContainer mpc = new PicoBuilder().withMonitor(CommonsLoggingComponentMonitor.class).build();
         String foo = simplifyRepresentation(mpc);
         assertEquals("PICO\n" +

@@ -9,15 +9,16 @@
  *****************************************************************************/
 package org.picocontainer.gems.adapters;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
-import org.picocontainer.ObjectReference;
-import org.picocontainer.references.ThreadLocalReference;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.picocontainer.ObjectReference;
+import org.picocontainer.references.ThreadLocalReference;
 
 
 /**
@@ -25,15 +26,12 @@ import java.util.List;
  * 
  * @author J&ouml;rg Schaible
  */
-public final class ThreadLocalReferenceTest extends TestCase {
+public final class ThreadLocalReferenceTest {
 
     private List m_exceptionList;
 
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         m_exceptionList = Collections.synchronizedList(new ArrayList());
     }
 
@@ -61,7 +59,7 @@ public final class ThreadLocalReferenceTest extends TestCase {
                 synchronized (thread) {
                     thread.wait();
                 }
-                Assert.assertEquals(thread.getName(), m_reference.get());
+                assertEquals(thread.getName(), m_reference.get());
             } catch (InterruptedException e) {
                 m_exceptionList.add(e);
             }
@@ -73,7 +71,7 @@ public final class ThreadLocalReferenceTest extends TestCase {
      * 
      * @throws InterruptedException
      */
-    public final void testThreadLocalReference() throws InterruptedException {
+    @Test public void testThreadLocalReference() throws InterruptedException {
         final ThreadLocalReference reference = new ThreadLocalReference();
         final Thread[] threads = new Thread[]{
                 new Thread(new RunIt(reference), "junit-TLR-1"), new Thread(new RunIt(reference), "junit-TLR-2"),

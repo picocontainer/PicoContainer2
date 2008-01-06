@@ -10,37 +10,42 @@
 
 package org.picocontainer.gems.behaviors;
 
-import com.thoughtworks.proxy.factory.CglibProxyFactory;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import junit.framework.TestCase;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
+import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.Cached;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.tck.AbstractComponentAdapterTestCase;
+import org.picocontainer.behaviors.Cached;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.tck.AbstractComponentAdapterTest;
 import org.picocontainer.testmodel.CompatibleTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
+import com.thoughtworks.proxy.factory.CglibProxyFactory;
 
 
 /**
  * @author J&ouml;rg Schaible
  */
-public class AssimilatedTestCase extends AbstractComponentAdapterTestCase {
+public class AssimilatedTestCase extends AbstractComponentAdapterTest {
 
     /**
      * Test if an instance can be assimilated.
      */
-    public void testInstanceIsBorged() {
+    @Test public void testInstanceIsBorged() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         final ComponentAdapter<CompatibleTouchable> componentAdapter = new Cached<CompatibleTouchable>(new ConstructorInjector(
                 CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
@@ -56,7 +61,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTestCase {
     /**
      * Test if the component key is preserved if it is not a class type.
      */
-    public void testComponentKeyIsPreserved() {
+    @Test public void testComponentKeyIsPreserved() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         final ComponentAdapter<CompatibleTouchable> componentAdapter = new Cached<CompatibleTouchable>(new ConstructorInjector(
                 "Touchy", CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
@@ -72,11 +77,11 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTestCase {
     /**
      * Test if proxy generation is omitted, if types are compatible.
      */
-    public void testAvoidUnnecessaryProxy() {
+    @Test public void testAvoidUnnecessaryProxy() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.addAdapter(new Assimilated(TestCase.class, new InstanceAdapter<AssimilatedTestCase>(TestCase.class, this, new NullLifecycleStrategy(),
+        mpc.addAdapter(new Assimilated(AbstractComponentAdapterTest.class, new InstanceAdapter<AssimilatedTestCase>(AbstractComponentAdapterTest.class, this, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor())));
-        final TestCase self = mpc.getComponent(TestCase.class);
+        final AbstractComponentAdapterTest self = mpc.getComponent(AbstractComponentAdapterTest.class);
         assertFalse(Proxy.isProxyClass(self.getClass()));
         assertSame(this, self);
     }
@@ -84,11 +89,11 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTestCase {
     /**
      * Test if proxy generation is omitted, if types are compatible and that the component key is not changed.
      */
-    public void testAvoidedProxyDoesNotChangeComponentKey() {
+    @Test public void testAvoidedProxyDoesNotChangeComponentKey() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
-        mpc.addAdapter(new Assimilated(TestCase.class, new InstanceAdapter<AssimilatedTestCase>(getClass(), this, new NullLifecycleStrategy(),
+        mpc.addAdapter(new Assimilated(AbstractComponentAdapterTest.class, new InstanceAdapter<AssimilatedTestCase>(getClass(), this, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor())));
-        final TestCase self = mpc.getComponent(getClass());
+        final AbstractComponentAdapterTest self = mpc.getComponent(getClass());
         assertNotNull(self);
         assertSame(this, self);
     }
@@ -96,9 +101,9 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTestCase {
     /**
      * Test fail-fast for components without interface.
      */
-    public void testComponentMustImplementInterface() {
+    @Test public void testComponentMustImplementInterface() {
         try {
-            new Assimilated(SimpleTouchable.class, new InstanceAdapter<AssimilatedTestCase>(TestCase.class, this, new NullLifecycleStrategy(),
+            new Assimilated(SimpleTouchable.class, new InstanceAdapter<AssimilatedTestCase>(AbstractComponentAdapterTest.class, this, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor()));
             fail("PicoCompositionException expected");
         } catch (final PicoCompositionException e) {
@@ -110,10 +115,10 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTestCase {
      * Test fail-fast for components without matching methods.
      * @throws NoSuchMethodException 
      */
-    public void testComponentMustHaveMathichMethods() throws NoSuchMethodException {
+    @Test public void testComponentMustHaveMathichMethods() throws NoSuchMethodException {
         final Method touch = Touchable.class.getMethod("touch", (Class[])null);
         try {
-            new Assimilated(Touchable.class, new InstanceAdapter<AssimilatedTestCase>(TestCase.class, this, new NullLifecycleStrategy(),
+            new Assimilated(Touchable.class, new InstanceAdapter<AssimilatedTestCase>(AbstractComponentAdapterTest.class, this, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor()));
             fail("PicoCompositionException expected");
         } catch (final PicoCompositionException e) {

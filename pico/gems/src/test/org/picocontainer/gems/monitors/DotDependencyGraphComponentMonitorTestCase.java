@@ -9,20 +9,24 @@
  *****************************************************************************/
 package org.picocontainer.gems.monitors;
 
-import junit.framework.TestCase;
-import org.picocontainer.testmodel.DependsOnList;
-import org.picocontainer.testmodel.DependsOnDependsOnListAndVector;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
-public class DotDependencyGraphComponentMonitorTestCase extends TestCase {
+import org.junit.Before;
+import org.junit.Test;
+import org.picocontainer.testmodel.DependsOnDependsOnListAndVector;
+import org.picocontainer.testmodel.DependsOnList;
+
+public class DotDependencyGraphComponentMonitorTestCase {
 
     DotDependencyGraphComponentMonitor monitor;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         monitor = new DotDependencyGraphComponentMonitor();
 
         Vector vec = new Vector();
@@ -45,7 +49,7 @@ public class DotDependencyGraphComponentMonitorTestCase extends TestCase {
                              DependsOnDependsOnListAndVector.class.getConstructors()[0], dodolav, new Object[]{vec, dol}, 9);
     }
 
-    public void testSimpleClassDependencyGraphCanEliminateDupes() throws NoSuchMethodException {
+    @Test public void testSimpleClassDependencyGraphCanEliminateDupes() throws NoSuchMethodException {
         String expected = ("" +
                 "  'java.util.ArrayList' -> 'java.util.Vector';\n" +
                 "  'org.picocontainer.testmodel.DependsOnDependsOnListAndVector' -> 'java.util.Vector';\n" +
@@ -55,7 +59,7 @@ public class DotDependencyGraphComponentMonitorTestCase extends TestCase {
         assertEquals(expected, monitor.getClassDependencyGraph());
     }
 
-    public void testSimpleInterfaceDependencyGraphCanEliminateDupes() throws NoSuchMethodException {
+    @Test public void testSimpleInterfaceDependencyGraphCanEliminateDupes() throws NoSuchMethodException {
         String expected = ("" +
                 "  'java.util.ArrayList' -> 'java.util.Collection' [style=dotted,label='needs'];\n" +
                 "  'java.util.ArrayList' -> 'java.util.List' [style=dotted, color=red,label='isA'];\n" +

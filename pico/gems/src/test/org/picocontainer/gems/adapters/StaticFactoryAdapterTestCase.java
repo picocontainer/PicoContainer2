@@ -9,22 +9,23 @@
  *****************************************************************************/
 package org.picocontainer.gems.adapters;
 
-import junit.framework.TestCase;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.DefaultPicoContainer;
+import static org.junit.Assert.assertNotNull;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+
 
 /**
  * @author J&ouml;rg Schaible
  */
-public class StaticFactoryAdapterTestCase extends TestCase {
+public class StaticFactoryAdapterTestCase {
 
-    public void testStaticFactoryInAction() {
+    @Test public void testStaticFactoryInAction() {
         ComponentAdapter componentAdapter = new StaticFactoryAdapter(Registry.class, new StaticFactory() {
             public Object get() {
                 try {

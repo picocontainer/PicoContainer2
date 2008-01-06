@@ -10,18 +10,20 @@
 
 package org.picocontainer.gems.jmx;
 
+import static org.junit.Assert.assertSame;
+
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 
 /**
  * @author J&ouml;rg Schaible
  */
-public class PredefinedObjectNameFactoryTest extends TestCase {
+public class PredefinedObjectNameFactoryTest {
 
-    public void testSpecifiedDomain() throws MalformedObjectNameException {
+    @Test public void testSpecifiedDomain() throws MalformedObjectNameException {
         final ObjectName key = new ObjectName("JUnit:type=null");
         final ObjectNameFactory factory = new PredefinedObjectNameFactory();
         final ObjectName objectName = factory.create(key, null);

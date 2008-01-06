@@ -8,10 +8,18 @@
 
 package org.picocontainer.gems.constraints;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import org.picocontainer.MutablePicoContainer;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.parameters.ComponentParameter;
@@ -24,22 +32,17 @@ import org.picocontainer.testmodel.DependsOnTwoComponents;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Integration tests using Constraints.
  *
  * @author Nick Sieger
  */
-public class ConstraintIntegrationTestCase
-    extends TestCase {
+public class ConstraintIntegrationTestCase {
 
     MutablePicoContainer container;
 
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @Before
+    public void setUp() throws Exception {       
         container = new DefaultPicoContainer(new Caching());
         container.addComponent(SimpleTouchable.class);
         container.addComponent(DependsOnTouchable.class);
@@ -49,7 +52,7 @@ public class ConstraintIntegrationTestCase
     }
 
 
-    public void testAmbiguouTouchableDependency() {
+    @Test public void testAmbiguouTouchableDependency() {
         container.addComponent(AlternativeTouchable.class);
         container.addComponent(DecoratedTouchable.class);
 
@@ -61,7 +64,7 @@ public class ConstraintIntegrationTestCase
         }
     }
 
-    public void testTouchableDependencyWithComponentKeyParameter() {
+    @Test public void testTouchableDependencyWithComponentKeyParameter() {
         container.addComponent(AlternativeTouchable.class);
         container.addComponent(DecoratedTouchable.class,
                                                   DecoratedTouchable.class,
@@ -71,7 +74,7 @@ public class ConstraintIntegrationTestCase
         assertNotNull(t);
     }
 
-    public void testTouchableDependencyInjectedViaConstraint() {
+    @Test public void testTouchableDependencyInjectedViaConstraint() {
         container.addComponent(AlternativeTouchable.class);
         container.addComponent(DecoratedTouchable.class,
                                                   DecoratedTouchable.class,
@@ -80,7 +83,7 @@ public class ConstraintIntegrationTestCase
         assertNotNull(t);
     }
 
-    public void testComponentDependsOnCollectionOfEverythingElse() {
+    @Test public void testComponentDependsOnCollectionOfEverythingElse() {
         container.addComponent(DependsOnList.class,
                                                   DependsOnList.class,
                                                   new CollectionConstraint(Anything.ANYTHING));
@@ -90,7 +93,7 @@ public class ConstraintIntegrationTestCase
         assertEquals(5, dependencies.size());
     }
 
-    public void testComponentDependsOnCollectionOfTouchables() {
+    @Test public void testComponentDependsOnCollectionOfTouchables() {
         container.addComponent(AlternativeTouchable.class);
         container.addComponent(DecoratedTouchable.class,
                                                   DecoratedTouchable.class,
@@ -104,7 +107,7 @@ public class ConstraintIntegrationTestCase
         assertEquals(3, dependencies.size());
     }
 
-    public void testComponentDependsOnCollectionOfSpecificTouchables() {
+    @Test public void testComponentDependsOnCollectionOfSpecificTouchables() {
         container.addComponent(AlternativeTouchable.class);
         container.addComponent(DecoratedTouchable.class,
                                                   DecoratedTouchable.class,
@@ -124,7 +127,7 @@ public class ConstraintIntegrationTestCase
         assertTrue(dependencies.contains(dt));
     }
 
-    public void testComponentDependsOnArrayOfEverythingElse() {
+    @Test public void testComponentDependsOnArrayOfEverythingElse() {
         container.addComponent(DependsOnArray.class,
                                                   DependsOnArray.class,
                                                   new CollectionConstraint(Anything.ANYTHING));

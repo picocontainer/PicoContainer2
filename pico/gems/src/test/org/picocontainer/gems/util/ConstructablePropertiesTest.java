@@ -8,16 +8,20 @@
  ******************************************************************************/
 package org.picocontainer.gems.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
 /**
  * test capabilities of constructable properties 
  * @author Konstantin Pribluda 
  */
-public class ConstructablePropertiesTest extends TestCase {
+public class ConstructablePropertiesTest {
 
-	public void testPropertiesLoading() throws Exception {
+	@Test public void testPropertiesLoading() throws Exception {
 
 		Properties properties = new ConstructableProperties("test.properties");
 		assertNotNull(properties);

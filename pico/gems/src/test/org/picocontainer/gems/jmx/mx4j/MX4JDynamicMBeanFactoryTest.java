@@ -10,22 +10,22 @@
 
 package org.picocontainer.gems.jmx.mx4j;
 
+import static org.junit.Assert.assertNotNull;
+
 import javax.management.DynamicMBean;
 import javax.management.MBeanInfo;
 
+import org.junit.Test;
 import org.picocontainer.gems.jmx.DynamicMBeanFactory;
 import org.picocontainer.gems.jmx.testmodel.Person;
 import org.picocontainer.testmodel.SimpleTouchable;
 
-import junit.framework.TestCase;
-
-
 /**
  * @author J&ouml;rg Schaible
  */
-public class MX4JDynamicMBeanFactoryTest extends TestCase {
+public class MX4JDynamicMBeanFactoryTest {
 
-    public void testMBeanCreationFailsWithoutManagementInterface() {
+    @Test public void testMBeanCreationFailsWithoutManagementInterface() {
         final DynamicMBeanFactory factory = new MX4JDynamicMBeanFactory();
         final MBeanInfo mBeanInfo = Person.createMBeanInfo();
         final DynamicMBean mBean = factory.create(new SimpleTouchable(), null, mBeanInfo);

@@ -1,13 +1,14 @@
 package org.picocontainer.gems.monitors.prefuse;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
+import org.junit.Test;
 import org.picocontainer.gems.monitors.ComponentDependencyMonitor.Dependency;
 
-public class DependencySetTestCase extends TestCase {
+public class DependencySetTestCase {
     int callCount = 0;
 
-    public void testShouldNotAddDuplicates() throws Exception {
+    @Test public void testShouldNotAddDuplicates() throws Exception {
         ComponentDependencyListener mockListener = new ComponentDependencyListener(){
             public void addDependency(Dependency dependency) {
              callCount++;

@@ -10,17 +10,19 @@
 
 package org.picocontainer.gems.adapters;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
 
 
 /**
@@ -28,14 +30,14 @@ import java.util.Properties;
  * 
  * @author J&ouml;rg Schaible
  */
-public class ThreadLocalizingTestCase extends TestCase {
+public class ThreadLocalizingTestCase {
 
     /**
      * Test creation of a CA ensuring ThreadLocal-behaviour.
      * 
      * @throws InterruptedException
      */
-    public final void testCreateComponentAdapterEnsuringThreadLocal() throws InterruptedException {
+    @Test public void testCreateComponentAdapterEnsuringThreadLocal() throws InterruptedException {
         final ComponentFactory componentFactory = new ThreadLocalizing().wrap(new ConstructorInjection());
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
                 new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), List.class, ArrayList.class);
@@ -62,7 +64,7 @@ public class ThreadLocalizingTestCase extends TestCase {
      * 
      * @throws InterruptedException
      */
-    public final void testCreateComponentAdapterFailingThreadLocal() throws InterruptedException {
+    @Test public void testCreateComponentAdapterFailingThreadLocal() throws InterruptedException {
         final ComponentFactory componentFactory = new ThreadLocalizing(ThreadLocalizing.THREAD_ENSURES_LOCALITY).wrap(new ConstructorInjection());
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
                 new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), List.class, ArrayList.class);
@@ -90,7 +92,7 @@ public class ThreadLocalizingTestCase extends TestCase {
      * 
      * @throws InterruptedException
      */
-    public final void testCreateComponentAdapterWorksForDifferentThreads() throws InterruptedException {
+    @Test public void testCreateComponentAdapterWorksForDifferentThreads() throws InterruptedException {
         final ComponentFactory componentFactory = new ThreadLocalizing(ThreadLocalizing.THREAD_ENSURES_LOCALITY).wrap(new ConstructorInjection());
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
                 new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), List.class, ArrayList.class);

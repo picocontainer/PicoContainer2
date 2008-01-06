@@ -9,25 +9,30 @@
 
 package org.picocontainer.gems.jndi;
 
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+
 import java.util.Hashtable;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * test capabilities of object reference storing stuff in JNDI
  * @author k.pribluda
  *
  */
-public class JNDIObjectReferenceTestCase extends TestCase {
+public class JNDIObjectReferenceTestCase {
 
 	Context ctx;
 	JNDIObjectReference reference;
 	
+	@Before
 	public void setUp() throws Exception {
-		super.setUp();
 		Hashtable ht = new Hashtable();
 		ht.put("java.naming.factory.initial","org.osjava.sj.memory.MemoryContextFactory");
 		ctx = new InitialContext(ht);
@@ -37,7 +42,7 @@ public class JNDIObjectReferenceTestCase extends TestCase {
 	 * object shall be stored and returned back
 	 * @throws NamingException
 	 */
-	public void testStorageAndRetrieval() throws NamingException {
+	@Test public void testStorageAndRetrieval() throws NamingException {
 		reference = new JNDIObjectReference("glee:/glum/glarch/blurge", ctx);
 		String obj = new String("that's me");		
 		reference.set(obj);
@@ -62,7 +67,7 @@ public class JNDIObjectReferenceTestCase extends TestCase {
 	/**
 	 * test that object is safely stored in root context
 	 */
-	public void testStorageInRoot() {
+	@Test public void testStorageInRoot() {
 		reference = new JNDIObjectReference("glarch", ctx);
 		String obj = new String("that's me");		
 		reference.set(obj);

@@ -9,11 +9,12 @@
 
 package org.picocontainer.gems.util;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Disposable;
 import org.picocontainer.Startable;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.testmodel.RecordingLifecycle;
 
@@ -23,8 +24,8 @@ import com.thoughtworks.proxy.factory.StandardProxyFactory;
 /**
  * @author Aslak Helles&oslash;y
  */
-public class MulticasterTestCase extends TestCase {
-    public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
+public class MulticasterTestCase {
+    @Test public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer(new Caching());
         pico.addComponent("recording", StringBuffer.class);
