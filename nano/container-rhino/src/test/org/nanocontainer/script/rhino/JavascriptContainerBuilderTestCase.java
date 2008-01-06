@@ -9,24 +9,31 @@
  *****************************************************************************/
 package org.nanocontainer.script.rhino;
 
-import org.mozilla.javascript.JavaScriptException;
-import org.nanocontainer.integrationkit.PicoCompositionException;
-import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.nanocontainer.testmodel.WebServer;
-import org.nanocontainer.testmodel.WebServerConfig;
-import org.nanocontainer.TestHelper;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.containers.ImmutablePicoContainer;
-import org.picocontainer.DefaultPicoContainer;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
+import org.junit.Test;
+import org.mozilla.javascript.JavaScriptException;
+import org.nanocontainer.TestHelper;
+import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.nanocontainer.testmodel.WebServer;
+import org.nanocontainer.testmodel.WebServerConfig;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.containers.ImmutablePicoContainer;
+
 public class JavascriptContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
-    public void testInstantiateBasicScriptable() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
+    @Test public void testInstantiateBasicScriptable() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
 
         Reader script = new StringReader("" +
                 "var pico = new DefaultNanoContainer()\n" +
@@ -37,7 +44,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         assertNotNull(pico.getComponent(WebServerConfig.class).getClass());
     }
 
-    public void testInstantiateWithBespokeComponentAdapter() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
+    @Test public void testInstantiateWithBespokeComponentAdapter() throws IOException, ClassNotFoundException, PicoCompositionException, JavaScriptException {
 
         Reader script = new StringReader("" +
                 "var pico = new DefaultNanoContainer(new ConstructorInjection())\n" +
@@ -55,7 +62,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         assertEquals("ClassLoader should be the same for both components", ws1.getClass().getClassLoader(), wsc.getClass().getClassLoader());
     }
 
-    public void testClassLoaderHierarchy() throws ClassNotFoundException, IOException, PicoCompositionException, JavaScriptException {
+    @Test public void testClassLoaderHierarchy() throws ClassNotFoundException, IOException, PicoCompositionException, JavaScriptException {
 
         File testCompJar = TestHelper.getTestCompJarFile();
         assertTrue(testCompJar.isFile());
@@ -93,7 +100,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         assertSame(parentComponent.getClass().getClassLoader(), loader);
     }
 
-    public void testRegisterComponentInstance() throws JavaScriptException, IOException {
+    @Test public void testRegisterComponentInstance() throws JavaScriptException, IOException {
         Reader script = new StringReader("" +
                 "var pico = new DefaultNanoContainer()\n" +
                 "pico.addComponent( new Packages." + FooTestComp.class.getName() + "())\n" +
@@ -109,7 +116,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
 
     }
 
-    public void testContainerCanBeBuiltWithParent() {
+    @Test public void testContainerCanBeBuiltWithParent() {
         Reader script = new StringReader("" +
                 "var pico = new DefaultNanoContainer(parent)\n");
         PicoContainer parent = new DefaultPicoContainer();

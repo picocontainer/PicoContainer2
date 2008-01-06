@@ -10,6 +10,14 @@
 
 package org.nanocontainer.script.xml;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -22,6 +30,9 @@ import java.util.Map;
 
 import javax.swing.JButton;
 
+import org.junit.Test;
+import org.nanocontainer.PrettyXmlRepresentation;
+import org.nanocontainer.TestHelper;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.testmodel.CustomerEntityImpl;
@@ -32,22 +43,20 @@ import org.nanocontainer.testmodel.MapSupport;
 import org.nanocontainer.testmodel.OrderEntityImpl;
 import org.nanocontainer.testmodel.WebServerConfig;
 import org.nanocontainer.testmodel.WebServerConfigComp;
-import org.nanocontainer.TestHelper;
-import org.nanocontainer.PrettyXmlRepresentation;
-
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
 import com.thoughtworks.xstream.XStream;
 
 /**
@@ -62,7 +71,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     //TODO some tests for XMLContainerBuilder that use a classloader that is retrieved at testtime.
     // i.e. not a programatic consequence of this.getClass().getClassLoader()
 
-    public void testCreateSimpleContainer() {
+    @Test public void testCreateSimpleContainer() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation class='java.lang.StringBuffer'/>" +
@@ -77,7 +86,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertNotNull(pico.getComponent("org.nanocontainer.testmodel.WebServer"));
     }
 
-    public void testCreateSimpleContainerWithExplicitKeysAndParameters() {
+    @Test public void testCreateSimpleContainerWithExplicitKeysAndParameters() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation key='aBuffer' class='java.lang.StringBuffer'/>" +
@@ -95,7 +104,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertNotNull(pico.getComponent("org.nanocontainer.testmodel.WebServer"));
     }
 
-    public void testCreateSimpleContainerWithExplicitKeysAndImplicitParameter() {
+    @Test public void testCreateSimpleContainerWithExplicitKeysAndImplicitParameter() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation key='aBuffer' class='java.lang.StringBuffer'/>" +
@@ -113,7 +122,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertNotNull(pico.getComponent("org.nanocontainer.testmodel.WebServer"));
     }
 
-    public void testNonParameterElementsAreIgnoredInComponentImplementation() {
+    @Test public void testNonParameterElementsAreIgnoredInComponentImplementation() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation key='aBuffer' class='java.lang.StringBuffer'/>" +
@@ -132,7 +141,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertNotNull(pico.getComponent("org.nanocontainer.testmodel.WebServer"));
     }
 
-    public void testContainerCanHostAChild() {
+    @Test public void testContainerCanHostAChild() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
@@ -149,7 +158,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertTrue(sb.toString().indexOf("-WebServerImpl") != -1);
     }
 
-    public void testClassLoaderHierarchy() throws IOException {
+    @Test public void testClassLoaderHierarchy() throws IOException {
         File testCompJar = TestHelper.getTestCompJarFile();
         File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
         File notStartableJar = new File(testCompJar.getParentFile(), "NotStartable.jar");
@@ -186,7 +195,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertTrue("Container should NOT have instantiated a 'NotStartable' component because it is NOT Startable", sb.toString().indexOf("-NotStartable") == -1);
     }
 
-    public void testUnknownclassThrowsNanoContainerMarkupException() {
+    @Test public void testUnknownclassThrowsNanoContainerMarkupException() {
         try {
             Reader script = new StringReader("" +
                     "<container>" +
@@ -199,7 +208,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
     }
 
-    public void testNoImplementationClassThrowsNanoContainerMarkupException() {
+    @Test public void testNoImplementationClassThrowsNanoContainerMarkupException() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation/>" +
@@ -211,7 +220,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
     }
 
-    public void testConstantParameterWithNoChildElementThrowsNanoContainerMarkupException() {
+    @Test public void testConstantParameterWithNoChildElementThrowsNanoContainerMarkupException() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation class='org.nanocontainer.script.xml.TestBeanComposer'>" +
@@ -227,12 +236,12 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
     }
 
-    public void testEmptyScriptDoesNotThrowsEmptyCompositionException() {
+    @Test public void testEmptyScriptDoesNotThrowsEmptyCompositionException() {
         Reader script = new StringReader("<container/>");
         buildContainer(script);
     }
 
-    public void testCreateContainerFromScriptThrowsSAXException() {
+    @Test public void testCreateContainerFromScriptThrowsSAXException() {
         Reader script = new StringReader("" +
                 "<container component-adapter-factory='" + ConstructorInjection.class.getName() + "'>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
@@ -244,7 +253,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
     }
 
-    public void testCreateContainerFromNullScriptThrowsNullPointerException() {
+    @Test public void testCreateContainerFromNullScriptThrowsNullPointerException() {
         Reader script = null;
         try {
             buildContainer(script);
@@ -253,7 +262,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
     }
 
-    public void testShouldThrowExceptionForNonExistantCafClass() {
+    @Test public void testShouldThrowExceptionForNonExistantCafClass() {
         Reader script = new StringReader("" +
                 "<container component-adapter-factory='org.nanocontainer.SomeInexistantFactory'>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
@@ -266,7 +275,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
     }
 
-    public void testComponentInstanceWithNoChildElementThrowsNanoContainerMarkupException() {
+    @Test public void testComponentInstanceWithNoChildElementThrowsNanoContainerMarkupException() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-instance>" +
@@ -281,7 +290,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
     }
 
-    public void testComponentInstanceWithFactoryCanBeUsed() {
+    @Test public void testComponentInstanceWithFactoryCanBeUsed() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-instance factory='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$TestFactory'>" +
@@ -296,7 +305,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals("Hello", instance.toString());
     }
 
-    public void testComponentInstanceWithDefaultFactory() {
+    @Test public void testComponentInstanceWithDefaultFactory() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-instance>" +
@@ -315,7 +324,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals("hello", ((TestBean) instance).getBar());
     }
 
-    public void testComponentInstanceWithBeanFactory() {
+    @Test public void testComponentInstanceWithBeanFactory() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-instance factory='org.nanocontainer.script.xml.BeanComponentInstanceFactory'>" +
@@ -334,7 +343,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals("hello", ((TestBean) instance).getBar());
     }
 
-    public void testComponentInstanceWithBeanFactoryAndInstanceThatIsDefinedInContainer() {
+    @Test public void testComponentInstanceWithBeanFactoryAndInstanceThatIsDefinedInContainer() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-instance key='date' factory='org.nanocontainer.script.xml.BeanComponentInstanceFactory'>" +
@@ -359,7 +368,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals(new Date(0), format.get2DigitYearStart());
     }
 
-    public void testComponentInstanceWithKey() {
+    @Test public void testComponentInstanceWithKey() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-instance key='aString'>" +
@@ -386,7 +395,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals(0.88, button.getAlignmentX(), 0.01);
     }
 
-    public void testComponentInstanceWithClassKey() {
+    @Test public void testComponentInstanceWithClassKey() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-instance class-name-key='java.util.Map' factory='org.nanocontainer.script.xml.XStreamComponentInstanceFactory'>" +
@@ -402,7 +411,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals("bar", map.get("foo"));
     }
 
-    public void testComponentInstanceWithFactoryAndKey() {
+    @Test public void testComponentInstanceWithFactoryAndKey() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-instance factory='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$TestFactory'" +
@@ -418,7 +427,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals("Hello", instance.toString());
     }
 
-    public void testComponentInstanceWithContainerFactoryAndKey() {
+    @Test public void testComponentInstanceWithContainerFactoryAndKey() {
         Reader script = new StringReader("" +
                 "<container component-instance-factory='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$ContainerTestFactory'>" +
                 "  <component-instance factory='org.nanocontainer.script.xml.XMLContainerBuilderTestCase$TestFactory'" +
@@ -453,7 +462,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
     }
 
-    public void testInstantiationOfComponentsWithParams() {
+    @Test public void testInstantiationOfComponentsWithParams() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.WebServerConfigComp'>" +
@@ -469,7 +478,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals(8080, config.getPort());
     }
 
-    public void testInstantiationOfComponentsWithParameterInstancesOfSameComponent() {
+    @Test public void testInstantiationOfComponentsWithParameterInstancesOfSameComponent() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation class='org.nanocontainer.script.xml.TestBeanComposer'>" +
@@ -494,7 +503,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }
 
-    public void testInstantiationOfComponentsWithParameterInstancesOfSameComponentAndBeanFactory() {
+    @Test public void testInstantiationOfComponentsWithParameterInstancesOfSameComponentAndBeanFactory() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-implementation class='org.nanocontainer.script.xml.TestBeanComposer'>" +
@@ -519,7 +528,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }
 
-    public void testInstantiationOfComponentsWithParameterKeys() {
+    @Test public void testInstantiationOfComponentsWithParameterKeys() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-instance key='bean1'>" +
@@ -546,7 +555,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }
 
-    public void testInstantiationOfComponentsWithComponentAdapter() {
+    @Test public void testInstantiationOfComponentsWithComponentAdapter() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-instance key='bean1'>" +
@@ -573,7 +582,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }
 
-    public void testComponentAdapterWithSpecifiedFactory() throws IOException {
+    @Test public void testComponentAdapterWithSpecifiedFactory() throws IOException {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-instance key='bean1'>" +
@@ -608,7 +617,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals("bean2", "hello2", composer.getBean2().getBar());
     }
 
-    public void testComponentAdapterWithNoKeyUsesTypeAsKey() {
+    @Test public void testComponentAdapterWithNoKeyUsesTypeAsKey() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-adapter class='org.nanocontainer.script.xml.TestBeanComposer'/>" +
@@ -618,7 +627,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertSame(TestBeanComposer.class, adapter.getComponentImplementation());
     }
 
-    public void testComponentAdapterWithNoClassThrowsNanoContainerMarkupException() {
+    @Test public void testComponentAdapterWithNoClassThrowsNanoContainerMarkupException() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-adapter key='beanKey'/> " +
@@ -631,7 +640,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
     }
 
-    public void testCachingCanBeUnsetAtContainerLevel() {
+    @Test public void testCachingCanBeUnsetAtContainerLevel() {
         Reader script = new StringReader("" +
                 "<container caching='false'>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
@@ -644,7 +653,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertNotSame(wsc1, wsc2);
     }
 
-    public void testCachingCanBeSetRedunadantlyAtContainerLevel() {
+    @Test public void testCachingCanBeSetRedunadantlyAtContainerLevel() {
         Reader script = new StringReader("" +
                 "<container caching='true'>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
@@ -657,7 +666,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertSame(wsc1, wsc2);
     }
 
-    public void testCustomInjectionFactory() throws IOException {
+    @Test public void testCustomInjectionFactory() throws IOException {
         Reader script = new StringReader("" +
                 "<container component-adapter-factory='" + ConstructorInjection.class.getName() + "'>" +
                 "</container>");
@@ -677,7 +686,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     }
 
 
-    public void testComponentMonitorCanBeSpecified() {
+    @Test public void testComponentMonitorCanBeSpecified() {
         Reader script = new StringReader("" +
                 "<container component-monitor='" + StaticWriterComponentMonitor.class.getName() + "'>" +
                 "  <component-implementation class='org.nanocontainer.testmodel.DefaultWebServerConfig'/>" +
@@ -688,7 +697,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertTrue(StaticWriterComponentMonitor.WRITER.toString().length() > 0);
     }
 
-    public void testComponentMonitorCanBeSpecifiedIfCAFIsSpecified() {
+    @Test public void testComponentMonitorCanBeSpecifiedIfCAFIsSpecified() {
         Reader script = new StringReader("" +
                 "<container component-adapter-factory='" + AdaptingInjection.class.getName() +
                 "' component-monitor='" + StaticWriterComponentMonitor.class.getName() + "'>" +
@@ -700,7 +709,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertTrue(StaticWriterComponentMonitor.WRITER.toString().length() > 0);
     }
 
-    public void testAdaptersAlsoUseBehaviorFactory() {
+    @Test public void testAdaptersAlsoUseBehaviorFactory() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-adapter-factory class='org.picocontainer.injectors.ConstructorInjection' key='factory'/>" +
@@ -788,7 +797,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertFalse("Instance exposes only interface", cfg1 instanceof DefaultWebServerConfig);
     }
 
-    public void testChainOfWrappedComponents() {
+    @Test public void testChainOfWrappedComponents() {
 
        Reader script = new StringReader("" +
                 "<container>\n" +
@@ -802,7 +811,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertNotNull(pico.getComponent(Touchable.class));
     }
     
-    public void testListSupport() {
+    @Test public void testListSupport() {
 
         Reader script = new StringReader("" +
                  "<container>\n" +
@@ -831,7 +840,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
          assertEquals(OrderEntityImpl.class, entity2.getClass());
      }
     
-    public void testMapSupport() {
+    @Test public void testMapSupport() {
         
         Reader script = new StringReader("" +
                 "<container>\n" +
@@ -862,7 +871,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals(OrderEntityImpl.class, entity2.getClass()); 
     }
     
-    public void testNoEmptyCollectionWithComponentKeyTypeFailure() {
+    @Test public void testNoEmptyCollectionWithComponentKeyTypeFailure() {
 
         Reader script = new StringReader("" +
                  "<container>\n" +
@@ -881,7 +890,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
      }
     
-    public void testNoComponentValueTypeWithComponentKeyTypeFailure() {
+    @Test public void testNoComponentValueTypeWithComponentKeyTypeFailure() {
 
         Reader script = new StringReader("" +
                  "<container>\n" +
@@ -900,7 +909,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
      }   
     
-    public void testNoEmptyCollectionWithComponentValueTypeFailure() {
+    @Test public void testNoEmptyCollectionWithComponentValueTypeFailure() {
 
         Reader script = new StringReader("" +
                  "<container>\n" +

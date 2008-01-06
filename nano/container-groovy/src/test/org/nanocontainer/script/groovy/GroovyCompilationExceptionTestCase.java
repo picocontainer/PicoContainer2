@@ -1,10 +1,13 @@
 package org.nanocontainer.script.groovy;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
 
+import org.junit.Test;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.PicoContainer;
 
@@ -15,7 +18,7 @@ import org.picocontainer.PicoContainer;
 public class GroovyCompilationExceptionTestCase extends AbstractScriptedContainerBuilderTestCase {
 
 
-    public void testGroovyCompilationExceptionContainsOriginalReasonInStackTrace() {
+    @Test public void testGroovyCompilationExceptionContainsOriginalReasonInStackTrace() {
         //Bogus script where imports are not kosher.
         Reader script = new StringReader("" +
             "def unresolvedVariable = new TestBean()\n" +

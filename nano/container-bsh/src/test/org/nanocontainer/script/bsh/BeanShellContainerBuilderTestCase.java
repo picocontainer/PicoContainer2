@@ -15,19 +15,26 @@
  */
 package org.nanocontainer.script.bsh;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.MalformedURLException;
 import java.util.Map;
 
-import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.junit.Test;
 import org.nanocontainer.TestHelper;
-import org.picocontainer.PicoContainer;
+import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
 
 /**
@@ -37,7 +44,7 @@ import org.picocontainer.containers.ImmutablePicoContainer;
 public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
 
-    public void testContainerCanBeBuiltWithParent() {
+    @Test public void testContainerCanBeBuiltWithParent() {
         Reader script = new StringReader("" +
                 "java.util.Map m = new java.util.HashMap();\n" +
                 "m.put(\"foo\",\"bar\");" +

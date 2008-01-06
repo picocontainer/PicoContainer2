@@ -13,15 +13,19 @@
  */
 package org.nanocontainer.script.groovy;
 
-import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.nanocontainer.testmodel.A;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.DefaultPicoContainer;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import groovy.lang.Binding;
 
 import java.io.Reader;
 import java.io.StringReader;
 
-import groovy.lang.Binding;
+import org.junit.Test;
+import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.nanocontainer.testmodel.A;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoContainer;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -30,7 +34,7 @@ import groovy.lang.Binding;
  */
 public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
-    public void testContainerCanBeBuiltWithParent() {
+    @Test public void testContainerCanBeBuiltWithParent() {
         Reader script = new StringReader("" +
                 "builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n" +
                 "pico = builder.container(parent:parent) { \n" +
@@ -43,7 +47,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
         assertEquals(StringBuffer.class, pico.getComponent(StringBuffer.class).getClass());
     }
 
-        public void testAdditionalBindingViaSubClassing() {
+        @Test public void testAdditionalBindingViaSubClassing() {
                 Reader script = new StringReader("" +
                 "builder = new org.nanocontainer.script.groovy.GroovyNodeBuilder()\n" +
                 "pico = builder.container(parent:parent) { \n" +
@@ -57,7 +61,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
         assertEquals("bar", pico.getComponent(String.class));
         }
 
-    public void testBuildingWithDefaultBuilder() {
+    @Test public void testBuildingWithDefaultBuilder() {
         // NOTE script does NOT define a "builder"
         Reader script = new StringReader("" +
                 "pico = builder.container(parent:parent) { \n" +
@@ -71,7 +75,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
         assertEquals("foo", pico.getComponent(String.class));
     }
 
-    public void testBuildingWithAppendingNodes() {
+    @Test public void testBuildingWithAppendingNodes() {
         Reader script = new StringReader("" +
                 "pico = builder.container(parent:parent) { \n" +
 
@@ -91,7 +95,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
 
 
 
-    public void testBuildingWithPicoSyntax() {
+    @Test public void testBuildingWithPicoSyntax() {
         Reader script = new StringReader("" +
                 "parent.addComponent('foo', java.lang.String)\n"  +
                 "pico = new org.picocontainer.DefaultPicoContainer(parent)\n" +
@@ -108,7 +112,7 @@ public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBui
 
 
 
-    public void testBuildingWithPicoSyntaxAndNullParent() {
+    @Test public void testBuildingWithPicoSyntaxAndNullParent() {
         Reader script = new StringReader("" +
                 "pico = new org.picocontainer.DefaultPicoContainer(parent)\n" +
                 "pico.addComponent(org.nanocontainer.testmodel.A)\n" +

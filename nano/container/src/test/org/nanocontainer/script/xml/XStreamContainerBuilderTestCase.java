@@ -9,22 +9,27 @@
  *****************************************************************************/
 package org.nanocontainer.script.xml;
 
-import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.nanocontainer.testmodel.DefaultWebServerConfig;
-import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
-import org.nanocontainer.testmodel.WebServerImpl;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.NameBinding;
-import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.behaviors.Cached;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 import java.io.Reader;
 import java.io.StringReader;
 
+import org.junit.Test;
+import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.nanocontainer.testmodel.DefaultWebServerConfig;
+import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
+import org.nanocontainer.testmodel.WebServerImpl;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.NameBinding;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.behaviors.Cached;
+
 public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 
-    public void testContainerBuilding() {
+    @Test public void testContainerBuilding() {
 
         Reader script = new StringReader("" +
                 "<container>" +
@@ -66,7 +71,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
         assertEquals("it's really late239", ((ThingThatTakesParamsInConstructor) pico.getComponent("konstantin needs beer")).getValue());
     }
 
-    public void testComponentAdapterInjection() throws Throwable {
+    @Test public void testComponentAdapterInjection() throws Throwable {
         Reader script = new StringReader("<container>" +
                 "<adapter key='testAdapter'>" +
                 "<instance key='firstString'>" +
@@ -92,7 +97,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
         assertNotNull((TestAdapter)ca.getDelegate());
     }
 
-    public void testInstantiationOfComponentsWithInstancesOfSameComponent() throws Exception {
+    @Test public void testInstantiationOfComponentsWithInstancesOfSameComponent() throws Exception {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <instance key='bean1'>" +
@@ -120,7 +125,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
     }
     
     // do not know how to extract parameters off adapter....
-    public void testThatDependencyUsesClassAsKey() {
+    @Test public void testThatDependencyUsesClassAsKey() {
         Reader script = new StringReader("" +
         "<container>" +                                          
         "   <implementation class='java.lang.String'/>" +
@@ -137,7 +142,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
     }
     
     
-    public void testDefaultContsructorRegistration() throws Exception {
+    @Test public void testDefaultContsructorRegistration() throws Exception {
         
         Reader script = new StringReader(
         "<container>" + 

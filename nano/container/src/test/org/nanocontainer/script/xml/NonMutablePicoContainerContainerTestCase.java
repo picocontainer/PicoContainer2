@@ -10,24 +10,28 @@
 
 package org.nanocontainer.script.xml;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.NameBinding;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.List;
-import java.lang.annotation.Annotation;
+
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.junit.Test;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.NameBinding;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoVisitor;
 import org.xml.sax.SAXException;
 
 /**
@@ -104,7 +108,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
 
     }
 
-    public void testCreateSimpleContainerWithPicoContainer()
+    @Test public void testCreateSimpleContainerWithPicoContainer()
         throws ParserConfigurationException, SAXException, IOException, PicoCompositionException
     {
         Reader script = new StringReader("" +
@@ -120,7 +124,7 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
         assertNotNull(pico.getComponent(DefaultWebServerConfig.class));
     }
 
-    public void testCreateSimpleContainerWithMutablePicoContainer()
+    @Test public void testCreateSimpleContainerWithMutablePicoContainer()
         throws ParserConfigurationException, SAXException, IOException, PicoCompositionException
     {
         Reader script = new StringReader("" +

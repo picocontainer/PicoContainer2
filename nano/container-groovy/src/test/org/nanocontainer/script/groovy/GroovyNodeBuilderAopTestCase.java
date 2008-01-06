@@ -9,8 +9,12 @@
  *****************************************************************************/
 package org.nanocontainer.script.groovy;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.StringReader;
 
+import org.junit.Test;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.testmodel.Dao;
 import org.nanocontainer.testmodel.Identifiable;
@@ -24,7 +28,7 @@ import org.picocontainer.PicoContainer;
  */
 public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuilderTestCase {
 
-    public void testContainerScopedInterceptor() {
+    @Test public void testContainerScopedInterceptor() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +
@@ -47,7 +51,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
         verifyIntercepted(dao, log);
     }
 
-    public void testContainerScopedPointcutWithNestedAdvices() {
+    @Test public void testContainerScopedPointcutWithNestedAdvices() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +
@@ -72,7 +76,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
         verifyIntercepted(dao, log);
     }
 
-    public void testContainerScopedContainerSuppliedInterceptor() {
+    @Test public void testContainerScopedContainerSuppliedInterceptor() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +
@@ -92,7 +96,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
         verifyIntercepted(dao, log);
     }
 
-    public void testComponentScopedInterceptor() {
+    @Test public void testComponentScopedInterceptor() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +
@@ -119,7 +123,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
         verifyNotIntercepted(notIntercepted, log);
     }
 
-    public void testContainerScopedMixin() {
+    @Test public void testContainerScopedMixin() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +
@@ -136,7 +140,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
         verifyMixin(dao);
     }
 
-    public void testExplicitAspectsManagerAndDecorationDelegate() {
+    @Test public void testExplicitAspectsManagerAndDecorationDelegate() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +
@@ -155,7 +159,7 @@ public class GroovyNodeBuilderAopTestCase extends AbstractScriptedContainerBuild
         verifyMixin(dao);
     }
 
-    public void testCustomComponentFactory() {
+    @Test public void testCustomComponentFactory() {
         String script = "" +
                 "package org.nanocontainer.script.groovy\n" +
                 "import org.nanocontainer.testmodel.*\n" +

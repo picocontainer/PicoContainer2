@@ -1,23 +1,28 @@
 package org.nanocontainer.script.xml.issues;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.NameBinding;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.gems.behaviors.HotSwappable;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Test;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.NameBinding;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.gems.behaviors.HotSwappable;
 
 //http://jira.codehaus.org/browse/NANO-170
 public class Issue0170TestCase extends AbstractScriptedContainerBuilderTestCase {
 
 
-    public void testSomething() {
+    @Test public void testSomething() {
 
     }
     

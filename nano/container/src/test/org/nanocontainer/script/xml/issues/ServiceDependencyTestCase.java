@@ -1,8 +1,11 @@
 package org.nanocontainer.script.xml.issues;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.Reader;
 import java.io.StringReader;
 
+import org.junit.Test;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.PicoContainer;
@@ -17,7 +20,7 @@ public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderT
 
     //TODO - make sure that this container builder can supply a LifecycleStrategy.
     //       meaning MySetterInjection can be swapped for SetterInjectionComponentFactory
-    public void testCanInstantiateProcessWithSDIDependencies() {
+    @Test public void testCanInstantiateProcessWithSDIDependencies() {
         Reader script = new StringReader("" +
                 "<container component-adapter-factory='"+ MySetterInjection.class.getName()+"'>"+
                 "  <component-implementation class='"+Service1Impl.class.getName()+"'/>"+

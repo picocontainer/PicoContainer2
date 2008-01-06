@@ -1,19 +1,13 @@
 package org.nanocontainer.script.jruby;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.NameBinding;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.SetterInjection;
-import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,9 +18,12 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
 
-import org.jmock.Mock;
-import org.jmock.core.Constraint;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
 import org.jruby.exceptions.RaiseException;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.TestHelper;
@@ -39,6 +36,21 @@ import org.nanocontainer.testmodel.HasParams;
 import org.nanocontainer.testmodel.ParentAssemblyScope;
 import org.nanocontainer.testmodel.SomeAssemblyScope;
 import org.nanocontainer.testmodel.X;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.SetterInjection;
+import org.picocontainer.injectors.SetterInjector;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
  * @author Nick Sieger
@@ -46,11 +58,14 @@ import org.nanocontainer.testmodel.X;
  * @author Chris Bailey
  * @author Mauro Talevi
  */
+@RunWith(JMock.class)
 public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
-    private static final String ASSEMBLY_SCOPE = "SOME_SCOPE";
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+	private static final String ASSEMBLY_SCOPE = "SOME_SCOPE";
 
 
-    public void testContainerCanBeBuiltWithParentGlobal() {
+    @Test public void testContainerCanBeBuiltWithParentGlobal() {
         Reader script = new StringReader(
                                          "StringBuffer = java.lang.StringBuffer\n" +
                                          "container(:parent => $parent) { \n" +
@@ -64,7 +79,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertEquals(StringBuffer.class, pico.getComponent(StringBuffer.class).getClass());
     }
 
-    public void testContainerCanBeBuiltWithComponentImplementation() {
+    @Test public void testContainerCanBeBuiltWithComponentImplementation() {
         X.reset();
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
@@ -79,7 +94,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertEquals("Should match the expression", "<AA>!A", X.componentRecorder);
     }
 
-    public void testContainerCanBeBuiltWithComponentInstance() {
+    @Test public void testContainerCanBeBuiltWithComponentInstance() {
         Reader script = new StringReader(
                                          "container { \n" +
                                          "  component(:key => 'string', :instance => 'foo')\n" +
@@ -111,7 +126,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertNotNull(pico.getComponent("foo"));
     }
 
-    public void testContainerBuiltWithMultipleComponentInstances() {
+    @Test public void testContainerBuiltWithMultipleComponentInstances() {
         Reader script = new StringReader(
                                          "container {\n" +
                                          "    component(:key => 'a', :instance => 'apple')\n" +
@@ -125,7 +140,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertEquals("noKeySpecified", pico.getComponent(String.class));
     }
 
-    public void testShouldFailWhenNeitherClassNorInstanceIsSpecifiedForComponent() {
+    @Test public void testShouldFailWhenNeitherClassNorInstanceIsSpecifiedForComponent() {
         Reader script = new StringReader(
                                          "container {\n" +
                                          "  component(:key => 'a')\n" +
@@ -139,7 +154,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         }
     }
 
-    public void testAcceptsConstantParametersForComponent() {
+    @Test public void testAcceptsConstantParametersForComponent() {
         Reader script = new StringReader(
                                          "HasParams = org.nanocontainer.testmodel.HasParams\n" +
                                          "container {\n" +
@@ -152,7 +167,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertEquals("abc", byClass.getParams());
     }
 
-    public void testAcceptsComponentClassNameAsString() {
+    @Test public void testAcceptsComponentClassNameAsString() {
         Reader script = new StringReader(
                                          "container {\n" +
                                          "    component(:key => 'byClassString', :class => 'org.nanocontainer.testmodel.HasParams', :parameters => [ 'c', 'a', 't' ])\n"
@@ -164,7 +179,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertEquals("cat", byClassString.getParams());
     }
 
-    public void testAcceptsComponentParametersForComponent() {
+    @Test public void testAcceptsComponentParametersForComponent() {
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "B = org.nanocontainer.testmodel.B\n" +
@@ -192,7 +207,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertNotSame(b1, b2);
     }
 
-    public void testAcceptsComponentParameterWithClassNameKey() {
+    @Test public void testAcceptsComponentParameterWithClassNameKey() {
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "B = org.nanocontainer.testmodel.B\n" +
@@ -210,7 +225,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertSame(a, b.getA());
     }
 
-    public void testInstantiateBasicComponentInDeeperTree() {
+    @Test public void testInstantiateBasicComponentInDeeperTree() {
         X.reset();
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
@@ -225,24 +240,26 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertEquals("Should match the expression", "<AA>!A", X.componentRecorder);
     }
 
-    public void testCustomComponentFactoryCanBeSpecified() {
+    @Test public void testCustomComponentFactoryCanBeSpecified() {
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "container(:component_adapter_factory => $assembly_scope) {\n" +
                                          "    component(A)\n" +
                                          "}");
 
-        A a = new A();
-        Mock componentFactoryMock = mock(ComponentFactory.class);
-        Constraint[] cons = {isA(ComponentMonitor.class), isA(LifecycleStrategy.class), isA(Properties.class), same(A.class), same(A.class), eq(null)};
-        componentFactoryMock.expects(once()).method("createComponentAdapter").with(cons)
-            .will(returnValue(new InstanceAdapter(A.class, a, new NullLifecycleStrategy(),
-                                                                        new NullComponentMonitor())));
-        PicoContainer pico = buildContainer(script, null, componentFactoryMock.proxy());
+        final A a = new A();
+        
+        final ComponentFactory componentFactory = mockery.mock(ComponentFactory.class);
+        mockery.checking(new Expectations(){{
+        	one(componentFactory).createComponentAdapter(with(any(ComponentMonitor.class)), with(any(LifecycleStrategy.class)), with(any(Properties.class)), with(same(A.class)), with(same(A.class)), with(aNull(Parameter[].class)));
+            will(returnValue(new InstanceAdapter(A.class, a, new NullLifecycleStrategy(), new NullComponentMonitor())));
+        }});
+                                                                        
+        PicoContainer pico = buildContainer(script, null, componentFactory);
         assertSame(a, pico.getComponent(A.class));
     }
 
-    public void testCustomComponentMonitorCanBeSpecified() {
+    @Test public void testCustomComponentMonitorCanBeSpecified() {
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
@@ -261,7 +278,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertTrue(writer.toString().length() > 0);
     }
 
-    public void testCustomComponentMonitorCanBeSpecifiedWhenCAFIsSpecified() {
+    @Test public void testCustomComponentMonitorCanBeSpecifiedWhenCAFIsSpecified() {
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
@@ -280,7 +297,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertTrue(writer.toString().length() > 0);
     }
 
-    public void testCustomComponentMonitorCanBeSpecifiedWhenParentIsSpecified() {
+    @Test public void testCustomComponentMonitorCanBeSpecifiedWhenParentIsSpecified() {
         DefaultNanoContainer parent = new DefaultNanoContainer();
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
@@ -298,7 +315,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertTrue(writer.toString().length() > 0);
     }
 
-    public void testCustomComponentMonitorCanBeSpecifiedWhenParentAndCAFAreSpecified() {
+    @Test public void testCustomComponentMonitorCanBeSpecifiedWhenParentAndCAFAreSpecified() {
         DefaultNanoContainer parent = new DefaultNanoContainer();
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
@@ -319,7 +336,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertTrue(writer.toString().length() > 0);
     }
 
-    public void testInstantiateWithImpossibleComponentDependenciesConsideringTheHierarchy() {
+    @Test public void testInstantiateWithImpossibleComponentDependenciesConsideringTheHierarchy() {
         X.reset();
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
@@ -340,7 +357,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         }
     }
 
-    public void testInstantiateWithChildContainerAndStartStopAndDisposeOrderIsCorrect() {
+    @Test public void testInstantiateWithChildContainerAndStartStopAndDisposeOrderIsCorrect() {
         X.reset();
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
@@ -362,7 +379,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertEquals("Should match the expression", "<A<C<BB>C>A>!B!C!A", X.componentRecorder);
     }
 
-    public void testBuildContainerWithParentAttribute() {
+    @Test public void testBuildContainerWithParentAttribute() {
         DefaultNanoContainer parent = new DefaultNanoContainer();
         parent.addComponent("hello", "world");
 
@@ -377,7 +394,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertEquals("world", pico.getComponent("hello"));
     }
 
-    public void testBuildContainerWithParentDependencyAndAssemblyScope() throws Exception {
+    @Test public void testBuildContainerWithParentDependencyAndAssemblyScope() throws Exception {
         DefaultNanoContainer parent = new DefaultNanoContainer();
         parent.addComponent("a", A.class);
 
@@ -400,7 +417,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertNull(pico.getComponent(B.class));
     }
 
-    public void testBuildContainerWithParentAndChildAssemblyScopes() throws IOException {
+    @Test public void testBuildContainerWithParentAndChildAssemblyScopes() throws IOException {
         String scriptValue =
                              "A = org.nanocontainer.testmodel.A\n" +
                              "B = org.nanocontainer.testmodel.B\n" +
@@ -441,7 +458,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                    componentAdapter instanceof SetterInjector);
     }
 
-    public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
+    @Test public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
         DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjection());
         Reader script = new StringReader(
                                          "A = org.nanocontainer.testmodel.A\n" +
@@ -462,7 +479,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     //TODO
-    public void testSpuriousAttributes() {
+    @Test public void testSpuriousAttributes() {
         DefaultNanoContainer parent = new DefaultNanoContainer();
 
         Reader script = new StringReader(
@@ -475,7 +492,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         }
     }
 
-    public void testWithDynamicClassPathThatDoesNotExist() {
+    @Test public void testWithDynamicClassPathThatDoesNotExist() {
         DefaultNanoContainer parent = new DefaultNanoContainer();
         try {
             Reader script = new StringReader(
@@ -492,7 +509,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     }
 
-    public void testWithDynamicClassPath() {
+    @Test public void testWithDynamicClassPath() {
         DefaultNanoContainer parent = new DefaultNanoContainer();
         Reader script = new StringReader(
             "TestHelper = org.nanocontainer.TestHelper\n"
@@ -510,7 +527,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
             .getName());
     }
 
-    public void testWithDynamicClassPathWithPermissions() {
+    @Test public void testWithDynamicClassPathWithPermissions() {
         DefaultNanoContainer parent = new DefaultNanoContainer();
         Reader script = new StringReader(
             "TestHelper = org.nanocontainer.TestHelper\n" +
@@ -531,7 +548,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         // testing the syntax here.
     }
 
-    public void testGrantPermissionInWrongPlace() {
+    @Test public void testGrantPermissionInWrongPlace() {
         DefaultNanoContainer parent = new DefaultNanoContainer();
         try {
             Reader script = new StringReader(
@@ -551,7 +568,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
 
-    public void testWithParentClassPathPropagatesWithNoParentContainer() throws IOException {
+    @Test public void testWithParentClassPathPropagatesWithNoParentContainer() throws IOException {
         File testCompJar = TestHelper.getTestCompJarFile();
 
         URLClassLoader classLoader = new URLClassLoader(new URL[]{testCompJar.toURL()},
@@ -575,7 +592,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     }
 
-//    public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
+//    @Test public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
 //        DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjectionComponentFactory() );
 //        Reader script = new StringReader("" +
 //                "package org.nanocontainer.testmodel\n" +
