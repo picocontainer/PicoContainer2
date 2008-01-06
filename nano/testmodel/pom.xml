@@ -18,8 +18,8 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>org.jmock</groupId>
+			<artifactId>jmock-junit4</artifactId>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

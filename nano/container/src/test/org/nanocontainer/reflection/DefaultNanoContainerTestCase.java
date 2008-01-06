@@ -10,22 +10,26 @@
 
 package org.nanocontainer.reflection;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Properties;
+
+import org.junit.Test;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
+import org.picocontainer.Characteristics;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Characteristics;
-import org.picocontainer.tck.AbstractPicoContainerTestCase;
-
-import java.util.Properties;
+import org.picocontainer.tck.AbstractPicoContainerTest;
 
 /**
  * @author Paul Hammant
  * @version $Revision$
  */
-public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase {
+public class DefaultNanoContainerTestCase extends AbstractPicoContainerTest {
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultNanoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new Caching(), parent));
@@ -37,7 +41,7 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
     }
 
     // TODO - go to a Nano TCK?
-    public void testNamedChildContainerIsAccessible()  {
+    @Test public void testNamedChildContainerIsAccessible()  {
         StringBuffer sb = new StringBuffer();
         final NanoContainer parent = (NanoContainer) createPicoContainer(null);
         parent.addComponent(sb);
@@ -48,7 +52,7 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
     }
 
     // TODO - go to a Nano TCK?
-    public void testNamedChildContainerIsAccessibleForStringKeys() {
+    @Test public void testNamedChildContainerIsAccessibleForStringKeys() {
         StringBuffer sb = new StringBuffer();
         final NanoContainer parent = (NanoContainer) createPicoContainer(null);
         parent.addComponent(sb);
@@ -60,7 +64,7 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
     }
 
     // TODO - go to a Nano TCK?
-    public void testNamedChildContainerIsAccessibleForClassKeys() {
+    @Test public void testNamedChildContainerIsAccessibleForClassKeys() {
         StringBuffer sb = new StringBuffer();
         final NanoContainer parent = (NanoContainer) createPicoContainer(null);
         parent.addComponent(sb);
@@ -71,7 +75,7 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
         assertTrue(sb.toString().indexOf("-instantiated") != -1);
     }
 
-    public void testMakeRemoveChildContainer() {
+    @Test public void testMakeRemoveChildContainer() {
         final NanoContainer parent = (NanoContainer) createPicoContainer(null);
         parent.addComponent("java.lang.String", "This is a test");
         MutablePicoContainer pico = parent.makeChildContainer();
@@ -84,7 +88,7 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase 
     // test methods inherited. This container is otherwise fully compliant.
 
 
-    public void testAcceptImplementsBreadthFirstStrategy() {
+    @Test public void testAcceptImplementsBreadthFirstStrategy() {
         super.testAcceptImplementsBreadthFirstStrategy();
     }
 

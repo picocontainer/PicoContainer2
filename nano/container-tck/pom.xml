@@ -15,15 +15,15 @@
 			<version>${pom.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>jmock</groupId>
 			<artifactId>jmock</artifactId>
 			<scope>compile</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.jmock</groupId>
+            <artifactId>jmock-junit4</artifactId>
+            <scope>compile</scope>
+        </dependency>
 	</dependencies>
 	<build>
 		<sourceDirectory>../container/src/test</sourceDirectory>
