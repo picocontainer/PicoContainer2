@@ -22,6 +22,7 @@ import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeJavaPackage;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
+import org.nanocontainer.integrationkit.LifecycleMode;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
@@ -41,11 +42,19 @@ import org.picocontainer.PicoContainer;
 public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
 
     public JavascriptContainerBuilder(Reader script, ClassLoader classLoader) {
-        super(script, classLoader);
+    	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
+    }
+	
+    public JavascriptContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
+        super(script, classLoader, lifecycleMode);
     }
 
     public JavascriptContainerBuilder(URL script, ClassLoader classLoader) {
-        super(script, classLoader);
+    	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
+    }
+    
+    public JavascriptContainerBuilder(URL script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
+        super(script, classLoader, lifecycleMode);
     }
 
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {

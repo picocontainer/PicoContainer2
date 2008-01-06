@@ -15,6 +15,7 @@ import java.io.Reader;
 import java.net.URL;
 
 import org.nanocontainer.integrationkit.AbstractContainerBuilder;
+import org.nanocontainer.integrationkit.LifecycleMode;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 
@@ -30,9 +31,14 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
     private final Reader scriptReader;
     private final URL scriptURL;
     private final ClassLoader classLoader;
-
+    
     public ScriptedContainerBuilder(Reader script, ClassLoader classLoader) {
-        this.scriptReader = script;
+    	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
+    }
+
+    public ScriptedContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
+        super(lifecycleMode);
+    	this.scriptReader = script;
         if (script == null) {
             throw new NullPointerException("script");
         }
@@ -42,9 +48,14 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
             throw new NullPointerException("classLoader");
         }
     }
+    
+    public ScriptedContainerBuilder(URL script, ClassLoader classLoader)  {
+    	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
+    }
 
-    public ScriptedContainerBuilder(URL script, ClassLoader classLoader) {
-        this.scriptReader = null;        
+    public ScriptedContainerBuilder(URL script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
+        super(lifecycleMode);
+    	this.scriptReader = null;        
         this.scriptURL = script;
         if (script == null) {
             throw new NullPointerException("script");

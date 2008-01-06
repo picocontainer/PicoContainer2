@@ -30,9 +30,11 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Map;
 
+import org.nanocontainer.integrationkit.LifecycleMode;
 import org.junit.Test;
 import org.nanocontainer.TestHelper;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.nanocontainer.testmodel.A;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
@@ -108,5 +110,37 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
         assertEquals(testCompInstance.getClass().getName(), testComp.getName());
 
     }
+    
+	@Test public void testAutoStartingContainerBuilderStarts() {
+        A.reset();
+        Reader script = new StringReader("" +
+        		"import org.nanocontainer.*;\n" +
+                "pico = new NanoBuilder(parent).withLifecycle().withCaching().build();\n" +
+                "pico.addComponent(org.nanocontainer.testmodel.A.class);\n" +
+                "");
+        PicoContainer parent = new DefaultPicoContainer();
+        PicoContainer pico = buildContainer(new BeanShellContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
+        //PicoContainer.getParent() is now ImmutablePicoContainer
+        assertNotSame(parent, pico.getParent());
+        assertEquals("<A",A.componentRecorder);		
+        A.reset();
+	}
+	
+	@Test public void testNonAutoStartingContainerBuildDoesntAutostart() {
+        A.reset();
+        Reader script = new StringReader("" +
+        		"import org.nanocontainer.*;\n" +
+                "pico = new NanoBuilder(parent).withLifecycle().withCaching().build();\n" +
+                "pico.addComponent(org.nanocontainer.testmodel.A.class);\n" +
+                "");
+        PicoContainer parent = new DefaultPicoContainer();
+        BeanShellContainerBuilder containerBuilder = new BeanShellContainerBuilder(script, getClass().getClassLoader(), LifecycleMode.NO_LIFECYCLE);
+        PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
+        //PicoContainer.getParent() is now ImmutablePicoContainer
+        assertNotSame(parent, pico.getParent());
+        assertEquals("",A.componentRecorder);
+        A.reset();
+    }
+    
 
 }

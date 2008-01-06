@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
 
+import org.nanocontainer.integrationkit.LifecycleMode;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
@@ -34,12 +35,20 @@ import org.python.util.PythonInterpreter;
  */
 public class JythonContainerBuilder extends ScriptedContainerBuilder {
 
+    public JythonContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode ) {
+        super(script, classLoader, lifecycleMode);
+    }
+    
     public JythonContainerBuilder(Reader script, ClassLoader classLoader) {
-        super(script, classLoader);
+    	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
     }
 
     public JythonContainerBuilder(URL script, ClassLoader classLoader) {
-        super(script, classLoader);
+        this(script, classLoader, LifecycleMode.AUTO_LIFECYCLE);
+    }
+
+    public JythonContainerBuilder(URL script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
+        super(script, classLoader, lifecycleMode);
     }
 
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {

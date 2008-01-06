@@ -32,6 +32,7 @@ import org.picocontainer.PicoClassNotFoundException;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoBuilder;
 import org.nanocontainer.integrationkit.ContainerPopulator;
+import org.nanocontainer.integrationkit.LifecycleMode;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
@@ -102,6 +103,10 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     private XMLComponentInstanceFactory componentInstanceFactory;
 
     public XMLContainerBuilder(Reader script, ClassLoader classLoader) {
+    	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
+    }
+    
+    public XMLContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
         super(script, classLoader);
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -112,7 +117,11 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     }
 
     public XMLContainerBuilder(final URL script, ClassLoader classLoader) {
-        super(script, classLoader);
+    	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
+    }
+    
+    public XMLContainerBuilder(final URL script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
+        super(script, classLoader, lifecycleMode);
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             documentBuilder.setEntityResolver(new EntityResolver() {

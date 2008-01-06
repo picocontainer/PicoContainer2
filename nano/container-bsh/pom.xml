@@ -38,5 +38,10 @@
             <artifactId>nanocontainer-tck</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>${pom.groupId}</groupId>
+            <artifactId>nanocontainer-testmodel</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

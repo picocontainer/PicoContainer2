@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
 
+import org.nanocontainer.integrationkit.LifecycleMode;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
@@ -27,11 +28,19 @@ import bsh.Interpreter;
 public class BeanShellContainerBuilder extends ScriptedContainerBuilder {
 
     public BeanShellContainerBuilder(Reader script, ClassLoader classLoader) {
-        super(script, classLoader);
+        this(script, classLoader, LifecycleMode.AUTO_LIFECYCLE);
     }
 
     public BeanShellContainerBuilder(URL script, ClassLoader classLoader) {
-        super(script, classLoader);
+    	this(script, classLoader, LifecycleMode.AUTO_LIFECYCLE);
+    }
+
+    public BeanShellContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
+        super(script, classLoader, lifecycleMode);
+    }
+
+    public BeanShellContainerBuilder(URL script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
+        super(script, classLoader, lifecycleMode);
     }
 
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {

@@ -23,13 +23,13 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.tck.AbstractPicoContainerTest;
+import org.picocontainer.tck.AbstractPicoContainerTestCase;
 
 /**
  * @author Paul Hammant
  * @version $Revision$
  */
-public class DefaultNanoContainerTestCase extends AbstractPicoContainerTest {
+public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase {
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultNanoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new Caching(), parent));

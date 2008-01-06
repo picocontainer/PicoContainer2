@@ -20,10 +20,21 @@ import org.picocontainer.ObjectReference;
  * @author Paul Hammant
  * @author Mauro Talevi
  * @version $Revision$
+ * @todo -- Perhaps the start/stop behavior should be moved to a decorator?
  */
 public abstract class AbstractContainerBuilder implements ContainerBuilder {
 
-    public final void buildContainer(ObjectReference containerRef, ObjectReference parentContainerRef, Object assemblyScope, boolean addChildToParent) {
+	private final LifecycleMode startMode;
+	
+	public AbstractContainerBuilder() {
+		this(LifecycleMode.AUTO_LIFECYCLE);
+	}
+	
+	public AbstractContainerBuilder(LifecycleMode startMode) {
+		this.startMode = startMode;
+	}
+	
+    public final void buildContainer(ObjectReference<PicoContainer> containerRef, ObjectReference<PicoContainer> parentContainerRef, Object assemblyScope, boolean addChildToParent) {
         PicoContainer parentContainer = parentContainerRef == null ? null : (PicoContainer) parentContainerRef.get();
         PicoContainer container = createContainer(parentContainer, assemblyScope);
 
@@ -51,17 +62,24 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
     }
 
     protected void autoStart(PicoContainer container) {
+    	if (!startMode.isInvokeLifecycle()) {
+    		return;
+    	}
+    	
         if (container instanceof Startable) {
             ((Startable) container).start();
         }
     }
 
-    public void killContainer(ObjectReference containerRef) {
+    public void killContainer(ObjectReference<PicoContainer> containerRef) {
         try {
             PicoContainer pico = (PicoContainer) containerRef.get();
-            if (pico instanceof Startable) {
-                ((Startable) pico).stop();
-            }
+        	if (startMode.isInvokeLifecycle()) {
+                if (pico instanceof Startable) {
+                    ((Startable) pico).stop();
+                }
+        	}
+        	
             if (pico instanceof Disposable) {
                 ((Disposable) pico).dispose();
             }

@@ -21,6 +21,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
+import org.nanocontainer.integrationkit.LifecycleMode;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.ComponentAdapter;
@@ -83,8 +84,12 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
         this(script, classLoader, new DomDriver());
     }
 
-    public XStreamContainerBuilder(Reader script, ClassLoader classLoader, HierarchicalStreamDriver driver) {
-        super(script, classLoader);
+    public XStreamContainerBuilder(Reader script, ClassLoader classLoader,  HierarchicalStreamDriver driver) {
+    	this(script,classLoader, driver, LifecycleMode.AUTO_LIFECYCLE);
+    }
+        
+    public XStreamContainerBuilder(Reader script, ClassLoader classLoader, HierarchicalStreamDriver driver, LifecycleMode lifecycleMode) {
+        super(script, classLoader, lifecycleMode);
         xsdriver = driver;
         InputSource inputSource = new InputSource(script);
         try {
@@ -99,7 +104,11 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder implements
     }
 
     public XStreamContainerBuilder(URL script, ClassLoader classLoader, HierarchicalStreamDriver driver) {
-        super(script, classLoader);
+    	this(script,classLoader, driver,LifecycleMode.AUTO_LIFECYCLE);
+    }
+    
+    public XStreamContainerBuilder(URL script, ClassLoader classLoader, HierarchicalStreamDriver driver, LifecycleMode lifecycleMode) {
+        super(script, classLoader,lifecycleMode);
         xsdriver = driver;
         try {
             InputSource inputSource = new InputSource(getScriptReader());

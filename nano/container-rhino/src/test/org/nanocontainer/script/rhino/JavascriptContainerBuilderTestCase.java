@@ -22,12 +22,15 @@ import java.io.StringReader;
 
 import org.junit.Test;
 import org.mozilla.javascript.JavaScriptException;
+import org.nanocontainer.integrationkit.LifecycleMode;
 import org.nanocontainer.TestHelper;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
+import org.nanocontainer.testmodel.A;
 import org.nanocontainer.testmodel.WebServer;
 import org.nanocontainer.testmodel.WebServerConfig;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
 
@@ -125,4 +128,35 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         //PicoContainer.getParent() is now ImmutablePicoContainer
         assertNotSame(parent, pico.getParent());
     }
+    
+    
+    @Test public void testAutoStartingContainerBuilderStarts() {
+        A.reset();
+        Reader script = new StringReader("" +
+                "var pico = parent.makeChildContainer() \n" +
+                "pico.addComponent(Packages.org.nanocontainer.testmodel.A)\n" +
+                "");
+        PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
+        PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
+        //PicoContainer.getParent() is now ImmutablePicoContainer
+        assertNotSame(parent, pico.getParent());
+        assertEquals("<A",A.componentRecorder);		
+        A.reset();
+	}
+	
+    @Test public void testNonAutoStartingContainerBuildDoesntAutostart() {
+        A.reset();
+        Reader script = new StringReader("" +
+                "var pico = parent.makeChildContainer() \n" +
+                "pico.addComponent(Packages.org.nanocontainer.testmodel.A)\n" +
+                "");
+        PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
+        JavascriptContainerBuilder containerBuilder = new JavascriptContainerBuilder(script, getClass().getClassLoader(), LifecycleMode.NO_LIFECYCLE);
+        PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
+        //PicoContainer.getParent() is now ImmutablePicoContainer
+        assertNotSame(parent, pico.getParent());
+        assertEquals("",A.componentRecorder);
+        A.reset();
+    }
+    
 }

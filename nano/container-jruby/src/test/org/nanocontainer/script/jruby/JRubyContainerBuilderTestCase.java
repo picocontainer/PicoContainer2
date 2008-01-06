@@ -1,5 +1,20 @@
 package org.nanocontainer.script.jruby;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.NameBinding;
+import org.picocontainer.PicoBuilder;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.SetterInjection;
+import org.picocontainer.injectors.SetterInjector;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
@@ -27,6 +42,7 @@ import org.junit.runner.RunWith;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.TestHelper;
+import org.nanocontainer.integrationkit.LifecycleMode;
 import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.NanoContainerMarkupException;
@@ -446,6 +462,38 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         PicoContainer pico = buildContainer(script, parent, new SomeAssemblyScope());
         assertNotNull(pico.getComponent(B.class));
     }
+    
+	@Test public void testAutoStartingContainerBuilderStarts() {
+        A.reset();
+        Reader script = new StringReader("" +
+                "A = org.nanocontainer.testmodel.A\n" +
+                "container(:parent => $parent) {\n" +
+                "       component(A)\n" +
+                "}\n");
+        PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
+        PicoContainer pico = buildContainer(new JRubyContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
+        //PicoContainer.getParent() is now ImmutablePicoContainer
+        assertNotSame(parent, pico.getParent());
+        assertEquals("<A",A.componentRecorder);		
+        A.reset();
+	}
+	
+    @Test public void testNonAutoStartingContainerBuildDoesntAutostart() {
+        A.reset();
+        Reader script = new StringReader("" +
+                "A = org.nanocontainer.testmodel.A\n" +
+                "container(:parent => $parent) {\n" +
+                "       component(A)\n" +
+                "}\n");
+        PicoContainer parent = new PicoBuilder().withLifecycle().withCaching().build();
+        JRubyContainerBuilder containerBuilder = new JRubyContainerBuilder(script, getClass().getClassLoader(), LifecycleMode.NO_LIFECYCLE);
+        PicoContainer pico = buildContainer(containerBuilder, parent, "SOME_SCOPE");
+        //PicoContainer.getParent() is now ImmutablePicoContainer
+        assertNotSame(parent, pico.getParent());
+        assertEquals("",A.componentRecorder);
+        A.reset();
+    }
+    
 
     public void FAILING_testBuildContainerWithParentAttributesPropagatesComponentFactory() {
         DefaultNanoContainer parent = new DefaultNanoContainer(new SetterInjection());
@@ -610,6 +658,8 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 //            // ignore
 //        }
 //    }
+    
+    
 
     private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {
         return buildContainer(new JRubyContainerBuilder(script, getClass().getClassLoader()), parent, scope);
