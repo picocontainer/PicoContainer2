@@ -1,27 +1,33 @@
 package org.nanocontainer.deployer;
 
 import org.apache.commons.vfs.FileObject;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.nanocontainer.deployer.Deployer;
-import org.nanocontainer.deployer.DeployingFolderListener;
-import org.nanocontainer.deployer.DifferenceAnalysingFolderContentHandler;
+import org.apache.commons.vfs.FileSystemException;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.ObjectReference;
+import org.picocontainer.tck.MockFactory;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
+ * @author Mauro Talevi
  */
-public class DeployingFolderListenerTestCase extends MockObjectTestCase {
-    public void testFolderAddedShouldDeployApplication() {
-        Mock folderMock = mock(FileObject.class);
-        FileObject folder = (FileObject) folderMock.proxy();
+@RunWith(JMock.class)
+public class DeployingFolderListenerTestCase {
+	
+	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+	
+    @Test public void testFolderAddedShouldDeployApplication() throws FileSystemException {
+    	final FileObject folder = mockery.mock(FileObject.class);
 
-        Mock deployerMock = mock(Deployer.class);
-        deployerMock.expects(once())
-                    .method("deploy")
-                    .with(same(folder), isA(ClassLoader.class), ANYTHING, NULL)
-                    .will(returnValue(null));
-        Deployer deployer = (Deployer)deployerMock.proxy();
+    	final Deployer deployer = mockery.mock(Deployer.class);
+        mockery.checking(new Expectations(){{
+        	one(deployer).deploy(with(same(folder)), with(any(ClassLoader.class)), with(any(ObjectReference.class)), with(aNull(Object.class)));
+        	will(returnValue(null));
+        }});
+        
         DifferenceAnalysingFolderContentHandler handler = null;
         DeployingFolderListener deployingFolderListener = new DeployingFolderListener(deployer, handler);
 
