@@ -9,6 +9,10 @@
 
 package org.picocontainer.behaviors;
 
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -20,11 +24,10 @@ import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.tck.AbstractComponentFactoryTestCase;
-
-public class ImplementationHidingTestCase extends AbstractComponentFactoryTestCase {
+import org.picocontainer.tck.AbstractComponentFactoryTest;
 
 
+public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
 
     @Test public void testAddComponentUsesImplementationHidingBehavior() {
         DefaultPicoContainer pico =

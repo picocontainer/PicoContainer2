@@ -9,6 +9,9 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -19,12 +22,13 @@ import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.tck.AbstractComponentFactoryTestCase;
+import org.picocontainer.tck.AbstractComponentFactoryTest;
+
 
 /**
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  */
-public class OptInCachingTestCase extends AbstractComponentFactoryTestCase {
+public class OptInCachingTestCase extends AbstractComponentFactoryTest {
 
     protected ComponentFactory createComponentFactory() {
         return new OptInCaching().wrap(new ConstructorInjection());

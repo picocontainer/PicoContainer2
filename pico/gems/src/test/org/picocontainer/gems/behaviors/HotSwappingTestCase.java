@@ -9,25 +9,29 @@
 
 package org.picocontainer.gems.behaviors;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.gems.behaviors.HotSwapping;
-import org.picocontainer.gems.behaviors.HotSwappable;
-import org.picocontainer.injectors.AdaptingInjection;
-import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.tck.AbstractComponentFactoryTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
+
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.injectors.AdaptingInjection;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.tck.AbstractComponentFactoryTest;
 
 
-public final class HotSwappingTestCase extends AbstractComponentFactoryTestCase {
+public final class HotSwappingTestCase extends AbstractComponentFactoryTest {
     private final ComponentFactory implementationHidingComponentFactory = new HotSwapping().wrap(new AdaptingInjection());
 
     // START SNIPPET: man

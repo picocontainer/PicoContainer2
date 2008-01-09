@@ -16,9 +16,10 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.tck.AbstractPicoContainerTestCase;
+import org.picocontainer.tck.AbstractPicoContainerTest;
 
-public class DelegatingMutablePicoContainerTestCase extends AbstractPicoContainerTestCase {
+
+public class DelegatingMutablePicoContainerTestCase extends AbstractPicoContainerTest {
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new MyDelegatingMutablePicoContainer(new DefaultPicoContainer());

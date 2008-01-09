@@ -9,6 +9,11 @@
  *****************************************************************************/
 package org.picocontainer.adapters;
 
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+
 import java.util.Map;
 
 import org.junit.Test;
@@ -21,18 +26,18 @@ import org.picocontainer.Startable;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.tck.AbstractComponentAdapterTestCase;
+import org.picocontainer.tck.AbstractComponentAdapterTest;
 import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
+
 
 /**
  * Test the InstanceAdapter.
  * 
  * @author J&ouml;rg Schaible
  */
-public final class InstanceAdapterTestCase
-    extends AbstractComponentAdapterTestCase {
+public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest {
 
     @Test public void testComponentAdapterReturnsSame() {
         final Touchable touchable = new SimpleTouchable();

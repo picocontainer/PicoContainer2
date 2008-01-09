@@ -9,6 +9,11 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,15 +35,16 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.tck.AbstractComponentFactoryTestCase;
+import org.picocontainer.tck.AbstractComponentFactoryTest;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
+
 
 /**
  * @author Aslak Helles&oslash;y
  * @author Mirko Novakovic
  */
-public class PropertyApplyingTestCase extends AbstractComponentFactoryTestCase {
+public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
 
     public static class Foo {
         public String message;

@@ -10,6 +10,7 @@
 
 package org.picocontainer.defaults;
 
+
 import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayInputStream;
@@ -24,14 +25,14 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.tck.AbstractPicoContainerTestCase;
+import org.picocontainer.tck.AbstractPicoContainerTest;
 
 
 /**
  * @author Thomas Heller
  * @author Paul Hammant
  */
-public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoContainerTestCase {
+public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoContainerTest {
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultPicoContainer(parent);
     }

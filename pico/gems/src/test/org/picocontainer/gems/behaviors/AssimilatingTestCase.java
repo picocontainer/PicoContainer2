@@ -10,24 +10,28 @@
 
 package org.picocontainer.gems.behaviors;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.List;
+
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.gems.behaviors.Assimilating;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.tck.AbstractComponentFactoryTestCase;
+import org.picocontainer.tck.AbstractComponentFactoryTest;
 import org.picocontainer.testmodel.AlternativeTouchable;
 import org.picocontainer.testmodel.CompatibleTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
-import java.util.List;
 
 
 /**
  * @author J&ouml;rg Schaible
  */
-public class AssimilatingTestCase extends AbstractComponentFactoryTestCase {
+public class AssimilatingTestCase extends AbstractComponentFactoryTest {
 
     /**
      * @see org.picocontainer.tck.AbstractComponentFactoryTestCase#createComponentFactory()

@@ -22,13 +22,13 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTestCase;
+import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTest;
 
 /**
  *
  * @author Aslak Helles&oslash;y
  */
-public class ImplementationHidingWithDefaultPicoContainerTestCase extends AbstractImplementationHidingPicoContainerTestCase {
+public class ImplementationHidingWithDefaultPicoContainerTestCase extends AbstractImplementationHidingPicoContainerTest {
 
     protected MutablePicoContainer createImplementationHidingPicoContainer() {
         return createPicoContainer(null);

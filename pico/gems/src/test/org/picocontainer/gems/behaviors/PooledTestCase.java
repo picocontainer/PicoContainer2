@@ -4,23 +4,31 @@
  */
 package org.picocontainer.gems.behaviors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Behavior;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.NameBinding;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.gems.behaviors.Pooled;
-import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.tck.AbstractComponentAdapterTestCase;
-import org.picocontainer.testmodel.RecordingLifecycle;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.picocontainer.Behavior;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.NameBinding;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.tck.AbstractComponentAdapterTest;
+import org.picocontainer.testmodel.RecordingLifecycle;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
@@ -30,7 +38,7 @@ import com.thoughtworks.proxy.toys.pool.Poolable;
 /**
  * @author J&ouml;rg Schaible
  */
-public final class PooledTestCase extends AbstractComponentAdapterTestCase {
+public final class PooledTestCase extends AbstractComponentAdapterTest{
 
     public static interface Identifiable {
         int getId();

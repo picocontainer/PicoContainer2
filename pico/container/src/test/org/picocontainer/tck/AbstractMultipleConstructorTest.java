@@ -9,7 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.tck;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.picocontainer.MutablePicoContainer;
@@ -19,10 +20,11 @@ import org.picocontainer.PicoException;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 
+
 /**
  * @author Aslak Helles&oslash;y
  */
-public abstract class AbstractMultipleConstructorTestCase extends TestCase {
+public abstract class AbstractMultipleConstructorTest {
 
     protected abstract MutablePicoContainer createPicoContainer();
 
@@ -109,7 +111,7 @@ public abstract class AbstractMultipleConstructorTestCase extends TestCase {
             pico.getComponent(Multi.class);
             fail();
         } catch (PicoCompositionException e) {
-            assertEquals("3 satisfiable constructors is too many for 'class org.picocontainer.tck.AbstractMultipleConstructorTestCase$Multi'. Constructor List:[<init>(), <init>(org.picocontainer.tck.AbstractMultipleConstructorTestCase$One,org.picocontainer.tck.AbstractMultipleConstructorTestCase$Two), <init>(org.picocontainer.tck.AbstractMultipleConstructorTestCase$Two,org.picocontainer.tck.AbstractMultipleConstructorTestCase$One)]",
+            assertEquals("3 satisfiable constructors is too many for 'class org.picocontainer.tck.AbstractMultipleConstructorTest$Multi'. Constructor List:[<init>(), <init>(org.picocontainer.tck.AbstractMultipleConstructorTest$One,org.picocontainer.tck.AbstractMultipleConstructorTest$Two), <init>(org.picocontainer.tck.AbstractMultipleConstructorTest$Two,org.picocontainer.tck.AbstractMultipleConstructorTest$One)]",
                     e.getMessage());
         }
     }

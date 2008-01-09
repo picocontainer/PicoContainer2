@@ -9,30 +9,31 @@
 
 package org.picocontainer.gems.behaviors;
 
+import static org.junit.Assert.assertEquals;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.injectors.AdaptingInjection;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Characteristics;
-import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.gems.adapters.ElephantProxy;
-import org.picocontainer.gems.adapters.ElephantImpl;
-import org.picocontainer.gems.adapters.Elephant;
-import org.picocontainer.tck.AbstractComponentFactoryTestCase;
-
-import java.util.ArrayList;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.gems.adapters.Elephant;
+import org.picocontainer.gems.adapters.ElephantImpl;
+import org.picocontainer.gems.adapters.ElephantProxy;
+import org.picocontainer.injectors.AdaptingInjection;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.tck.AbstractComponentFactoryTest;
 
 
-public final class AsmImplementationHidingTestCase extends AbstractComponentFactoryTestCase {
+public final class AsmImplementationHidingTestCase extends AbstractComponentFactoryTest {
 
     private final ComponentFactory implementationHidingComponentFactory = new AsmImplementationHiding().wrap(new AdaptingInjection());
 

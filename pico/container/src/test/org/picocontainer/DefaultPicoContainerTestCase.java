@@ -38,7 +38,7 @@ import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.WriterComponentMonitor;
-import org.picocontainer.tck.AbstractPicoContainerTestCase;
+import org.picocontainer.tck.AbstractPicoContainerTest;
 import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
@@ -50,7 +50,9 @@ import org.picocontainer.testmodel.Touchable;
  * @author Ward Cunningham
  * @author Mauro Talevi
  */
-public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTestCase {
+public final class DefaultPicoContainerTestCase extends
+		AbstractPicoContainerTest {
+
 	protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
 		return new DefaultPicoContainer(parent);
 	}

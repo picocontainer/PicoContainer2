@@ -11,12 +11,12 @@ package org.picocontainer.defaults;
 
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.tck.AbstractLazyInstantiationTestCase;
+import org.picocontainer.tck.AbstractLazyInstantiationTest;
 
 /**
  * @author Aslak Helles&oslash;y
  */
-public class DefaultLazyInstantiationTestCase extends AbstractLazyInstantiationTestCase {
+public class DefaultLazyInstantiationTestCase extends AbstractLazyInstantiationTest {
     protected MutablePicoContainer createPicoContainer() {
         return new DefaultPicoContainer();
     }

@@ -12,12 +12,12 @@ package org.picocontainer.defaults;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.tck.AbstractMultipleConstructorTestCase;
+import org.picocontainer.tck.AbstractMultipleConstructorTest;
 
 /**
  * @author Aslak Helles&oslash;y
  */
-public class DefaultMultipleConstructorTestCase extends AbstractMultipleConstructorTestCase {
+public class DefaultMultipleConstructorTestCase extends AbstractMultipleConstructorTest {
     protected MutablePicoContainer createPicoContainer() {
         return new DefaultPicoContainer();
     }

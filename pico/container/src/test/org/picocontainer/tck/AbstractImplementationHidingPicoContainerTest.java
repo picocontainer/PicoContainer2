@@ -9,6 +9,13 @@
  *****************************************************************************/
 package org.picocontainer.tck;
 
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -23,7 +30,7 @@ import org.picocontainer.PicoException;
 /**
  * @author Paul Hammant
  */
-public abstract class AbstractImplementationHidingPicoContainerTestCase extends AbstractPicoContainerTestCase {
+public abstract class AbstractImplementationHidingPicoContainerTest extends AbstractPicoContainerTest {
 
 
     @Test public void testInstanceIsNotAutomaticallyHidden() {

@@ -9,7 +9,9 @@
  *****************************************************************************/
 package org.picocontainer.tck;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 import org.picocontainer.Characteristics;
@@ -19,7 +21,7 @@ import org.picocontainer.PicoException;
 /**
  * @author Aslak Helles&oslash;y
  */
-public abstract class AbstractLazyInstantiationTestCase extends TestCase {
+public abstract class AbstractLazyInstantiationTest {
 
     protected abstract MutablePicoContainer createPicoContainer();
 
