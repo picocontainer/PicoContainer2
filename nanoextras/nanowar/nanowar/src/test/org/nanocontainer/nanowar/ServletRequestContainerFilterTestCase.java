@@ -1,69 +1,84 @@
 package org.nanocontainer.nanowar;
 
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
+import java.io.IOException;
+
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * @author Mauro Talevi
  */
-public class ServletRequestContainerFilterTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class ServletRequestContainerFilterTestCase {
 
-    private ServletRequestContainerFilter filter;
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+
+	private ServletRequestContainerFilter filter = new ServletRequestContainerFilter();   
     
-    public void setUp(){ 
-        filter = new ServletRequestContainerFilter();        
-    }
-    
-    public void testInit() throws Exception {
+    @Test public void testInit() throws Exception {
         filter.init(mockFilterConfig(mockServletContext()));
     }
 
-    public void testDestroy() throws Exception {
+    @Test public void testDestroy() throws Exception {
         filter.destroy();
         // no-op method
     }
 
-    public void testDoFilterWhenAlreadyFiltered() throws Exception {
+    @Test public void testDoFilterWhenAlreadyFiltered() throws Exception {
         filter.init(mockFilterConfig(null));
         filter.doFilter(mockRequest(ServletRequestContainerFilter.ALREADY_FILTERED_KEY, Boolean.TRUE), mockResponse(), mockFilterChain(true));
     }
         
     private ServletContext mockServletContext() {
-        Mock mock = mock(ServletContext.class);
-        return (ServletContext)mock.proxy();
+    	return mockery.mock(ServletContext.class);
     }
     
-    private HttpServletRequest mockRequest(Object key, Object attribute) {
-        Mock mock = mock(HttpServletRequest.class);
+    private HttpServletRequest mockRequest(final String key, final Object attribute) {
+    	final HttpServletRequest request = mockery.mock(HttpServletRequest.class);
         if ( key != null ){
-            mock.expects(once()).method("getAttribute").with(eq(key)).will(returnValue(attribute));
+        	mockery.checking(new Expectations(){{
+        		one(request).getAttribute(with(equal(key)));
+        		will(returnValue(attribute));
+        	}});
         }
-        return (HttpServletRequest)mock.proxy();
+        return request;
     }
     
     private HttpServletResponse mockResponse() {
-        Mock mock = mock(HttpServletResponse.class);
-        return (HttpServletResponse)mock.proxy();
+    	return mockery.mock(HttpServletResponse.class);
     }
     
-    private FilterChain mockFilterChain(boolean doFilter){
-        Mock mock = mock(FilterChain.class);
+    private FilterChain mockFilterChain(boolean doFilter) throws IOException, ServletException{
+    	final FilterChain chain = mockery.mock(FilterChain.class);
         if ( doFilter ){
-            mock.expects(atLeastOnce()).method("doFilter").withAnyArguments();
+        	mockery.checking(new Expectations(){{
+        		one(chain).doFilter(with(any(ServletRequest.class)), with(any(ServletResponse.class)));
+        	}});
         }
-        return (FilterChain)mock.proxy();
+        return chain;
     }
     
-    private FilterConfig mockFilterConfig(ServletContext context) {
-        Mock mock = mock(FilterConfig.class);
-        mock.expects(once()).method("getServletContext").will(returnValue(context));
-        return (FilterConfig)mock.proxy();
+    private FilterConfig mockFilterConfig(final ServletContext context) {
+    	final FilterConfig config = mockery.mock(FilterConfig.class);
+        mockery.checking(new Expectations(){{
+        	one(config).getServletContext();
+        	will(returnValue(context));
+        }});
+        return config;
     }
 
 }

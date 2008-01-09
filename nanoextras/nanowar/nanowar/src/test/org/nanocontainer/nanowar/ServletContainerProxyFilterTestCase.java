@@ -8,25 +8,38 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import javax.servlet.FilterConfig;
 import javax.servlet.http.HttpServletRequest;
 
-import org.jmock.Mock;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.DefaultPicoContainer;
 
 
 /**
  * @author Gr&eacute;gory Joseph
  * @author Mauro Talevi
  */
+@RunWith(JMock.class)
 public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase {
-    protected void tearDown() throws Exception {
+	
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+    @After public void tearDown() throws Exception {
         FooFilter.resetInitCounter();
     }
 
-    public void testSimplestCaseWithClassRegistration() throws Exception {
+    @Test public void testSimplestCaseWithClassRegistration() throws Exception {
         FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFilter.class, FooFilter.class, null, null, false);
         initTest("pico.addComponent(org.nanocontainer.nanowar.Foo)\n" +
                 "pico.addComponent(org.nanocontainer.nanowar.FooFilter)\n",
@@ -36,7 +49,7 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         assertEquals(1, FooFilter.getInitCounter());
     }
 
-    public void testSimplestCaseWithKeyRegistration() throws Exception {
+    @Test public void testSimplestCaseWithKeyRegistration() throws Exception {
         FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFilter.class, null, "foo-filter", null, false);
         initTest("pico.addComponent(org.nanocontainer.nanowar.Foo)\n" +
                 "pico.addComponent('foo-filter', org.nanocontainer.nanowar.FooFilter)\n",
@@ -46,7 +59,7 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         assertEquals(1, FooFilter.getInitCounter());
     }
 
-    public void testFilterRegisteredAtRequestScope() throws Exception {
+    @Test public void testFilterRegisteredAtRequestScope() throws Exception {
         FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFilter.class, null, "foo-filter", null, false);
         initTest("", "",
                 "pico.addComponent(org.nanocontainer.nanowar.Foo)\n" +
@@ -57,7 +70,7 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         assertEquals(1, FooFilter.getInitCounter());
     }
 
-    public void testFilterWithInitSetToContextShouldCallInitOnlyOncePerLookup() throws Exception {
+    @Test public void testFilterWithInitSetToContextShouldCallInitOnlyOncePerLookup() throws Exception {
         FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFilter.class, null, "foo-filter", null, true);
         initTest("pico.addComponent(org.nanocontainer.nanowar.Foo)\n" +
                 "pico.addComponent('foo-filter', org.nanocontainer.nanowar.FooFilter)\n",
@@ -69,7 +82,7 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         assertEquals(1, FooFilter.getInitCounter());
     }
 
-    public void testFilterWithInitSetToContextShouldCallInitOnlyOncePerLookupWhichMakesItEachTimeIfLookupNotSetToOnlyOnce() throws Exception {
+    @Test public void testFilterWithInitSetToContextShouldCallInitOnlyOncePerLookupWhichMakesItEachTimeIfLookupNotSetToOnlyOnce() throws Exception {
         FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFilter.class, null, "foo-filter", null, false);
         initTest("pico.addComponent(org.nanocontainer.nanowar.Foo)\n" +
                 "pico.addComponent('foo-filter', org.nanocontainer.nanowar.FooFilter)\n",
@@ -81,7 +94,7 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         assertEquals(3, FooFilter.getInitCounter());
     }
 
-    public void testFilterWithInitSetToRequestShouldCallInitAtEachRequest() throws Exception {
+    @Test public void testFilterWithInitSetToRequestShouldCallInitAtEachRequest() throws Exception {
         FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFilter.class, null, "foo-filter", "request", false);
         initTest("pico.addComponent(org.nanocontainer.nanowar.Foo)\n" +
                 "pico.addComponent('foo-filter', org.nanocontainer.nanowar.FooFilter)\n",
@@ -94,7 +107,7 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         assertEquals(3, FooFilter.getInitCounter());
     }
 
-    public void testFilterRegisteredAtContextScopeWithInitSetToNeverShouldNeverCallInit() throws Exception {
+    @Test public void testFilterRegisteredAtContextScopeWithInitSetToNeverShouldNeverCallInit() throws Exception {
         FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFilter.class, null, "foo-filter", "never", false);
         initTest("pico.addComponent(org.nanocontainer.nanowar.Foo)\n" +
                 "pico.addComponent('foo-filter', org.nanocontainer.nanowar.FooFilter)\n",
@@ -106,7 +119,7 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         assertEquals(0, FooFilter.getInitCounter());
     }
 
-    public void testFilterRegisteredAtRequestScopeWithInitSetToNeverShouldNeverCallInit() throws Exception {
+    @Test public void testFilterRegisteredAtRequestScopeWithInitSetToNeverShouldNeverCallInit() throws Exception {
         FilterDef f = new FilterDef("pico-filter", ServletContainerProxyFilter.class, null, "foo-filter", "never", false);
         initTest("", "",
                 "pico.addComponent(org.nanocontainer.nanowar.Foo)\n" +
@@ -119,12 +132,12 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         assertEquals(0, FooFilter.getInitCounter());    
     }
     
-    public void testFilterDestroyIsIgnoredIfDelegateNotFound(){
+    @Test public void testFilterDestroyIsIgnoredIfDelegateNotFound(){
         ServletContainerProxyFilter filter = new ServletContainerProxyFilter();
         filter.destroy();        
     }
 
-    public void testFilterDestroyIsDelegated() throws Exception{
+    @Test public void testFilterDestroyIsDelegated() throws Exception{
         ServletContainerProxyFilter filter = new ServletContainerProxyFilter();
         filter.init(mockFilterConfig(null, null, null, FooFilter.class.getName()));
         MutablePicoContainer container = new DefaultPicoContainer();
@@ -134,7 +147,7 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         filter.destroy();
     }
     
-    public void testInitDelegateFailsIfDelegateIsNotFound() throws Exception {
+    @Test public void testInitDelegateFailsIfDelegateIsNotFound() throws Exception {
         ServletContainerProxyFilter filter = new ServletContainerProxyFilter();
         try {
             filter.initDelegate();
@@ -144,7 +157,7 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         }
     }
     
-    public void testDelegateLookupFailsIfNeitherKeyOrClassIsSpecified() throws Exception{
+    @Test public void testDelegateLookupFailsIfNeitherKeyOrClassIsSpecified() throws Exception{
         ServletContainerProxyFilter filter = new ServletContainerProxyFilter();
         String delegateKey = null;
         String delegateClassName = null;
@@ -159,7 +172,7 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         }
     }
     
-    public void testDelegateLookupFailsIfClassCannotBeLoaded() throws Exception{
+    @Test public void testDelegateLookupFailsIfClassCannotBeLoaded() throws Exception{
         ServletContainerProxyFilter filter = new ServletContainerProxyFilter();
         String delegateKey = null;
         String delegateClassName = "inexistentClass";
@@ -174,7 +187,7 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         }
     }
     
-    public void testDelegateLookupFailsIfFilterIsNotFoundInContainer() throws Exception{
+    @Test public void testDelegateLookupFailsIfFilterIsNotFoundInContainer() throws Exception{
         ServletContainerProxyFilter filter = new ServletContainerProxyFilter();
         String delegateKey = null;
         String delegateClassName = FooFilter.class.getName();
@@ -189,19 +202,28 @@ public class ServletContainerProxyFilterTestCase extends AbstractServletTestCase
         }
     }    
     
-    private FilterConfig mockFilterConfig(String initType, String lookupOnce, String delegateKey, String delegateClass) {
-        Mock mock = mock(FilterConfig.class);
-        mock.expects(once()).method("getInitParameter").with(eq("init-type")).will(returnValue(initType));
-        mock.expects(once()).method("getInitParameter").with(eq("lookup-only-once")).will(returnValue(lookupOnce));
-        mock.expects(once()).method("getInitParameter").with(eq("delegate-key")).will(returnValue(delegateKey));
-        mock.expects(once()).method("getInitParameter").with(eq("delegate-class")).will(returnValue(delegateClass));
-        return (FilterConfig)mock.proxy();
+    private FilterConfig mockFilterConfig(final String initType, final String lookupOnce, final String delegateKey, final String delegateClass) {
+    	final FilterConfig filterConfig = mockery.mock(FilterConfig.class);
+    	mockery.checking(new Expectations(){{
+    		one(filterConfig).getInitParameter(with(equal("init-type")));
+    		will(returnValue(initType));
+    		one(filterConfig).getInitParameter(with(equal("lookup-only-once")));
+    		will(returnValue(lookupOnce));
+    		one(filterConfig).getInitParameter(with(equal("delegate-key")));
+    		will(returnValue(delegateKey));
+    		one(filterConfig).getInitParameter(with(equal("delegate-class")));
+    		will(returnValue(delegateClass));
+    	}});
+        return filterConfig;
     }
 
-    private HttpServletRequest mockRequest(MutablePicoContainer container) {
-        Mock mock = mock(HttpServletRequest.class);
-        mock.expects(once()).method("getAttribute").with(eq(KeyConstants.REQUEST_CONTAINER)).will(returnValue(container));
-        return (HttpServletRequest)mock.proxy();
+    private HttpServletRequest mockRequest(final MutablePicoContainer container) {
+    	final HttpServletRequest request = mockery.mock(HttpServletRequest.class);
+    	mockery.checking(new Expectations(){{
+    		one(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
+    		will(returnValue(container));
+    	}});
+        return request;
     }
 
 }

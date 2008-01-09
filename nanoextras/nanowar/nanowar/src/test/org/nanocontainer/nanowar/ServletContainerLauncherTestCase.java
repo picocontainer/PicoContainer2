@@ -7,20 +7,31 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * 
  * @author Mauro Talevi
  */
-public class ServletContainerLauncherTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class ServletContainerLauncherTestCase {
 
-    public void testStartContainerWithNullBuilderFails(){
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+	@Test public void testStartContainerWithNullBuilderFails(){
         ServletContext context = mockServletContext(KeyConstants.BUILDER, null);
         HttpServletRequest request = mockHttpServletRequest(null, null);
         ServletRequestContainerLauncher launcher = new ServletRequestContainerLauncher(context, request);
@@ -32,25 +43,31 @@ public class ServletContainerLauncherTestCase extends MockObjectTestCase {
         }                
     }
 
-    public void testKillContainerWithNullContainerIsIgnored(){
+    @Test public void testKillContainerWithNullContainerIsIgnored(){
         ServletContext context = mockServletContext(KeyConstants.BUILDER, null);
         HttpServletRequest request = mockHttpServletRequest(KeyConstants.REQUEST_CONTAINER, null);
         ServletRequestContainerLauncher launcher = new ServletRequestContainerLauncher(context, request);
         launcher.killContainer();
     }
     
-    private ServletContext mockServletContext(String key, Object attribute) {
-        Mock mock = mock(ServletContext.class);
-        mock.expects(once()).method("getAttribute").with(eq(key)).will(returnValue(attribute));
-        return (ServletContext)mock.proxy();
+    private ServletContext mockServletContext(final String key, final Object attribute) {
+    	final ServletContext context = mockery.mock(ServletContext.class);
+    	mockery.checking(new Expectations(){{
+    		one(context).getAttribute(with(equal(key)));
+    		will(returnValue(attribute));
+    	}});
+        return context;
     }
 
-    private HttpServletRequest mockHttpServletRequest(String key, Object attribute) {
-        Mock mock = mock(HttpServletRequest.class);
+    private HttpServletRequest mockHttpServletRequest(final String key, final Object attribute) {
+    	final HttpServletRequest request = mockery.mock(HttpServletRequest.class);
         if ( key != null ){
-            mock.expects(once()).method("getAttribute").with(eq(key)).will(returnValue(attribute));
+        	mockery.checking(new Expectations(){{
+        		one(request).getAttribute(with(equal(key)));
+        		will(returnValue(attribute));
+        	}});
         }
-        return (HttpServletRequest)mock.proxy();
+        return request;
     }
 
 }

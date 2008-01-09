@@ -9,56 +9,72 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.picocontainer.ObjectReference;
+import static org.junit.Assert.assertEquals;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
+import java.io.UnsupportedEncodingException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.ObjectReference;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
+ * @author Mauro Talevi
  */
-public class ReferenceTestCase extends MockObjectTestCase {
-    private final String key = "foo";
+@RunWith(JMock.class)
+public class ReferenceTestCase {
+
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+	private final String key = "foo";
     private final Object value = new Object();
 
-    public void testRequestScope() throws UnsupportedEncodingException {
-        Mock mock = createMock(ServletRequest.class);
-        RequestScopeReference ref = new RequestScopeReference((ServletRequest) mock.proxy(), key);
-        setGetAndVerify(ref, mock);
+    @Test public void testRequestScope() throws UnsupportedEncodingException {
+    	final ServletRequest request = mockery.mock(ServletRequest.class);
+    	mockery.checking(new Expectations(){{
+    		one(request).setAttribute(with(equal(key)), with(equal(value)));
+    		one(request).getAttribute(with(equal(key)));
+    		will(returnValue(value));
+    	}});
+        RequestScopeReference ref = new RequestScopeReference(request, key);
+        setGetAndVerify(ref);
     }
 
-    public void testApplicationScope() {
-        Mock mock = createMock(ServletContext.class);
-        ApplicationScopeReference ref = new ApplicationScopeReference((ServletContext) mock.proxy(), key);
-        setGetAndVerify(ref, mock);
+    @Test public void testApplicationScope() {
+    	final ServletContext context = mockery.mock(ServletContext.class);
+    	mockery.checking(new Expectations(){{
+    		one(context).setAttribute(with(equal(key)), with(equal(value)));
+    		one(context).getAttribute(with(equal(key)));
+    		will(returnValue(value));
+    	}});
+        ApplicationScopeReference ref = new ApplicationScopeReference(context, key);
+        setGetAndVerify(ref);
     }
 
-    public void testSessionScope() {
-        Mock mock = createMock(HttpSession.class);
-        SessionScopeReference ref = new SessionScopeReference((HttpSession) mock.proxy(), key);
-        setGetAndVerify(ref, mock);
+    @Test public void testSessionScope() {
+    	final HttpSession session = mockery.mock(HttpSession.class);
+    	mockery.checking(new Expectations(){{
+    		one(session).setAttribute(with(equal(key)), with(equal(value)));
+    		one(session).getAttribute(with(equal(key)));
+    		will(returnValue(value));
+    	}});
+        SessionScopeReference ref = new SessionScopeReference(session, key);
+        setGetAndVerify(ref);
     }
 
-    private void setGetAndVerify(ObjectReference ref, Mock mock) {
+    private void setGetAndVerify(ObjectReference ref) {
         ref.set(value);
         assertEquals(value, ref.get());
     }
 
-    private Mock createMock(final Class clazz) {
-        Mock mock = mock(clazz);
-        mock.expects(once())
-                .method("setAttribute")
-                .with(eq(key), eq(value));
-        mock.expects(once())
-                .method("getAttribute")
-                .with(eq(key))
-                .will(returnValue(value));
-        return mock;
-    }
+  
 
 }

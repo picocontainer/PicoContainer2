@@ -8,80 +8,98 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.DefaultPicoContainer;
+
 
 /**
  * @author Stephen Molitor
  * @author Mauro Talevi
  */
-public final class ServletContainerFinderTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public final class ServletContainerFinderTestCase {
 
-    private final Mock requestMock = mock(HttpServletRequest.class);
-    private final HttpServletRequest request = (HttpServletRequest) requestMock.proxy();
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+    private final HttpServletRequest request = mockery.mock(HttpServletRequest.class);
+    private final HttpSession session = mockery.mock(HttpSession.class);
+    private final ServletContext servletContext = mockery.mock(ServletContext.class);
 
-    private final Mock sessionMock = mock(HttpSession.class);
-    private final HttpSession session = (HttpSession) sessionMock.proxy();
+    private ServletContainerFinder finder = new ServletContainerFinder();
 
-    private final Mock servletContextMock = mock(ServletContext.class);
-    private final ServletContext servletContext = (ServletContext) servletContextMock.proxy();
-
-    private ServletContainerFinder finder;
-
-    public void testRequestContainerExists() {
-        MutablePicoContainer container = new DefaultPicoContainer();
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.REQUEST_CONTAINER)).will(
-                returnValue(container));
+    @Test public void testRequestContainerExists() {
+        final MutablePicoContainer container = new DefaultPicoContainer();
+    	mockery.checking(new Expectations(){{
+    		one(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
+    		will(returnValue(container));
+    	}});
         assertSame(container, finder.findContainer(request));
     }
 
-    public void testSessionContainerExists() {
-        MutablePicoContainer container = new DefaultPicoContainer();
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.REQUEST_CONTAINER)).will(
-                returnValue(null));
-        sessionMock.expects(once()).method("getAttribute").with(eq(KeyConstants.SESSION_CONTAINER)).will(
-                returnValue(container));
+    @Test public void testSessionContainerExists() {
+        final MutablePicoContainer container = new DefaultPicoContainer();
+    	mockery.checking(new Expectations(){{
+    		one(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
+    		will(returnValue(null));
+    		one(session).getAttribute(with(equal(KeyConstants.SESSION_CONTAINER)));
+    		will(returnValue(container));    		
+    		one(request).getSession();
+    		will(returnValue(session));
+    	}});
         assertSame(container, finder.findContainer(request));
     }
 
-    public void testApplicationContainerExists() {
-        MutablePicoContainer container = new DefaultPicoContainer();
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.REQUEST_CONTAINER)).will(
-                returnValue(null));
-        sessionMock.expects(once()).method("getAttribute").with(eq(KeyConstants.SESSION_CONTAINER)).will(
-                returnValue(null));
-        servletContextMock.expects(once()).method("getAttribute").with(eq(KeyConstants.APPLICATION_CONTAINER)).will(
-                returnValue(container));
+    @Test public void testApplicationContainerExists() {
+        final MutablePicoContainer container = new DefaultPicoContainer();
+    	mockery.checking(new Expectations(){{
+    		one(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
+    		will(returnValue(null));
+    		one(session).getAttribute(with(equal(KeyConstants.SESSION_CONTAINER)));
+    		will(returnValue(null));    		
+    		one(servletContext).getAttribute(with(equal(KeyConstants.APPLICATION_CONTAINER)));
+    		will(returnValue(container));    		
+    		atLeast(1).of(request).getSession();
+    		will(returnValue(session));
+    		one(session).getServletContext();
+    		will(returnValue(servletContext));    	
+    	}});
         assertSame(container, finder.findContainer(request));
     }
 
-    public void testNoContainerExists() {
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.REQUEST_CONTAINER)).will(
-                returnValue(null));
-        sessionMock.expects(once()).method("getAttribute").with(eq(KeyConstants.SESSION_CONTAINER)).will(
-                returnValue(null));
-        servletContextMock.expects(once()).method("getAttribute").with(eq(KeyConstants.APPLICATION_CONTAINER)).will(
-                returnValue(null));
-
+    @Test public void testNoContainerExists() {
+    	mockery.checking(new Expectations(){{
+    		one(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
+    		will(returnValue(null));
+    		one(session).getAttribute(with(equal(KeyConstants.SESSION_CONTAINER)));
+    		will(returnValue(null));    		
+    		one(servletContext).getAttribute(with(equal(KeyConstants.APPLICATION_CONTAINER)));
+    		will(returnValue(null));    		
+    		atLeast(1).of(request).getSession();
+    		will(returnValue(session));
+    		one(session).getServletContext();
+    		will(returnValue(servletContext));    	
+    	}});
+        
         try {
             finder.findContainer(request);
             fail("PicoCompositionException should have been raised");
         } catch (PicoCompositionException e) {
             // expected
         }
-    }
-
-    protected void setUp() {
-        finder = new ServletContainerFinder();
-        requestMock.stubs().method("getSession").will(returnValue(session));
-        sessionMock.stubs().method("getServletContext").will(returnValue(servletContext));
     }
 
 }

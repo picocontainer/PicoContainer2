@@ -1,19 +1,21 @@
 package org.nanocontainer.nanosar;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.fail;
+
+import org.junit.Test;
 
 /**
  * test capabilities of container deployer
  * 
  * @author k.pribluda
  */
-public class ContainerDeployerTestCase extends TestCase {
-
+public class ContainerDeployerTestCase {
+	
 	/**
 	 * test that script name is required to create pico
 	 * 
 	 */
-	public void testScriptIsRequired() {
+	@Test public void testScriptIsRequired() {
 		ContainerDeployer deployer = new ContainerDeployer();
 
 		try {

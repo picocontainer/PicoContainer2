@@ -9,50 +9,61 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.DefaultPicoContainer;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+
+
 /**
  * test case for XStreamContainerComposer
  *
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
- * @version $Revision$
+ * @author Mauro Talevi
  */
-public class XStreamContainerComposerTestCase extends MockObjectTestCase implements KeyConstants {
+@RunWith(JMock.class)
+public class XStreamContainerComposerTestCase implements KeyConstants {
 
-    public void testThatProperConfigurationIsRead() throws Exception {
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+    @Test public void testThatProperConfigurationIsRead() throws Exception {
         XStreamContainerComposer composer = new XStreamContainerComposer();
 
         MutablePicoContainer application = new DefaultPicoContainer();
-        Mock servletContextMock = mock(ServletContext.class);
+        ServletContext servletContext = mockery.mock(ServletContext.class);
 
-        composer.composeContainer(application, servletContextMock.proxy());
+        composer.composeContainer(application, servletContext);
 
         assertNotNull(application.getComponent("applicationScopedInstance"));
 
         MutablePicoContainer session = new DefaultPicoContainer();
-        Mock httpSessionMock = mock(HttpSession.class);
+        HttpSession httpSession = mockery.mock(HttpSession.class);
 
-        composer.composeContainer(session, httpSessionMock.proxy());
+        composer.composeContainer(session, httpSession);
 
         assertNotNull(session.getComponent("sessionScopedInstance"));
 
         MutablePicoContainer request = new DefaultPicoContainer();
-        Mock httpRequestMock = mock(HttpServletRequest.class);
+        HttpServletRequest httpRequest = mockery.mock(HttpServletRequest.class);
 
-        composer.composeContainer(request, httpRequestMock.proxy());
+        composer.composeContainer(request, httpRequest);
 
         assertNotNull(request.getComponent("requestScopedInstance"));
     }
     
 
-    public void testCompositionWithInvalidScope() {
+    @Test public void testCompositionWithInvalidScope() {
         XStreamContainerComposer composer = new XStreamContainerComposer();
 
         MutablePicoContainer applicationContainer = new DefaultPicoContainer();
@@ -60,21 +71,21 @@ public class XStreamContainerComposerTestCase extends MockObjectTestCase impleme
         assertNull(applicationContainer.getComponent("applicationScopedInstance"));
     }
         
-    public void testComposedHierarchy() {
+    @Test public void testComposedHierarchy() {
         XStreamContainerComposer composer = new XStreamContainerComposer();
 
         MutablePicoContainer applicationContainer = new DefaultPicoContainer();
-        Mock servletContextMock = mock(ServletContext.class);
+        ServletContext servletContext = mockery.mock(ServletContext.class);
 
-        composer.composeContainer(applicationContainer, servletContextMock.proxy());
+        composer.composeContainer(applicationContainer, servletContext);
 
         MutablePicoContainer sessionContainer = new DefaultPicoContainer(applicationContainer);
-        Mock httpSessionMock = mock(HttpSession.class);
-        composer.composeContainer(sessionContainer, httpSessionMock.proxy());
+        HttpSession httpSession = mockery.mock(HttpSession.class);
+        composer.composeContainer(sessionContainer, httpSession);
 
         MutablePicoContainer requestContainer = new DefaultPicoContainer(sessionContainer);
-        Mock httpRequestMock = mock(HttpServletRequest.class);
-        composer.composeContainer(requestContainer, httpRequestMock.proxy());
+        HttpServletRequest httpRequest = mockery.mock(HttpServletRequest.class);
+        composer.composeContainer(requestContainer, httpRequest);
         assertNotNull(requestContainer.getComponent("testFooHierarchy"));
     }
 }

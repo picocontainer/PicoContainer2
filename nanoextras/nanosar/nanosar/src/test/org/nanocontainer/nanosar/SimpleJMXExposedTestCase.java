@@ -1,28 +1,31 @@
 package org.nanocontainer.nanosar;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
 import javax.management.ObjectName;
 
+import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
-
-import junit.framework.TestCase;
 
 /**
  * test capabilities of JMX exposition
  * @author k.pribluda
  *
  */
-public class SimpleJMXExposedTestCase extends TestCase {
+public class SimpleJMXExposedTestCase {
 
 	/**
 	 * if no object name is set, shall expose under base name
 	 * with key as property
 	 */
-	public void testExposingWithImplicitName() throws Exception  {	
+	@Test public void testExposingWithImplicitName() throws Exception  {	
 		SimpleComponent toRegister = new SimpleComponent();
 		MutablePicoContainer container = new DefaultPicoContainer();
 		SimpleJMXExposed<SimpleComponent> jmxExposed = new SimpleJMXExposed<SimpleComponent>(new InstanceAdapter<SimpleComponent>("blam", toRegister));
@@ -39,7 +42,7 @@ public class SimpleJMXExposedTestCase extends TestCase {
 	}
 	
 	
-	public void testExposingWithExplicitName() throws Exception {
+	@Test public void testExposingWithExplicitName() throws Exception {
 		SimpleComponent toRegister = new SimpleComponent();
 		MutablePicoContainer container = new DefaultPicoContainer();
 		SimpleJMXExposed<SimpleComponent> jmxExposed = new SimpleJMXExposed<SimpleComponent>(new InstanceAdapter<SimpleComponent>("blam", toRegister), new ObjectName("glum:glam=glem"));

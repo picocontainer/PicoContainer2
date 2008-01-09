@@ -45,36 +45,6 @@
             <artifactId>nanocontainer-nanowar-webwork2</artifactId>
             <version>${pom.version}</version>
         </dependency>
-        <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanowar-jsf-webapp</artifactId>
-            <version>${pom.version}</version>
-            <type>war</type>
-        </dependency>
-        <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanowar-nanoweb-webapp</artifactId>
-            <version>${pom.version}</version>
-            <type>war</type>
-        </dependency>
-        <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanowar-struts-webapp</artifactId>
-            <version>${pom.version}</version>
-            <type>war</type>
-        </dependency>
-        <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanowar-webwork-webapp</artifactId>
-            <version>${pom.version}</version>
-            <type>war</type>
-        </dependency>
-        <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>nanowar-webwork2-webapp</artifactId>
-            <version>${pom.version}</version>
-            <type>war</type>
-        </dependency>
 	</dependencies>
 	<build>
 		<plugins>

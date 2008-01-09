@@ -8,6 +8,8 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jmock.MockObjectTestCase;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import com.meterware.httpunit.GetMethodWebRequest;
@@ -35,10 +37,10 @@ import com.meterware.servletunit.ServletUnitClient;
  * 
  * @author Gr&eacute;gory Joseph
  */
-public class AbstractServletTestCase extends MockObjectTestCase {
+public class AbstractServletTestCase {
     private ServletRunner sr;
 
-    public void testTheTest() throws Exception {
+    @Test public void testTheTest() throws Exception {
         FilterDef filterDef = new FilterDef("test", DummyFilter.class, null, null, null, false);
         initTest("", "", "", filterDef);
         String res = doTest();

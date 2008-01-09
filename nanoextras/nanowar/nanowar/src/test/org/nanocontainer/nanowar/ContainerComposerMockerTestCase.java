@@ -9,8 +9,11 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
+import org.junit.Test;
 
 /**
  * TestCase for ContainerComposerMocker
@@ -18,11 +21,11 @@ import junit.framework.TestCase;
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
  * @version $Revision$
  */
-public class ContainerComposerMockerTestCase extends TestCase implements KeyConstants {
+public class ContainerComposerMockerTestCase implements KeyConstants {
 
-    // TODO test what mock properly ?
-    // Hmmm, a stop() is being called on DPC, when it already disposed.
-    public void doNot_testThatItMocksProperly() {
+    // FIXME @Test 
+	// Hmmm, a stop() is being called on DPC, when it already disposed.
+    public void testThatItMocksProperly() {
 
         ContainerComposerMocker mocker = new ContainerComposerMocker(XStreamContainerComposer.class);
         assertNull(mocker.getApplicationContainer());
@@ -59,7 +62,7 @@ public class ContainerComposerMockerTestCase extends TestCase implements KeyCons
         assertNull(mocker.getRequestContainer());
     }
 
-    public void testFoo() {
+    @Test public void testFoo() {
         // boo
     }
 

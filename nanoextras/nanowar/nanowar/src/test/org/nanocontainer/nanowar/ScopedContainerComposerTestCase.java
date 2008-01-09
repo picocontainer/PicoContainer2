@@ -9,14 +9,20 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import java.io.StringReader;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
@@ -31,20 +37,23 @@ import org.picocontainer.references.SimpleReference;
  * @author Mauro Talevi
  * @author Konstantin Pribluda ( konstantin.pribluda[at]infodesire.com )
  */
-public class ScopedContainerComposerTestCase extends MockObjectTestCase {
-
-    public void testCompositionWithInvalidScope() {
+@RunWith(JMock.class)
+public class ScopedContainerComposerTestCase {
+	
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+    @Test public void testCompositionWithInvalidScope() {
         ScopedContainerComposer composer = new ScopedContainerComposer();
         MutablePicoContainer applicationContainer = new DefaultPicoContainer();
         composer.composeContainer(applicationContainer, "invalid-scope");
         assertNull(applicationContainer.getComponent("applicationScopedInstance"));
     }
     
-    public void testComposedHierarchyWithDefaultConfiguration() {
+    @Test public void testComposedHierarchyWithDefaultConfiguration() {
         assertComposedHierarchy(new ScopedContainerComposer());
     }
     
-    public void testComposedHierarchyWithCustomMXLConfiguration() {
+    @Test public void testComposedHierarchyWithCustomMXLConfiguration() {
         String xmlConfig = 
             "<container>" +
             "<component-implementation class='org.nanocontainer.nanowar.ScopedContainerConfigurator'>"+
@@ -72,21 +81,22 @@ public class ScopedContainerComposerTestCase extends MockObjectTestCase {
     
     private void assertComposedHierarchy(ScopedContainerComposer composer) {
         MutablePicoContainer applicationContainer = new DefaultPicoContainer();
-        Mock servletContextMock = mock(ServletContext.class);
+        ServletContext servletContext = mockery.mock(ServletContext.class);
 
-        composer.composeContainer(applicationContainer, servletContextMock.proxy());
+        composer.composeContainer(applicationContainer, servletContext);
         assertNotNull(applicationContainer.getComponent("applicationScopedInstance"));
         assertNotNull(applicationContainer.getComponent("testFoo"));
 
         MutablePicoContainer sessionContainer = new DefaultPicoContainer(applicationContainer);
-        Mock httpSessionMock = mock(HttpSession.class);
-        composer.composeContainer(sessionContainer, httpSessionMock.proxy());
+
+        HttpSession httpSession = mockery.mock(HttpSession.class);
+        composer.composeContainer(sessionContainer, httpSession);
         assertNotNull(sessionContainer.getComponent("applicationScopedInstance"));
         assertNotNull(sessionContainer.getComponent("sessionScopedInstance"));
 
         MutablePicoContainer requestContainer = new DefaultPicoContainer(sessionContainer);
-        Mock httpRequestMock = mock(HttpServletRequest.class);
-        composer.composeContainer(requestContainer, httpRequestMock.proxy());
+        HttpServletRequest httpRequest = mockery.mock(HttpServletRequest.class);
+        composer.composeContainer(requestContainer, httpRequest);
         assertNotNull(requestContainer.getComponent("applicationScopedInstance"));
         assertNotNull(requestContainer.getComponent("sessionScopedInstance"));
         assertNotNull(requestContainer.getComponent("requestScopedInstance"));
