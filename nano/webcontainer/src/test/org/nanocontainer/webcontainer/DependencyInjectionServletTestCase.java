@@ -9,26 +9,28 @@
 
 package org.nanocontainer.webcontainer;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.net.URL;
 
-import junit.framework.TestCase;
-
+import org.junit.After;
+import org.junit.Test;
 import org.mortbay.util.IO;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 
-public class DependencyInjectionServletTestCase extends TestCase {
+public class DependencyInjectionServletTestCase {
 
     PicoJettyServer server;
-    protected void tearDown() throws Exception {
+    @After public void tearDown() throws Exception {
         if (server != null) {
             server.stop();
         }
         Thread.sleep(1000);
     }
 
-    public void testCanInstantiateWebContainerContextAndServlet() throws InterruptedException, IOException {
+    @Test public void testCanInstantiateWebContainerContextAndServlet() throws InterruptedException, IOException {
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
         parentContainer.addComponent(String.class, "Fred");
@@ -49,7 +51,7 @@ public class DependencyInjectionServletTestCase extends TestCase {
 
     }
 
-    public void testCanInstantiateWebContainerContextAndServletInstance() throws InterruptedException, IOException {
+    @Test public void testCanInstantiateWebContainerContextAndServletInstance() throws InterruptedException, IOException {
 
 
         server = new PicoJettyServer("localhost", 8080, new EmptyPicoContainer());

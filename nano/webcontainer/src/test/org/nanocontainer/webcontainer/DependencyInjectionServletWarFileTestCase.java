@@ -1,26 +1,29 @@
 package org.nanocontainer.webcontainer;
 
-import java.io.IOException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
-import junit.framework.TestCase;
-
+import org.junit.After;
+import org.junit.Test;
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.util.IO;
 import org.picocontainer.DefaultPicoContainer;
 
-public class DependencyInjectionServletWarFileTestCase extends TestCase {
+public class DependencyInjectionServletWarFileTestCase {
 
     PicoJettyServer server;
-    protected void tearDown() throws Exception {
+    @After public void tearDown() throws Exception {
         if (server != null) {
             server.stop();
         }
         Thread.sleep(1000);
     }
 
-    public void testCanInstantiateWebContainerContextAndServlet()
+    @Test public void testCanInstantiateWebContainerContextAndServlet()
             throws InterruptedException, IOException {
 
         File testWar = TestHelper.getTestWarFile();
@@ -46,7 +49,7 @@ public class DependencyInjectionServletWarFileTestCase extends TestCase {
 
     }
 
-    public void testCanHostJspPage()
+    @Test public void testCanHostJspPage()
             throws InterruptedException, IOException {
 
         File testWar = TestHelper.getTestWarFile();

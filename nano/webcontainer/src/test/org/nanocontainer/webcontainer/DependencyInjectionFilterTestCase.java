@@ -1,25 +1,26 @@
 package org.nanocontainer.webcontainer;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.URL;
 
+import org.junit.After;
+import org.junit.Test;
+import org.mortbay.util.IO;
 import org.picocontainer.DefaultPicoContainer;
 
-import org.mortbay.util.IO;
-
-public class DependencyInjectionFilterTestCase extends TestCase {
+public class DependencyInjectionFilterTestCase {
 
     PicoJettyServer server;
-    protected void tearDown() throws Exception {
+    @After public void tearDown() throws Exception {
         if (server != null) {
             server.stop();
         }
         Thread.sleep(1000);
     }
 
-    public void testCanInstantiateWebContainerContextAndFilter() throws InterruptedException, IOException {
+    @Test public void testCanInstantiateWebContainerContextAndFilter() throws InterruptedException, IOException {
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
         parentContainer.addComponent(String.class, "Fred");
@@ -42,7 +43,7 @@ public class DependencyInjectionFilterTestCase extends TestCase {
 
     }
 
-    public void testCanInstantiateWebContainerContextAndFilterInstance() throws InterruptedException, IOException {
+    @Test public void testCanInstantiateWebContainerContextAndFilterInstance() throws InterruptedException, IOException {
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
         parentContainer.addComponent(String.class, "Fred");
@@ -65,8 +66,7 @@ public class DependencyInjectionFilterTestCase extends TestCase {
 
     }
 
-
-    public void testCanInstantiateWebContainerContextAndServlet() throws InterruptedException, IOException {
+    @Test public void testCanInstantiateWebContainerContextAndServlet() throws InterruptedException, IOException {
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
         parentContainer.addComponent(String.class, "Fred");

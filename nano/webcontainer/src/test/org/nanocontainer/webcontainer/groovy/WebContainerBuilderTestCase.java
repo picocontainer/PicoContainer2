@@ -10,6 +10,9 @@
 
 package org.nanocontainer.webcontainer.groovy;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,8 +21,8 @@ import java.io.StringReader;
 import java.net.ConnectException;
 import java.net.URL;
 
-import junit.framework.TestCase;
-
+import org.junit.After;
+import org.junit.Test;
 import org.mortbay.util.IO;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
 import org.nanocontainer.webcontainer.TestHelper;
@@ -28,21 +31,21 @@ import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.references.SimpleReference;
 
-public final class WebContainerBuilderTestCase extends TestCase {
+public final class WebContainerBuilderTestCase {
 
     private final ObjectReference containerRef = new SimpleReference();
     private final ObjectReference parentContainerRef = new SimpleReference();
 
     private MutablePicoContainer pico;
 
-    protected void tearDown() throws Exception {
+    @After public void tearDown() throws Exception {
         if (pico != null) {
             pico.stop();
         }
         //Thread.sleep(2 * 1000);
     }
 
-    public void testCanComposeWebContainerContextAndFilter() throws InterruptedException, IOException {
+    @Test public void testCanComposeWebContainerContextAndFilter() throws InterruptedException, IOException {
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
@@ -66,7 +69,7 @@ public final class WebContainerBuilderTestCase extends TestCase {
         assertPageIsHostedWithContents(script, "hello Fred Filtered!(int= 5 bau)", "http://localhost:8080/bar/foo2");
     }
 
-    public void testCanComposeWebContainerContextAndServlet() throws InterruptedException, IOException {
+    @Test public void testCanComposeWebContainerContextAndServlet() throws InterruptedException, IOException {
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
@@ -86,7 +89,7 @@ public final class WebContainerBuilderTestCase extends TestCase {
         assertPageIsHostedWithContents(script, "hello Fred bar", "http://localhost:8080/bar/foo");
     }
 
-    public void testCanComposeWebContainerContextAndServletInstance() throws InterruptedException, IOException {
+    @Test public void testCanComposeWebContainerContextAndServletInstance() throws InterruptedException, IOException {
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
@@ -106,7 +109,7 @@ public final class WebContainerBuilderTestCase extends TestCase {
     }
 
     
-    public void testCanComposeWebContainerContextWithExplicitConnector() throws InterruptedException, IOException {
+    @Test public void testCanComposeWebContainerContextWithExplicitConnector() throws InterruptedException, IOException {
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
                 "builder = new GroovyNodeBuilder()\n" +
@@ -125,7 +128,7 @@ public final class WebContainerBuilderTestCase extends TestCase {
         assertPageIsHostedWithContents(script, "hello Fred", "http://localhost:8080/bar/foo");
     }
 
-    public void testCanComposeWebContainerAndWarFile() throws InterruptedException, IOException {
+    @Test public void testCanComposeWebContainerAndWarFile() throws InterruptedException, IOException {
 
         File testWar = TestHelper.getTestWarFile();
 
@@ -148,7 +151,7 @@ public final class WebContainerBuilderTestCase extends TestCase {
         assertEquals("-contextInitialized", pico.getComponent(StringBuffer.class).toString());
     }
 
-    public void testCanComposeWebContainerContextAndListener() throws InterruptedException, IOException {
+    @Test public void testCanComposeWebContainerContextAndListener() throws InterruptedException, IOException {
 
         Reader script = new StringReader("" +
                 "package org.nanocontainer.script.groovy\n" +
@@ -177,7 +180,7 @@ public final class WebContainerBuilderTestCase extends TestCase {
 
     }
 
-    public void testStaticContentCanBeServed() throws InterruptedException, IOException {
+    @Test public void testStaticContentCanBeServed() throws InterruptedException, IOException {
 
         File testWar = TestHelper.getTestWarFile();
 
@@ -211,7 +214,7 @@ public final class WebContainerBuilderTestCase extends TestCase {
 
     }
 
-    public void testStaticContentCanBeServedWithDefaultWelcomePage() throws InterruptedException, IOException {
+    @Test public void testStaticContentCanBeServedWithDefaultWelcomePage() throws InterruptedException, IOException {
 
         File testWar = TestHelper.getTestWarFile();
 

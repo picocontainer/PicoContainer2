@@ -1,27 +1,26 @@
 package org.nanocontainer.webcontainer;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.URL;
 
+import org.junit.After;
+import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 
-import org.nanocontainer.webcontainer.PicoJettyServer;
-import org.nanocontainer.webcontainer.PicoContext;
-
-public class DependencyInjectionListenerTestCase extends TestCase {
+public class DependencyInjectionListenerTestCase {
 
     PicoJettyServer server;
-    protected void tearDown() throws Exception {
+    @After public void tearDown() throws Exception {
         if (server != null) {
             server.stop();
         }
         Thread.sleep(1000);
     }
 
-    public void testCanInstantiateWebContainerContextAndListener() throws InterruptedException, IOException {
+    @Test public void testCanInstantiateWebContainerContextAndListener() throws InterruptedException, IOException {
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
         StringBuffer sb = new StringBuffer();
@@ -42,7 +41,7 @@ public class DependencyInjectionListenerTestCase extends TestCase {
 
     }
 
-    public void testListenerInvokedBeforeFilterBeforeServlet() throws InterruptedException, IOException {
+    @Test public void testListenerInvokedBeforeFilterBeforeServlet() throws InterruptedException, IOException {
 
         final DefaultPicoContainer parentContainer = new DefaultPicoContainer();
         StringBuffer sb = new StringBuffer();
@@ -70,7 +69,7 @@ public class DependencyInjectionListenerTestCase extends TestCase {
 
 
 
-    public void testCanInstantiateWebContainerContextAndListenerInstance() throws InterruptedException, IOException {
+    @Test public void testCanInstantiateWebContainerContextAndListenerInstance() throws InterruptedException, IOException {
 
         StringBuffer sb = new StringBuffer();
 

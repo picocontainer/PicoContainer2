@@ -1,21 +1,30 @@
 package org.nanocontainer.webcontainer;
 
-import junit.framework.TestCase;
-import org.mortbay.util.IO;
-import org.mortbay.jetty.handler.ErrorHandler;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.picocontainer.containers.EmptyPicoContainer;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.net.Socket;
+import java.net.URL;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
-import java.net.URL;
-import java.net.Socket;
 
-public class JspTestCase extends TestCase {
+import org.junit.After;
+import org.junit.Test;
+import org.mortbay.jetty.handler.ErrorHandler;
+import org.mortbay.util.IO;
+import org.picocontainer.containers.EmptyPicoContainer;
+
+public class JspTestCase {
 
     PicoJettyServer server;
 
-    protected void tearDown() throws Exception {
+    @After public void tearDown() throws Exception {
         if (server != null) {
             server.stop();
         }
@@ -23,7 +32,7 @@ public class JspTestCase extends TestCase {
     }
 
 
-    public void testCanInstantiateWebContainerContextAndSimpleJspPage() throws InterruptedException, IOException {
+    @Test public void testCanInstantiateWebContainerContextAndSimpleJspPage() throws InterruptedException, IOException {
 
         File warFile = TestHelper.getTestWarFile();
 
@@ -58,7 +67,7 @@ public class JspTestCase extends TestCase {
 
     }
 
-    public void testCanInstantiateWebContainerContextAndMissingJspPageHandled() throws InterruptedException, IOException {
+    @Test public void testCanInstantiateWebContainerContextAndMissingJspPageHandled() throws InterruptedException, IOException {
 
         File warFile = TestHelper.getTestWarFile();
 

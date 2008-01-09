@@ -21,10 +21,6 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 
 /**
- * <a href="http://www.junit.org/">JUnit</a>
- * {@link junit.framework.TestCase testcase} for
- * BeanShellAdapter.
- *
  * @author <a href="mail at leosimons dot com">Leo Simons</a>
  * @author Nick Sieger
  * @version $Id$
