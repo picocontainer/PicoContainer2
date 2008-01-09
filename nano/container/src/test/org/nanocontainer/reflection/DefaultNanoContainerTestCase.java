@@ -10,6 +10,9 @@
 
 package org.nanocontainer.reflection;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Properties;
 
 import org.junit.Test;
@@ -20,13 +23,13 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.tck.AbstractPicoContainerTestCase;
+import org.picocontainer.tck.AbstractPicoContainerTest;
 
 /**
  * @author Paul Hammant
  * @version $Revision$
  */
-public class DefaultNanoContainerTestCase extends AbstractPicoContainerTestCase {
+public class DefaultNanoContainerTestCase extends AbstractPicoContainerTest {
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultNanoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new Caching(), parent));
