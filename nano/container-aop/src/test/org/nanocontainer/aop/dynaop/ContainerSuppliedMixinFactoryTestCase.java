@@ -9,7 +9,8 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
-import org.jmock.MockObjectTestCase;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.nanocontainer.testmodel.IdentifiableMixin;
 import org.picocontainer.DefaultPicoContainer;
@@ -20,7 +21,7 @@ import dynaop.MixinFactory;
 /**
  * @author Stephen Molitor
  */
-public final class ContainerSuppliedMixinFactoryTestCase extends MockObjectTestCase {
+public final class ContainerSuppliedMixinFactoryTestCase {
 
     private final MutablePicoContainer pico = new DefaultPicoContainer();
     private final MixinFactory mixinFactory = new ContainerSuppliedMixinFactory(pico, IdentifiableMixin.class);

@@ -9,24 +9,38 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.tck.MockFactory;
 
 import dynaop.ClassPointcut;
 
 /**
  * @author Stephen Molitor
+ * @author Mauro Talevi
  */
-public final class DynaopClassPointcutTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public final class DynaopClassPointcutTestCase {
 
-    private final Mock mockDelegate = mock(dynaop.ClassPointcut.class);
+	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+	
+    private final ClassPointcut classPointcut = mockery.mock(ClassPointcut.class);
 
     @Test public void testPicks() {
-        mockDelegate.expects(once()).method("picks").with(eq(String.class)).will(returnValue(false));
-        mockDelegate.expects(once()).method("picks").with(eq(Integer.class)).will(returnValue(true));
+    	 mockery.checking(new Expectations(){{
+     		one(classPointcut).picks(with(equal(String.class)));
+     		will(returnValue(false));
+     		one(classPointcut).picks(with(equal(Integer.class)));    		
+     		will(returnValue(true));
+     	}});
 
-        ClassPointcut pointcut = new DynaopClassPointcut((ClassPointcut) mockDelegate.proxy());
+    	ClassPointcut pointcut = new DynaopClassPointcut(classPointcut);
         assertFalse(pointcut.picks(String.class));
         assertTrue(pointcut.picks(Integer.class));
     }

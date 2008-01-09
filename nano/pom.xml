@@ -163,12 +163,7 @@
         <groupId>${pom.groupId}</groupId>
         <artifactId>nanocontainer-booter</artifactId>
         <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>jmock</groupId>
-        <artifactId>jmock</artifactId>
-        <version>1.0.1</version>
-      </dependency>
+      </dependency>   
       <dependency>
         <groupId>org.jmock</groupId>
         <artifactId>jmock-junit4</artifactId>
@@ -182,12 +177,7 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
-    <!-- test scoped dependencies -->
-    <dependency>
-      <groupId>jmock</groupId>
-      <artifactId>jmock</artifactId>
-      <scope>test</scope>
-    </dependency>
+    <!-- test scoped dependencies -->    
     <dependency>
       <groupId>org.jmock</groupId>
       <artifactId>jmock-junit4</artifactId>

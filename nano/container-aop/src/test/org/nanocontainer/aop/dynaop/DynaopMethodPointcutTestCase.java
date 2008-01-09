@@ -9,29 +9,43 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.lang.reflect.Method;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.tck.MockFactory;
 
 import dynaop.MethodPointcut;
 
 /**
  * @author Stephen Molitor
+ * @author Mauro Talevi
  */
-public final class DynaopMethodPointcutTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public final class DynaopMethodPointcutTestCase {
 
-    private final Mock mockDelegate = mock(dynaop.MethodPointcut.class);
+	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+
+    private final MethodPointcut methodPointcut = mockery.mock(MethodPointcut.class);
 
     @Test public void testPicks() throws SecurityException, NoSuchMethodException {
-        Method method1 = String.class.getMethod("length");
-        Method method2 = String.class.getMethod("hashCode");
+        final Method method1 = String.class.getMethod("length");
+        final Method method2 = String.class.getMethod("hashCode");
 
-        mockDelegate.expects(once()).method("picks").with(eq(method1)).will(returnValue(false));
-        mockDelegate.expects(once()).method("picks").with(eq(method2)).will(returnValue(true));
-
-        dynaop.MethodPointcut pointcut = new DynaopMethodPointcut((MethodPointcut) mockDelegate.proxy());
+        mockery.checking(new Expectations(){{
+    		one(methodPointcut).picks(with(equal(method1)));
+    		will(returnValue(false));
+    		one(methodPointcut).picks(with(equal(method2)));    		
+    		will(returnValue(true));
+    	}});
+        
+        dynaop.MethodPointcut pointcut = new DynaopMethodPointcut(methodPointcut);
         assertFalse(pointcut.picks(method1));
         assertTrue(pointcut.picks(method2));
     }

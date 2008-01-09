@@ -9,12 +9,18 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
+
+import static org.junit.Assert.assertEquals;
+
 import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.tck.MockFactory;
 
 import dynaop.Invocation;
 import dynaop.Proxy;
@@ -22,46 +28,67 @@ import dynaop.ProxyContext;
 
 /**
  * @author Stephen Molitor
+ * @author Mauro Talevi
  */
-public final class InvocationAdapterTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public final class InvocationAdapterTestCase {
 
-    private final Mock mockInvocation = mock(Invocation.class);
-    private final MethodInvocation invocationAdapter = new InvocationAdapter((Invocation) mockInvocation.proxy());
-    private final Mock mockProxy = mock(Proxy.class);
-    private final Mock mockProxyContext = mock(ProxyContext.class);
+	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+	
+    private final Invocation invocation = mockery.mock(Invocation.class);
+    private final MethodInvocation methodInvocation = new InvocationAdapter(invocation);
+    private final Proxy proxy = mockery.mock(Proxy.class);
+    private final ProxyContext proxyContext = mockery.mock(ProxyContext.class);
 
     @Test public void testProceed() throws Throwable {
-        mockInvocation.expects(once()).method("proceed").will(returnValue("result"));
-        Object result = invocationAdapter.proceed();
+        mockery.checking(new Expectations(){{
+    		one(invocation).proceed();
+    		will(returnValue("result"));
+    	}});
+        Object result = methodInvocation.proceed();
         assertEquals("result", result);
     }
 
     @Test public void testGetArguments() {
-        Object[] args = {"a", "b", "c"};
-        mockInvocation.expects(once()).method("getArguments").will(returnValue(args));
-        Object[] actualArgs = invocationAdapter.getArguments();
+        final Object[] args = {"a", "b", "c"};
+        mockery.checking(new Expectations(){{
+    		one(invocation).getArguments();
+    		will(returnValue(args));
+    	}});
+        Object[] actualArgs = methodInvocation.getArguments();
         assertEquals(args, actualArgs);
     }
 
     @Test public void testGetMethod() throws SecurityException, NoSuchMethodException {
-        Method method = String.class.getMethod("length");
-        mockInvocation.expects(once()).method("getMethod").will(returnValue(method));
-        Method actualMethod = invocationAdapter.getMethod();
+        final Method method = String.class.getMethod("length");
+        mockery.checking(new Expectations(){{
+    		one(invocation).getMethod();
+    		will(returnValue(method));
+    	}});
+        Method actualMethod = methodInvocation.getMethod();
         assertEquals(method, actualMethod);
     }
 
     @Test public void testGetStaticPart() throws SecurityException, NoSuchMethodException {
-        Method method = String.class.getMethod("length");
-        mockInvocation.expects(once()).method("getMethod").will(returnValue(method));
-        Object staticPart = invocationAdapter.getStaticPart();
+        final Method method = String.class.getMethod("length");
+        mockery.checking(new Expectations(){{
+    		one(invocation).getMethod();
+    		will(returnValue(method));
+    	}});
+        Object staticPart = methodInvocation.getStaticPart();
         assertEquals(method, staticPart);
     }
 
     @Test public void testGetThis() {
-        mockInvocation.expects(once()).method("getProxy").will(returnValue(mockProxy.proxy()));
-        mockProxy.expects(once()).method("getProxyContext").will(returnValue(mockProxyContext.proxy()));
-        mockProxyContext.expects(once()).method("unwrap").will(returnValue("target"));
-        Object target = invocationAdapter.getThis();
+        mockery.checking(new Expectations(){{
+    		one(invocation).getProxy();
+    		will(returnValue(proxy));
+       		one(proxy).getProxyContext();
+    		will(returnValue(proxyContext));
+       		one(proxyContext).unwrap();
+    		will(returnValue("target"));
+    	}});
+        Object target = methodInvocation.getThis();
         assertEquals("target", target);
     }
 

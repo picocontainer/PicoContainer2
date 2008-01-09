@@ -9,27 +9,38 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import org.aopalliance.intercept.MethodInterceptor;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.aopalliance.intercept.MethodInvocation;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.tck.MockFactory;
 
 import dynaop.Interceptor;
 import dynaop.InterceptorFactory;
 
 /**
  * @author Stephen Molitor
+ * @author Mauro Talevi
  */
-public final class ContainerSuppliedInterceptorFactoryTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public final class ContainerSuppliedInterceptorFactoryTestCase {
+
+	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
 
     private final MutablePicoContainer pico = new DefaultPicoContainer();
 
     @Test public void testCreate() throws Throwable {
-        Mock methodInterceptorMock = mock(MethodInterceptor.class);
+    	final MethodInterceptor methodInterceptor = mockery.mock(MethodInterceptor.class);
 
-        pico.addComponent("interceptorComponentKey", methodInterceptorMock.proxy());
+        pico.addComponent("interceptorComponentKey", methodInterceptor);
 
         InterceptorFactory interceptorFactory = new ContainerSuppliedInterceptorFactory(pico, "interceptorComponentKey");
         Interceptor interceptor = interceptorFactory.create(null);
@@ -37,7 +48,9 @@ public final class ContainerSuppliedInterceptorFactoryTestCase extends MockObjec
 
         // verify that the dynaop interceptor delegates to the MethodInterceptor
         // in the container:
-        methodInterceptorMock.expects(once()).method("invoke");
+    	mockery.checking(new Expectations(){{
+    		one(methodInterceptor).invoke(with(any(MethodInvocation.class)));
+    	}});
         interceptor.intercept(null);
     }
 

@@ -9,32 +9,43 @@
  *****************************************************************************/
 package org.nanocontainer.aop.defaults;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import static org.junit.Assert.assertEquals;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.nanocontainer.aop.AspectsApplicator;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.tck.MockFactory;
 
 /**
  * @author Stephen Molitor
+ * @author Mauro Talevi
  */
-public final class AspectedTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public final class AspectedTestCase {
 
-    private final Mock mockApplicator = mock(AspectsApplicator.class);
-    private final Mock mockComponentAdapterDelegate = mock(ComponentAdapter.class);
+	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+
+    private final AspectsApplicator applicator = mockery.mock(AspectsApplicator.class);
+    private final ComponentAdapter componentAdapter = mockery.mock(ComponentAdapter.class);
     private final PicoContainer container = new DefaultPicoContainer();
 
     @Test public void testGetComponentInstance() {
-        mockComponentAdapterDelegate.expects(once()).method("getComponentInstance").with(same(container)).will(returnValue("addComponent"));
-        mockComponentAdapterDelegate.expects(once()).method("getComponentKey").will(returnValue("componentKey"));
+    	mockery.checking(new Expectations(){{
+    		one(componentAdapter).getComponentInstance(with(same(container)));
+    		will(returnValue("addComponent"));
+    		one(componentAdapter).getComponentKey();
+    		will(returnValue("componentKey"));
+    		one(applicator).applyAspects(with(same("componentKey")), with(same("addComponent")), with(same(container)));
+    		will(returnValue("wrappedComponent"));
+    	}});
 
-        mockApplicator.expects(once()).method("applyAspects").with(same("componentKey"), same("addComponent"),
-                same(container)).will(returnValue("wrappedComponent"));
-
-        ComponentAdapter adapter = new Aspected((AspectsApplicator) mockApplicator.proxy(),
-                (ComponentAdapter) mockComponentAdapterDelegate.proxy());
+    	ComponentAdapter adapter = new Aspected(applicator, componentAdapter);
         Object component = adapter.getComponentInstance(container);
         assertEquals("wrappedComponent", component);
     }

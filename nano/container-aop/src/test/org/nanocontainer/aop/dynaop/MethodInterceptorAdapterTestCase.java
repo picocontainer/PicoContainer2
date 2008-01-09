@@ -9,27 +9,39 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
+import static org.junit.Assert.assertEquals;
+
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.picocontainer.tck.MockFactory;
 
 import dynaop.Invocation;
 
 /**
  * @author Stephen Molitor
+ * @author Mauro Talevi
  */
-public final class MethodInterceptorAdapterTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public final class MethodInterceptorAdapterTestCase {
 
-    private final Mock mockMethodInterceptor = mock(MethodInterceptor.class);
-    private final Mock mockInvocation = mock(Invocation.class);
+	private Mockery mockery = MockFactory.mockeryWithCountingNamingScheme();
+
+    private final MethodInterceptor methodInterceptor = mockery.mock(MethodInterceptor.class);
+    private final Invocation invocation = mockery.mock(Invocation.class);
 
     @Test public void testInvoke() throws Throwable {
-        mockMethodInterceptor.expects(once()).method("invoke").with(isA(MethodInvocation.class)).will(returnValue("result"));
+    	 mockery.checking(new Expectations(){{
+     		one(methodInterceptor).invoke(with(any(MethodInvocation.class)));
+     		will(returnValue("result"));
+     	}});
 
-        dynaop.Interceptor interceptor = new MethodInterceptorAdapter((MethodInterceptor) mockMethodInterceptor.proxy());
-        Object result = interceptor.intercept((Invocation) mockInvocation.proxy());
+        dynaop.Interceptor interceptor = new MethodInterceptorAdapter(methodInterceptor);
+        Object result = interceptor.intercept(invocation);
         assertEquals("result", result);
     }
 
