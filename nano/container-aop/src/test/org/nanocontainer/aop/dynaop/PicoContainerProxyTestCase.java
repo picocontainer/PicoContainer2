@@ -9,20 +9,22 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.DefaultPicoContainer;
 
 /**
  * @author Stephen Molitor
  */
-public final class PicoContainerProxyTestCase extends TestCase {
+public final class PicoContainerProxyTestCase {
 
     private final MutablePicoContainer container = new DefaultPicoContainer();
     private final ContainerLoader containerLoader = new ContainerLoader();
 
-    public void testProxy() {
+    @Test public void testProxy() {
         PicoContainer proxy = PicoContainerProxy.create(containerLoader);
         containerLoader.setContainer(container);
 

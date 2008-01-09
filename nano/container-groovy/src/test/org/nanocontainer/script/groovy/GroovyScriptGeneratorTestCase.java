@@ -1,19 +1,22 @@
 package org.nanocontainer.script.groovy;
 
-import junit.framework.TestCase;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.DefaultPicoContainer;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.StringReader;
 import java.util.ArrayList;
+
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public class GroovyScriptGeneratorTestCase extends TestCase {
-    public void testShouldWriteAGroovyScriptThatAllowsToRecreateASimilarContainer() {
+public class GroovyScriptGeneratorTestCase {
+    @Test public void testShouldWriteAGroovyScriptThatAllowsToRecreateASimilarContainer() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(ArrayList.class);
         pico.addComponent("Hello", "World");

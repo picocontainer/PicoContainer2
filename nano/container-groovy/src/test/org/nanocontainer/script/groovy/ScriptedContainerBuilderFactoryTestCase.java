@@ -1,26 +1,23 @@
 package org.nanocontainer.script.groovy;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 
-import junit.framework.TestCase;
-
+import org.junit.Test;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 
-public class ScriptedContainerBuilderFactoryTestCase extends TestCase {
+public class ScriptedContainerBuilderFactoryTestCase {
 
     private static final String TEST_SCRIPT_PATH = "/org/nanocontainer/script/groovy/nanocontainer.groovy";
 
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testScriptedContainerBuilderFactoryWithUrl() throws ClassNotFoundException {
+    @Test public void testScriptedContainerBuilderFactoryWithUrl() throws ClassNotFoundException {
         URL resource = getClass().getResource(TEST_SCRIPT_PATH);
         assertNotNull("Could not find script resource '+ TEST_SCRIPT_PATH + '.", resource);
 
@@ -30,7 +27,7 @@ public class ScriptedContainerBuilderFactoryTestCase extends TestCase {
         assertEquals(GroovyContainerBuilder.class.getName(), builder.getClass().getName());
     }
 
-    public void testBuildWithReader() throws ClassNotFoundException {
+    @Test public void testBuildWithReader() throws ClassNotFoundException {
         Reader script = new StringReader("" +
             "import org.nanocontainer.testmodel.*\n" +
             "X.reset()\n" +

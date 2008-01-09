@@ -9,30 +9,34 @@
  *****************************************************************************/
 package org.nanocontainer.reflection;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 
-public final class StringToObjectConverterTestCase extends TestCase {
+import org.junit.Test;
+
+public final class StringToObjectConverterTestCase {
     private final StringToObjectConverter converter = new StringToObjectConverter();
 
-    public void testConvertsToString() {
+    @Test public void testConvertsToString() {
         assertEquals("hello", converter.convertTo(String.class, "hello"));
         assertEquals("", converter.convertTo(String.class, ""));
     }
 
-    public void testConvertsToInts() {
+    @Test public void testConvertsToInts() {
         assertEquals(22, converter.convertTo(Integer.class, "22"));
         assertEquals(-9, converter.convertTo(Integer.class, "-9"));
     }
 
-    public void testConvertsToLong() {
+    @Test public void testConvertsToLong() {
         assertEquals(123456789012L, converter.convertTo(Long.class, "123456789012"));
         assertEquals(-123456789012L, converter.convertTo(Long.class, "-123456789012"));
         assertEquals((long)0, converter.convertTo(Long.class, "0"));
     }
 
-    public void testConvertsToBooleanUsingBestGuess() {
+    @Test public void testConvertsToBooleanUsingBestGuess() {
         assertEquals(Boolean.TRUE, converter.convertTo(Boolean.class, "t"));
         assertEquals(Boolean.TRUE, converter.convertTo(Boolean.class, "true"));
         assertEquals(Boolean.TRUE, converter.convertTo(Boolean.class, "T"));
@@ -51,7 +55,7 @@ public final class StringToObjectConverterTestCase extends TestCase {
         assertEquals(Boolean.FALSE, converter.convertTo(Boolean.class, "I'm a lumberjack and I'm okay"));
     }
 
-    public void testCustomConversionsCanBeRegistered() {
+    @Test public void testCustomConversionsCanBeRegistered() {
         converter.register(File.class, new Converter() {
             public Object convert(String in) {
                 return new File(in);
@@ -61,14 +65,14 @@ public final class StringToObjectConverterTestCase extends TestCase {
         assertEquals(new File("hello"), converter.convertTo(File.class, "hello"));
     }
 
-    public void testNullsMapToDefaultValues() {
+    @Test public void testNullsMapToDefaultValues() {
         assertNull(converter.convertTo(String.class, null));
         assertEquals(0, converter.convertTo(Integer.class, null));
         assertEquals((long)0, converter.convertTo(Long.class, null));
         assertEquals(Boolean.FALSE, converter.convertTo(Boolean.class, null));
     }
 
-    public void testExceptionThrownIfConverterNotRegistered() {
+    @Test public void testExceptionThrownIfConverterNotRegistered() {
         try {
             converter.convertTo(File.class, "hello");
             fail("Should have thrown exception");
@@ -77,7 +81,7 @@ public final class StringToObjectConverterTestCase extends TestCase {
         }
     }
 
-    public void testDodgyFormatThrowExceptions() {
+    @Test public void testDodgyFormatThrowExceptions() {
         try {
             converter.convertTo(Integer.class, "fooo");
             fail("Should have thrown exception");

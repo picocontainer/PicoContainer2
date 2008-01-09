@@ -10,27 +10,34 @@
 
 package org.nanocontainer.reflection;
 
-import junit.framework.TestCase;
-import org.nanocontainer.NanoContainer;
-import org.nanocontainer.ClassName;
-import org.nanocontainer.DefaultNanoContainer;
-import org.nanocontainer.TestHelper;
-import org.picocontainer.PicoClassNotFoundException;
-import org.nanocontainer.testmodel.WebServerImpl;
-import org.picocontainer.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.net.MalformedURLException;
 
-public class OldDefaultNanoContainerTestCase extends TestCase {
+import org.junit.Test;
+import org.nanocontainer.ClassName;
+import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
+import org.nanocontainer.TestHelper;
+import org.nanocontainer.testmodel.WebServerImpl;
+import org.picocontainer.PicoClassNotFoundException;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoException;
 
-    public void testBasic() throws PicoCompositionException {
+public class OldDefaultNanoContainerTestCase {
+
+    @Test public void testBasic() throws PicoCompositionException {
         NanoContainer nanoContainer = new DefaultNanoContainer();
         nanoContainer.addComponent(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
         nanoContainer.addComponent("org.nanocontainer.testmodel.WebServer", new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
     }
 
-    public void testProvision() throws PicoException {
+    @Test public void testProvision() throws PicoException {
         NanoContainer nanoContainer = new DefaultNanoContainer();
         nanoContainer.addComponent(new ClassName("org.nanocontainer.testmodel.DefaultWebServerConfig"));
         nanoContainer.addComponent(new ClassName("org.nanocontainer.testmodel.WebServerImpl"));
@@ -39,7 +46,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         assertTrue("WebServerImpl should exist", nanoContainer.getComponent(WebServerImpl.class) != null);
     }
 
-    public void testNoGenerationRegistration() throws PicoCompositionException {
+    @Test public void testNoGenerationRegistration() throws PicoCompositionException {
         NanoContainer nanoContainer = new DefaultNanoContainer();
         try {
             nanoContainer.addComponent(new ClassName("Ping"));
@@ -49,7 +56,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
         }
     }
 
-    public void testThatTestCompIsNotNaturallyInTheClassPathForTesting() {
+    @Test public void testThatTestCompIsNotNaturallyInTheClassPathForTesting() {
 
         // the following tests try to load the jar containing TestComp - it
         // won't do to have the class already available in the classpath
@@ -64,7 +71,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
 
     }
 
-    public void testChildContainerAdapterCanRelyOnParentContainerAdapter() throws MalformedURLException {
+    @Test public void testChildContainerAdapterCanRelyOnParentContainerAdapter() throws MalformedURLException {
 
         File testCompJar = TestHelper.getTestCompJarFile();
 
@@ -113,7 +120,7 @@ public class OldDefaultNanoContainerTestCase extends TestCase {
 
     }
 
-    public void testClassLoaderJugglingIsPossible() throws MalformedURLException {
+    @Test public void testClassLoaderJugglingIsPossible() throws MalformedURLException {
         NanoContainer parentContainer = new DefaultNanoContainer();
 
 

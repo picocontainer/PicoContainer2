@@ -30,9 +30,9 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Map;
 
-import org.nanocontainer.integrationkit.LifecycleMode;
 import org.junit.Test;
 import org.nanocontainer.TestHelper;
+import org.nanocontainer.integrationkit.LifecycleMode;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.testmodel.A;
 import org.picocontainer.DefaultPicoContainer;

@@ -9,15 +9,18 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
+import static org.junit.Assert.assertSame;
+
+import org.junit.Test;
+
 import dynaop.MixinFactory;
-import junit.framework.TestCase;
 
 /**
  * @author Stephen Molitor
  */
-public class InstanceMixinFactoryTestCase extends TestCase {
+public class InstanceMixinFactoryTestCase {
 
-    public void testCreate() {
+    @Test public void testCreate() {
         Object instance = "foo";
         MixinFactory factory = new InstanceMixinFactory(instance);
         assertSame(instance, factory.create(null));

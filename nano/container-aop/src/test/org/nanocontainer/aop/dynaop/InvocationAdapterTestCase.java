@@ -9,14 +9,16 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
-import dynaop.Invocation;
-import dynaop.Proxy;
-import dynaop.ProxyContext;
+import java.lang.reflect.Method;
+
 import org.aopalliance.intercept.MethodInvocation;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.junit.Test;
 
-import java.lang.reflect.Method;
+import dynaop.Invocation;
+import dynaop.Proxy;
+import dynaop.ProxyContext;
 
 /**
  * @author Stephen Molitor
@@ -28,34 +30,34 @@ public final class InvocationAdapterTestCase extends MockObjectTestCase {
     private final Mock mockProxy = mock(Proxy.class);
     private final Mock mockProxyContext = mock(ProxyContext.class);
 
-    public void testProceed() throws Throwable {
+    @Test public void testProceed() throws Throwable {
         mockInvocation.expects(once()).method("proceed").will(returnValue("result"));
         Object result = invocationAdapter.proceed();
         assertEquals("result", result);
     }
 
-    public void testGetArguments() {
+    @Test public void testGetArguments() {
         Object[] args = {"a", "b", "c"};
         mockInvocation.expects(once()).method("getArguments").will(returnValue(args));
         Object[] actualArgs = invocationAdapter.getArguments();
         assertEquals(args, actualArgs);
     }
 
-    public void testGetMethod() throws SecurityException, NoSuchMethodException {
+    @Test public void testGetMethod() throws SecurityException, NoSuchMethodException {
         Method method = String.class.getMethod("length");
         mockInvocation.expects(once()).method("getMethod").will(returnValue(method));
         Method actualMethod = invocationAdapter.getMethod();
         assertEquals(method, actualMethod);
     }
 
-    public void testGetStaticPart() throws SecurityException, NoSuchMethodException {
+    @Test public void testGetStaticPart() throws SecurityException, NoSuchMethodException {
         Method method = String.class.getMethod("length");
         mockInvocation.expects(once()).method("getMethod").will(returnValue(method));
         Object staticPart = invocationAdapter.getStaticPart();
         assertEquals(method, staticPart);
     }
 
-    public void testGetThis() {
+    @Test public void testGetThis() {
         mockInvocation.expects(once()).method("getProxy").will(returnValue(mockProxy.proxy()));
         mockProxy.expects(once()).method("getProxyContext").will(returnValue(mockProxyContext.proxy()));
         mockProxyContext.expects(once()).method("unwrap").will(returnValue("target"));

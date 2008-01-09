@@ -1,32 +1,38 @@
 package org.nanocontainer.script;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import junit.framework.TestCase;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Name/Builder Resolution Test Cases.
  * @author Michael Rimov
  */
-public class ScriptBuilderResolverTestCase extends TestCase {
+public class ScriptBuilderResolverTestCase {
     private ScriptBuilderResolver scriptBuilderResolver = null;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before public void setUp() throws Exception {
         scriptBuilderResolver = new ScriptBuilderResolver();
     }
 
-    protected void tearDown() throws Exception {
+    @After public void tearDown() throws Exception {
         scriptBuilderResolver = null;
-        super.tearDown();
     }
 
 
-    public void testGetAllSupportedExtensions() {
+    @Test public void testGetAllSupportedExtensions() {
         Set allExtensions = new TreeSet();
 
         allExtensions.add(ScriptBuilderResolver.XML);
@@ -40,14 +46,14 @@ public class ScriptBuilderResolverTestCase extends TestCase {
         assertTrue(allExtensions.size() == 0);
     }
 
-    public void testGetBuilderClassNameForFile() {
+    @Test public void testGetBuilderClassNameForFile() {
         File compositionFile = new File("test.xml");
         String expected = ScriptBuilderResolver.DEFAULT_XML_BUILDER;
         String actual = scriptBuilderResolver.getBuilderClassName(compositionFile);
         assertEquals("return value", expected, actual);
     }
 
-    public void testGetBuilderClassNameForResource() {
+    @Test public void testGetBuilderClassNameForResource() {
         final String resourceName = "/org/nanocontainer/nanocontainer.xml";
         URL compositionURL = this.getClass().getResource(resourceName);
         if (compositionURL == null) {
@@ -58,13 +64,13 @@ public class ScriptBuilderResolverTestCase extends TestCase {
         assertEquals("return value", expected, actual);
     }
 
-    public void testGetBuilderClassNameForExtension() throws UnsupportedScriptTypeException {
+    @Test public void testGetBuilderClassNameForExtension() throws UnsupportedScriptTypeException {
         String expectedReturn = ScriptBuilderResolver.DEFAULT_XML_BUILDER;
         String actualReturn = scriptBuilderResolver.getBuilderClassName(".xml");
         assertEquals("return value", expectedReturn, actualReturn);
     }
 
-    public void testGetBuilderForExtensionThrowsExceptionForUnknownBuilderType() {
+    @Test public void testGetBuilderForExtensionThrowsExceptionForUnknownBuilderType() {
         try {
             scriptBuilderResolver.getBuilderClassName(".foo");
             fail("Retrieving extension of type .foo should have thrown exception");
@@ -73,12 +79,12 @@ public class ScriptBuilderResolverTestCase extends TestCase {
         }
     }
 
-    public void testRegisterBuilder() {
+    @Test public void testRegisterBuilder() {
         scriptBuilderResolver.registerBuilder(".foo","org.example.FooBar");
         assertEquals("org.example.FooBar", scriptBuilderResolver.getBuilderClassName(".foo"));
     }
 
-    public void testResetBuilders() {
+    @Test public void testResetBuilders() {
         scriptBuilderResolver.registerBuilder(".foo","org.example.FooBar");
         scriptBuilderResolver.resetBuilders();
         try {

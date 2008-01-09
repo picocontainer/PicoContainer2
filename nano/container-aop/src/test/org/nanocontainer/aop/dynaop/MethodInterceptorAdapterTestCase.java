@@ -9,11 +9,13 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
-import dynaop.Invocation;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.junit.Test;
+
+import dynaop.Invocation;
 
 /**
  * @author Stephen Molitor
@@ -23,7 +25,7 @@ public final class MethodInterceptorAdapterTestCase extends MockObjectTestCase {
     private final Mock mockMethodInterceptor = mock(MethodInterceptor.class);
     private final Mock mockInvocation = mock(Invocation.class);
 
-    public void testInvoke() throws Throwable {
+    @Test public void testInvoke() throws Throwable {
         mockMethodInterceptor.expects(once()).method("invoke").with(isA(MethodInvocation.class)).will(returnValue("result"));
 
         dynaop.Interceptor interceptor = new MethodInterceptorAdapter((MethodInterceptor) mockMethodInterceptor.proxy());

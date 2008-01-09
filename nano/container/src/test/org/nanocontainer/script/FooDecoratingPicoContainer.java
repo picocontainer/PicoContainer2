@@ -1,14 +1,14 @@
 package org.nanocontainer.script;
 
-import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import junit.framework.Assert;
+
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-
-import java.util.HashMap;
-import java.util.ArrayList;
-
-import junit.framework.Assert;
+import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 
 public class FooDecoratingPicoContainer extends AbstractDelegatingMutablePicoContainer {
     public FooDecoratingPicoContainer(MutablePicoContainer delegate) {

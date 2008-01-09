@@ -9,9 +9,11 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
-import dynaop.ClassPointcut;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.junit.Test;
+
+import dynaop.ClassPointcut;
 
 /**
  * @author Stephen Molitor
@@ -20,7 +22,7 @@ public final class DynaopClassPointcutTestCase extends MockObjectTestCase {
 
     private final Mock mockDelegate = mock(dynaop.ClassPointcut.class);
 
-    public void testPicks() {
+    @Test public void testPicks() {
         mockDelegate.expects(once()).method("picks").with(eq(String.class)).will(returnValue(false));
         mockDelegate.expects(once()).method("picks").with(eq(Integer.class)).will(returnValue(true));
 

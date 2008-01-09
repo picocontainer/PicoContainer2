@@ -8,24 +8,27 @@
  *****************************************************************************/
 package org.nanocontainer.script.xml;
 
-import junit.framework.TestCase;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.StringReader;
+
+import org.junit.Test;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * @author Paul Hammant
  * @author Marcos Tarruella
  */
-public class BeanComponentInstanceFactoryTestCase extends TestCase {
+public class BeanComponentInstanceFactoryTestCase {
 
-    public void testDeserialization() throws ParserConfigurationException, IOException, SAXException {
+    @Test public void testDeserialization() throws ParserConfigurationException, IOException, SAXException {
         BeanComponentInstanceFactory factory = new BeanComponentInstanceFactory();
 
         StringReader sr = new StringReader("" +
@@ -43,7 +46,7 @@ public class BeanComponentInstanceFactoryTestCase extends TestCase {
         assertEquals(10, bean.getFoo());
     }
 
-    public void testDeserializationWithMappedName() throws ParserConfigurationException, IOException, SAXException {
+    @Test public void testDeserializationWithMappedName() throws ParserConfigurationException, IOException, SAXException {
         BeanComponentInstanceFactory factory = new BeanComponentInstanceFactory();
 
         StringReader sr = new StringReader("" +

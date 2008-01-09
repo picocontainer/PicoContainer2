@@ -10,9 +10,6 @@
 
 package org.nanocontainer.reflection;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Properties;
 
 import org.junit.Test;

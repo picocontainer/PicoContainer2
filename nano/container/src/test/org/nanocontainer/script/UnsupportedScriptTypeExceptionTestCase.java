@@ -1,27 +1,31 @@
 package org.nanocontainer.script;
 
-import junit.framework.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Exception Tests.
  * @author Michael Rimov
  */
-public class UnsupportedScriptTypeExceptionTestCase extends TestCase {
+public class UnsupportedScriptTypeExceptionTestCase {
     private UnsupportedScriptTypeException unsupportedScriptTypeException = null;
 
     private final String[] supportedParams = new String[]{".groovy",".py",".xml"};
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before public void setUp() throws Exception {
         unsupportedScriptTypeException = new UnsupportedScriptTypeException("test.txt", supportedParams);
     }
 
-    protected void tearDown() throws Exception {
+    @After public void tearDown() throws Exception {
         unsupportedScriptTypeException = null;
-        super.tearDown();
     }
 
-    public void testGetMessage() {
+    @Test public void testGetMessage() {
         String actualReturn = unsupportedScriptTypeException.getMessage();
         assertNotNull(actualReturn);
         assertTrue(actualReturn.indexOf(".groovy") > -1);
@@ -30,13 +34,13 @@ public class UnsupportedScriptTypeExceptionTestCase extends TestCase {
         assertTrue(actualReturn.indexOf("test.txt") > -1);
     }
 
-    public void testGetRequestedExtension() {
+    @Test public void testGetRequestedExtension() {
         String expectedReturn = "test.txt";
         String actualReturn = unsupportedScriptTypeException.getRequestedExtension();
         assertEquals("return value", expectedReturn, actualReturn);
     }
 
-    public void testGetSystemSupportedExtensions() {
+    @Test public void testGetSystemSupportedExtensions() {
         String[] expectedReturn = supportedParams;
         String[] actualReturn = unsupportedScriptTypeException.getSystemSupportedExtensions();
         assertEquals("return value", expectedReturn, actualReturn);

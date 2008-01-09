@@ -10,31 +10,35 @@
 
 package org.nanocontainer.script.groovy.buildernodes;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Collections;
 import java.util.HashMap;
-import org.nanocontainer.NanoContainer;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.nanocontainer.DefaultNanoContainer;
+import org.nanocontainer.NanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
-import junit.framework.TestCase;
 
 /**
  * Tests node marking and exceptions
  * @author Michael Rimov
  */
-public class TestAppendContainerNode extends TestCase {
+public class TestAppendContainerNode {
     private AppendContainerNode appendContainerNode = null;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before public void setUp() throws Exception {
         appendContainerNode = new AppendContainerNode();
     }
 
-    protected void tearDown() throws Exception {
+    @After public void tearDown() throws Exception {
         appendContainerNode = null;
-        super.tearDown();
     }
 
-    public void testCreateNewNodeWithoutParameterThrowsException() {
+    @Test public void testCreateNewNodeWithoutParameterThrowsException() {
         try {
             appendContainerNode.createNewNode(null, Collections.EMPTY_MAP);
             fail("Should have thrown exception");
@@ -43,7 +47,7 @@ public class TestAppendContainerNode extends TestCase {
         }
     }
 
-    public void testCreateNodeWithParmeterReturnsParameter() throws NanoContainerMarkupException {
+    @Test public void testCreateNodeWithParmeterReturnsParameter() throws NanoContainerMarkupException {
         HashMap params = new HashMap();
         NanoContainer nano = new DefaultNanoContainer();
         params.put(AppendContainerNode.CONTAINER, nano);
@@ -51,7 +55,7 @@ public class TestAppendContainerNode extends TestCase {
         assertTrue(nano == nano2);
     }
 
-    public void testCreateWithImproperTypeThrowsClassCastException() throws NanoContainerMarkupException {
+    @Test public void testCreateWithImproperTypeThrowsClassCastException() throws NanoContainerMarkupException {
         HashMap params = new HashMap();
         params.put(AppendContainerNode.CONTAINER, "This is a test");
         try {

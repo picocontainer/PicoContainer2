@@ -12,12 +12,12 @@ package org.nanocontainer.aop;
 import org.nanocontainer.testmodel.Dao;
 import org.nanocontainer.testmodel.Identifiable;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * @author Stephen Molitor
  */
-public abstract class AbstractAopTestCase extends TestCase {
+public abstract class AbstractAopTestCase {
 
     protected void verifyIntercepted(Dao dao, StringBuffer log) {
         String before = log.toString();

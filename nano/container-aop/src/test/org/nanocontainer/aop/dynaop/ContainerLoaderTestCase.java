@@ -9,25 +9,28 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
-import junit.framework.TestCase;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+
+import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 
 /**
  * @author Stephen Molitor
  */
-public final class ContainerLoaderTestCase extends TestCase {
+public final class ContainerLoaderTestCase {
 
     private final ContainerLoader loader = new ContainerLoader();
     private final PicoContainer container = new DefaultPicoContainer();
 
-    public void testContainerSet() {
+    @Test public void testContainerSet() {
         loader.setContainer(container);
         assertSame(container, loader.getContainer());
     }
 
-    public void testContainerNotSet() {
+    @Test public void testContainerNotSet() {
         try {
             loader.getContainer();
             fail("PicoCompositionException should have been raised");

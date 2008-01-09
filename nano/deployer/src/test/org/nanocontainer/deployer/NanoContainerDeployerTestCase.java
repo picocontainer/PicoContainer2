@@ -1,32 +1,33 @@
 package org.nanocontainer.deployer;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;
 import org.apache.commons.vfs.impl.DefaultFileSystemManager;
 import org.apache.commons.vfs.impl.VFSClassLoader;
 import org.apache.commons.vfs.provider.local.DefaultLocalFileProvider;
 import org.apache.commons.vfs.provider.zip.ZipFileProvider;
-import org.nanocontainer.deployer.Deployer;
-import org.nanocontainer.deployer.NanoContainerDeployer;
-import org.picocontainer.PicoContainer;
+import org.junit.Test;
 import org.picocontainer.ObjectReference;
-
-import junit.framework.TestCase;
-
-import java.net.MalformedURLException;
-import java.lang.reflect.InvocationTargetException;
-import java.io.File;
+import org.picocontainer.PicoContainer;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public final class NanoContainerDeployerTestCase extends TestCase {
+public final class NanoContainerDeployerTestCase {
 
     private final String jarsDir = "target/deployer/apps";
     private final String folderPath = "src/deploytest";
 
-    public void testZipWithDeploymentScriptAndClassesCanBeDeployed() throws FileSystemException, MalformedURLException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+    @Test public void testZipWithDeploymentScriptAndClassesCanBeDeployed() throws FileSystemException, MalformedURLException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
         DefaultFileSystemManager manager = new DefaultFileSystemManager();
         FileObject applicationArchive = getApplicationArchive(manager, jarsDir + "/successful-deploy.jar");
 
@@ -37,7 +38,7 @@ public final class NanoContainerDeployerTestCase extends TestCase {
         assertEquals("Groovy Started", zap.toString());
     }
 
-    public void testZipWithBadScriptNameThrowsFileSystemException() throws ClassNotFoundException, FileSystemException {
+    @Test public void testZipWithBadScriptNameThrowsFileSystemException() throws ClassNotFoundException, FileSystemException {
 
       DefaultFileSystemManager manager = new DefaultFileSystemManager();
       FileObject applicationFolder = getApplicationArchive(manager,  jarsDir + "/badscript-deploy.jar");
@@ -52,7 +53,7 @@ public final class NanoContainerDeployerTestCase extends TestCase {
       }
     }
 
-    public void testMalformedDeployerArchiveThrowsFileSystemException() throws ClassNotFoundException, FileSystemException {
+    @Test public void testMalformedDeployerArchiveThrowsFileSystemException() throws ClassNotFoundException, FileSystemException {
       DefaultFileSystemManager manager = new DefaultFileSystemManager();
       FileObject applicationFolder = getApplicationArchive(manager,  jarsDir + "/malformed-deploy.jar");
 
@@ -66,7 +67,7 @@ public final class NanoContainerDeployerTestCase extends TestCase {
       }
     }
 
-    public void testFolderWithDeploymentScriptAndClassesCanBeDeployed() throws FileSystemException, MalformedURLException, ClassNotFoundException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+    @Test public void testFolderWithDeploymentScriptAndClassesCanBeDeployed() throws FileSystemException, MalformedURLException, ClassNotFoundException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
         DefaultFileSystemManager manager = new DefaultFileSystemManager();
         FileObject applicationFolder = getApplicationFolder(manager, folderPath);
 
@@ -83,14 +84,14 @@ public final class NanoContainerDeployerTestCase extends TestCase {
         }
     }
 
-    public void testZapClassCanBeLoadedByVFSClassLoader() throws FileSystemException, MalformedURLException, ClassNotFoundException {
+    @Test public void testZapClassCanBeLoadedByVFSClassLoader() throws FileSystemException, MalformedURLException, ClassNotFoundException {
         DefaultFileSystemManager manager = new DefaultFileSystemManager();
         FileObject applicationFolder = getApplicationFolder(manager, folderPath);
         ClassLoader applicationClassLoader = new VFSClassLoader(applicationFolder, manager, getClass().getClassLoader());
         applicationClassLoader.loadClass("foo.bar.Zap");
     }
 
-    public void testSettingDifferentBaseNameWillResultInChangeForWhatBuilderLooksFor() throws FileSystemException, MalformedURLException {
+    @Test public void testSettingDifferentBaseNameWillResultInChangeForWhatBuilderLooksFor() throws FileSystemException, MalformedURLException {
         DefaultFileSystemManager manager = new DefaultFileSystemManager();
         FileObject applicationFolder = getApplicationFolder(manager, folderPath);
         NanoContainerDeployer deployer = new NanoContainerDeployer(manager);
@@ -110,7 +111,7 @@ public final class NanoContainerDeployerTestCase extends TestCase {
     }
 
 
-    public void testParentClassLoadersArePropertyPropagated() throws FileSystemException, MalformedURLException, ClassNotFoundException {
+    @Test public void testParentClassLoadersArePropertyPropagated() throws FileSystemException, MalformedURLException, ClassNotFoundException {
         DefaultFileSystemManager manager = new DefaultFileSystemManager();
         FileObject applicationFolder = getApplicationFolder(manager, folderPath);
         NanoContainerDeployer deployer = new NanoContainerDeployer(manager);
@@ -121,7 +122,7 @@ public final class NanoContainerDeployerTestCase extends TestCase {
 
     }
 
-    public void testAssemblyScope() throws FileSystemException, MalformedURLException, ClassNotFoundException {
+    @Test public void testAssemblyScope() throws FileSystemException, MalformedURLException, ClassNotFoundException {
         DefaultFileSystemManager manager = new DefaultFileSystemManager();
         FileObject applicationArchive = getApplicationArchive(manager, jarsDir + "/successful-deploy.jar");
 

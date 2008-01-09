@@ -1,20 +1,20 @@
 package org.nanocontainer;
 
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashSet;
+
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.lifecycle.LifecycleState;
 
-import java.util.HashSet;
-import java.util.ArrayList;
-import java.io.LineNumberReader;
-import java.io.StringReader;
-import java.io.IOException;
-
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 public class PrettyXmlRepresentation {
 

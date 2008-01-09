@@ -8,6 +8,8 @@
  *****************************************************************************/
 package org.nanocontainer.script.xml;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -15,8 +17,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import junit.framework.TestCase;
-
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -28,17 +29,17 @@ import com.thoughtworks.xstream.converters.reflection.Sun14ReflectionProvider;
  * @author Paul Hammant
  * @author Marcos Tarruella
  */
-public class XStreamComponentInstanceFactoryTestCase extends TestCase {
+public class XStreamComponentInstanceFactoryTestCase {
 
-    public void testDeserializationWithDefaultMode() throws ParserConfigurationException, IOException, SAXException {
+    @Test public void testDeserializationWithDefaultMode() throws ParserConfigurationException, IOException, SAXException {
         runDeserializationTest(new XStreamComponentInstanceFactory());
     }
 
-    public void testDeserializationInEncancedMode() throws ParserConfigurationException, IOException, SAXException {
+    @Test public void testDeserializationInEncancedMode() throws ParserConfigurationException, IOException, SAXException {
         runDeserializationTest(new XStreamComponentInstanceFactory(new XStream(new Sun14ReflectionProvider())));
     }
 
-    public void testDeserializationInPureJavaMode() throws ParserConfigurationException, IOException, SAXException {
+    @Test public void testDeserializationInPureJavaMode() throws ParserConfigurationException, IOException, SAXException {
         runDeserializationTest(new PureJavaXStreamComponentInstanceFactory());
     }
 

@@ -11,10 +11,11 @@ package org.nanocontainer.aop.defaults;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.junit.Test;
 import org.nanocontainer.aop.AspectsApplicator;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoContainer;
 
 /**
  * @author Stephen Molitor
@@ -25,7 +26,7 @@ public final class AspectedTestCase extends MockObjectTestCase {
     private final Mock mockComponentAdapterDelegate = mock(ComponentAdapter.class);
     private final PicoContainer container = new DefaultPicoContainer();
 
-    public void testGetComponentInstance() {
+    @Test public void testGetComponentInstance() {
         mockComponentAdapterDelegate.expects(once()).method("getComponentInstance").with(same(container)).will(returnValue("addComponent"));
         mockComponentAdapterDelegate.expects(once()).method("getComponentKey").will(returnValue("componentKey"));
 

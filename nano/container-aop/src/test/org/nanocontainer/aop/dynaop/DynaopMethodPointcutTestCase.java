@@ -9,11 +9,13 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
-import dynaop.MethodPointcut;
+import java.lang.reflect.Method;
+
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.junit.Test;
 
-import java.lang.reflect.Method;
+import dynaop.MethodPointcut;
 
 /**
  * @author Stephen Molitor
@@ -22,7 +24,7 @@ public final class DynaopMethodPointcutTestCase extends MockObjectTestCase {
 
     private final Mock mockDelegate = mock(dynaop.MethodPointcut.class);
 
-    public void testPicks() throws SecurityException, NoSuchMethodException {
+    @Test public void testPicks() throws SecurityException, NoSuchMethodException {
         Method method1 = String.class.getMethod("length");
         Method method2 = String.class.getMethod("hashCode");
 

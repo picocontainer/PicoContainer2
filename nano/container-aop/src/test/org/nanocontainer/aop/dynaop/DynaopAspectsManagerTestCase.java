@@ -9,6 +9,13 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.lang.reflect.Method;
+
+import org.junit.Test;
 import org.nanocontainer.aop.AbstractAopTestCase;
 import org.nanocontainer.aop.AspectsManager;
 import org.nanocontainer.aop.ClassPointcut;
@@ -26,13 +33,11 @@ import org.nanocontainer.testmodel.Identifiable;
 import org.nanocontainer.testmodel.IdentifiableMixin;
 import org.nanocontainer.testmodel.OrderEntity;
 import org.nanocontainer.testmodel.OrderEntityImpl;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.DefaultPicoContainer;
-
-import java.lang.reflect.Method;
 
 /**
  * @author Stephen Molitor
@@ -44,7 +49,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
     private final MutablePicoContainer pico = new DefaultPicoContainer(componentFactory);
     private final PointcutsFactory cuts = aspects.getPointcutsFactory();
 
-    public void testInterceptor() {
+    @Test public void testInterceptor() {
         StringBuffer log = new StringBuffer();
         aspects.registerInterceptor(cuts.instancesOf(Dao.class), cuts.allMethods(), new LoggingInterceptor(log));
         pico.addComponent(Dao.class, DaoImpl.class);
@@ -52,7 +57,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         verifyIntercepted(dao, log);
     }
 
-    public void testContainerSuppliedInterceptor() {
+    @Test public void testContainerSuppliedInterceptor() {
         aspects.registerInterceptor(cuts.instancesOf(Dao.class), cuts.allMethods(), LoggingInterceptor.class);
 
         pico.addComponent("log", StringBuffer.class);
@@ -64,7 +69,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         verifyIntercepted(dao, log);
     }
 
-    public void testComponentInterceptor() {
+    @Test public void testComponentInterceptor() {
         StringBuffer log = new StringBuffer();
 
         aspects.registerInterceptor(cuts.component("intercepted"), cuts.allMethods(), new LoggingInterceptor(log));
@@ -78,7 +83,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         verifyNotIntercepted(notIntercepted, log);
     }
 
-    public void testContainerSuppliedComponentInterceptor() {
+    @Test public void testContainerSuppliedComponentInterceptor() {
         aspects.registerInterceptor(cuts.component("intercepted"), cuts.allMethods(), LoggingInterceptor.class);
 
         pico.addComponent("log", StringBuffer.class);
@@ -94,7 +99,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         verifyNotIntercepted(notIntercepted, log);
     }
 
-    public void testMixin() {
+    @Test public void testMixin() {
         aspects.registerMixin(cuts.instancesOf(Dao.class), IdentifiableMixin.class);
         pico.addComponent(Dao.class, DaoImpl.class);
         Dao dao = pico.getComponent(Dao.class);
@@ -102,7 +107,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         assertTrue(dao instanceof AnotherInterface);
     }
 
-    public void testContainerSuppliedMixin() {
+    @Test public void testContainerSuppliedMixin() {
         aspects.registerMixin(cuts.instancesOf(OrderEntity.class), IdentifiableMixin.class);
         pico.addComponent("order1", OrderEntityImpl.class);
         pico.addComponent("order2", OrderEntityImpl.class);
@@ -124,7 +129,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         assertEquals(2, order2.getId());
     }
 
-    public void testContainerSuppliedMixinWithMixinExplicitlyRegistered() {
+    @Test public void testContainerSuppliedMixinWithMixinExplicitlyRegistered() {
         aspects.registerMixin(cuts.instancesOf(OrderEntity.class), IdentifiableMixin.class);
         pico.addComponent(IdentifiableMixin.class);
         pico.addComponent("order1", OrderEntityImpl.class);
@@ -143,7 +148,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         assertEquals(42, order2.getId());
     }
 
-    public void testComponentMixin() {
+    @Test public void testComponentMixin() {
         pico.addComponent("hasMixin", DaoImpl.class);
         pico.addComponent("noMixin", DaoImpl.class);
 
@@ -180,7 +185,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         assertEquals(2, hasMixin2.getId());
     }
 
-    public void testMixinExplicitInterfaces() {
+    @Test public void testMixinExplicitInterfaces() {
         aspects.registerMixin(cuts.instancesOf(Dao.class), new Class[]{Identifiable.class}, IdentifiableMixin.class);
         pico.addComponent(Dao.class, DaoImpl.class);
         Dao dao = pico.getComponent(Dao.class);
@@ -188,7 +193,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         assertFalse(dao instanceof AnotherInterface);
     }
 
-    public void testComponentMixinExplicitInterfaces() {
+    @Test public void testComponentMixinExplicitInterfaces() {
         pico.addComponent("hasMixin", DaoImpl.class);
         pico.addComponent("noMixin", DaoImpl.class);
 
@@ -203,7 +208,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         assertFalse(hasMixin instanceof AnotherInterface);
     }
 
-    public void testCustomClassPointcut() {
+    @Test public void testCustomClassPointcut() {
         StringBuffer log = new StringBuffer();
 
         ClassPointcut customCut = new ClassPointcut() {
@@ -218,7 +223,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         verifyIntercepted(dao, log);
     }
 
-    public void testCustomMethodPointcut() {
+    @Test public void testCustomMethodPointcut() {
         StringBuffer log = new StringBuffer();
 
         MethodPointcut customCut = new MethodPointcut() {
@@ -233,7 +238,7 @@ public final class DynaopAspectsManagerTestCase extends AbstractAopTestCase {
         verifyIntercepted(dao, log);
     }
 
-    public void testCustomComponentPointcut() {
+    @Test public void testCustomComponentPointcut() {
         StringBuffer log = new StringBuffer();
 
         ComponentPointcut customCut = new ComponentPointcut() {

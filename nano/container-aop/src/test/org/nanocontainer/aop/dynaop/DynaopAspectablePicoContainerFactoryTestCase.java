@@ -9,6 +9,12 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 import org.nanocontainer.aop.AbstractAopTestCase;
 import org.nanocontainer.aop.AspectablePicoContainer;
 import org.nanocontainer.aop.AspectablePicoContainerFactory;
@@ -23,9 +29,9 @@ import org.nanocontainer.testmodel.Identifiable;
 import org.nanocontainer.testmodel.IdentifiableMixin;
 import org.nanocontainer.testmodel.OrderEntity;
 import org.nanocontainer.testmodel.OrderEntityImpl;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.testmodel.SimpleTouchable;
 
 /**
@@ -37,7 +43,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
     private final AspectablePicoContainer pico = containerFactory.createContainer();
     private final PointcutsFactory cuts = pico.getPointcutsFactory();
 
-    public void testInterceptor() {
+    @Test public void testInterceptor() {
         StringBuffer log = new StringBuffer();
         pico.registerInterceptor(cuts.instancesOf(Dao.class), cuts.allMethods(), new LoggingInterceptor(log));
         pico.addComponent(Dao.class, DaoImpl.class);
@@ -45,7 +51,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         verifyIntercepted(dao, log);
     }
 
-    public void testContainerSuppliedInterceptor() {
+    @Test public void testContainerSuppliedInterceptor() {
         pico.registerInterceptor(cuts.instancesOf(Dao.class), cuts.allMethods(), LoggingInterceptor.class);
 
         pico.addComponent("log", StringBuffer.class);
@@ -57,7 +63,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         verifyIntercepted(dao, log);
     }
 
-    public void testComponentInterceptor() {
+    @Test public void testComponentInterceptor() {
         StringBuffer log = new StringBuffer();
 
         pico.registerInterceptor(cuts.component("intercepted"), cuts.allMethods(), new LoggingInterceptor(log));
@@ -71,7 +77,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         verifyNotIntercepted(notIntercepted, log);
     }
 
-    public void testContainerSuppliedComponentInterceptor() {
+    @Test public void testContainerSuppliedComponentInterceptor() {
         pico.registerInterceptor(cuts.component("intercepted"), cuts.allMethods(), LoggingInterceptor.class);
 
         pico.addComponent("log", StringBuffer.class);
@@ -87,7 +93,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         verifyNotIntercepted(notIntercepted, log);
     }
 
-    public void testMixin() {
+    @Test public void testMixin() {
         pico.registerMixin(cuts.instancesOf(Dao.class), IdentifiableMixin.class);
         pico.addComponent(Dao.class, DaoImpl.class);
         Dao dao = pico.getComponent(Dao.class);
@@ -95,7 +101,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         assertTrue(dao instanceof AnotherInterface);
     }
 
-    public void testContainerSuppliedMixin() {
+    @Test public void testContainerSuppliedMixin() {
         pico.addComponent(IdGenerator.class, IdGeneratorImpl.class);
         pico.addComponent("order1", OrderEntityImpl.class);
         pico.addComponent("order2", OrderEntityImpl.class);
@@ -113,7 +119,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         assertEquals(2, i2.getId());
     }
 
-    public void testComponentMixin() {
+    @Test public void testComponentMixin() {
         pico.addComponent("hasMixin", DaoImpl.class);
         pico.addComponent("noMixin", DaoImpl.class);
 
@@ -127,7 +133,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         assertTrue(hasMixin instanceof AnotherInterface);
     }
 
-    public void testContainerSuppliedComponentMixin() {
+    @Test public void testContainerSuppliedComponentMixin() {
         pico.addComponent(IdGenerator.class, IdGeneratorImpl.class);
         pico.registerMixin(cuts.componentName("hasMixin*"), new Class[]{Identifiable.class}, IdentifiableMixin.class);
         pico.addComponent("hasMixin1", OrderEntityImpl.class);
@@ -146,7 +152,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         assertEquals(2, ((Identifiable) hasMixin2).getId());
     }
 
-    public void testMixinExplicitInterfaces() {
+    @Test public void testMixinExplicitInterfaces() {
         pico.registerMixin(cuts.instancesOf(Dao.class), new Class[]{Identifiable.class}, IdentifiableMixin.class);
         pico.addComponent(Dao.class, DaoImpl.class);
         Dao dao = pico.getComponent(Dao.class);
@@ -154,7 +160,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         assertFalse(dao instanceof AnotherInterface);
     }
 
-    public void testComponentMixinExplicitInterfaces() {
+    @Test public void testComponentMixinExplicitInterfaces() {
         pico.addComponent("hasMixin", DaoImpl.class);
         pico.addComponent("noMixin", DaoImpl.class);
 
@@ -169,7 +175,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         assertFalse(hasMixin instanceof AnotherInterface);
     }
 
-    public void testCreateWithParentContainer() {
+    @Test public void testCreateWithParentContainer() {
         MutablePicoContainer parent = new DefaultPicoContainer();
         parent.addComponent("key", "value");
         AspectablePicoContainerFactory containerFactory = new DynaopAspectablePicoContainerFactory();
@@ -177,7 +183,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         assertEquals("value", child.getComponent("key"));
     }
     
-    public void testMakeChildContainer(){
+    @Test public void testMakeChildContainer(){
         AspectablePicoContainerFactory aspectableContainerFactory = new DynaopAspectablePicoContainerFactory();
         AspectablePicoContainer parent = aspectableContainerFactory.createContainer();
         parent.addComponent("t1", SimpleTouchable.class);
@@ -187,7 +193,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         assertTrue(t1 instanceof SimpleTouchable);        
     }
 
-    public void testInterfacesWithClassPointcut() {
+    @Test public void testInterfacesWithClassPointcut() {
         pico.addComponent(Dao.class, DaoImpl.class);
         pico.registerMixin(cuts.instancesOf(Dao.class), IdentifiableMixin.class);
         pico.registerInterfaces(cuts.instancesOf(Dao.class), new Class[]{AnotherInterface.class});
@@ -196,7 +202,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         assertTrue(dao instanceof AnotherInterface);
     }
 
-    public void testInterfacesWithClassPointcutNoAdviceStillSetsUp() {
+    @Test public void testInterfacesWithClassPointcutNoAdviceStillSetsUp() {
         pico.addComponent(Dao.class, DaoImpl.class);
         pico.registerInterfaces(cuts.instancesOf(Dao.class), new Class[]{AnotherInterface.class});
         Dao dao = pico.getComponent(Dao.class);
@@ -207,7 +213,7 @@ public final class DynaopAspectablePicoContainerFactoryTestCase extends Abstract
         assertTrue(dao instanceof AnotherInterface);
     }
 
-    public void testInterfacesWithComponentPointcut() {
+    @Test public void testInterfacesWithComponentPointcut() {
         pico.addComponent(Dao.class, DaoImpl.class);
         pico.registerMixin(cuts.component(Dao.class), IdentifiableMixin.class);
         pico.registerInterfaces(cuts.component(Dao.class), new Class[]{AnotherInterface.class});

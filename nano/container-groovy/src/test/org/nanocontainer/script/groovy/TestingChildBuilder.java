@@ -11,9 +11,10 @@
 package org.nanocontainer.script.groovy;
 
 import groovy.util.NodeBuilder;
-import org.picocontainer.MutablePicoContainer;
 
 import java.util.Map;
+
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * @author Paul Hammant

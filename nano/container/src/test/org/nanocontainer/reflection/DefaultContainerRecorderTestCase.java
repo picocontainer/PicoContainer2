@@ -1,5 +1,10 @@
 package org.nanocontainer.reflection;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -9,8 +14,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 
-import junit.framework.TestCase;
-
+import org.junit.Test;
+import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.integrationkit.ContainerRecorder;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
@@ -18,9 +23,8 @@ import org.nanocontainer.testmodel.FredImpl;
 import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
 import org.nanocontainer.testmodel.Wilma;
 import org.nanocontainer.testmodel.WilmaImpl;
-import org.nanocontainer.DefaultNanoContainer;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.parameters.ComponentParameter;
 
@@ -28,8 +32,8 @@ import org.picocontainer.parameters.ComponentParameter;
  * @author Konstantin Pribluda ( konstantin.pribluda(at)infodesire.com )
  * @author Aslak Helles&oslash;y
  */
-public class DefaultContainerRecorderTestCase extends TestCase {
-    public void testInvocationsCanBeRecordedAndReplayedOnADifferentContainerInstance() throws Exception {
+public class DefaultContainerRecorderTestCase {
+    @Test public void testInvocationsCanBeRecordedAndReplayedOnADifferentContainerInstance() throws Exception {
         ContainerRecorder recorder = new DefaultContainerRecorder(new DefaultNanoContainer());
         MutablePicoContainer recorded = recorder.getContainerProxy();
 
@@ -52,7 +56,7 @@ public class DefaultContainerRecorderTestCase extends TestCase {
         assertEquals("apple239", ((ThingThatTakesParamsInConstructor) anotherSlave.getComponent("thing")).getValue());
     }
 
-    public void testRecorderWorksAfterSerialization() throws IOException, ClassNotFoundException, IllegalAccessException, InvocationTargetException {
+    @Test public void testRecorderWorksAfterSerialization() throws IOException, ClassNotFoundException, IllegalAccessException, InvocationTargetException {
         ContainerRecorder recorder = new DefaultContainerRecorder(new DefaultPicoContainer());
         MutablePicoContainer recorded = recorder.getContainerProxy();
         recorded.addComponent("fruit", "apple");
@@ -74,7 +78,7 @@ public class DefaultContainerRecorderTestCase extends TestCase {
     }
 
 
-    public void testXMLRecorderHierarchy() {
+    @Test public void testXMLRecorderHierarchy() {
         MutablePicoContainer parentPrototype = new DefaultPicoContainer(new Caching());
         DefaultContainerRecorder parentRecorder = new DefaultContainerRecorder(parentPrototype);
         StringReader parentResource = new StringReader("" 

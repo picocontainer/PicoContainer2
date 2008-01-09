@@ -9,15 +9,19 @@
  *****************************************************************************/
 package org.nanocontainer.aop.defaults;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import org.junit.Test;
 import org.nanocontainer.aop.ComponentPointcut;
 
 /**
  * @author Stephen Molitor
  */
-public class KeyEqualsComponentPointcutTestCase extends TestCase {
+public class KeyEqualsComponentPointcutTestCase {
 
-    public void testPicks() {
+    @Test public void testPicks() {
         ComponentPointcut pointcutA = new KeyEqualsComponentPointcut("a");
         ComponentPointcut pointcutB = new KeyEqualsComponentPointcut("b");
 
@@ -27,7 +31,7 @@ public class KeyEqualsComponentPointcutTestCase extends TestCase {
         assertTrue(pointcutB.picks("b"));
     }
 
-    public void testConstructorChecksForNullComponentKey() {
+    @Test public void testConstructorChecksForNullComponentKey() {
         try {
             new KeyEqualsComponentPointcut(null);
             fail("NullPointerException should have been raised");

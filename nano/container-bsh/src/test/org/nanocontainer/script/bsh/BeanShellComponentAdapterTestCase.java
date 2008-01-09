@@ -9,13 +9,16 @@
  *****************************************************************************/
 package org.nanocontainer.script.bsh;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 
-import junit.framework.TestCase;
-
+import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * <a href="http://www.junit.org/">JUnit</a>
@@ -26,7 +29,7 @@ import org.picocontainer.DefaultPicoContainer;
  * @author Nick Sieger
  * @version $Id$
  */
-public class BeanShellComponentAdapterTestCase extends TestCase {
+public class BeanShellComponentAdapterTestCase {
 
     private MutablePicoContainer pico;
 
@@ -39,7 +42,7 @@ public class BeanShellComponentAdapterTestCase extends TestCase {
         return adapter;
     }
 
-    public void testGetComponentInstance() {
+    @Test public void testGetComponentInstance() {
         ComponentAdapter adapter = setupComponentAdapter(ScriptableDemoBean.class);
 
         ScriptableDemoBean bean = (ScriptableDemoBean) adapter.getComponentInstance(pico);
@@ -49,7 +52,7 @@ public class BeanShellComponentAdapterTestCase extends TestCase {
         assertTrue(bean.whatever instanceof ArrayList);
     }
 
-    public void testGetComponentInstanceBadScript() {
+    @Test public void testGetComponentInstanceBadScript() {
         ComponentAdapter adapter = setupComponentAdapter(BadScriptableDemoBean.class);
 
         try {

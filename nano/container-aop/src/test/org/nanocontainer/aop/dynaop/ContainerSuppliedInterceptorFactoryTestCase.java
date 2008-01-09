@@ -9,13 +9,15 @@
  *****************************************************************************/
 package org.nanocontainer.aop.dynaop;
 
-import dynaop.Interceptor;
-import dynaop.InterceptorFactory;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.picocontainer.MutablePicoContainer;
+import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+
+import dynaop.Interceptor;
+import dynaop.InterceptorFactory;
 
 /**
  * @author Stephen Molitor
@@ -24,7 +26,7 @@ public final class ContainerSuppliedInterceptorFactoryTestCase extends MockObjec
 
     private final MutablePicoContainer pico = new DefaultPicoContainer();
 
-    public void testCreate() throws Throwable {
+    @Test public void testCreate() throws Throwable {
         Mock methodInterceptorMock = mock(MethodInterceptor.class);
 
         pico.addComponent("interceptorComponentKey", methodInterceptorMock.proxy());
@@ -39,7 +41,7 @@ public final class ContainerSuppliedInterceptorFactoryTestCase extends MockObjec
         interceptor.intercept(null);
     }
 
-    public void testInterceptorNotFoundInContainer() {
+    @Test public void testInterceptorNotFoundInContainer() {
         MutablePicoContainer container = new DefaultPicoContainer();
         InterceptorFactory interceptorFactory = new ContainerSuppliedInterceptorFactory(container,
                 "interceptorComponentKey");

@@ -9,21 +9,25 @@
 
 package org.nanocontainer;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.cli.CommandLine;
+import org.junit.Test;
 
 
 /**
  * @author Mauro Talevi
  */
-public class StandaloneTestCase extends TestCase {
+public class StandaloneTestCase {
 
-    public void testShouldBeAbleToInvokeMainMethodWithScriptFromFile() throws IOException {
+    @Test public void testShouldBeAbleToInvokeMainMethodWithScriptFromFile() throws IOException {
         File absoluteScriptPath = getAbsoluteScriptPath();
         Standalone.main(new String[] {
             "-c",
@@ -32,7 +36,7 @@ public class StandaloneTestCase extends TestCase {
         });
     }
 
-    public void testShouldBeAbleToInvokeMainMethodWithScriptFromClasspathWithXmlIncludes() throws IOException {
+    @Test public void testShouldBeAbleToInvokeMainMethodWithScriptFromClasspathWithXmlIncludes() throws IOException {
         Standalone.main(new String[] {
             "-r",
             "/org/nanocontainer/nanocontainer-with-include.xml", 
@@ -49,7 +53,7 @@ public class StandaloneTestCase extends TestCase {
         return new File(absoluteDirPath, "nanocontainer.xml");
     }
 
-    public void testCommandLineWithHelp() throws Exception {
+    @Test public void testCommandLineWithHelp() throws Exception {
         CommandLine cl = Standalone.getCommandLine(new String[]{"-h"}, Standalone.createOptions());
         assertTrue(cl.hasOption('h'));
         assertFalse(cl.hasOption('v'));
@@ -58,7 +62,7 @@ public class StandaloneTestCase extends TestCase {
         assertFalse(cl.hasOption('n'));
     }
 
-    public void testCommandLineWithVersion() throws Exception {
+    @Test public void testCommandLineWithVersion() throws Exception {
         CommandLine cl = Standalone.getCommandLine(new String[]{"-v"}, Standalone.createOptions());
         assertFalse(cl.hasOption('h'));
         assertTrue(cl.hasOption('v'));
@@ -67,7 +71,7 @@ public class StandaloneTestCase extends TestCase {
         assertFalse(cl.hasOption('n'));
     }
 
-    public void testCommandLineWithCompostion() throws Exception {
+    @Test public void testCommandLineWithCompostion() throws Exception {
         CommandLine cl = Standalone.getCommandLine(new String[]{"-cpath"}, Standalone.createOptions());
         assertFalse(cl.hasOption('h'));
         assertFalse(cl.hasOption('v'));
@@ -76,7 +80,7 @@ public class StandaloneTestCase extends TestCase {
         assertFalse(cl.hasOption('n'));
     }
 
-    public void testCommandLineWithCompositionAndQuiet() throws Exception {
+    @Test public void testCommandLineWithCompositionAndQuiet() throws Exception {
         CommandLine cl = Standalone.getCommandLine(new String[]{"-cpath", "-q"}, Standalone.createOptions());
         assertFalse(cl.hasOption('h'));
         assertFalse(cl.hasOption('v'));
@@ -85,7 +89,7 @@ public class StandaloneTestCase extends TestCase {
         assertFalse(cl.hasOption('n'));
     }
 
-    public void testCommandLineWithCompositionAndQuietAndNowait() throws Exception {
+    @Test public void testCommandLineWithCompositionAndQuietAndNowait() throws Exception {
         CommandLine cl = Standalone.getCommandLine(new String[]{"-cpath", "-q", "-n"}, Standalone.createOptions());
         assertFalse(cl.hasOption('h'));
         assertFalse(cl.hasOption('v'));

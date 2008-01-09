@@ -9,7 +9,11 @@
  *****************************************************************************/
 package org.nanocontainer.aop.defaults;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import org.junit.Test;
 import org.nanocontainer.aop.ComponentPointcut;
 import org.nanocontainer.aop.MalformedRegularExpressionException;
 import org.nanocontainer.testmodel.Dao;
@@ -17,9 +21,9 @@ import org.nanocontainer.testmodel.Dao;
 /**
  * @author Stephen Molitor
  */
-public class NameMatchesComponentPointcutTestCase extends TestCase {
+public class NameMatchesComponentPointcutTestCase {
 
-    public void testPicks() throws Exception {
+    @Test public void testPicks() throws Exception {
         ComponentPointcut cut1 = new NameMatchesComponentPointcut("^foo$");
         assertTrue(cut1.picks("foo"));
         assertFalse(cut1.picks("barfoo"));
@@ -31,12 +35,12 @@ public class NameMatchesComponentPointcutTestCase extends TestCase {
         assertTrue(cut2.picks("foobar"));
     }
 
-    public void testNotStringComponentKey() {
+    @Test public void testNotStringComponentKey() {
         ComponentPointcut cut = new NameMatchesComponentPointcut("foo");
         assertFalse(cut.picks(Dao.class));
     }
 
-    public void testConstructorThrowsMalformedRegularExpressionException() {
+    @Test public void testConstructorThrowsMalformedRegularExpressionException() {
         try {
             new NameMatchesComponentPointcut("(");
             fail("MalformedRegularExpression exception should have been raised");
