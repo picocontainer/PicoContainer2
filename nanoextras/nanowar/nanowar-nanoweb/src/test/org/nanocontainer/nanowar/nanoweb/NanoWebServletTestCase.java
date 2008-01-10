@@ -1,12 +1,13 @@
 package org.nanocontainer.nanowar.nanoweb;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.nanocontainer.integrationkit.ContainerBuilder;
-import org.nanocontainer.nanowar.KeyConstants;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.behaviors.Caching;
+import static org.junit.Assert.assertEquals;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.Vector;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -14,157 +15,103 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.util.Vector;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.nanocontainer.integrationkit.ContainerBuilder;
+import org.nanocontainer.nanowar.KeyConstants;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.ObjectReference;
+import org.picocontainer.behaviors.Caching;
 
 /**
  * @author Aslak Helles&oslash;y
  * @author Kouhei Mori
- * @version $Revision$
+ * @author Mauro Talevi
  */
-public class NanoWebServletTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class NanoWebServletTestCase {
+	
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
     private NanoWebServlet nanoServlet;
     private MutablePicoContainer applicationContainer;
     private MutablePicoContainer requestContainer;
 
-    private Mock requestMock;
-    private Mock responseMock;
-    private Mock servletContextMock;
-    private Mock servletConfigMock;
-    private Mock containerBuilderMock;
-    private Mock requestDispatcherMock;
+    private HttpServletRequest request = mockery.mock(HttpServletRequest.class);
+    private HttpServletResponse response = mockery.mock(HttpServletResponse.class);
+    private ServletContext servletContext = mockery.mock(ServletContext.class);
+    private ServletConfig servletConfig = mockery.mock(ServletConfig.class);
+    private ContainerBuilder containerBuilder = mockery.mock(ContainerBuilder.class);
+    private RequestDispatcher requestDispatcher = mockery.mock(RequestDispatcher.class);
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before public void setUp() throws Exception {
         nanoServlet = new NanoWebServlet();
-        requestMock = mock(HttpServletRequest.class);
-        responseMock = mock(HttpServletResponse.class);
-        servletContextMock = mock(ServletContext.class);
-        servletConfigMock = mock(ServletConfig.class);
-        servletConfigMock.expects(once())
-                         .method("getServletContext")
-                         .withNoArguments()
-                         .will(returnValue(servletContextMock.proxy()));
-        servletConfigMock.expects(once())
-                         .method("getServletContext")
-                         .withNoArguments()
-                         .will(returnValue(servletContextMock.proxy()));
-        servletConfigMock.expects(atLeastOnce())
-                         .method("getServletName")
-                         .withNoArguments()
-                         .will(returnValue("NanoWeb"));
-        servletConfigMock.expects(once())
-                         .method("getServletContext")
-                         .withNoArguments()
-                         .will(returnValue(servletContextMock.proxy()));
-        servletConfigMock.expects(once())
-                         .method("getServletContext")
-                         .withNoArguments()
-                         .will(returnValue(servletContextMock.proxy()));
-        servletContextMock.expects(once())
-                          .method("log")
-                          .with(eq("NanoWeb: init"));
         applicationContainer = new DefaultPicoContainer();
-        servletContextMock.expects(once())
-                          .method("getAttribute")
-                          .with(eq(KeyConstants.APPLICATION_CONTAINER)).will(returnValue(applicationContainer));
-
-        servletContextMock.expects(once())
-                          .method("getResource")
-                          .with(eq("/test_doit_success.vm"))
-                          .will(returnValue(new URL("http://dummy/")));
-        containerBuilderMock = mock(ContainerBuilder.class);
-        servletContextMock.expects(once())
-                          .method("getAttribute")
-                          .with(eq(KeyConstants.BUILDER))
-                          .will(returnValue(containerBuilderMock.proxy()));
         requestContainer = new DefaultPicoContainer(new Caching());
-        requestMock.expects(once())
-                   .method("getAttribute")
-                   .with(eq(KeyConstants.REQUEST_CONTAINER))
-                   .will(returnValue(requestContainer));
-        requestMock.expects(once())
-                    .method("getSession")
-                    .with(eq(Boolean.TRUE))
-                    .will(returnValue(null));
-        containerBuilderMock.expects(once())
-                            .method("buildContainer")
-                            .withAnyArguments();
-        containerBuilderMock.expects(once())
-                            .method("killContainer")
-                            .withAnyArguments();
-        requestMock.expects(once())
-                   .method("getAttribute")
-                   .with(eq("javax.servlet.include.servlet_path"))
-                   .will(returnValue(null));
-        requestMock.expects(once())
-                   .method("getAttribute")
-                   .with(eq("javax.servlet.include.servlet_path"))
-                   .will(returnValue(null));
-        requestMock.expects(once())
-                   .method("getAttribute")
-                   .with(eq(KeyConstants.REQUEST_CONTAINER))
-                   .will(returnValue(requestContainer));
-        requestDispatcherMock = mock(RequestDispatcher.class);
-        requestDispatcherMock.expects(once())
-                             .method("forward")
-                             .with(eq(requestMock.proxy()), eq(responseMock.proxy()));
-
         // url params
-        Vector paramtereNames = new Vector();
-        paramtereNames.add("year");
-        requestMock.expects(once())
-                   .method("getParameterNames")
-                   .withNoArguments()
-                   .will(returnValue(paramtereNames.elements()));
-        requestMock.expects(once())
-                   .method("getParameter")
-                   .with(eq("year"))
-                   .will(returnValue("2004"));
+        final Vector paramNames = new Vector();
+        paramNames.add("year");
 
-        // path, action and view
-        requestMock.expects(once())
-                   .method("getServletPath")
-                   .withNoArguments()
-                   .will(returnValue("/test/doit.nano"));
-        requestMock.expects(once())
-                   .method("getRequestDispatcher")
-                   .with(eq("/test_doit_success.vm"))
-                   .will(returnValue(requestDispatcherMock.proxy()));
-
-        nanoServlet.init((ServletConfig) servletConfigMock.proxy());
+        mockery.checking(new Expectations(){{
+        	atLeast(4).of(servletConfig).getServletContext();
+        	will(returnValue(servletContext));
+        	atLeast(1).of(servletConfig).getServletName();
+        	will(returnValue("NanoWeb"));
+        	one(servletContext).log(with(equal("NanoWeb: init")));
+        	one(servletContext).getAttribute(with(equal(KeyConstants.APPLICATION_CONTAINER)));
+        	will(returnValue(applicationContainer));
+        	one(servletContext).getAttribute(with(equal(KeyConstants.BUILDER)));
+        	will(returnValue(containerBuilder));
+        	one(servletContext).getResource(with(equal("/test_doit_success.vm")));
+        	will(returnValue(new URL("http://dummy/")));
+        	atLeast(2).of(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
+        	will(returnValue(requestContainer));
+        	one(request).getSession(with(equal(true)));
+        	will(returnValue(null));
+        	atLeast(2).of(request).getAttribute(with(equal("javax.servlet.include.servlet_path")));
+        	will(returnValue(null));
+        	one(request).getParameterNames();
+        	will(returnValue(paramNames.elements()));
+        	one(request).getParameter(with(equal("year")));
+        	will(returnValue("2004"));
+        	one(request).getServletPath();
+        	will(returnValue("/test/doit.nano"));
+        	one(request).getRequestDispatcher(with(equal("/test_doit_success.vm")));
+        	will(returnValue(requestDispatcher));
+        	one(containerBuilder).buildContainer(with(any(ObjectReference.class)), with(any(ObjectReference.class)), with(any(Object.class)), with(any(Boolean.class)));
+        	one(containerBuilder).killContainer(with(any(ObjectReference.class)));
+        	one(requestDispatcher).forward(with(equal(request)), with(equal(response)));
+        }});
+        nanoServlet.init((ServletConfig) servletConfig);
     }
 
-    public void testParametersShouldBeSetAndExecuteInvokedOnJavaAction() throws IOException, ServletException {
+    @Test public void testParametersShouldBeSetAndExecuteInvokedOnJavaAction() throws IOException, ServletException {
         requestContainer.addComponent("/test", MyAction.class);
-        requestMock.expects(once())
-                   .method("setAttribute")
-                   .with(eq("action"), isA(MyAction.class));
+        
+        mockery.checking(new Expectations(){{
+        	one(request).setAttribute(with(equal("action")), with(any(MyAction.class)));
+        }});
 
-        nanoServlet.service((HttpServletRequest)requestMock.proxy(), (HttpServletResponse)responseMock.proxy());
+        nanoServlet.service((HttpServletRequest)request, (HttpServletResponse)response);
 
         MyAction action = (MyAction) requestContainer.getComponent("/test");
         assertEquals(2004, action.getYear());
         assertEquals("success", action.doit());
     }
 
-    public void testParametersShouldBeSetAndExecuteInvokedOnGroovyAction() throws IOException, ServletException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        servletConfigMock.expects(once())
-                         .method("getServletContext")
-                         .withNoArguments()
-                         .will(returnValue(servletContextMock.proxy()));
-        servletContextMock.expects(once())
-                          .method("getResource")
-                          .with(eq("/test.groovy"))
-                          .will(returnValue(getClass().getResource("/test.groovy")));
-        requestMock.expects(once())
-                   .method("setAttribute")
-                   .with(eq("action"), isA(Object.class));
-
-        nanoServlet.service((HttpServletRequest)requestMock.proxy(), (HttpServletResponse)responseMock.proxy());
+    @Test public void testParametersShouldBeSetAndExecuteInvokedOnGroovyAction() throws IOException, ServletException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    	 mockery.checking(new Expectations(){{
+         	one(servletContext).getResource(with(equal("/test.groovy")));
+         	will(returnValue(getClass().getResource("/test.groovy")));
+        	one(request).setAttribute(with(equal("action")), with(any(Object.class)));
+         }});
+        nanoServlet.service((HttpServletRequest)request, (HttpServletResponse)response);
 
         Object action = requestContainer.getComponent("/test.groovy");
         Method getYear = action.getClass().getMethod("getProperty", (new Class[] {String.class}));

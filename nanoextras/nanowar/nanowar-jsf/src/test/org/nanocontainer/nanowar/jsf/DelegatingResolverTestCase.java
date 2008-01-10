@@ -9,44 +9,54 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.jsf;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.el.VariableResolver;
-import org.jmock.cglib.Mock;
-import org.jmock.cglib.MockObjectTestCase;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.jmock.lib.legacy.ClassImposteriser;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.nanocontainer.nanowar.KeyConstants;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * Basic testing for the NanoWAR variable resolver. 
  * DelegatingResolverTestCase
  * @author Michael Rimov
+ * @author Mauro Talevi
  */
-public class DelegatingResolverTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class DelegatingResolverTestCase {
 
+	private Mockery mockery = mockeryWithClassImposteriser();
+	
     private MutablePicoContainer appContainer = null;
 
     private MutablePicoContainer sessionContainer = null;
 
     private MutablePicoContainer requestContainer = null;
 
-    private Mock variableResolverMock = null;
-
-    private VariableResolver delegate;
+    private VariableResolver variableResolver = mockery.mock(VariableResolver.class);
 
     private NanoWarDelegatingVariableResolver ourVariableResolver = null;
 
-    private FacesContext facesContext = null;
+    private FacesContext facesContext = mockery.mock(FacesContext.class);
 
-    private Mock facesContextMock = null;
-
-    private Mock externalContextMock = null;
-
-    private ExternalContext externalContext = null;
+    private ExternalContext externalContext = mockery.mock(ExternalContext.class);
 
     private Map requestMap = null;
 
@@ -54,7 +64,7 @@ public class DelegatingResolverTestCase extends MockObjectTestCase {
 
     private Map appMap = null;
 
-    protected void setUp() {
+    @Before public void setUp() {
         appContainer = new DefaultPicoContainer();
         appContainer.addComponent("A", A.class);
 
@@ -64,13 +74,11 @@ public class DelegatingResolverTestCase extends MockObjectTestCase {
         requestContainer = sessionContainer.makeChildContainer();
         requestContainer.addComponent("C", C.class);
 
-        facesContextMock = new Mock(FacesContext.class);
-        facesContext = (FacesContext) facesContextMock.proxy();
-
-        externalContextMock = new Mock(ExternalContext.class);
-        externalContext = (ExternalContext) externalContextMock.proxy();
         // Set up getExternalContext common call.
-        facesContextMock.expects(atLeastOnce()).method("getExternalContext").will(returnValue(externalContext));
+        mockery.checking(new Expectations(){{
+            atLeast(1).of(facesContext).getExternalContext();
+            will(returnValue(externalContext));        	
+        }});
 
         // Set up return for hashmap.
         requestMap = new HashMap();
@@ -80,32 +88,31 @@ public class DelegatingResolverTestCase extends MockObjectTestCase {
         appMap = new HashMap();
         appMap.put(KeyConstants.APPLICATION_CONTAINER, appContainer);
 
-        variableResolverMock = new Mock(VariableResolver.class);
-
         // Sanity Check for containers.
         assertNotNull(requestContainer.getComponent("A"));
-        delegate = (VariableResolver) variableResolverMock.proxy();
-        ourVariableResolver = new NanoWarDelegatingVariableResolver(delegate);
+        ourVariableResolver = new NanoWarDelegatingVariableResolver(variableResolver);
 
     }
 
-    protected void tearDown() {
-        delegate = null;
+    private Mockery mockeryWithClassImposteriser() {
+		Mockery mockery = mockeryWithCountingNamingScheme();
+		mockery.setImposteriser(ClassImposteriser.INSTANCE);
+		return mockery;
+	}
+
+	@After public void tearDown() {
         appContainer = null;
         sessionContainer = null;
         requestContainer = null;
-        variableResolverMock = null;
-        delegate = null;
-        ourVariableResolver = null;
-        facesContext = null;
-        externalContextMock = null;
-        externalContext = null;
     }
 
-    public void testUnfoundObjectsPassOnToDelegator() {
-        externalContextMock.expects(once()).method("getRequestMap").will(returnValue(requestMap));
-        variableResolverMock.expects(once()).method("resolveVariable").with(ANYTHING, eq("D")).will(
-            returnValue(new D()));
+    @Test public void testUnfoundObjectsPassOnToDelegator() {
+  	  	mockery.checking(new Expectations(){{
+          one(externalContext).getRequestMap();
+          will(returnValue(requestMap));        	
+          one(variableResolver).resolveVariable(with(any(FacesContext.class)), with(equal("D")));
+          will(returnValue(new D()));        	
+  	  	}});
         Object result = ourVariableResolver.resolveVariable(facesContext, "D");
         assertTrue(result instanceof D);
     }
@@ -113,25 +120,35 @@ public class DelegatingResolverTestCase extends MockObjectTestCase {
     /**
      * Checks to make sure the request level container is returned.
      */
-    public void testRequestIsCheckedForRegisteredClasses() {
-        externalContextMock.expects(atLeastOnce()).method("getRequestMap").will(returnValue(requestMap));
-        externalContextMock.expects(never()).method("getSessionMap").will(returnValue(sessionMap));
-        externalContextMock.expects(never()).method("getApplicationMap").will(returnValue(appMap));
+    @Test public void testRequestIsCheckedForRegisteredClasses() {
+    	mockery.checking(new Expectations(){{
+          atLeast(1).of(externalContext).getRequestMap();
+          will(returnValue(requestMap));        	
+          never(externalContext).getSessionMap();
+          will(returnValue(sessionMap));        	
+          never(externalContext).getApplicationMap();
+          will(returnValue(appMap));        	
+    	}});
         assertNotNull(ourVariableResolver.resolveVariable(facesContext,"C"));
         assertNotNull(ourVariableResolver.resolveVariable(facesContext,"B"));
-        assertNotNull(ourVariableResolver.resolveVariable(facesContext,"A"));
-        
+        assertNotNull(ourVariableResolver.resolveVariable(facesContext,"A"));        
     }
 
     /**
      * Checks to make sure the session container only is returned.
      */
-    public void testSessionIsCheckedForRegisteredClasses() {
+    @Test public void testSessionIsCheckedForRegisteredClasses() {
         requestMap.clear();
-        externalContextMock.expects(atLeastOnce()).method("getRequestMap").will(returnValue(requestMap));
-        externalContextMock.expects(atLeastOnce()).method("getSessionMap").will(returnValue(sessionMap));
-        externalContextMock.expects(never()).method("getApplicationMap").will(returnValue(appMap));
-        variableResolverMock.expects(once()).method("resolveVariable").with(ANYTHING, eq("C")).will(returnValue(null));
+    	mockery.checking(new Expectations(){{
+            atLeast(1).of(externalContext).getRequestMap();
+            will(returnValue(requestMap));        	
+            atLeast(1).of(externalContext).getSessionMap();
+            will(returnValue(sessionMap));        	
+            never(externalContext).getApplicationMap();
+            will(returnValue(appMap));        	
+            one(variableResolver).resolveVariable(with(any(FacesContext.class)), with(equal("C")));
+            will(returnValue(null));       
+      	}});
         assertNull(ourVariableResolver.resolveVariable(facesContext,"C"));
         assertNotNull(ourVariableResolver.resolveVariable(facesContext,"B"));
         assertNotNull(ourVariableResolver.resolveVariable(facesContext,"A"));
@@ -143,14 +160,21 @@ public class DelegatingResolverTestCase extends MockObjectTestCase {
      * don't exist.
      *
      */
-    public void testApplicationContextIsCheckedForRegisteredClasses() {
+    @Test public void testApplicationContextIsCheckedForRegisteredClasses() {
         requestMap.clear();
         sessionMap.clear();
-        externalContextMock.expects(atLeastOnce()).method("getRequestMap").will(returnValue(requestMap));
-        externalContextMock.expects(atLeastOnce()).method("getSessionMap").will(returnValue(sessionMap));
-        externalContextMock.expects(atLeastOnce()).method("getApplicationMap").will(returnValue(appMap));
-        variableResolverMock.expects(once()).method("resolveVariable").with(ANYTHING, eq("C")).will(returnValue(null));
-        variableResolverMock.expects(once()).method("resolveVariable").with(ANYTHING, eq("B")).will(returnValue(null));
+        mockery.checking(new Expectations(){{
+            atLeast(1).of(externalContext).getRequestMap();
+            will(returnValue(requestMap));        	
+            atLeast(1).of(externalContext).getSessionMap();
+            will(returnValue(sessionMap));        	
+            atLeast(1).of(externalContext).getApplicationMap();
+            will(returnValue(appMap));        	
+            one(variableResolver).resolveVariable(with(any(FacesContext.class)), with(equal("C")));
+            will(returnValue(null));       
+            one(variableResolver).resolveVariable(with(any(FacesContext.class)), with(equal("B")));
+            will(returnValue(null));       
+      	}});
         assertNull(ourVariableResolver.resolveVariable(facesContext,"C"));
         assertNull(ourVariableResolver.resolveVariable(facesContext,"B"));
         assertNotNull(ourVariableResolver.resolveVariable(facesContext,"A"));
