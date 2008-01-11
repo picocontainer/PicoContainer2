@@ -10,21 +10,26 @@
 
 package org.nanocontainer.persistence.hibernate;
 
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import org.hibernate.SessionFactory;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.junit.Test;
 
 /**
  * Test that lifecycle closes session factory
- * 
- * @version $Revision: 2043 $
  */
-public class SessionFactoryLifecycleTestCase extends MockObjectTestCase {
+public class SessionFactoryLifecycleTestCase {
 
-    public void testThatLifecycleCallsClose() throws Exception {
-        Mock sessionFactoryMock = mock(SessionFactory.class);
-        sessionFactoryMock.expects(once()).method("close").withNoArguments();
-        SessionFactoryLifecycle sfl = new SessionFactoryLifecycle((SessionFactory) sessionFactoryMock.proxy());
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+    @Test public void testThatLifecycleCallsClose() throws Exception {
+    	final SessionFactory sessionFactory = mockery.mock(SessionFactory.class);
+    	mockery.checking(new Expectations(){{
+    		one(sessionFactory).close();
+    	}});
+        SessionFactoryLifecycle sfl = new SessionFactoryLifecycle(sessionFactory);
         sfl.stop();
     }
 

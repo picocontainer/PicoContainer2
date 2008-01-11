@@ -10,20 +10,24 @@
 
 package org.nanocontainer.persistence.hibernate;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.junit.Test;
 
 /**
  * Test case for failover session delegator
- * 
- * @version $Revision: 2043 $
  */
-public class FailoverSessionDelegatorTestCase extends TestCase {
+public class FailoverSessionDelegatorTestCase {
 
-    public void testSessionCreationAndDisposal() throws Exception {
+    @Test public void testSessionCreationAndDisposal() throws Exception {
         SessionFactory factory = (new ConstructableConfiguration("/hibernate.cfg.xml")).buildSessionFactory();
         FailoverSessionDelegator delegator = new FailoverSessionDelegator(factory);
         Session session = delegator.getDelegatedSession();

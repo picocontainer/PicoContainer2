@@ -11,19 +11,24 @@
 package org.nanocontainer.persistence.hibernate.annotations;
 
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.nanocontainer.persistence.hibernate.annotations.ConstructableAnnotationConfiguration;
+import org.junit.Test;
 
 /**
  * Constructable Configuration Test case for Annotations.
  * @author Michael Rimov
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz> 
  */
-public class ConstructableAnnotationConfigurationTestCase extends TestCase {
+public class ConstructableAnnotationConfigurationTestCase {
 
-    public void testDefaultConstruction() throws Exception {
+    @Test public void testDefaultConstruction() throws Exception {
         //Should Will load hibernate.hbm.xml
         ConstructableAnnotationConfiguration config = new ConstructableAnnotationConfiguration();
         assertNotNull(config);
@@ -31,7 +36,7 @@ public class ConstructableAnnotationConfigurationTestCase extends TestCase {
     }
 
 
-    public void testResourceConstruction() throws Exception {
+    @Test public void testResourceConstruction() throws Exception {
         ConstructableAnnotationConfiguration config = new ConstructableAnnotationConfiguration("/hibernate.cfg.xml");
         attemptWrite(config);
     }

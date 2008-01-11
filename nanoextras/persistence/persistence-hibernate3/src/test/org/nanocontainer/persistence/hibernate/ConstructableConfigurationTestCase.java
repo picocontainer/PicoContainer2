@@ -10,23 +10,26 @@
 
 package org.nanocontainer.persistence.hibernate;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.junit.Test;
 
 /**
  * @version $Revision: 2043 $
  */
-public class ConstructableConfigurationTestCase extends TestCase {
+public class ConstructableConfigurationTestCase {
 
-    public void testDefaultConstruction() throws Exception {
+    @Test public void testDefaultConstruction() throws Exception {
         ConstructableConfiguration config = new ConstructableConfiguration();
         assertNotNull(config);
 		attemptWrite(config);
     }
 
-    public void testResourceConstruction() throws Exception {
+    @Test public void testResourceConstruction() throws Exception {
         ConstructableConfiguration config = new ConstructableConfiguration("/hibernate.cfg.xml");
         assertNotNull(config);
 		attemptWrite(config);

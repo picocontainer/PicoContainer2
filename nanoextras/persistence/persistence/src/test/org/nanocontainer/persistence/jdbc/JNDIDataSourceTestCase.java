@@ -9,31 +9,49 @@
  *****************************************************************************/
 package org.nanocontainer.persistence.jdbc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import java.sql.SQLException;
 
 import javax.naming.Context;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.nanocontainer.persistence.jdbc.JNDIDataSource;
 
 /**
  * @author Juze Peleteiro <juze -a-t- intelli -dot- biz>
+ * @author Mauro Talevi
  */
-public class JNDIDataSourceTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class JNDIDataSourceTestCase  {
 
-	public void testDataSource() throws SQLException {
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+	@Test public void testDataSource() throws SQLException, NamingException {
 		final String NAME = "aeiou";
 
-		Mock context = mock(Context.class);
-		Mock dataSource = mock(DataSource.class);
+		final Context context = mockery.mock(Context.class);
+		final DataSource dataSource = mockery.mock(DataSource.class);
+		mockery.checking(new Expectations(){{
+			one(context).lookup(with(equal(NAME)));
+			will(returnValue(dataSource));
+			one(dataSource).setLoginTimeout(with(any(Integer.class)));
+			will(throwException(new SQLException()));
+			one(context).lookup(with(equal(NAME)));
+			will(returnValue(dataSource));
+			one(dataSource).getLoginTimeout();
+			will(returnValue(123));
+		}});
 
-		context.expects(once()).method("lookup").with(eq(NAME)).will(returnValue(dataSource.proxy()));
-		dataSource.expects(once()).method("setLoginTimeout").will(throwException(new SQLException()));
-		context.expects(once()).method("lookup").with(eq(NAME)).will(returnValue(dataSource.proxy()));
-		dataSource.expects(once()).method("getLoginTimeout").will(returnValue(123));
-
-		JNDIDataSource component = new JNDIDataSource(NAME, (Context) context.proxy());
+		JNDIDataSource component = new JNDIDataSource(NAME, context);
 
 		component.start();
 

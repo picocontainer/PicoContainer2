@@ -9,32 +9,49 @@
  *****************************************************************************/
 package org.nanocontainer.persistence.jdbc;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * @author Juze Peleteiro <juze -a-t- intelli -dot- biz>
+ * @author Mauro Talevi
  */
-public class FailoverDataSourceConnectionTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class FailoverDataSourceConnectionTestCase {
 
-	public void testFailover() throws SQLException {
-		Mock dataSource = mock(DataSource.class);
-		Mock connection = mock(Connection.class);
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
+	@Test public void testFailover() throws SQLException {
+		final DataSource dataSource = mockery.mock(DataSource.class);
+		final Connection connection = mockery.mock(Connection.class);
 
-		dataSource.expects(once()).method("getConnection").will(returnValue(connection.proxy()));
-		connection.expects(once()).method("createStatement").will(throwException(new SQLException()));
-		connection.expects(once()).method("rollback");
-		connection.expects(once()).method("close");
-		dataSource.expects(once()).method("getConnection").will(returnValue(connection.proxy()));
-		connection.expects(once()).method("getAutoCommit").will(returnValue(true));
-		connection.expects(once()).method("close");
+		mockery.checking(new Expectations(){{
+			one(dataSource).getConnection();
+			will(returnValue(connection));
+			one(connection).createStatement();
+			will(throwException(new SQLException()));
+			one(connection).rollback();
+			one(connection).close();
+			one(dataSource).getConnection();
+			will(returnValue(connection));
+			one(connection).getAutoCommit();
+			will(returnValue(true));
+			one(connection).close();
+		}});
 
-		FailoverDataSourceConnection component = new FailoverDataSourceConnection((DataSource) dataSource.proxy());
+		FailoverDataSourceConnection component = new FailoverDataSourceConnection(dataSource);
 
 		component.start();
 		

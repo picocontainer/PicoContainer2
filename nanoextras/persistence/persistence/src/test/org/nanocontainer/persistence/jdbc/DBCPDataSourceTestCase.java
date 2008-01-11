@@ -9,17 +9,20 @@
  *****************************************************************************/
 package org.nanocontainer.persistence.jdbc;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * @author Juze Peleteiro <juze -a-t- intelli -dot- biz>
  */
-public class DBCPDataSourceTestCase extends TestCase {
+public class DBCPDataSourceTestCase {
 
-	public void testDBCP() throws SQLException {
+	@Test public void testDBCP() throws SQLException {
 		DBCPDataSource component = new DBCPDataSource("org.hsqldb.jdbcDriver", "jdbc:hsqldb:mem:test", "sa", "");
 
 		component.start();

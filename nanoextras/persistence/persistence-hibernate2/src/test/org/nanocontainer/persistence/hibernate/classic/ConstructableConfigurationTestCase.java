@@ -9,23 +9,24 @@
  *****************************************************************************/
 package org.nanocontainer.persistence.hibernate.classic;
 
-import org.nanocontainer.persistence.hibernate.classic.ConstructableConfiguration;
+import static org.junit.Assert.assertNotNull;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.nanocontainer.persistence.hibernate.classic.ConstructableConfiguration;
 
 /**
  * @author Konstantin Pribluda
  * @version $Revision: 2043 $
  */
-public class ConstructableConfigurationTestCase extends TestCase {
+public class ConstructableConfigurationTestCase {
 	
-	public void testDefaultConstruction() throws Exception {
+	@Test public void testDefaultConstruction() throws Exception {
 		ConstructableConfiguration config = new ConstructableConfiguration();
 		assertNotNull(config);
 	}
 	
 	
-	public void testResourceConstruction()  throws Exception {
+	@Test public void testResourceConstruction()  throws Exception {
 		ConstructableConfiguration config = new ConstructableConfiguration("/hibernate.cfg.xml");
 		assertNotNull(config);
 	}

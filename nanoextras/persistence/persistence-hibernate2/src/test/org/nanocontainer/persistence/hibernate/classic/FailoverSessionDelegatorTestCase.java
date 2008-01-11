@@ -9,10 +9,18 @@
  *****************************************************************************/
 package org.nanocontainer.persistence.hibernate.classic;
 
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.Serializable;
 import java.util.Iterator;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
 import net.sf.hibernate.CallbackException;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Interceptor;
@@ -27,9 +35,9 @@ import net.sf.hibernate.type.Type;
  * @author Konstantin Pribluda
  * @version $Revision: 2043 $
  */
-public class FailoverSessionDelegatorTestCase extends TestCase {
+public class FailoverSessionDelegatorTestCase {
 
-	public void testSessionCreationAndDisposal() throws Exception {
+	@Test public void testSessionCreationAndDisposal() throws Exception {
 
 		SessionFactory factory = (new ConstructableConfiguration()).buildSessionFactory();
 
@@ -65,7 +73,7 @@ public class FailoverSessionDelegatorTestCase extends TestCase {
 	 * 
 	 * @throws Exception
 	 */
-	public void testIterceptorInjection() throws Exception {
+	@Test public void testIterceptorInjection() throws Exception {
 
 		Interceptor interceptor = new Interceptor() {
 

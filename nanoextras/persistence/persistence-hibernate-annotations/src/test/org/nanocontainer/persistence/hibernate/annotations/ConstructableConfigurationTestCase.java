@@ -10,18 +10,21 @@
 
 package org.nanocontainer.persistence.hibernate.annotations;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
+import org.junit.Test;
 
 /**
- * @version $Revision: 2043 $
  */
-public class ConstructableConfigurationTestCase extends TestCase {
+public class ConstructableConfigurationTestCase {
 
-    public void fixme_testDefaultConstruction() {
+	//FIME @Test
+    public void testDefaultConstruction() {
         ConstructableConfiguration config = new ConstructableConfiguration();
         //assertNotNull(config);
 		//Because of melding hibernate and hibernate-jpa, we're skipping this write for the hibernate-annotations
@@ -29,7 +32,7 @@ public class ConstructableConfigurationTestCase extends TestCase {
 		//attemptWrite(config);
     }
 
-    public void testResourceConstruction() throws Exception {
+    @Test public void testResourceConstruction() throws Exception {
         ConstructableConfiguration config = new ConstructableConfiguration("/hibernate3.cfg.xml");
         assertNotNull(config);
 		attemptWrite(config);
