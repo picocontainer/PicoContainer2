@@ -156,16 +156,6 @@
                 <version>${pom.version}</version>
             </dependency>
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>3.8.1</version>
-            </dependency>
-            <dependency>
-                <groupId>jmock</groupId>
-                <artifactId>jmock</artifactId>
-                <version>1.0.1</version>
-            </dependency>
-            <dependency>
                 <groupId>proxytoys</groupId>
                 <artifactId>proxytoys</artifactId>
                 <version>0.2.1</version>
@@ -174,16 +164,6 @@
     </dependencyManagement>
     <dependencies>
         <!-- test scoped dependencies -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>jmock</groupId>
-            <artifactId>jmock</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.picocontainer</groupId>
             <artifactId>picocontainer-tck</artifactId>
