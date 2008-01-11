@@ -8,13 +8,23 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import javax.servlet.http.HttpServletRequest;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.nanocontainer.nanowar.KeyConstants;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
 
 import webwork.action.ServletActionContext;
@@ -23,18 +33,21 @@ import webwork.action.ServletActionContext;
  * @author Konstantin Pribluda
  * @author Mauro Talevi
  */
-public class PicoActionFactoryTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class PicoActionFactoryTestCase {
 
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
     private PicoActionFactory factory;
     private DefaultPicoContainer container;
     
-    public void setUp(){
+    @Before public void setUp(){
         factory = new PicoActionFactory();
         container = new DefaultPicoContainer(new Caching());
         (new ActionContextScopeReference(KeyConstants.REQUEST_CONTAINER)).set(container);
     }
     
-	public void testActionInstantiationWithValidClassName() throws Exception {
+	@Test public void testActionInstantiationWithValidClassName() throws Exception {
 		container.addComponent("foo");
 		TestAction action = (TestAction) factory
 				.getActionImpl(TestAction.class.getName());
@@ -42,20 +55,20 @@ public class PicoActionFactoryTestCase extends MockObjectTestCase {
 		assertEquals("foo", action.getFoo());
 	}
     
-    public void testActionInstantiationWhichFailsDueToFailedDependencies() throws Exception {
+    @Test public void testActionInstantiationWhichFailsDueToFailedDependencies() throws Exception {
         TestAction action = (TestAction) factory
                 .getActionImpl(TestAction.class.getName());
         assertNull(action);
     }
 
-    public void testActionInstantiationWithInvalidClassName() throws Exception {
+    @Test public void testActionInstantiationWithInvalidClassName() throws Exception {
         container.addComponent("foo");
         TestAction action = (TestAction) factory
                 .getActionImpl("invalidAction");
         assertNull(action);
     }
 
-    public void testActionInstantiationWhichHasAlreadyBeenRegistered() throws Exception {
+    @Test public void testActionInstantiationWhichHasAlreadyBeenRegistered() throws Exception {
         container.addComponent("foo");
         container.addComponent(TestAction.class);
         TestAction action1 = container.getComponent(TestAction.class);
@@ -64,7 +77,7 @@ public class PicoActionFactoryTestCase extends MockObjectTestCase {
         assertSame(action1, action2);
     }
 
-    public void testActionInstantiationWhichHasAlreadyBeenRequested() throws Exception {
+    @Test public void testActionInstantiationWhichHasAlreadyBeenRequested() throws Exception {
         container.addComponent("foo");
         TestAction action1 = (TestAction) factory
                 .getActionImpl(TestAction.class.getName());
@@ -73,15 +86,18 @@ public class PicoActionFactoryTestCase extends MockObjectTestCase {
         assertSame(action1, action2);
     }
     
-    public void testActionContainerIsFoundInRequest() throws Exception {
-        Mock requestMock = mock(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) requestMock.proxy();
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
-                returnValue(null));
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.REQUEST_CONTAINER)).will(
-                returnValue(container));
-        requestMock.expects(once()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
-                isA(MutablePicoContainer.class));
+    @Test public void testActionContainerIsFoundInRequest() throws Exception {
+    	
+    	final HttpServletRequest request = mockery.mock(HttpServletRequest.class);
+    	mockery.checking(new Expectations(){{
+	        atLeast(1).of(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
+            will(returnValue(null));
+            atLeast(1).of(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
+            will(returnValue(container));
+            atLeast(1).of(request).setAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)),
+                    with(any(MutablePicoContainer.class))); 
+		}});
+
         ServletActionContext.setRequest(request);
         container.addComponent("foo");
         TestAction action = (TestAction) factory

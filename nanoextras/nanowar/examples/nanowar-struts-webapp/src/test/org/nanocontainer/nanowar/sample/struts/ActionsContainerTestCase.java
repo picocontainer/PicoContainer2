@@ -1,7 +1,5 @@
 package org.nanocontainer.nanowar.sample.struts;
 
-import junit.framework.TestCase;
-
 import org.nanocontainer.nanowar.sample.dao.CheeseDao;
 import org.nanocontainer.nanowar.sample.service.CheeseService;
 import org.nanocontainer.script.ScriptedContainerBuilder;
@@ -16,7 +14,7 @@ import java.io.StringReader;
 /**
  * @author Mauro Talevi
  */
-public final class ActionsContainerTestCase extends TestCase {
+public final class ActionsContainerTestCase {
 
     private final ObjectReference containerRef = new SimpleReference();
 
@@ -30,7 +28,7 @@ public final class ActionsContainerTestCase extends TestCase {
         return (PicoContainer) containerRef.get();
     }
 
-    public void testContainerBuildingWithXmlConfig() {
+    @Test public void testContainerBuildingWithXmlConfig() {
 
         Reader script = new StringReader("<container>"
                 + "	 <implementation type='org.nanocontainer.nanowar.sample.dao.CheeseDao'"

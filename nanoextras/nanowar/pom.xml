@@ -22,7 +22,6 @@
         <module>nanowar-struts</module>
         <module>nanowar-webwork</module>
         <module>nanowar-webwork2</module>
-        <module>distribution</module>
     </modules>
 
     <description>

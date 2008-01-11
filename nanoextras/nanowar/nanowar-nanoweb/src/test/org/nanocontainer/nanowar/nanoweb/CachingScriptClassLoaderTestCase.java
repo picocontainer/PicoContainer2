@@ -1,6 +1,7 @@
 package org.nanocontainer.nanowar.nanoweb;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -9,13 +10,15 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
 
+import org.junit.Test;
+
 /**
  * @author Aslak Helles&oslash;y
  * @author Kouhei Mori
- * @version $Revision$
  */
-public class CachingScriptClassLoaderTestCase extends TestCase {
-    public void testClassesAreCachedWhenTheUrlTimeStampIsNotMoreRecent() throws IOException, ScriptException {
+public class CachingScriptClassLoaderTestCase {
+	
+    @Test public void testClassesAreCachedWhenTheUrlTimeStampIsNotMoreRecent() throws IOException, ScriptException {
         CachingScriptClassLoader loader = new CachingScriptClassLoader();
 
         MockURLConnection urlConnection = new MockURLConnection();
@@ -27,7 +30,7 @@ public class CachingScriptClassLoaderTestCase extends TestCase {
         assertSame(clazz1, clazz2);
     }
 
-    public void testClassesAreReloadedWhenTheUrlTimeStampIsMoreRecent() throws IOException, ScriptException {
+    @Test public void testClassesAreReloadedWhenTheUrlTimeStampIsMoreRecent() throws IOException, ScriptException {
         CachingScriptClassLoader loader = new CachingScriptClassLoader();
 
         MockURLConnection urlConnection = new MockURLConnection();

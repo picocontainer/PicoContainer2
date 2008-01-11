@@ -8,36 +8,38 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.struts;
 
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts.action.ActionMapping;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Before;
+import org.junit.runner.RunWith;
 import org.nanocontainer.nanowar.KeyConstants;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * @author Stephen Molitor
+ * @author Mauro Talevi
  */
-public abstract class AbstractActionTestCase extends MockObjectTestCase {
-    protected HttpServletRequest request;
-    protected HttpServletResponse response;
+@RunWith(JMock.class)
+public abstract class AbstractActionTestCase {
+
+	Mockery mockery = mockeryWithCountingNamingScheme();
+	
+	protected HttpServletRequest request = mockery. mock(HttpServletRequest.class);
+    protected HttpServletResponse response = mockery. mock(HttpServletResponse.class);
     protected ActionMapping mapping;
     protected TestService service;
 
-    private Mock requestMock;
-    private Mock responseMock;
     private MutablePicoContainer container;
 
-    protected void setUp() {
-        requestMock = mock(HttpServletRequest.class);
-        request = (HttpServletRequest) requestMock.proxy();
-
-        responseMock = mock(HttpServletResponse.class);
-        response = (HttpServletResponse) responseMock.proxy();
-
+    @Before public void setUp() {
         String actionType = StrutsTestAction.class.getName();
         mapping = new ActionMapping();
         mapping.setPath("/myPath1");
@@ -46,8 +48,11 @@ public abstract class AbstractActionTestCase extends MockObjectTestCase {
         service = new TestService();
         container = new DefaultPicoContainer();
         container.addComponent(TestService.class, service);
-
-        requestMock.stubs().method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(returnValue(container));
+        
+        mockery.checking(new Expectations(){{
+            atLeast(1).of(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
+            will(returnValue(container));        	
+        }});
     }
 
 }

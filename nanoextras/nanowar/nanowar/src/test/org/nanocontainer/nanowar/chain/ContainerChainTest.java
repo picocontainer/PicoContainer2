@@ -1,32 +1,33 @@
-
 package org.nanocontainer.nanowar.chain;
 
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
-import org.picocontainer.DefaultPicoContainer;
-
-import junit.framework.TestCase;
 
 /**
  * test capabilities of container chains
  * @author Konstantin Pribluda
  */
-public class ContainerChainTest extends TestCase {
+public class ContainerChainTest {
 
 	
 	/**
 	 * empty chain shall 
 	 * @throws Exception
 	 */
-	public void testEmptyChain()  {
+	@Test public void testEmptyChain()  {
 		ContainerChain chain = new ContainerChain();
 		assertNull(chain.getLast());
 	}
 	
 	
-	public void testAddingContainerSetsItToLast() {
+	@Test public void testAddingContainerSetsItToLast() {
 		ContainerChain chain = new ContainerChain();
 		PicoContainer container = new DefaultPicoContainer();
 		
@@ -37,7 +38,7 @@ public class ContainerChainTest extends TestCase {
 	}
 	
 	
-	public void testStartStopPropagation() {
+	@Test public void testStartStopPropagation() {
 		ContainerChain chain = new ContainerChain();
 		MutablePicoContainer first = new DefaultPicoContainer();
 	

@@ -8,44 +8,62 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork2;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import javax.servlet.http.HttpServletRequest;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.nanocontainer.nanowar.KeyConstants;
+import org.picocontainer.Characteristics;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ObjectReference;
-import org.picocontainer.Characteristics;
 import org.picocontainer.references.ThreadLocalReference;
 
 /**
  * @author Mauro Talevi
  * @author Konstantin Pribluda
  */
-public final class PicoObjectFactoryTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public final class PicoObjectFactoryTestCase {
 
+	private Mockery mockery = mockeryWithCountingNamingScheme();
+	
     private PicoObjectFactory factory;
     private DefaultPicoContainer container;
-    private final Mock requestMock = mock(HttpServletRequest.class);
-    private final HttpServletRequest request = (HttpServletRequest) requestMock.proxy();
+    private final HttpServletRequest request = mockery.mock(HttpServletRequest.class);
     
-    public void setUp(){
+    @Before public void setUp(){
         container = (DefaultPicoContainer)new DefaultPicoContainer().change(Characteristics.CACHE);
         ObjectReference reference = new ThreadLocalReference();
         reference.set(request);
         factory = new PicoObjectFactory(reference);
     }
     
-	public void testActionInstantiationWithValidClassName() throws Exception {
-        requestMock.expects(atLeastOnce()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
-                returnValue(null));
-        requestMock.expects(atLeastOnce()).method("getAttribute").with(eq(KeyConstants.REQUEST_CONTAINER)).will(
-                returnValue(container));
-        requestMock.expects(atLeastOnce()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
-                isA(MutablePicoContainer.class));
+	@Test public void testActionInstantiationWithValidClassName() throws Exception {
+		
+		mockery.checking(new Expectations(){{
+	        atLeast(1).of(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
+            will(returnValue(null));
+            atLeast(1).of(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
+            will(returnValue(container));
+            atLeast(1).of(request).setAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)),
+                    with(any(MutablePicoContainer.class))); 
+		}});
+		
 		container.addComponent("foo");
 		TestAction action = (TestAction) factory
 				.buildBean(TestAction.class.getName());
@@ -53,14 +71,17 @@ public final class PicoObjectFactoryTestCase extends MockObjectTestCase {
 		assertEquals("foo", action.getFoo());
 	}
     
-    public void testActionInstantiationWhichFailsDueToFailedDependencies() throws Exception {
-        requestMock.expects(atLeastOnce()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
-                returnValue(null));
-        requestMock.expects(atLeastOnce()).method("getAttribute").with(eq(KeyConstants.REQUEST_CONTAINER)).will(
-                returnValue(container));
-        requestMock.expects(atLeastOnce()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
-                isA(MutablePicoContainer.class));
-        TestAction action = null;
+    @Test public void testActionInstantiationWhichFailsDueToFailedDependencies() throws Exception {
+		mockery.checking(new Expectations(){{
+	        atLeast(1).of(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
+            will(returnValue(null));
+            atLeast(1).of(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
+            will(returnValue(container));
+            atLeast(1).of(request).setAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)),
+                    with(any(MutablePicoContainer.class))); 
+		}});
+
+		TestAction action = null;
         try {
             action = (TestAction) factory
                             .buildBean(TestAction.class.getName());
@@ -71,7 +92,7 @@ public final class PicoObjectFactoryTestCase extends MockObjectTestCase {
         assertNull(action);
     }
 
-    public void testActionInstantiationWithInvalidClassName() throws Exception {
+    @Test public void testActionInstantiationWithInvalidClassName() throws Exception {
         try {
             factory.buildBean("invalidAction");
             fail("PicoCompositionException expected");
@@ -80,13 +101,16 @@ public final class PicoObjectFactoryTestCase extends MockObjectTestCase {
         }
     }
 
-    public void testActionInstantiationWhichHasAlreadyBeenRegistered() throws Exception {
-        requestMock.expects(atLeastOnce()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
-                returnValue(null));
-        requestMock.expects(atLeastOnce()).method("getAttribute").with(eq(KeyConstants.REQUEST_CONTAINER)).will(
-                returnValue(container));
-        requestMock.expects(atLeastOnce()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
-                isA(MutablePicoContainer.class));
+    @Test public void testActionInstantiationWhichHasAlreadyBeenRegistered() throws Exception {
+		mockery.checking(new Expectations(){{
+	        atLeast(1).of(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
+            will(returnValue(null));
+            atLeast(1).of(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
+            will(returnValue(container));
+            atLeast(1).of(request).setAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)),
+                    with(any(MutablePicoContainer.class))); 
+		}});
+
         container.addComponent("foo");
         container.addComponent(TestAction.class);
         TestAction action1 = container.getComponent(TestAction.class);
@@ -101,10 +125,13 @@ public final class PicoObjectFactoryTestCase extends MockObjectTestCase {
      * validators, interceptors etc - they shall not be shared. 
      * @throws Exception
      */
-    public void testActionInstantiationWhichHasAlreadyBeenRequested() throws Exception {
-        requestMock.expects(atLeastOnce()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
-                returnValue(container));
-        container.addComponent("foo");
+    @Test public void testActionInstantiationWhichHasAlreadyBeenRequested() throws Exception {
+    	mockery.checking(new Expectations(){{
+	        atLeast(1).of(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
+            will(returnValue(container));
+		}});
+
+    	container.addComponent("foo");
         TestAction action1 = (TestAction) factory
                 .buildBean(TestAction.class.getName());
         TestAction action2 = (TestAction) factory

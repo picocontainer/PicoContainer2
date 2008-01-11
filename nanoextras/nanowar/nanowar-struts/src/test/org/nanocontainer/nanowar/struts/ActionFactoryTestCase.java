@@ -8,36 +8,47 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.struts;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServlet;
-import org.jmock.Mock;
-import org.jmock.cglib.MockObjectTestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.jmock.lib.legacy.ClassImposteriser;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.nanocontainer.nanowar.KeyConstants;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.behaviors.Caching;
 
 /**
  * @author Stephen Molitor
+ * @author Mauro Talevi
  */
-public final class ActionFactoryTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public final class ActionFactoryTestCase {
+	
+	private Mockery mockery = mockeryWithClassImposteriser();
+	
+    private final HttpServletRequest request = mockery.mock(HttpServletRequest.class);
 
-    private final Mock requestMock = mock(HttpServletRequest.class);
-    private final HttpServletRequest request = (HttpServletRequest) requestMock.proxy();
+    private final HttpSession session = mockery.mock(HttpSession.class);
 
-    private final Mock sessionMock = mock(HttpSession.class);
-    private final HttpSession session = (HttpSession) sessionMock.proxy();
+    private final ServletContext servletContext = mockery.mock(ServletContext.class);
 
-    private final Mock servletContextMock = mock(ServletContext.class);
-    private final ServletContext servletContext = (ServletContext) servletContextMock.proxy();
-
-    private final Mock servletMock = mock(ActionServlet.class);
-    private final ActionServlet servlet = (ActionServlet) servletMock.proxy();
+    private final ActionServlet servlet = mockery.mock(ActionServlet.class);
 
     private ActionMapping mapping1;
     private ActionMapping mapping2;
@@ -45,34 +56,66 @@ public final class ActionFactoryTestCase extends MockObjectTestCase {
     private ActionFactory actionFactory;
     private TestService service;
 
-    public void testActionContainerCreatedOnlyOncePerRequest() {
-        MutablePicoContainer requestContainer = new DefaultPicoContainer();
-        requestContainer.addComponent(TestService.class);
-        MutablePicoContainer actionsContainer = new DefaultPicoContainer(requestContainer);
+    @Before public void setUp() {
+        String actionType = StrutsTestAction.class.getName();
 
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
-                returnValue(actionsContainer));
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
-                returnValue(actionsContainer));
-        requestMock.expects(once()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
-                isA(MutablePicoContainer.class));
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.REQUEST_CONTAINER)).will(
-                returnValue(requestContainer));
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
-                returnValue(null));
+        mapping1 = new ActionMapping();
+        mapping1.setPath("/myPath1");
+        mapping1.setType(actionType);
+
+        mapping2 = new ActionMapping();
+        mapping2.setPath("/myPath2");
+        mapping2.setType(actionType);
+
+        mockery.checking(new Expectations(){{
+            atLeast(0).of(request).getSession();
+            will(returnValue(session));
+            atLeast(0).of(session).getServletContext();
+            will(returnValue(servletContext));
+        }});
+
+        actionFactory = new ActionFactory();
+        service = new TestService();
+    }
+
+    private Mockery mockeryWithClassImposteriser() {
+		Mockery mockery = mockeryWithCountingNamingScheme();
+		mockery.setImposteriser(ClassImposteriser.INSTANCE);
+		return mockery;
+	}
+
+    @Test public void testActionContainerCreatedOnlyOncePerRequest() {
+        final MutablePicoContainer requestContainer = new DefaultPicoContainer();
+        requestContainer.addComponent(TestService.class);
+        final MutablePicoContainer actionsContainer = new DefaultPicoContainer(requestContainer);
+        
+        mockery.checking(new Expectations(){{
+            one(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
+            will(returnValue(actionsContainer));
+            one(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
+            will(returnValue(actionsContainer));
+            one(request).setAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)),
+                    with(any(MutablePicoContainer.class)));
+            one(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
+            will(returnValue(requestContainer));
+            one(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
+            will(returnValue(null));        	
+        }});
 
         actionFactory.getAction(request, mapping1, servlet);
         actionFactory.getAction(request, mapping1, servlet);
         actionFactory.getAction(request, mapping1, servlet);
     }
 
-    public void testGetActionWhenActionsContainerAlreadyExists() {
+    @Test public void testGetActionWhenActionsContainerAlreadyExists() {
         MutablePicoContainer requestContainer = new DefaultPicoContainer(new Caching());
         requestContainer.addComponent(TestService.class, service);
-        MutablePicoContainer actionsContainer = new DefaultPicoContainer(new Caching(),requestContainer);
+        final MutablePicoContainer actionsContainer = new DefaultPicoContainer(new Caching(),requestContainer);
 
-        requestMock.stubs().method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
-                returnValue(actionsContainer));
+        mockery.checking(new Expectations(){{
+            atLeast(1).of(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
+            will(returnValue(actionsContainer));
+        }});
 
         StrutsTestAction action1 = (StrutsTestAction) actionFactory.getAction(request, mapping1, servlet);
         StrutsTestAction action2 = (StrutsTestAction) actionFactory.getAction(request, mapping2, servlet);
@@ -97,70 +140,80 @@ public final class ActionFactoryTestCase extends MockObjectTestCase {
         assertSame(servlet, action2.getServlet());
     }
 
-    public void testRequestContainerExists() {
-        MutablePicoContainer requestContainer = new DefaultPicoContainer();
+    @Test public void testRequestContainerExists() {
+        final MutablePicoContainer requestContainer = new DefaultPicoContainer();
         requestContainer.addComponent(TestService.class, service);
 
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
-                returnValue(null));
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.REQUEST_CONTAINER)).will(
-                returnValue(requestContainer));
-        requestMock.expects(once()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
-                isA(MutablePicoContainer.class));
-
+        mockery.checking(new Expectations(){{
+            one(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
+            will(returnValue(null));
+            one(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
+            will(returnValue(requestContainer));
+            one(request).setAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)),
+                    with(any(MutablePicoContainer.class)));        	
+        }});
+        
         TestAction action = (TestAction) actionFactory.getAction(request, mapping1, servlet);
         assertNotNull(action);
         assertSame(service, action.getService());
     }
 
-    public void testSessionContainerExists() {
-        MutablePicoContainer sessionContainer = new DefaultPicoContainer();
+    @Test public void testSessionContainerExists() {
+        final MutablePicoContainer sessionContainer = new DefaultPicoContainer();
         sessionContainer.addComponent(TestService.class, service);
 
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
-                returnValue(null));
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.REQUEST_CONTAINER)).will(
-                returnValue(null));
-        sessionMock.expects(once()).method("getAttribute").with(eq(KeyConstants.SESSION_CONTAINER)).will(
-                returnValue(sessionContainer));
-        requestMock.expects(once()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
-                isA(MutablePicoContainer.class));
+        mockery.checking(new Expectations(){{
+            one(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
+            will(returnValue(null));
+            one(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
+            will(returnValue(null));
+            one(session).getAttribute(with(equal(KeyConstants.SESSION_CONTAINER)));
+            will(returnValue(sessionContainer));
+            one(request).setAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)),
+                    with(any(MutablePicoContainer.class)));        	
+        }});
 
         TestAction action = (TestAction) actionFactory.getAction(request, mapping1, servlet);
         assertNotNull(action);
         assertSame(service, action.getService());
     }
 
-    public void testApplicationContainerExists() {
-        MutablePicoContainer appContainer = new DefaultPicoContainer();
+    @Test public void testApplicationContainerExists() {
+        final MutablePicoContainer appContainer = new DefaultPicoContainer();
         appContainer.addComponent(TestService.class, service);
 
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
-                returnValue(null));
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.REQUEST_CONTAINER)).will(
-                returnValue(null));
-        sessionMock.expects(once()).method("getAttribute").with(eq(KeyConstants.SESSION_CONTAINER)).will(
-                returnValue(null));
-        servletContextMock.expects(once()).method("getAttribute").with(eq(KeyConstants.APPLICATION_CONTAINER)).will(
-                returnValue(appContainer));
-        requestMock.expects(once()).method("setAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER),
-                isA(MutablePicoContainer.class));
+        mockery.checking(new Expectations(){{
+            one(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
+            will(returnValue(null));
+            one(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
+            will(returnValue(null));
+            one(session).getAttribute(with(equal(KeyConstants.SESSION_CONTAINER)));
+            will(returnValue(null));
+            one(servletContext).getAttribute(with(equal(KeyConstants.APPLICATION_CONTAINER)));
+            will(returnValue(appContainer));
+            one(request).setAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)),
+                    with(any(MutablePicoContainer.class)));        	
+        }});
 
+        
         TestAction action = (TestAction) actionFactory.getAction(request, mapping1, servlet);
         assertNotNull(action);
         assertSame(service, action.getService());
     }
 
-    public void testNoContainerExists() {
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
-                returnValue(null));
-        requestMock.expects(once()).method("getAttribute").with(eq(KeyConstants.REQUEST_CONTAINER)).will(
-                returnValue(null));
-        sessionMock.expects(once()).method("getAttribute").with(eq(KeyConstants.SESSION_CONTAINER)).will(
-                returnValue(null));
-        servletContextMock.expects(once()).method("getAttribute").with(eq(KeyConstants.APPLICATION_CONTAINER)).will(
-                returnValue(null));
+    @Test public void testNoContainerExists() {
 
+        mockery.checking(new Expectations(){{
+            one(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
+            will(returnValue(null));
+            one(request).getAttribute(with(equal(KeyConstants.REQUEST_CONTAINER)));
+            will(returnValue(null));
+            one(session).getAttribute(with(equal(KeyConstants.SESSION_CONTAINER)));
+            will(returnValue(null));
+            one(servletContext).getAttribute(with(equal(KeyConstants.APPLICATION_CONTAINER)));
+            will(returnValue(null));
+        }});
+        
         try {
             actionFactory.getAction(request, mapping1, servlet);
             fail("PicoCompositionException should have been raised");
@@ -169,11 +222,14 @@ public final class ActionFactoryTestCase extends MockObjectTestCase {
         }
     }
 
-    public void testBadActionType() {
-        MutablePicoContainer actionsContainer = new DefaultPicoContainer();
-        requestMock.stubs().method("getAttribute").with(eq(KeyConstants.ACTIONS_CONTAINER)).will(
-                returnValue(actionsContainer));
+    @Test public void testBadActionType() {
+        final MutablePicoContainer actionsContainer = new DefaultPicoContainer();
 
+        mockery.checking(new Expectations(){{
+            one(request).getAttribute(with(equal(KeyConstants.ACTIONS_CONTAINER)));
+            will(returnValue(actionsContainer));
+        }});
+        
         mapping1.setType("/i/made/a/typo");
         try {
             actionFactory.getAction(request, mapping1, servlet);
@@ -181,24 +237,6 @@ public final class ActionFactoryTestCase extends MockObjectTestCase {
         } catch (PicoCompositionException e) {
             // expected
         }
-    }
-
-    protected void setUp() {
-        String actionType = StrutsTestAction.class.getName();
-
-        mapping1 = new ActionMapping();
-        mapping1.setPath("/myPath1");
-        mapping1.setType(actionType);
-
-        mapping2 = new ActionMapping();
-        mapping2.setPath("/myPath2");
-        mapping2.setType(actionType);
-
-        requestMock.stubs().method("getSession").will(returnValue(session));
-        sessionMock.stubs().method("getServletContext").will(returnValue(servletContext));
-
-        actionFactory = new ActionFactory();
-        service = new TestService();
     }
 
 }

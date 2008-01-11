@@ -1,17 +1,18 @@
 package org.nanocontainer.nanowar.nanoweb;
 
+import static org.junit.Assert.assertSame;
 import groovy.lang.GroovyObjectSupport;
 import groovy.lang.Reference;
-import junit.framework.TestCase;
 
 import java.beans.IntrospectionException;
+
+import org.junit.Test;
 
 /**
  * See http://jira.codehaus.org/secure/ViewIssue.jspa?id=14385
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
-public class GPathExperiment extends TestCase {
+public class GPathExperiment {
     public static class Root {
         private NodeOne nodeOne;
 
@@ -48,7 +49,7 @@ public class GPathExperiment extends TestCase {
         }
     }
 
-    public void testShouldSetPropertiesWithGPath() throws IntrospectionException {
+    @Test public void testShouldSetPropertiesWithGPath() throws IntrospectionException {
         Root root = new Root();
         GroovyObjectSupport rootSupport = new Reference(root);
 

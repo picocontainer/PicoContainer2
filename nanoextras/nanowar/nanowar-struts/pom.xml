@@ -28,5 +28,10 @@
             <artifactId>cglib-nodep</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jmock</groupId>
+            <artifactId>jmock-legacy</artifactId>
+            <scope>test</scope>
+        </dependency>               
 	</dependencies>
 </project>

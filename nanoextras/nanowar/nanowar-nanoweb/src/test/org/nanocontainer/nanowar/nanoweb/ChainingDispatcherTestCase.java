@@ -1,14 +1,16 @@
 package org.nanocontainer.nanowar.nanoweb;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
-public class ChainingDispatcherTestCase extends TestCase {
+public class ChainingDispatcherTestCase {
 
-    public void testDispatcherChain() {
+    @Test public void testDispatcherChain() {
         ChainingDispatcher dispatcher = new ChainingDispatcher(".vm");
         String[] views = dispatcher.getViews("/foo/bar", "zap", "success");
         assertEquals("/foo/bar_zap_success.vm", views[0]);

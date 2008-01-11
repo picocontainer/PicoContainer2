@@ -8,15 +8,20 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.struts;
 
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+
 import java.io.IOException;
 
+import org.junit.Test;
 
 /**
  * @author Stephen Molitor
  */
 public class PicoTilesRequestProcessorTestCase extends AbstractActionTestCase {
 
-    public void testProcessActionCreate() throws IOException {
+    @Test public void testProcessActionCreate() throws IOException {
         PicoTilesRequestProcessor requestProcessor = new PicoTilesRequestProcessor();
         TestAction action = (TestAction) requestProcessor.processActionCreate(request, response, mapping);
         assertNotNull(action);
