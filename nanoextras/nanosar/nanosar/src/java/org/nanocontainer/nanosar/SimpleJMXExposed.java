@@ -3,14 +3,11 @@ package org.nanocontainer.nanosar;
 import java.util.Hashtable;
 
 import javax.management.InstanceAlreadyExistsException;
-import javax.management.InstanceNotFoundException;
 import javax.management.JMException;
 import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
-
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoCompositionException;

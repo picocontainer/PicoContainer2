@@ -74,7 +74,7 @@ public class ContainerDeployer implements ContainerDeployerMBean, MBeanRegistrat
 
 	public String list() {
 		StringBuffer sb = new StringBuffer();
-		for (ComponentAdapter adapter : containerRef.get()
+		for (ComponentAdapter<?> adapter : containerRef.get()
 				.getComponentAdapters()) {
 			sb.append(adapter.toString());
 			sb.append("\n");

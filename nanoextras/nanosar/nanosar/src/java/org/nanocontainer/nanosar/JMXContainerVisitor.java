@@ -7,7 +7,6 @@ import javax.management.ObjectName;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.gems.jndi.JNDIExposed;
 import org.picocontainer.visitors.TraversalCheckingVisitor;
 
 /**
