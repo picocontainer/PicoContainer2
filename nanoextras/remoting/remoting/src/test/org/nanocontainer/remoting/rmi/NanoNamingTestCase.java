@@ -1,5 +1,10 @@
 package org.nanocontainer.remoting.rmi;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
@@ -8,21 +13,21 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.nanocontainer.remoting.rmi.testmodel.Thang;
 import org.nanocontainer.remoting.rmi.testmodel.Thing;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 
 import com.thoughtworks.proxy.ProxyFactory;
 import com.thoughtworks.proxy.factory.CglibProxyFactory;
-
-import junit.framework.TestCase;
 
 /**
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public final class NanoNamingTestCase extends TestCase {
+public final class NanoNamingTestCase {
     private final ProxyFactory proxyFactory;
     private MutablePicoContainer pico;
 
@@ -34,7 +39,7 @@ public final class NanoNamingTestCase extends TestCase {
         proxyFactory = new CglibProxyFactory();
     }
 
-    public void setUp() throws MalformedURLException, NotBoundException, RemoteException, AlreadyBoundException {
+    @Before public void setUp() throws MalformedURLException, NotBoundException, RemoteException, AlreadyBoundException {
         // Configure server side components
         pico = new DefaultPicoContainer();
         thingKey = new ByRefKey("thing");
@@ -53,7 +58,7 @@ public final class NanoNamingTestCase extends TestCase {
 
 
 
-    public void testRemoteComponentCanBeLookedUp() throws MalformedURLException, NotBoundException, RemoteException, AlreadyBoundException {
+    @Test public void testRemoteComponentCanBeLookedUp() throws MalformedURLException, NotBoundException, RemoteException, AlreadyBoundException {
         // The client looks up the thing (by ref)
         Thing thing = (Thing) naming.lookup(new ByRefKey("thing"));
         Thang thang = thing.getThang();
@@ -68,7 +73,7 @@ public final class NanoNamingTestCase extends TestCase {
         assertEquals(0, list.size());
     }
 
-    public void testByRefObjectsCanBePassedDownAndUnwrapped() throws Exception {
+    @Test public void testByRefObjectsCanBePassedDownAndUnwrapped() throws Exception {
         Thing serverThing = (Thing) pico.getComponent(thingKey);
         Thang serverThang = (Thang) pico.getComponent(thangKey);
 

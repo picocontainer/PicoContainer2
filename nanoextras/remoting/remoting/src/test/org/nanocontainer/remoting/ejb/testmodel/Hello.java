@@ -20,5 +20,5 @@ public interface Hello extends EJBObject {
      * @return Returns &quot;Hello World&quot;
      * @throws RemoteException
      */
-    public String getHelloWorld();
+    public String getHelloWorld() throws RemoteException;
 }

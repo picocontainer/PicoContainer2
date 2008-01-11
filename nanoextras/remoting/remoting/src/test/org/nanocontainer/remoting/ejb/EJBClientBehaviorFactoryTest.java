@@ -9,59 +9,68 @@
  *****************************************************************************/
 package org.nanocontainer.remoting.ejb;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+
 import java.util.Hashtable;
 import java.util.Properties;
 
 import javax.naming.Context;
-import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.jmock.lib.legacy.ClassImposteriser;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.nanocontainer.remoting.ejb.testmodel.Hello;
 import org.nanocontainer.remoting.ejb.testmodel.HelloHomeImpl;
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-
-import junit.framework.Test;
-
-import org.jmock.Mock;
-import org.jmock.cglib.MockObjectTestCase;
 
 
 /**
  * Unit test for EJBClientBehaviorFactory.
  * @author J&ouml;rg Schaible
  */
-public class EJBClientBehaviorFactoryTest extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class EJBClientBehaviorFactoryTest {
 
-    private Mock m_initialContextMock;
-    private Properties m_systemProperties;
+	private Mockery mockery = mockeryWithClassImposteriser();
+	
+    private InitialContextMock initialContext = (InitialContextMock) mockery.mock(InitialContextMock.class);
+    private Properties systemProperties;
 
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-        m_systemProperties = System.getProperties();
+    private Mockery mockeryWithClassImposteriser() {
+		Mockery mockery = mockeryWithCountingNamingScheme();
+		mockery.setImposteriser(ClassImposteriser.INSTANCE);
+		return mockery;
+	}
 
-        m_initialContextMock = mock(InitialContextMock.class);
-        InitialContextFactoryMock.setInitialContext((InitialContext)m_initialContextMock.proxy());
+    @Before public void setUp() throws Exception {
+        systemProperties = System.getProperties();
+        InitialContextFactoryMock.setInitialContext(initialContext);
     }
 
-    /**
-     * @see junit.framework.TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
+    @After public void tearDown() throws Exception {
         InitialContextFactoryMock.setInitialContext(null);
-        System.setProperties(m_systemProperties);
-        super.tearDown();
+        System.setProperties(systemProperties);
     }
 
     /**
      * Test for standard constructor using system InitialContext
+     * @throws NamingException 
      */
-    public final void testSystemInitialContext() {
+    @Test public void testSystemInitialContext() throws NamingException {
         System.setProperty(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
         final ComponentFactory componentFactory = new EJBClientBehaviorFactory();
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), null, "Hello", Hello.class, null);
@@ -70,14 +79,18 @@ public class EJBClientBehaviorFactoryTest extends MockObjectTestCase {
         final Object hello2 = componentAdapter.getComponentInstance(null);
         assertNotNull(hello1);
         assertTrue(Hello.class.isAssignableFrom(hello1.getClass()));
-        m_initialContextMock.expects(once()).method("lookup").with(eq("Hello")).will(returnValue(new HelloHomeImpl()));
+        mockery.checking(new Expectations(){{
+        	one(initialContext).lookup(with(equal("Hello")));
+        	will(returnValue(new HelloHomeImpl()));        	
+        }});
         assertEquals(hello1.hashCode(), hello2.hashCode());
     }
 
     /**
      * Test for constructor using a prepared environment for the InitialContext
+     * @throws NamingException 
      */
-    public final void testPreparedInitialContext() {
+    @Test public void testPreparedInitialContext() throws NamingException {
         final Hashtable env = new Hashtable();
         env.put(Context.INITIAL_CONTEXT_FACTORY, InitialContextFactoryMock.class.getName());
         final ComponentFactory componentFactory = new EJBClientBehaviorFactory(env);
@@ -87,7 +100,10 @@ public class EJBClientBehaviorFactoryTest extends MockObjectTestCase {
         final Object hello2 = componentAdapter.getComponentInstance(null);
         assertNotNull(hello1);
         assertTrue(Hello.class.isAssignableFrom(hello1.getClass()));
-        m_initialContextMock.expects(once()).method("lookup").with(eq("Hello")).will(returnValue(new HelloHomeImpl()));
+        mockery.checking(new Expectations(){{
+        	one(initialContext).lookup(with(equal("Hello")));
+        	will(returnValue(new HelloHomeImpl()));        	
+        }});
         assertEquals(hello1.hashCode(), hello2.hashCode());
     }
 

@@ -22,5 +22,5 @@ public interface HelloHome extends EJBHome {
      * @throws CreateException
      * @throws RemoteException
      */
-    public Hello create();
+    public Hello create() throws CreateException;
 }

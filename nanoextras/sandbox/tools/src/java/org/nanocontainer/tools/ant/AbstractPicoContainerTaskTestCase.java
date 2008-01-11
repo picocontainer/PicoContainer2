@@ -9,8 +9,9 @@
  *****************************************************************************/
 package org.nanocontainer.tools.ant;
 
+import junit.framework.TestCase;
+
 import org.apache.tools.ant.Project;
-import org.jmock.MockObjectTestCase;
 
 /**
  * Base class for testing of PicoContainerTask implementations.
@@ -18,7 +19,7 @@ import org.jmock.MockObjectTestCase;
  * @author Aslak Helles&oslash;y
  * @version $Revision$
  */
-public abstract class AbstractPicoContainerTaskTestCase extends MockObjectTestCase {
+public abstract class AbstractPicoContainerTaskTestCase extends TestCase {
     protected PicoContainerTask task;
 
     public void setUp() {
