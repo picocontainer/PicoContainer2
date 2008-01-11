@@ -13,7 +13,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.jmock.Mock;
+import org.jmock.Mockery;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultContainerBuilder;
@@ -32,6 +32,8 @@ import org.picocontainer.references.SimpleReference;
  */
 public class ContainerComposerMocker implements KeyConstants {
 
+	private Mockery mockery = new Mockery();
+	
     private final ContainerBuilder containerKiller = new DefaultContainerBuilder(null);
     /**
      * application level container
@@ -61,7 +63,7 @@ public class ContainerComposerMocker implements KeyConstants {
      */
     public void startApplication() {
         SimpleReference ref = new SimpleReference();
-        containerBuilder.buildContainer(ref, new SimpleReference(), (new Mock(ServletContext.class)).proxy(), false);
+        containerBuilder.buildContainer(ref, new SimpleReference(), mockery.mock(ServletContext.class), false);
         applicationContainer = (MutablePicoContainer) ref.get();
     }
 
@@ -85,7 +87,7 @@ public class ContainerComposerMocker implements KeyConstants {
         SimpleReference ref = new SimpleReference();
         SimpleReference parent = new SimpleReference();
         parent.set(applicationContainer);
-        containerBuilder.buildContainer(ref, parent, ((new Mock(HttpSession.class)).proxy()), false);
+        containerBuilder.buildContainer(ref, parent, mockery.mock(HttpSession.class), false);
         sessionContainer = (MutablePicoContainer) ref.get();
     }
 
@@ -108,7 +110,7 @@ public class ContainerComposerMocker implements KeyConstants {
         SimpleReference ref = new SimpleReference();
         SimpleReference parent = new SimpleReference();
         parent.set(sessionContainer);
-        containerBuilder.buildContainer(ref, parent, (new Mock(HttpServletRequest.class)).proxy(), false);
+        containerBuilder.buildContainer(ref, parent, mockery.mock(HttpServletRequest.class), false);
         requestContainer = (MutablePicoContainer) ref.get();
     }
 
