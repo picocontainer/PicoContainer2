@@ -91,16 +91,27 @@ public class ComponentNode extends AbstractBuilderNode {
         Object cnkey = attributes.remove(CLASS_NAME_KEY);
         Object classValue = attributes.remove(CLASS);
         Object instance = attributes.remove(INSTANCE);
-        List parameters = (List) attributes.remove(PARAMETERS);
+        Object parameters =  attributes.remove(PARAMETERS);
         List properties = (List) attributes.remove(PROPERTIES);
 
         return ComponentElementHelper.makeComponent(cnkey, key, getParameters(parameters), classValue, (NanoContainer) current, instance, getProperties(properties));
     }
 
-    private static Parameter[] getParameters(List paramsList) {
-        if (paramsList == null) {
+    private static Parameter[] getParameters(Object params) {
+        if (params == null) {
             return null;
         }
+        
+        if (params instanceof Parameter[]){
+        	return (Parameter[])params;
+        } 
+        
+        if (! (params instanceof List)) {
+        	throw new IllegalArgumentException("Parameters may only be of type List or Parameter Array");
+        }
+        
+        List paramsList = (List)params;
+        
         int n = paramsList.size();
         Parameter[] parameters = new Parameter[n];
         for (int i = 0; i < n; ++i) {

@@ -2,6 +2,7 @@ package org.nanocontainer.script.groovy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -212,6 +213,40 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         public NeedsString(String foo) {
             this.foo = foo;
         }
+    }
+    
+    public static class ParameterTestingObject {
+    	
+    	public final String constructedString;
+    	
+    	public ParameterTestingObject() {
+    		constructedString = null;
+    	}
+    	
+    	public ParameterTestingObject(String parameterString) {
+    		this.constructedString = parameterString;
+    	}
+    	
+    }
+    
+    @Test
+    public void canHandleZeroParameterArguments() {
+        Reader script = new StringReader("" +
+        		"import org.picocontainer.*\n\n" + 
+                "nano = builder.container {\n" +
+                "    component(instance:'This is a test')\n" + 
+                "    component(key: 'ConstructedAuto', class: org.nanocontainer.script.groovy.GroovyNodeBuilderTestCase.ParameterTestingObject)\n" +
+                "    component(key: 'ZeroParameter', class: org.nanocontainer.script.groovy.GroovyNodeBuilderTestCase.ParameterTestingObject, parameters: Parameter.ZERO)\n" +
+                "}");    	
+
+        PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
+        assertNotNull(pico.getComponent(String.class));
+        
+        ParameterTestingObject testObject = (ParameterTestingObject)pico.getComponent("ConstructedAuto");
+        assertEquals("This is a test", testObject.constructedString);
+        
+        testObject = (ParameterTestingObject)pico.getComponent("ZeroParameter");
+        assertNull(testObject.constructedString);
     }
 
     //FIXME @Test Fails under JUnit4
