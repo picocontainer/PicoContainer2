@@ -8,11 +8,14 @@
     <artifactId>nanocontainer</artifactId>
     <name>NanoContainer Core</name>
     <packaging>jar</packaging>
-
     <dependencies>
         <dependency>
             <groupId>org.picocontainer</groupId>
             <artifactId>picocontainer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.paranamer</groupId>
+            <artifactId>paranamer</artifactId>
         </dependency>
         <!-- optional dependencies -->
         <dependency>
@@ -45,5 +48,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>
