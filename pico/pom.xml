@@ -315,6 +315,7 @@
           <version>2.0-beta-7</version>
           <configuration>
             <autoVersionSubmodules>true</autoVersionSubmodules>
+            <preparationGoals>clean install</preparationGoals>
             <tagBase>
               https://svn.codehaus.org/picocontainer/java/2.x/tags/
             </tagBase>
