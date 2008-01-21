@@ -35,7 +35,53 @@ behavior factory. For the session and request level ones, you choose
 Storing instead. You wrap the Storing behavior factory instances in
 HttpSessionStoring and reprogram each http request like so:</p>
 <div class="source">
-  <pre>public class MyTinyPicoServlet extends HttpServlet {<br /><br />    private DefaultPicoContainer requestContainer;<br /><br />    private HttpSessionStoring sessionStoring;<br />    private HttpSessionStoring requestStoring;<br /><br />    public void init(ServletConfig cfg) throws ServletException {<br /><br />        PicoContainer appContainer = new DefaultPicoContainer(new Caching()); // app scoped components are cached for all users/sessions<br /><br />        Storing storingBehavior1 = new Storing();<br />        PicoContainer sessionContainer = new DefaultPicoContainer(storingBehavior1, appContainer);<br />        sessionStoringAdapter = new HttpSessionStoringAdapter(storingBehavior1, "sessionStore");<br /><br />        Storing storingBehavior2 = new Storing();<br />        requestContainer = new DefaultPicoContainer(storingBehavior2, sessionContainer);<br />        requestStoringAdapter = new HttpSessionStoringAdapter(storingBehavior2, "requestStore");<br /><br />        // populate app, session and request scoped containers.<br />        appContainer.addComponent(HibernateManager.class, MyHibernateManager.class); // all sessions share one HibernateManager<br />        sessionContainer.addComponent(ShoppingCart.class, FifoCart.class); // a new cart per user<br />        requestContainer.addComponent("/addToCart.do", AddToCart.class); // key crudely maps to URL<br />        requestContainer.addComponent("/removeFromCart.do", RemoveFromCart.class);<br />        // etc<br /><br />    }<br /><br />    protected void service(HttpServletRequest req, HttpServletResponse resp)<br />        throws ServletException, IOException {<br /><br />        sessionStoringAdapter.retrieveOrCreateStore(req.getSession()); // associate thread with session, for caching (session scoped components)<br />        requestStoringAdapter.resetStore(); // cache components per request (request scoped components)<br /><br />        Action action = (Action) requestContainer.getComponent(req.getPathTranslated());<br /><br />        try {<br />            action.execute(req, resp); // yeah yeah, this is pretty basic<br />        } finally {<br />            sessionStoringAdapter.invalidateStore();<br />            requestStoringAdapter.invalidateStore();<br />        }<br />        // trying to retrieve components from at session or request scopes from here on will result in an UnsupportedOperationException<br />    }<br /><br />}<br /></pre>
+  <pre>public class MyTinyPicoServlet extends HttpServlet {
+
+    private DefaultPicoContainer requestContainer;
+
+    private HttpSessionStoring sessionStoring;
+    private HttpSessionStoring requestStoring;
+
+    public void init(ServletConfig cfg) throws ServletException {
+
+        PicoContainer appContainer = new DefaultPicoContainer(new Caching()); // app scoped components are cached for all users/sessions
+
+        Storing storingBehavior1 = new Storing();
+        PicoContainer sessionContainer = new DefaultPicoContainer(storingBehavior1, appContainer);
+        sessionStoringAdapter = new HttpSessionStoringAdapter(storingBehavior1, "sessionStore");
+
+        Storing storingBehavior2 = new Storing();
+        requestContainer = new DefaultPicoContainer(storingBehavior2, sessionContainer);
+        requestStoringAdapter = new HttpSessionStoringAdapter(storingBehavior2, "requestStore");
+
+        // populate app, session and request scoped containers.
+        appContainer.addComponent(HibernateManager.class, MyHibernateManager.class); // all sessions share one HibernateManager
+        sessionContainer.addComponent(ShoppingCart.class, FifoCart.class); // a new cart per user
+        requestContainer.addComponent("/addToCart.do", AddToCart.class); // key crudely maps to URL
+        requestContainer.addComponent("/removeFromCart.do", RemoveFromCart.class);
+        // etc
+
+    }
+
+    protected void service(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+
+        sessionStoringAdapter.retrieveOrCreateStore(req.getSession()); // associate thread with session, for caching (session scoped components)
+        requestStoringAdapter.resetStore(); // cache components per request (request scoped components)
+
+        Action action = (Action) requestContainer.getComponent(req.getPathTranslated());
+
+        try {
+            action.execute(req, resp); // yeah yeah, this is pretty basic
+        } finally {
+            sessionStoringAdapter.invalidateStore();
+            requestStoringAdapter.invalidateStore();
+        }
+        // trying to retrieve components from at session or request scopes from here on will result in an UnsupportedOperationException
+    }
+
+}
+</pre>
 </div>
 <p>The HttpSessionStoring class is not in the core jar, its in the
 'gems' one. If you don't want a second jar - copy the class (it's real
