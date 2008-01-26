@@ -27,6 +27,7 @@
             <groupId>dynaop</groupId>
             <artifactId>dynaop</artifactId>
             <version>1.0</version>
+            <optional>true</optional>
         </dependency>
         <!-- test scoped dependencies -->
         <dependency>
