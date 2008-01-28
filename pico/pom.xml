@@ -37,6 +37,7 @@
     <url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</url>
   </scm>
   <repositories>
+	<!--
     <repository>
       <id>codehaus-repository</id>
       <name>Codehaus Repository</name>
@@ -53,7 +54,9 @@
       <url>http://dist.codehaus.org</url>
       <layout>legacy</layout>
     </repository>
+	-->
     <repository>
+	  <!-- profuse is not on central yet -->
       <layout>legacy</layout>
       <id>astrogrid.org-repository</id>
       <name>Astrogrid Repository</name>
@@ -61,6 +64,10 @@
     </repository>
   </repositories>
   <pluginRepositories>
+	<!-- 
+		Following declarations break the build! 
+		Clean your local M2 repo and try it yourself!
+		
     <pluginRepository>
       <id>codehaus-plugin-repository</id>
       <name>Codehaus Plugin Repository</name>
@@ -82,6 +89,7 @@
         <enabled>true</enabled>
       </snapshots>
     </pluginRepository>
+	-->
   </pluginRepositories>
   <distributionManagement>
     <repository>
@@ -317,6 +325,16 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
           <version>2.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.2</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
