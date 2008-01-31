@@ -10,13 +10,17 @@
 You may have a component that has a dependency on something that the
 container could ordinarily satisfy more than one. &nbsp;By default,
 when PicoContainer is presented with such a situation, it will throw an
-exception suggesting the depency resolution is ambiguous.
+exception suggesting the dependency resolution is ambiguous.
 <h2>Disambiguation using parameter names<span style="text-decoration: underline;"></span></h2>
 With PicoContainer 2.0 we are able to leverage the parameter names of
 constructors and methods in order to remove the ambiguity on
 dependancies.<br />
 <div class="source">
-<pre>public class Store {<br /> public Store(StockManager workingDayStockManager, StockManager afterHoursStockManager) {<br /> // etc<br /> }<br />}</pre>
+<pre>public class Store {
+  public Store(StockManager workingDayStockManager, StockManager afterHoursStockManager) {
+    // etc
+  }
+}</pre>
 </div>
 If Store is added to the container appropriately, then its parameter
 names <span style="font-family: monospace;">'</span>workingHoursStockManager'
@@ -47,15 +51,29 @@ Dependency-Injection where parameter names are present.<br />
 <span style="text-decoration: underline;"></span>
 <h3>Disambiguation using Binding Annotations
 </h3>
-<p>This worls the same as Guice. &nbsp;Namely you make an
+<p>This works the same as Guice. &nbsp;Namely you make an
 annotation that extends our 'Bind' annotation and mark it in your&nbsp;constructor or method's signature like so.</p>
 <div class="source">
 <div>
-<pre>@Retention(RetentionPolicy.RUNTIME)<br />@Target({ElementType.FIELD, ElementType.PARAMETER})<br />@Bind<br />public static @interface WorkingDayStockManager {}<br /><br />@Retention(RetentionPolicy.RUNTIME)<br />@Target({ElementType.FIELD, ElementType.PARAMETER})<br />@Bind<br />public static @interface AfterHoursStockManager {}<br /><br />public class Store {<br /> public Store(@WorkingDayStockManager StockManager workingDayStockManager, <br /> @AfterHoursStockManager StockManager afterHoursStockManager) {<br /> // etc<br /> }<br />}</pre>
+<pre>@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Bind
+public static @interface WorkingDayStockManager {}
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Bind
+public static @interface AfterHoursStockManager {}
+public class Store {
+  public Store(@WorkingDayStockManager StockManager workingDayStockManager, 
+    @AfterHoursStockManager StockManager afterHoursStockManager) {
+    // etc
+  }
+}</pre>
 </div>
 </div>
 Making PicoContainer leverage binding annotations if present is
-automatic.<br /><br />Biniding
-annotations specified for constructor parameters (as shown above),
+automatic.<br /><br />Binding
+annotations can be specified for constructor parameters (as shown above),
 method injection parameters as well as field injection.<br />
-</body></html>
+</body>
+</html>
