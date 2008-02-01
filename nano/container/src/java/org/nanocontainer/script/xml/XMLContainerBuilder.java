@@ -107,7 +107,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder implements Con
     }
     
     public XMLContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
-        super(script, classLoader);
+        super(script, classLoader, lifecycleMode);
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             parse(documentBuilder, new InputSource(script));
