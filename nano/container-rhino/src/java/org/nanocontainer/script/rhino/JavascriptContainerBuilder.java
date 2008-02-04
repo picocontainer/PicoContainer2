@@ -20,12 +20,14 @@ import org.mozilla.javascript.ImporterTopLevel;
 import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeJavaPackage;
+import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
 import org.nanocontainer.integrationkit.LifecycleMode;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.PicoContainer;
+
 
 /**
  * {@inheritDoc}
@@ -67,10 +69,12 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
         cx = Context.enter(cx);
 
         try {
+        	
             Scriptable scope = new ImporterTopLevel(cx);
             scope.put("parent", scope, parentContainer);
             scope.put("assemblyScope", scope, assemblyScope);
-            ImporterTopLevel.importPackage(cx,
+            //Behavior change.  Rhino scripts now must use importPackage() explicitly.
+           /* ImporterTopLevel.importPackage(cx,
                     scope, new NativeJavaPackage[]{
                         new NativeJavaPackage("org.picocontainer.lifecycle", loader),
                         new NativeJavaPackage("org.picocontainer", loader),
@@ -83,9 +87,11 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
                         new NativeJavaPackage("java.net", loader),
                         new NativeJavaPackage("java.io", loader),
                     },
-                    null);
-            Script scriptObject = cx.compileReader(scope, getScriptReader(), "javascript", 1, null);
-            scriptObject.exec(cx, scope);
+                    null);*/
+
+            //Script scriptObject = cx.compileReader(scope, getScriptReader(), "javascript", 1, null);
+			//scriptObject.exec(cx, scope);            
+            cx.evaluateReader(scope, getScriptReader(), "nanocontainer.js", 1, null);
             Object pico = scope.get("pico", scope);
 
             if (pico == null) {
@@ -101,13 +107,16 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
             return (PicoContainer) javaObject;
         } catch (NanoContainerMarkupException e) {
             throw e;
-        } catch (JavaScriptException e) {
-            Object value = e.getValue();
-            if (value instanceof Throwable) {
-                throw new NanoContainerMarkupException((Throwable) value);
-            } else {
-                throw new NanoContainerMarkupException(e);
-            }
+        } catch (RhinoException e) {
+			StringBuilder message = new StringBuilder();
+			message.append("There was an error in script '");
+			message.append(e.sourceName());
+			message.append("'.  Line number: ");
+			message.append(e.lineNumber());
+			message.append(" and Column number: ");
+			message.append(e.columnNumber());
+			message.append(" .");
+			throw new NanoContainerMarkupException(message.toString(), e);
         } catch (IOException e) {
             throw new NanoContainerMarkupException("IOException encountered, message -'" + e.getMessage() + "'", e);
         } finally {
