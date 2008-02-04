@@ -36,25 +36,8 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</developerConnection>
     <url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</url>
   </scm>
+  <!-- Note:  only use repositories for released artifacts.  Snapshots should be  accessed by configuring snapshot repositories via a settings profile -->
   <repositories>
-	<!--
-    <repository>
-      <id>codehaus-repository</id>
-      <name>Codehaus Repository</name>
-      <url>http://repository.codehaus.org</url>
-    </repository>
-    <repository>
-      <id>codehaus-snapshots-repository</id>
-      <name>Codehaus Snapshots Repository</name>
-      <url>http://snapshots.repository.codehaus.org</url>
-    </repository>
-    <repository>
-      <id>codehaus-dist-repository</id>
-      <name>Codehaus Dist Repository</name>
-      <url>http://dist.codehaus.org</url>
-      <layout>legacy</layout>
-    </repository>
-	-->
     <repository>
 	  <!-- profuse is not on central yet -->
       <layout>legacy</layout>
@@ -63,34 +46,6 @@
       <url>http://www.astrogrid.org/maven</url>
     </repository>
   </repositories>
-  <pluginRepositories>
-	<!-- 
-		Following declarations break the build! 
-		Clean your local M2 repo and try it yourself!
-		
-    <pluginRepository>
-      <id>codehaus-plugin-repository</id>
-      <name>Codehaus Plugin Repository</name>
-      <url>http://repository.codehaus.org</url>
-    </pluginRepository>
-    <pluginRepository>
-      <id>codehaus-plugin-snapshots-repository</id>
-      <name>Codehaus Plugin Snapshots Repository</name>
-      <url>http://snapshots.repository.codehaus.org</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </pluginRepository>
-    <pluginRepository>
-      <id>apache-plugin-snapshots-repository</id>
-      <name>Apache Plugin Snapshots Repository</name>
-      <url>http://people.apache.org/repo/m2-snapshot-repository</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </pluginRepository>
-	-->
-  </pluginRepositories>
   <distributionManagement>
     <repository>
       <id>codehaus.org</id>
