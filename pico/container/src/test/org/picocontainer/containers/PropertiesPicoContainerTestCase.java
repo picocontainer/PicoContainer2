@@ -4,9 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import java.util.Properties;
+import java.io.IOException;
+import java.io.FileInputStream;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Characteristics;
 
 /**
  * test that properties container works properly
@@ -42,5 +45,46 @@ public class PropertiesPicoContainerTestCase {
 		
 		assertSame(stored,contaienr.getComponent("glam"));
 	}
+
+
+    @Test public void thatParanamerBehavesForASpecialCase() {
+
+       Properties properties = new Properties();
+       properties.put("portNumber", 1);
+       properties.put("hostName", "string");
+       properties.put("agentName", "agent0");
+       System.out.println("Properties: " + properties);
+       DefaultPicoContainer container = new DefaultPicoContainer(new PropertiesPicoContainer(properties));
+       container.as(Characteristics.USE_NAMES).addComponent(Dependant.class);
+       container.as(Characteristics.USE_NAMES).addComponent(Dependency.class);
+       Dependant dependant = (Dependant) container.getComponent(Dependant.class);
+       System.out.println(dependant);
+   }
+
+    public static class Dependency {
+           private final String name;
+           public Dependency(final String agentName) {
+               this.name = agentName;
+           }
+           public String toString() {
+               return name;
+           }
+       }
+
+       public static class Dependant /*  */ {
+           private final int number;
+           private final String string;
+           private final Dependency dependency;
+
+           public Dependant(final String hostName, final int portNumber, final Dependency dependency) {
+               this.number = portNumber;
+               this.string = hostName;
+               this.dependency = dependency;
+           }
+
+           public String toString() {
+               return "Number: " + number + " String: " + string + " Dependency: " + dependency;
+           }
+       }
 
 }
