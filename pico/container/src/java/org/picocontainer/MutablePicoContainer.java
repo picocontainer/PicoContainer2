@@ -86,9 +86,11 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
 
     /**
      * Register a component via a ComponentAdapter. Use this if you need fine grained control over what
-     * ComponentAdapter to use for a specific component.
+     * ComponentAdapter to use for a specific component.  The adapter will be wrapped in whatever behaviors that the 
+     * the container has been set up with.  If you want to bypass that behavior for the adapter you are adding, 
+     * you should use Characteristics.NONE like so pico.as(Characteristics.NONE).addAdapter(...)
      *
-     * @param componentAdapter the addAdapter
+     * @param componentAdapter the adapter
      *
      * @return the same instance of MutablePicoContainer
      *
