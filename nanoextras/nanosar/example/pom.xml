@@ -69,7 +69,7 @@
                             <tasks>
                                 <delete file="${jboss.deploy.dir}/${pom.artifactId}-${pom.version}.sar"/>
                                 <copy
-                                        file="${project.build.directory}/${pom.artifactId}-${pom.version}.sar"
+                                        file="${project.build.directory}/${pom.artifactId}-${pom.version}.jboss-sar"
                                         todir="${jboss.deploy.dir}"
                                         overwrite="true" />
 
