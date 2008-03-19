@@ -1,0 +1,7 @@
+http://jira.codehaus.org/browse/MNG-3361
+
+the above affects your ability to deploy from leopard presently.
+
+Brett's hack works though.
+
+- Paul
