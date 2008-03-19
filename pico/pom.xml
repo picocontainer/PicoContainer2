@@ -61,7 +61,7 @@
     </snapshotRepository>
     <site>
       <id>codehaus.org</id>
-      <url>dav:https://dav.codehaus.org/picocontainer/</url>
+      <url>dav:https://dav.codehaus.org/picocontainer/maven/</url>
     </site>
   </distributionManagement>
   <dependencyManagement>
