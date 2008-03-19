@@ -10,11 +10,11 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>org.nanocontainer</groupId>
+            <groupId>${pom.groupId}</groupId>
             <artifactId>nanocontainer</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.nanocontainer</groupId>
+            <groupId>${pom.groupId}</groupId>
             <artifactId>nanocontainer-groovy</artifactId>
         </dependency>
         <!-- test scoped dependencies -->
