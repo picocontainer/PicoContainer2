@@ -85,6 +85,7 @@ public class ComponentAdapterTestCase {
             return null;
         }
 
+        @Override
         public void verify(PicoContainer container) throws PicoCompositionException {
         }
 

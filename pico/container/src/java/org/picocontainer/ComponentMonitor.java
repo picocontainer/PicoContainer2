@@ -120,11 +120,19 @@ public interface ComponentMonitor {
 
 
     /**
-     * 
+     * No Component has been found for the key in question. Implementors of this have a last ditch opportunity to
+     * specify something for the need.
+     *
      * @param container
      * @param componentKey
      */
     Object noComponentFound(MutablePicoContainer container, Object componentKey);
 
+    /**
+     * A mechanism to monitor or override the AbstractInjectors being made for components.
+     *
+     * @param abstractInjector the abstract injector the container intends to use for the component currently being added.
+     * @return an abstract Injector. For most implementations, the same one as was passed in.
+     */
     AbstractInjector newInjectionFactory(AbstractInjector abstractInjector);
 }

@@ -145,6 +145,7 @@ public class AbstractInjectorTestCase {
             super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
         }
 
+        @Override
         public void verify(PicoContainer container) throws PicoCompositionException {
                 }
 

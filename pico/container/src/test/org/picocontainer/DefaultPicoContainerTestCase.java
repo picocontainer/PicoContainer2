@@ -743,15 +743,10 @@ public final class DefaultPicoContainerTestCase extends
     private static class MyNullComponentMonitor extends NullComponentMonitor {
         public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
             return new AbstractInjector(List.class, ArrayList.class, Parameter.DEFAULT, MyNullComponentMonitor.this, null, false) {
-                public void verify(PicoContainer container) throws PicoCompositionException {
-                }
                 public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
                     ArrayList list = new ArrayList();
                     list.add("doppleganger");
                     return list;
-                }
-                public String getDescriptor() {
-                    return "n/a";
                 }
             };
         }

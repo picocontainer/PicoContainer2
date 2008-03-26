@@ -117,6 +117,7 @@ public class MethodInjector extends SingleMemberInjector {
     }
 
 
+    @Override
     public void verify(final PicoContainer container) throws PicoCompositionException {
         if (verifyingGuard == null) {
             verifyingGuard = new ThreadLocalCyclicDependencyGuard() {

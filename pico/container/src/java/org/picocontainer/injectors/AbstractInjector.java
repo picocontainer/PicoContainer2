@@ -102,7 +102,8 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         return componentParameters;
     }
 
-    public abstract void verify(PicoContainer container) throws PicoCompositionException;
+    public void verify(PicoContainer container) throws PicoCompositionException {
+    }
 
     @Override
 	public void accept(final PicoVisitor visitor) {
@@ -127,6 +128,10 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 
     public boolean hasLifecycle(final Class<?> type) {
         return lifecycleStrategy.hasLifecycle(type);
+    }
+
+    public String getDescriptor() {
+        return "Asbtract Injector";
     }
 
     /**

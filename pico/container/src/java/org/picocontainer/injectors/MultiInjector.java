@@ -65,6 +65,7 @@ public class MultiInjector extends AbstractInjector {
         return annotatedMethodInjector.getComponentInstance(container);
     }
 
+    @Override
     public void verify(PicoContainer container) throws PicoCompositionException {
         constuctorInjector.verify(container);
         constuctorInjector.verify(container);
