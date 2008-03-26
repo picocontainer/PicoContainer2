@@ -21,13 +21,7 @@ import static org.picocontainer.Characteristics.SDI;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.lang.reflect.Member;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 import org.junit.Test;
 import org.picocontainer.behaviors.Caching;
@@ -43,6 +37,7 @@ import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.adapters.InstanceAdapter;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -738,4 +733,27 @@ public final class DefaultPicoContainerTestCase extends
 		assertEquals(1, container.getComponentAdapters().size());
 	}
 
+    @Test public void canInterceptImplementationViaNewInjectionFactoryMethodOnMonitor() {
+        DefaultPicoContainer dpc = new DefaultPicoContainer(new MyNullComponentMonitor());
+        dpc.addComponent(List.class, ArrayList.class);
+        assertNotNull(dpc.getComponent(List.class));
+        assertEquals("doppleganger", dpc.getComponent(List.class).get(0));
+    }
+
+    private static class MyNullComponentMonitor extends NullComponentMonitor {
+        public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
+            return new AbstractInjector(List.class, ArrayList.class, Parameter.DEFAULT, MyNullComponentMonitor.this, null, false) {
+                public void verify(PicoContainer container) throws PicoCompositionException {
+                }
+                public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
+                    ArrayList list = new ArrayList();
+                    list.add("doppleganger");
+                    return list;
+                }
+                public String getDescriptor() {
+                    return "n/a";
+                }
+            };
+        }
+    }
 }

@@ -22,10 +22,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Member;
 
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
+import org.picocontainer.*;
+import org.picocontainer.injectors.AbstractInjector;
 
 /**
  * A {@link ComponentMonitor} which writes to a {@link Writer}. 
@@ -104,5 +102,9 @@ public class WriterComponentMonitor implements ComponentMonitor {
     public Object noComponentFound(MutablePicoContainer container, Object componentKey) {
         out.println(format(ComponentMonitorHelper.NO_COMPONENT, componentKey));
         return delegate.noComponentFound(container, componentKey);
+    }
+
+    public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
+        return delegate.newInjectionFactory(abstractInjector);
     }
 }

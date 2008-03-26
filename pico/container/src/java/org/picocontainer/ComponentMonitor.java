@@ -10,6 +10,8 @@
 
 package org.picocontainer;
 
+import org.picocontainer.injectors.AbstractInjector;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
@@ -123,4 +125,6 @@ public interface ComponentMonitor {
      * @param componentKey
      */
     Object noComponentFound(MutablePicoContainer container, Object componentKey);
+
+    AbstractInjector newInjectionFactory(AbstractInjector abstractInjector);
 }

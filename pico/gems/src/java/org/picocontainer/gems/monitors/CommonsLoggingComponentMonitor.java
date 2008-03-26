@@ -22,10 +22,8 @@ import java.lang.reflect.Member;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
+import org.picocontainer.*;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.monitors.ComponentMonitorHelper;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -209,6 +207,10 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
             log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.NO_COMPONENT, componentKey));
         }
         return delegate.noComponentFound(container, componentKey);
+    }
+
+    public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
+        return delegate.newInjectionFactory(abstractInjector); 
     }
 
     protected Log getLog(Member member) {

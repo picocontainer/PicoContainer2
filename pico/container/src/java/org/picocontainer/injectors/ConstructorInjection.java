@@ -31,10 +31,9 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  */
 public class ConstructorInjection implements InjectionFactory, Serializable {
 
-
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties properties, Object componentKey,
                                                    Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
         boolean useNames = AbstractBehaviorFactory.removePropertiesIfPresent(properties, Characteristics.USE_NAMES);
-        return new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, useNames);
+        return componentMonitor.newInjectionFactory(new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, useNames));
     }
 }

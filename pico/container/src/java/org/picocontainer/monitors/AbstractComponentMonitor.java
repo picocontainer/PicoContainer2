@@ -15,11 +15,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Member;
 
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
+import org.picocontainer.*;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
@@ -113,6 +110,10 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
 
     public Object noComponentFound(MutablePicoContainer container, Object componentKey) {
         return delegate.noComponentFound(container, componentKey);
+    }
+
+    public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
+        return abstractInjector;
     }
 
     /**

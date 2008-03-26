@@ -26,10 +26,8 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import org.picocontainer.monitors.ComponentMonitorHelper;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
+import org.picocontainer.*;
+import org.picocontainer.injectors.AbstractInjector;
 
 
 /**
@@ -212,6 +210,10 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
         }
         return delegate.noComponentFound(container, componentKey);
 
+    }
+
+    public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
+        return delegate.newInjectionFactory(abstractInjector);
     }
 
     protected Logger getLogger(Member member) {

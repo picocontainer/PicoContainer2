@@ -14,13 +14,9 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Member;
-import java.lang.reflect.AccessibleObject;
 
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.PicoLifecycleException;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
+import org.picocontainer.*;
+import org.picocontainer.injectors.AbstractInjector;
 
 /**
  * A {@link ComponentMonitor} which does nothing. 
@@ -74,6 +70,10 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
 
     public Object noComponentFound(MutablePicoContainer container, Object componentKey) {
         return null;
+    }
+
+    public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
+        return abstractInjector;  
     }
 
 }

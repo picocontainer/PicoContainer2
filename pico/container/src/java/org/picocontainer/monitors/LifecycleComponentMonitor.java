@@ -16,12 +16,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoLifecycleException;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
+import org.picocontainer.*;
+import org.picocontainer.injectors.AbstractInjector;
 
 /**
  * A {@link ComponentMonitor} which collects lifecycle failures
@@ -100,6 +96,10 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
 
     public Object noComponentFound(MutablePicoContainer container, Object componentKey) {
         return delegate.noComponentFound(container, componentKey);
+    }
+
+    public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
+        return delegate.newInjectionFactory(abstractInjector);
     }
 
 

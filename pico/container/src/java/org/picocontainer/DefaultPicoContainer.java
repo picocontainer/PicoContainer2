@@ -341,7 +341,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return found;
     }
 
-    protected MutablePicoContainer addAdapterInternal(final ComponentAdapter<?> componentAdapter) {
+    protected MutablePicoContainer addAdapterInternal(ComponentAdapter<?> componentAdapter) {
         Object componentKey = componentAdapter.getComponentKey();
         if (getComponentKeyToAdapterCache().containsKey(componentKey)) {
             throw new PicoCompositionException("Duplicate Keys not allowed. Duplicate for '" + componentKey + "'");
