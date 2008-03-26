@@ -735,6 +735,7 @@ public final class DefaultPicoContainerTestCase extends
 
     @Test public void canInterceptImplementationViaNewInjectionFactoryMethodOnMonitor() {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new MyNullComponentMonitor());
+        dpc.addComponent(Collection.class, HashSet.class);
         dpc.addComponent(List.class, ArrayList.class);
         assertNotNull(dpc.getComponent(List.class));
         assertEquals("doppleganger", dpc.getComponent(List.class).get(0));
@@ -742,13 +743,17 @@ public final class DefaultPicoContainerTestCase extends
 
     private static class MyNullComponentMonitor extends NullComponentMonitor {
         public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
-            return new AbstractInjector(List.class, ArrayList.class, Parameter.DEFAULT, MyNullComponentMonitor.this, null, false) {
-                public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
-                    ArrayList list = new ArrayList();
-                    list.add("doppleganger");
-                    return list;
-                }
-            };
+            if (abstractInjector.getComponentKey() == List.class) {
+                return new AbstractInjector(List.class, ArrayList.class, Parameter.DEFAULT, MyNullComponentMonitor.this, null, false) {
+                    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
+                        ArrayList list = new ArrayList();
+                        list.add("doppleganger");
+                        return list;
+                    }
+                };
+            } else {
+                return abstractInjector;
+            }
         }
     }
 }
