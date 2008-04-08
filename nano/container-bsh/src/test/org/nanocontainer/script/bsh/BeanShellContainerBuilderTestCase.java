@@ -64,17 +64,13 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
 
     }
 
-    /**
-     * The following test requires the next beta of beanshell to work.
-     * @todo Get this working again ! - PH
-     * can run.
-     * @throws IOException
-     * @throws MalformedURLException
-     */
-    public void doNot_testWithParentClassPathPropagatesWithToBeanShellInterpreter() throws MalformedURLException {
+    @Test
+    public void testWithParentClassPathPropagatesWithToBeanShellInterpreter() throws MalformedURLException {
         Reader script = new StringReader("" +
-            "try {\n" +
-            "    getClass(\"TestComp\");\n" +
+    		"import org.nanocontainer.*;\n" +
+    		"Class clazz;\n"+
+            "try {\n" + 
+            "    clazz = getClass(\"TestComp\");\n" +
             "} catch (ClassNotFoundException ex) {\n" +
             "     ClassLoader current = this.getClass().getClassLoader(); \n" +
             "     print(current.toString());\n" +
@@ -82,17 +78,17 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
             "     print(\"Failed ClassLoading: \");\n" +
             "     ex.printStackTrace();\n" +
             "}\n" +
-            "Class clazz = getClass(\"TestComp\");\n" +
             "print(clazz); \n" +
             "ClassLoader cl = clazz.getClassLoader();" +
-            "pico = new org.nanocontainer.DefaultNanoContainer(cl, parent);\n" +
-            "pico.addAdapter( \"TestComp\" );\n");
+            "pico = new NanoBuilder(parent).withLifecycle().withCaching().withClassLoader(cl).build();\n" +
+            "pico.addComponent(\"TestComp\", clazz, org.picocontainer.Parameter.ZERO);\n");
 
         
 
         File testCompJar = TestHelper.getTestCompJarFile();
-        System.err.println("--> " + testCompJar.getAbsolutePath());
-        URLClassLoader classLoader = new URLClassLoader(new URL[] {testCompJar.toURL()}, this.getClass().getClassLoader());
+        assertTrue("Cannot find TestComp.jar. " + testCompJar.getAbsolutePath() + " Please set testcomp.jar system property before running.", testCompJar.exists());
+        //System.err.println("--> " + testCompJar.getAbsolutePath());
+        URLClassLoader classLoader = new URLClassLoader(new URL[] {testCompJar.toURI().toURL()}, this.getClass().getClassLoader());
         Class testComp = null;
         PicoContainer parent = new DefaultPicoContainer();
 
@@ -105,9 +101,9 @@ public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainer
 
         PicoContainer pico = buildContainer(new BeanShellContainerBuilder(script, classLoader), parent, "SOME_SCOPE");
         assertNotNull(pico);
-        Object testCompInstance = pico.getComponent(testComp);
+        Object testCompInstance = pico.getComponent("TestComp");
         assertNotNull(testCompInstance);
-        assertEquals(testCompInstance.getClass().getName(), testComp.getName());
+        assertEquals(testComp.getName(),testCompInstance.getClass().getName());
 
     }
     
