@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Properties;
@@ -659,6 +660,41 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 //        }
 //    }
     
+
+	/**
+	 * Script will fail with not finding class TestComp if the classloader propagation is not working.
+	 * @throws MalformedURLException
+	 */
+    @Test
+	public void testWithParentClassPathPropagatesWithToInterpreter() throws MalformedURLException {
+	    Reader script = new StringReader("" +
+                "container(:parent => $parent) {\n" +
+                "       component(:class => \"TestComp\")\n" +
+                "}\n");
+	
+	    
+	
+	    File testCompJar = TestHelper.getTestCompJarFile();
+	    assertTrue("Cannot find TestComp.jar. " + testCompJar.getAbsolutePath() + " Please set testcomp.jar system property before running.", testCompJar.exists());
+	    //System.err.println("--> " + testCompJar.getAbsolutePath());
+	    URLClassLoader classLoader = new URLClassLoader(new URL[] {testCompJar.toURI().toURL()}, this.getClass().getClassLoader());
+	    Class testComp = null;
+	    PicoContainer parent = new DefaultPicoContainer();
+	
+	    try {
+	        testComp = classLoader.loadClass("TestComp");
+	    } catch (ClassNotFoundException ex) {
+	        ex.printStackTrace();
+	        fail("Unable to load test component from the jar using a url classloader");
+	    }
+	
+	    PicoContainer pico = buildContainer(new JRubyContainerBuilder(script, classLoader), parent, "SOME_SCOPE");
+	    assertNotNull(pico);
+	    Object testCompInstance = pico.getComponent("TestComp");
+	    assertNotNull(testCompInstance);
+	    assertEquals(testComp.getName(),testCompInstance.getClass().getName());
+	
+	}
     
 
     private PicoContainer buildContainer(Reader script, PicoContainer parent, Object scope) {
