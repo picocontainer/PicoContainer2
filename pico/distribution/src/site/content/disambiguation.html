@@ -58,11 +58,15 @@ annotation that extends our 'Bind' annotation and mark it in your&nbsp;construct
 <pre>@Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Bind
-public static @interface WorkingDayStockManager {}
+public static @interface WorkingDayStockManager {	
+}
+
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Bind
-public static @interface AfterHoursStockManager {}
+public static @interface AfterHoursStockManager {	
+}
+
 public class Store {
   public Store(@WorkingDayStockManager StockManager workingDayStockManager, 
     @AfterHoursStockManager StockManager afterHoursStockManager) {
