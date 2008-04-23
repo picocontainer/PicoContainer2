@@ -116,12 +116,12 @@ public class BasicComponentParameter implements Parameter, Serializable {
         this.componentKey = componentKey;
     }
 
-    /** Expect any paramter of the appropriate type. */
+    /** Expect any parameter of the appropriate type. */
     public BasicComponentParameter() {
     }
 
     /**
-     * Check wether the given Parameter can be statisfied by the container.
+     * Check whether the given Parameter can be satisfied by the container.
      *
      * @return <code>true</code> if the Parameter can be verified.
      *
