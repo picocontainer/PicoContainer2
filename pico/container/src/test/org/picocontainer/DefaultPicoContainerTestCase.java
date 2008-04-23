@@ -9,26 +9,18 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
+import org.junit.Test;
 import static org.picocontainer.Characteristics.CDI;
 import static org.picocontainer.Characteristics.SDI;
-
-import java.io.Serializable;
-import java.io.StringWriter;
-import java.lang.reflect.Member;
-import java.util.*;
-
-import org.junit.Test;
+import org.picocontainer.adapters.FactoryAdapter;
+import org.picocontainer.annotations.Inject;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.injectors.MultiInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.WriterComponentMonitor;
@@ -37,7 +29,19 @@ import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
-import org.picocontainer.adapters.InstanceAdapter;
+
+import java.io.Serializable;
+import java.io.StringWriter;
+import java.lang.reflect.Member;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author Aslak Helles&oslash;y
@@ -383,7 +387,11 @@ public final class DefaultPicoContainerTestCase extends
 			return instance.getClass();
 		}
 
-		public Object getComponentInstance(PicoContainer container)
+        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
+            return getComponentInstance(container, null);
+        }
+
+        public Object getComponentInstance(PicoContainer container, Type into)
 				throws PicoCompositionException {
 			return instance;
 		}
@@ -746,6 +754,10 @@ public final class DefaultPicoContainerTestCase extends
             if (abstractInjector.getComponentKey() == List.class) {
                 return new AbstractInjector(List.class, ArrayList.class, Parameter.DEFAULT, MyNullComponentMonitor.this, null, false) {
                     public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
+                        return getComponentInstance(container, null);
+                    }
+
+                    public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
                         ArrayList list = new ArrayList();
                         list.add("doppleganger");
                         return list;
@@ -756,4 +768,47 @@ public final class DefaultPicoContainerTestCase extends
             }
         }
     }
+
+    public static interface Swede {
+    }
+    public static class Turnip {
+        @Inject
+        Swede swede;
+        private final String foo;
+
+        public Turnip(String foo) {
+            this.foo = foo;
+        }
+
+        public Swede getSwede() {
+            return swede;
+        }
+
+        public String getFoo() {
+            return foo;
+        }
+    }
+
+    @Test public void testThatComponentCanHaveAProvidedDependency() {
+        MutablePicoContainer container = new DefaultPicoContainer(new MultiInjection());
+        container.addComponent(String.class, "foo");
+        container.addComponent(Turnip.class);
+        container.addAdapter(new FactoryAdapter<Swede>() {
+            public Swede getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {
+                return new Swede() {
+                    public String toString() {
+                        return "Swede:" + ((Class) into).getName();
+                    }
+                };
+            }
+        });
+
+        Turnip t = container.getComponent(Turnip.class);
+        assertNotNull(t);
+        assertEquals("Swede:" + Swede.class.getName(), t.getSwede().toString());
+        assertEquals("foo", t.getFoo());
+
+    }
+
+
 }

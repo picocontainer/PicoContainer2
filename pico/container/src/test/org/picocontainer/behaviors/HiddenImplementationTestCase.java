@@ -30,7 +30,7 @@ public class HiddenImplementationTestCase {
     @Test public void testMultipleInterfacesCanBeHidden() {
         ComponentAdapter ca = new ConstructorInjector(new Class[]{ActionListener.class, MouseListener.class}, Footle.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
         HiddenImplementation ihca = new HiddenImplementation(ca);
-        Object comp = ihca.getComponentInstance(null);
+        Object comp = ihca.getComponentInstance(null, null);
         assertNotNull(comp);
         assertTrue(comp instanceof ActionListener);
         assertTrue(comp instanceof MouseListener);
@@ -40,7 +40,7 @@ public class HiddenImplementationTestCase {
         ComponentAdapter ca = new ConstructorInjector(new Class[]{String.class}, Footle.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
         HiddenImplementation ihca = new HiddenImplementation(ca);
         try {
-            ihca.getComponentInstance(null);
+            ihca.getComponentInstance(null, null);
             fail("PicoCompositionException expected");
         } catch (PicoCompositionException e) {
             // expected        

@@ -13,6 +13,8 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Cached;
 
+import java.lang.reflect.Type;
+
 
 /**
  * This component adapter makes it possible to hide the implementation of a real subject (behind a proxy). If the key of the
@@ -48,10 +50,10 @@ public class HotSwappable extends HiddenImplementation {
     }
 
 
-    public Object getComponentInstance(PicoContainer container) {
+    public Object getComponentInstance(PicoContainer container, Type into) {
         synchronized (swappable) {
             if (instance == null) {
-                instance = super.getComponentInstance(container);
+                instance = super.getComponentInstance(container, into);
             }
         }
         return instance;

@@ -14,10 +14,11 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+
+import java.lang.reflect.Type;
 
 /**
  * <p>
@@ -77,7 +78,7 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Beha
         return componentInstance.getClass();
     }
 
-    public T getComponentInstance(PicoContainer container) {
+    public T getComponentInstance(PicoContainer container, Type into) {
         return componentInstance;
     }
     

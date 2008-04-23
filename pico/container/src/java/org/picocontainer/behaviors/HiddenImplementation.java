@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -46,7 +47,7 @@ public class HiddenImplementation<T> extends AbstractBehavior<T> {
         super(delegate);
     }
 
-    public T getComponentInstance(final PicoContainer container) throws PicoCompositionException {
+    public T getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
 
         ComponentAdapter<T> delegate = getDelegate();
         Object componentKey = delegate.getComponentKey();
@@ -56,7 +57,7 @@ public class HiddenImplementation<T> extends AbstractBehavior<T> {
         } else if (componentKey instanceof Class[]) {
             classes = (Class[]) componentKey;
         } else {
-            return delegate.getComponentInstance(container);
+            return delegate.getComponentInstance(container, into);
         }
 
         Class<?>[] interfaces = verifyInterfacesOnly(classes);
@@ -81,7 +82,7 @@ public class HiddenImplementation<T> extends AbstractBehavior<T> {
     }
 
     protected Object invokeMethod(Method method, Object[] args, PicoContainer container) throws Throwable {
-        Object componentInstance = getDelegate().getComponentInstance(container);
+        Object componentInstance = getDelegate().getComponentInstance(container, null);
         ComponentMonitor componentMonitor = currentMonitor();
         try {
             componentMonitor.invoking(container, this, method, componentInstance);

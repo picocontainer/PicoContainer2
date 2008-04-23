@@ -17,6 +17,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.reflect.Type;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Behavior;
@@ -269,7 +270,7 @@ public final class Pooled extends AbstractBehavior implements Behavior {
      * @throws PoolException if the pool is exhausted or waiting for a returning object timed out or
      *             was interrupted
      */
-    public Object getComponentInstance(PicoContainer container) {
+    public Object getComponentInstance(PicoContainer container, Type into) {
         if (delegateHasLifecylce) {
             if (disposed) throw new IllegalStateException("Already disposed");
         }
@@ -283,7 +284,7 @@ public final class Pooled extends AbstractBehavior implements Behavior {
                     break;
                 }
                 if (maxPoolSize > pool.size()) {
-                    final Object component = super.getComponentInstance(container);
+                    final Object component = super.getComponentInstance(container, into);
                     if (delegateHasLifecylce) {
                         components.add(component);
                         if (started) {

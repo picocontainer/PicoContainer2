@@ -18,6 +18,7 @@ import org.picocontainer.behaviors.Cached;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.lang.reflect.Type;
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
@@ -81,11 +82,11 @@ public class JMXExposed extends AbstractBehavior {
      *             {@link javax.management.DynamicMBean} in the {@link MBeanServer } fails.
      * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer)
      */
-    public Object getComponentInstance(final PicoContainer container)
+    public Object getComponentInstance(final PicoContainer container, Type into)
             throws PicoCompositionException
     {
         final ComponentAdapter componentAdapter = new Cached(getDelegate());
-        final Object componentInstance = componentAdapter.getComponentInstance(container);
+        final Object componentInstance = componentAdapter.getComponentInstance(container, into);
         for (DynamicMBeanProvider provider : providers) {
             final JMXRegistrationInfo info = provider.provide(container, componentAdapter);
             if (info != null) {

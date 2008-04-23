@@ -18,9 +18,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.*;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -41,8 +39,8 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         super(delegate);
     }
 
-    public Object getComponentInstance(final PicoContainer container) {
-        Object o = getDelegate().getComponentInstance(container);
+    public Object getComponentInstance(final PicoContainer container, java.lang.reflect.Type into) {
+        Object o = getDelegate().getComponentInstance(container, into);
         Class[] interfaces = o.getClass().getInterfaces();
         if (interfaces.length != 0) {
             byte[] bytes = makeProxy("XX", interfaces, true);

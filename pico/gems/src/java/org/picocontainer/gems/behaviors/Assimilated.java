@@ -20,6 +20,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 
 /**
@@ -110,10 +111,10 @@ public final class Assimilated extends AbstractBehavior {
      * 
      * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer)
      */
-    public Object getComponentInstance(final PicoContainer container)
+    public Object getComponentInstance(final PicoContainer container, Type into)
             throws PicoCompositionException  {
-        return isCompatible ? super.getComponentInstance(container) : Delegating.object(
-                type, super.getComponentInstance(container), proxyFactory);
+        return isCompatible ? super.getComponentInstance(container, into) : Delegating.object(
+                type, super.getComponentInstance(container, into), proxyFactory);
     }
 
     public String getDescriptor() {

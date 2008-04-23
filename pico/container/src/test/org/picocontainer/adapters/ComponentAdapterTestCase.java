@@ -12,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Type;
 
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
@@ -41,7 +42,13 @@ public class ComponentAdapterTestCase {
         TestAdapter(Object componentKey, Class<T> componentImplementation) {
             super(componentKey, componentImplementation);
         }
+
         public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
+            return null;
+        }
+
+
+        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
             return null;
         }
         public void verify(PicoContainer container) throws PicoVerificationException {
@@ -57,7 +64,12 @@ public class ComponentAdapterTestCase {
         TestMonitoringComponentAdapter(ComponentMonitor componentMonitor) {
             super(null, null, componentMonitor);
         }
+
         public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
+            return null;
+        }
+
+        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
             return null;
         }
         public void verify(PicoContainer container) throws PicoVerificationException {
@@ -87,6 +99,10 @@ public class ComponentAdapterTestCase {
 
         @Override
         public void verify(PicoContainer container) throws PicoCompositionException {
+        }
+
+        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+            return null;
         }
 
         public T getComponentInstance(PicoContainer container) throws PicoCompositionException {

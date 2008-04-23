@@ -10,6 +10,7 @@
 package org.picocontainer.gems.jndi;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 
 import javax.naming.NamingException;
 
@@ -71,10 +72,14 @@ public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 		return jndiReference.get().getClass();
 	}
 
-	/**
+    public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
+        return getComponentInstance(container, null);
+    }
+
+    /**
 	 * retrieve instance out of JNDI
 	 */
-	public T getComponentInstance(PicoContainer container)
+	public T getComponentInstance(PicoContainer container, Type into)
 			throws PicoCompositionException {
 		return  jndiReference.get();
 	}

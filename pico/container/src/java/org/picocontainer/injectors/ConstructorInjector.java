@@ -21,6 +21,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.lang.annotation.Annotation;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -145,7 +146,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
     }
 
 
-    public T getComponentInstance(final PicoContainer container) throws PicoCompositionException {
+    public T getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
                 public T run() {

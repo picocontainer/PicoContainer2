@@ -132,7 +132,7 @@ public class AdaptingBehaviorTestCase {
         mergeInto(Characteristics.SYNCHRONIZE,cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof Cached);
-        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
+        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), null);
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
 

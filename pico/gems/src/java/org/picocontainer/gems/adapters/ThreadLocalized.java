@@ -24,6 +24,7 @@ import org.picocontainer.behaviors.AbstractBehavior;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 import java.util.Set;
 
 
@@ -71,7 +72,7 @@ public final class ThreadLocalized extends AbstractBehavior {
         this(new Cached(delegate, new ThreadLocalReference()), new StandardProxyFactory());
     }
 
-    public Object getComponentInstance(final PicoContainer pico) throws PicoCompositionException {
+    public Object getComponentInstance(final PicoContainer pico, Type into) throws PicoCompositionException {
 
         if (interfaces == null) {
             interfaces = getInterfaces();

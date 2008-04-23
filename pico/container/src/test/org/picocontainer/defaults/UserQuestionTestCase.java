@@ -15,6 +15,7 @@ import static org.junit.Assert.assertSame;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.lang.reflect.Type;
 
 import org.junit.Test;
 import org.picocontainer.Characteristics;
@@ -42,7 +43,7 @@ public final class UserQuestionTestCase {
             this.bla = cheeseMap;
         }
 
-        public Object getComponentInstance(PicoContainer pico) throws PicoCompositionException {
+        public Object getComponentInstance(PicoContainer pico, Type into) throws PicoCompositionException {
             return bla.get("cheese");
         }
 

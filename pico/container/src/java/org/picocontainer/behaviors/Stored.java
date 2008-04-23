@@ -6,6 +6,8 @@ import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 
+import java.lang.reflect.Type;
+
 /**
  * behaviour for all behaviours wishing to store
  * their component in "awkward places" ( object references ) 
@@ -48,7 +50,7 @@ public class Stored<T> extends AbstractBehavior<T> {
 	public void dispose(PicoContainer container) {
 	    if ( delegateHasLifecylce ){
 	        if (disposed) throw new IllegalStateException("Already disposed");
-	        dispose(getComponentInstance(container));
+	        dispose(getComponentInstance(container, null));
 	        disposed = true;
 	    }
 	}
@@ -77,10 +79,10 @@ public class Stored<T> extends AbstractBehavior<T> {
 	    instanceReference.set(null);
 	}
 
-	public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
+	public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
 	    T instance = instanceReference.get();
 	    if (instance == null) {
-	        instance = super.getComponentInstance(container);
+	        instance = super.getComponentInstance(container, into);
 	        instanceReference.set(instance);
 	    }
 	    return instance;
@@ -98,7 +100,7 @@ public class Stored<T> extends AbstractBehavior<T> {
 	    if ( delegateHasLifecylce ){
 	        if (disposed) throw new IllegalStateException("Already disposed");
 	        if (started) throw new IllegalStateException("Already started");
-	        start(getComponentInstance(container));
+	        start(getComponentInstance(container, null));
 	        started = true;
 	    }
 	}
@@ -111,7 +113,7 @@ public class Stored<T> extends AbstractBehavior<T> {
 	    if ( delegateHasLifecylce ){
 	        if (disposed) throw new IllegalStateException("Already disposed");
 	        if (!started) throw new IllegalStateException("Not started");
-	        stop(getComponentInstance(container));
+	        stop(getComponentInstance(container, null));
 	        started = false;
 	    }
 	}

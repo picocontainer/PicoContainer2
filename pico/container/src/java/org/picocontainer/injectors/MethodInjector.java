@@ -11,6 +11,7 @@ package org.picocontainer.injectors;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
@@ -65,7 +66,7 @@ public class MethodInjector extends SingleMemberInjector {
         return null;
     }
 
-    public Object getComponentInstance(final PicoContainer container) throws PicoCompositionException {
+    public Object getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {

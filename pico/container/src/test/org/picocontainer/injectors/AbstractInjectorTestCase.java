@@ -14,6 +14,7 @@ import static org.junit.Assert.assertSame;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -149,7 +150,7 @@ public class AbstractInjectorTestCase {
         public void verify(PicoContainer container) throws PicoCompositionException {
                 }
 
-        public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
+        public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
             return null;
         }
 

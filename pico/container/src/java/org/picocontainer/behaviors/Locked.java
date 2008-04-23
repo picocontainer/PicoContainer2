@@ -16,6 +16,7 @@ import org.picocontainer.PicoCompositionException;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.lang.reflect.Type;
 
 /**
  * @author Paul Hammant
@@ -35,11 +36,11 @@ public class Locked<T> extends AbstractBehavior<T> {
         super(delegate);
     }
 
-    public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
+    public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
         T retVal = null;
         lock.lock();
         try {
-          retVal = super.getComponentInstance(container);
+          retVal = super.getComponentInstance(container, into);
         }
         finally {
           lock.unlock();

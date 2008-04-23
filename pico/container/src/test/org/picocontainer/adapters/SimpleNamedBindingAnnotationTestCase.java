@@ -8,6 +8,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Properties;
 
 import org.junit.Test;
@@ -131,7 +132,7 @@ public class SimpleNamedBindingAnnotationTestCase {
             // @todo Auto-generated method stub
         }
 
-        public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
+        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
             final T inst;
             try {
                 inst = getComponentImplementation().newInstance();

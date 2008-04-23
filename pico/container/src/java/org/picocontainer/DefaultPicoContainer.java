@@ -9,20 +9,7 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
+import org.picocontainer.adapters.FactoryAdapter;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.behaviors.AdaptingBehavior;
@@ -39,6 +26,20 @@ import org.picocontainer.lifecycle.LifecycleState;
 import static org.picocontainer.lifecycle.LifecycleState.*;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * <p/>
@@ -521,13 +522,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         Object retVal;
         if (annotation != null) {
             final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, annotation);
-            retVal = componentAdapter == null ? null : getInstance(componentAdapter);
+            retVal = componentAdapter == null ? null : getInstance(componentAdapter, null);
         } else if (componentKeyOrType instanceof Class) {
             final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, (NameBinding) null);
-            retVal = componentAdapter == null ? null : getInstance(componentAdapter);
+            retVal = componentAdapter == null ? null : getInstance(componentAdapter, (Class<?>)componentKeyOrType);
         } else {
             ComponentAdapter<?> componentAdapter = getComponentAdapter(componentKeyOrType);
-            retVal = componentAdapter == null ? null : getInstance(componentAdapter);
+            retVal = componentAdapter == null ? null : getInstance(componentAdapter, null);
         }
         if (retVal == null) {
             retVal = componentMonitor.noComponentFound(this, componentKeyOrType);
@@ -546,7 +547,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
 
-    private Object getInstance(final ComponentAdapter<?> componentAdapter) {
+    private Object getInstance(final ComponentAdapter<?> componentAdapter, Class componentKey) {
         // check whether this is our adapter
         // we need to check this to ensure up-down dependencies cannot be followed
         final boolean isLocal = getModifiableComponentAdapterList().contains(componentAdapter);
@@ -554,7 +555,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (isLocal) {
             Object instance;
             try {
-                instance = componentAdapter.getComponentInstance(this);
+                if (componentAdapter instanceof FactoryAdapter) {
+                    instance = ((FactoryAdapter) componentAdapter).getComponentInstance(this, componentKey);
+                } else {
+                    instance = componentAdapter.getComponentInstance(this);
+                }
             } catch (AbstractInjector.CyclicDependencyException e) {
                 if (parent != null) {
                     instance = parent.getComponent(componentAdapter.getComponentKey());

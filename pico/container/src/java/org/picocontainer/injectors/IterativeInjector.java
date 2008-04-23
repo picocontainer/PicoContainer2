@@ -13,6 +13,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.lang.annotation.Annotation;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.thoughtworks.paranamer.CachingParanamer;
-import com.thoughtworks.paranamer.Paranamer;
 
 /**
  * Injection will happen iteratively after component instantiation
@@ -131,7 +131,7 @@ public abstract class IterativeInjector extends AbstractInjector {
         throw new UnsatisfiableDependenciesException(this, null, unsatisfiableDependencyTypes, container);
     }
 
-    public Object getComponentInstance(final PicoContainer container) throws PicoCompositionException {
+    public Object getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
         final Constructor constructor = getConstructor();
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {

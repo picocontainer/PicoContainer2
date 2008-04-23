@@ -13,6 +13,8 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -90,6 +92,10 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
                 throw new ClassCastException(componentImplementation.getName() + " is not a " + componentType.getName());
             }
         }
+    }
+
+    public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
+        return getComponentInstance(container, null);
     }
 
     /**

@@ -14,6 +14,8 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVerificationException;
 import org.picocontainer.adapters.AbstractAdapter;
 
+import java.lang.reflect.Type;
+
 
 /**
  * Component adapter that wrapps a static factory with the help of {@link StaticFactory}.
@@ -52,7 +54,7 @@ public final class StaticFactoryAdapter extends AbstractAdapter {
      * @return Returns the component created by the static factory.
      * @see org.picocontainer.ComponentAdapter#getComponentInstance(org.picocontainer.PicoContainer)
      */
-    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
+    public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
         return staticFactory.get();
     }
 

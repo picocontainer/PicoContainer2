@@ -13,6 +13,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -104,6 +105,12 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 
     public void verify(PicoContainer container) throws PicoCompositionException {
     }
+
+    public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
+        return getComponentInstance(container, null);
+    }
+
+    public abstract T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException;
 
     @Override
 	public void accept(final PicoVisitor visitor) {

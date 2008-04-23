@@ -13,6 +13,7 @@ import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
 import java.io.File;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -73,8 +74,8 @@ public class PropertyApplicator<T> extends AbstractBehavior<T> {
      *                                     {@inheritDoc}
      * @see #setProperties(Map)
      */
-    public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
-        final T componentInstance = super.getComponentInstance(container);
+    public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        final T componentInstance = super.getComponentInstance(container, into);
         if (setters == null) {
             setters = getSetters(getComponentImplementation());
         }

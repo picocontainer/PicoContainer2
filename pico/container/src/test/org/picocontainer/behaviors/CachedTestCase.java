@@ -185,7 +185,7 @@ public class CachedTestCase {
                 one(ca).dispose(with(any(Touchable.class)));
             }
             if (hasLifecycle) {
-            	one(ca).getComponentInstance(with(any(PicoContainer.class)));
+            	one(ca).getComponentInstance(with(any(PicoContainer.class)), with(aNull(Class.class)));
             	will(returnValue(new SimpleTouchable()));
             }
             one(ca).getComponentImplementation();

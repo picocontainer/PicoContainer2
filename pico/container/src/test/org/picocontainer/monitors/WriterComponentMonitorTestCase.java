@@ -19,6 +19,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -96,7 +97,11 @@ public class WriterComponentMonitorTestCase  {
         try {
             componentMonitor.lifecycleInvocationFailed(new TransientPicoContainer(),
                                                        new AbstractAdapter(Map.class, HashMap.class) {
-                                                           public Object getComponentInstance(PicoContainer container)
+                                                           public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
+                                                               return getComponentInstance(container, null);
+                                                           }
+
+                                                           public Object getComponentInstance(PicoContainer container, Type into)
                                                                throws PicoCompositionException {
                                                                return "x";
                                                            }

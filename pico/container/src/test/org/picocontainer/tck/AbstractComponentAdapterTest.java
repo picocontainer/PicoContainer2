@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -540,7 +541,7 @@ public abstract class AbstractComponentAdapterTest  {
             super(delegate);
         }
 
-        public Object getComponentInstance(final PicoContainer container) {
+        public Object getComponentInstance(final PicoContainer container, Type into) {
             Assert.fail("Not instantiatable");
             return null;
         }
@@ -558,8 +559,8 @@ public abstract class AbstractComponentAdapterTest  {
             this.list = list;
         }
 
-        public Object getComponentInstance(final PicoContainer container) {
-            final Object result = super.getComponentInstance(container);
+        public Object getComponentInstance(final PicoContainer container, Type into) {
+            final Object result = super.getComponentInstance(container, into);
             list.add(result);
             return result;
         }
@@ -580,13 +581,13 @@ public abstract class AbstractComponentAdapterTest  {
             this.reference = reference;
         }
 
-        public Object getComponentInstance(final PicoContainer container) {
+        public Object getComponentInstance(final PicoContainer container, Type into) {
             if (set.contains(this)) {
                 reference.set(this);
             } else {
                 set.add(this);
             }
-            return super.getComponentInstance(container);
+            return super.getComponentInstance(container, into);
         }
 
         public String getDescriptor() {

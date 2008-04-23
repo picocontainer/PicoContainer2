@@ -15,6 +15,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
 
+import java.lang.reflect.Type;
+
 /**
  * Component Adapter that uses java synchronized around getComponentInstance().
  * @author Aslak Helles&oslash;y
@@ -30,8 +32,8 @@ public class Synchronized<T> extends AbstractBehavior<T> {
         super(delegate);
     }
 
-    public synchronized T getComponentInstance(PicoContainer container) throws PicoCompositionException {
-        return super.getComponentInstance(container);
+    public synchronized T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        return super.getComponentInstance(container, into);
     }
 
     public String getDescriptor() {

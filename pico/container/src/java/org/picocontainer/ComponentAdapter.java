@@ -7,6 +7,8 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import java.lang.reflect.Type;
+
 /**
  * A component adapter is responsible for providing a specific component
  * instance of type <T>. An instance of an implementation of this interface is
@@ -47,8 +49,23 @@ public interface ComponentAdapter<T> {
      * @throws PicoCompositionException  if the component has dependencies which could not be resolved, or
      *                                     instantiation of the component lead to an ambigous situation within the
      *                                     container.
+     * @deprecated since PicoContainer 2.2
      */
     T getComponentInstance(PicoContainer container) throws PicoCompositionException;
+
+    /**
+     * Retrieve the component instance. This method will usually create a new instance each time it is called, but that
+     * is not required. For example, {@link org.picocontainer.behaviors.Cached} will always return the
+     * same instance.
+     *
+     * @param container the {@link org.picocontainer.PicoContainer}, that is used to resolve any possible dependencies of the instance.
+     * @param into the class that is about to be injected into.
+     * @return the component instance.
+     * @throws PicoCompositionException  if the component has dependencies which could not be resolved, or
+     *                                     instantiation of the component lead to an ambigous situation within the
+     *                                     container.
+     */
+    T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException;
 
     /**
      * Verify that all dependencies for this adapter can be satisifed. Normally, the adapter should verify this by

@@ -16,6 +16,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.annotations.Inject;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Type;
 import java.util.Set;
 
 /** @author Paul Hammant */
@@ -23,6 +24,7 @@ public class MultiInjector extends AbstractInjector {
 
     private final ConstructorInjector constuctorInjector;
     private final SetterInjector setterInjector;
+    private final AnnotatedFieldInjector annotatedFieldInjector;
     private AnnotatedMethodInjector annotatedMethodInjector;
 
     public MultiInjector(Object componentKey,
@@ -59,10 +61,24 @@ public class MultiInjector extends AbstractInjector {
             protected void unsatisfiedDependencies(PicoContainer container, Set<Class> unsatisfiableDependencyTypes) {
             }
         };
+        annotatedFieldInjector = new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, Inject.class, useNames) {
+            protected Object getOrMakeInstance(PicoContainer container,
+                                               Constructor constructor,
+                                               ComponentMonitor componentMonitor)  {
+                return annotatedMethodInjector.getComponentInstance(container);
+            }
+
+            protected Constructor getConstructor() {
+                return null;
+            }
+
+            protected void unsatisfiedDependencies(PicoContainer container, Set<Class> unsatisfiableDependencyTypes) {
+            }
+        };
     }
 
-    public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
-        return annotatedMethodInjector.getComponentInstance(container);
+    public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        return annotatedFieldInjector.getComponentInstance(container, into);
     }
 
     @Override

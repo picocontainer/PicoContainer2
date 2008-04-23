@@ -43,7 +43,7 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
         final Touchable touchable = new SimpleTouchable();
         final ComponentAdapter componentAdapter = new InstanceAdapter(Touchable.class, touchable, new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor());
-        assertSame(touchable, componentAdapter.getComponentInstance(null));
+        assertSame(touchable, componentAdapter.getComponentInstance(null, null));
     }
 
     @Test public void testDefaultLifecycleStrategy() {

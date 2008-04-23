@@ -11,6 +11,7 @@
 package org.picocontainer.behaviors;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -57,7 +58,11 @@ public abstract class AbstractBehavior<T> implements Behavior<T>, ComponentMonit
     }
 
     public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
-        return (T) delegate.getComponentInstance(container);
+        return getComponentInstance(container, null);
+    }
+
+    public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+        return (T) delegate.getComponentInstance(container, into);
     }
 
     public void verify(PicoContainer container) throws PicoCompositionException {
