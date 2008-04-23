@@ -63,15 +63,15 @@ public class ComponentParameter
     }
 
     /**
-     * Expect any scalar paramter of the appropriate type or an {@link java.lang.reflect.Array}.
+     * Expect any scalar parameter of the appropriate type or an {@link java.lang.reflect.Array}.
      */
     public ComponentParameter() {
         this(false);
     }
 
     /**
-     * Expect any scalar paramter of the appropriate type or an {@link java.lang.reflect.Array}.
-     * Resolve the parameter even if no compoennt is of the array's component type.
+     * Expect any scalar parameter of the appropriate type or an {@link java.lang.reflect.Array}.
+     * Resolve the parameter even if no compnoent is of the array's component type.
      * 
      * @param emptyCollection <code>true</code> allows an Array to be empty
      */
@@ -80,7 +80,7 @@ public class ComponentParameter
     }
 
     /**
-     * Expect any scalar paramter of the appropriate type or the collecting type
+     * Expect any scalar parameter of the appropriate type or the collecting type
      * {@link java.lang.reflect.Array},{@link java.util.Collection}or {@link java.util.Map}.
      * The components in the collection will be of the specified type.
      * 
@@ -92,7 +92,7 @@ public class ComponentParameter
     }
 
     /**
-     * Expect any scalar paramter of the appropriate type or the collecting type
+     * Expect any scalar parameter of the appropriate type or the collecting type
      * {@link java.lang.reflect.Array},{@link java.util.Collection}or {@link java.util.Map}.
      * The components in the collection will be of the specified type and their adapter's key
      * must have a particular type.
