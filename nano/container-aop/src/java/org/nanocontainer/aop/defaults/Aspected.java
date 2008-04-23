@@ -15,6 +15,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehavior;
 
+import java.lang.reflect.Type;
+
 /**
  * @author Stephen Molitor
  */
@@ -27,8 +29,8 @@ public class Aspected extends AbstractBehavior {
         this.aspectsApplicator = aspectsApplicator;
     }
 
-    public Object getComponentInstance(PicoContainer pico) throws PicoCompositionException {
-        Object component = super.getComponentInstance(pico);
+    public Object getComponentInstance(PicoContainer pico, Type into) throws PicoCompositionException {
+        Object component = super.getComponentInstance(pico, into);
         return aspectsApplicator.applyAspects(getComponentKey(), component, pico);
     }
 

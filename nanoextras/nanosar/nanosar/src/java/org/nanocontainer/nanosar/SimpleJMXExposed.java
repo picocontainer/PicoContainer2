@@ -101,7 +101,7 @@ public class  SimpleJMXExposed<T> extends AbstractBehavior<T> {
 		}
 		
 		try {
-			server.registerMBean(getComponentInstance(container),getName());
+			server.registerMBean(getComponentInstance(container, null),getName());
 		} catch (JMException e) {
 			throw new PicoCompositionException(e);
 		}

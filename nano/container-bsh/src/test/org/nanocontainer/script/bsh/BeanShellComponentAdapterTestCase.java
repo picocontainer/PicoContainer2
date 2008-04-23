@@ -41,7 +41,7 @@ public class BeanShellComponentAdapterTestCase {
     @Test public void testGetComponentInstance() {
         ComponentAdapter adapter = setupComponentAdapter(ScriptableDemoBean.class);
 
-        ScriptableDemoBean bean = (ScriptableDemoBean) adapter.getComponentInstance(pico);
+        ScriptableDemoBean bean = (ScriptableDemoBean) adapter.getComponentInstance(pico, null);
 
         assertEquals("Bsh demo script should have set the key", "thekey", bean.key);
 
@@ -52,7 +52,7 @@ public class BeanShellComponentAdapterTestCase {
         ComponentAdapter adapter = setupComponentAdapter(BadScriptableDemoBean.class);
 
         try {
-            adapter.getComponentInstance(pico);
+            adapter.getComponentInstance(pico, null);
             fail("did not throw exception on missing 'instance' variable");
         } catch (BeanShellScriptCompositionException bssie) {
             // success

@@ -22,6 +22,7 @@ import java.io.Reader;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
+import java.lang.reflect.Type;
 
 /**
  * This adapter relies on <a href="http://beanshell.org/">Bsh</a> for instantiation
@@ -67,7 +68,7 @@ public class BeanShellAdapter extends AbstractAdapter {
         this(componentKey, componentImplementation, parameters, BeanShellAdapter.class.getClassLoader());
     }
 
-    public Object getComponentInstance(PicoContainer pico)
+    public Object getComponentInstance(PicoContainer pico, Type into)
             throws PicoCompositionException
     {
 

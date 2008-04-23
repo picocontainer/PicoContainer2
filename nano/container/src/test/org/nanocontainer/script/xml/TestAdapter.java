@@ -13,6 +13,8 @@ package org.nanocontainer.script.xml;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.AbstractAdapter;
 
+import java.lang.reflect.Type;
+
 /**
  * component adapter to test script instantiation.
  */
@@ -33,7 +35,12 @@ public final class TestAdapter extends AbstractAdapter {
     public void verify(PicoContainer pico) {
     }
 
+
     public Object getComponentInstance(PicoContainer pico) {
+        return null;
+    }
+
+    public Object getComponentInstance(PicoContainer pico, Type into) {
         return null;
     }
 
