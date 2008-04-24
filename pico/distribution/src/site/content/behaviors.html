@@ -1,55 +1,79 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+    
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>Modifying Behaviors</title>
-
-    <style type="text/css">
+    <title>Modifying Behaviors</title><style type="text/css">
 <!--
 .style1 {font-family: "Courier New", Courier, monospace}
 -->
-    </style>
-</head>
+    </style></head>
+
+
 <body>
-<p>Components as managed by PicoContainer can have behaviors added
-   to them by the container during instantiation.</p>
+<p>PicoContainer can add behaviors to components automatically during instantiation.</p>
 
 <p>Behaviors are deleivered by passing a BehaviorFactory reference into the PicoContainer instance on construction. For
-   the most part BehaviorFactories are completely stateless.</p>
+   the most part BehaviorFactories are completely stateless, and the Behavior instances they make are not.</p>
 <p>See below for details on <a href="#cns">Caching and Singletons</a>, <a href="#hasi">Implementation Hiding and Hot Swapping</a>, as well as <a href="#o">Other</a>  behaviors</p>
 <h3>General use</h3>
 <p>DefaultPicoContainer can take a behavior factory instance in its constructor:</p>
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer(new BehaviorClass());
+  <pre>pico = new DefaultPicoContainer(new BehaviorClass());
 
-pico.addComponent(Foo.class); // the behavior will affect Foo's instance</pre>
+pico.addComponent(Foo.class); 
+
+// other components added
+
+Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by an additonal behavior.</pre>
 </div>
 <p>Or it can take behaviours that wrap each other:</p>
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer(new BehaviorClass().wrap(new AnotherBehaviorClass())); 
-pico.addComponent(Foo.class);  // both behaviors will affect Foo's instance
+  <pre>pico = new DefaultPicoContainer(new BehaviorClass().wrap(new AnotherBehaviorClass()));
+&nbsp;
+pico.addComponent(Foo.class);  
+
+// other components added
+
+Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by two additonal behaviors.
+
 </pre>
 </div>
 <p>Behaviors can be signalled by properties per component:</p>
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer();
+  <pre>pico = new DefaultPicoContainer();
+
 pico.as(SOME_BEHAVIOR).addComponent(Foo.class);  // the behavior has a property marking it, and the default 
-                                                    component facory understands that property</pre>
+                                                    component facory understands that property
+
+// other components added
+
+Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by an additonal behavior.
+</pre>
 </div>
 <p>You can build a container with the applicable property:</p>
 <div class="source">
-  <pre>pico = new PicoBuilder().withXxxxxxxx().build();
-pico.addComponent(Foo.class); // the behavior will affect Foo's instance</pre>
+  <pre>pico = new PicoBuilder().withXXXBehavior().build();
+
+pico.addComponent(Foo.class); 
+
+// other components added
+
+Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by an additonal behavior.
+</pre>
 </div>
 <p>Behaviors can be chained together by PicoBuilder:</p>
 <div class="source">
   <pre>import static org.picocontainer.behaviors.Behaviors.xxxxxxx;
+import static org.picocontainer.behaviors.Behaviors.yyyyyyy;
 ...
 pico = new PicoBuilder().withBehaviors(xxxxxxx(), yyyyyyy()).build();
-pico.addComponent(Foo.class); // both behaviors will affect Foo's instance</pre>
+
+pico.addComponent(Foo.class); 
+
+// other components added
+
+Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by two additonal behaviors.
+</pre>
 </div>
 <h2><a name="cns" id="cns"></a>Cashing and Singletons</h2>
 <h3>Caching</h3>
@@ -65,16 +89,14 @@ pico.addComponent(Foo.class); // both behaviors will affect Foo's instance</pre>
 
 <p>Choose your style for caching behavior:</p>
 
-<div class="source"><pre>
-pico = new DefaultPicoContainer(new Caching());
+<div class="source"><pre>pico = new DefaultPicoContainer(new Caching());
 pico.addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
 // both the same instance
 </pre>
 </div>
-<div class="source"><pre>
-pico = new DefaultPicoContainer();
+<div class="source"><pre>pico = new DefaultPicoContainer();
 pico.as(CACHE).addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
@@ -101,8 +123,7 @@ Apple a2 = pico.getComponent(Apple.class);
 <h3>Opt in Caching</h3>
 <p>This is caching as above, but only when that property is set.</p>
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer(new OptinCaching());
+  <pre>pico = new DefaultPicoContainer(new OptinCaching());
 pico.addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
@@ -110,8 +131,7 @@ Apple a2 = pico.getComponent(Apple.class);
 </pre>
 </div>
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer(new OptinCaching());
+  <pre>pico = new DefaultPicoContainer(new OptinCaching());
 pico.as(CACHE).addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
@@ -129,8 +149,7 @@ Apple a2 = pico.getComponent(Apple.class);
 <p>Choose your style for thread caching behavior:</p>
 
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer(new ThreadCaching());
+  <pre>pico = new DefaultPicoContainer(new ThreadCaching());
 pico.addComponent(Apple.class);
 new Thread() {
   public void run() {
@@ -151,8 +170,7 @@ new Thread() {
 </pre>
 </div>
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer();
+  <pre>pico = new DefaultPicoContainer();
 pico.as(THREAD_CACHE).addComponent(Apple.class);
 
 </pre>
@@ -175,8 +193,7 @@ pico.addComponent(Apple.class);</pre>
    it:</p>
 
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer(new Storing());
+  <pre>pico = new DefaultPicoContainer(new Storing());
 pico.addComponent(Apple.class);
 Apple a1, a2, a3
 
@@ -205,9 +222,9 @@ new Thread() {
   <pre>storing = new Storing();
 pico = new DefaultPicoContainer(sc);
 ....
-storing.putCacheForThread(httpRequest.getSession().getAttribute(&quot;sessionComponentStore&quot;);
+storing.putCacheForThread(httpRequest.getSession().getAttribute("sessionComponentStore");
 // do other methods that process request in session concept and may do getComponent(..) from the sesion container.
-httpRequest.getSession().setAttribute(&quot;sessionComponentStore&quot;, sc.getCacheForThread());</pre></div>
+httpRequest.getSession().setAttribute("sessionComponentStore", sc.getCacheForThread());</pre></div>
 
 <p>See <a href="scopes.html">scopes</a> for another example for a web framework</p>
 
@@ -218,16 +235,14 @@ httpRequest.getSession().setAttribute(&quot;sessionComponentStore&quot;, sc.getC
    interface
    that it implements. </p>
 
-<div class="source"><pre>
-pico = new DefaultPicoContainer(new ImplementationHiding());
+<div class="source"><pre>pico = new DefaultPicoContainer(new ImplementationHiding());
 pico.addComponent(Apple.class, AppleImpl.class);
 Apple a1 = pico.getComponent(Apple.class);
 // cannot cast back to AppleImpl
 </pre>
 </div>
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer();
+  <pre>pico = new DefaultPicoContainer();
 pico.as(HIDE_IMPL).addComponent(Apple.class, AppleImpl.class);
 Apple a1 = pico.getComponent(Apple.class);
 // cannot cast back to AppleImpl
@@ -255,7 +270,15 @@ Apple a1 = pico.getComponent(Apple.class);
 <h3>Hot Swapping</h3>
 <p>This builds on the <span class="style1">ASMImplementationHiding</span> behavior above, but also allows the hot swapping of component implementations during use. It has implicit caching behavior too.</p>
 
-<div class="source"><pre>DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwapping());<br />pico.addComponent(Map.class, HashMap.class);<br />Map firstMap = pico.getComponent(Map.class);<br />firstMap.put(&quot;foo&quot;, &quot;bar&quot;);<br />HotSwappable hs = (HotSwappable) pico.getComponentAdapter(Map.class);<br />Object oldMap = hs.getSwappable().swap(new HashMap());<br />Map secondMap = pico.getComponent(Map.class);<br />secondMap.put(&quot;apple&quot;, &quot;orange&quot;);<br />
+<div class="source"><pre>DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwapping());
+pico.addComponent(Map.class, HashMap.class);
+Map firstMap = pico.getComponent(Map.class);
+firstMap.put("foo", "bar");
+HotSwappable hs = (HotSwappable) pico.getComponentAdapter(Map.class);
+Object oldMap = hs.getSwappable().swap(new HashMap());
+Map secondMap = pico.getComponent(Map.class);
+secondMap.put("apple", "orange");
+
 // first map and second map are the same
 // 'foo' is not a key in the map, wereas 'apple' is</pre>
 </div>
@@ -266,8 +289,7 @@ Apple a1 = pico.getComponent(Apple.class);
 <h3>Synchronizing</h3>
 <p>Synchronizing wraps object creation in Java's classic <span class="style1">synchronize</span> feature:</p>
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer(new Synchronizing().wrap(new Caching()));
+  <pre>pico = new DefaultPicoContainer(new Synchronizing().wrap(new Caching()));
 pico.addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
@@ -275,8 +297,7 @@ Apple a2 = pico.getComponent(Apple.class);
 </pre>
 </div>
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer();
+  <pre>pico = new DefaultPicoContainer();
 pico.as(SYNCHRONIZE, CACHE).addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
@@ -303,10 +324,10 @@ Apple a2 = pico.getComponent(Apple.class);
 </pre>
 </div>
 <h3>Locking</h3>
-<p>Locking wraps object creation in JDK 1.5's ReentrantLock facility. It is suggested that this is a more efficient alternative to the <span class="style1">Synchronizing</span> behaviour above:</p>
+<p>Locking wraps object creation in JDK 1.5's ReentrantLock facility.
+It is suggested that this is a more efficient alternative to the <span class="style1">Synchronizing</span> behaviour above:</p>
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer(new Locking().wrap(new Caching()));
+  <pre>pico = new DefaultPicoContainer(new Locking().wrap(new Caching()));
 pico.addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
@@ -314,8 +335,7 @@ Apple a2 = pico.getComponent(Apple.class);
 </pre>
 </div>
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer();
+  <pre>pico = new DefaultPicoContainer();
 pico.as(LOCK, CACHE).addComponent(Apple.class);
 Apple a1 = pico.getComponent(Apple.class);
 Apple a2 = pico.getComponent(Apple.class);
@@ -348,8 +368,7 @@ Apple a2 = pico.getComponent(Apple.class);
    handing in some configuration if you like.</p>
 
 <div class="source">
-  <pre>
-class Foo {
+  <pre>class Foo {
   String message;
   public void setMessage(String message) {
      this.message = message;
@@ -362,16 +381,15 @@ class Foo {
 pico = new DefaultPicoContainer(new PropertyApplying());
 pico.addComponent(Foo.class);
 PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
-pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
+pa.setProperty("message", "hello");
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
 </div>
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer();
+  <pre>pico = new DefaultPicoContainer();
 pico.as(APPLY_PROPERTIES).addComponent(Foo.class);
 PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
-pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
+pa.setProperty("message", "hello");
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
 </div>
@@ -379,7 +397,7 @@ System.out.println(pico.getComponent(Foo.class)); // prints hello
     <pre>pico = new PicoBuilder().withProperties().build();
 pico.addComponent(Foo.class);
 PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
-pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
+pa.setProperty("message", "hello");
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
 </div>
@@ -389,7 +407,7 @@ System.out.println(pico.getComponent(Foo.class)); // prints hello
 pico = new PicoBuilder().withBehaviors(propertyApplying()).build();
 pico.addComponent(Foo.class);
 PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
-pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
+pa.setProperty("message", "hello");
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
 </div>
@@ -401,7 +419,7 @@ pico = new PicoBuilder().withBehaviors(caching(), propertyApplying()).build();
 pico.addComponent(Foo.class);
 Cached cached = (Cached) pico.getAdapter(Foo.class);
 PropertyApplicator pa = (PropertyApplicator) getDelegate(PropertyApplicator.class);
-pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
+pa.setProperty("message", "hello");
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
 </div>
@@ -418,35 +436,32 @@ System.out.println(pico.getComponent(Foo.class)); // prints hello
    stages.</p>
 
 <div class="source">
-  <pre>
-class Foo {
+  <pre>class Foo {
 
   public Foo() {
-      System.out.println(&quot;Foo was instantiated&quot;);
+      System.out.println("Foo was instantiated");
   }
 }
 
 ...
 pico = new DefaultPicoContainer(new Automatic());
 pico.addComponent(Foo.class);
-pico.addComponent(&quot;bar&quot;, String.class);
-pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
+pico.addComponent("bar", String.class);
+pico.getComponent("bar"); // Foo instantiated too.
 </pre>
 </div>
 <div class="source">
-  <pre>
-pico = new DefaultPicoContainer();
+  <pre>pico = new DefaultPicoContainer();
 pico.as(AUTOMATIC).addComponent(Foo.class);
-pico.addComponent(&quot;bar&quot;, String.class);
-pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
+pico.addComponent("bar", String.class);
+pico.getComponent("bar"); // Foo instantiated too.
 </pre>
 </div>
 <div class="source">
-  <pre>
-pico = new PicoBuilder().withAutomatic().build();
+  <pre>pico = new PicoBuilder().withAutomatic().build();
 pico.addComponent(Foo.class);
-pico.addComponent(&quot;bar&quot;, String.class);
-pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
+pico.addComponent("bar", String.class);
+pico.getComponent("bar"); // Foo instantiated too.
 </pre>
 </div>
 <div class="source">
@@ -454,11 +469,8 @@ pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
 ...
 pico = new PicoBuilder().withBehaviors(automatic()).build();
 pico.addComponent(Foo.class);
-pico.addComponent(&quot;bar&quot;, String.class);
-pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
+pico.addComponent("bar", String.class);
+pico.getComponent("bar"); // Foo instantiated too.
 </pre>
 </div>
-</body>
-
-
-</html>
+</body></html>
