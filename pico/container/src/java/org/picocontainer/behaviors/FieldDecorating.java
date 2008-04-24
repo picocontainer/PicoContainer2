@@ -15,27 +15,31 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.Decorated;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 import java.util.Properties;
 
 
 /**
- * BehaviorFactory for Decorating. This factory will create {@link org.picocontainer.gems.behaviors.Decorated} that will
- * allow you to decorate what you like on the component instance that has been created
+ * BehaviorFactory for Field Decorating. This factory will create {@link org.picocontainer.gems.behaviors.FieldDecorated} that will
+ * allow you to decorate fields on the component instance that has been created
  *
  * @author Paul Hammant
  */
-public abstract class Decorating extends AbstractBehaviorFactory implements Decorated.Decorator {
+public abstract class FieldDecorating extends AbstractBehaviorFactory implements FieldDecorated.Decorator {
+    private final Class<?> fieldClass;
+
+    public FieldDecorating(Class<?> fieldClass) {
+        this.fieldClass = fieldClass;
+    }
 
     public ComponentAdapter createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
             throws PicoCompositionException {
-        return new Decorated(
+        return new FieldDecorated(
                 super.createComponentAdapter(
                         componentMonitor, lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters),
-                this);
+                fieldClass, this);
     }
 
 
