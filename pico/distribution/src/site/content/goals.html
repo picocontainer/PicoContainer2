@@ -1,26 +1,29 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type" />
+<title>Project Goals</title></head>
 
-<html>
-<head>
-<title>Our Goals</title>
-</head>
+
 <body>
 <p>PicoContainer's core was designed with some goals in mind:</p>
 <ul>
-  <li>No mandatory dependencies.</li>
-  <li>No logging built in (we have a Monitor interface and implementations for Commons-Logging and Log4J etc)</li>
+  <li>No mandatory dependencies.</li><li>No mandatory implements/extends/import for component makers.</li>
+  <li>No logging built in (we have a Monitor interface and implementations for Commons-Logging and Log4J etc).</li>
   <li>No meta-data requirement.</li>
   <li>Small jar size.</li>
-  <li>Embeddable by design (no main method entry point)</li>
+  <li>Embeddable by design (no main method entry point).</li>
 </ul>
-<p>If someone has a need for PicoContainer that we did not originally envision, or a feature that could be imlemented, we will try to accomodate it. The principle of Lowest Common Denominator (LCD) allows us for PicoContainer itself, to keep things small, while allowing extensions to deliver the larger visions. Thus, meta-data, dependancies, mainable are all OK for related extensions of PicoContainer.</p>
-<p>&nbsp;</p>
+<p>If someone has a need for PicoContainer that we did not originally
+envision, or a feature not yet imlemented, we will try to accomodate
+it.&nbsp;</p><p>The principle of Lowest Common Denominator (LCD) allows
+us, for PicoContainer itself, to keep things small, while allowing
+extensions to deliver the larger visions. Thus, meta-data,
+dependancies, mainable are all OK for related extensions of
+PicoContainer like NanoContainer.</p>Meanwhile, we want teams to be
+able to use PicoContainer in their project in an inobstrsuve way.
+&nbsp;We're happy for teams to embed it in such a way that its
+invisible.&nbsp;
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp; </p>
-</body>
-
-
-
-</html>
+</body></html>
