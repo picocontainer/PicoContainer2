@@ -1,10 +1,31 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html><head>
-<title>Dependency Injection</title></head>
+<html><head><title>Dependency Injection</title><style type="text/css">
+.callout {
+  border-style: solid;
+  margin: 10px;
+  padding: 4px;
+  background-color: red;
+  display: inline;
+}
+
+</style></head>
 <body>
-<p>See Martin Fowlers's <a href="http://www.martinfowler.com/articles/injection.html">Inversion of Control Containers and the Dependency Injection</a>  article from 2003 for a thorough description. Surely everyone has read this by now? </p>
-<h2> Injection Types </h2>
-<h3>Constructor Dependency Injection (CDI) </h3>
+<p>See Martin Fowlers's <a href="http://www.martinfowler.com/articles/injection.html">Inversion of Control Containers and the Dependency Injection</a>  article from 2003 for a thorough description. Surely everyone has read this by now?</p><p>Very
+quickly: Dependency Injection is where components are given their
+dependencies through their constructors, methods, or directly into
+fields. &nbsp;Those components do not get their dependencies
+themselves, or instantiate them directly. &nbsp;This is very much
+related to the encompassing design principle <a href="inversion-of-control.html">Inversion of Control</a>.  </p>
+<h2>Different types of Dependency Injection supported by PicoContainer </h2><p>PicoContainer
+supports multiple ways to specify the injection of dependencies into
+components. &nbsp;Constructor injection (listed first) is the
+recomended idiom for PicoContainer. &nbsp;Other types leverage fields
+and methods. &nbsp;Variations of the method types, can follow a naming
+convention or be marked with an annotation. &nbsp;Dependencies for
+those could be populated one by one, or all in one method call. Indeed
+components could be populated with combinations of Constructor, Method
+and Field Injection.</p>
+<h3>Constructor&nbsp;Injection </h3>
 <p>This is where a component has a constructor, with arguments that are its dependencies:</p>
 <div class="source">
   <pre>public class Apple {
@@ -21,15 +42,19 @@
   // methods
 }</pre></div>
 <p>
-The PicoContainer team recommends CDI over other types. There is no need
+The PicoContainer team recommends Constructor Dependency Injection
+(CDI) over other types - the project was started to pioneer this
+approach. With PicoContainer is no need
 to mark up the constructor with an annotation. Having more than one
 constructor is OK too, as PicoContainer will try to use the one with
 the most arguments and fall back to ones with fewer if it cannot
 satisfy the longer ones.</p>
 <p>The  component factory for this is <strong>ConstructorInjection</strong>. It only handles constructor injection types of components.  Factory <strong>AdaptiveInjection</strong>
 defaults to constructor injection, after checking first to see it the
-component in question is a Annotated Method or Field type (see below). </p>
-<h3>Setter Dependency Injection (SDI) </h3>
+component in question is a Annotated Method or Field type (see below).</p><p class="callout">Constructor Injection is idomatic PicoContainer
+- choose this style over all others if you can - especially if you are
+starting out with Dependency Injection.&nbsp;  </p>
+<h3>Injecting into Setter Methods </h3>
 <p>This is where a component has an empty constructor with dependencies provided by setters after instantiation:</p>
 <div class="source">
   <pre>public class Apple {
@@ -54,7 +79,7 @@ PicoContainer, such as 'init' or 'inject'.</p>
   <p>The  component factory for this is <strong>SetterInjection</strong>. It only handles setter injection types of components.</p>
 <p>Factory <strong>AdaptiveInjection</strong> can also handle setter injection types, though it requires that the component was registered with the <a href="properties.html">property</a> 'SDI' in order to activate the Setter Injection functionality. <strong>AdaptiveInjection</strong> will also fall through to constructor injection if there is no SDI property. </p>
 <p>If you want to use an prefix other than 'set', then specify your preferred prexix in the non-default constructor for <strong>SetterInjection</strong>.</p>
-<h3>Annotated Field Dependency Injection </h3>
+<h3>Injecting into Annotated Fields &nbsp; </h3>
 <p>This is where a component has an empty constructor with dependencies
 indicated by a field annotation and provided automatically by the
 container after instantiation.</p>
@@ -71,14 +96,14 @@ container after instantiation.</p>
 </div>
 <p>
 Yes that's right, there's no constructor needed. It means that for a
-Unit Test, you cannot simply 'new' the class, which is a downside.</p>
+Unit Test, you cannot simply 'new' the class without some magic to populate the dependency fields.</p>
 <p>The  component factory for this is a class<strong> AnnotatedFieldInjection</strong>. It only handles field-annotation injection types of components.</p>
 <p>Additionally component factory <strong>AdaptiveInjection</strong>
 can also handle field annotation types, if the @Inject annotation from
 PicoContainer's codebase is used as the marker for injection. <strong>AdaptiveInjection</strong> will also fall through to constructor injection if there is no recognised @Inject annotation.</p>
 <p>If you want to use an @Inject annotation from another codebase, then
 specify the preferred annotation class in the constructor for <strong>AnnotatedFieldInjection</strong>.</p>
-<h3>Annotated Method Dependency Injection </h3>
+<h3>Injecting into Annotated Methods&nbsp; </h3>
 <p>This is where a component has an empty constructor and gets its
 dependencies injected into annotated methods after instantiation:</p>
 <div class="source">
@@ -102,7 +127,7 @@ dependencies injected into annotated methods after instantiation:</p>
   // other methods
 }</pre>
 </div>
-<p>The method (whatever its name) needs an @Inject annotation.  That's from our codebase (org.picocontainer.Inject).</p>
+<p>The method (whatever its name) needs an @Inject annotation.  That is from our codebase (org.picocontainer.Inject).</p>
 <p>The  component factory for this is <strong>AnnotatedMethodInjection</strong>. It only handles method-annotation injection types of components.</p>
 <p>Additionally component factory <strong>AdaptiveInjection</strong>
 can also handle method-annotation injection types, if the @Inject
@@ -111,8 +136,8 @@ injection. AdaptiveInjection will also fall through to constructor
 injection if there is no recognised annotation.</p>
 <p>If you want to use an @Inject annotation from another codebase, then
 specify the preferred annotation class in the constructor for <strong>AnnotatedMethodInjection</strong>.</p>
-<h3> Method Dependency Injection </h3>
-<p>This is where a component has an empty constructor and gets all its
+<h3>Injecting into a Single Method&nbsp; </h3>
+<p>This is where a component has an empty constructor and gets <span style="font-weight: bold;">all</span> its
 dependencies injected into single method after instantiation:</p>
 <div class="source">
   <pre>public class Apple {
@@ -130,7 +155,7 @@ dependencies injected into single method after instantiation:</p>
 <p>The method name needs be 'inject' unless overridden in the InjectionFactory.</p>
 <p>The  component factory for this is <strong>MethodInjection</strong>. It only handles method-injection types of components.</p>
 <p>Additionally component factory <strong>AdaptiveInjection</strong> can also handle method-injection types, but only if the METHOD_INJECTION characteristic is specified.</p>
-<h3> Muli-Type Dependency Injection </h3>
+<h3> Muli-type Dependency Injection </h3>
 <p>This is where a component has is a blend of one or more of Constructor, Setter, Method, Annotated Field etc:</p>
 <div class="source">
   <pre>public class Apple {
@@ -244,7 +269,9 @@ different characteristics.</p>
 
 pico.addComponent("dessertApple", GoldenDeliciousApple.class);
 pico.addComponent("cookingApple", BramleyApple.class);
-pico.as(Characteristics.USE_NAMES).addComponent(AppleProcessor.class);</pre>
+pico.as(Characteristics.USE_NAMES).addComponent(AppleProcessor.class);
+
+AppleProcessor appleProcessor = pico.getComponent(AppleProcessor.class);</pre>
 </div>
 <p>In this case the constructor to AppleProcessor has carefully named
 parameters - 'dessertApple' and 'cookingApple'. This is picked up on
