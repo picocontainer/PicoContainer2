@@ -16,6 +16,7 @@ import static org.picocontainer.Characteristics.SDI;
 import org.picocontainer.adapters.FactoryAdapter;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.behaviors.Caching;
+import org.picocontainer.behaviors.Decorating;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjection;
@@ -32,6 +33,7 @@ import org.picocontainer.testmodel.Touchable;
 
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -771,6 +773,13 @@ public final class DefaultPicoContainerTestCase extends
 
     public static interface Swede {
     }
+    public static class Turnip2 extends Turnip {
+        public Turnip2(String foo, Swede swede) {
+            super(foo);
+            assertNotNull(swede);
+            super.swede = swede;
+        }
+    }
     public static class Turnip {
         @Inject
         Swede swede;
@@ -793,16 +802,7 @@ public final class DefaultPicoContainerTestCase extends
         MutablePicoContainer container = new DefaultPicoContainer(new MultiInjection());
         container.addComponent(String.class, "foo");
         container.addComponent(Turnip.class);
-        container.addAdapter(new FactoryAdapter<Swede>() {
-            public Swede getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {
-                return new Swede() {
-                    public String toString() {
-                        return "Swede:" + ((Class) into).getName();
-                    }
-                };
-            }
-        });
-
+        container.addAdapter(new SwedeFactoryAdapter());
         Turnip t = container.getComponent(Turnip.class);
         assertNotNull(t);
         assertEquals("Swede:" + Swede.class.getName(), t.getSwede().toString());
@@ -810,5 +810,63 @@ public final class DefaultPicoContainerTestCase extends
 
     }
 
+    @Test public void testThatComponentCanHaveAProvidedDependencyViaConstructor() {
+        MutablePicoContainer container = new DefaultPicoContainer();
+        container.addComponent(String.class, "foo");
+        container.addComponent(Turnip2.class);
+        container.addAdapter(new SwedeFactoryAdapter());
+        Turnip2 t = container.getComponent(Turnip2.class);
+        assertNotNull(t);
+        assertEquals("Swede:" + Swede.class.getName(), t.getSwede().toString());
+        assertEquals("foo", t.getFoo());
 
+    }
+
+    @Test
+    public void testThatComponentCanHaveAProvidedDependencyViaBehavior() {
+        MutablePicoContainer container = new DefaultPicoContainer(new SwedeDecorating().wrap(new ConstructorInjection()));
+        container.addComponent(String.class, "foo");
+        container.addComponent(Turnip.class);
+        Turnip t = container.getComponent(Turnip.class);
+        assertNotNull(t);
+        assertNotNull(t.getSwede());
+        assertEquals("Swede:" + Turnip.class.getName(), t.getSwede().toString());
+        assertEquals("foo", t.getFoo());
+
+    }
+
+
+    private static class SwedeDecorating extends Decorating {
+        public void decorate(final Object instance) {
+            Field[] fields = instance.getClass().getDeclaredFields();
+            for (int i = 0; i < fields.length; i++) {
+                Field field = fields[i];
+                if (field.getName().equals("swede") && field.getType() == Swede.class) {
+                    Swede value = new Swede() {
+                        public String toString() {
+                            return "Swede:" + instance.getClass().getName();
+                        }
+                    };
+                    field.setAccessible(true);
+                    try {
+                        field.set(instance, value);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+            }
+        }
+    }
+
+    private static class SwedeFactoryAdapter extends FactoryAdapter<Swede> {
+
+        public Swede getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {
+            return new Swede() {
+                public String toString() {
+                    return "Swede:" + ((Class) into).getName();
+                }
+            };
+        }
+    }
 }
