@@ -62,14 +62,14 @@ public interface ComponentAdapter<T> {
      * @param into the class that is about to be injected into.
      * @return the component instance.
      * @throws PicoCompositionException  if the component has dependencies which could not be resolved, or
-     *                                     instantiation of the component lead to an ambigous situation within the
+     *                                     instantiation of the component lead to an ambiguous situation within the
      *                                     container.
      */
     T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException;
 
     /**
-     * Verify that all dependencies for this adapter can be satisifed. Normally, the adapter should verify this by
-     * checking that the associated PicoContainer contains all the needed dependnecies.
+     * Verify that all dependencies for this adapter can be satisfied. Normally, the adapter should verify this by
+     * checking that the associated PicoContainer contains all the needed dependencies.
      *
      * @param container the {@link PicoContainer}, that is used to resolve any possible dependencies of the instance.
      * @throws PicoCompositionException if one or more dependencies cannot be resolved.
