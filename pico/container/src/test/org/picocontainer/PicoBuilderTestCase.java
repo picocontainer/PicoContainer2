@@ -15,6 +15,7 @@ import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implementationHiding;
 import static org.picocontainer.behaviors.Behaviors.synchronizing;
 import static org.picocontainer.injectors.Injectors.SDI;
+import org.picocontainer.injectors.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,9 +24,11 @@ import java.util.Properties;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.picocontainer.behaviors.ImplementationHiding;
+import org.picocontainer.behaviors.*;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.lifecycle.LifecycleState;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
+import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -64,85 +67,54 @@ public class PicoBuilderTestCase {
     }
 
     @Test public void testBasic() {
-        MutablePicoContainer mpc = new PicoBuilder().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
+                new NullLifecycleStrategy(), new EmptyPicoContainer());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithStartableLifecycle() {
 
-        new NullComponentMonitor();
+        NullComponentMonitor ncm = new NullComponentMonitor();
 
-        MutablePicoContainer mpc = new PicoBuilder().withLifecycle().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/PICO/lifecycleStrategy/componentMonitor\n" +
-                "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder().withLifecycle().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
+                new StartableLifecycleStrategy(ncm), new EmptyPicoContainer(), ncm);
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithReflectionLifecycle() {
-        MutablePicoContainer mpc = new PicoBuilder().withReflectionLifecycle().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.ReflectionLifecycleStrategy\n" +
-                "    methodNames\n" +
-                "      stringstartstring\n" +
-                "      stringstopstring\n" +
-                "      stringdisposestring\n" +
-                "    methodNames\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/PICO/lifecycleStrategy/componentMonitor\n" +
-                "PICO",foo);
+        NullComponentMonitor ncm = new NullComponentMonitor();
+
+        MutablePicoContainer actual = new PicoBuilder().withReflectionLifecycle().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
+                new ReflectionLifecycleStrategy(ncm), new EmptyPicoContainer(), ncm);
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
 
     @Test public void testWithConsoleMonitor() {
-        MutablePicoContainer mpc = new PicoBuilder().withConsoleMonitor().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor\n" +
-                "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder().withConsoleMonitor().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new ConsoleComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithConsoleMonitorAndLifecycleUseTheSameUltimateMonitor() {
-        MutablePicoContainer mpc = new PicoBuilder().withLifecycle().withConsoleMonitor().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                     "  componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                     "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                     "  lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
-                     "    componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor\n" +
-                     "      delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
-                     "  componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor reference=/PICO/lifecycleStrategy/componentMonitor\n" +
-                     "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder().withLifecycle().withConsoleMonitor().build();
+        ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
+        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
+                new StartableLifecycleStrategy(cm), new EmptyPicoContainer(), cm);
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
 
     @Test public void testWithCustomMonitorByClass() {
-        MutablePicoContainer mpc = new PicoBuilder().withMonitor(ConsoleComponentMonitor.class).build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor\n" +
-                "    delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder().withMonitor(ConsoleComponentMonitor.class).build();
+        ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
+        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), cm);
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -158,190 +130,113 @@ public class PicoBuilderTestCase {
     }
 
     @Test public void testWithImplementationHiding() {
-        MutablePicoContainer mpc = new PicoBuilder().withHiddenImplementations().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.behaviors.ImplementationHiding\n" +
-                "    delegate=org.picocontainer.injectors.AdaptingInjection\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder().withHiddenImplementations().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new ImplementationHiding().wrap(new AdaptingInjection()),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithImplementationHidingInstance() {
-        MutablePicoContainer mpc = new PicoBuilder().withComponentFactory(new ImplementationHiding()).build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.behaviors.ImplementationHiding\n" +
-                "    delegate=org.picocontainer.injectors.AdaptingInjection\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder().withComponentFactory(new ImplementationHiding()).build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new ImplementationHiding().wrap(new AdaptingInjection()),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithCafsListChainThingy() {
-        MutablePicoContainer mpc = new PicoBuilder(SDI()).withBehaviors(caching(), synchronizing(), implementationHiding()).build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.behaviors.Caching\n" +
-                "    delegate=org.picocontainer.behaviors.Synchronizing\n" +
-                "      delegate=org.picocontainer.behaviors.ImplementationHiding\n" +
-                "        delegate=org.picocontainer.injectors.SetterInjection\n" +
-                "          set\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder(SDI()).withBehaviors(caching(), synchronizing(), implementationHiding()).build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new Caching().wrap(new Synchronizing().wrap(new ImplementationHiding().wrap(new SetterInjection()))),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
 
     public static class CustomParentcontainer extends EmptyPicoContainer {}
 
     @Test public void testWithCustomParentContainer() {
-        MutablePicoContainer mpc = new PicoBuilder(new CustomParentcontainer()).build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                "  parent=org.picocontainer.PicoBuilderTestCase_CustomParentcontainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder(new CustomParentcontainer()).build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
+                new NullLifecycleStrategy(), new CustomParentcontainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithBogusParentContainerBehavesAsIfNotSet() {
-        MutablePicoContainer mpc = new PicoBuilder((PicoContainer)null).build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                     "  componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                     "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                     "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                     "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                     "PICO", foo);
+        MutablePicoContainer actual = new PicoBuilder((PicoContainer)null).build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
 
     @Test public void testWithSetterDI() {
-        MutablePicoContainer mpc = new PicoBuilder().withSetterInjection().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.SetterInjection\n" +
-                "    set\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder().withSetterInjection().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new SetterInjection(),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithAnnotatedMethodDI() {
-            MutablePicoContainer mpc = new PicoBuilder().withAnnotatedMethodInjection().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AnnotatedMethodInjection\n" +
-                "    org.picocontainer.annotations.Inject\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);
+            MutablePicoContainer actual = new PicoBuilder().withAnnotatedMethodInjection().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new AnnotatedMethodInjection(),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithAnnotatedFieldDI() {
-            MutablePicoContainer mpc = new PicoBuilder().withAnnotatedFieldInjection().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.AnnotatedFieldInjection\n" +
-                "    org.picocontainer.annotations.Inject\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);
+            MutablePicoContainer actual = new PicoBuilder().withAnnotatedFieldInjection().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new AnnotatedFieldInjection(),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithCtorDI() {
-        MutablePicoContainer mpc = new PicoBuilder().withConstructorInjection().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.injectors.ConstructorInjection\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder().withConstructorInjection().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new ConstructorInjection(),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithImplementationHidingAndSetterDI() {
-        MutablePicoContainer mpc = new PicoBuilder().withHiddenImplementations().withSetterInjection().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.behaviors.ImplementationHiding\n" +
-                "    delegate=org.picocontainer.injectors.SetterInjection\n" +
-                "      set\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder().withHiddenImplementations().withSetterInjection().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new ImplementationHiding().wrap(new SetterInjection()),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithCachingImplementationHidingAndSetterDI() {
-        MutablePicoContainer mpc = new PicoBuilder().withCaching().withHiddenImplementations().withSetterInjection().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.behaviors.Caching\n" +
-                "    delegate=org.picocontainer.behaviors.ImplementationHiding\n" +
-                "      delegate=org.picocontainer.injectors.SetterInjection\n" +
-                "        set\n" +                
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder().withCaching().withHiddenImplementations().withSetterInjection().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new Caching().wrap(new ImplementationHiding().wrap(new SetterInjection())),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithSynchronizing() {
-        MutablePicoContainer mpc = new PicoBuilder().withSynchronizing().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.behaviors.Synchronizing\n" +
-                "    delegate=org.picocontainer.injectors.AdaptingInjection\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder().withSynchronizing().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new Synchronizing().wrap(new AdaptingInjection()),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithLocking() {
-        MutablePicoContainer mpc = new PicoBuilder().withLocking().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                "  componentFactory=org.picocontainer.behaviors.Locking\n" +
-                "    delegate=org.picocontainer.injectors.AdaptingInjection\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder().withLocking().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new Locking().wrap(new AdaptingInjection()),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithPropertyApplier() {
-        MutablePicoContainer mpc = new PicoBuilder().withPropertyApplier().build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                     "  componentFactory=org.picocontainer.behaviors.PropertyApplying\n" +
-                     "    delegate=org.picocontainer.injectors.AdaptingInjection\n" +
-                     "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                     "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                     "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                     "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder().withPropertyApplier().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new PropertyApplying().wrap(new AdaptingInjection()),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     //TODO - fix up to refer to SomeContainerDependency
     @Test public void testWithCustomComponentFactory() {
-        MutablePicoContainer mpc = new PicoBuilder().withCustomContainerComponent(new SomeContainerDependency()).withComponentFactory(CustomComponentFactory.class).build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("PICO\n" +
-                     "  componentFactory=org.picocontainer.PicoBuilderTestCase_CustomComponentFactory\n" +
-                     "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                     "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                     "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                     "PICO",foo);
+        MutablePicoContainer actual = new PicoBuilder().withCustomContainerComponent(new SomeContainerDependency()).withComponentFactory(CustomComponentFactory.class).build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new CustomComponentFactory(new SomeContainerDependency()),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     public static class SomeContainerDependency {
@@ -364,14 +259,10 @@ public class PicoBuilderTestCase {
 
 
     @Test public void testWithCustomPicoContainer() {
-        MutablePicoContainer mpc = new PicoBuilder().implementedBy(TestPicoContainer.class).build();
-        String foo = simplifyRepresentation(mpc);
-        assertEquals("org.picocontainer.PicoBuilderTestCase_-TestPicoContainer\n" +
-                "  componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "  lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "org.picocontainer.PicoBuilderTestCase_-TestPicoContainer",foo);
+        MutablePicoContainer actual = new PicoBuilder().implementedBy(TestPicoContainer.class).build();
+        MutablePicoContainer expected = new TestPicoContainer(new AdaptingInjection(),
+                new NullComponentMonitor(), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
 
@@ -379,51 +270,6 @@ public class PicoBuilderTestCase {
         public TestPicoContainer(ComponentFactory componentFactory, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
             super(componentFactory, lifecycleStrategy, parent, monitor);
         }
-    }
-
-
-    private String simplifyRepresentation(MutablePicoContainer mpc) {
-        String foo = xs.toXML(mpc);
-        foo = foo.replace('$','_');
-        foo = foo.replaceAll("/>","");
-        foo = foo.replaceAll("</","");
-        foo = foo.replaceAll("<","");
-        foo = foo.replaceAll(">","");
-        foo = foo.replaceAll("\n  startedComponentAdapters","");
-        foo = foo.replaceAll("\n  componentKeyToAdapterCache","");
-        foo = foo.replaceAll("\n  componentAdapters","");
-        foo = foo.replaceAll("\n  orderedComponentAdapters","");
-        foo = foo.replaceAll("\n  childrenStarted","");
-        foo = foo.replaceAll("\n  handler","");
-        foo = foo.replaceAll("\n  children","");
-        foo = foo.replaceAll("injectionAnnotation","");
-        foo = foo.replaceAll("setterMethodPrefix","");
-        foo = foo.replaceAll("lifecycleState","");
-        for (LifecycleState eachState : LifecycleState.values()) {
-            foo = foo.replaceAll("\n  " + eachState.name(), "");        	
-        }
-        foo = foo.replaceAll("\n  lifecycleStrategy\n","\n");
-        foo = foo.replaceAll("\n  componentMonitor\n","\n");
-        foo = foo.replaceAll("\n    componentMonitor\n","\n");
-        foo = foo.replaceAll("\n  delegate\n","\n");
-        foo = foo.replaceAll("\n    useNames\n","\n");
-        foo = foo.replaceAll("\n    delegate\n","\n");
-        foo = foo.replaceAll("\n      delegate\n","\n");
-        foo = foo.replaceAll("\n        delegate\n","\n");
-        foo = foo.replaceAll("\n  componentCharacteristic class=\"org.picocontainer.DefaultPicoContainer$1\"","");
-        foo = foo.replaceAll("\n  componentProperties","");
-        foo = foo.replaceAll("\n    startedComponentAdapters","");
-        foo = foo.replaceAll("\"class=","\"\nclass=");
-        foo = foo.replaceAll("\n  componentFactory\n","\n");
-        foo = foo.replaceAll("\n  lifecycleManager","");
-        foo = foo.replaceAll("class=\"org.picocontainer.DefaultPicoContainer_1\"","");
-        foo = foo.replaceAll("class=","=");
-        foo = foo.replaceAll("\"","");
-        foo = foo.replaceAll(" \n","\n");
-        foo = foo.replaceAll(" =","=");
-        foo = foo.replaceAll("\n\n","\n");
-
-        return foo;
     }
 
 
