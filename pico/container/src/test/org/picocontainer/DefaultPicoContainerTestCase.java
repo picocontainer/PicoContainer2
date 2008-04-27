@@ -907,7 +907,6 @@ public final class DefaultPicoContainerTestCase extends
 
     @Test public void testThatParentTraversalForComponentsCanBeBlocked() {
         DefaultPicoContainer grandparent = new DefaultPicoContainer();
-        grandparent.setTiering(true);
         DefaultPicoContainer parent = (DefaultPicoContainer) grandparent.makeChildContainer();
         parent.setTiering(true);
         DefaultPicoContainer child = (DefaultPicoContainer) parent.makeChildContainer();
