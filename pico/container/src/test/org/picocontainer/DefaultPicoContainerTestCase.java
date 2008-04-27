@@ -891,4 +891,41 @@ public final class DefaultPicoContainerTestCase extends
             };
         }
     }
+
+
+    public static class Couch {
+
+    }
+
+    public static class TiredPerson {
+        private Couch couchToSitOn;
+
+        public TiredPerson(Couch couchToSitOn) {
+            this.couchToSitOn = couchToSitOn;
+        }
+    }
+
+    @Test public void testThatParentTraversalForComponentsCanBeBlocked() {
+        DefaultPicoContainer grandparent = new DefaultPicoContainer();
+        grandparent.setTiering(true);
+        DefaultPicoContainer parent = (DefaultPicoContainer) grandparent.makeChildContainer();
+        parent.setTiering(true);
+        DefaultPicoContainer child = (DefaultPicoContainer) parent.makeChildContainer();
+        child.setTiering(true);
+        grandparent.addComponent(Couch.class);
+        child.addComponent(TiredPerson.class);
+
+        TiredPerson tp = null;
+        try {
+            tp = child.getComponent(TiredPerson.class);
+            fail("should have barfed");
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
+            System.out.println("");
+            // expected
+        }
+
+    }
+
+
+
 }

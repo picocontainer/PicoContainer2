@@ -16,10 +16,7 @@ import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.behaviors.Cached;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.HiddenImplementation;
-import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
-import org.picocontainer.containers.AbstractDelegatingPicoContainer;
-import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.containers.ImmutablePicoContainer;
+import org.picocontainer.containers.*;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.lifecycle.LifecycleState;
@@ -130,6 +127,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
 	protected final List<ComponentAdapter<?>> orderedComponentAdapters = new ArrayList<ComponentAdapter<?>>();
+    private boolean tiering = false;
 
     /**
      * Creates a new container with a custom ComponentFactory and a parent container.
@@ -267,7 +265,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public final ComponentAdapter<?> getComponentAdapter(final Object componentKey) {
         ComponentAdapter<?> adapter = getComponentKeyToAdapterCache().get(componentKey);
         if (adapter == null && parent != null) {
-            adapter = parent.getComponentAdapter(componentKey);
+            adapter = getParent().getComponentAdapter(componentKey);
         }
         return adapter;
     }
@@ -291,7 +289,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             return found.get(0);
         } else if (found.isEmpty()) {
             if (parent != null) {
-                return parent.getComponentAdapter(componentType, componentNameBinding);
+                return getParent().getComponentAdapter(componentType, componentNameBinding);
             } else {
                 return null;
             }
@@ -562,7 +560,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                 }
             } catch (AbstractInjector.CyclicDependencyException e) {
                 if (parent != null) {
-                    instance = parent.getComponent(componentAdapter.getComponentKey());
+                    instance = getParent().getComponent(componentAdapter.getComponentKey());
                     if (instance != null) {
                         return instance;
                     }
@@ -573,7 +571,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
             return instance;
         } else if (parent != null) {
-            return parent.getComponent(componentAdapter.getComponentKey());
+            return getParent().getComponent(componentAdapter.getComponentKey());
         }
 
         return null;
@@ -582,6 +580,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     /** {@inheritDoc} **/
     public PicoContainer getParent() {
+        if (tiering) {
+            return new TieringGuard(parent);            
+        }
         return parent;
     }
 
@@ -930,9 +931,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 		return componentAdapters;
 	}
 
+    public void setTiering(boolean tiering) {
+        this.tiering = tiering;
+    }
 
 
-	private class AsPropertiesPicoContainer extends AbstractDelegatingMutablePicoContainer {
+    private class AsPropertiesPicoContainer extends AbstractDelegatingMutablePicoContainer {
         /**
 		 * Serialization UUID.
 		 */
