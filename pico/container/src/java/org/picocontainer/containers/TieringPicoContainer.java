@@ -113,7 +113,7 @@ public class TieringPicoContainer extends DefaultPicoContainer {
         return new TieringPicoContainer(super.componentFactory, super.lifecycleStrategy, this, super.componentMonitor);
     }
 
-    public static class TieringGuard extends AbstractDelegatingPicoContainer {
+    private static class TieringGuard extends AbstractDelegatingPicoContainer {
 
         private static final AskingParentForComponent askingParentForComponent = new AskingParentForComponent();
 
@@ -224,12 +224,11 @@ public class TieringPicoContainer extends DefaultPicoContainer {
             }
         }
 
-        public static class AskingParentForComponent extends ThreadLocal {
-            protected Object initialValue() {
-                return Boolean.FALSE;
-            }
+    }
+    private static class AskingParentForComponent extends ThreadLocal {
+        protected Object initialValue() {
+            return Boolean.FALSE;
         }
-
     }
 
 }
