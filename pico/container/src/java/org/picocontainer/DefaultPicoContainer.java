@@ -79,7 +79,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 	/**
 	 * Component factory instance.
 	 */
-	private final ComponentFactory componentFactory;
+	protected final ComponentFactory componentFactory;
     
 	/**
 	 * Parent picocontainer
@@ -104,14 +104,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     /**
      * Lifecycle strategy instance.
      */
-    private final LifecycleStrategy lifecycleStrategy;
+    protected final LifecycleStrategy lifecycleStrategy;
     
     private final Properties componentProperties = new Properties();
     
     /**
      * Component monitor instance.  Receives event callbacks.
      */
-    private ComponentMonitor componentMonitor;
+    protected ComponentMonitor componentMonitor;
 
     /** List collecting the CAs which have been successfully started */
     private final List<WeakReference<ComponentAdapter<?>>> startedComponentAdapters = new ArrayList<WeakReference<ComponentAdapter<?>>>();
@@ -127,7 +127,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
 	protected final List<ComponentAdapter<?>> orderedComponentAdapters = new ArrayList<ComponentAdapter<?>>();
-    private boolean tiering = false;
 
     /**
      * Creates a new container with a custom ComponentFactory and a parent container.
@@ -580,9 +579,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     /** {@inheritDoc} **/
     public PicoContainer getParent() {
-        if (tiering) {
-            return new TieringGuard(parent);            
-        }
         return parent;
     }
 
@@ -930,11 +926,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 	protected List<ComponentAdapter<?>> getModifiableComponentAdapterList() {
 		return componentAdapters;
 	}
-
-    public void setTiering(boolean tiering) {
-        this.tiering = tiering;
-    }
-
 
     private class AsPropertiesPicoContainer extends AbstractDelegatingMutablePicoContainer {
         /**
