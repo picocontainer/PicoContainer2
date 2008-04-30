@@ -19,14 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ObjectReference;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
+import org.picocontainer.*;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.parameters.ComponentParameter;
 
@@ -41,7 +34,7 @@ import org.picocontainer.parameters.ComponentParameter;
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
  */
-public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements LifecycleStrategy {
+public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements LifecycleStrategy, Injector<T> {
     /** The cycle guard for the verification. */
     protected transient ThreadLocalCyclicDependencyGuard verifyingGuard;
     /** The parameters to use for initialization. */

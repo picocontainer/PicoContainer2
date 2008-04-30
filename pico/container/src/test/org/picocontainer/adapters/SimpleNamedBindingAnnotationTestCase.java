@@ -159,6 +159,10 @@ public class SimpleNamedBindingAnnotationTestCase {
             return inst;
         }
 
+        public T decorateComponentInstance(PicoContainer container, Type into, T instance) {
+            return null;
+        }
+
         public String getDescriptor() {
             return "FieldInjector";
         }

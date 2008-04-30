@@ -28,7 +28,7 @@ import com.thoughtworks.paranamer.CachingParanamer;
 /**
  * Injection will happen iteratively after component instantiation
  */
-public abstract class IterativeInjector extends AbstractInjector {
+public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     protected transient List<AccessibleObject> injectionMembers;
     protected transient Class[] injectionTypes;
@@ -131,44 +131,44 @@ public abstract class IterativeInjector extends AbstractInjector {
         throw new UnsatisfiableDependenciesException(this, null, unsatisfiableDependencyTypes, container);
     }
 
-    public Object getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
+    public T getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
         final Constructor constructor = getConstructor();
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
                     final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
-                    ComponentMonitor componentMonitor = currentMonitor();
-                    Object componentInstance;
-
-                    componentInstance = getOrMakeInstance(container, constructor, componentMonitor);
-                    AccessibleObject member = null;
-                    Object injected[] = new Object[injectionMembers.size()];
-                    try {
-                        for (int i = 0; i < injectionMembers.size(); i++) {
-                            member = injectionMembers.get(i);
-                            componentMonitor.invoking(container, IterativeInjector.this, (Member) member, componentInstance);
-                            if (matchingParameters[i] == null) {
-                                continue;
-                            }
-                            Object toInject = matchingParameters[i].resolveInstance(guardedContainer, IterativeInjector.this, injectionTypes[i],
-                                                                                    makeParameterNameImpl(injectionMembers.get(i)),
-                                                                                    useNames(),
-                                                                                    bindings[i]);
-                            injectIntoMember(member, componentInstance, toInject);
-                            injected[i] = toInject;
-                        }
-                        return componentInstance;
-                    } catch (InvocationTargetException e) {
-                        return caughtInvocationTargetException(componentMonitor, (Member) member, componentInstance, e);
-                    } catch (IllegalAccessException e) {
-                        return caughtIllegalAccessException(componentMonitor, (Member) member, componentInstance, e);
-                    }
+                    Object componentInstance = getOrMakeInstance(container, constructor, currentMonitor());
+                    return decorateComponentInstance(matchingParameters, currentMonitor(), componentInstance, container, guardedContainer);
 
                 }
             };
         }
         instantiationGuard.setGuardedContainer(container);
-        return instantiationGuard.observe(getComponentImplementation());
+        return (T) instantiationGuard.observe(getComponentImplementation());
+    }
+
+    private Object decorateComponentInstance(Parameter[] matchingParameters, ComponentMonitor componentMonitor, Object componentInstance, PicoContainer container, PicoContainer guardedContainer) {
+        AccessibleObject member = null;
+        Object injected[] = new Object[injectionMembers.size()];
+        try {
+            for (int i = 0; i < injectionMembers.size(); i++) {
+                member = injectionMembers.get(i);
+                componentMonitor.invoking(container, this, (Member) member, componentInstance);
+                if (matchingParameters[i] == null) {
+                    continue;
+                }
+                Object toInject = matchingParameters[i].resolveInstance(guardedContainer, this, injectionTypes[i],
+                                                                        makeParameterNameImpl(injectionMembers.get(i)),
+                                                                        useNames(), bindings[i]);
+                injectIntoMember(member, componentInstance, toInject);
+                injected[i] = toInject;
+            }
+            return componentInstance;
+        } catch (InvocationTargetException e) {
+            return caughtInvocationTargetException(componentMonitor, (Member) member, componentInstance, e);
+        } catch (IllegalAccessException e) {
+            return caughtIllegalAccessException(componentMonitor, (Member) member, componentInstance, e);
+        }
     }
 
     protected Object getOrMakeInstance(PicoContainer container,
@@ -200,6 +200,20 @@ public abstract class IterativeInjector extends AbstractInjector {
                                       null,
                                       System.currentTimeMillis() - startTime);
         return componentInstance;
+    }
+
+    public T decorateComponentInstance(final PicoContainer container, Type into, final T instance) {
+        if (instantiationGuard == null) {
+            instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
+                public Object run() {
+                    final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
+                    return decorateComponentInstance(matchingParameters, currentMonitor(), instance, container, guardedContainer);
+                }
+            };
+        }
+        instantiationGuard.setGuardedContainer(container);
+        return (T) instantiationGuard.observe(getComponentImplementation());
+
     }
 
     protected void injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)

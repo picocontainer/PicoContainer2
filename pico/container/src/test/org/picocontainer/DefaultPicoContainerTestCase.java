@@ -766,6 +766,10 @@ public final class DefaultPicoContainerTestCase extends
                         list.add("doppleganger");
                         return list;
                     }
+
+                    public Object decorateComponentInstance(PicoContainer container, Type into, Object instance) {
+                        return null;
+                    }
                 };
             } else {
                 return abstractInjector;

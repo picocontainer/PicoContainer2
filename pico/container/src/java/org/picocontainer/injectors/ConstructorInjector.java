@@ -192,6 +192,10 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         return instantiationGuard.observe(getComponentImplementation());
     }
 
+    public T decorateComponentInstance(PicoContainer container, Type into, T instance) {
+        return null; // Not applicable for Ctor Injection.
+    }
+
     protected Object[] getMemberArguments(PicoContainer container, final Constructor ctor) {
         return super.getMemberArguments(container, ctor, ctor.getParameterTypes(), getBindings(ctor.getParameterAnnotations()));
     }

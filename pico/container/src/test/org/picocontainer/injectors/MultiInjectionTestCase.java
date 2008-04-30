@@ -10,6 +10,7 @@ package org.picocontainer.injectors;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -98,14 +99,15 @@ public class MultiInjectionTestCase {
     }
 
 
-    @Test public void testComponentWithCtorAndSetterDiCanHaveAllCtorDepsAndSomeSetterDepsSatisfiedSubjectToAvailability() throws NoSuchMethodException {
+    @Test public void testComponentWithCtorAndSetterDiCanNoteMissingSetterDependency() throws NoSuchMethodException {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new MultiInjection());
         dpc.addComponent(Bar.class);
         dpc.addComponent(Foo.class);
-        Foo foo = dpc.getComponent(Foo.class);
-        assertNotNull(foo);
-        assertNotNull(foo.bar);
-        assertNull(foo.baz); // baz was never added to the container.s
+        try {
+            Foo foo = dpc.getComponent(Foo.class);
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
+            assertTrue(e.getMessage().contains(Baz.class.getName()));
+        }
     }
 
 }

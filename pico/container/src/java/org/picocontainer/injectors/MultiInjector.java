@@ -44,8 +44,6 @@ public class MultiInjector extends AbstractInjector {
                 return null;   
             }
 
-            protected void unsatisfiedDependencies(PicoContainer container, Set<Class> unsatisfiableDependencyTypes) {
-            }
         };
         annotatedMethodInjector = new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, Inject.class, useNames) {
             protected Object getOrMakeInstance(PicoContainer container,
@@ -58,8 +56,6 @@ public class MultiInjector extends AbstractInjector {
                 return null;
             }
 
-            protected void unsatisfiedDependencies(PicoContainer container, Set<Class> unsatisfiableDependencyTypes) {
-            }
         };
         annotatedFieldInjector = new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, Inject.class, useNames) {
             protected Object getOrMakeInstance(PicoContainer container,
@@ -72,13 +68,15 @@ public class MultiInjector extends AbstractInjector {
                 return null;
             }
 
-            protected void unsatisfiedDependencies(PicoContainer container, Set<Class> unsatisfiableDependencyTypes) {
-            }
         };
     }
 
     public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
         return annotatedFieldInjector.getComponentInstance(container, into);
+    }
+
+    public Object decorateComponentInstance(PicoContainer container, Type into, Object instance) {
+        return null; // not applicable
     }
 
     @Override

@@ -31,7 +31,7 @@ import org.picocontainer.PicoContainer;
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
  */
-public class MethodInjector extends SingleMemberInjector {
+public class MethodInjector<T> extends SingleMemberInjector<T> {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     private final String methodName;
 
@@ -66,18 +66,19 @@ public class MethodInjector extends SingleMemberInjector {
         return null;
     }
 
-    public Object getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
+    public T getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
+                    //TODO merge next seven lines into the getInjectorMethod method ?
                     Method method;
-                    Object inst = null;
                     try {
                         method = getInjectorMethod();
                     } catch (AmbiguousComponentResolutionException e) {
                         e.setComponent(getComponentImplementation());
                         throw e;
                     }
+                    T inst = null;
                     ComponentMonitor componentMonitor = currentMonitor();
                     try {
                         componentMonitor.instantiating(container, MethodInjector.this, null);
@@ -86,20 +87,11 @@ public class MethodInjector extends SingleMemberInjector {
                         inst = getComponentImplementation().newInstance();
                         if (method != null) {
                             parameters = getMemberArguments(guardedContainer, method);
-                            method.invoke(inst, parameters);
+                            invokeMethod(method, parameters, inst, container);
                         }
-                        componentMonitor.instantiated(container,
-                                                      MethodInjector.this,
+                        componentMonitor.instantiated(container, MethodInjector.this,
                                                       null, inst, parameters, System.currentTimeMillis() - startTime);
                         return inst;
-                    } catch (InvocationTargetException e) {
-                        componentMonitor.instantiationFailed(container, MethodInjector.this, null, e);
-                        if (e.getTargetException() instanceof RuntimeException) {
-                            throw (RuntimeException) e.getTargetException();
-                        } else if (e.getTargetException() instanceof Error) {
-                            throw (Error) e.getTargetException();
-                        }
-                        throw new PicoCompositionException(e.getTargetException());
                     } catch (InstantiationException e) {
                         return caughtInstantiationException(componentMonitor, null, e, container);
                     } catch (IllegalAccessException e) {
@@ -110,11 +102,51 @@ public class MethodInjector extends SingleMemberInjector {
             };
         }
         instantiationGuard.setGuardedContainer(container);
-        return instantiationGuard.observe(getComponentImplementation());
+        return (T) instantiationGuard.observe(getComponentImplementation());
     }
 
     protected Object[] getMemberArguments(PicoContainer container, final Method method) {
         return super.getMemberArguments(container, method, method.getParameterTypes(), getBindings(method.getParameterAnnotations()));
+    }
+
+    public T decorateComponentInstance(final PicoContainer container, Type into, final T instance) {
+        if (instantiationGuard == null) {
+            instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
+                public Object run() {
+                    //TODO merge next seven lines into the getInjectorMethod method ?
+                    Method method;
+                    try {
+                        method = getInjectorMethod();
+                    } catch (AmbiguousComponentResolutionException e) {
+                        e.setComponent(getComponentImplementation());
+                        throw e;
+                    }
+                    Object inst = null;
+                    Object[] parameters = null;
+                    parameters = getMemberArguments(guardedContainer, method);
+                    return invokeMethod(method, parameters, instance, container);
+                }
+            };
+        }
+        instantiationGuard.setGuardedContainer(container);
+        return (T) instantiationGuard.observe(getComponentImplementation());
+
+    }
+
+    private Object invokeMethod(Method method, Object[] parameters, T instance, PicoContainer container) {
+        try {
+            return method.invoke(instance, parameters);
+        } catch (IllegalAccessException e) {
+            return caughtIllegalAccessException(currentMonitor(), method, instance, e);
+        } catch (InvocationTargetException e) {
+            currentMonitor().instantiationFailed(container, MethodInjector.this, null, e);
+            if (e.getTargetException() instanceof RuntimeException) {
+                throw (RuntimeException) e.getTargetException();
+            } else if (e.getTargetException() instanceof Error) {
+                throw (Error) e.getTargetException();
+            }
+        }
+        return null;
     }
 
 

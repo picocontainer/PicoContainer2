@@ -12,10 +12,12 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.PropertyApplicator;
 import org.picocontainer.behaviors.Cached;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 /**
  * Instantiates components using empty constructors and
@@ -33,7 +35,7 @@ import java.lang.reflect.Method;
  * @author Mauro Talevi
  * @author Paul Hammant
  */
-public class SetterInjector extends IterativeInjector {
+public class SetterInjector<T> extends IterativeInjector<T> {
 
     private final String setterMethodPrefix;
 
@@ -59,7 +61,6 @@ public class SetterInjector extends IterativeInjector {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
         this.setterMethodPrefix = setterMethodPrefix;
     }
-
 
     protected boolean isInjectorMethod(Method method) {
         String methodName = method.getName();
