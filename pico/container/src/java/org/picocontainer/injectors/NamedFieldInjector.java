@@ -21,31 +21,31 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
- * Injection happens after instantiation, and through fields marked as injection points via an Annotation.
- * The default annotation of org.picocontainer.annotations.@Inject can be overridden.
+ * Injection happens after instantiation, and fields are marked as 
+ * injection points via a named field.
  */
-public class AnnotatedFieldInjector extends IterativeInjector {
+public class NamedFieldInjector extends IterativeInjector {
 
     /**
 	 * Serialization UUID.
 	 */
-	private static final long serialVersionUID = -1995850745951708186L;
-	
-	private final Class<? extends Annotation> injectionAnnotation;
+    private static final long serialVersionUID = -4521781727538518713L;
 
-    public AnnotatedFieldInjector(Object key,
+    private final List<String> fieldNames;
+
+    public NamedFieldInjector(Object key,
                                   Class<?> impl,
                                   Parameter[] parameters,
                                   ComponentMonitor componentMonitor,
                                   LifecycleStrategy lifecycleStrategy, 
-                                  Class<? extends Annotation> injectionAnnotation, boolean useNames) {
+                                  String fieldNames, boolean useNames) {
 
         super(key, impl, parameters, componentMonitor, lifecycleStrategy, useNames);
-        this.injectionAnnotation = injectionAnnotation;
+        List<String> stringList = Arrays.asList(fieldNames.trim().split(" "));
+        this.fieldNames = stringList;
     }
 
     protected void initializeInjectionMembersAndTypeLists() {
@@ -54,7 +54,7 @@ public class AnnotatedFieldInjector extends IterativeInjector {
         final List<Class> typeList = new ArrayList<Class>();
         final Field[] fields = getFields();
         for (final Field field : fields) {
-            if (isAnnotatedForInjection(field)) {
+            if (isNamedForInjection(field)) {
                 injectionMembers.add(field);
                 typeList.add(box(field.getType()));
                 bindingIds.add(getBinding(field));
@@ -74,8 +74,8 @@ public class AnnotatedFieldInjector extends IterativeInjector {
         return null;
     }
 
-    protected boolean isAnnotatedForInjection(Field field) {
-        return field.getAnnotation(injectionAnnotation) != null;
+    protected boolean isNamedForInjection(Field field) {
+        return fieldNames.contains(field.getName());
     }
 
     private Field[] getFields() {
@@ -95,7 +95,7 @@ public class AnnotatedFieldInjector extends IterativeInjector {
     }
 
     public String getDescriptor() {
-        return "AnnotatedFieldInjector-";
+        return "NamedFieldInjector-";
     }
 
     protected NameBinding makeParameterNameImpl(final AccessibleObject member) {
@@ -105,4 +105,10 @@ public class AnnotatedFieldInjector extends IterativeInjector {
             }
         };
     }
+
+    List<String> getInjectionFieldNames() {
+        return Collections.unmodifiableList(fieldNames);
+    }
+
+
 }
