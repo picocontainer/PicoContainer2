@@ -137,7 +137,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
                     final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
-                    Object componentInstance = getOrMakeInstance(container, constructor, currentMonitor());
+                    Object componentInstance = makeInstance(container, constructor, currentMonitor());
                     return decorateComponentInstance(matchingParameters, currentMonitor(), componentInstance, container, guardedContainer);
 
                 }
@@ -171,9 +171,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         }
     }
 
-    protected Object getOrMakeInstance(PicoContainer container,
-                                       Constructor constructor,
-                                       ComponentMonitor componentMonitor) {
+    private Object makeInstance(PicoContainer container, Constructor constructor, ComponentMonitor componentMonitor) {
         long startTime = System.currentTimeMillis();
         Constructor constructorToUse = componentMonitor.instantiating(container,
                                                                       IterativeInjector.this, constructor);
