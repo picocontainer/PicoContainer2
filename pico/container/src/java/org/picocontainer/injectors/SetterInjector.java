@@ -18,6 +18,8 @@ import org.picocontainer.behaviors.Cached;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Instantiates components using empty constructors and
@@ -60,6 +62,11 @@ public class SetterInjector<T> extends IterativeInjector<T> {
                           String setterMethodPrefix, boolean useNames) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
         this.setterMethodPrefix = setterMethodPrefix;
+    }
+
+    protected void injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
+        throws IllegalAccessException, InvocationTargetException {
+        ((Method)member).invoke(componentInstance, toInject);
     }
 
     protected boolean isInjectorMethod(Method method) {

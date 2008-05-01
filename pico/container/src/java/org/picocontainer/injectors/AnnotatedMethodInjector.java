@@ -15,6 +15,8 @@ import org.picocontainer.LifecycleStrategy;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.InvocationTargetException;
 
 public class AnnotatedMethodInjector extends SetterInjector {
 
@@ -32,6 +34,11 @@ public class AnnotatedMethodInjector extends SetterInjector {
                                    LifecycleStrategy lifecycleStrategy, Class<? extends Annotation> injectionAnnotation, boolean useNames) {
         super(key, impl, parameters, monitor, lifecycleStrategy, "", useNames);
         this.injectionAnnotation = injectionAnnotation;
+    }
+
+    protected void injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
+        throws IllegalAccessException, InvocationTargetException {
+        ((Method)member).invoke(componentInstance, toInject);
     }
 
     protected final boolean isInjectorMethod(Method method) {

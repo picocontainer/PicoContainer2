@@ -214,10 +214,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
     }
 
-    protected void injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
-        throws IllegalAccessException, InvocationTargetException {
-        ((Method)member).invoke(componentInstance, toInject);
-    }
+    protected abstract void injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject) throws IllegalAccessException, InvocationTargetException;
 
     @Override
     public void verify(final PicoContainer container) throws PicoCompositionException {
