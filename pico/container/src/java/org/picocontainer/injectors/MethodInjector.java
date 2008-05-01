@@ -57,7 +57,13 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
     }
 
     protected Method getInjectorMethod() {
-        Method[] methods = super.getComponentImplementation().getMethods();
+        Method[] methods = new Method[0];
+        try {
+            methods = super.getComponentImplementation().getMethods();
+        } catch (AmbiguousComponentResolutionException e) {
+            e.setComponent(getComponentImplementation());
+            throw e;
+        }
         for (Method method : methods) {
             if (method.getName().equals(methodName)) {
                 return method;
@@ -70,14 +76,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
-                    //TODO merge next seven lines into the getInjectorMethod method ?
-                    Method method;
-                    try {
-                        method = getInjectorMethod();
-                    } catch (AmbiguousComponentResolutionException e) {
-                        e.setComponent(getComponentImplementation());
-                        throw e;
-                    }
+                    Method method = getInjectorMethod();
                     T inst = null;
                     ComponentMonitor componentMonitor = currentMonitor();
                     try {
@@ -113,14 +112,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
-                    //TODO merge next seven lines into the getInjectorMethod method ?
-                    Method method;
-                    try {
-                        method = getInjectorMethod();
-                    } catch (AmbiguousComponentResolutionException e) {
-                        e.setComponent(getComponentImplementation());
-                        throw e;
-                    }
+                    Method method = getInjectorMethod();
                     Object inst = null;
                     Object[] parameters = null;
                     parameters = getMemberArguments(guardedContainer, method);
