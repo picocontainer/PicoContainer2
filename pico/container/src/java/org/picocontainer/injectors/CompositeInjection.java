@@ -14,7 +14,11 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import java.io.Serializable;
 import java.util.Properties;
 
-/** @author Paul Hammant */
+/**
+ * A Composite of other types on InjectionFactories - pass them into the varargs constructor.
+ * 
+ * @author Paul Hammant
+ */
 public class CompositeInjection implements InjectionFactory, Serializable {
 
     private static final long serialVersionUID = 1962189227810901031L;    
