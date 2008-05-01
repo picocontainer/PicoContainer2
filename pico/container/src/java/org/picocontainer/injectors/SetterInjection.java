@@ -59,7 +59,7 @@ public class SetterInjection implements InjectionFactory, Serializable {
      */
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
-        boolean useNames = AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.USE_NAMES);
+        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES);
         return new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterMethodPrefix, useNames);
     }
 }

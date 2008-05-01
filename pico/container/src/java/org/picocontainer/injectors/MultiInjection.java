@@ -8,9 +8,7 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.InjectionFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.LifecycleStrategy;
@@ -40,7 +38,7 @@ public class MultiInjection implements InjectionFactory, Serializable {
                                                           Object componentKey,
                                                           Class<T> componentImplementation,
                                                           Parameter... parameters) throws PicoCompositionException {
-        boolean useNames = AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.USE_NAMES);
+        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES);
         return new MultiInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterPrefix, useNames);
     }
 }

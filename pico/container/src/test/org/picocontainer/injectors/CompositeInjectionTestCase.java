@@ -11,9 +11,12 @@ package org.picocontainer.injectors;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Characteristics;
+import static org.picocontainer.injectors.NamedFieldInjection.injectionFieldNames;
 import org.picocontainer.annotations.Inject;
 
 /**
@@ -65,6 +68,16 @@ public class CompositeInjectionTestCase {
             this.baz = baz;
         }
     }
+    public static class Foo4 {
+        private final Bar bar;
+        private String one;
+        private String two;
+
+        public Foo4(Bar bar) {
+            this.bar = bar;
+        }
+
+    }
 
     @Test public void testComponentWithCtorAndSetterDiCanHaveAllDepsSatisfied() throws NoSuchMethodException {
         DefaultPicoContainer dpc = new DefaultPicoContainer(
@@ -103,16 +116,20 @@ public class CompositeInjectionTestCase {
     }
 
 
-    @Test public void testComponentWithCtorAndSetterDiCanNoteMissingSetterDependency() throws NoSuchMethodException {
+    @Test public void testComponentWithCtorAndNamedFieldWorkToegether() throws NoSuchMethodException {
         DefaultPicoContainer dpc = new DefaultPicoContainer(
-                new CompositeInjection(new ConstructorInjection(), new SetterInjection()));
+                new CompositeInjection(new ConstructorInjection(), new NamedFieldInjection()));
         dpc.addComponent(Bar.class);
-        dpc.addComponent(Foo.class);
-        try {
-            Foo foo = dpc.getComponent(Foo.class);
-        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            assertTrue(e.getMessage().contains(Baz.class.getName()));
-        }
+        dpc.addConfig("one", "1");
+        dpc.addConfig("two", "2");
+        dpc.as(injectionFieldNames("one", "two")).addComponent(Foo4.class);
+        Foo4 foo4 = dpc.getComponent(Foo4.class);
+        assertNotNull(foo4);
+        assertNotNull(foo4.bar);
+        assertNotNull(foo4.one);
+        assertEquals("1", foo4.one);
+        assertNotNull(foo4.two);
+        assertEquals("2", foo4.two);
     }
 
 }

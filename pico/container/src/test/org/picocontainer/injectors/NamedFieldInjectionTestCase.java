@@ -44,21 +44,6 @@ public class NamedFieldInjectionTestCase {
         assertEquals("pogo", nfi.getInjectionFieldNames().get(1));
     }
 
-    @Test public void testFactoryDoesNotMakeNamedInjectorIfCrucialPropertyIsMissing() {
-
-        NamedFieldInjection injectionFactory = new NamedFieldInjection();
-
-        ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
-        try {
-            ComponentAdapter ca = injectionFactory.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm),
-                    new Properties(), Map.class, HashMap.class, Parameter.DEFAULT);
-            fail("shoulda barfed");
-        } catch (PicoCompositionException e) {
-            assertTrue(e.getMessage().contains("You have to specify"));
-        }
-
-    }
-
     @Test public void testPropertiesAreRight() {
         Properties props = NamedFieldInjection.injectionFieldNames("aa","pogo","bb");
         assertEquals("aa pogo bb", props.remove("injectionFieldNames"));

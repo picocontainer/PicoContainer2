@@ -445,6 +445,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                                                                                                componentKey,
                                                                                                (Class<?>)componentImplementationOrInstance,
                                                                                                parameters);
+            AbstractBehaviorFactory.removePropertiesIfPresent(tmpProperties, Characteristics.USE_NAMES);
             throwIfPropertiesLeft(tmpProperties);
             return addAdapterInternal(componentAdapter);
         } else {

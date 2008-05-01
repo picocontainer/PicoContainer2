@@ -52,7 +52,7 @@ public class AnnotatedFieldInjection implements InjectionFactory, Serializable {
                                                    Object componentKey,
                                                    Class<T> componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
-        boolean useNames = AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.USE_NAMES);
+        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES);
         return new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy,
                                           injectionAnnotation, useNames);
     }

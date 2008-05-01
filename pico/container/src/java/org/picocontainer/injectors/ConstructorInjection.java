@@ -33,7 +33,7 @@ public class ConstructorInjection implements InjectionFactory, Serializable {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties properties, Object componentKey,
                                                    Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
-        boolean useNames = AbstractBehaviorFactory.removePropertiesIfPresent(properties, Characteristics.USE_NAMES);
+        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(properties, Characteristics.USE_NAMES);
         return componentMonitor.newInjectionFactory(new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, useNames));
     }
 }

@@ -35,7 +35,6 @@ public class CompositeInjection implements InjectionFactory, Serializable {
                                                           Object componentKey,
                                                           Class<T> componentImplementation,
                                                           Parameter... parameters) throws PicoCompositionException {
-        boolean useNames = AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.USE_NAMES);
 
         Injector[] injectors = new Injector[injectionFactories.length];
 
@@ -45,6 +44,7 @@ public class CompositeInjection implements InjectionFactory, Serializable {
                     lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters);
         }
 
+        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES);
         return new CompositeInjector(componentKey, componentImplementation, parameters,
                 componentMonitor, lifecycleStrategy,
                 useNames, injectors);

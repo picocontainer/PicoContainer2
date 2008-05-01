@@ -40,7 +40,7 @@ public class MethodInjection implements ComponentFactory {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,
                                                    Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
-        boolean useNames = AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.USE_NAMES);
+        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES);
         return new MethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionMethodName, useNames);
     }
 

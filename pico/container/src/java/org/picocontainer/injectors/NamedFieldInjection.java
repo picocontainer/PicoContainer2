@@ -17,11 +17,9 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.InjectionFactory;
 import org.picocontainer.Characteristics;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
-import org.picocontainer.annotations.Inject;
 
 import java.util.Properties;
 import java.io.Serializable;
-import java.lang.annotation.Annotation;
 
 /**
  * A {@link org.picocontainer.InjectionFactory} for named fields.
@@ -47,13 +45,12 @@ public class NamedFieldInjection implements InjectionFactory, Serializable {
                                                    Object componentKey,
                                                    Class<T> componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
-        boolean useNames = AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.USE_NAMES);
         String fieldNames = (String) componentProperties.remove("injectionFieldNames");
         if (fieldNames == null) {
-            throw new PicoCompositionException("You have to specify injection field names for this to work");
+            fieldNames = "";
         }
         return new NamedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor,
-                lifecycleStrategy, fieldNames, useNames);
+                lifecycleStrategy, fieldNames);
     }
 
     public static Properties injectionFieldNames(String... fieldNames) {

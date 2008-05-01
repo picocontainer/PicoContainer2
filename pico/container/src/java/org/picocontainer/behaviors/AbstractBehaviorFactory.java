@@ -48,7 +48,7 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
         return adapter;
     }
 
-    public static boolean removePropertiesIfPresent(Properties current, Properties present) {
+    public static boolean arePropertiesPresent(Properties current, Properties present) {
         Enumeration<?> keys = present.keys();
         while (keys.hasMoreElements()) {
             String key = (String) keys.nextElement();
@@ -61,7 +61,14 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
                 return false;
             }
         }
-        keys = present.keys();
+        return true;
+    }
+
+    public static boolean removePropertiesIfPresent(Properties current, Properties present) {
+        if (!arePropertiesPresent(current, present)) {
+            return false;
+        }
+        Enumeration<?> keys = present.keys();
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();
             current.remove(key);
