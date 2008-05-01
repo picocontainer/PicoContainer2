@@ -24,27 +24,26 @@ import java.security.PrivilegedAction;
 import java.util.*;
 
 /**
- * Injection happens after instantiation, and fields are marked as 
- * injection points via a named field.
+ * Injection happens after instantiation, and fields are marked as
+ * injection points via a field type.
  */
-public class NamedFieldInjector extends IterativeInjector {
+public class TypedFieldInjector extends IterativeInjector {
 
     /**
 	 * Serialization UUID.
 	 */
-    private static final long serialVersionUID = -4521781727538518713L;
 
-    private final List<String> fieldNames;
+    private final List<String> classes;
 
-    public NamedFieldInjector(Object key,
+    public TypedFieldInjector(Object key,
                                   Class<?> impl,
                                   Parameter[] parameters,
                                   ComponentMonitor componentMonitor,
-                                  LifecycleStrategy lifecycleStrategy, 
-                                  String fieldNames) {
+                                  LifecycleStrategy lifecycleStrategy,
+                                  String classNames) {
 
         super(key, impl, parameters, componentMonitor, lifecycleStrategy, true);
-        this.fieldNames = Arrays.asList(fieldNames.trim().split(" "));
+        this.classes = Arrays.asList(classNames.trim().split(" "));
     }
 
     protected void initializeInjectionMembersAndTypeLists() {
@@ -53,7 +52,7 @@ public class NamedFieldInjector extends IterativeInjector {
         final List<Class> typeList = new ArrayList<Class>();
         final Field[] fields = getFields();
         for (final Field field : fields) {
-            if (isNamedForInjection(field)) {
+            if (isTypedForInjection(field)) {
                 injectionMembers.add(field);
                 typeList.add(box(field.getType()));
                 bindingIds.add(getBinding(field));
@@ -73,8 +72,8 @@ public class NamedFieldInjector extends IterativeInjector {
         return null;
     }
 
-    protected boolean isNamedForInjection(Field field) {
-        return fieldNames.contains(field.getName());
+    protected boolean isTypedForInjection(Field field) {
+        return classes.contains(field.getType().getName());
     }
 
     private Field[] getFields() {
@@ -94,7 +93,7 @@ public class NamedFieldInjector extends IterativeInjector {
     }
 
     public String getDescriptor() {
-        return "NamedFieldInjector-";
+        return "TypedFieldInjector-";
     }
 
     protected NameBinding makeParameterNameImpl(final AccessibleObject member) {
@@ -105,8 +104,8 @@ public class NamedFieldInjector extends IterativeInjector {
         };
     }
 
-    List<String> getInjectionFieldNames() {
-        return Collections.unmodifiableList(fieldNames);
+    List<String> getInjectionFieldTypes() {
+        return Collections.unmodifiableList(classes);
     }
 
 
