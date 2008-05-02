@@ -37,17 +37,19 @@ HttpSessionStoring and reprogram each http request like so:</p>
 <div class="source">
   <pre>public class MyTinyPicoServlet extends HttpServlet {
 
-    private DefaultPicoContainer requestContainer;
+    private MutablePicoContainer appContainer;
+    private MutablePicoContainer sessionContainer;
+    private MutablePicoContainer requestContainer;
 
     private HttpSessionStoring sessionStoring;
     private HttpSessionStoring requestStoring;
 
     public void init(ServletConfig cfg) throws ServletException {
 
-        PicoContainer appContainer = new DefaultPicoContainer(new Caching()); // app scoped components are cached for all users/sessions
+        appContainer = new DefaultPicoContainer(new Caching()); // app scoped components are cached for all users/sessions
 
         Storing storingBehavior1 = new Storing();
-        PicoContainer sessionContainer = new DefaultPicoContainer(storingBehavior1, appContainer);
+        sessionContainer = new DefaultPicoContainer(storingBehavior1, appContainer);
         sessionStoringAdapter = new HttpSessionStoringAdapter(storingBehavior1, "sessionStore");
 
         Storing storingBehavior2 = new Storing();
