@@ -9,12 +9,10 @@ public class TieringPicoContainer extends DefaultPicoContainer {
     /**
      * Creates a new container with a custom ComponentFactory, LifecycleStrategy for instance registration,
      * and a parent container.
-     * <p/>
      * <em>
      * Important note about caching: If you intend the components to be cached, you should pass
      * in a factory that creates {@link Cached} instances, such as for example
-     * {@link Caching}. Caching can delegate to
-     * other ComponentAdapterFactories.
+     * {@link Caching}. Caching can delegate to other ComponentAdapterFactories.
      * </em>
      *
      * @param componentFactory the factory to use for creation of ComponentAdapters.
@@ -23,14 +21,12 @@ public class TieringPicoContainer extends DefaultPicoContainer {
      *                                instance (not implementations!)
      * @param parent                  the parent container (used for component dependency lookups).
      */
-    public TieringPicoContainer(final ComponentFactory componentFactory,
-                                final LifecycleStrategy lifecycleStrategy,
+    public TieringPicoContainer(final ComponentFactory componentFactory, final LifecycleStrategy lifecycleStrategy,
                                 final PicoContainer parent) {
-        super(componentFactory, parent);
+        super(componentFactory, lifecycleStrategy, parent);
     }
 
-    public TieringPicoContainer(final ComponentFactory componentFactory,
-                                final LifecycleStrategy lifecycleStrategy,
+    public TieringPicoContainer(final ComponentFactory componentFactory, final LifecycleStrategy lifecycleStrategy,
                                 final PicoContainer parent, final ComponentMonitor componentMonitor) {
         super(componentFactory, lifecycleStrategy, parent, componentMonitor);
     }
@@ -54,7 +50,8 @@ public class TieringPicoContainer extends DefaultPicoContainer {
      * @param lifecycleStrategy the lifecycle strategy to use.
      * @param parent            the parent container (used for component dependency lookups).
      */
-    public TieringPicoContainer(final ComponentMonitor monitor, final LifecycleStrategy lifecycleStrategy, final PicoContainer parent) {
+    public TieringPicoContainer(final ComponentMonitor monitor, final LifecycleStrategy lifecycleStrategy,
+                                final PicoContainer parent) {
         super(monitor, lifecycleStrategy, parent);
     }
 
@@ -106,7 +103,7 @@ public class TieringPicoContainer extends DefaultPicoContainer {
 
 
     public PicoContainer getParent() {
-        return new TieringGuard(this);
+        return new TieringGuard(super.getParent());
     }
 
     public MutablePicoContainer makeChildContainer() {

@@ -2,6 +2,7 @@ package org.picocontainer.containers;
 
 import org.junit.Test;
 import static org.junit.Assert.fail;
+import static org.junit.Assert.assertNotNull;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
@@ -20,10 +21,10 @@ public class TieringPicoContainerTestCase {
     }
 
     @Test
-    public void testThatParentTraversalForComponentsCanBeBlocked() {
+    public void testThatGrandparentTraversalForComponentsCanBeBlocked() {
         MutablePicoContainer grandparent = new TieringPicoContainer();
-        MutablePicoContainer parent = (DefaultPicoContainer) grandparent.makeChildContainer();
-        MutablePicoContainer child = (DefaultPicoContainer) parent.makeChildContainer();
+        MutablePicoContainer parent = grandparent.makeChildContainer();
+        MutablePicoContainer child = parent.makeChildContainer();
         grandparent.addComponent(Couch.class);
         child.addComponent(TiredPerson.class);
 
@@ -35,6 +36,19 @@ public class TieringPicoContainerTestCase {
             System.out.println("");
             // expected
         }
+
+    }
+
+    @Test
+    public void testThatParentTraversalIsOkForTiering() {
+        MutablePicoContainer parent = new TieringPicoContainer();
+        MutablePicoContainer  child = parent.makeChildContainer();
+        parent.addComponent(Couch.class);
+        child.addComponent(TiredPerson.class);
+
+        TiredPerson tp = child.getComponent(TiredPerson.class);
+        assertNotNull(tp);
+        assertNotNull(tp.couchToSitOn);
 
     }
 }
