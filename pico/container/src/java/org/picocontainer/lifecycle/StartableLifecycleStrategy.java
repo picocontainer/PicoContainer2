@@ -139,11 +139,11 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         return getStartableInterface().isAssignableFrom(type) || getDisposableInterface().isAssignableFrom(type);
     }
 
-    protected Class<Disposable> getDisposableInterface() {
+    protected Class getDisposableInterface() {
         return Disposable.class;
     }
 
-    protected Class<Startable> getStartableInterface() {
+    protected Class getStartableInterface() {
         return Startable.class;
     }
 }
