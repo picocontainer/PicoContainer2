@@ -16,7 +16,7 @@ public class PicoLifecycleException extends PicoException {
     private final Method method;
     private final Object instance;
 
-    public PicoLifecycleException(final Method method, final Object instance, final RuntimeException cause) {
+    public PicoLifecycleException(final Method method, final Object instance, final Throwable cause) {
         super(cause);
         this.method = method;
         this.instance = instance;

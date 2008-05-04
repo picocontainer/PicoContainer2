@@ -65,6 +65,9 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
                                           ComponentAdapter<?> componentAdapter, Method method,
                                           Object instance,
                                           RuntimeException cause) {
+        if (cause instanceof PicoLifecycleException) {
+            throw cause;
+        }
         throw new PicoLifecycleException(method, instance, cause);
     }
 

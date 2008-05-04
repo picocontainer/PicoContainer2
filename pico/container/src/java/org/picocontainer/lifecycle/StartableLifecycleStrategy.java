@@ -8,10 +8,9 @@
 package org.picocontainer.lifecycle;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Disposable;
-import org.picocontainer.Startable;
+import org.picocontainer.*;
 
 /**
  * Startable lifecycle strategy.  Starts and stops component if Startable,
@@ -95,10 +94,24 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
     }
 
     protected void startComponent(final Object component) {
-        ((Startable) component).start();
+        doLifecycleMethod(component, start);
     }
+
+    private void doLifecycleMethod(Object component, Method lifecycleMethod) {
+        try {
+            lifecycleMethod.invoke(component);
+        } catch (IllegalAccessException e) {
+            throw new PicoLifecycleException(lifecycleMethod, component, e);
+        } catch (InvocationTargetException e) {
+            if (e.getTargetException() instanceof RuntimeException) {
+                throw (RuntimeException) e.getTargetException();
+            }
+            throw new PicoLifecycleException(lifecycleMethod, component, e.getTargetException());
+        }
+    }
+
     protected void stopComponent(final Object component) {
-        ((Startable) component).stop();
+        doLifecycleMethod(component, stop);
     }
     protected void disposeComponent(final Object component) {
         ((Disposable) component).dispose();

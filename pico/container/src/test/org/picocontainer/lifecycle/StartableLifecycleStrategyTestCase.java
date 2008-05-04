@@ -16,9 +16,13 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import org.junit.runner.RunWith;
-import org.picocontainer.Disposable;
-import org.picocontainer.Startable;
+import org.picocontainer.*;
+import static org.picocontainer.Characteristics.CACHE;
+import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
@@ -72,5 +76,102 @@ public class StartableLifecycleStrategyTestCase {
     	 return mock;
         }
         return mockery.mock(Serializable.class);
+    }
+
+    interface ThirdPartyStartable {
+        void sstart() throws Exception;
+        void sstop();
+    }
+    public static class ThirdPartyStartableComponent implements ThirdPartyStartable {
+        StringBuilder sb;
+        public ThirdPartyStartableComponent(StringBuilder sb) {
+            this.sb = sb;
+        }
+
+        public void sstart() {
+            sb.append("<");
+        }
+
+        public void sstop() {
+            sb.append(">");
+        }
+    }
+
+    public static class ThirdPartyStartableComponent2 implements ThirdPartyStartable {
+        public void sstart() {
+            throw new UnsupportedOperationException();
+        }
+        public void sstop() {
+        }
+    }
+
+    public static class ThirdPartyStartableComponent3 implements ThirdPartyStartable {
+        public void sstart() throws Exception {
+            throw new Exception("whoaa!");
+        }
+        public void sstop() {
+        }
+    }
+
+    @Test public void testThirdPartyStartable() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new MyStartableLifecycleStrategy(), new EmptyPicoContainer());
+        StringBuilder sb = new StringBuilder();
+        pico.addComponent(sb);
+        pico.as(CACHE).addComponent(ThirdPartyStartableComponent.class);
+        pico.start();
+        pico.stop();
+        assertEquals("<>", sb.toString());
+
+    }
+
+    @Test public void testThirdPartyStartableCanNoteLifecycleRuntimeException() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new MyStartableLifecycleStrategy(), new EmptyPicoContainer());
+        pico.as(CACHE).addComponent(ThirdPartyStartableComponent2.class);
+        try {
+            pico.start();
+            fail("should have barfed");
+        } catch (PicoLifecycleException e) {
+            assertTrue(e.getCause() instanceof UnsupportedOperationException);
+            assertTrue(e.getInstance() instanceof ThirdPartyStartableComponent2);
+            assertEquals("sstart", e.getMethod().getName());
+            // expected
+        }
+
+    }
+
+    @Test public void testThirdPartyStartableCanNoteLifecycleException() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new MyStartableLifecycleStrategy(), new EmptyPicoContainer());
+        pico.as(CACHE).addComponent(ThirdPartyStartableComponent3.class);
+        try {
+            pico.start();
+            fail("should have barfed");
+        } catch (PicoLifecycleException e) {
+            Throwable throwable = e.getCause();
+            assertTrue(throwable instanceof Exception);
+            String s = throwable.getMessage();
+            assertEquals("whoaa!", s);
+            assertTrue(e.getInstance() instanceof ThirdPartyStartableComponent3);
+            assertEquals("sstart", e.getMethod().getName());
+            // expected
+        }
+
+    }
+
+    private static class MyStartableLifecycleStrategy extends StartableLifecycleStrategy {
+        public MyStartableLifecycleStrategy() {
+            super(new NullComponentMonitor());
+        }
+
+        protected String getStopMethodName() {
+            return "sstop";
+        }
+
+        protected String getStartMethodName() {
+            return "sstart";
+        }
+
+        protected Class getStartableInterface() {
+            return ThirdPartyStartable.class;
+        }
     }
 }
