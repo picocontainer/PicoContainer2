@@ -65,7 +65,7 @@ public final class Characteristics {
 
     public static final Properties USE_NAMES = immutable(_USE_NAMES, TRUE);
 
-    private static Properties immutable(String name, String value) {
+    public static Properties immutable(String name, String value) {
         return new ImmutableProperties(name, value);
     }
 

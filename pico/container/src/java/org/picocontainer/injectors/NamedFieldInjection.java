@@ -17,6 +17,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.InjectionFactory;
 import org.picocontainer.Characteristics;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import static org.picocontainer.Characteristics.immutable;
 
 import java.util.Properties;
 import java.io.Serializable;
@@ -38,6 +39,7 @@ public class NamedFieldInjection implements InjectionFactory, Serializable {
 	 */
     private static final long serialVersionUID = 5805385846324233960L;
 
+    private static final String INJECTION_FIELD_NAMES = "injectionFieldNames";
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
@@ -45,7 +47,7 @@ public class NamedFieldInjection implements InjectionFactory, Serializable {
                                                    Object componentKey,
                                                    Class<T> componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
-        String fieldNames = (String) componentProperties.remove("injectionFieldNames");
+        String fieldNames = (String) componentProperties.remove(INJECTION_FIELD_NAMES);
         if (fieldNames == null) {
             fieldNames = "";
         }
@@ -59,8 +61,7 @@ public class NamedFieldInjection implements InjectionFactory, Serializable {
             sb.append(" ").append(fieldNames[i]);
         }
         Properties retVal = new Properties();
-        retVal.setProperty("injectionFieldNames", sb.toString().trim());
-        return retVal;
+        return immutable(INJECTION_FIELD_NAMES, sb.toString().trim());
     }
 
 }

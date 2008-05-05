@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.Characteristics;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 
@@ -46,7 +47,9 @@ public class NamedFieldInjectionTestCase {
 
     @Test public void testPropertiesAreRight() {
         Properties props = NamedFieldInjection.injectionFieldNames("aa","pogo","bb");
-        assertEquals("aa pogo bb", props.remove("injectionFieldNames"));
+        assertTrue(props instanceof Characteristics.ImmutableProperties);
+        assertEquals("aa pogo bb", props.getProperty("injectionFieldNames"));
+        assertEquals(1, props.size());
     }
 
 

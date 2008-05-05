@@ -58,7 +58,8 @@ public class TypedFieldInjectionTestCase {
 
     @Test public void testPropertiesAreRight() {
         Properties props = TypedFieldInjection.injectionFieldTypes(FIELD_TYPES);
-        assertEquals("java.lang.Integer org.picocontainer.injectors.TypedFieldInjectionTestCase$PogoStick java.lang.Float", props.remove("injectionFieldTypes"));
+        assertEquals("java.lang.Integer org.picocontainer.injectors.TypedFieldInjectionTestCase$PogoStick java.lang.Float", props.getProperty("injectionFieldTypes"));
+        assertEquals(1, props.size());
     }
 
 
