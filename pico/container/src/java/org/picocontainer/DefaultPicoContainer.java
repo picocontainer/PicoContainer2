@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import org.picocontainer.adapters.FactoryInjector;
+import org.picocontainer.injectors.FactoryInjector;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.behaviors.AdaptingBehavior;

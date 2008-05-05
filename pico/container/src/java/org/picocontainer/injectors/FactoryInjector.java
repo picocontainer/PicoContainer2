@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picocontainer.adapters;
+package org.picocontainer.injectors;
 
 import org.picocontainer.*;
 
@@ -61,7 +61,7 @@ public abstract class FactoryInjector<T> implements Injector<T> {
     }
 
     public String getDescriptor() {
-        return "Factory-";
+        return "FactoryInjector-";
     }
 
     public void start(PicoContainer container) {
