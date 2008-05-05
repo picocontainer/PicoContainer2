@@ -53,8 +53,7 @@ public abstract class FactoryInjector<T> implements Injector<T> {
 
     public abstract T getComponentInstance(PicoContainer container, Type clazz);
 
-    public T decorateComponentInstance(PicoContainer container, Type into, T instance) {
-            return null;
+    public void decorateComponentInstance(PicoContainer container, Type into, T instance) {
     }
 
 

@@ -765,8 +765,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
                         return list;
                     }
 
-                    public Object decorateComponentInstance(PicoContainer container, Type into, Object instance) {
-                        return null;
+                    public void decorateComponentInstance(PicoContainer container, Type into, Object instance) {
                     }
                 };
             } else {

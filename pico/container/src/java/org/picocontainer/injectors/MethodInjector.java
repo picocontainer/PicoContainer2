@@ -108,7 +108,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         return super.getMemberArguments(container, method, method.getParameterTypes(), getBindings(method.getParameterAnnotations()));
     }
 
-    public T decorateComponentInstance(final PicoContainer container, Type into, final T instance) {
+    public void decorateComponentInstance(final PicoContainer container, Type into, final T instance) {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
@@ -121,7 +121,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
             };
         }
         instantiationGuard.setGuardedContainer(container);
-        return (T) instantiationGuard.observe(getComponentImplementation());
+        instantiationGuard.observe(getComponentImplementation());
 
     }
 

@@ -200,7 +200,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         return componentInstance;
     }
 
-    public T decorateComponentInstance(final PicoContainer container, Type into, final T instance) {
+    public void decorateComponentInstance(final PicoContainer container, Type into, final T instance) {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
@@ -210,7 +210,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             };
         }
         instantiationGuard.setGuardedContainer(container);
-        return (T) instantiationGuard.observe(getComponentImplementation());
+        instantiationGuard.observe(getComponentImplementation());
 
     }
 

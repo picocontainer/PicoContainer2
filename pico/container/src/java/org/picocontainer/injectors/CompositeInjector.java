@@ -34,15 +34,14 @@ public class CompositeInjector<T> extends AbstractInjector<T> {
             if (instance == null) {
                 instance = injector.getComponentInstance(container);
             } else {
-                instance = injector.decorateComponentInstance(container, into, instance);
+                injector.decorateComponentInstance(container, into, instance);
             }
         }
         return (T) instance;
     }
 
 
-    public T decorateComponentInstance(PicoContainer container, Type into, T instance) {
-        return null; // not Applicable
+    public void decorateComponentInstance(PicoContainer container, Type into, T instance) {
     }
 
     public void verify(PicoContainer container) throws PicoCompositionException {
