@@ -20,6 +20,7 @@
     <section>
         <name>Specialist Concepts</name>
         <page>fluent-style.html</page>
+        <page>parameter-names.html</page>
         <page>builder.html</page>
         <page>interception.html</page>
         <page>properties.html</page>

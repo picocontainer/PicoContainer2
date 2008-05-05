@@ -33,7 +33,7 @@ and Field Injection.</p>
   private final Pear pear;
   private final Banana banana;
 	
-  public Apple(<u>Orange</u> orange, <u>Pear</u> pear, <u>Banana</u> banana) {
+  public Apple(Orange</u> orange, Pear</u> pear, Banana</u> banana) {
     this.orange = orange;
     this.pear = pear;
     this.banana = banana;
@@ -76,13 +76,13 @@ starting out with Dependency Injection.&nbsp;  </p>
   private Orange orange;
   private Pear pear;
   private Banana banana;	
-  public <u>set</u>Orange(<u>Orange</u> orange) {
+  public set</u>Orange(Orange</u> orange) {
     this.orange = orange;
   }		
-  public <u>set</u>Pear(<u>Pear</u> pear) {
+  public set</u>Pear(Pear</u> pear) {
     this.pear = pear;
   }
-  public <u>set</u>Banana(<u>Banana</u> banana) {
+  public set</u>Banana(Banana</u> banana) {
     this.banana = banana;
   }
   // other methods
@@ -114,12 +114,12 @@ indicated by a field annotation and provided automatically by the
 container after instantiation.</p>
 <div class="source">
   <pre>public class Apple {
-  <u>@Inject</u>
-  private <u>Orange</u> orange;
-  <u>@Inject</u>
-  private <u>Pear</u> pear;
-  <u>@Inject</u>
-  private <u>Banana</u> banana;
+  @Inject</u>
+  private Orange</u> orange;
+  @Inject</u>
+  private Pear</u> pear;
+  @Inject</u>
+  private Banana</u> banana;
   // methods
 }</pre>
 </div>
@@ -151,9 +151,9 @@ indicated by a on a per component basis with an array of field-types to be injec
 container after instantiation.</p>
 <div class="source">
   <pre>public class Apple {
-  private <u>Orange</u> orange;
-  private <u>Pear</u> pear;
-  private <u>Banana</u> banana;
+  private Orange</u> orange;
+  private Pear</u> pear;
+  private Banana</u> banana;
   // methods
 }</pre>
 </div>
@@ -161,7 +161,7 @@ container after instantiation.</p>
 <div class="source">
   <pre>import static org.picocontainer.injectors.TypedFieldInjection.injectionFieldTypes;
 	pico = new DefaultPicoContainer(new TypedFieldInjection();
-pico.as(injectionFieldTypes(<u>Orange.class</u>, <u>Pear.class</u>, <u>Banana.class</u>)).addComponent(Apple.class);
+pico.as(injectionFieldTypes(Orange.class</u>, Pear.class</u>, Banana.class</u>)).addComponent(Apple.class);
 // etc
 Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
@@ -177,9 +177,9 @@ indicated by a on a per component basis with an array of field-names to be injec
 container after instantiation.</p>
 <div class="source">
   <pre>public class Apple {
-  private Orange <u>orange</u>;
-  private Pear <u>pear</u>;
-  private Banana <u>banana</u>;
+  private Orange orange</u>;
+  private Pear pear</u>;
+  private Banana banana</u>;
   // methods
 }</pre>
 </div>
@@ -187,7 +187,7 @@ container after instantiation.</p>
 <div class="source">
   <pre>import static org.picocontainer.injectors.NamedFieldInjection.injectionFieldNames;
 	pico = new DefaultPicoContainer(new NamedFieldInjection();
-pico.as(injectionFieldNames("<u>orange</u>", "<u>pear</u>", "<u>banana</u>")).addComponent(Apple.class);
+pico.as(injectionFieldNames("orange</u>", "pear</u>", "banana</u>")).addComponent(Apple.class);
 // etc
 Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
@@ -206,15 +206,15 @@ dependencies injected into annotated methods after instantiation:</p>
   private Pear pear;
   private Banana banana;
 
-  <u>@Inject</u>
-  public injectOrange(<u>Orange</u> orange) {
+  @Inject</u>
+  public injectOrange(Orange</u> orange) {
     this.orange = orange;
   }
-  <u>@Inject</u>
-  public setPear(<u>Pear</u> pear) {
+  @Inject</u>
+  public setPear(Pear</u> pear) {
     this.pear = pear;
   }
-  <u>@Inject</u>
+  @Inject</u>
   public provideBanana(Banana banana) {
     this.banana = banana;
   }
@@ -254,7 +254,7 @@ dependencies injected into single method after instantiation:</p>
   private Orange orange;
   private Pear pear;
   private Banana banana;
-  public <u>inject</u>(<u>Orange</u> orange, <u>Pear</u> pear, <u>Banana</u> banana) {
+  public inject</u>(Orange</u> orange, Pear</u> pear, Banana</u> banana) {
     this.orange = orange;
     this.pear = pear;
     this.banana = banana;
@@ -296,12 +296,12 @@ Apple apple = pico.getComponent(Apple.class);
   <pre>public class Apple {
   private Orange orange;
   private Pear pear;
-  <u>@Inject</u>
-  private <u>Banana</u> banana;
-  public <u>inject</u>(<u>Orange</u> orange) {
+  @Inject</u>
+  private Banana</u> banana;
+  public inject</u>(Orange</u> orange) {
     this.orange = orange;
   }
-  public void <u>inject</u>(<u>Pear</u> pear) {
+  public void inject</u>(Pear</u> pear) {
     this.pear = pear;
   }
   // other methods
@@ -324,12 +324,12 @@ Pear by method injection and Banana is via Annotated Field Injection.</p>
   <pre>public class Apple {
   private Orange orange;
   private Pear pear;
-  <u>@FruitNeeded</u>
-  private <u>Banana</u> banana;
-  public Apple(<u>Orange</u> orange) {
+  @FruitNeeded</u>
+  private Banana</u> banana;
+  public Apple(Orange</u> orange) {
     this.orange = orange;
   }
-  public void <u>fruitNeeded</u>(<u>Pear</u> pear) {
+  public void fruitNeeded</u>(Pear</u> pear) {
     this.pear = pear;
   }
   // other methods
@@ -356,7 +356,7 @@ Pear by method injection and Banana is via Annotated Field Injection.</p>
   private final Orange orange;
   private final Pear pear;
   private final Banana banana;
-  public Apple(Orange orange, Pear pear, Banana banana, <u>Log</u> log) {
+  public Apple(Orange orange, Pear pear, Banana banana, Log</u> log) {
     this.orange = orange;
     this.pear = pear;
     this.banana = banana;
@@ -368,15 +368,15 @@ Pear by method injection and Banana is via Annotated Field Injection.</p>
 </div>
 <h4>Usage</h4>
 <div class="source">
-  <pre>public class LogInjector extends FactoryInjector<u>&lt;Log&gt;</u> {
+  <pre>public class LogInjector extends FactoryInjector&lt;Log&gt;</u> {
   public Log getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {
-    return <u>LogFactory.getLog((Class) into);</u>
+    return LogFactory.getLog((Class) into);</u>
   }
 }
 ...
 pico = new DefaultPicoContainer(new ConstructorInjection());
 pico.addComponent(Apple.class);
-pico.addAdapter(<u>new LogInjector()</u>);
+pico.addAdapter(new LogInjector()</u>);
 // etc
 Apple apple = pico.getComponent(Apple.class);
 </pre>
