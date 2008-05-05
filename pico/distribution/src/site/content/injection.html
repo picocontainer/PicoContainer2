@@ -41,6 +41,21 @@ and Field Injection.</p>
 		
   // methods
 }</pre></div>
+<h4>Using it</h4>
+<div class="source">
+  <pre>pico = new DefaultPicoContainer(new ConstructorInjection());
+pico.addComponent(Apple.class);
+// others
+Apple apple = pico.getComponent(Apple.class);</pre>
+</div>
+<p>Constructor Injection, is a default too (via AdaptiveInjection):</p>
+<div class="source">
+  <pre>pico = new DefaultPicoContainer();
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
+</div>
+
 <p>
 The PicoContainer team recommends Constructor Dependency Injection
 (CDI) over other types - the project was started to pioneer this
@@ -213,20 +228,6 @@ Pear by method injection and Banana is via Annotated Field Injection.</p>
 <p>Additionally component factory <strong>AdaptiveInjection</strong> can also handle method-injection types, but only if the MULTI_INJECTION characteristic is specified.</p>
 
 <h2>Using PicoContainer with Injection Types</h2>
-<p>Explicit Constructor Injection:</p>
-<div class="source">
-  <pre>pico = new DefaultPicoContainer(new ConstructorInjection());
-pico.addComponent(Apple.class);
-// others
-Apple apple = pico.getComponent(Apple.class);</pre>
-</div>
-<p>Constructor Injection, is a default too (via AdaptiveInjection):</p>
-<div class="source">
-  <pre>pico = new DefaultPicoContainer();
-pico.addComponent(Apple.class);
-// others
-Apple apple = pico.getComponent(Apple.class);</pre>
-</div>
 <p>Explicit Setter Injection:</p>
 <div class="source">
   <pre>pico = new DefaultPicoContainer(new SetterInjection());
