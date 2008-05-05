@@ -5,7 +5,6 @@
  * style license a copy of which has been included with this distribution in *
  * the LICENSE.txt file.                                                     *
  *                                                                           *
- * Original code by                                                          *
  *****************************************************************************/
 package org.picocontainer.adapters;
 
@@ -19,18 +18,10 @@ import java.lang.reflect.Type;
 
 /**
  * <p>
- * Component adapter which wraps a component instance.
- * </p>
- * <p>
- * This component adapter supports both a {@link org.picocontainer.Behavior Behavior} and a
- * {@link org.picocontainer.LifecycleStrategy LifecycleStrategy} to control the lifecycle of the component.
- * The lifecycle manager methods simply delegate to the lifecycle strategy methods
- * on the component instance.
+ * A Component adapter which provides an custom instance in a factory style 
  * </p>
  *
- * @author Aslak Helles&oslash;y
  * @author Paul Hammant
- * @author Mauro Talevi
  */
 public abstract class FactoryAdapter<T> implements ComponentAdapter<T> {
     private Class key;

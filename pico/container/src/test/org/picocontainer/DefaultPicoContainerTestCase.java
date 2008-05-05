@@ -19,7 +19,6 @@ import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Decorating;
 import org.picocontainer.behaviors.FieldDecorating;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.containers.TieringPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
