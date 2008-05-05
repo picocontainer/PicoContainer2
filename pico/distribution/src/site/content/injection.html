@@ -286,10 +286,10 @@ Apple apple = pico.getComponent(Apple.class);
 </pre>
 </div>
 
-
 <p>The method name needs be 'inject' unless overridden in the InjectionFactory.</p>
 <p>The  component factory for this is <strong>MethodInjection</strong>. It only handles method-injection types of components.</p>
 <p>Additionally the default component factory <strong>AdaptiveInjection</strong> can also handle method-injection types, but only if the METHOD_INJECTION characteristic is specified.</p>
+
 <h3> Muli-type Dependency Injection </h3>
 <p>This is where a component has is a blend of one or more of Constructor, Setter, Method, Annotated Field etc:</p>
 <div class="source">
@@ -300,47 +300,53 @@ Apple apple = pico.getComponent(Apple.class);
   private <u>Banana</u> banana;
   public <u>inject</u>(<u>Orange</u> orange) {
     this.orange = orange;
-  public void <u>inject</u>Pear(<u>Pear</u> pear) {
+  }
+  public void <u>inject</u>(<u>Pear</u> pear) {
     this.pear = pear;
   }
   // other methods
 }</pre>
 </div>
+<h4>Usage</h4>
+<div class="source">
+  <pre>pico = new DefaultPicoContainer(new MultiInjection();
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
+</div>
 <p>&nbsp;In the case above, Orange comes in through the constructor,
 Pear by method injection and Banana is via Annotated Field Injection.</p>
-<p>The  component factory for this is <strong>MultiInjection</strong>. It only handles method-injection types of components.</p>
-<p>Additionally the default component factory <strong>AdaptiveInjection</strong> can also handle method-injection types, but only if the MULTI_INJECTION characteristic is specified.</p>
+<p>The  component factory for this is <strong>MultiInjection</strong>.</p>
 
-<h2> Leveraging Parameter Names </h2>
-<p>This is where the type alone is not enough to indicate which
-dependency should be put one or more constructor args. The following
-component has a need for two of the same type, with some subtly
-different characteristics.</p>
+<h3>Composite Dependency Injection</h3>
+<p>This is also where a component has is a blend of one or more of Constructor, Setter, Method, Annotated Field.  The difference is that you know precisely what your injection design is and want to tune specifically for that, or you are some way off the defaults supported by <strong>MultiInjection</strong></p>
 <div class="source">
-  <pre>public class AppleProcessor {
-  private Apple dessertApple;
-  private Apple cookingApple;
-
-  public inject(Apple dessertApple, Apple cookingApple) {
-    this.dessertApple = dessertApple;
-    this.cookingApple = cookingApple;
+  <pre>public class Apple {
+  private Orange orange;
+  private Pear pear;
+  <u>@FruitNeeded</u>
+  private <u>Banana</u> banana;
+  public Apple(<u>Orange</u> orange) {
+    this.orange = orange;
+  }
+  public void <u>fruitNeeded</u>(<u>Pear</u> pear) {
+    this.pear = pear;
   }
   // other methods
-}
-
-pico.addComponent("dessertApple", GoldenDeliciousApple.class);
-pico.addComponent("cookingApple", BramleyApple.class);
-pico.as(Characteristics.USE_NAMES).addComponent(AppleProcessor.class);
-
-AppleProcessor appleProcessor = pico.getComponent(AppleProcessor.class);</pre>
+}</pre>
 </div>
-<p>In this case the constructor to AppleProcessor has carefully named
-parameters - 'dessertApple' and 'cookingApple'. This is picked up on
-for the two named components GoldenDeliciousApple and BramleyApple also
-set up in the container.</p>
-<p>There are two ways for this to work:</p>
-<ul>
-  <li>relying on the fact that  your component classes have debug info compiled into them. </li>
-  <li>post-processing component classes with <a href="http://paranamer.codehaus.org/">Paranamer</a> before placing them in their jar </li>
-</ul>
+<h4>Usage</h4>
+<div class="source">
+  <pre>pico = new DefaultPicoContainer(new CompositeInjection(
+	  new ConstructorInjection(), new AnnotatedFieldInjection(FruitNeeded.class), 
+	  new MethodInjection("fruitNeeded"));
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
+</div>
+<p>&nbsp;In the case above, Orange comes in through the constructor,
+Pear by method injection and Banana is via Annotated Field Injection.</p>
+<p>The  component factory for this is <strong>CompositeInjection</strong>.</p>
+
+
 </body></html>
