@@ -9,7 +9,7 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import org.picocontainer.adapters.FactoryAdapter;
+import org.picocontainer.adapters.FactoryInjector;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.behaviors.AdaptingBehavior;
@@ -553,8 +553,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (isLocal) {
             Object instance;
             try {
-                if (componentAdapter instanceof FactoryAdapter) {
-                    instance = ((FactoryAdapter) componentAdapter).getComponentInstance(this, componentKey);
+                if (componentAdapter instanceof FactoryInjector) {
+                    instance = ((FactoryInjector) componentAdapter).getComponentInstance(this, componentKey);
                 } else {
                     instance = componentAdapter.getComponentInstance(this);
                 }

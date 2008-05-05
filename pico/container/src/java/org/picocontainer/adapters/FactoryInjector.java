@@ -8,25 +8,22 @@
  *****************************************************************************/
 package org.picocontainer.adapters;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
+import org.picocontainer.*;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 /**
  * <p>
- * A Component adapter which provides an custom instance in a factory style 
+ * A Injector which provides an custom instance in a factory style
  * </p>
  *
  * @author Paul Hammant
  */
-public abstract class FactoryAdapter<T> implements ComponentAdapter<T> {
+public abstract class FactoryInjector<T> implements Injector<T> {
     private Class key;
 
-    public FactoryAdapter() throws PicoCompositionException {
+    public FactoryInjector() throws PicoCompositionException {
         Type type = this.getClass().getGenericSuperclass();
         key = (Class) ((ParameterizedType) type).getActualTypeArguments()[0];
     }
@@ -55,6 +52,11 @@ public abstract class FactoryAdapter<T> implements ComponentAdapter<T> {
     }
 
     public abstract T getComponentInstance(PicoContainer container, Type clazz);
+
+    public T decorateComponentInstance(PicoContainer container, Type into, T instance) {
+            return null;
+    }
+
 
     public void verify(PicoContainer container) {
     }

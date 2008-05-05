@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import static org.picocontainer.Characteristics.CDI;
 import static org.picocontainer.Characteristics.SDI;
-import org.picocontainer.adapters.FactoryAdapter;
+import org.picocontainer.adapters.FactoryInjector;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Decorating;
@@ -806,7 +806,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         MutablePicoContainer container = new DefaultPicoContainer(new MultiInjection());
         container.addComponent(String.class, "foo");
         container.addComponent(Turnip.class);
-        container.addAdapter(new SwedeFactoryAdapter());
+        container.addAdapter(new SwedeFactoryInjector());
         Turnip t = container.getComponent(Turnip.class);
         assertNotNull(t);
         assertEquals("Swede:" + Swede.class.getName(), t.getSwede().toString());
@@ -818,7 +818,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         MutablePicoContainer container = new DefaultPicoContainer();
         container.addComponent(String.class, "foo");
         container.addComponent(Turnip2.class);
-        container.addAdapter(new SwedeFactoryAdapter());
+        container.addAdapter(new SwedeFactoryInjector());
         Turnip2 t = container.getComponent(Turnip2.class);
         assertNotNull(t);
         assertEquals("Swede:" + Swede.class.getName(), t.getSwede().toString());
@@ -884,7 +884,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         }
     }
 
-    private static class SwedeFactoryAdapter extends FactoryAdapter<Swede> {
+    private static class SwedeFactoryInjector extends FactoryInjector<Swede> {
 
         public Swede getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {
             return new Swede() {

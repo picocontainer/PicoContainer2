@@ -9,6 +9,7 @@ import java.lang.reflect.Type;
 
 public class Decorated extends AbstractBehavior {
     private final Decorator decorator;
+    private static final long serialVersionUID = 438844637809706077L;
 
     public Decorated(ComponentAdapter delegate, Decorator decorator) {
         super(delegate);
