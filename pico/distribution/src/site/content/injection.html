@@ -33,7 +33,7 @@ and Field Injection.</p>
   private final Pear pear;
   private final Banana banana;
 	
-  public Apple(Orange orange, Pear pear, Banana banana) {
+  public Apple(<u>Orange</u> orange, <u>Pear</u> pear, <u>Banana</u> banana) {
     this.orange = orange;
     this.pear = pear;
     this.banana = banana;
@@ -51,7 +51,7 @@ the most arguments and fall back to ones with fewer if it cannot
 satisfy the longer ones.</p>
 <p>The  component factory for this is <strong>ConstructorInjection</strong>. It only handles constructor injection types of components.  Factory <strong>AdaptiveInjection</strong>
 defaults to constructor injection, after checking first to see it the
-component in question is a Annotated Method or Field type (see below).</p><p class="callout">Constructor Injection is idomatic PicoContainer
+component in question is a Annotated Method or Field type (see below).</p><p class="callout">Constructor Injection is idiomatic PicoContainer
 - choose this style over all others if you can - especially if you are
 starting out with Dependency Injection.&nbsp;  </p>
 <h3>Injecting into Setter Methods </h3>
@@ -61,13 +61,13 @@ starting out with Dependency Injection.&nbsp;  </p>
   private Orange orange;
   private Pear pear;
   private Banana banana;	
-  public setOrange(Orange orange) {
+  public <u>set</u>Orange(<u>Orange</u> orange) {
     this.orange = orange;
   }		
-  public setPear(Pear pear) {
+  public <u>set</u>Pear(<u>Pear</u> pear) {
     this.pear = pear;
   }
-  public setBanana(Banana banana) {
+  public <u>set</u>Banana(<u>Banana</u> banana) {
     this.banana = banana;
   }
   // other methods
@@ -78,31 +78,67 @@ preferred choice. You can force a different prefix to be choosable in
 PicoContainer, such as 'init' or 'inject'.</p>
   <p>The  component factory for this is <strong>SetterInjection</strong>. It only handles setter injection types of components.</p>
 <p>Factory <strong>AdaptiveInjection</strong> can also handle setter injection types, though it requires that the component was registered with the <a href="properties.html">property</a> 'SDI' in order to activate the Setter Injection functionality. <strong>AdaptiveInjection</strong> will also fall through to constructor injection if there is no SDI property. </p>
-<p>If you want to use an prefix other than 'set', then specify your preferred prexix in the non-default constructor for <strong>SetterInjection</strong>.</p>
+<p>If you want to use an prefix other than 'set', then specify your preferred prefix in the non-default constructor for <strong>SetterInjection</strong>.</p>
 <h3>Injecting into Annotated Fields &nbsp; </h3>
 <p>This is where a component has an empty constructor with dependencies
 indicated by a field annotation and provided automatically by the
 container after instantiation.</p>
 <div class="source">
   <pre>public class Apple {
-  @Inject
-  private Orange orange;
-  @Inject
-  private Pear pear;
-  @Inject
-  private Banana banana;
+  <u>@Inject</u>
+  private <u>Orange</u> orange;
+  <u>@Inject</u>
+  private <u>Pear</u> pear;
+  <u>@Inject</u>
+  private <u>Banana</u> banana;
   // methods
 }</pre>
 </div>
 <p>
 Yes that's right, there's no constructor needed. It means that for a
 Unit Test, you cannot simply 'new' the class without some magic to populate the dependency fields.</p>
-<p>The  component factory for this is a class<strong> AnnotatedFieldInjection</strong>. It only handles field-annotation injection types of components.</p>
+<p>The  component factory for this is a class<strong> AnnotatedFieldInjection</strong>. It only handles annotation-field injection for components.</p>
 <p>Additionally component factory <strong>AdaptiveInjection</strong>
 can also handle field annotation types, if the @Inject annotation from
-PicoContainer's codebase is used as the marker for injection. <strong>AdaptiveInjection</strong> will also fall through to constructor injection if there is no recognised @Inject annotation.</p>
+PicoContainer's code-base is used as the marker for injection. <strong>AdaptiveInjection</strong> will also fall through to constructor injection if there is no recognized @Inject annotation.</p>
 <p>If you want to use an @Inject annotation from another codebase, then
 specify the preferred annotation class in the constructor for <strong>AnnotatedFieldInjection</strong>.</p>
+
+<h3>Injecting into Typed Fields &nbsp; </h3>
+<p>This is where a component has an empty constructor with dependencies
+indicated by a on a per component basis with an array of field-types to be injected into. These will be provided automatically by the
+container after instantiation.</p>
+<div class="source">
+  <pre>public class Apple {
+  private <u>Orange</u> orange;
+  private <u>Pear</u> pear;
+  private <u>Banana</u> banana;
+  // methods
+}</pre>
+</div>
+<p>
+Yes that's right, there's no constructor needed. It means that for a
+Unit Test, you cannot simply 'new' the class without some magic to populate the dependency fields.</p>
+<p>The  component factory for this is a class<strong> TypedFieldInjection</strong>. It only handles typed-field injection for components.</p>
+
+<h3>Injecting into Named Fields &nbsp; </h3>
+<p>This is where a component has an empty constructor with dependencies
+indicated by a on a per component basis with an array of field-names to be injected into. These will be provided automatically by the
+container after instantiation.</p>
+<div class="source">
+  <pre>public class Apple {
+  private Orange <u>orange</u>;
+  private Pear <u>pear</u>;
+  private Banana <u>banana</u>;
+  // methods
+}</pre>
+</div>
+<p>
+Yes that's right, there's no constructor needed. It means that for a
+Unit Test, you cannot simply 'new' the class without some magic to populate the dependency fields.</p>
+<p>The  component factory for this is a class<strong> TypedFieldInjection</strong>. It only handles typed-field injection for components.</p>
+
+
 <h3>Injecting into Annotated Methods&nbsp; </h3>
 <p>This is where a component has an empty constructor and gets its
 dependencies injected into annotated methods after instantiation:</p>
@@ -112,15 +148,15 @@ dependencies injected into annotated methods after instantiation:</p>
   private Pear pear;
   private Banana banana;
 
-  @Inject
-  public injectOrange(Orange orange) {
+  <u>@Inject</u>
+  public injectOrange(<u>Orange</u> orange) {
     this.orange = orange;
   }
-  @Inject
-  public setPear(Pear pear) {
+  <u>@Inject</u>
+  public setPear(<u>Pear</u> pear) {
     this.pear = pear;
   }
-  @Inject
+  <u>@Inject</u>
   public provideBanana(Banana banana) {
     this.banana = banana;
   }
@@ -131,10 +167,10 @@ dependencies injected into annotated methods after instantiation:</p>
 <p>The  component factory for this is <strong>AnnotatedMethodInjection</strong>. It only handles method-annotation injection types of components.</p>
 <p>Additionally component factory <strong>AdaptiveInjection</strong>
 can also handle method-annotation injection types, if the @Inject
-annotation from PicoContainer's codebase is used as the marker for
+annotation from PicoContainer's code-base is used as the marker for
 injection. AdaptiveInjection will also fall through to constructor
-injection if there is no recognised annotation.</p>
-<p>If you want to use an @Inject annotation from another codebase, then
+injection if there is no recognized annotation.</p>
+<p>If you want to use an @Inject annotation from another code-base, then
 specify the preferred annotation class in the constructor for <strong>AnnotatedMethodInjection</strong>.</p>
 <h3>Injecting into a Single Method&nbsp; </h3>
 <p>This is where a component has an empty constructor and gets <span style="font-weight: bold;">all</span> its
@@ -144,7 +180,7 @@ dependencies injected into single method after instantiation:</p>
   private Orange orange;
   private Pear pear;
   private Banana banana;
-  public inject(Orange orange, Pear pear, Banana banana) {
+  public <u>inject</u>(<u>Orange</u> orange, <u>Pear</u> pear, <u>Banana</u> banana) {
     this.orange = orange;
     this.pear = pear;
     this.banana = banana;
@@ -161,11 +197,11 @@ dependencies injected into single method after instantiation:</p>
   <pre>public class Apple {
   private Orange orange;
   private Pear pear;
-  @Inject
-  private Banana banana;
-  public inject(Orange orange) {
+  <u>@Inject</u>
+  private <u>Banana</u> banana;
+  public <u>inject</u>(<u>Orange</u> orange) {
     this.orange = orange;
-  public void injectPear(Pear pear) {
+  public void <u>inject</u>Pear(<u>Pear</u> pear) {
     this.pear = pear;
   }
   // other methods
@@ -175,8 +211,6 @@ dependencies injected into single method after instantiation:</p>
 Pear by method injection and Banana is via Annotated Field Injection.</p>
 <p>The  component factory for this is <strong>MultiInjection</strong>. It only handles method-injection types of components.</p>
 <p>Additionally component factory <strong>AdaptiveInjection</strong> can also handle method-injection types, but only if the MULTI_INJECTION characteristic is specified.</p>
-
-
 
 <h2>Using PicoContainer with Injection Types</h2>
 <p>Explicit Constructor Injection:</p>
@@ -203,17 +237,37 @@ Apple apple = pico.getComponent(Apple.class);</pre>
 <p>Explicit Annotated Field injection:</p>
 <div class="source">
   <pre>pico = new DefaultPicoContainer(new AnnotatedFieldInjection();
-pico.addComponent(Apple.class);
+pico.addComponent(Apple.class); // Apple has @Inject above the fields that need it.
 // others
 Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
-<p>Explicit Annotated Field injection, with alternate Annotation:</p>
+<p>Explicit Annotated Field injection, with custom Annotation:</p>
 <div class="source">
   <pre>pico = new DefaultPicoContainer(new AnnotatedFieldInjection(MyInjectAnnotaton.class);
 pico.addComponent(Apple.class);
 // others
 Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
+
+<p>Explicit Typed Field injection:</p>
+<div class="source">
+  <pre>import static org.picocontainer.injectors.TypedFieldInjection.injectionFieldTypes;
+	pico = new DefaultPicoContainer(new TypedFieldInjection();
+pico.as(injectionFieldTypes(Orange.class, Pear.class, Banana.class)).addComponent(Apple.class);
+// others
+Apple apple = pico.getComponent(Apple.class);</pre>
+</div>
+
+<p>Explicit Named Field injection:</p>
+<div class="source">
+  <pre>import static org.picocontainer.injectors.NamedFieldInjection.injectionFieldNames;
+	pico = new DefaultPicoContainer(new NamedFieldInjection();
+pico.as(injectionFieldNames("orange", "pear", "banana")).addComponent(Apple.class);
+// others
+Apple apple = pico.getComponent(Apple.class);</pre>
+</div>
+
+
 <p>Explicit Annotated Method injection:</p>
 <div class="source">
   <pre>pico = new DefaultPicoContainer(new AnnotatedMethodInjection();
