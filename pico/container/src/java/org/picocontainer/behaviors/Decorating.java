@@ -29,23 +29,16 @@ import java.util.Properties;
  */
 public abstract class Decorating extends AbstractBehaviorFactory implements Decorated.Decorator {
 
-    public ComponentAdapter createComponentAdapter(
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
-            throws PicoCompositionException {
-        return new Decorated(
-                super.createComponentAdapter(
-                        componentMonitor, lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters),
-                this);
+    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
+                                                   Properties componentProperties, final Object componentKey,
+                                                   final Class componentImplementation, final Parameter... parameters) throws PicoCompositionException {
+        return new Decorated(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+                componentProperties,componentKey, componentImplementation, parameters), this);
     }
 
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
-                                                LifecycleStrategy lifecycleStrategy,
-                                                Properties componentProperties,
-                                                ComponentAdapter adapter) {
-        return super.addComponentAdapter(componentMonitor,
-                lifecycleStrategy,
-                componentProperties,
-                adapter);
+    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
+                                                Properties componentProperties, ComponentAdapter adapter) {
+        return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
     }
 }
