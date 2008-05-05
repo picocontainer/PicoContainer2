@@ -4,18 +4,36 @@
 
 
 <body>
+<p><strong>???, 2008</strong></p>
+<p>PicoContainer 2.2 released (194K jar) </p>
+<p>New (since 2.1):</p>
+<ul>
+	<li>A new TieringPicoContainer that when used in a container tree, forbids children from seeking dependencies from their grandparents (they can only seek such from their parents)</li>
+	<li>A new ReusablePicoContainer that is 2.5x faster for some niche usages where you are repeatedly discarding a container and then repopulating it (Gems)</li>
+	<li>NamedFieldInjection allows named fields to be injected into (per component) - use when AnnotatedFieldInjection is not what you want</li>
+	<li>TypedFieldInjection allows fields of a specified type to be injected into (per component) - use when AnnotatedFieldInjection is not what you want</li>
+	<li>CompositeInjection allows a very custom setup of what injection-types you want your instance to support. Use when speed of execution is of the essence and AdaptiveInjection is not 
+		right for you.</li>
+	<li>Decorating (behavior factory) - do something to a component instance immediately after its instantiation (and formal injection)</li>
+	<li>FactoryAdapter - Allows for a custom instance to be injected into a component. E.g. 'new Logger(Foo.class)' for a Logger type and a Foo instance being the injectee</li>	
+</ul>
+<p>Changes (versus 2.1):</p>
+<ul>
+	<li>Teams embedding PicoContainer and (completely hiding it from user communities) can extend StartableLifecycleStrategy and provide their own Startable interface (was buggy)</li>
+</ul>
 <p><strong>Mar 31, 2008</strong></p>
 <p>PicoContainer 2.1 released (194K jar) </p>
-<p>New (versus&nbsp;2.0):</p>
-<ul><li>A new ComponentMonitor method to allow allow for better mocking of select components during unit testing.</li></ul><p><strong>Jan 19, 2008</strong></p>
+<p>New (since 2.0):</p>
+<ul><li>A new ComponentMonitor method to allow allow for better mocking of select components during unit testing.</li></ul>
+<p><strong>Jan 19, 2008</strong></p>
 <p>PicoContainer 2.0 released (190K jar) </p>
-<p>New (versus beta 2):</p>
+<p>New (since 2.0-beta-2):</p>
 <ul>
   <li>Binding Annotations support (disambiguation)</li>
   <li>Newer and rewritten properties backed containers</li>
   <li>Parameter names can be leveraged for all relevant types of injection</li>
 </ul>
-<p>Changed (versus beta 2):</p>
+<p>Changes (versus 2.0-beta-2):</p>
 <ul>
   <li>Yet More Java5 generics</li>
   <li>Build moved to JUnit 4.x and JMock 2.x (does not affect users of PicoContainer)</li>
@@ -23,7 +41,7 @@
 </ul>
 <p><strong>August 26, 2007</strong></p>
 <p>PicoContainer 2.0 beta 2 released (152K jar) </p>
-<p>New (versus beta 1):</p>
+<p>New (versus 2.0-beta-1):</p>
 <ul>
   <li>Rudimentary AOP capability for components built in</li>
   <li>Method Injection (one method post-construction with multiple arguments)</li>
@@ -33,7 +51,7 @@
   <li>Automatic components (instantiate irrespective of need)</li>
   <li>Reentrant-Lock version of Synchronizing behavior</li>
 </ul>
-<p>Changed (versus beta 1):</p>
+<p>Changes (versus 2.0-beta-1):</p>
 <ul>
   <li>Better Java5 generics</li>
   <li>Renames of behaviors and injectors to more verb-like style</li>
@@ -49,7 +67,7 @@
   <li>Large sets of configuration can be taken from properties files and command line arguments</li>
   <li>PicoBuilder to make a container with desired behavior. </li>
 </ul>
-<p>Changed:</p>
+<p>Changes:</p>
 <ul>
   <li>Java 5 style (use of generics, varargs, among others)</li>
   <li>Large scale Refactoring of packages and class names</li>
