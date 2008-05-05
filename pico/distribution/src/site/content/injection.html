@@ -94,14 +94,18 @@ pico.addComponent(Apple.class);
 // etc
 Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
-
+<p>If you want to use an prefix other than 'set'...</p>
+<div class="source">
+  <pre>pico = new DefaultPicoContainer(new SetterInjection("mySynonymForSet"));
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
   <p>Setter methods (those prefixed with 'set') may not be your
 preferred choice. You can force a different prefix to be choosable in
 PicoContainer, such as 'init' or 'inject'.</p>
   <p>The  component factory for this is <strong>SetterInjection</strong>. It only handles setter injection types of components.</p>
 <p>Factory <strong>AdaptiveInjection</strong> can also handle setter injection types, though it requires that the component was registered with the <a href="properties.html">property</a> 'SDI' in order to activate the Setter Injection functionality. <strong>AdaptiveInjection</strong> will also fall through to constructor injection if there is no SDI property. </p>
-<p>If you want to use an prefix other than 'set', then specify your preferred prefix in the non-default constructor for <strong>SetterInjection</strong>.</p>
 
 <h3>Injecting into Annotated Fields &nbsp; </h3>
 <p>This is where a component has an empty constructor with dependencies
@@ -140,9 +144,6 @@ Unit Test, you cannot simply 'new' the class without some magic to populate the 
 <p>Additionally the default component factory <strong>AdaptiveInjection</strong>
 can also handle field annotation types, if the @Inject annotation from
 PicoContainer's code-base is used as the marker for injection. <strong>AdaptiveInjection</strong> will also fall through to constructor injection if there is no recognized @Inject annotation.</p>
-<p>If you want to use an @Inject annotation from another codebase, then
-specify the preferred annotation class in the constructor for <strong>AnnotatedFieldInjection</strong>.</p>
-
 <h3>Injecting into Typed Fields &nbsp; </h3>
 <p>This is where a component has an empty constructor with dependencies
 indicated by a on a per component basis with an array of field-types to be injected into. These will be provided automatically by the
@@ -243,8 +244,6 @@ can also handle method-annotation injection types, if the @Inject
 annotation from PicoContainer's code-base is used as the marker for
 injection. AdaptiveInjection will also fall through to constructor
 injection if there is no recognized annotation.</p>
-<p>If you want to use an @Inject annotation from another code-base, then
-specify the preferred annotation class in the constructor for <strong>AnnotatedMethodInjection</strong>.</p>
 
 <h3>Injecting into a Single Method&nbsp; </h3>
 <p>This is where a component has an empty constructor and gets <span style="font-weight: bold;">all</span> its
