@@ -272,7 +272,7 @@ Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
 <p>Custom injection method prefix:</p>
 <div class="source">
-  <pre>pico = new DefaultPicoContainer(new MethodInjection("setDependencies");
+  <pre>pico = new DefaultPicoContainer(new MethodInjection("mySynonymForInject");
 pico.addComponent(Apple.class);
 // etc
 Apple apple = pico.getComponent(Apple.class);</pre>
