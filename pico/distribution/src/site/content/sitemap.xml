@@ -40,15 +40,16 @@
         <page>transparency.html</page>
     </section>
     <section>
-        <name>Containers</name>
+        <name>Containers Choices</name>
         <page>DefaultPicoContainer.html</page>
 	    <page>CommandLineArgumentsPicoContainer.html</page>
 		<page>PropertiesPicoContainer.html</page>
 		<page>SystemPropertiesPicoContainer.html</page>
 		<page>TransientPicoContainer.html</page>
+		<page>TieringPicoContainer.html</page>
     </section>
     <section>
-         <name>Applications</name>
+         <name>Making Larger Applications</name>
          <page>web-frameworks.html</page>
     </section>
     <section>
