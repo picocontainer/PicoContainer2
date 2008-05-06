@@ -27,7 +27,7 @@ public class AImpl implements A {
 public class BImpl implements B {
     private final A a;
 
-    BImpl(PicoContainer pico) {
+    public BImpl(PicoContainer pico) {
         a = (A) pico.getComponentOfType(A.class);
         
         /*
@@ -38,7 +38,7 @@ public class BImpl implements B {
 }</pre>
         </div>
     </div>
-    <p>It can be used in the following way:</p>
+    <p>The usage would probably look similar to:</p>
 
     <div class="source">
         <div>
@@ -51,21 +51,23 @@ pico.addComponent(pico);
 B b = (B) pico.getComponent(&quot;b&quot;);</pre>
         </div>
     </div>
-    <p>This will work, but it's an antipattern. </p>
+    <p>It will work, but it is an antipattern. </p>
 
     <p>The reasons why the above implementation of BImpl is an antipattern are:</p>
     <ul>
-        <li>It introduces an unneeded dependency from BImpl to the container.</li>
-        <li>This makes BImpl hard to test without a container.</li>
-        <li>B assumes that the container has a registered an A. As a result, B won't FailFast if it hasn't. Instead, a
-            will reference null, and BImpl will FailLate.
+        <li>It introduces an unneeded dependency from BImpl to the container, breaking the core principal of Inversion of Control</li>
+        <li>This makes BImpl harder to unit test</li>
+        <li>B assumes that the container has a registered an A. As a result, B won't fail fast if it has not. Instead, a
+            will reference null, and BImpl will fail later.
         </li>
     </ul>
 </div>
 <div>
     <h2>Causes</h2>
-
-    <p>Not sure. Poor understanding of how PicoContainer works? Not being able to think &quot;simple&quot;?</p>
+    <ul>
+      <li>Missing the historical context of PicoContainer, Dependency Injection and Inversion of Control.</li> 
+	  <li>Love of 'God class' designs.</li>
+    <ul>
 </div>
 <div>
     <h2>What to do</h2>
@@ -87,6 +89,6 @@ B b = (B) pico.getComponent(&quot;b&quot;);</pre>
     </div>
     <p>PicoContainer will figure out that BImpl needs an A instance, and will pass in the AImpl, as this is an
        implementation of A.</p>
-</div>
+    </div>
 </body>
 </html>
