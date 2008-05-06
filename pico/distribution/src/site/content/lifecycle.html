@@ -2,16 +2,16 @@
 
 <html>
 <head>
-<title>Lifecycle</title>
+<title>Component Lifecycle</title>
 </head>
 <body>
-<p>Lifecycle with configuration and depenedency injection makes
-Inversion of Control (IoC).</p>
+<p>Inversion of Control is three things: component dependencies and configuration, but also Component Lifecycle.</p>
+
 <p>After instantiation, if the component warrants it, a 'start'
 stage may be required. More specifically, if a container has injected
 and instantiated all components in a set, one or more of them may
 require starting in the same order they were instantiated. Later, in
-reverse order, the same component(s) may require stoping. In fact start
+reverse order, the same component(s) may require stopping. In fact start
 and stop may happen more than one for the life of an application.
 Disposal may happen once only, before the component is eligible for
 garbage collection.</p>
@@ -25,7 +25,7 @@ garbage collection.</p>
 <p>In PicoContainer we think allow a pluggable LifecycleStrategy.</p>
 <h3>Startable</h3>
 <p>Our own interface for startable. We wish it were in the JDK,
-because we're big into making components unecumbered by the trappings of
+because we're big into making components unencumbered by the trappings of
 containment. In English: we'd rather not make components
 implement/extend/throw anything from our framework. Its a 'transparency'
 thing.</p>

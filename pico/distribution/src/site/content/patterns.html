@@ -31,7 +31,7 @@
   <li>  Keep a consistent state at all times - init() or populate() is a code smell.</li>
   <li>Have no static fields or methods</li>
   <li>Never expect or return null.</li>
-  <li>FailFast - even when constructing.</li>
+  <li>Fail fast - even when constructing.</li>
   <li>Am Easy to test- all dependent object I use can be passed to me, often in my constructor (typically as Mock Objects).</li>
   <li>Accept dependent object that can easily be substituted with Mock Objects (I don't use Concrete Class Dependency).</li>
   <li>Chain multiple constructors to a common place (using this(...)).</li>
