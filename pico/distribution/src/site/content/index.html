@@ -1,52 +1,72 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head><title>Overview</title>
 
-<html>
-<head>
-<title>Overview</title>
+<style type="text/css">
+.callout {
+  border-style: solid;
+  margin: 10px;
+  padding: 4px;
+  background-color: red;
+  display: table;
+}
+
+</style>
 </head>
 
+
 <body>
-
 <h2>What is PicoContainer?</h2>
-
-<p>PicoContainer is a  highly embeddable full service Inversion of Control (IoC) container
+<p>PicoContainer is a highly embeddable full service Inversion of
+Control (IoC) container
 for components honour the Dependency Injection pattern.</p>
-<p>You could use it as a lightweight alternative to Sun's J2EE patterns for web applications or general solutions. </p>
-<p>What is Dependency Injection? Martin Fowler has a good <a href="http://www.martinfowler.com/articles/injection.html">article</a> from 2003, but here is another view: It is a good design pattern that, for large enterprise applications, facilitates: </p>
+<p>You could use it as a lightweight alternative to Sun's J2EE
+patterns for web applications or general solutions. </p>
+<p>What is Dependency Injection? Martin Fowler has a good <a href="http://www.martinfowler.com/articles/injection.html">article</a>
+from 2003, but here is another view: It is a good design pattern that,
+for large enterprise applications, facilitates: </p>
 <ul>
-  <li>easy best practice  unit testing vs little and difficult unit testing. </li>
-  <li>component reuse vs  rewriting through ignorance or need </li>
-  <li>centralized configuration vs components reading their own config (scattered) </li>
-  <li>clean &amp; declarative architecture vs nest of singletons that nobody can make sense of </li>
-  <li>maintainability vs developers having difficulties fixing bugs </li>
-  <li>adaptability vs developers not knowing where to start to add features</li>
+<li>easy best practice unit testing vs little and difficult
+unit testing. </li>
+<li>component reuse vs rewriting through ignorance or need </li>
+<li>centralized configuration vs components reading their own
+config (scattered) </li>
+<li>clean &amp; declarative architecture vs nest of
+singletons that nobody can make sense of </li>
+<li>maintainability vs developers having difficulties fixing
+bugs </li>
+<li>adaptability vs developers not knowing where to start to
+add features</li>
 </ul>
-<p>Dependency Injection is
-  quite often, but not exclusively, used by Agile practicioners. It
-  counters the situation where the enterprise application:</p>
+<p>Dependency Injection is quite often, but not exclusively, used
+by Agile practicioners. It counters the situation where the enterprise
+application:</p>
 <ul>
-  <li>has grown to be thousands of classes, with dozens if not
-  hundreds of Singletons</li>
-  <li>draws similarities to Spaghetti, Hairballs or <a href="http://www.laputan.org/mud/">Balls of Mud</a></li>
-  <li>has made development staff looking after it miserable</li>
-  <li>suffers repeated allegations of being unable to be developed without complete rewrite </li>
+<li>has grown to be thousands of classes, with dozens if not
+hundreds of Singletons</li>
+<li>draws similarities to Spaghetti, Hairballs or <a href="http://www.laputan.org/mud/">Balls of Mud</a></li>
+<li>has made development staff looking after it miserable</li>
+<li>suffers repeated allegations of being unable to be
+developed without complete rewrite </li>
 </ul>
-<p>Despite it being very compact in size (the core is ~128K and it
-has no mandatory dependencies outside the JDK), PicoContainer supports different dependency injection types (Constructor, Setter, Annotated Field and Method) and offers multiple lifecycle and monitoring strategies.</p>
-<p>PicoContainer has originally been implemented in Java but is also
+<p>Despite it being very compact in size (the core is ~128K and
+it
+has no mandatory dependencies outside the JDK), PicoContainer supports
+different dependency injection types (Constructor, Setter, Annotated
+Field and Method) and offers multiple lifecycle and monitoring
+strategies.</p>
+<p>PicoContainer has originally been implemented in Java but is
+also
 available for other platforms and languages. These are detailed <a href="http://docs.codehaus.org/display/PICO/Ports">here</a>.</p>
-<div class="section">
-<h3>Getting Started</h3>
-<p>Take a look at the <a href="introduction.html">introduction</a>. </p>
-</div>
-<div class="section">
+<h3>Where Next</h3>
+<span class="callout">
+The <a href="introduction.html">Introduction</a>
+talks over basic
+<br />PicoContainer usage, and has pictures - yay!
+</span>
 <h3>Related projects</h3>
-<p><a href="http://www.nanocontainer.org">NanoContainer</a> builds on top of PicoContainer the support for
+<p><a href="http://www.nanocontainer.org">NanoContainer</a>
+builds on top of PicoContainer the support for
 several scripting meta-languages (XML, Groovy, Bsh, Jython and Rhyno),
 AOP, Web frameworks (Struts and WebWork), Persistence (Hibernate) SOAP,
 JMX, and much more.</p>
-</div>
-</body>
-
-
-</html>
+</body></html>
