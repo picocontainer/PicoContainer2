@@ -3,11 +3,107 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Disambiguation</title>
 </head>
 <body>
-<h2>Overview</h2>
-<p>You may have a component that has a dependency on something that the
-container could ordinarily satisfy more than one. &nbsp;By default,
-when PicoContainer is presented with such a situation, it will throw an
-exception suggesting the dependency resolution is ambiguous.</p>
+<h2>What is Disambiguation?</h2>
+During your first forays into PicoContainer land, you might encounter an <em>AmbiguousComponentResolutionException</em> like this:
+<pre>org.picocontainer.injectors<a href="http://www.picocontainer.org/javadoc/core/org/picocontainer/injectors/AbstractInjector.AmbiguousComponentResolutionException.html">.AbstractInjector$AmbiguousComponentResolutionExceptio</a>n: class &lt; Something Here &gt; needs a '&lt; Something Here &gt;' injected, but there are too many choices to inject. These:[class &lt; Something Here &gt;, class &lt; Something Here &gt;], refer http://picocontainer.org/ambiguous-injectable-help.html
+	at org.picocontainer.parameters.BasicComponentParameter.getTargetAdapter(BasicComponentParameter.java:270)
+	at org.picocontainer.parameters.BasicComponentParameter.resolveAdapter(BasicComponentParameter.java:205)
+	at org.picocontainer.parameters.BasicComponentParameter.isResolvable(BasicComponentParameter.java:136)
+	at org.picocontainer.parameters.ComponentParameter.isResolvable(ComponentParameter.java:132)
+	at org.picocontainer.injectors.ConstructorInjector.getGreediestSatisfiableConstructor(ConstructorInjector.java:105)
+	at org.picocontainer.injectors.ConstructorInjector$1.run(ConstructorInjector.java:155)
+	at org.picocontainer.injectors.AbstractInjector$ThreadLocalCyclicDependencyGuard.observe(AbstractInjector.java:262)
+	at org.picocontainer.injectors.ConstructorInjector.getComponentInstance(ConstructorInjector.java:192)
+	at org.picocontainer.injectors.AbstractInjector.getComponentInstance(AbstractInjector.java:103)
+	at org.picocontainer.DefaultPicoContainer.getInstance(DefaultPicoContainer.java:559)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:526)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:538)
+</pre>
+<p> Or possibly a <em>CyclicDependencyException</em> like this:</p>
+<pre>
+org.picocontainer.injectors.<a href="http://www.picocontainer.org/javadoc/core/org/picocontainer/injectors/AbstractInjector.CyclicDependencyException.html">AbstractInjector$CyclicDependencyException</a>: Cyclic dependency: [class &lt; Something Here &gt;, class &lt; Something Here &gt;, class &lt; Something Here &gt;]
+	at org.picocontainer.injectors.AbstractInjector$ThreadLocalCyclicDependencyGuard.observe(AbstractInjector.java:257)
+	at org.picocontainer.injectors.ConstructorInjector.getComponentInstance(ConstructorInjector.java:192)
+	at org.picocontainer.behaviors.AbstractBehavior.getComponentInstance(AbstractBehavior.java:65)
+	at org.picocontainer.behaviors.Stored.getComponentInstance(Stored.java:85)
+	at org.picocontainer.behaviors.AbstractBehavior.getComponentInstance(AbstractBehavior.java:61)
+	at org.picocontainer.DefaultPicoContainer.getInstance(DefaultPicoContainer.java:559)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:526)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:516)
+	at org.picocontainer.parameters.BasicComponentParameter.resolveInstance(BasicComponentParameter.java:146)
+	at org.picocontainer.parameters.ComponentParameter.resolveInstance(ComponentParameter.java:119)
+	at org.picocontainer.injectors.SingleMemberInjector.getMemberArguments(SingleMemberInjector.java:89)
+	at org.picocontainer.injectors.ConstructorInjector.getMemberArguments(ConstructorInjector.java:199)
+	at org.picocontainer.injectors.ConstructorInjector$1.run(ConstructorInjector.java:162)
+	at org.picocontainer.injectors.AbstractInjector$ThreadLocalCyclicDependencyGuard.observe(AbstractInjector.java:262)
+	at org.picocontainer.injectors.ConstructorInjector.getComponentInstance(ConstructorInjector.java:192)
+	at org.picocontainer.behaviors.AbstractBehavior.getComponentInstance(AbstractBehavior.java:65)
+	at org.picocontainer.behaviors.Stored.getComponentInstance(Stored.java:85)
+	at org.picocontainer.behaviors.AbstractBehavior.getComponentInstance(AbstractBehavior.java:61)
+	at org.picocontainer.DefaultPicoContainer.getInstance(DefaultPicoContainer.java:559)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:526)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:516)
+	at org.picocontainer.parameters.BasicComponentParameter.resolveInstance(BasicComponentParameter.java:146)
+	at org.picocontainer.parameters.ComponentParameter.resolveInstance(ComponentParameter.java:119)
+	at org.picocontainer.injectors.SingleMemberInjector.getMemberArguments(SingleMemberInjector.java:89)
+	at org.picocontainer.injectors.ConstructorInjector.getMemberArguments(ConstructorInjector.java:199)
+	at org.picocontainer.injectors.ConstructorInjector$1.run(ConstructorInjector.java:162)
+	at org.picocontainer.injectors.AbstractInjector$ThreadLocalCyclicDependencyGuard.observe(AbstractInjector.java:262)
+	at org.picocontainer.injectors.ConstructorInjector.getComponentInstance(ConstructorInjector.java:192)
+	at org.picocontainer.behaviors.AbstractBehavior.getComponentInstance(AbstractBehavior.java:65)
+	at org.picocontainer.behaviors.Stored.getComponentInstance(Stored.java:85)
+	at org.picocontainer.behaviors.AbstractBehavior.getComponentInstance(AbstractBehavior.java:61)
+	at org.picocontainer.DefaultPicoContainer.getInstance(DefaultPicoContainer.java:559)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:526)
+	at org.picocontainer.DefaultPicoContainer.getComponent(DefaultPicoContainer.java:538)
+</pre>
+<p>And you say to your self something like, &quot;<strong>What the heck happened?!?!?!?</strong>&quot;</p>
+<p>The situation here is not as scary as it seems. We'll examine what causes the errors one at a time.</p>
+<h4>CyclicDependencyException</h4>
+<p>Here's a test case that shows what can cause a CyclicDependencyException:</p>
+<div class="source">
+<pre>
+	@Test public void testCircular() {
+		MutablePicoContainer mpc = new PicoBuilder().build();
+		mpc.addComponent(List.class, ArrayList.class);
+		mpc.addComponent(Set.class, HashSet.class);
+		
+		List l = mpc.getComponent(List.class); //Throws a Circular Dependency Exception
+	}
+    </pre>
+</div>
+<p>Upon first glance at the code, you might think &quot;Yeah, so?&quot;. But the problem here is that PicoContainer tries to satisfy the <em>greediest</em> constructor; or in other words, it looks for the constructor with the most arguments first. In this case, there is a constructor <em>ArrayList(Collection src), </em>and since it has the most arguments, PicoContainer uses this one.</p>
+<p>Unforunately, this results in the following situation:</p>
+<ol>
+    <li>PicoContainer tries to instantiate <em>ArrayList</em>. It finds a constructor that requires a Collection.</li>
+    <li>It searches itself and finds that it has an object that satisfies the Collection argument: the <em>HashSet</em>.</li>
+    <li>It tries to insantiate the HashSet, and finds it has a constructor that requires are Collection.</li>
+    <li>So it searches itself and finds an object that satisfies the Collection argument: the ArrayList.</li>
+</ol>
+<p>And so on until we either run out of stack space or this document increases to 2 Gb in size explaining the recursion. Fortunately, PicoContainer is smart enough to know where there is a recursive satisfaction like this and throws an exception rather than going into infinite recursion.</p>
+<p>That is what causes the Cyclic Dependency Injection.</p>
+<p>So how do you solve it? Well, lets back up see what causes the AmbiguousComponentResolutionException first and <em>then</em> we'll talk about how to fix it. (We promise! We won't let you down!)</p>
+<h3>AmbiguousComponentResolutionException</h3>
+<p>Here's a test case that shows what can cause AmbiguousComponentResolutionException:</p>
+<div class="source">
+	<pre>
+	@Test public void testAmbiguous() {
+		MutablePicoContainer mpc = new PicoBuilder().build();
+		mpc.addComponent(List.class, ArrayList.class);
+		mpc.addComponent(Set.class, HashSet.class);
+		mpc.addComponent(Collection.class, TreeSet.class);
+		
+		List l = mpc.getComponent(List.class);
+	}    	
+    </pre>
+</div>
+<p>The only difference between this example and the CyclicDependencyException example is the introduction of a new object that can satisfy the <em>java.util.Collection</em> requirement. Review: Pico will automatically grab the argument that has the most arguments that can be satisified. So what happens here?</p>
+<ol>
+    <li>PicoContainer tries to instantiate <em>ArrayList</em>.</li>
+    <li>It finds that there are now <strong>two</strong> components that can satisfy the <em>ArrayList(Collection) </em>argument: <em>Set</em>, and <em>Collection</em>.</li>
+</ol>
+<p>Rather than try to guess which one the developer intended to use. (And frankly, knowing us developers, Pico would guess wrong), we throw an AmbiguousComponentResolutionException instead.</p>
+<p>So, what we really need is a way to specify that PicoContainer uses the exact constructor we want with the exact arguments. Making sure that PicoContainer understands which constructor to use in a situation like this is called &quot;Disambiguation&quot;.</p>
 <h2>Disambiguation using parameter names<span style="text-decoration: underline;"></span></h2>
 <p>With PicoContainer 2.0 we are able to leverage the parameter names of
 constructors and methods in order to remove the ambiguity on
