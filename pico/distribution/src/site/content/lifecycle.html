@@ -31,14 +31,52 @@ containment. In English: we'd rather not make components
 implement/extend/throw anything from our framework. Its a 'transparency'
 thing.</p>
 <p>Here's an example of components fitting that ideal</p>
-<div class="source"><pre>public class Apple implements Startable{<br />  public void start() {<br />    // listen on socket, start thread etc.<br />  }<br />  public void stop() {<br />    // stop listening on socket, kill thread etc.<br />  }<br />}<br /><br /><br />...<br /><br /><br />pico = new DefaultPicoContainer(new StartableLifecycleStrategy());<br />pico.addComponent(Apple.class);<br />pico.start();<br />// start gets called<br /><br />Apple a = pico.getComponent(Apple.class);<br /></pre></div>
+<div class="source"><pre>public class Apple implements Startable{
+  public void start() {
+    // listen on socket, start thread etc.
+  }
+  public void stop() {
+    // stop listening on socket, kill thread etc.
+  }
+}
+
+
+...
+
+
+pico = new DefaultPicoContainer(new StartableLifecycleStrategy());
+pico.addComponent(Apple.class);
+pico.start();
+// start gets called
+
+Apple a = pico.getComponent(Apple.class);
+</pre></div>
 <p>The StartableLifecycleStrategy can be extended if you prefer your
 own interface for Startable. Just override</p>
 <h3>Reflection based start/stop/dispose</h3>
 <p>This works without an interface. Instead it works via reflection,
 and appropriate method names.</p>
 
-<div class="source"><pre>public class Apple {<br />  public void start() {<br />    // listen on socket, start thread etc.<br />  }<br />  public void stop() {<br />    // stop listening on socket, kill thread etc.<br />  }<br />}<br /><br /><br />...<br /><br /><br />pico = new DefaultPicoContainer(new ReflectionLifecycleStrategy());<br />pico.addComponent(Apple.class);<br />pico.start();<br />// start gets called<br /><br />Apple a = pico.getComponent(Apple.class);<br /></pre></div>
+<div class="source"><pre>public class Apple {
+  public void start() {
+    // listen on socket, start thread etc.
+  }
+  public void stop() {
+    // stop listening on socket, kill thread etc.
+  }
+}
+
+
+...
+
+
+pico = new DefaultPicoContainer(new ReflectionLifecycleStrategy());
+pico.addComponent(Apple.class);
+pico.start();
+// start gets called
+
+Apple a = pico.getComponent(Apple.class);
+</pre></div>
 
 <p>If you have other synonyms for start/stop/dispose, just extend
 the ReflectionLifecycleStrategy class and provide them.</p>
@@ -51,5 +89,7 @@ that no components honor any lifecycle concept..</p>
 four methods to implement. See LifecycleStrategy.</p><h3>Where Next?</h3>
 <span class="callout">
 The&nbsp;<a href="disambiguation.html">Disambiguation</a>
-page outlines strategies&nbsp; <br />for dealing with chosing which of two <br />potential injectables for one component</span><p></p>
+page outlines strategies<br/>
+for dealing with choosing which of two<br/> 
+potential injectables for one component</span><p></p>
 </body></html>

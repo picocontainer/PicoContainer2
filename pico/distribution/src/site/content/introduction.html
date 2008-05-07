@@ -16,7 +16,9 @@ object instances back.</p>
 <p>Example:</p>
 <div class="source">
 <div>
-<pre>MutablePicoContainer pico = new DefaultPicoContainer();<br>pico.addComponent(ArrayList.class);<br>List list = (List) pico.getComponent(ArrayList.class);</pre>
+<pre>MutablePicoContainer pico = new DefaultPicoContainer();
+pico.addComponent(ArrayList.class);
+List list = (List) pico.getComponent(ArrayList.class);</pre>
 </div>
 </div>
 <p>(i)<a href="http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/MutablePicoContainer.html">MutablePicoContainer
@@ -43,7 +45,8 @@ complex dependencies between each other:</p>
 </tr>
 </tbody>
 </table>
-<p>(Green means class, Yellow means interface).<br>
+<p>(Green means class, Yellow means interface).
+
 PicoContainer identifies dependencies by looking at the constructors of
 registered classes (<a href="constructor-injection.html" title="Constructor Injection">Constructor Injection</a>).
 PicoContainer can also be though of as a generic factory that can be
@@ -55,22 +58,49 @@ following code (we added a concrete Peelable):</p>
 <p><img src="images/apple-implements-peelable.png" align="middle" border="0"></p>
 <div class="source">
 <div>
-<pre>public interface Peelable {<br> void peel();<br>}</pre>
+<pre>public interface Peelable {
+ void peel();
+}</pre>
 </div>
 </div>
 <div class="source">
 <div>
-<pre>public class Apple implements Peelable {<br> public void peel() {<br> }<br>}</pre>
+<pre>public class Apple implements Peelable {
+ public void peel() {
+ }
+}</pre>
 </div>
 </div>
 <div class="source">
 <div>
-<pre>public class Peeler implements Startable {<br> private final Peelable peelable;<br><br> public Peeler(Peelable peelable) {<br> this.peelable = peelable;<br> }<br><br> public void start() {<br> peelable.peel();<br> }<br><br> public void stop() {<br><br> }<br>}</pre>
+<pre>public class Peeler implements Startable {
+ private final Peelable peelable;
+
+ public Peeler(Peelable peelable) {
+ this.peelable = peelable;
+ }
+
+ public void start() {
+ peelable.peel();
+ }
+
+ public void stop() {
+
+ }
+}</pre>
 </div>
 </div>
 <div class="source">
 <div>
-<pre>public class Juicer {<br> private final Peelable peelable;<br> private final Peeler peeler;<br><br> public Juicer(Peelable peelable, Peeler peeler) {<br> this.peelable = peelable;<br> this.peeler = peeler;<br> }<br>}</pre>
+<pre>public class Juicer {
+ private final Peelable peelable;
+ private final Peeler peeler;
+
+ public Juicer(Peelable peelable, Peeler peeler) {
+ this.peelable = peelable;
+ this.peeler = peeler;
+ }
+}</pre>
 </div>
 </div>
 <p>(Note that this code suffers from the antipattern <a href="propagating-dependency-antipattern.html" title="Propagating Dependency">Propagating Dependency</a>
@@ -80,7 +110,10 @@ but let's not worry about that for now <img class="emoticon" src="/images/icons/
 them like this (the order of registration has no significance):</p>
 <div class="source">
 <div>
-<pre>MutablePicoContainer pico = new DefaultPicoContainer();<br>pico.addComponent(Apple.class);<br>pico.addComponent(Juicer.class);<br>pico.addComponent(Peeler.class);</pre>
+<pre>MutablePicoContainer pico = new DefaultPicoContainer();
+pico.addComponent(Apple.class);
+pico.addComponent(Juicer.class);
+pico.addComponent(Peeler.class);</pre>
 </div>
 </div>
 <p>(i)<a href="http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/MutablePicoContainer.html">MutablePicoContainer
@@ -97,7 +130,10 @@ like this (provided it has been registered previously):</p>
 behind the scenes (except that PicoContainer uses reflection):</p>
 <div class="source">
 <div>
-<pre>Peelable peelable = new Apple();<br>Peeler peeler = new Peeler(peelable);<br>Juicer juicer = new Juicer(peelable, peeler);<br>return juicer;</pre>
+<pre>Peelable peelable = new Apple();
+Peeler peeler = new Peeler(peelable);
+Juicer juicer = new Juicer(peelable, peeler);
+return juicer;</pre>
 </div>
 </div>
 <p><img class="emoticon" src="/images/icons/emoticons/information.gif" alt="" align="middle" border="0" height="16" width="16">
@@ -114,15 +150,33 @@ you try to build a large enterprise application from it).</p>
 <p>A container (and its registered components) can get access to
 components registered in a parent container, but not vice-versa.
 Consider this example, using the classes from above:</p>
-<p><img class="emoticon" src="/images/icons/emoticons/warning.gif" alt="" align="middle" border="0" height="16" width="16"><br>
-THIS WON'T WORK! It is for illustration purposes only!<br>
+<p><img class="emoticon" src="/images/icons/emoticons/warning.gif" alt="" align="middle" border="0" height="16" width="16">
+
+THIS WON'T WORK! It is for illustration purposes only!
+
 <img class="emoticon" src="/images/icons/emoticons/warning.gif" alt="" align="middle" border="0" height="16" width="16"></p>
 <div class="source">
 <div>
-<pre>// Create x hierarchy of containers<br>MutablePicoContainer x = new DefaultPicoContainer();<br>MutablePicoContainer y = new DefaultPicoContainer( x );<br>MutablePicoContainer z = new DefaultPicoContainer( y );<br><br>// Assemble components<br>x.addComponent(Apple.class);<br>y.addComponent(Juicer.class);<br>z.addComponent(Peeler.class);<br><br>// Instantiate components<br>Peeler peeler = (Peeler) z.getComponent(Peeler.class);<br>// WON'T WORK! peeler will be null<br>peeler = (Peeler) x.getComponent(Peeler.class);<br>// WON'T WORK! This will throw an exception<br>Juicer juicer = (Juicer) y.getComponent(Juicer.class);</pre>
+<pre>// Create x hierarchy of containers
+MutablePicoContainer x = new DefaultPicoContainer();
+MutablePicoContainer y = new DefaultPicoContainer( x );
+MutablePicoContainer z = new DefaultPicoContainer( y );
+
+// Assemble components
+x.addComponent(Apple.class);
+y.addComponent(Juicer.class);
+z.addComponent(Peeler.class);
+
+// Instantiate components
+Peeler peeler = (Peeler) z.getComponent(Peeler.class);
+// WON'T WORK! peeler will be null
+peeler = (Peeler) x.getComponent(Peeler.class);
+// WON'T WORK! This will throw an exception
+Juicer juicer = (Juicer) y.getComponent(Juicer.class);</pre>
 </div>
 </div>
-<p>This can be visualised as follows:<br>
+<p>This can be visualised as follows:
+
 <img src="images/juicer-in-pico-hierarchy.png" align="middle" border="0"></p>
 <p>Let's analyse what will happen here:</p>
 <ul>
@@ -134,7 +188,8 @@ to Peeler can't be satisfied (z can't be seen by y). </li>
 </ul>
 <p><img class="emoticon" src="/images/icons/emoticons/warning.gif" alt="" align="middle" border="0" height="16" width="16">
 Since this obviously won't work, keep in mind that this was just an
-exercise to illustrate how container hierarchies work.<br>
+exercise to illustrate how container hierarchies work.
+
 <img class="emoticon" src="/images/icons/emoticons/information.gif" alt="" align="middle" border="0" height="16" width="16">
 For a more concrete example of the usage of container hierarchies, see <a href="http://www.nanocontainer.org/NanoWar" rel="nofollow">NanoContainer
 NanoWar<sup><img class="rendericon" src="/images/icons/linkext7.gif" alt="" align="middle" border="0" height="7" width="7"></sup></a>.</p>
@@ -186,7 +241,12 @@ cause the parent container to know about the child container.</p>
 <h3>Example</h3>
 <div class="source">
 <div>
-<pre>MutablePicoContainer parent = new DefaultPicoContainer(new Caching());<br>MutablePicoContainer child = new DefaultPicoContainer(parent);<br>// We must let the parent container know about the child container.<br>parent.addComponent(child);<br>// This will start the parent, which will start the child.<br>parent.start();</pre>
+<pre>MutablePicoContainer parent = new DefaultPicoContainer(new Caching());
+MutablePicoContainer child = new DefaultPicoContainer(parent);
+// We must let the parent container know about the child container.
+parent.addComponent(child);
+// This will start the parent, which will start the child.
+parent.start();</pre>
 </div>
 </div>
 <p><strong><img class="emoticon" src="/images/icons/emoticons/warning.gif" alt="warning" align="middle" border="0" height="16" width="16">
@@ -203,17 +263,29 @@ container. </p>
 two styles. </p>
 <p>Classic bean style: </p>
 <div class="source">
-<pre>pico = new DefaultPicoContainer();<br>pico.addComponent(ComponentOneImpl.class) // by type<br>pico.addComponent(ComponentTwoImpl.class) // by type<br>pico.addComponent(new ComponentThreeImpl()) // by instance<br>pico.addComponent(ComponentFourImpl.class) // by type<br><br>ComponentFourImpl four = pico.getComponent(ComponentFourImpl.class);<br></pre>
+<pre>pico = new DefaultPicoContainer();
+pico.addComponent(ComponentOneImpl.class) // by type
+pico.addComponent(ComponentTwoImpl.class) // by type
+pico.addComponent(new ComponentThreeImpl()) // by instance
+pico.addComponent(ComponentFourImpl.class) // by type
+
+ComponentFourImpl four = pico.getComponent(ComponentFourImpl.class);
+</pre>
 </div>
 <p>Or you can use a <a href="http://www.martinfowler.com/bliki/FluentInterface.html">fluent</a>
 style if you want:</p>
 <div class="source">
-<pre>ComponentFour four = new DefaultPicoContainer()<br> .addComponent(ComponentOne.class)<br> .addComponent(ComponentTwo.class)<br> .addComponent(new ComponentThree())<br> .addComponent(ComponentFour.class)<br> .getComponent(ComponentFour.class);</pre>
+<pre>ComponentFour four = new DefaultPicoContainer()
+ .addComponent(ComponentOne.class)
+ .addComponent(ComponentTwo.class)
+ .addComponent(new ComponentThree())
+ .addComponent(ComponentFour.class)
+ .getComponent(ComponentFour.class);</pre>
 </div>
 <h3>Where Next?</h3>
 <span class="callout">
 The <a href="injection.html">Dependency Injection</a>
-page discusses the types of <br>
+page discusses the types of<br>
 Dependency Injection, with examples
 </span>
 

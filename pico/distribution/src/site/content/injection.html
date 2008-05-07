@@ -42,16 +42,34 @@ and Field Injection.</p>
 <p>This is where a component has a constructor, with arguments
 that are its dependencies:</p>
 <div class="source">
-<pre>public class Apple {<br /> private final Orange orange;<br /> private final Pear pear;<br /> private final Banana banana;<br />	<br /> public Apple(Orange orange, Pear pear, Banana banana) {<br /> this.orange = orange;<br /> this.pear = pear;<br /> this.banana = banana;<br /> }<br />	<br /> // methods<br />}</pre>
+<pre>public class Apple {
+ private final Orange orange;
+ private final Pear pear;
+ private final Banana banana;
+	
+ public Apple(Orange orange, Pear pear, Banana banana) {
+ this.orange = orange;
+ this.pear = pear;
+ this.banana = banana;
+ }
+	
+ // methods
+}</pre>
 </div>
 <h4>Usage</h4>
 <div class="source">
-<pre>pico = new DefaultPicoContainer(new ConstructorInjection());<br />pico.addComponent(Apple.class);<br />// etc<br />Apple apple = pico.getComponent(Apple.class);</pre>
+<pre>pico = new DefaultPicoContainer(new ConstructorInjection());
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
 <p>Constructor Injection, is a default too (via
 AdaptiveInjection):</p>
 <div class="source">
-<pre>pico = new DefaultPicoContainer();<br />pico.addComponent(Apple.class);<br />// etc<br />Apple apple = pico.getComponent(Apple.class);</pre>
+<pre>pico = new DefaultPicoContainer();
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
 <p>
 The PicoContainer team recommends Constructor Dependency Injection
@@ -67,23 +85,45 @@ defaults to constructor injection, after checking first to see it the
 component in question is a Annotated Method or Field type (see below).</p>
 <p class="callout">Constructor Injection is idiomatic
 PicoContainer
-- choose <br />
+- choose 
+
 this style over all others if you can - especially if you are
-<br />
+
+
 starting out with Dependency Injection.&nbsp; </p>
 <h3>Injecting into Setter Methods </h3>
 <p>This is where a component has an empty constructor with
 dependencies provided by setters after instantiation:</p>
 <div class="source">
-<pre>public class Apple {<br /> private Orange orange;<br /> private Pear pear;<br /> private Banana banana; <br /> public setOrange(Orange orange) {<br /> this.orange = orange;<br /> } <br /> public setPear(Pear pear) {<br /> this.pear = pear;<br /> }<br /> public setBanana(Banana banana) {<br /> this.banana = banana;<br /> }<br /> // other methods<br />}</pre>
+<pre>public class Apple {
+ private Orange orange;
+ private Pear pear;
+ private Banana banana; 
+ public setOrange(Orange orange) {
+ this.orange = orange;
+ } 
+ public setPear(Pear pear) {
+ this.pear = pear;
+ }
+ public setBanana(Banana banana) {
+ this.banana = banana;
+ }
+ // other methods
+}</pre>
 </div>
 <h4>Usage</h4>
 <div class="source">
-<pre>pico = new DefaultPicoContainer(new SetterInjection());<br />pico.addComponent(Apple.class);<br />// etc<br />Apple apple = pico.getComponent(Apple.class);</pre>
+<pre>pico = new DefaultPicoContainer(new SetterInjection());
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
 <p>If you want to use an prefix other than 'set'...</p>
 <div class="source">
-<pre>pico = new DefaultPicoContainer(new SetterInjection("mySynonymForSet"));<br />pico.addComponent(Apple.class);<br />// etc<br />Apple apple = pico.getComponent(Apple.class);</pre>
+<pre>pico = new DefaultPicoContainer(new SetterInjection("mySynonymForSet"));
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
 <p>Setter methods (those prefixed with 'set') may not be your
 preferred choice. You can force a different prefix to be choosable in
@@ -102,15 +142,29 @@ dependencies
 indicated by a field annotation and provided automatically by the
 container after instantiation.</p>
 <div class="source">
-<pre>public class Apple {<br /> @Inject<br /> private Orange orange;<br /> @Inject<br /> private Pear pear;<br /> @Inject<br /> private Banana banana;<br /> // methods<br />}</pre>
+<pre>public class Apple {
+ @Inject
+ private Orange orange;
+ @Inject
+ private Pear pear;
+ @Inject
+ private Banana banana;
+ // methods
+}</pre>
 </div>
 <h4>Usage</h4>
 <div class="source">
-<pre>pico = new DefaultPicoContainer(new AnnotatedFieldInjection();<br />pico.addComponent(Apple.class); <br />// etc<br />Apple apple = pico.getComponent(Apple.class);</pre>
+<pre>pico = new DefaultPicoContainer(new AnnotatedFieldInjection();
+pico.addComponent(Apple.class); 
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
 <p>With an custom annotation instead of PicoContainer's @Inject</p>
 <div class="source">
-<pre>pico = new DefaultPicoContainer(new AnnotatedFieldInjection(MyInjectAnnotaton.class);<br />pico.addComponent(Apple.class);<br />// etc<br />Apple apple = pico.getComponent(Apple.class);</pre>
+<pre>pico = new DefaultPicoContainer(new AnnotatedFieldInjection(MyInjectAnnotaton.class);
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
 <p>
 Yes that's right, there's no constructor needed. It means that for a
@@ -131,11 +185,20 @@ indicated by a on a per component basis with an array of field-types to
 be injected into. These will be provided automatically by the
 container after instantiation.</p>
 <div class="source">
-<pre>public class Apple {<br /> private Orange orange;<br /> private Pear pear;<br /> private Banana banana;<br /> // methods<br />}</pre>
+<pre>public class Apple {
+ private Orange orange;
+ private Pear pear;
+ private Banana banana;
+ // methods
+}</pre>
 </div>
 <h4>Usage</h4>
 <div class="source">
-<pre>import static org.picocontainer.injectors.TypedFieldInjection.injectionFieldTypes;<br />	pico = new DefaultPicoContainer(new TypedFieldInjection();<br />pico.as(injectionFieldTypes(Orange.class, Pear.class, Banana.class)).addComponent(Apple.class);<br />// etc<br />Apple apple = pico.getComponent(Apple.class);</pre>
+<pre>import static org.picocontainer.injectors.TypedFieldInjection.injectionFieldTypes;
+	pico = new DefaultPicoContainer(new TypedFieldInjection();
+pico.as(injectionFieldTypes(Orange.class, Pear.class, Banana.class)).addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
 <p>
 Yes that's right, there's no constructor needed. It means that for a
@@ -151,11 +214,20 @@ indicated by a on a per component basis with an array of field-names to
 be injected into. These will be provided automatically by the
 container after instantiation.</p>
 <div class="source">
-<pre>public class Apple {<br /> private Orange orange;<br /> private Pear pear;<br /> private Banana banana;<br /> // methods<br />}</pre>
+<pre>public class Apple {
+ private Orange orange;
+ private Pear pear;
+ private Banana banana;
+ // methods
+}</pre>
 </div>
 <h4>Usage</h4>
 <div class="source">
-<pre>import static org.picocontainer.injectors.NamedFieldInjection.injectionFieldNames;<br />	pico = new DefaultPicoContainer(new NamedFieldInjection();<br />pico.as(injectionFieldNames("orange", "pear", "banana")).addComponent(Apple.class);<br />// etc<br />Apple apple = pico.getComponent(Apple.class);</pre>
+<pre>import static org.picocontainer.injectors.NamedFieldInjection.injectionFieldNames;
+	pico = new DefaultPicoContainer(new NamedFieldInjection();
+pico.as(injectionFieldNames("orange", "pear", "banana")).addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
 <p>
 Yes that's right, there's no constructor needed. It means that for a
@@ -169,15 +241,39 @@ injection for components.</p>
 its
 dependencies injected into annotated methods after instantiation:</p>
 <div class="source">
-<pre>public class Apple {<br /> private Orange orange;<br /> private Pear pear;<br /> private Banana banana;<br /><br /> @Inject<br /> public injectOrange(Orange orange) {<br /> this.orange = orange;<br /> }<br /> @Inject<br /> public setPear(Pear pear) {<br /> this.pear = pear;<br /> }<br /> @Inject<br /> public provideBanana(Banana banana) {<br /> this.banana = banana;<br /> }<br /> // other methods<br />}</pre>
+<pre>public class Apple {
+ private Orange orange;
+ private Pear pear;
+ private Banana banana;
+
+ @Inject
+ public injectOrange(Orange orange) {
+ this.orange = orange;
+ }
+ @Inject
+ public setPear(Pear pear) {
+ this.pear = pear;
+ }
+ @Inject
+ public provideBanana(Banana banana) {
+ this.banana = banana;
+ }
+ // other methods
+}</pre>
 </div>
 <h4>Usage</h4>
 <div class="source">
-<pre>pico = new DefaultPicoContainer(new AnnotatedMethodInjection();<br />pico.addComponent(Apple.class);<br />// etc<br />Apple apple = pico.getComponent(Apple.class);</pre>
+<pre>pico = new DefaultPicoContainer(new AnnotatedMethodInjection();
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
 <p>With an custom annotation instead of PicoContainer's @Inject</p>
 <div class="source">
-<pre>pico = new DefaultPicoContainer(new AnnotatedMethodInjection(MyInjectAnnotaton.class);<br />pico.addComponent(Apple.class);<br />// etc<br />Apple apple = pico.getComponent(Apple.class);</pre>
+<pre>pico = new DefaultPicoContainer(new AnnotatedMethodInjection(MyInjectAnnotaton.class);
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
 <p>The method (whatever its name) needs an @Inject annotation.
 That is from our codebase (org.picocontainer.Inject).</p>
@@ -192,20 +288,40 @@ injection if there is no recognized annotation.</p>
 <p>This is where a component has an empty constructor and gets <span style="font-weight: bold;">all</span> its
 dependencies injected into single method after instantiation:</p>
 <div class="source">
-<pre>public class Apple {<br /> private Orange orange;<br /> private Pear pear;<br /> private Banana banana;<br /> public inject(Orange orange, Pear pear, Banana banana) {<br /> this.orange = orange;<br /> this.pear = pear;<br /> this.banana = banana;<br /> }<br /> // other methods<br />}</pre>
+<pre>public class Apple {
+ private Orange orange;
+ private Pear pear;
+ private Banana banana;
+ public inject(Orange orange, Pear pear, Banana banana) {
+ this.orange = orange;
+ this.pear = pear;
+ this.banana = banana;
+ }
+ // other methods
+}</pre>
 </div>
 <h4>Usage</h4>
 <div class="source">
-<pre>pico = new DefaultPicoContainer(new MethodInjection();<br />pico.addComponent(Apple.class);<br />// etc<br />Apple apple = pico.getComponent(Apple.class);</pre>
+<pre>pico = new DefaultPicoContainer(new MethodInjection();
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
 <p>Custom injection method prefix:</p>
 <div class="source">
-<pre>pico = new DefaultPicoContainer(new MethodInjection("mySynonymForInject");<br />pico.addComponent(Apple.class);<br />// etc<br />Apple apple = pico.getComponent(Apple.class);</pre>
+<pre>pico = new DefaultPicoContainer(new MethodInjection("mySynonymForInject");
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
 <p>Via the default AdaptiveInjection Method injection, via a
 characteristic:</p>
 <div class="source">
-<pre>pico = new DefaultPicoContainer();<br />pico.as(Characteristics.METHOD_INJECTION).addComponent(Apple.class);<br />// etc<br />Apple apple = pico.getComponent(Apple.class);<br /></pre>
+<pre>pico = new DefaultPicoContainer();
+pico.as(Characteristics.METHOD_INJECTION).addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);
+</pre>
 </div>
 <p>The method name needs be 'inject' unless overridden in the
 InjectionFactory.</p>
@@ -218,11 +334,26 @@ METHOD_INJECTION characteristic is specified.</p>
 <p>This is where a component has is a blend of one or more of
 Constructor, Setter, Method, Annotated Field etc:</p>
 <div class="source">
-<pre>public class Apple {<br /> private Orange orange;<br /> private Pear pear;<br /> @Inject<br /> private Banana banana;<br /> public inject(Orange orange) {<br /> this.orange = orange;<br /> }<br /> public void inject(Pear pear) {<br /> this.pear = pear;<br /> }<br /> // other methods<br />}</pre>
+<pre>public class Apple {
+ private Orange orange;
+ private Pear pear;
+ @Inject
+ private Banana banana;
+ public inject(Orange orange) {
+ this.orange = orange;
+ }
+ public void inject(Pear pear) {
+ this.pear = pear;
+ }
+ // other methods
+}</pre>
 </div>
 <h4>Usage</h4>
 <div class="source">
-<pre>pico = new DefaultPicoContainer(new MultiInjection();<br />pico.addComponent(Apple.class);<br />// etc<br />Apple apple = pico.getComponent(Apple.class);</pre>
+<pre>pico = new DefaultPicoContainer(new MultiInjection();
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
 <p>&nbsp;In the case above, Orange comes in through the
 constructor,
@@ -235,11 +366,28 @@ you know precisely what your injection design is and want to tune
 specifically for that, or you are some way off the defaults supported
 by <strong>MultiInjection</strong></p>
 <div class="source">
-<pre>public class Apple {<br /> private Orange orange;<br /> private Pear pear;<br /> @FruitNeeded<br /> private Banana banana;<br /> public Apple(Orange orange) {<br /> this.orange = orange;<br /> }<br /> public void fruitNeeded(Pear pear) {<br /> this.pear = pear;<br /> }<br /> // other methods<br />}</pre>
+<pre>public class Apple {
+ private Orange orange;
+ private Pear pear;
+ @FruitNeeded
+ private Banana banana;
+ public Apple(Orange orange) {
+ this.orange = orange;
+ }
+ public void fruitNeeded(Pear pear) {
+ this.pear = pear;
+ }
+ // other methods
+}</pre>
 </div>
 <h4>Usage</h4>
 <div class="source">
-<pre>pico = new DefaultPicoContainer(new CompositeInjection(<br />	new ConstructorInjection(), new AnnotatedFieldInjection(FruitNeeded.class), <br />	new MethodInjection("fruitNeeded")));<br />pico.addComponent(Apple.class);<br />// etc<br />Apple apple = pico.getComponent(Apple.class);</pre>
+<pre>pico = new DefaultPicoContainer(new CompositeInjection(
+	new ConstructorInjection(), new AnnotatedFieldInjection(FruitNeeded.class), 
+	new MethodInjection("fruitNeeded")));
+pico.addComponent(Apple.class);
+// etc
+Apple apple = pico.getComponent(Apple.class);</pre>
 </div>
 <p>&nbsp;In the case above, Orange comes in through the
 constructor,
@@ -251,14 +399,39 @@ aware of the thing it is injecting into and can make a custom instance
 just for that injectee. This type of injection is only possible if you
 add an Adapter for it directly that subclasses <strong>FactoryInjection&lt;T&gt;</strong></p>
 <div class="source">
-<pre>public class Apple {<br /> private final Log log;<br /> private final Orange orange;<br /> private final Pear pear;<br /> private final Banana banana;<br /> public Apple(Orange orange, Pear pear, Banana banana, Log log) {<br /> this.orange = orange;<br /> this.pear = pear;<br /> this.banana = banana;<br /> this.log = log;<br /> }<br /><br /> // methods<br />}</pre>
+<pre>public class Apple {
+ private final Log log;
+ private final Orange orange;
+ private final Pear pear;
+ private final Banana banana;
+ public Apple(Orange orange, Pear pear, Banana banana, Log log) {
+ this.orange = orange;
+ this.pear = pear;
+ this.banana = banana;
+ this.log = log;
+ }
+
+ // methods
+}</pre>
 </div>
 <h4>Usage</h4>
 <div class="source">
-<pre>public class LogInjector extends FactoryInjector&lt;Log&gt; {<br /> public Log getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {<br /> return LogFactory.getLog((Class) into);<br /> }<br />}<br />...<br />pico = new DefaultPicoContainer(new ConstructorInjection());<br />pico.addComponent(Apple.class);<br />pico.addAdapter(new LogInjector());<br />// etc<br />Apple apple = pico.getComponent(Apple.class);<br /></pre>
+<pre>public class LogInjector extends FactoryInjector&lt;Log&gt; {
+ public Log getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {
+ return LogFactory.getLog((Class) into);
+ }
+}
+...
+pico = new DefaultPicoContainer(new ConstructorInjection());
+pico.addComponent(Apple.class);
+pico.addAdapter(new LogInjector());
+// etc
+Apple apple = pico.getComponent(Apple.class);
+</pre>
 </div>
 <h3>Where Next?</h3>
 <span class="callout">
 The&nbsp;<a href="behaviors.html">Modifying Behaviors</a>
-page outlines <br />the adding of behaviors to components</span>
+page outlines <br/>
+the adding of behaviors to components</span>
 </body></html>
