@@ -16,6 +16,7 @@
         <page>lifecycle.html</page>
         <page>monitors.html</page>
         <page>scopes.html</page>
+        <page>disambiguation.html</page>
     </section>
     <section>
         <name>Specialist Concepts</name>
@@ -24,7 +25,6 @@
         <page>builder.html</page>
         <page>interception.html</page>
         <page>properties.html</page>
-        <page>disambiguation.html</page>
         <page>component-configuration.html</page>
     </section>
     <section>
