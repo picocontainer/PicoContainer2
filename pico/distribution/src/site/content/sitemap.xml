@@ -14,9 +14,8 @@
         <page>injection.html</page>
         <page>behaviors.html</page>
         <page>lifecycle.html</page>
-        <page>monitors.html</page>
-        <page>scopes.html</page>
         <page>disambiguation.html</page>
+        <page>scopes.html</page>
     </section>
     <section>
         <name>Specialist Concepts</name>
@@ -26,6 +25,7 @@
         <page>interception.html</page>
         <page>properties.html</page>
         <page>component-configuration.html</page>
+        <page>monitors.html</page>
     </section>
     <section>
         <name>Architecture</name>
