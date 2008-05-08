@@ -157,3 +157,11 @@ table.bodyTable tr.b {
   text-align: right;
   margin-right: 10px;
 }
+
+.section blockquote  {
+    border: 2px solid #2aa526;
+	margin-right: 5%;
+	margin-left: 33%;
+	padding: 5px 10px 5px 10px;
+	background-color: #EEEEEE;
+}
