@@ -84,10 +84,26 @@ public interface ComponentAdapter<T> {
      */
     void accept(PicoVisitor visitor);
 
+    /**
+     * Component adapters may be nested in a chain, and this method is used to grab the next ComponentAdapter in the chain.
+     * @return the next component adapter in line or null if there is no delegate ComponentAdapter.
+     */
     ComponentAdapter<T> getDelegate();
 
+    /**
+     * Locates a component adapter of type <em>componentAdapterType</em> in the ComponentAdapter chain.  Will return null
+     * if there is no adapter of the given type.
+     * @param <U> the type of ComponentAdapter being located.
+     * @param componentAdapterType the class of the adapter type being located.  Never null.
+     * @return the appropriate component adapter of type <em>U</em>.  May return null if the component adapter type is not
+     * returned.
+     */
     <U extends ComponentAdapter> U findAdapterOfType(Class<U> componentAdapterType);
 
+    /**
+     * Get a string key descriptor of the component adapter.  
+     * @return
+     */
     String getDescriptor();
 
 }

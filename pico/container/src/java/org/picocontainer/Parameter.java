@@ -30,6 +30,18 @@ import java.lang.annotation.Annotation;
  */
 public interface Parameter {
 
+	/**
+	 * Zero parameter is used when you wish a component to be instantiated with its default constructor.  Ex:
+	 * <div class="source">
+	 * 	<pre>
+	 * 		MutablePicoContainer mpc = new PicoBuilder().build();
+	 * 		mpc.addComponent(Map.class, HashMap.class, Parameter.ZERO);
+	 * 		mpc.addComponent(List.class, ArrayList.class, Parameter.ZERO);
+	 * 	</pre>
+	 * </div>
+	 * <p>By specifying the default constructor in this example code, you allow PicoContainer to recognize
+	 * that HashMap(Collection) should <em>not</em> be used and avoid a CircularDependencyException.</p>
+	 */
     Parameter[] ZERO = new Parameter[0];
     Parameter[] DEFAULT = new Parameter[]{ ComponentParameter.DEFAULT };
 
