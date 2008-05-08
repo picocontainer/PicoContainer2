@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
 
 import org.junit.Assert;
 import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.annotations.Bind;
@@ -39,24 +41,24 @@ public class TypedBindingAnnotationTestCase  {
             System.out.println("");
             // expected
         }
-        Assert.assertNotNull(mpc.getComponent(Apple.class, Bramley.class));
+        assertNotNull(mpc.getComponent(Apple.class, Bramley.class));
     }
 
     @Test public void testBindingAnnotationsWithConstructorInjection() {
         MutablePicoContainer mpc = new DefaultPicoContainer(new ConstructorInjection());
 
-        addFiveComponents(mpc, FruitBasketConstructor.class);
-        FruitBasket fb = mpc.getComponent(FruitBasketConstructor.class);
+        addFiveComponents(mpc, FruitBasketViaConstructor.class);
+        FruitBasket fb = mpc.getComponent(FruitBasketViaConstructor.class);
         assertFourMemberApplesAreRight(fb);
         assertGettingOfAppleOneWorks(mpc);
     }
 
     private void assertFourMemberApplesAreRight(FruitBasket fb) {
-        Assert.assertNotNull(fb);
-        Assert.assertEquals(fb.bramley.getX(), 1);
-        Assert.assertEquals(fb.cox.getX(), 2);
-        Assert.assertEquals(fb.granny.getX(), 3);
-        Assert.assertEquals(fb.braeburn.getX(), 4);
+        assertNotNull(fb);
+        assertEquals(fb.bramley.getX(), 1);
+        assertEquals(fb.cox.getX(), 2);
+        assertEquals(fb.granny.getX(), 3);
+        assertEquals(fb.braeburn.getX(), 4);
     }
 
     @Test public void testBindingAnnotationsWithMethodInjection() {
@@ -133,9 +135,9 @@ public class TypedBindingAnnotationTestCase  {
     @Bind
     public static @interface Braeburn {}
 
-    public static class FruitBasketConstructor extends FruitBasket {
+    public static class FruitBasketViaConstructor extends FruitBasket {
         // used in testBindingAnnotationsWithConstructorInjection()
-        public FruitBasketConstructor(@Bramley Apple bramley, @Cox Apple cox, @Granny Apple granny, @Braeburn Apple braeburn) {
+        public FruitBasketViaConstructor(@Bramley Apple bramley, @Cox Apple cox, @Granny Apple granny, @Braeburn Apple braeburn) {
             foo(bramley, cox, granny, braeburn);
         }
 

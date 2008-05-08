@@ -118,40 +118,6 @@ public class TieringPicoContainer extends DefaultPicoContainer {
             super(parent);
         }
 
-        public <T> T getComponent(Class<T> componentType) {
-            boolean iDidIt = false;
-            try {
-                if (askingParentForComponent.get() == Boolean.FALSE) {
-                    askingParentForComponent.set(Boolean.TRUE);
-                    iDidIt = true;
-                } else if (askingParentForComponent.get() == Boolean.TRUE) {
-                    return null;
-                }
-                return super.getComponent(componentType);
-            } finally {
-                if (iDidIt) {
-                    askingParentForComponent.set(Boolean.FALSE);
-                }
-            }
-        }
-
-        public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
-            boolean iDidIt = false;
-            try {
-                if (askingParentForComponent.get() == Boolean.FALSE) {
-                    askingParentForComponent.set(Boolean.TRUE);
-                    iDidIt = true;
-                } else if (askingParentForComponent.get() == Boolean.TRUE) {
-                    return null;
-                }
-                return super.getComponent(componentType, binding);
-            } finally {
-                if (iDidIt) {
-                    askingParentForComponent.set(Boolean.FALSE);
-                }
-            }
-        }
-
         public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {
             boolean iDidIt = false;
             try {
@@ -163,23 +129,6 @@ public class TieringPicoContainer extends DefaultPicoContainer {
                 }
 
                 return super.getComponentAdapter(componentType, componentNameBinding);
-            } finally {
-                if (iDidIt) {
-                    askingParentForComponent.set(Boolean.FALSE);
-                }
-            }
-        }
-
-        public Object getComponent(Object componentKeyOrType) {
-            boolean iDidIt = false;
-            try {
-                if (askingParentForComponent.get() == Boolean.FALSE) {
-                    askingParentForComponent.set(Boolean.TRUE);
-                    iDidIt = true;
-                } else if (askingParentForComponent.get() == Boolean.TRUE) {
-                    return null;
-                }
-                return super.getComponent(componentKeyOrType);
             } finally {
                 if (iDidIt) {
                     askingParentForComponent.set(Boolean.FALSE);
