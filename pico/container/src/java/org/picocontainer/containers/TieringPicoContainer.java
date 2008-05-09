@@ -101,7 +101,6 @@ public class TieringPicoContainer extends DefaultPicoContainer {
         super();
     }
 
-
     public PicoContainer getParent() {
         return new TieringGuard(super.getParent());
     }
@@ -121,60 +120,69 @@ public class TieringPicoContainer extends DefaultPicoContainer {
         public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {
             boolean iDidIt = false;
             try {
-                if (askingParentForComponent.get() == Boolean.FALSE) {
-                    askingParentForComponent.set(Boolean.TRUE);
+                if (notYetAskingParentForComponent()) {
+                    nowAskingParentForComponent();
                     iDidIt = true;
-                } else if (askingParentForComponent.get() == Boolean.TRUE) {
+                    return super.getComponentAdapter(componentType, componentNameBinding);
+                } else {
                     return null;
                 }
-
-                return super.getComponentAdapter(componentType, componentNameBinding);
             } finally {
                 if (iDidIt) {
-                    askingParentForComponent.set(Boolean.FALSE);
+                    doneAskingParentForComponent();
                 }
             }
+        }
+
+        private <T> void nowAskingParentForComponent() {
+            askingParentForComponent.set(Boolean.TRUE);
         }
 
         public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
             boolean iDidIt = false;
             try {
-                if (askingParentForComponent.get() == Boolean.FALSE) {
-                    askingParentForComponent.set(Boolean.TRUE);
+                if (notYetAskingParentForComponent()) {
+                    nowAskingParentForComponent();
                     iDidIt = true;
-                } else if (askingParentForComponent.get() == Boolean.TRUE) {
+                    return super.getComponentAdapter(componentType, binding);
+                } else {
                     return null;
                 }
-                return super.getComponentAdapter(componentType, binding);
             } finally {
                 if (iDidIt) {
-                    askingParentForComponent.set(Boolean.FALSE);
+                    doneAskingParentForComponent();
                 }
             }
+        }
+
+        private <T> void doneAskingParentForComponent() {
+            askingParentForComponent.set(Boolean.FALSE);
+        }
+
+        private <T> boolean notYetAskingParentForComponent() {
+            return askingParentForComponent.get() == Boolean.FALSE;
         }
 
         public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
             boolean iDidIt = false;
             try {
-                if (askingParentForComponent.get() == Boolean.FALSE) {
-                    askingParentForComponent.set(Boolean.TRUE);
+                if (notYetAskingParentForComponent()) {
+                    nowAskingParentForComponent();
                     iDidIt = true;
-                } else if (askingParentForComponent.get() == Boolean.TRUE) {
+                    return super.getComponentAdapter(componentKey);
+                } else {
                     return null;
                 }
-                return super.getComponentAdapter(componentKey);
             } finally {
                 if (iDidIt) {
-                    askingParentForComponent.set(Boolean.FALSE);
+                    doneAskingParentForComponent();
                 }
             }
         }
-
     }
     private static class AskingParentForComponent extends ThreadLocal {
         protected Object initialValue() {
             return Boolean.FALSE;
         }
     }
-
 }

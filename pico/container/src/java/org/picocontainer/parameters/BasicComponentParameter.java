@@ -256,7 +256,11 @@ public class BasicComponentParameter implements Parameter, Serializable {
             found.remove(exclude);
             if (found.size() == 0) {
                 if (container.getParent() != null) {
-                    return container.getParent().getComponentAdapter(expectedType, expectedNameBinding);
+                    if (binding != null) {
+                        return container.getParent().getComponentAdapter(expectedType, binding.getClass());
+                    } else {
+                        return container.getParent().getComponentAdapter(expectedType, expectedNameBinding);
+                    }
                 } else {
                     return null;
                 }
