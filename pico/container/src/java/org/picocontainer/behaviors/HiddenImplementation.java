@@ -82,7 +82,7 @@ public class HiddenImplementation<T> extends AbstractBehavior<T> {
     }
 
     protected Object invokeMethod(Method method, Object[] args, PicoContainer container) throws Throwable {
-        Object componentInstance = getDelegate().getComponentInstance(container, null);
+        Object componentInstance = getDelegate().getComponentInstance(container, NOTHING.class);
         ComponentMonitor componentMonitor = currentMonitor();
         try {
             componentMonitor.invoking(container, this, method, componentInstance);

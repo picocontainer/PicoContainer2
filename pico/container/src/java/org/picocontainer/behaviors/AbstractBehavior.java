@@ -58,7 +58,7 @@ public abstract class AbstractBehavior<T> implements Behavior<T>, ComponentMonit
     }
 
     public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
-        return getComponentInstance(container, null);
+        return getComponentInstance(container, NOTHING.class);
     }
 
     public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {

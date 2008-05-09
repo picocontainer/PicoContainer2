@@ -23,6 +23,11 @@ import java.lang.reflect.Type;
  */
 public interface ComponentAdapter<T> {
 
+    class NOTHING {
+        private NOTHING(){
+        }
+    };
+
     /**
      * Retrieve the key associated with the component.
      *

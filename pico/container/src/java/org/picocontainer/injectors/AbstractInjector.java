@@ -100,7 +100,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
     }
 
     public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
-        return getComponentInstance(container, null);
+        return getComponentInstance(container, NOTHING.class);
     }
 
     public abstract T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException;
