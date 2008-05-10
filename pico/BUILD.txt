@@ -14,3 +14,7 @@ Note:  profiles are additive and the default profile is always active.
 Eg, build with reporting and distribution:
 
 mvn -Preporting,distribution install
+
+Note:  Releasing/deploying on Mac is affected by
+http://jira.codehaus.org/browse/MNG-3361
+Brett's hack works though.
