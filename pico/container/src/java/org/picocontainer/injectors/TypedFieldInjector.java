@@ -34,6 +34,7 @@ public class TypedFieldInjector extends IterativeInjector {
 	 */
 
     private final List<String> classes;
+    private static final long serialVersionUID = 4579165430483092396L;
 
     public TypedFieldInjector(Object key,
                                   Class<?> impl,

@@ -28,6 +28,7 @@ import java.util.Properties;
  * @author Paul Hammant
  */
 public abstract class Decorating extends AbstractBehaviorFactory implements Decorated.Decorator {
+    private static final long serialVersionUID = -8206270693607850036L;
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties, final Object componentKey,

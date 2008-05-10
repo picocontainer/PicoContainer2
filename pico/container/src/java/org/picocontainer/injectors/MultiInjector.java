@@ -23,6 +23,7 @@ import java.util.Set;
 public class MultiInjector extends CompositeInjector {
 
     private AnnotatedMethodInjector annotatedMethodInjector;
+    private static final long serialVersionUID = 9010039547575057092L;
 
     public MultiInjector(Object componentKey,
                          Class componentImplementation,

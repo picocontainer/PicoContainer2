@@ -23,6 +23,7 @@ import org.picocontainer.references.ThreadLocalReference;
  * @author Paul Hammant
  */
 public final class ThreadCached<T> extends Stored<T>{
+    private static final long serialVersionUID = 267851067019988875L;
 
     public ThreadCached(ComponentAdapter<T> delegate) {
         super(delegate, new ThreadLocalReference<T>());

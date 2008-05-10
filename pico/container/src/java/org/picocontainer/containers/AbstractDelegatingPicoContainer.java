@@ -20,8 +20,9 @@ import org.picocontainer.PicoVisitor;
 public abstract class AbstractDelegatingPicoContainer implements PicoContainer, Serializable{
 
 	private PicoContainer delegate;
+    private static final long serialVersionUID = 6444995393199283475L;
 
-	public AbstractDelegatingPicoContainer(PicoContainer delegate) {
+    public AbstractDelegatingPicoContainer(PicoContainer delegate) {
 		if (delegate == null) {
 			throw new NullPointerException(
 					"PicoContainer delegate must not be null");

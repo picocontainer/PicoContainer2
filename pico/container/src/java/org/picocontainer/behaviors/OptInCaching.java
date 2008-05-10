@@ -26,6 +26,7 @@ import java.util.Properties;
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  */
 public class OptInCaching extends AbstractBehaviorFactory {
+    private static final long serialVersionUID = -5348440996181449307L;
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
             throws PicoCompositionException {

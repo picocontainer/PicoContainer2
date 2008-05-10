@@ -15,6 +15,7 @@ public class PicoLifecycleException extends PicoException {
 
     private final Method method;
     private final Object instance;
+    private static final long serialVersionUID = -8045259440649543706L;
 
     public PicoLifecycleException(final Method method, final Object instance, final Throwable cause) {
         super(cause);

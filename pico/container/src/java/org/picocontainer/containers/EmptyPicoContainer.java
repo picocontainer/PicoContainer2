@@ -28,6 +28,7 @@ import java.lang.annotation.Annotation;
  * @author Konstantin Pribluda
  */
 public class EmptyPicoContainer implements PicoContainer, Serializable {
+    private static final long serialVersionUID = -2225539108410682231L;
 
     public Object getComponent(Object componentKeyOrType) {
         return null;

@@ -30,6 +30,7 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  * @author Jon Tirs&eacute;n
  */
 public class ConstructorInjection implements InjectionFactory, Serializable {
+    private static final long serialVersionUID = -6044681748649376149L;
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties properties, Object componentKey,
                                                    Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {

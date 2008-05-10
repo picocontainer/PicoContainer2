@@ -23,6 +23,7 @@ import java.util.Properties;
 /** @author Paul Hammant */
 public class MultiInjection implements InjectionFactory, Serializable {
     private final String setterPrefix;
+    private static final long serialVersionUID = -2696923482238638163L;
 
     public MultiInjection(String setterPrefix) {
         this.setterPrefix = setterPrefix;

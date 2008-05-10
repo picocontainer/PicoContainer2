@@ -32,6 +32,7 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
     private final Class type;
     private final boolean visitInInstantiationOrder;
     private final List componentInstances;
+    private static final long serialVersionUID = 2988472264483878674L;
 
     /**
      * Construct a MethodCallingVisitor for a method with arguments.

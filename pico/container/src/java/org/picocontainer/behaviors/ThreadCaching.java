@@ -21,6 +21,7 @@ import java.util.Properties;
 
 /** @author Paul Hammant */
 public class ThreadCaching extends AbstractBehaviorFactory {
+    private static final long serialVersionUID = 2183610804796111257L;
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                           LifecycleStrategy lifecycleStrategy,

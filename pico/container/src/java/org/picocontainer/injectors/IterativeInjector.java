@@ -36,6 +36,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
 
     private transient CachingParanamer paranamer = new CachingParanamer();
+    private static final long serialVersionUID = -8464541266367504077L;
 
     /**
      * Constructs a IterativeInjector

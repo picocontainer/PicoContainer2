@@ -34,8 +34,9 @@ import org.picocontainer.references.SimpleReference;
  * @author Mauro Talevi
  */
 public class Cached<T> extends Stored<T> {
+    private static final long serialVersionUID = -733344400276063938L;
 
-	public Cached(ComponentAdapter delegate) {
+    public Cached(ComponentAdapter delegate) {
 		this(delegate, new SimpleReference());
 	}
 

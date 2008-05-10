@@ -23,8 +23,9 @@ import org.picocontainer.PicoContainer;
  * @author Paul Hammant
  */
 public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDelegatingPicoContainer implements MutablePicoContainer {
+    private static final long serialVersionUID = -4205331381194234032L;
 
-	
+
     public AbstractDelegatingMutablePicoContainer(MutablePicoContainer delegate) {
 		super(delegate);
 	}

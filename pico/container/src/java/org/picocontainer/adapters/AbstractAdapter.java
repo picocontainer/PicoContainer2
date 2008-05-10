@@ -35,6 +35,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
     private Object componentKey;
     private Class<T> componentImplementation;
     private ComponentMonitor componentMonitor;
+    private static final long serialVersionUID = -1349323457365397071L;
 
 
     /**

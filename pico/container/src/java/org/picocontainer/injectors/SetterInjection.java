@@ -32,6 +32,7 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 public class SetterInjection implements InjectionFactory, Serializable {
 
     private final String setterMethodPrefix;
+    private static final long serialVersionUID = -7940916082786647148L;
 
     public SetterInjection(String setterMethodPrefix) {
         this.setterMethodPrefix = setterMethodPrefix;

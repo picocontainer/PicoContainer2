@@ -33,6 +33,7 @@ import com.thoughtworks.paranamer.Paranamer;
 public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
 
     private transient CachingParanamer paranamer = new CachingParanamer();
+    private static final long serialVersionUID = 6159718060308373858L;
 
     public SingleMemberInjector(Object componentKey,
                                 Class componentImplementation,

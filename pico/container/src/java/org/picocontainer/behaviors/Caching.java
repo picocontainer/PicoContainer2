@@ -29,8 +29,9 @@ import java.util.Properties;
  * @author Konstantin Pribluda
  */
 public class Caching extends AbstractBehaviorFactory {
+    private static final long serialVersionUID = 1406297431996719245L;
 
-	public <T> ComponentAdapter<T> createComponentAdapter(
+    public <T> ComponentAdapter<T> createComponentAdapter(
 			ComponentMonitor componentMonitor,
 			LifecycleStrategy lifecycleStrategy,
 			Properties componentProperties, Object componentKey,

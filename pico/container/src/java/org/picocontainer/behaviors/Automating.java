@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.Properties;
 
 public class Automating extends AbstractBehaviorFactory implements Serializable {
+    private static final long serialVersionUID = -963250264296920405L;
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,

@@ -22,6 +22,7 @@ import java.io.Serializable;
 
 /** @author Paul Hammant */
 public class Intercepting extends AbstractBehaviorFactory {
+    private static final long serialVersionUID = 8186483610012094244L;
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                           LifecycleStrategy lifecycleStrategy,

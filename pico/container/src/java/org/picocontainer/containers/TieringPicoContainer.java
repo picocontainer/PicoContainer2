@@ -5,6 +5,7 @@ import org.picocontainer.*;
 import java.lang.annotation.Annotation;
 
 public class TieringPicoContainer extends DefaultPicoContainer {
+    private static final long serialVersionUID = -5151515447097626792L;
 
     /**
      * Creates a new container with a custom ComponentFactory, LifecycleStrategy for instance registration,
@@ -112,6 +113,7 @@ public class TieringPicoContainer extends DefaultPicoContainer {
     private static class TieringGuard extends AbstractDelegatingPicoContainer {
 
         private static final AskingParentForComponent askingParentForComponent = new AskingParentForComponent();
+        private static final long serialVersionUID = 6581803994637104355L;
 
         public TieringGuard(PicoContainer parent) {
             super(parent);

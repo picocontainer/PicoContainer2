@@ -43,6 +43,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
     /** The strategy used to control the lifecycle */
     protected LifecycleStrategy lifecycleStrategy;
     private final boolean useNames;
+    private static final long serialVersionUID = -3329611066565987256L;
 
     /**
      * Constructs a new ComponentAdapter for the given key and implementation.

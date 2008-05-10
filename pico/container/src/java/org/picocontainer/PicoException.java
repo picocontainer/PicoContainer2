@@ -21,6 +21,7 @@ import java.io.PrintWriter;
  * @author Aslak Helles&oslash;y
  */
 public abstract class PicoException extends RuntimeException {
+    private static final long serialVersionUID = 735297118776661954L;
 
     /**
      * Construct a new exception with no cause and no detail message. Note modern JVMs may still track the exception

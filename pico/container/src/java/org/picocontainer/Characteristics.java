@@ -70,6 +70,7 @@ public final class Characteristics {
     }
 
     public static class ImmutableProperties extends Properties {
+        private static final long serialVersionUID = -6629995310407708747L;
 
         public ImmutableProperties(String name, String value) {
             super.setProperty(name, value);

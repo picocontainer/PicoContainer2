@@ -40,6 +40,7 @@ import java.lang.reflect.InvocationTargetException;
 public class SetterInjector<T> extends IterativeInjector<T> {
 
     private final String setterMethodPrefix;
+    private static final long serialVersionUID = -5447112091453900667L;
 
     /**
      * Constructs a SetterInjector

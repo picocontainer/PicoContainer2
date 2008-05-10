@@ -34,6 +34,7 @@ import org.picocontainer.PicoContainer;
 public class MethodInjector<T> extends SingleMemberInjector<T> {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     private final String methodName;
+    private static final long serialVersionUID = 4064293554344009835L;
 
 
     /**

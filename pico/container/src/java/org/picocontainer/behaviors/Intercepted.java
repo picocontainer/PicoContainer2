@@ -23,6 +23,7 @@ public class Intercepted<T> extends HiddenImplementation {
     private final Map<Class, Object> pres = new HashMap<Class, Object>();
     private final Map<Class, Object> posts = new HashMap<Class, Object>();
     private Controller controller = new ControllerWrapper(new InterceptorThreadLocal());
+    private static final long serialVersionUID = 786952112142697225L;
 
     public Intercepted(ComponentAdapter delegate) {
         super(delegate);
@@ -68,6 +69,8 @@ public class Intercepted<T> extends HiddenImplementation {
     }
 
     public static class InterceptorThreadLocal extends ThreadLocal implements Serializable {
+        private static final long serialVersionUID = -8094308289336175716L;
+
         protected Object initialValue() {
             return new ControllerImpl();
         }

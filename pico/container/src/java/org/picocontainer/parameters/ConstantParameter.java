@@ -37,6 +37,7 @@ public class ConstantParameter
         implements Parameter, Serializable {
 
     private final Object value;
+    private static final long serialVersionUID = -6619664190787772953L;
 
     public ConstantParameter(Object value) {
         this.value = value;
