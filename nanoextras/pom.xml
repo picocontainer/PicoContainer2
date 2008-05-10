@@ -10,8 +10,8 @@
     <modules>
         <module>nanosar</module>
         <module>nanowar</module>
-        <module>persistence</module>
         <module>remoting</module>
+        <module>persistence</module>
     </modules>
 
     <organization>
