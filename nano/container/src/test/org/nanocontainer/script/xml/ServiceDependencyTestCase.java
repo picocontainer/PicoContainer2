@@ -1,4 +1,4 @@
-package org.nanocontainer.script.xml.issues;
+package org.nanocontainer.script.xml;
 
 import static org.junit.Assert.assertNotNull;
 
