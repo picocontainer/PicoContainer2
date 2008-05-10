@@ -13,7 +13,6 @@ package org.nanocontainer.persistence.hibernate.annotations;
 import java.io.File;
 import java.net.URL;
 
-import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.w3c.dom.Document;
 
@@ -22,9 +21,9 @@ import org.w3c.dom.Document;
  * configure() methods. See respective {@link org.hibernate.cfg.Configuration configure methods}.
  * 
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
- * @version $Revision: 2043 $
  * @see org.hibernate.cfg.Configuration
  */
+@SuppressWarnings("serial")
 public class ConstructableConfiguration extends Configuration {
 
     public ConstructableConfiguration() {
