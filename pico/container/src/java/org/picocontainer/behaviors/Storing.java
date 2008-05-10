@@ -83,7 +83,7 @@ public class Storing extends AbstractBehaviorFactory {
         mapThreadLocalObjectReference.set(Collections.unmodifiableMap(Collections.emptyMap()));
     }
 
-    public static class StoreThreadLocal extends ThreadLocal {
+    public static class StoreThreadLocal extends ThreadLocal implements Serializable {
         protected Object initialValue() {
             return new HashMap();
         }
