@@ -37,7 +37,7 @@ public final class AspectedTestCase {
 
     @Test public void testGetComponentInstance() {
     	mockery.checking(new Expectations(){{
-    		one(componentAdapter).getComponentInstance(with(same(container)), with(aNull(Class.class)));
+    		one(componentAdapter).getComponentInstance(with(same(container)), with(same(ComponentAdapter.NOTHING.class)));
     		will(returnValue("addComponent"));
     		one(componentAdapter).getComponentKey();
     		will(returnValue("componentKey"));
