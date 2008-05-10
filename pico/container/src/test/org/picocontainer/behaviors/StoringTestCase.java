@@ -57,24 +57,31 @@ public class StoringTestCase {
     @Test public void testThatTwoThreadsHaveSeparatedCacheValues() {
 
         final Foo[] foos = new Foo[4];
+        final int[] sizes = new int[2];
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
-        final DefaultPicoContainer child = new DefaultPicoContainer(new Storing(), parent);
+        final Storing storing = new Storing();
+        final DefaultPicoContainer child = new DefaultPicoContainer(storing, parent);
 
         parent.addComponent(StringBuilder.class);
         child.addComponent(Foo.class);
 
         StringBuilder sb = parent.getComponent(StringBuilder.class);
+        assertEquals("store was not empty at outset for main thread", 0, storing.getCacheSize());
         foos[0] = child.getComponent(Foo.class);
 
-        Thread thread = new Thread() {
+        Thread thread = new Thread("other") {
             public void run() {
+                sizes[0] = storing.getCacheSize();
                 foos[1] = child.getComponent(Foo.class);
                 foos[3] = child.getComponent(Foo.class);
+                sizes[1] = storing.getCacheSize();
             }
         };
         thread.start();
         foos[2] = child.getComponent(Foo.class);
+        assertEquals("store was not sized 1 at end for main thread", 1, storing.getCacheSize());
+
         sleepALittle();
 
         assertNotNull(foos[0]);
@@ -86,6 +93,9 @@ public class StoringTestCase {
         assertFalse(foos[0] == foos[1]);
         assertEquals("<Foo<Foo", sb.toString());
         assertEquals("Stored:ConstructorInjector-class org.picocontainer.behaviors.StoringTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
+
+        assertEquals("store was not empty at outset for other thread", 0, sizes[0]);
+        assertEquals("store was not sized 1 at end for other thread", 1, sizes[1]);
     }
 
     @Test public void testThatTwoThreadsHaveSeparatedCacheValuesForThreeScopeScenario() {
