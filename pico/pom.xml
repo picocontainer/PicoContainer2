@@ -3,7 +3,7 @@
   <groupId>org.picocontainer</groupId>
   <artifactId>picocontainer-parent</artifactId>
   <name>PicoContainer Parent</name>
-  <version>2.2-SNAPSHOT</version>
+  <version>2.2</version>
   <packaging>pom</packaging>
   <url>http://www.picocontainer.org</url>
   <modules>
@@ -32,9 +32,9 @@
     </license>
   </licenses>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</developerConnection>
-    <url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</url>
+    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/tags/picocontainer-2.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/tags/picocontainer-2.2</developerConnection>
+    <url>https://svn.codehaus.org/picocontainer/java/2.x/tags/picocontainer-2.2</url>
   </scm>
   <!-- Note:  only use repositories for released artifacts.  Snapshots should be  accessed by configuring snapshot repositories via a settings profile -->
   <repositories>
