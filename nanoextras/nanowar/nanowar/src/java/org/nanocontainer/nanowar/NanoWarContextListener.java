@@ -25,17 +25,17 @@ import org.nanocontainer.NanoContainer;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultContainerBuilder;
-import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.ScriptBuilderResolver;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.references.SimpleReference;
 import org.picocontainer.containers.PropertiesPicoContainer;
 import org.picocontainer.containers.SystemPropertiesPicoContainer;
 import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.references.SimpleReference;
 
 /**
  * Servlet listener class that hooks into the underlying servlet

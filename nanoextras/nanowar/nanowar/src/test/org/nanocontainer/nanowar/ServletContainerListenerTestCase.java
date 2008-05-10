@@ -33,7 +33,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.DefaultContainerBuilder;
-import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilderFactory;
 import org.nanocontainer.script.groovy.GroovyContainerBuilder;
@@ -41,6 +40,7 @@ import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.references.SimpleReference;
 

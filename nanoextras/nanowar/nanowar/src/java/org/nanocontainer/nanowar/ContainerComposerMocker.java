@@ -17,8 +17,8 @@ import org.jmock.Mockery;
 import org.nanocontainer.integrationkit.ContainerBuilder;
 import org.nanocontainer.integrationkit.ContainerComposer;
 import org.nanocontainer.integrationkit.DefaultContainerBuilder;
-import org.nanocontainer.integrationkit.PicoCompositionException;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.references.SimpleReference;
 
