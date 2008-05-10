@@ -27,11 +27,11 @@ public class DefaultContainerBuilder extends AbstractContainerBuilder {
     }
 
     /**
-     * TODO better solution cuold be found to activate default caching
      * @param parentContainer
      * @param assemblyScope
      * @return
      */
+    // TODO better solution to activate default caching
     protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
         return (new DefaultPicoContainer(parentContainer)).change(Characteristics.CACHE);
     }
