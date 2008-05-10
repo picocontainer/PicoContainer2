@@ -13,6 +13,7 @@ package org.nanocontainer.persistence.hibernate;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.util.Map;
+import java.util.Set;
 
 import javax.naming.NamingException;
 import javax.naming.Reference;
@@ -20,8 +21,10 @@ import javax.naming.Reference;
 import org.hibernate.HibernateException;
 import org.hibernate.Interceptor;
 import org.hibernate.SessionFactory;
+import org.hibernate.StatelessSession;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.classic.Session;
+import org.hibernate.engine.FilterDefinition;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.stat.Statistics;
@@ -109,6 +112,14 @@ public final class SessionFactoryDelegator implements SessionFactory {
 		return this.getDelegatedSessionFactory().getCurrentSession();
 	}
 
+    public Set getDefinedFilterNames() {
+        return this.getDelegatedSessionFactory().getDefinedFilterNames();
+    }
+
+    public FilterDefinition getFilterDefinition(String filterName) throws HibernateException {
+        return this.getDelegatedSessionFactory().getFilterDefinition(filterName);
+    }
+
     public Reference getReference() throws NamingException {
         return this.getDelegatedSessionFactory().getReference();
     }
@@ -135,6 +146,14 @@ public final class SessionFactoryDelegator implements SessionFactory {
 
     public Session openSession(Interceptor interceptor) {
         return this.getDelegatedSessionFactory().openSession(interceptor);
+    }
+
+    public StatelessSession openStatelessSession() {
+        return this.getDelegatedSessionFactory().openStatelessSession();
+    }
+
+    public StatelessSession openStatelessSession(Connection connection) {
+        return this.getDelegatedSessionFactory().openStatelessSession(connection);
     }
 
 }

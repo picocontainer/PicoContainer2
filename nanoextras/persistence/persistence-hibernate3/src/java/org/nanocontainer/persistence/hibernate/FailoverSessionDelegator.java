@@ -16,6 +16,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Interceptor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.nanocontainer.persistence.ExceptionHandler;
 
 /**
