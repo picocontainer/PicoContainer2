@@ -166,7 +166,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                                             + " returned a null constructor from method 'instantiating' after passing in " + constructor);
                         }
                         long startTime = System.currentTimeMillis();
-                        T inst = newInstance(constructor, parameters);
+                        T inst = instantiate(constructor, parameters);
                         componentMonitor.instantiated(container,
                                                       ConstructorInjector.this,
                                                       constructor, inst, parameters, System.currentTimeMillis() - startTime);
@@ -190,6 +190,11 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         }
         instantiationGuard.setGuardedContainer(container);
         return instantiationGuard.observe(getComponentImplementation());
+    }
+
+    protected T instantiate(Constructor<T> constructor, Object[] parameters) throws InstantiationException, IllegalAccessException, InvocationTargetException {
+        T inst = newInstance(constructor, parameters);
+        return inst;
     }
 
     public void decorateComponentInstance(PicoContainer container, Type into, T instance) {
