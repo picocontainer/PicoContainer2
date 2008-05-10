@@ -8,7 +8,6 @@ import org.picocontainer.behaviors.Caching;
 
 /**
  * @author Paul Hammant
- * @version $Revision: 3144 $
  */
 @SuppressWarnings("serial")
 public class TestContainer extends DefaultNanoContainer {

@@ -15,7 +15,6 @@ import java.lang.reflect.Method;
  * Pointcut that picks methods.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 public interface MethodPointcut {
 

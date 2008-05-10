@@ -40,7 +40,6 @@ import org.picocontainer.PicoContainer;
  * </pre></code>
  * </p>
  * @author Michael Rimov
- * @version 1.0
  */
 public class AppendContainerNode extends AbstractBuilderNode {
     /**

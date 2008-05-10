@@ -11,7 +11,6 @@ package org.nanocontainer.testmodel;
 
 /**
  * @author Stephen Molitor
- * @version $Revision$
  */
 public class StringBean {
 

@@ -15,7 +15,6 @@ import org.nanocontainer.aop.ComponentPointcut;
  * Component pointcut that matches against a component key.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 public class KeyEqualsComponentPointcut implements ComponentPointcut {
 

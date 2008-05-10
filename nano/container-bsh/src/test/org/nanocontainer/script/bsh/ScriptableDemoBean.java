@@ -12,7 +12,6 @@ package org.nanocontainer.script.bsh;
 /**
  * @author <a href="mail at leosimons dot com">Leo Simons</a>
  * @author Aslak Hellesoy
- * @version $Id$
  */
 public class ScriptableDemoBean {
     public Object key;

@@ -8,10 +8,6 @@
  * Original code by                                                          *
  *****************************************************************************/
 
-/**
- * @author Aslak Helles&oslash;y
- * @version $Revision$
- */
 package org.nanocontainer.deployer;
 
 import java.io.InputStreamReader;

@@ -6,7 +6,6 @@ import java.io.File;
  * Used for testing permissions.
  *
  * @author Paul Hammant
- * @version $Revision$
  */
 public class FileSystemUsing {
 

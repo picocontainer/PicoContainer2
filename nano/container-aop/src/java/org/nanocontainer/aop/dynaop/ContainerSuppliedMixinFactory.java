@@ -22,7 +22,6 @@ import org.picocontainer.injectors.ConstructorInjector;
  * has dependencies on other components in the <code>PicoContainer</code>.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 class ContainerSuppliedMixinFactory implements MixinFactory {
 

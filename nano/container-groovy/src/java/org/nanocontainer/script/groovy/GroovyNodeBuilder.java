@@ -58,7 +58,6 @@ import java.util.Map;
  * @author Aslak Helles&oslash;y
  * @author Michael Rimov
  * @author Mauro Talevi
- * @version $Revision: 2695 $
  */
 public class GroovyNodeBuilder extends BuilderSupport {
 

@@ -17,7 +17,6 @@ import org.nanocontainer.DefaultNanoContainer;
 
 /**
  * @author Paul Hammant
- * @version $Revision: 2695 $
  */
 public class ClassLoaderNode extends AbstractBuilderNode {
 

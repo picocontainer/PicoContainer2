@@ -17,7 +17,6 @@ import org.nanocontainer.aop.PointcutsFactory;
  * 'back-end' (nanning, dynop, etc.).
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 public abstract class AbstractPointcutsFactory implements PointcutsFactory {
 

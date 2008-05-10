@@ -15,7 +15,6 @@ import java.lang.reflect.Method;
  * Produces pointcuts.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 public interface PointcutsFactory {
 

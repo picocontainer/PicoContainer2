@@ -17,7 +17,6 @@ import org.nanocontainer.aop.dynaop.DynaopAspectsManager;
  * scripting of aspects via dynaop.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 public class DynaopGroovyNodeBuilder extends GroovyNodeBuilder {
 

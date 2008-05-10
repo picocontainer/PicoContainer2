@@ -22,7 +22,6 @@ import org.picocontainer.PicoContainer;
  * <code>ContainerLoader</code>.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 class PicoContainerProxy implements Interceptor {
 

@@ -27,7 +27,6 @@ import org.picocontainer.tck.AbstractPicoContainerTest;
 
 /**
  * @author Paul Hammant
- * @version $Revision$
  */
 public class DefaultNanoContainerTestCase extends AbstractPicoContainerTest {
 

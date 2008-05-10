@@ -55,7 +55,6 @@ import org.xml.sax.SAXException;
  * @author Aslak Helles&oslash;y
  * @author Jeppe Cramon
  * @author Mauro Talevi
- * @version $Revision$
  */
 public class XMLContainerBuilder extends ScriptedContainerBuilder implements ContainerPopulator {
 

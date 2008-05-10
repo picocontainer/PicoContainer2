@@ -13,7 +13,6 @@ package org.nanocontainer.aop;
  * Pointcut that picks component keys.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 public interface ComponentPointcut {
 

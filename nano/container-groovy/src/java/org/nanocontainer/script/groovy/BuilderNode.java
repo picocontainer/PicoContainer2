@@ -10,7 +10,6 @@ import org.nanocontainer.script.NanoContainerMarkupException;
  * validation and interaction methods for the mediator (The GroovyNodeBuilder
  * object) to figure out who should handle what.
  * @author Michael Rimov
- * @version 1.0
  */
 public interface BuilderNode {
 

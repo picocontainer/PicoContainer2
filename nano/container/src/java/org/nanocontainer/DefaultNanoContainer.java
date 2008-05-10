@@ -51,7 +51,6 @@ import java.util.Properties;
  * @author Paul Hammant
  * @author Mauro Talevi
  * @author Michael Rimov
- * @version $Revision$
  */
 public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer implements NanoContainer, Serializable,
                                                                                             ComponentMonitorStrategy {

@@ -7,7 +7,6 @@ import org.picocontainer.PicoException;
  * Runtime Wrapper Exception for errors in deployment.
  *
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class DeploymentException extends PicoException {
 

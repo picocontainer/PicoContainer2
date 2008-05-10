@@ -24,7 +24,6 @@ import java.util.Collection;
  * to register their aspects.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 class ComponentAspectsCollection {
 

@@ -9,11 +9,8 @@
  *****************************************************************************/
 package org.nanocontainer.testmodel;
 
-
-
 /**
  * @author Stephen Molitor
- * @version $Revision: 1631 $
  */
 public class CustomerEntityImpl implements CustomerEntity {
 

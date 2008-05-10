@@ -7,7 +7,6 @@ import org.picocontainer.Startable;
 /**
  * Component that polls a folder for children at regular intervals.
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public final class FolderContentPoller implements Startable {
     private final FolderContentHandler folderContentHandler;

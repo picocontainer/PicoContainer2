@@ -28,7 +28,6 @@ import java.lang.reflect.Method;
  * An <code>AspectsManager</code> implemented using dynaop.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 public class DynaopAspectsManager implements AspectsManager {
 

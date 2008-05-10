@@ -23,7 +23,6 @@ import java.util.Properties;
  * <code>PicoContainer</code>.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 class ContainerSuppliedInterceptorFactory implements InterceptorFactory {
 

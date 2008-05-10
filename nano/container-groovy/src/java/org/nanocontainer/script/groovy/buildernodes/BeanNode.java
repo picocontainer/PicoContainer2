@@ -24,7 +24,6 @@ import org.codehaus.groovy.runtime.InvokerHelper;
  * @author Aslak Helles&oslash;y
  * @author Michael Rimov
  * @author Mauro Talevi
- * @version $Revision: 2695 $
  */
 public class BeanNode extends AbstractBuilderNode {
 

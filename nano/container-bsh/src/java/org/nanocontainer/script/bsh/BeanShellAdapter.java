@@ -46,7 +46,6 @@ import java.lang.reflect.Type;
  * </ul>
  * @author <a href="mail at leosimons dot com">Leo Simons</a>
  * @author Aslak Hellesoy
- * @version $Id$
  */
 public class BeanShellAdapter extends AbstractAdapter {
     private final Parameter[] parameters;

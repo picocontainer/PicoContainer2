@@ -17,7 +17,6 @@ import org.nanocontainer.aop.ComponentPointcut;
  * <code>org.nanocontainer.aop.ComponentPointcut</code>.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 abstract class ComponentAspect {
 

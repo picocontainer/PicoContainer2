@@ -14,7 +14,6 @@ import java.util.Collection;
  * to be saved.
  *
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class GroovyScriptGenerator {
     // This implementation is ugly and naive. But it's all I need for now.

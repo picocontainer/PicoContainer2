@@ -36,9 +36,7 @@ import org.xml.sax.SAXException;
 
 /**
  * @author Maarten Grootendorst
- * @version $Revision$
  */
-
 // TODO to rename?
 public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedContainerBuilderTestCase {
 

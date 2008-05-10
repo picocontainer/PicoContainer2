@@ -18,7 +18,6 @@ import org.aopalliance.intercept.MethodInterceptor;
  * <code>dynaop.Interceptor</code> interface.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 class MethodInterceptorAdapter implements Interceptor {
 

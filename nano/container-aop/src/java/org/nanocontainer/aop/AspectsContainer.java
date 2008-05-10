@@ -20,7 +20,6 @@ import org.aopalliance.intercept.MethodInterceptor;
  * components.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 public interface AspectsContainer {
 

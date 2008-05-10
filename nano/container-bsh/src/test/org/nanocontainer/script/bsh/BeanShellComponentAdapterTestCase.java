@@ -23,7 +23,6 @@ import org.picocontainer.MutablePicoContainer;
 /**
  * @author <a href="mail at leosimons dot com">Leo Simons</a>
  * @author Nick Sieger
- * @version $Id$
  */
 public class BeanShellComponentAdapterTestCase {
 

@@ -24,7 +24,6 @@ import java.lang.reflect.Method;
  * interface using dynaop.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 public class  DynaopPointcutsFactory extends AbstractPointcutsFactory {
 

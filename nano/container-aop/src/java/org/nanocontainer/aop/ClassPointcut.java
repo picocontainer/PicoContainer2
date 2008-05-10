@@ -13,7 +13,6 @@ package org.nanocontainer.aop;
  * Pointcut that picks classes.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 public interface ClassPointcut {
 

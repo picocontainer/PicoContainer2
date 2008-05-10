@@ -20,7 +20,6 @@ import org.picocontainer.PicoContainer;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public final class NanoContainerDeployerTestCase {
 

@@ -23,7 +23,6 @@ import java.util.Properties;
  * Produces component adapters that apply aspects to components.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 public class Aspecting extends AbstractBehaviorFactory {
 

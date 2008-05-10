@@ -19,7 +19,6 @@ import org.nanocontainer.aop.ComponentPointcut;
  * pointcut.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 final class MixinComponentAspect extends ComponentAspect {
 

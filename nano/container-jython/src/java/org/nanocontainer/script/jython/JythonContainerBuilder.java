@@ -31,7 +31,6 @@ import org.python.util.PythonInterpreter;
  * @author Mike Royle
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
- * @version $Revision$
  */
 public class JythonContainerBuilder extends ScriptedContainerBuilder {
 

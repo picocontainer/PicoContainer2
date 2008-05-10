@@ -17,7 +17,6 @@ import org.picocontainer.PicoException;
  *
  * @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class NanoContainerMarkupException extends PicoException {
 

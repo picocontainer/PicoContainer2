@@ -16,7 +16,6 @@ import org.picocontainer.PicoException;
  * invalid regular expression.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 public class MalformedRegularExpressionException extends PicoException {
 

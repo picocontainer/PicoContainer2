@@ -11,7 +11,6 @@ package org.nanocontainer.testmodel;
 
 /**
  * @author Stephen Molitor
- * @version $Revision: 1631 $
  */
 public interface IdGenerator {
 

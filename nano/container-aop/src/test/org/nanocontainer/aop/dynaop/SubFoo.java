@@ -13,7 +13,6 @@ package org.nanocontainer.aop.dynaop;
 
 /**
  * @author Stephen Molitor
- * @version $Revision$
  */
 public class SubFoo extends Foo {
 

@@ -32,7 +32,6 @@ import org.picocontainer.injectors.AbstractInjector;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 

@@ -21,7 +21,6 @@ import org.picocontainer.PicoCompositionException;
  * advice factories.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 class ContainerLoader {
 

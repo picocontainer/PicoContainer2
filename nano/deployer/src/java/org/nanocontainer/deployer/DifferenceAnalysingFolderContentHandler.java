@@ -12,7 +12,6 @@ import java.util.List;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class DifferenceAnalysingFolderContentHandler implements FolderContentHandler {
     private final FileObject folder;

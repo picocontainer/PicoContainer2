@@ -18,7 +18,6 @@ import org.nanocontainer.script.NanoContainerMarkupException;
 
 /**
  * @author Paul Hammant
- * @version $Revision: 2695 $
  */
 public class GrantNode extends AbstractBuilderNode {
 

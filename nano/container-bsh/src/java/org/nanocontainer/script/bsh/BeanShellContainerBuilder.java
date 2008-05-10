@@ -23,7 +23,6 @@ import bsh.Interpreter;
  * @author Aslak Helles&oslash;y
  * @author Michael Rimov
  * @author Mauro Talevi
- * @version $Revision$
  */
 public class BeanShellContainerBuilder extends ScriptedContainerBuilder {
 

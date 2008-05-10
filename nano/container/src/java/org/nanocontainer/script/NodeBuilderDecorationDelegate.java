@@ -25,7 +25,6 @@ import java.util.Map;
  *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public interface NodeBuilderDecorationDelegate {
 

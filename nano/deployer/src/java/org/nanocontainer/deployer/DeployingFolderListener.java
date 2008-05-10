@@ -6,7 +6,6 @@ import org.picocontainer.Startable;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class DeployingFolderListener implements FolderListener, Startable {
     private final Deployer deployer;

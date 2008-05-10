@@ -7,10 +7,6 @@
  *                                                                           *
  * Original code by                                                          *
  *****************************************************************************/
-/**
- * @author Aslak Helles&oslash;y
- * @version $Revision$
- */
 package org.nanocontainer.script.groovy;
 
 import static org.junit.Assert.assertEquals;
@@ -32,7 +28,6 @@ import org.picocontainer.PicoContainer;
 /**
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
- * @version $Revision$
  */
 public class GroovyContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 

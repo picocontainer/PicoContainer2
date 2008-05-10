@@ -18,7 +18,6 @@ import org.picocontainer.MutablePicoContainer;
 
 /**
  * @author Paul Hammant
- * @version $Revision: 3144 $
  */
 public final class TestingChildBuilder extends NodeBuilder {
 

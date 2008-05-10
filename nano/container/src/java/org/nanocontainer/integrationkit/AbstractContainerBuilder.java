@@ -19,9 +19,8 @@ import org.picocontainer.ObjectReference;
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @author Mauro Talevi
- * @version $Revision$
- * @todo -- Perhaps the start/stop behavior should be moved to a decorator?
  */
+//TODO -- Perhaps the start/stop behavior should be moved to a decorator?
 public abstract class AbstractContainerBuilder implements ContainerBuilder {
 
 	private final LifecycleMode startMode;

@@ -64,7 +64,6 @@ import com.thoughtworks.xstream.XStream;
  * @author Aslak Helles&oslash;y
  * @author Jeppe Cramon
  * @author Mauro Talevi
- * @version $Revision$
  */
 public final class XMLContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
 

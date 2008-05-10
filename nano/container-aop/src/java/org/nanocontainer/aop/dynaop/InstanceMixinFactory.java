@@ -18,7 +18,6 @@ import java.util.Properties;
  * Produces mixin advice from a mixin instance object.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 public class InstanceMixinFactory implements MixinFactory {
 

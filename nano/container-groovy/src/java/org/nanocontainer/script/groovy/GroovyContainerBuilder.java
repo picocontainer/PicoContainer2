@@ -43,7 +43,6 @@ import org.nanocontainer.DefaultNanoContainer;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
- * @version $Revision$
  */
 public class GroovyContainerBuilder extends ScriptedContainerBuilder {
     private Class<?> scriptClass;

@@ -17,7 +17,6 @@ import org.nanocontainer.aop.ComponentPointcut;
  * Aspect that addes interfaces to a component.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 class InterfacesComponentAspect extends ComponentAspect {
 

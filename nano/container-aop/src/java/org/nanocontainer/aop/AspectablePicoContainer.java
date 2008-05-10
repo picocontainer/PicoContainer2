@@ -16,7 +16,6 @@ import org.picocontainer.MutablePicoContainer;
  * application of aspects to components in the container.
  *
  * @author Stephen Molitor
- * @version $Revision$
  * @see <a href='package-summary.html#package_description'>The package
  *      description</a> has a basic overview of how to use the nanoaop package.
  */

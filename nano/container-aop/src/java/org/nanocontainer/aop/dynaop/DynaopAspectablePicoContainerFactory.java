@@ -29,7 +29,6 @@ import org.picocontainer.behaviors.Caching;
  *
  * @author Stephen Molitor
  * @author Mauro Talevi
- * @version $Revision$
  */
 public class DynaopAspectablePicoContainerFactory implements AspectablePicoContainerFactory {
 

@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
  * <code>org.nanocontainer.nanoaop.MethodInvocation</code> interface.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 class InvocationAdapter implements MethodInvocation {
 

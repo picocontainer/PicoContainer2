@@ -18,7 +18,6 @@ import java.lang.reflect.Method;
  * <code>org.nanocontainer.aop.MethodPointcut</code> interface.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 class DynaopMethodPointcut implements dynaop.MethodPointcut, MethodPointcut {
 

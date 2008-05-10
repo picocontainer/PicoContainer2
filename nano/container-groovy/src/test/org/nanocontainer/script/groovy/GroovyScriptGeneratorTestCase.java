@@ -13,7 +13,6 @@ import org.picocontainer.PicoContainer;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 public class GroovyScriptGeneratorTestCase {
     @Test public void testShouldWriteAGroovyScriptThatAllowsToRecreateASimilarContainer() {

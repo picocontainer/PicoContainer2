@@ -25,7 +25,6 @@ import org.picocontainer.PicoContainer;
  * @author Aslak Helles&oslash;y
  * @author Obie Fernandez
  * @author Mauro Talevi
- * @version $Revision$
  */
 public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder {
     private final Reader scriptReader;

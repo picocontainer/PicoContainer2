@@ -20,7 +20,6 @@ import org.picocontainer.ComponentFactory;
  *
  * @author Stephen Molitor
  * @author Mauro Talevi
- * @version $Revision$
  */
 public interface AspectablePicoContainerFactory {
 

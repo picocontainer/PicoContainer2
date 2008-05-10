@@ -8,11 +8,6 @@
  * Original code by                                                          *
  *****************************************************************************/
 
-/**
- * @author Aslak Helles&oslash;y
- * @author Michael Rimov
- * @version $Revision$
- */
 package org.nanocontainer.script.bsh;
 
 import static org.junit.Assert.assertEquals;
@@ -22,7 +17,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.MalformedURLException;
@@ -41,10 +35,9 @@ import org.picocontainer.containers.ImmutablePicoContainer;
 
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
+ * @author Michael Rimov
  */
 public class BeanShellContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
-
 
     @Test public void testContainerCanBeBuiltWithParent() {
         Reader script = new StringReader("" +

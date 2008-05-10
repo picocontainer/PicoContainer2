@@ -13,7 +13,6 @@ import org.picocontainer.PicoCompositionException;
 
 /**
  * @author <a href="mail at leosimons dot com">Leo Simons</a>
- * @version $Id$
  */
 public class BeanShellScriptCompositionException
     extends PicoCompositionException

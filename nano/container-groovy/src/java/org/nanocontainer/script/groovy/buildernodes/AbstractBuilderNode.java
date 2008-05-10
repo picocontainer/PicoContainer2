@@ -27,7 +27,6 @@ import org.nanocontainer.script.NanoContainerMarkupException;
  * @author Aslak Helles&oslash;y
  * @author Michael Rimov
  * @author Mauro Talevi
- * @version $Revision: 2443 $
  */
 abstract public class AbstractBuilderNode implements BuilderNode, Serializable {
 

@@ -15,7 +15,6 @@ import org.picocontainer.ObjectReference;
  * of the PicoContainer world, a deployer can be considered a bit of a mini-microcontainer.</p>
  * @author Aslak Helles&oslash;y
  * @author Michael Rimov
- * @version $Revision$
  */
 public interface Deployer {
 

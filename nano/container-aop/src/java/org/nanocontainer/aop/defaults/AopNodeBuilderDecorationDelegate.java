@@ -33,7 +33,6 @@ import java.util.Map;
 /**
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
- * @version $Revision$
  */
 public class AopNodeBuilderDecorationDelegate implements NodeBuilderDecorationDelegate {
 

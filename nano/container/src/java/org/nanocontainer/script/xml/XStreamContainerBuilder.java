@@ -51,7 +51,6 @@ import com.thoughtworks.xstream.io.xml.DomReader;
  * This class builds up a hierarchy of PicoContainers from an XML configuration file.
  *
  * @author Konstantin Pribluda
- * @version $Revision$
  */
 public class XStreamContainerBuilder extends ScriptedContainerBuilder implements ContainerPopulator {
     private final Element rootElement;

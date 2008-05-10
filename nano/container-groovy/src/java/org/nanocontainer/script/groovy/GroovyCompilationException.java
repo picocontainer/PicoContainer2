@@ -11,7 +11,6 @@ import org.nanocontainer.script.NanoContainerMarkupException;
 
 /**
  * @author Paul Hammant
- * @version $Revision$
  */
 public final class GroovyCompilationException extends NanoContainerMarkupException {
     private final CompilationFailedException compilationFailedException;

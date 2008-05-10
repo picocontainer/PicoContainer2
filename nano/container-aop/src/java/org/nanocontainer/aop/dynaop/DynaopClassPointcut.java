@@ -16,7 +16,6 @@ import org.nanocontainer.aop.ClassPointcut;
  * <code>org.nanocontainer.aop.ClassPointcut</code> interface.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 class DynaopClassPointcut implements dynaop.ClassPointcut, ClassPointcut {
 

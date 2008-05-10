@@ -26,9 +26,7 @@ package org.nanocontainer.script.bsh;
  * protocol.
  *
  * @author Nick Sieger
- * @version 1.0
  */
-
 public class BadScriptableDemoBean extends ScriptableDemoBean {
 
 }

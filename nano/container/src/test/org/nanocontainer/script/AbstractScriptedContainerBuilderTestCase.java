@@ -9,7 +9,6 @@
  *****************************************************************************/
 /**
  * @author Aslak Helles&oslash;y
- * @version $Revision$
  */
 package org.nanocontainer.script;
 

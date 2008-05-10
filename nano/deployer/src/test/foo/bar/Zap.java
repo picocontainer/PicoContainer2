@@ -8,15 +8,13 @@
  * Original code by                                                          *
  *****************************************************************************/
 
-/**
- * @author Aslak Helles&oslash;y
- * @version $Revision: 1570 $
- */
 package foo.bar;
 
 import org.picocontainer.Startable;
 
-
+/**
+ * @author Aslak Helles&oslash;y
+ */
 public class Zap implements Startable {
     private final String hello;
     private String toString = "Not started";

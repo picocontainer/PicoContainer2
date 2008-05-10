@@ -16,7 +16,6 @@ import org.picocontainer.PicoContainer;
  * need to inject aspects into a component.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 public interface AspectsApplicator {
 

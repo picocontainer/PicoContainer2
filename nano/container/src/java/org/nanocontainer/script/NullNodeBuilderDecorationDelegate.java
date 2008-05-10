@@ -8,7 +8,6 @@ import java.util.Map;
 /**
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
- * @version $Revision$
  */
 public class NullNodeBuilderDecorationDelegate implements NodeBuilderDecorationDelegate {
     public ComponentFactory decorate(ComponentFactory componentFactory, Map attributes) {

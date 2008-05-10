@@ -21,7 +21,6 @@ import org.nanocontainer.aop.MalformedRegularExpressionException;
  * expression.
  *
  * @author Stephen Molitor
- * @version $Revision$
  */
 public class NameMatchesComponentPointcut implements ComponentPointcut {
 
