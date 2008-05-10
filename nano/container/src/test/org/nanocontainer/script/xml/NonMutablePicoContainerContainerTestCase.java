@@ -23,7 +23,7 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Test;
-import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.picocontainer.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.testmodel.DefaultWebServerConfig;
 import org.picocontainer.ComponentAdapter;

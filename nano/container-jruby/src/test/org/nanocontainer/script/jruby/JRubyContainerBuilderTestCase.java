@@ -44,7 +44,7 @@ import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.NanoContainer;
 import org.nanocontainer.TestHelper;
 import org.nanocontainer.integrationkit.LifecycleMode;
-import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.picocontainer.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.testmodel.A;

@@ -20,7 +20,7 @@ import org.jruby.exceptions.RaiseException;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.runtime.builtin.IRubyObject;
 import org.nanocontainer.integrationkit.LifecycleMode;
-import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.picocontainer.PicoCompositionException;
 import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.script.ScriptedContainerBuilder;

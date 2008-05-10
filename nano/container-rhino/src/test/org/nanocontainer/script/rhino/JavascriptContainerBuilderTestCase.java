@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.mozilla.javascript.JavaScriptException;
 import org.nanocontainer.integrationkit.LifecycleMode;
 import org.nanocontainer.TestHelper;
-import org.nanocontainer.integrationkit.PicoCompositionException;
+import org.picocontainer.PicoCompositionException;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.testmodel.A;
 import org.nanocontainer.testmodel.WebServer;
