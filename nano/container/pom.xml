@@ -13,10 +13,6 @@
             <groupId>org.picocontainer</groupId>
             <artifactId>picocontainer</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.thoughtworks.paranamer</groupId>
-            <artifactId>paranamer</artifactId>
-        </dependency>
         <!-- optional dependencies -->
         <dependency>
             <groupId>commons-cli</groupId>
