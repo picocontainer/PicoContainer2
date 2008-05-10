@@ -15,7 +15,7 @@ import org.picocontainer.MutablePicoContainer;
  * See <a href="http://nanocontainer.org/NanoWar">NanoWar</a>
  * for sample usage.
  *
- * @author Joe Walnes Joe Walnes
+ * @author Joe Walnes 
  * @author Mauro Talevi
  */
 public interface ContainerComposer {
