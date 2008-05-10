@@ -18,7 +18,6 @@ import mx4j.AbstractDynamicMBean;
  * DynamicMBean implementation based on MX4J.
  * @author James Strachan
  * @author Michael Ward
- * @version $Revision$
  */
 public class MX4JDynamicMBean extends AbstractDynamicMBean {
 

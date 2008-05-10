@@ -30,7 +30,6 @@ import javax.management.modelmbean.RequiredModelMBean;
  * <em>MBean</em>.
  * @author Michael Ward
  * @author J&ouml;rg Schaible
- * @version $Revision$
  */
 public class StandardMBeanFactory implements DynamicMBeanFactory {
 

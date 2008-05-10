@@ -22,7 +22,6 @@ import org.picocontainer.gems.jmx.StandardMBeanFactory;
  * difference to the StandardMBeanFactory is, that it does not need a special management interface for a component to
  * expose.
  * @author Michael Ward
- * @version $Revision$
  */
 public class MX4JDynamicMBeanFactory extends StandardMBeanFactory {
 

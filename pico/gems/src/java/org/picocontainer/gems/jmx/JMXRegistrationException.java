@@ -16,7 +16,6 @@ import org.picocontainer.PicoCompositionException;
 /**
  * A registration exception caused trying to register the component with JMX.
  * @author Michael Ward
- * @version $Revision$
  */
 public class JMXRegistrationException extends PicoCompositionException {
 
