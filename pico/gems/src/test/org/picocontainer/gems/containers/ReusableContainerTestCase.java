@@ -162,4 +162,11 @@ public class ReusableContainerTestCase extends AbstractPicoContainerTest {
 		System.out.println("Completed iterations using DefaultPicoContainer.  Time: " + (endTime - startTime) + "m.s.");
 	}
 
+    protected void addContainers(List expectedList) {
+        expectedList.add(ReusablePicoContainer.class);
+    }
+
+    @Test public void testAcceptImplementsBreadthFirstStrategy() {
+        super.testAcceptImplementsBreadthFirstStrategy();
+    }
 }

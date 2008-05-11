@@ -748,12 +748,13 @@ public abstract class AbstractPicoContainerTest {
 
         List expectedList = new ArrayList();
 
-        expectedList.add(parent.getClass());
+
+        addContainers(expectedList);
         addDefaultComponentFactories(expectedList);
         expectedList.add(hashMapAdapter.getClass());
         expectedList.add(hashSetAdapter.getClass());
         expectedList.add(stringAdapter.getClass());
-        expectedList.add(child.getClass());
+        addContainers(expectedList);
         addDefaultComponentFactories(expectedList);
         expectedList.add(arrayListAdapter.getClass());
         expectedList.add(exceptionAdapter.getClass());
@@ -770,6 +771,10 @@ public abstract class AbstractPicoContainerTest {
         }
     }
 
+    protected void addContainers(List expectedList) {
+        expectedList.add(DefaultPicoContainer.class);
+    }
+    
     protected void addDefaultComponentFactories(List expectedList) {
         expectedList.add(AdaptingBehavior.class);
     }

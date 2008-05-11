@@ -223,4 +223,11 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 		
 		return result;
     }
+
+    public MutablePicoContainer makeChildContainer() {
+        ReusablePicoContainer pc = new ReusablePicoContainer(componentFactory, lifecycleStrategy, this);
+        addChildContainer(pc);
+        return pc;
+    }
+
 }

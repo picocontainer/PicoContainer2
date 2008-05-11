@@ -40,7 +40,9 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
 
     public void accept(PicoVisitor visitor) {
         visitor.visitComponentFactory(this);
-        delegate.accept(visitor);
+        if (delegate != null) {
+            delegate.accept(visitor);
+        }
     }
 
 
