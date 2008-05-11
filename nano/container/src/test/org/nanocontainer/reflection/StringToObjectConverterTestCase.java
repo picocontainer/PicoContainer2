@@ -16,6 +16,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 
 import org.junit.Test;
+import org.nanocontainer.StringConversions;
 
 public final class StringToObjectConverterTestCase {
     private final StringConversions converter = new StringConversions();
@@ -56,7 +57,7 @@ public final class StringToObjectConverterTestCase {
     }
 
     @Test public void testCustomConversionsCanBeRegistered() {
-        converter.register(File.class, new StringConverter() {
+        converter.register(File.class, new StringConversions.StringConverter() {
             public Object convert(String in) {
                 return new File(in);
             }
@@ -76,7 +77,7 @@ public final class StringToObjectConverterTestCase {
         try {
             converter.convertTo(File.class, "hello");
             fail("Should have thrown exception");
-        } catch (InvalidConversionException e) {
+        } catch (StringConversions.InvalidConversionException e) {
             // good
         }
     }

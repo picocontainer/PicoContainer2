@@ -9,12 +9,26 @@
  *****************************************************************************/
 
 
-package org.nanocontainer.reflection;
+package org.nanocontainer;
+
+import org.picocontainer.PicoCompositionException;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class StringConversions {
+
+    public interface StringConverter<T> {
+        T convert(String in);
+    }
+
+    public static class InvalidConversionException extends PicoCompositionException {
+        private static final long serialVersionUID = 1343091406791232802L;
+
+        public InvalidConversionException(String message) {
+        super(message);
+    }
+}
 
     private final Map<Class, StringConverter> converters = new HashMap<Class, StringConverter>();
 
