@@ -9,6 +9,7 @@
 package org.nanocontainer.nanowar.webwork2;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,6 +18,8 @@ import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
 import org.apache.struts2.views.JspSupportServlet;
 import com.opensymphony.xwork2.ActionProxyFactory;
 import com.opensymphony.xwork2.DefaultActionProxyFactory;
+
+import java.io.IOException;
 
 /**
  * Extension to the standard WebWork2 ServletDispatcher that instantiates 
@@ -29,16 +32,16 @@ import com.opensymphony.xwork2.DefaultActionProxyFactory;
  */
 public class PicoWebWork2ServletDispatcher extends JspSupportServlet { // was ServletDispatcher
 
-    public PicoWebWork2ServletDispatcher() {
+    public PicoWebWork2ServletDispatcher(ServletContext servletContext) {
         super();
         ActionProxyFactory.setFactory(new PicoActionProxyFactory());
     }
 
-    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ServletRequestContainerLauncher containerLauncher = new ServletRequestContainerLauncher(getServletContext(), request);
         try {
             containerLauncher.startContainer();
-            // process the servlet using webwork2
+            // process the servlet using struts2
             super.service(request, response);
         } finally {
             containerLauncher.killContainer();

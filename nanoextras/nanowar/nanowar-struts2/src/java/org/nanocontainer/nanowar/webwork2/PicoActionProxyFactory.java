@@ -8,9 +8,7 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork2;
 
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.ActionProxy;
-import com.opensymphony.xwork2.DefaultActionProxyFactory;
+import com.opensymphony.xwork2.*;
 
 import java.util.Map;
 
@@ -25,15 +23,12 @@ import org.nanocontainer.nanowar.webwork2.PicoActionInvocation;
  * @deprecated Use DefaultActionProxyFactory 
  */
 public class PicoActionProxyFactory extends DefaultActionProxyFactory {
-    public ActionInvocation createActionInvocation(ActionProxy actionProxy) throws Exception {
-        return new PicoActionInvocation(actionProxy);
+
+    public ActionInvocation createActionInvocation(ObjectFactory objectFactory, UnknownHandler unknownHandler, ActionProxy actionProxy, Map extraContext) throws Exception {
+        return new PicoActionInvocation(objectFactory,  unknownHandler, actionProxy, extraContext);
     }
 
-    public ActionInvocation createActionInvocation(ActionProxy actionProxy, Map extraContext) throws Exception {
-        return new PicoActionInvocation(actionProxy, extraContext);
-    }
-
-    public ActionInvocation createActionInvocation(ActionProxy actionProxy, Map extraContext, boolean pushAction) throws Exception {
-        return new PicoActionInvocation(actionProxy, extraContext, pushAction);
+    public ActionInvocation createActionInvocation(ObjectFactory objectFactory, UnknownHandler unknownHandler, ActionProxy actionProxy, Map extraContext, boolean pushAction) throws Exception {
+        return new PicoActionInvocation(objectFactory,  unknownHandler, actionProxy, extraContext, pushAction);
     }
 }
