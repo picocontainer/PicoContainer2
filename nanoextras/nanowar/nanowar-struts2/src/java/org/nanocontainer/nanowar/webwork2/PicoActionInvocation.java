@@ -12,6 +12,8 @@ import java.util.Map;
 
 import com.opensymphony.xwork2.ActionProxy;
 import com.opensymphony.xwork2.DefaultActionInvocation;
+import com.opensymphony.xwork2.ObjectFactory;
+import com.opensymphony.xwork2.UnknownHandler;
 
 /**
  * Implementation of {@link com.opensymphony.xwork.ActionInvocation ActionInvocation}
@@ -22,17 +24,15 @@ import com.opensymphony.xwork2.DefaultActionInvocation;
  * @deprecated Use DefaultActionInvocation 
  */
 public class PicoActionInvocation extends DefaultActionInvocation {
+    
+    private static final long serialVersionUID = 8877588734538436197L;
 
-    public PicoActionInvocation(ActionProxy proxy) throws Exception {
-        super(proxy);
+    public PicoActionInvocation(ObjectFactory objectFactory, UnknownHandler unknownHandler, ActionProxy proxy, Map extraContext) throws Exception {
+        super(objectFactory,  unknownHandler, proxy, extraContext);
     }
 
-    public PicoActionInvocation(ActionProxy proxy, Map extraContext) throws Exception {
-        super(proxy, extraContext);
-    }
-
-    public PicoActionInvocation(ActionProxy proxy, Map extraContext, boolean pushAction) throws Exception {
-        super(proxy, extraContext, pushAction);
+    public PicoActionInvocation(ObjectFactory objectFactory, UnknownHandler unknownHandler, ActionProxy proxy, Map extraContext, boolean pushAction) throws Exception {
+        super(objectFactory,  unknownHandler, proxy, extraContext, pushAction);
     }
 
 }
