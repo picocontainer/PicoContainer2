@@ -18,7 +18,7 @@ import java.io.File;
 import org.junit.Test;
 
 public final class StringToObjectConverterTestCase {
-    private final StringToObjectConverter converter = new StringToObjectConverter();
+    private final StringConversions converter = new StringConversions();
 
     @Test public void testConvertsToString() {
         assertEquals("hello", converter.convertTo(String.class, "hello"));
@@ -56,7 +56,7 @@ public final class StringToObjectConverterTestCase {
     }
 
     @Test public void testCustomConversionsCanBeRegistered() {
-        converter.register(File.class, new Converter() {
+        converter.register(File.class, new StringConverter() {
             public Object convert(String in) {
                 return new File(in);
             }
