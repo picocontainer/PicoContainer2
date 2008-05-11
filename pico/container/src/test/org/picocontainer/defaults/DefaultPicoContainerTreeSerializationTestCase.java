@@ -33,6 +33,7 @@ import org.picocontainer.tck.AbstractPicoContainerTest;
  * @author Paul Hammant
  */
 public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoContainerTest {
+
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultPicoContainer(parent);
     }
@@ -55,5 +56,10 @@ public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoC
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
         child = (MutablePicoContainer) ois.readObject();
         assertNotNull(child.getParent());
+    }
+    
+    @Test
+    public void testAcceptImplementsBreadthFirstStrategy() {
+        super.testAcceptImplementsBreadthFirstStrategy();
     }
 }

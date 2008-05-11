@@ -705,19 +705,19 @@ public abstract class AbstractPicoContainerTest {
         }
 
         public void visitContainer(PicoContainer pico) {
-            list.add(pico);
+            list.add(pico.getClass());
         }
 
         public void visitComponentAdapter(ComponentAdapter componentAdapter) {
-            list.add(componentAdapter);
+            list.add(componentAdapter.getClass());
         }
 
         public void visitComponentFactory(ComponentFactory componentFactory) {
-            list.add(componentFactory);
+            list.add(componentFactory.getClass());
         }
 
         public void visitParameter(Parameter parameter) {
-            list.add(parameter);
+            list.add(parameter.getClass());
         }
 
     }
@@ -746,8 +746,7 @@ public abstract class AbstractPicoContainerTest {
                                                          throwableParameter}, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
         ComponentAdapter exceptionAdapter = child.as(getProperties()).addAdapter(ci).getComponentAdapter(Exception.class, (NameBinding) null);
 
-        List expectedList = new ArrayList();
-
+        List<Class> expectedList = new ArrayList<Class>();
 
         addContainers(expectedList);
         addDefaultComponentFactories(expectedList);
@@ -764,11 +763,10 @@ public abstract class AbstractPicoContainerTest {
         PicoVisitor visitor = new RecordingStrategyVisitor(visitedList);
         visitor.traverse(parent);
         assertEquals(expectedList.size(), visitedList.size());
-        for (int i = 0; i < visitedList.size(); i++) {
-            Object actual = visitedList.get(i);
-            Object expected = expectedList.get(i);
-            assertSame(expected, actual.getClass());
+        for (Class c : expectedList) {
+            assertTrue(visitedList.remove(c));
         }
+        assertEquals(0, visitedList.size());
     }
 
     protected void addContainers(List expectedList) {
