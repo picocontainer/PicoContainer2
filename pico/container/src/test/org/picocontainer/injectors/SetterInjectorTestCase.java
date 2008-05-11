@@ -435,9 +435,8 @@ public class SetterInjectorTestCase
         }
     }
 
-    // TODO PICO-188
-    // http://jira.codehaus.org/browse/PICO-188
-    public void FIXME_testShouldBeAbleToHandleMutualDependenciesWithSetterInjection() {
+    //@Test  http://jira.codehaus.org/browse/PICO-188
+    public void shouldBeAbleToHandleMutualDependenciesWithSetterInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer(new Caching().wrap(new SetterInjection()));
 
         pico.addComponent(Yin.class);
