@@ -26,9 +26,10 @@ import java.util.Properties;
  * 
  *  @author Paul Hammant 
  */
-public class MethodInjection implements ComponentFactory {
+public class MethodInjection extends AbstractInjectionFactory {
 
     private final String injectionMethodName;
+    private static final long serialVersionUID = -2709009345398980376L;
 
     public MethodInjection(String injectionMethodName) {
         this.injectionMethodName = injectionMethodName;

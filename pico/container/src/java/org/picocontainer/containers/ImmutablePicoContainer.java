@@ -25,7 +25,7 @@ import java.lang.annotation.Annotation;
  *
  * @author Konstantin Pribluda
  */
-public class ImmutablePicoContainer implements PicoContainer, Serializable {
+public final class ImmutablePicoContainer implements PicoContainer, Serializable {
 
     private final PicoContainer delegate;
     private static final long serialVersionUID = -2618754969124385717L;
@@ -85,7 +85,8 @@ public class ImmutablePicoContainer implements PicoContainer, Serializable {
         return delegate.getComponents(componentType);
     }
 
-    public void accept(PicoVisitor visitor) {
+    public final void accept(PicoVisitor visitor) {
+        // don't visit "this" its pointless.
         delegate.accept(visitor);
     }
 

@@ -24,6 +24,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.AbstractInjectionFactory;
 
 
 /**
@@ -102,7 +103,7 @@ public class SimpleNamedBindingAnnotationTestCase {
         return type.getName() + "/" + bindingId;
     }
 
-    public class FieldInjection implements InjectionFactory, Serializable {
+    public class FieldInjection extends AbstractInjectionFactory {
 
         public <T> ComponentAdapter<T> createComponentAdapter(
             ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,

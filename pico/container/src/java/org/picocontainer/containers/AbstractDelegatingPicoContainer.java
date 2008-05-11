@@ -30,8 +30,9 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
 		this.delegate = delegate;
 	}
 
-	public void accept(PicoVisitor visitor) {
-		delegate.accept(visitor);
+	public final void accept(PicoVisitor visitor) {
+        visitor.visitContainer(this);
+        delegate.accept(visitor);
 	}
 
 

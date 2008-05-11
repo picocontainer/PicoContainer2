@@ -29,7 +29,7 @@ import java.util.Properties;
  *
  * @author Paul Hammant
  */
-public class AnnotatedMethodInjection implements InjectionFactory, Serializable {
+public class AnnotatedMethodInjection extends AbstractInjectionFactory {
 
     /**
 	 * Serialization UUID.

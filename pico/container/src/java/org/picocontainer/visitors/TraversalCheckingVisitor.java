@@ -10,6 +10,7 @@ package org.picocontainer.visitors;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.visitors.AbstractPicoVisitor;
 
 
@@ -43,6 +44,10 @@ public class TraversalCheckingVisitor
     }
 
     public void visitComponentAdapter(ComponentAdapter componentAdapter) {
+        checkTraversal();
+    }
+
+    public void visitComponentFactory(ComponentFactory componentFactory) {
         checkTraversal();
     }
 

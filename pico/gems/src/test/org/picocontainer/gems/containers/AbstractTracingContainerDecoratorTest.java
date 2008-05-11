@@ -41,13 +41,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.NameBinding;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
+import org.picocontainer.*;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -119,7 +113,11 @@ public abstract class AbstractTracingContainerDecoratorTest  {
 				throw new UnsupportedOperationException();
 			}
 
-			public void visitContainer(PicoContainer pico) {
+            public void visitComponentFactory(ComponentFactory componentFactory) {
+                throw new UnsupportedOperationException();
+            }
+
+            public void visitContainer(PicoContainer pico) {
 				throw new UnsupportedOperationException();
 			}
 

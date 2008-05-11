@@ -19,7 +19,7 @@ import java.util.Properties;
  * 
  * @author Paul Hammant
  */
-public class CompositeInjection implements InjectionFactory, Serializable {
+public class CompositeInjection extends AbstractInjectionFactory {
 
     private static final long serialVersionUID = 1962189227810901031L;    
 

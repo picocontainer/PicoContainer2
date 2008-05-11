@@ -527,6 +527,10 @@ public abstract class AbstractComponentAdapterTest  {
             visitedElements.add(componentAdapter);
         }
 
+        public void visitComponentFactory(ComponentFactory componentFactory) {
+            visitedElements.add(componentFactory);
+        }
+
         public void visitParameter(Parameter parameter) {
             visitedElements.add(parameter);
         }

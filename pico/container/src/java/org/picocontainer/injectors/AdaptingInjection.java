@@ -14,13 +14,7 @@ import java.io.Serializable;
 import java.lang.reflect.AccessibleObject;
 import java.util.Properties;
 
-import org.picocontainer.Characteristics;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.InjectionFactory;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
+import org.picocontainer.*;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
@@ -43,7 +37,7 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  * @see MethodInjection
  * @see ConstructorInjection
  */
-public class AdaptingInjection implements InjectionFactory, Serializable {
+public class AdaptingInjection extends AbstractInjectionFactory {
 
     /**
 	 * Serialization UUID.

@@ -7,11 +7,7 @@
  *****************************************************************************/
 package org.picocontainer.visitors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVerificationException;
-import org.picocontainer.PicoVisitor;
+import org.picocontainer.*;
 import org.picocontainer.visitors.TraversalCheckingVisitor;
 
 import java.util.ArrayList;
@@ -28,7 +24,8 @@ import java.util.Set;
 public class VerifyingVisitor extends TraversalCheckingVisitor {
 
     private final List nestedVerificationExceptions;
-    private final Set verifiedComponentAdapters;
+    private final Set<ComponentAdapter> verifiedComponentAdapters;
+    private final Set<ComponentFactory> verifiedComponentFactories;
     private final PicoVisitor componentAdapterCollector;
     private PicoContainer currentPico;
 
@@ -37,7 +34,8 @@ public class VerifyingVisitor extends TraversalCheckingVisitor {
      */
     public VerifyingVisitor() {
         nestedVerificationExceptions = new ArrayList();
-        verifiedComponentAdapters = new HashSet();
+        verifiedComponentAdapters = new HashSet<ComponentAdapter>();
+        verifiedComponentFactories = new HashSet<ComponentFactory>();
         componentAdapterCollector = new ComponentAdapterCollector();
     }
 
@@ -79,6 +77,21 @@ public class VerifyingVisitor extends TraversalCheckingVisitor {
         }
     }
 
+    public void visitComponentFactory(ComponentFactory componentFactory) {
+        super.visitComponentFactory(componentFactory);
+
+        if (!verifiedComponentFactories.contains(componentFactory)) {
+            try {
+                componentFactory.verify(currentPico);
+            } catch (RuntimeException e) {
+                nestedVerificationExceptions.add(e);
+            }
+            componentFactory.accept(componentAdapterCollector);
+        }
+    }
+
+
+
     private class ComponentAdapterCollector implements PicoVisitor {
         // /CLOVER:OFF
         public Object traverse(Object node) {
@@ -92,6 +105,10 @@ public class VerifyingVisitor extends TraversalCheckingVisitor {
 
         public void visitComponentAdapter(ComponentAdapter componentAdapter) {
             verifiedComponentAdapters.add(componentAdapter);
+        }
+
+        public void visitComponentFactory(ComponentFactory componentFactory) {
+            verifiedComponentFactories.add(componentFactory);
         }
 
         public void visitParameter(Parameter parameter) {

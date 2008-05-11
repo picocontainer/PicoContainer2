@@ -352,8 +352,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		assertEquals(monitor2, pico.currentMonitor());
 	}
 
-	private static final class ComponentFactoryWithNoMonitor implements
-			ComponentFactory {
+	private static final class ComponentFactoryWithNoMonitor implements ComponentFactory {
 		private final ComponentAdapter adapter;
 
 		public ComponentFactoryWithNoMonitor(ComponentAdapter adapter) {
@@ -368,7 +367,14 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 				throws PicoCompositionException {
 			return adapter;
 		}
-	}
+
+        public void verify(PicoContainer container) {
+        }
+
+        public void accept(PicoVisitor visitor) {
+            visitor.visitComponentFactory(this);
+        }
+    }
 
 	private static final class ComponentAdapterWithNoMonitor implements
 			ComponentAdapter {
@@ -400,7 +406,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		}
 
 		public void accept(PicoVisitor visitor) {
-		}
+        }
 
 		public ComponentAdapter getDelegate() {
 			return null;
@@ -890,10 +896,4 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
             };
         }
     }
-
-
-
-
-
-
 }

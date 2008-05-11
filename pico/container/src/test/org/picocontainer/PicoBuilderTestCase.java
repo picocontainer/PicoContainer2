@@ -255,6 +255,13 @@ public class PicoBuilderTestCase {
                                                        Parameter... parameters) throws PicoCompositionException {
             return null;
         }
+
+        public void verify(PicoContainer container) {
+        }
+
+        public void accept(PicoVisitor visitor) {
+            visitor.visitComponentFactory(this);
+        }
     }
 
 

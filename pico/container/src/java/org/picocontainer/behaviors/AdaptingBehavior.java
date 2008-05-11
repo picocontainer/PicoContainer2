@@ -9,14 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Characteristics;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.BehaviorFactory;
+import org.picocontainer.*;
 import org.picocontainer.annotations.Cache;
 import org.picocontainer.injectors.AdaptingInjection;
 
@@ -84,6 +77,14 @@ public class AdaptingBehavior implements BehaviorFactory, Serializable {
 
 
         return lastFactory.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
+    }
+
+    public void verify(PicoContainer container) {
+    }
+
+    public void accept(PicoVisitor visitor) {
+        visitor.visitComponentFactory(this);
+        
     }
 
     protected AdaptingInjection makeInjectionFactory() {

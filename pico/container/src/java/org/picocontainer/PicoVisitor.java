@@ -34,13 +34,21 @@ public interface PicoVisitor {
      */
 
     void visitContainer(PicoContainer pico);
+
     /**
      * Visit a {@link ComponentAdapter} that has to accept the visitor.
      * 
      * @param componentAdapter the visited ComponentAdapter.
      */
-
     void visitComponentAdapter(ComponentAdapter componentAdapter);
+
+    /**
+     * Visit a {@link ComponentAdapter} that has to accept the visitor.
+     *
+     * @param componentAdapter the visited ComponentAdapter.
+     */
+    void visitComponentFactory(ComponentFactory componentFactory);
+
     /**
      * Visit a {@link Parameter} that has to accept the visitor.
      * 

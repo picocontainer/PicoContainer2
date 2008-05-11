@@ -25,6 +25,8 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.injectors.AdaptingInjection;
+import org.picocontainer.behaviors.AdaptingBehavior;
 
 
 /**
@@ -46,13 +48,15 @@ public class ImmutablePicoContainerTestCase {
     }
 
     @Test public void testVisitingOfImmutableContainerWorks() {
-        final DefaultPicoContainer pico = new DefaultPicoContainer();
+        final AdaptingInjection ai = new AdaptingInjection();
+        final DefaultPicoContainer pico = new DefaultPicoContainer(ai);
         Object foo = new Object();
         final ComponentAdapter componentAdapter = pico.addComponent(foo).getComponentAdapter(foo.getClass(), (NameBinding) null);
 
         final PicoVisitor fooVisitor = mockery.mock(PicoVisitor.class);
         mockery.checking(new Expectations() {{
             one(fooVisitor).visitContainer(with(same(pico)));
+        	one(fooVisitor).visitComponentFactory(with(same(ai)));
         	one(fooVisitor).visitComponentAdapter(with(same(componentAdapter)));
         }});
         PicoContainer ipc = new ImmutablePicoContainer(pico);

@@ -7,13 +7,7 @@
  ******************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.BehaviorFactory;
+import org.picocontainer.*;
 import org.picocontainer.injectors.AdaptingInjection;
 
 import java.io.Serializable;
@@ -39,6 +33,16 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
         return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, componentKey,
                 componentImplementation, parameters);
     }
+
+    public void verify(PicoContainer container) {
+        delegate.verify(container);
+    }
+
+    public void accept(PicoVisitor visitor) {
+        visitor.visitComponentFactory(this);
+        delegate.accept(visitor);
+    }
+
 
     public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
             LifecycleStrategy lifecycleStrategy, Properties componentProperties, ComponentAdapter<T> adapter) {
@@ -85,4 +89,5 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
         }
 
     }
+
 }

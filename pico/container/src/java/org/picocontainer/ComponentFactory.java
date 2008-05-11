@@ -65,5 +65,19 @@ public interface ComponentFactory {
                                             Class<T> componentImplementation,
                                             Parameter... parameters) throws PicoCompositionException;
 
+    /**
+     * Verification for the ComponentFactory - subject to implementation.
+     *
+     * @param container the {@link PicoContainer}, that is used for verification.
+     * @throws PicoCompositionException if one or more dependencies cannot be resolved.
+     */
+    void verify(PicoContainer container);
 
+    /**
+     * Accepts a visitor for this ComponentFactory. The method is normally called by visiting a {@link PicoContainer}, that
+     * cascades the visitor also down to all its ComponentFactory instances.
+     *
+     * @param visitor the visitor.
+     */
+    void accept(PicoVisitor visitor);
 }

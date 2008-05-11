@@ -29,7 +29,7 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  *  @author Paul Hammant 
  * @author Jon Tirs&eacute;n
  */
-public class ConstructorInjection implements InjectionFactory, Serializable {
+public class ConstructorInjection extends AbstractInjectionFactory  {
     private static final long serialVersionUID = -6044681748649376149L;
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties properties, Object componentKey,

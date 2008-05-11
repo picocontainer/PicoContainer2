@@ -21,7 +21,7 @@ import java.io.Serializable;
 import java.util.Properties;
 
 /** @author Paul Hammant */
-public class MultiInjection implements InjectionFactory, Serializable {
+public class MultiInjection extends AbstractInjectionFactory {
     private final String setterPrefix;
     private static final long serialVersionUID = -2696923482238638163L;
 

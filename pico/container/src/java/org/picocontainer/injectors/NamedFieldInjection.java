@@ -31,7 +31,7 @@ import java.io.Serializable;
  *
  * @author Paul Hammant
  */
-public class NamedFieldInjection implements InjectionFactory, Serializable {
+public class NamedFieldInjection extends AbstractInjectionFactory {
 
 
     /**

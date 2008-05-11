@@ -51,7 +51,8 @@ public class CompositeInjector<T> extends AbstractInjector<T> {
         }
     }
 
-    public void accept(PicoVisitor visitor) {
+    public final void accept(PicoVisitor visitor) {
+        super.accept(visitor);
         for (int i = 0; i < injectors.length; i++) {
             injectors[i].accept(visitor);
         }

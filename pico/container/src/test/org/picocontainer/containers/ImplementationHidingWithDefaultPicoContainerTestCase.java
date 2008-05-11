@@ -11,6 +11,7 @@ package org.picocontainer.containers;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
+import java.util.List;
 
 import junit.framework.AssertionFailedError;
 
@@ -22,6 +23,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTest;
 
 /**
@@ -38,10 +40,23 @@ public class ImplementationHidingWithDefaultPicoContainerTestCase extends Abstra
         return new Properties[] {Characteristics.NO_CACHE, Characteristics.NO_HIDE_IMPL};
     }
 
+    // TODO (PH) should IH do caching at all and CtorInjection instead of AdaptingInjection ?
+
+    protected void addDefaultComponentFactories(List expectedList) {
+        expectedList.add(Caching.class);
+        expectedList.add(ImplementationHiding.class);
+        expectedList.add(ConstructorInjection.class);
+    }
+
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultPicoContainer(new Caching().wrap(new ImplementationHiding().wrap(new ConstructorInjection())), parent);
     }
-    
+
+    @Test
+    public void testAggregatedVerificationException() {
+        super.testAggregatedVerificationException();    
+    }
+
     @Test public void testSameInstanceCanBeUsedAsDifferentTypeWhenCaching() {
         // we're choosing a CAF for DPC, thus Caching (a default) not enabled.
         try {

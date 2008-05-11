@@ -31,7 +31,7 @@ import static org.picocontainer.Characteristics.immutable;
  *
  * @author Paul Hammant
  */
-public class TypedFieldInjection implements InjectionFactory, Serializable {
+public class TypedFieldInjection extends AbstractInjectionFactory {
 
     private static final String INJECTION_FIELD_TYPES = "injectionFieldTypes";
     private static final long serialVersionUID = -536396559663715962L;

@@ -36,22 +36,10 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.junit.Test;
-import org.picocontainer.Behavior;
-import org.picocontainer.Characteristics;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Disposable;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.NameBinding;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoVerificationException;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.Startable;
+import org.picocontainer.*;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -724,6 +712,10 @@ public abstract class AbstractPicoContainerTest {
             list.add(componentAdapter);
         }
 
+        public void visitComponentFactory(ComponentFactory componentFactory) {
+            list.add(componentFactory);
+        }
+
         public void visitParameter(Parameter parameter) {
             list.add(parameter);
         }
@@ -754,19 +746,32 @@ public abstract class AbstractPicoContainerTest {
                                                          throwableParameter}, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
         ComponentAdapter exceptionAdapter = child.as(getProperties()).addAdapter(ci).getComponentAdapter(Exception.class, (NameBinding) null);
 
-        List expectedList = Arrays.asList(parent,
-                                          hashMapAdapter,
-                                          hashSetAdapter,
-                                          stringAdapter,
-                                          child,
-                                          arrayListAdapter,
-                                          exceptionAdapter,
-                                          componentParameter,
-                                          throwableParameter);
+        List expectedList = new ArrayList();
+
+        expectedList.add(parent.getClass());
+        addDefaultComponentFactories(expectedList);
+        expectedList.add(hashMapAdapter.getClass());
+        expectedList.add(hashSetAdapter.getClass());
+        expectedList.add(stringAdapter.getClass());
+        expectedList.add(child.getClass());
+        addDefaultComponentFactories(expectedList);
+        expectedList.add(arrayListAdapter.getClass());
+        expectedList.add(exceptionAdapter.getClass());
+        expectedList.add(componentParameter.getClass());
+        expectedList.add(throwableParameter.getClass());
         List<Object> visitedList = new LinkedList<Object>();
         PicoVisitor visitor = new RecordingStrategyVisitor(visitedList);
         visitor.traverse(parent);
         assertEquals(expectedList.size(), visitedList.size());
+        for (int i = 0; i < visitedList.size(); i++) {
+            Object actual = visitedList.get(i);
+            Object expected = expectedList.get(i);
+            assertSame(expected, actual.getClass());
+        }
+    }
+
+    protected void addDefaultComponentFactories(List expectedList) {
+        expectedList.add(AdaptingBehavior.class);
     }
 
     @Test public void testAmbiguousDependencies() throws PicoCompositionException {

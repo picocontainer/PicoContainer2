@@ -29,7 +29,7 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  *
  * @author J&ouml;rg Schaible
  */
-public class SetterInjection implements InjectionFactory, Serializable {
+public class SetterInjection extends AbstractInjectionFactory {
 
     private final String setterMethodPrefix;
     private static final long serialVersionUID = -7940916082786647148L;

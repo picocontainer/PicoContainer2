@@ -37,6 +37,7 @@ public abstract class FactoryInjector<T> implements Injector<T> {
     }
 
     public void accept(PicoVisitor visitor) {
+        visitor.visitComponentAdapter(this);
     }
 
     public ComponentAdapter<T> getDelegate() {

@@ -29,7 +29,7 @@ import java.lang.annotation.Annotation;
  *
  * @author Paul Hammant
  */
-public class AnnotatedFieldInjection implements InjectionFactory, Serializable {
+public class AnnotatedFieldInjection extends AbstractInjectionFactory {
 
     /**
 	 * Serialization UUID.

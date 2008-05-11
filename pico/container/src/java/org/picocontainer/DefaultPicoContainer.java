@@ -795,6 +795,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     public void accept(final PicoVisitor visitor) {
         visitor.visitContainer(this);
+        componentFactory.accept(visitor); // will cascade through behaviors
         final List<ComponentAdapter<?>> componentAdapters = new ArrayList<ComponentAdapter<?>>(getComponentAdapters());
         for (ComponentAdapter<?> componentAdapter : componentAdapters) {
             componentAdapter.accept(visitor);
