@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
 
-import com.opensymphony.webwork.dispatcher.ServletDispatcher;
-import com.opensymphony.xwork.ActionProxyFactory;
-import com.opensymphony.xwork.DefaultActionProxyFactory;
+import org.apache.struts2.views.JspSupportServlet;
+import com.opensymphony.xwork2.ActionProxyFactory;
+import com.opensymphony.xwork2.DefaultActionProxyFactory;
 
 /**
  * Extension to the standard WebWork2 ServletDispatcher that instantiates 
@@ -27,7 +27,7 @@ import com.opensymphony.xwork.DefaultActionProxyFactory;
  *
  * @author Joe Walnes
  */
-public class PicoWebWork2ServletDispatcher extends ServletDispatcher {
+public class PicoWebWork2ServletDispatcher extends JspSupportServlet { // was ServletDispatcher
 
     public PicoWebWork2ServletDispatcher() {
         super();

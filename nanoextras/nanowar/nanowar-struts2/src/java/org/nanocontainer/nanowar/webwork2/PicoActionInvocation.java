@@ -10,8 +10,8 @@ package org.nanocontainer.nanowar.webwork2;
 
 import java.util.Map;
 
-import com.opensymphony.xwork.ActionProxy;
-import com.opensymphony.xwork.DefaultActionInvocation;
+import com.opensymphony.xwork2.ActionProxy;
+import com.opensymphony.xwork2.DefaultActionInvocation;
 
 /**
  * Implementation of {@link com.opensymphony.xwork.ActionInvocation ActionInvocation}

@@ -8,7 +8,7 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork2;
 
-import com.opensymphony.xwork.ObjectFactory;
+import com.opensymphony.xwork2.ObjectFactory;
 import org.nanocontainer.nanowar.ActionsContainerFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;

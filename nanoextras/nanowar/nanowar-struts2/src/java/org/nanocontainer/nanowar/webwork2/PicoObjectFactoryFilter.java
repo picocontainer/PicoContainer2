@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.references.ThreadLocalReference;
 
-import com.opensymphony.xwork.ObjectFactory;
+import com.opensymphony.xwork2.ObjectFactory;
 
 /**
  * Filter which initialises a PicoObjectFactory as the XWork ObjectFactory
