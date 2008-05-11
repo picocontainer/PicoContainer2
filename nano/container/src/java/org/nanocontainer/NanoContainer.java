@@ -44,7 +44,7 @@ public interface NanoContainer extends MutablePicoContainer {
      */
     ClassLoader getComponentClassLoader();
     
-    MutablePicoContainer makeChildContainer(String name);
+    NanoContainer makeChildContainer(String name);
 
     void addChildContainer(String name, PicoContainer child);
 

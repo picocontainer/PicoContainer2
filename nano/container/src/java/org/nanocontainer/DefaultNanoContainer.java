@@ -221,7 +221,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
      *
      * @return The child MutablePicoContainer
      */
-    public MutablePicoContainer makeChildContainer(String name) {
+    public NanoContainer makeChildContainer(String name) {
         DefaultNanoContainer child = createChildContainer();
         MutablePicoContainer parentDelegate = getDelegate();
         parentDelegate.removeChildContainer(child.getDelegate());
@@ -380,7 +380,7 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
             return DefaultNanoContainer.this.getComponentClassLoader();
         }
 
-        public MutablePicoContainer makeChildContainer(String name) {
+        public NanoContainer makeChildContainer(String name) {
             return DefaultNanoContainer.this.makeChildContainer(name);
         }
 

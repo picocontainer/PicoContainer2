@@ -14,6 +14,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
+import java.util.List;
 
 import org.junit.Test;
 import org.nanocontainer.DefaultNanoContainer;
@@ -23,6 +24,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
+import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.tck.AbstractPicoContainerTest;
 
 /**
@@ -90,5 +92,16 @@ public class DefaultNanoContainerTestCase extends AbstractPicoContainerTest {
     @Test public void testAcceptImplementsBreadthFirstStrategy() {
         super.testAcceptImplementsBreadthFirstStrategy();
     }
+
+    protected void addContainers(List expectedList) {
+        expectedList.add(DefaultNanoContainer.class);
+        expectedList.add(DefaultPicoContainer.class);
+    }
+
+
+    protected void addDefaultComponentFactories(List expectedList) {
+        expectedList.add(Caching.class);
+    }
+
 
 }
