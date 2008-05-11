@@ -9,8 +9,11 @@
  *****************************************************************************/
 package org.nanocontainer.reflection;
 
-// todo should this extend RTE ??
-public class InvalidConversionException extends RuntimeException {
+import org.picocontainer.PicoCompositionException;
+
+public class InvalidConversionException extends PicoCompositionException {
+    private static final long serialVersionUID = -6121032191716322930L;
+
     public InvalidConversionException(String message) {
         super(message);
     }

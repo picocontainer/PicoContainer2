@@ -11,6 +11,6 @@
 
 package org.nanocontainer.reflection;
 
-public interface Converter {
-    Object convert(String in);
+public interface Converter<T> {
+    T convert(String in);
 }

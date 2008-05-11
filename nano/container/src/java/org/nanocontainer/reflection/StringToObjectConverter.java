@@ -19,26 +19,26 @@ public class StringToObjectConverter {
     private final Map<Class, Converter> converters = new HashMap<Class, Converter>();
 
     public StringToObjectConverter() {
-        register(String.class, new Converter() {
-            public Object convert(String in) {
+        register(String.class, new Converter<String>() {
+            public String convert(String in) {
                 return in;
             }
         });
 
-        register(Integer.class, new Converter() {
-            public Object convert(String in) {
+        register(Integer.class, new Converter<Integer>() {
+            public Integer convert(String in) {
                 return in == null ? 0 : Integer.valueOf(in);
             }
         });
 
-        register(Long.class, new Converter() {
-            public Object convert(String in) {
+        register(Long.class, new Converter<Long>() {
+            public Long convert(String in) {
                 return in == null ? (long) 0 : Long.valueOf(in);
             }
         });
 
-        register(Boolean.class, new Converter() {
-            public Object convert(String in) {
+        register(Boolean.class, new Converter<Boolean>() {
+            public Boolean convert(String in) {
                 if (in == null || in.length() == 0) {
                     return Boolean.FALSE;
                 }
