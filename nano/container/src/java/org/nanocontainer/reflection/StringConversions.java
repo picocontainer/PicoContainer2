@@ -14,30 +14,30 @@ package org.nanocontainer.reflection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StringToObjectConverter {
+public class StringConversions {
 
-    private final Map<Class, Converter> converters = new HashMap<Class, Converter>();
+    private final Map<Class, StringConverter> converters = new HashMap<Class, StringConverter>();
 
-    public StringToObjectConverter() {
-        register(String.class, new Converter<String>() {
+    public StringConversions() {
+        register(String.class, new StringConverter<String>() {
             public String convert(String in) {
                 return in;
             }
         });
 
-        register(Integer.class, new Converter<Integer>() {
+        register(Integer.class, new StringConverter<Integer>() {
             public Integer convert(String in) {
                 return in == null ? 0 : Integer.valueOf(in);
             }
         });
 
-        register(Long.class, new Converter<Long>() {
+        register(Long.class, new StringConverter<Long>() {
             public Long convert(String in) {
                 return in == null ? (long) 0 : Long.valueOf(in);
             }
         });
 
-        register(Boolean.class, new Converter<Boolean>() {
+        register(Boolean.class, new StringConverter<Boolean>() {
             public Boolean convert(String in) {
                 if (in == null || in.length() == 0) {
                     return Boolean.FALSE;
@@ -49,14 +49,14 @@ public class StringToObjectConverter {
     }
 
     public Object convertTo(Class desiredClass, String inputString) {
-        Converter converter = converters.get(desiredClass);
+        StringConverter converter = converters.get(desiredClass);
         if (converter == null) {
             throw new InvalidConversionException("Cannot convert to type " + desiredClass.getName());
         }
         return converter.convert(inputString);
     }
 
-    public void register(Class type, Converter converter) {
+    public void register(Class type, StringConverter converter) {
         converters.put(type, converter);
     }
 }
