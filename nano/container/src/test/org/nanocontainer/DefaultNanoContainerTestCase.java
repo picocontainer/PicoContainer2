@@ -8,7 +8,7 @@
  * Original code by Paul Hammant                                             *
  *****************************************************************************/
 
-package org.nanocontainer.reflection;
+package org.nanocontainer;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
