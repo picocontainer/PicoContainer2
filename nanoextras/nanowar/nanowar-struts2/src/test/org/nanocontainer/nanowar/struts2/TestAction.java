@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.webwork2;
+package org.nanocontainer.nanowar.struts2;
 
 import com.opensymphony.xwork2.Action;
 

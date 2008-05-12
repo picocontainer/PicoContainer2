@@ -6,16 +6,18 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.webwork2;
-
-import com.opensymphony.xwork2.*;
+package org.nanocontainer.nanowar.struts2;
 
 import java.util.Map;
 
-import org.nanocontainer.nanowar.webwork2.PicoActionInvocation;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.ActionProxy;
+import com.opensymphony.xwork2.DefaultActionProxyFactory;
+import com.opensymphony.xwork2.ObjectFactory;
+import com.opensymphony.xwork2.UnknownHandler;
 
 /**
- * Extension of XWork's {@link com.opensymphony.xwork.ActionProxyFactory ActionProxyFactory}
+ * Extension of XWork's {@link com.opensymphony.xwork2.DefaultActionProxyFactory DefaultActionProxyFactory}
  * which creates PicoActionInvocations.
  * 
  * @author Chris Sturm
@@ -23,10 +25,6 @@ import org.nanocontainer.nanowar.webwork2.PicoActionInvocation;
  * @deprecated Use DefaultActionProxyFactory 
  */
 public class PicoActionProxyFactory extends DefaultActionProxyFactory {
-
-    public ActionInvocation createActionInvocation(ObjectFactory objectFactory, UnknownHandler unknownHandler, ActionProxy actionProxy, Map extraContext) throws Exception {
-        return new PicoActionInvocation(objectFactory,  unknownHandler, actionProxy, extraContext);
-    }
 
     public ActionInvocation createActionInvocation(ObjectFactory objectFactory, UnknownHandler unknownHandler, ActionProxy actionProxy, Map extraContext, boolean pushAction) throws Exception {
         return new PicoActionInvocation(objectFactory,  unknownHandler, actionProxy, extraContext, pushAction);

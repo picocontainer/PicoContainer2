@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.nanowar.webwork2;
+package org.nanocontainer.nanowar.struts2;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

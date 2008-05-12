@@ -5,7 +5,7 @@
  * license a copy of which has been included with this distribution in * the
  * LICENSE.txt file. * *
  ******************************************************************************/
-package org.nanocontainer.nanowar.webwork2;
+package org.nanocontainer.nanowar.struts2;
 
 import java.io.IOException;
 
