@@ -18,18 +18,18 @@ import org.apache.struts2.views.JspSupportServlet;
 import org.nanocontainer.nanowar.ServletRequestContainerLauncher;
 
 /**
- * Extension to the standard WebWork2 ServletDispatcher that instantiates a new
+ * Extension to the standard Struts2 JspSupportServlet that instantiates a new
  * container in the request scope for each request and disposes of it correctly
- * at the end of the request. <p/> To use, replace the WebWork ServletDispatcher
+ * at the end of the request. <p/> To use, replace the Struts2 JspSupportServlet
  * in web.xml with this.
  * 
  * @author Joe Walnes
  */
-public class PicoWebWork2ServletDispatcher extends JspSupportServlet { // was
-                                                                        // ServletDispatcher
+public class PicoStruts2Servlet extends JspSupportServlet { // was ServletDispatcher
 
-    public PicoWebWork2ServletDispatcher(ServletContext servletContext) {
+    public PicoStruts2Servlet(ServletContext servletContext) {
         super();
+        // TODO set action proxy factory to use Pico's
         // DefaultActionProxyFactory.setFactory(new PicoActionProxyFactory());
     }
 
