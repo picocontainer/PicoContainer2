@@ -73,10 +73,12 @@ public class Storing extends AbstractBehaviorFactory {
         mapThreadLocalObjectReference.set(wrappedMap.wrapped);
     }
 
-    public Map resetCacheForThread() {
+    public StoreWrapper resetCacheForThread() {
         HashMap map = new HashMap();
         mapThreadLocalObjectReference.set(map);
-        return map;
+        StoreWrapper storeWrapper = new StoreWrapper();
+        storeWrapper.wrapped = map;
+        return storeWrapper;
     }
 
     public void invalidateCacheForThread() {
@@ -87,8 +89,8 @@ public class Storing extends AbstractBehaviorFactory {
         return ((Map)mapThreadLocalObjectReference.get()).size();
     }
 
-    public static class StoreThreadLocal extends ThreadLocal implements Serializable {
-        protected Object initialValue() {
+    public static class StoreThreadLocal extends ThreadLocal<Map> implements Serializable {
+        protected Map initialValue() {
             return new HashMap();
         }
     }

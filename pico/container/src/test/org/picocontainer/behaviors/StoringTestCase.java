@@ -14,6 +14,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
@@ -205,7 +206,7 @@ public class StoringTestCase {
         assertNotNull(two);
         assertSame(one,two);
 
-        storeCaching.resetCacheForThread();
+        assertTrue(storeCaching.resetCacheForThread() instanceof Storing.StoreWrapper);
 
         Foo three = child.getComponent(Foo.class);
         Foo four = child.getComponent(Foo.class);

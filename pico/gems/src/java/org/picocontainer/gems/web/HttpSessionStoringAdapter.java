@@ -30,7 +30,6 @@ public class HttpSessionStoringAdapter {
             storingBehavior.putCacheForThread(sr);
         } else {
             session.setAttribute(name, storingBehavior.resetCacheForThread());
-
         }
     }
 
