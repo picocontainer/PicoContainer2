@@ -20,6 +20,7 @@
         <module>nanowar-jsf</module>
         <module>nanowar-nanoweb</module>
         <module>nanowar-struts</module>
+        <module>nanowar-struts2</module>
         <module>nanowar-webwork</module>
         <module>nanowar-webwork2</module>
     </modules>

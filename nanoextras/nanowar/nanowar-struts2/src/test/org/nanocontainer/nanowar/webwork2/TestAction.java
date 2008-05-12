@@ -8,7 +8,7 @@
  *****************************************************************************/
 package org.nanocontainer.nanowar.webwork2;
 
-import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork2.Action;
 
 
 public final class TestAction implements Action {
