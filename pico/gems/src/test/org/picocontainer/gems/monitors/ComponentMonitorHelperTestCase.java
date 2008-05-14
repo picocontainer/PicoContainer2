@@ -8,17 +8,23 @@
 package org.picocontainer.gems.monitors;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
 import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
 import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -95,11 +101,28 @@ public abstract class ComponentMonitorHelperTestCase {
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.NO_COMPONENT, "doh"));
     }
 
+    @Test public void shouldSerialize() throws IOException, ClassNotFoundException{
+    	ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    	ObjectOutputStream oos = new ObjectOutputStream(bos);
+    	oos.writeObject(componentMonitor);
+    	oos.close();
+    	
+    	byte[] savedBytes = bos.toByteArray();
+    	assertNotNull(savedBytes);
+    	ByteArrayInputStream bis = new ByteArrayInputStream(savedBytes);
+    	ObjectInputStream ois = new ObjectInputStream(bis);
+    	this.componentMonitor = (ComponentMonitor) ois.readObject();
+    	assertNotNull(componentMonitor);
+    	//Run through a couple of other tests so we know that the delegate logger internally 
+    	//appears to be working.    
+    	testShouldTraceInstantiatedWithInjected();
+    }
+    
 
     protected void assertFileContent(String line) throws IOException{
         List lines = toLines( new StringReader( ForTestSakeAppender.CONTENT ) );
         String s = lines.toString();
-        assertTrue("Line '" + line + "' not found", s.indexOf(line) > 0);
+        assertTrue("Line '" + line + "' not found.  Instead got: " + line, s.indexOf(line) > 0);
     }
     
     protected List toLines(Reader resource) throws IOException {
