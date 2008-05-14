@@ -57,7 +57,10 @@ import org.apache.log4j.Logger;
  * </pre>
  *
  * @author Michael Rimov
+ * @deprecated Since PicoContainer 2.3,  Pico 2 ComponentAdapters can now do everything that this 
+ * decorator provided.
  */
+@Deprecated
 public class Log4jTracingContainerDecorator implements MutablePicoContainer, Serializable {
 
     /** Wrapped container. */

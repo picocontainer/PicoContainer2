@@ -25,7 +25,10 @@ import java.lang.annotation.Annotation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/** @author Michael Rimov */
+/** @author Michael Rimov 
+ * @deprecated As of PicoContainer 2.3  ComponentMonitor now can do all jobs of tracing container.
+ */
+@Deprecated
 public class CommonsLoggingTracingContainerDecorator implements MutablePicoContainer, Serializable {
 
     /** Wrapped container. */
