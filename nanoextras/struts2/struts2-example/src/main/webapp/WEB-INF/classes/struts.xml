@@ -1,0 +1,16 @@
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+  <constant name="pico-composition" value="org.picocontainer.struts2.example.ExampleWebAppComposition"/>
+
+  <package name="default" extends="struts-default">
+    <action name="GetQuotes" class="org.picocontainer.struts2.example.GetQuote">
+        <result name="input">/WEB-INF/Quotes.jsp</result>
+      <result>/WEB-INF/Quotes.jsp</result>
+    </action>      
+  </package>
+
+</struts>
