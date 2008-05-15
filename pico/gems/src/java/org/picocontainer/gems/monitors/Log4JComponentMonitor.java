@@ -10,14 +10,15 @@
 
 package org.picocontainer.gems.monitors;
 
-import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
 import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 import static org.picocontainer.monitors.ComponentMonitorHelper.format;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
@@ -26,10 +27,13 @@ import java.lang.reflect.Method;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.monitors.ComponentMonitorHelper;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.*;
-import org.picocontainer.injectors.AbstractInjector;
 
 
 /**
@@ -51,11 +55,6 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
 	 * Log4j Logger.
 	 */
     private transient Logger logger;
-    
-    /**
-     * A serialized string that is used to reconstruct the logger instance after de-serialization.
-     */
-    private String defaultLoggerCategory;
     
     /**
      * Delegate Monitor.
@@ -100,7 +99,6 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     public Log4JComponentMonitor(Logger logger) {
         this();
         this.logger = logger;
-        defaultLoggerCategory = logger.getName();
     }
 
     /**
@@ -134,7 +132,6 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     public Log4JComponentMonitor(Logger logger, ComponentMonitor delegate) {
         this(delegate);
         this.logger = logger;
-        defaultLoggerCategory = logger.getName();
     }
 
     public Log4JComponentMonitor(ComponentMonitor delegate) {
@@ -247,6 +244,21 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
 
     
     /**
+     * Serializes the monitor.
+     * @param oos object output stream.
+     * @throws IOException
+     */
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+    	oos.defaultWriteObject();
+    	if (logger != null) {
+    		oos.writeBoolean(true);
+    		oos.writeUTF(logger.getName());
+    	} else {
+    		oos.writeBoolean(false);    			
+    	}
+    }
+    
+    /**
      * Manually creates a new logger instance if it was defined earlier.
      * @param ois
      * @throws IOException
@@ -254,7 +266,11 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
      */
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
     	ois.defaultReadObject();
-    	if (this.defaultLoggerCategory != null) {
+    	boolean hasDefaultLogger = ois.readBoolean();
+    	if (hasDefaultLogger) {
+	    	String defaultLoggerCategory = ois.readUTF();
+	    	assert defaultLoggerCategory != null : "Serialization indicated default logger, "
+	    		+"but no logger category found in input stream.";
     		logger = LogManager.getLogger(defaultLoggerCategory);
     	}
     }

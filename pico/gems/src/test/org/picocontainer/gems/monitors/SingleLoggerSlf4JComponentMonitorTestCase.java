@@ -20,7 +20,7 @@ import org.picocontainer.ComponentMonitor;
 public class SingleLoggerSlf4JComponentMonitorTestCase extends ComponentMonitorHelperTestCase {
 
     protected ComponentMonitor makeComponentMonitor() {
-        return new Log4JComponentMonitor(Slf4jComponentMonitor.class);
+        return new Slf4jComponentMonitor(Slf4jComponentMonitor.class);
     }
 
     protected Constructor getConstructor() throws NoSuchMethodException {

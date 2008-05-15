@@ -10,19 +10,24 @@
 
 package org.picocontainer.gems.monitors;
 
-import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
-import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
 import static org.picocontainer.monitors.ComponentMonitorHelper.ctorToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
+import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
 import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.picocontainer.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.monitors.ComponentMonitorHelper;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -47,7 +52,8 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
 	 * Commons Logger.
 	 */
 	private Log log;
-    
+	
+   
 	/**
 	 * Delegate for component monitor chains.
 	 */
@@ -84,12 +90,13 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
 
     /**
      * Creates a CommonsLoggingComponentMonitor with a given Log instance
-     * 
+     * <p><strong>Bug.</strong>  It doesn't appear that there's a way to serialize a CommonsLogging Log
+     * and bring it back. (There's no category name).</p>
      * @param log the Log to write to
      */
     public CommonsLoggingComponentMonitor(Log log) {
         this();
-        this.log = log;
+        this.log = log;        
     }
 
     /**
@@ -116,7 +123,8 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
 
     /**
      * Creates a CommonsLoggingComponentMonitor with a given Log instance
-     *
+     * <p><strong>Bug.</strong>  It doesn't appear that there's a way to serialize a CommonsLogging Log
+     * and bring it back. (There's no category name).</p>
      * @param log the Log to write to
      * @param delegate the delegate
      */
@@ -126,7 +134,8 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
 
-    public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
+    /** {@inheritDoc} **/
+   public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
                                      Constructor<T> constructor
     ) {
         Log log = getLog(constructor);
@@ -136,6 +145,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
         return delegate.instantiating(container, componentAdapter, constructor);
     }
 
+   /** {@inheritDoc} **/
     public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
                              Constructor<T> constructor,
                              Object instantiated,
@@ -148,6 +158,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
         delegate.instantiated(container, componentAdapter, constructor, instantiated, parameters, duration);
     }
 
+    /** {@inheritDoc} **/
     public <T> void instantiationFailed(PicoContainer container,
                                     ComponentAdapter<T>  componentAdapter,
                                     Constructor<T>  constructor,
@@ -159,6 +170,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
         delegate.instantiationFailed(container, componentAdapter, constructor, cause);
     }
 
+    /** {@inheritDoc} **/
     public void invoking(PicoContainer container,
                          ComponentAdapter<?> componentAdapter,
                          Member member,
@@ -170,6 +182,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
         delegate.invoking(container, componentAdapter, member, instance);
     }
 
+    /** {@inheritDoc} **/
     public void invoked(PicoContainer container,
                         ComponentAdapter<?> componentAdapter,
                         Method method,
@@ -182,6 +195,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
         delegate.invoked(container, componentAdapter, method, instance,  duration);
     }
 
+    /** {@inheritDoc} **/
     public void invocationFailed(Member member, Object instance, Exception cause) {
         Log log = getLog(member);
         if (log.isWarnEnabled()) {
@@ -190,6 +204,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
         delegate.invocationFailed(member, instance, cause);
     }
 
+    /** {@inheritDoc} **/
     public void lifecycleInvocationFailed(MutablePicoContainer container,
                                           ComponentAdapter<?> componentAdapter, Method method,
                                           Object instance,
@@ -201,6 +216,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
         delegate.lifecycleInvocationFailed(container, componentAdapter, method, instance, cause);
     }
 
+    /** {@inheritDoc} **/
     public Object noComponentFound(MutablePicoContainer container, Object componentKey) {
         Log log = this.log != null ? this.log : LogFactory.getLog(ComponentMonitor.class);
         if (log.isWarnEnabled()) {
@@ -209,10 +225,16 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
         return delegate.noComponentFound(container, componentKey);
     }
 
+    /** {@inheritDoc} **/
     public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
         return delegate.newInjectionFactory(abstractInjector); 
     }
 
+    /**
+     * Retrieves the logger appropriate for the calling member's class.
+     * @param member constructor/method/field who's callback is required.
+     * @return the Commons logging instance.
+     */
     protected Log getLog(Member member) {
         if ( log != null ){
             return log;
@@ -220,4 +242,5 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
         return LogFactory.getLog(member.getDeclaringClass());
     }
 
+    
 }
