@@ -10,6 +10,9 @@
 package org.picocontainer.struts2;
 
 import com.opensymphony.xwork2.ObjectFactory;
+import com.opensymphony.xwork2.config.entities.InterceptorConfig;
+import com.opensymphony.xwork2.config.ConfigurationException;
+import com.opensymphony.xwork2.interceptor.Interceptor;
 import com.opensymphony.xwork2.inject.Inject;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
@@ -94,6 +97,11 @@ public class PicoStruts2ObjectFactory extends ObjectFactory {
             return component;
         }
         return super.buildBean(clazz, extraContext);
+    }
+
+    public Interceptor buildInterceptor(InterceptorConfig config, Map params) throws ConfigurationException {
+        System.out.println("-->buildInterceptor: " + config.getClassName() + " " + params.);
+        return super.buildInterceptor(config, params);
     }
 
     public boolean isNoArgConstructorRequired() {
