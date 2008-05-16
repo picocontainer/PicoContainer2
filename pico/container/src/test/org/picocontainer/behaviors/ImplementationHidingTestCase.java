@@ -130,5 +130,20 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
         assertEquals("<init>foo()", sb.toString()); // instantiated
     }
 
+    @Test public void shouldNotInstantiateForEveryMethodCall() {
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
+        parent.addComponent(StringBuilder.class);
+        DefaultPicoContainer pico =
+            new DefaultPicoContainer(new ImplementationHiding(), parent);
+        pico.addComponent(NeedsStringBuilder.class, NeedsStringBuilderImpl.class);
+        NeedsStringBuilder nsb = pico.getComponent(NeedsStringBuilder.class);
+        assertNotNull(nsb);
+        nsb.foo();
+        nsb.foo();
+        StringBuilder sb = pico.getComponent(StringBuilder.class);
+        assertEquals("<init>foo()foo()", sb.toString());
+    }
+
+
 
 }

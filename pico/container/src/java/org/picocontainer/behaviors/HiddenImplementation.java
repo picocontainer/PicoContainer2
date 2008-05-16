@@ -73,16 +73,19 @@ public class HiddenImplementation<T> extends AbstractBehavior<T> {
 	private T createProxy(Class[] interfaces, final PicoContainer container, final ClassLoader classLoader) {
         return (T) Proxy.newProxyInstance(classLoader,
                 interfaces, new InvocationHandler() {
-                    public Object invoke(final Object proxy, final Method method,
-                                         final Object[] args)
-                            throws Throwable {
-                        return invokeMethod(method, args, container);
-                    }
-                });
+            private Object instance;
+            public synchronized Object invoke(final Object proxy, final Method method,
+                                 final Object[] args)
+                    throws Throwable {
+                if (instance == null) {
+                    instance = getDelegate().getComponentInstance(container, NOTHING.class);
+                }
+                return invokeMethod(instance, method, args, container);
+            }
+        });
     }
 
-    protected Object invokeMethod(Method method, Object[] args, PicoContainer container) throws Throwable {
-        Object componentInstance = getDelegate().getComponentInstance(container, NOTHING.class);
+    protected Object invokeMethod(Object componentInstance, Method method, Object[] args, PicoContainer container) throws Throwable {
         ComponentMonitor componentMonitor = currentMonitor();
         try {
             componentMonitor.invoking(container, this, method, componentInstance);

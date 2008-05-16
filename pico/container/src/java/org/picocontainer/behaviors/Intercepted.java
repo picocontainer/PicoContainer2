@@ -37,8 +37,8 @@ public class Intercepted<T> extends HiddenImplementation {
         posts.put(type, interceptor);
     }
 
-    protected Object invokeMethod(Method method, Object[] args, PicoContainer container) throws Throwable {
-        Object componentInstance = getDelegate().getComponentInstance(container, NOTHING.class);
+    @Override
+    protected Object invokeMethod(Object componentInstance, Method method, Object[] args, PicoContainer container) throws Throwable {
         try {
             controller.clear();
             controller.instance(componentInstance);
