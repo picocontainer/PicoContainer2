@@ -58,11 +58,11 @@ public class InterceptingTestCase {
         });
         intercepted.addPostInvocation(Foo.class, new Foo() {
             public void one() {
-                sb.append("addPostInvocation-one(),");
+                sb.append("post-one(),");
             }
             public String two(String a, int b) {
                 assertEquals("two", interceptor.getOriginalRetVal());
-                sb.append("addPostInvocation-two('"+a+"',"+b+"),");
+                sb.append("post-two('"+a+"',"+b+"),");
                 return null;
             }
         });
@@ -71,7 +71,7 @@ public class InterceptingTestCase {
         assertNotNull(foo);
         foo.one();
         assertEquals("two", foo.two("hello", 99));
-        assertEquals("pre-one(),call-one(),addPostInvocation-one(),pre-two('hello',99),call-two('hello',99),addPostInvocation-two('hello',99),", sb.toString());
+        assertEquals("pre-one(),call-one(),post-one(),pre-two('hello',99),call-two('hello',99),post-two('hello',99),", sb.toString());
         assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
