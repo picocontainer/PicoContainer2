@@ -11,8 +11,8 @@ import org.apache.log4j.Level;
 import org.picocontainer.logging.Logger;
 
 /**
- * Logging facade implmentation for Apache Log4J project. The following lists
- * the mapping between DNA log levels and Log4J log levels.
+ * Logger implementation that delegates to Apache Log4J loggers. The following
+ * lists the mapping to the Log4J log levels.
  * <ul>
  * <li>trace ==&gt; debug</li>
  * <li>debug ==&gt; debug</li>

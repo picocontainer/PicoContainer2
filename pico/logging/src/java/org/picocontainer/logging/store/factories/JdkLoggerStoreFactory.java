@@ -14,16 +14,16 @@ import java.util.Map;
 import java.util.Properties;
 import org.picocontainer.logging.store.LoggerStore;
 import org.picocontainer.logging.store.LoggerStoreCreationException;
-import org.picocontainer.logging.store.stores.Jdk14LoggerStore;
+import org.picocontainer.logging.store.stores.JdkLoggerStore;
 
 /**
- * Jdk14LoggerStoreFactory is an implementation of LoggerStoreFactory for the
- * Jkd14 Logger.
+ * JdkLoggerStoreFactory is an implementation of LoggerStoreFactory for the
+ * JdkLogger.
  * 
  * @author Mauro Talevi
  * @author Peter Donald
  */
-public class Jdk14LoggerStoreFactory extends AbstractLoggerStoreFactory {
+public class JdkLoggerStoreFactory extends AbstractLoggerStoreFactory {
 
     protected LoggerStore doCreateLoggerStore(final Map<String, Object> config) {
         try {
@@ -32,11 +32,11 @@ public class Jdk14LoggerStoreFactory extends AbstractLoggerStoreFactory {
                 final ByteArrayOutputStream output = new ByteArrayOutputStream();
                 properties.store(output, "");
                 final ByteArrayInputStream input = new ByteArrayInputStream(output.toByteArray());
-                return new Jdk14LoggerStore(input);
+                return new JdkLoggerStore(input);
             }
             final InputStream resource = getInputStream(config);
             if (null != resource) {
-                return new Jdk14LoggerStore(resource);
+                return new JdkLoggerStore(resource);
             }
             return missingConfiguration();
         } catch (Exception e) {

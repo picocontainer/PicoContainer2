@@ -59,20 +59,20 @@ public class ConfiguratorTest extends AbstractTest {
     }
 
     @Test
-    public void testJDK14Configurator() throws IOException {
-        runLoggerTest("jdk14", Configurator.createLoggerStore(Configurator.JDK14, getResource("logging.properties")),
+    public void testJDKConfigurator() throws IOException {
+        runLoggerTest("jdk", Configurator.createLoggerStore(Configurator.JDK, getResource("logging.properties")),
                 ConsoleLogger.LEVEL_DEBUG);
     }
 
     @Test
-    public void testJDK14ConfiguratorNoDebug() throws IOException {
-        runLoggerTest("jdk14", Configurator.createLoggerStore(Configurator.JDK14, getResource("logging.properties")),
+    public void testJDKConfiguratorNoDebug() throws IOException {
+        runLoggerTest("jdk", Configurator.createLoggerStore(Configurator.JDK, getResource("logging.properties")),
                 ConsoleLogger.LEVEL_NONE);
     }
 
     @Test
-    public void testJDK14ConfiguratorNoLog() throws IOException {
-        runLoggerTest("jdk14", Configurator.createLoggerStore(Configurator.JDK14, getResource("logging.properties")));
+    public void testJDKConfiguratorNoLog() throws IOException {
+        runLoggerTest("jdk", Configurator.createLoggerStore(Configurator.JDK, getResource("logging.properties")));
     }
 
 }

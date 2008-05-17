@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.picocontainer.logging.loggers.ConsoleLogger;
 import org.picocontainer.logging.store.factories.ConsoleLoggerStoreFactory;
 import org.picocontainer.logging.store.factories.InitialLoggerStoreFactory;
-import org.picocontainer.logging.store.factories.Jdk14LoggerStoreFactory;
+import org.picocontainer.logging.store.factories.JdkLoggerStoreFactory;
 
 /**
  * @author Mauro Talevi
@@ -71,25 +71,25 @@ public class LoggerStoreFactoryTest extends AbstractTest {
         runFactoryTest(new InitialLoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG, config, "log4j-properties");
     }
 
-    // JDK14LoggerStoreFactory tests
+    // JDKLoggerStoreFactory tests
     @Test
-    public void testJDK14LoggerStoreFactoryInvalidInput() throws Exception {
-        runInvalidInputData(new Jdk14LoggerStoreFactory());
+    public void testJDKLoggerStoreFactoryInvalidInput() throws Exception {
+        runInvalidInputData(new JdkLoggerStoreFactory());
     }
 
     @Test
-    public void testJDK14LoggerStoreFactoryWithProperties() throws IOException {
+    public void testJDKLoggerStoreFactoryWithProperties() throws IOException {
         final Properties properties = new Properties();
         properties.load(getResource("logging.properties"));
         final HashMap<String, Object> config = new HashMap<String, Object>();
         config.put(Properties.class.getName(), properties);
-        runFactoryTest(new Jdk14LoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG, config, "jdk14");
+        runFactoryTest(new JdkLoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG, config, "jdk");
     }
 
     @Test
-    public void testJDK14LoggerStoreFactoryWithStreams() throws IOException {
-        runStreamBasedFactoryTest("logging.properties", new Jdk14LoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG,
-                "jdk14", new HashMap<String, Object>());
+    public void testJDKLoggerStoreFactoryWithStreams() throws IOException {
+        runStreamBasedFactoryTest("logging.properties", new JdkLoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG,
+                "jdk", new HashMap<String, Object>());
     }
 
 }

@@ -28,7 +28,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Before;
 import org.picocontainer.logging.Logger;
-import org.picocontainer.logging.store.stores.Jdk14LoggerStore;
+import org.picocontainer.logging.store.stores.JdkLoggerStore;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
@@ -89,7 +89,7 @@ public abstract class AbstractTest {
             reader.close();
             logFile.delete();
 
-            if (!(store instanceof Jdk14LoggerStore)) {
+            if (!(store instanceof JdkLoggerStore)) {
                 final Logger nejney = store.getLogger("nejney");
                 nejney.info(MESSAGE);
 

@@ -14,8 +14,8 @@ import java.util.logging.Level;
 import org.picocontainer.logging.Logger;
 
 /**
- * Logging facade implmentation for JDK1.4 logging toolkit. The following lists
- * the mapping between DNA log levels and JDK1.4 log levels.
+ * Logger implementation that delegates to JDK logging. The following lists the
+ * mapping to the JDK log levels.
  * <ul>
  * <li>trace ==&gt; finest</li>
  * <li>debug ==&gt; fine</li>
@@ -24,18 +24,18 @@ import org.picocontainer.logging.Logger;
  * <li>error ==&gt; severe</li>
  * </ul>
  */
-public class Jdk14Logger implements Logger {
+public class JdkLogger implements Logger {
     /**
-     * The JDK1.4 logger.
+     * The JDK logger.
      */
     private final java.util.logging.Logger logger;
 
     /**
-     * Create an instance of JDK14Logger facade.
+     * Create an instance of JdkLogger
      * 
-     * @param logger the JDK1.4 logger.
+     * @param logger the JDK logger.
      */
-    public Jdk14Logger(final java.util.logging.Logger logger) {
+    public JdkLogger(final java.util.logging.Logger logger) {
         if (null == logger) {
             throw new NullPointerException("logger");
         }
@@ -190,6 +190,6 @@ public class Jdk14Logger implements Logger {
      */
     public Logger getChildLogger(final String name) {
         final String childName = this.logger.getName() + "." + name;
-        return new Jdk14Logger(java.util.logging.Logger.getLogger(childName));
+        return new JdkLogger(java.util.logging.Logger.getLogger(childName));
     }
 }

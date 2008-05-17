@@ -15,7 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.junit.Test;
 import org.picocontainer.logging.loggers.ConsoleLogger;
 import org.picocontainer.logging.store.stores.ConsoleLoggerStore;
-import org.picocontainer.logging.store.stores.Jdk14LoggerStore;
+import org.picocontainer.logging.store.stores.JdkLoggerStore;
 import org.picocontainer.logging.store.stores.Log4JLoggerStore;
 import org.xml.sax.SAXException;
 
@@ -108,23 +108,23 @@ public class LoggerStoreTest extends AbstractTest {
         runLoggerTest("log4j-properties", store);
     }
 
-    // JDK14LoggerStore tests
+    // JDKLoggerStore tests
     @Test
-    public void testJDK14Configuration() throws IOException {
-        final LoggerStore store = new Jdk14LoggerStore(getResource("logging.properties"));
-        runLoggerTest("jdk14", store, ConsoleLogger.LEVEL_DEBUG);
+    public void testJDKConfiguration() throws IOException {
+        final LoggerStore store = new JdkLoggerStore(getResource("logging.properties"));
+        runLoggerTest("jdk", store, ConsoleLogger.LEVEL_DEBUG);
     }
 
     @Test
-    public void testJDK14ConfigurationNoDebug() throws IOException {
-        final LoggerStore store = new Jdk14LoggerStore(getResource("logging.properties"));
-        runLoggerTest("jdk14", store, ConsoleLogger.LEVEL_NONE);
+    public void testJDKConfigurationNoDebug() throws IOException {
+        final LoggerStore store = new JdkLoggerStore(getResource("logging.properties"));
+        runLoggerTest("jdk", store, ConsoleLogger.LEVEL_NONE);
     }
 
     @Test
-    public void testJDK14ConfigurationNoLog() throws IOException {
-        final LoggerStore store = new Jdk14LoggerStore(getResource("logging.properties"));
-        runLoggerTest("jdk14", store);
+    public void testJDKConfigurationNoLog() throws IOException {
+        final LoggerStore store = new JdkLoggerStore(getResource("logging.properties"));
+        runLoggerTest("jdk", store);
     }
 
 }

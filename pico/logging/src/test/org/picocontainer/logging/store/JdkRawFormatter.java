@@ -15,7 +15,7 @@ import java.util.logging.LogRecord;
  * 
  * @author Peter Donald
  */
-public class JDK14RawFormatter extends Formatter {
+public class JdkRawFormatter extends Formatter {
     public String format(final LogRecord record) {
         return formatMessage(record) + "\n";
     }
