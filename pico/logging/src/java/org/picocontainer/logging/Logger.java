@@ -1,15 +1,14 @@
 /*
- * Copyright (C) PicoContainer Organization. All rights reserved.            
+ * Copyright (C) PicoContainer Organization. All rights reserved.
  * ------------------------------------------------------------------------- 
- * The software in this package is published under the terms of the BSD      
- * style license a copy of which has been included with this distribution in 
- * the LICENSE.txt file.                                                     
- */                                                                           
-
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ */
 package org.picocontainer.logging;
 
 /**
- * This interface was a facade for different Logger subsystems.
+ * Facade for different Logger systems.
  */
 public interface Logger {
     /**
@@ -17,7 +16,7 @@ public interface Logger {
      * 
      * @param message the message
      */
-    void trace(String message);
+    void trace(Object message);
 
     /**
      * Log a trace message with an associated throwable.
@@ -25,7 +24,7 @@ public interface Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    void trace(String message, Throwable throwable);
+    void trace(Object message, Throwable throwable);
 
     /**
      * Return true if a trace message will be logged.
@@ -39,7 +38,7 @@ public interface Logger {
      * 
      * @param message the message
      */
-    void debug(String message);
+    void debug(Object message);
 
     /**
      * Log a debug message with an associated throwable.
@@ -47,7 +46,7 @@ public interface Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    void debug(String message, Throwable throwable);
+    void debug(Object message, Throwable throwable);
 
     /**
      * Return true if a debug message will be logged.
@@ -61,7 +60,7 @@ public interface Logger {
      * 
      * @param message the message
      */
-    void info(String message);
+    void info(Object message);
 
     /**
      * Log a info message with an associated throwable.
@@ -69,7 +68,7 @@ public interface Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    void info(String message, Throwable throwable);
+    void info(Object message, Throwable throwable);
 
     /**
      * Return true if an info message will be logged.
@@ -83,7 +82,7 @@ public interface Logger {
      * 
      * @param message the message
      */
-    void warn(String message);
+    void warn(Object message);
 
     /**
      * Log a warn message with an associated throwable.
@@ -91,7 +90,7 @@ public interface Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    void warn(String message, Throwable throwable);
+    void warn(Object message, Throwable throwable);
 
     /**
      * Return true if a warn message will be logged.
@@ -105,7 +104,7 @@ public interface Logger {
      * 
      * @param message the message
      */
-    void error(String message);
+    void error(Object message);
 
     /**
      * Log a error message with an associated throwable.
@@ -113,7 +112,7 @@ public interface Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    void error(String message, Throwable throwable);
+    void error(Object message, Throwable throwable);
 
     /**
      * Return true if a error message will be logged.

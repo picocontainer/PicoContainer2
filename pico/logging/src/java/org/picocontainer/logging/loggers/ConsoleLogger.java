@@ -121,7 +121,7 @@ public class ConsoleLogger implements Logger {
      * 
      * @param message the message
      */
-    public void trace(final String message) {
+    public void trace(final Object message) {
         trace(message, null);
     }
 
@@ -131,7 +131,7 @@ public class ConsoleLogger implements Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    public void trace(final String message, final Throwable throwable) {
+    public void trace(final Object message, final Throwable throwable) {
         output(LEVEL_TRACE, LEVEL_TRACE_STR, message, throwable);
     }
 
@@ -149,7 +149,7 @@ public class ConsoleLogger implements Logger {
      * 
      * @param message the message
      */
-    public void debug(final String message) {
+    public void debug(final Object message) {
         debug(message, null);
     }
 
@@ -159,7 +159,7 @@ public class ConsoleLogger implements Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    public void debug(final String message, final Throwable throwable) {
+    public void debug(final Object message, final Throwable throwable) {
         output(LEVEL_DEBUG, LEVEL_DEBUG_STR, message, throwable);
     }
 
@@ -177,7 +177,7 @@ public class ConsoleLogger implements Logger {
      * 
      * @param message the message
      */
-    public void info(final String message) {
+    public void info(final Object message) {
         info(message, null);
     }
 
@@ -187,7 +187,7 @@ public class ConsoleLogger implements Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    public void info(final String message, final Throwable throwable) {
+    public void info(final Object message, final Throwable throwable) {
         output(LEVEL_INFO, LEVEL_INFO_STR, message, throwable);
     }
 
@@ -205,7 +205,7 @@ public class ConsoleLogger implements Logger {
      * 
      * @param message the message
      */
-    public void warn(final String message) {
+    public void warn(final Object message) {
         warn(message, null);
     }
 
@@ -215,7 +215,7 @@ public class ConsoleLogger implements Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    public void warn(final String message, final Throwable throwable) {
+    public void warn(final Object message, final Throwable throwable) {
         output(LEVEL_WARN, LEVEL_WARN_STR, message, throwable);
     }
 
@@ -233,7 +233,7 @@ public class ConsoleLogger implements Logger {
      * 
      * @param message the message
      */
-    public void error(final String message) {
+    public void error(final Object message) {
         error(message, null);
     }
 
@@ -243,7 +243,7 @@ public class ConsoleLogger implements Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    public void error(final String message, final Throwable throwable) {
+    public void error(final Object message, final Throwable throwable) {
         output(LEVEL_ERROR, LEVEL_ERROR_STR, message, throwable);
     }
 
@@ -274,7 +274,7 @@ public class ConsoleLogger implements Logger {
      * @param message the message
      * @param throwable the throwable, may be null
      */
-    private void output(final int level, final String type, final String message, final Throwable throwable) {
+    private void output(final int level, final String type, final Object message, final Throwable throwable) {
         if (m_level <= level) {
             doOutput(type, message, throwable);
         }
@@ -287,7 +287,7 @@ public class ConsoleLogger implements Logger {
      * @param message the message
      * @param throwable the throwable, may be null
      */
-    void doOutput(final String type, final String message, final Throwable throwable) {
+    void doOutput(final String type, final Object message, final Throwable throwable) {
         synchronized (System.out) {
             m_output.println("[" + type + "] " + message);
             if (null != throwable) {

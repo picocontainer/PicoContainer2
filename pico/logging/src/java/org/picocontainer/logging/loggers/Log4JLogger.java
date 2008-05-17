@@ -51,7 +51,7 @@ public class Log4JLogger implements Logger {
      * 
      * @param message the message
      */
-    public void trace(final String message) {
+    public void trace(final Object message) {
         m_logger.log(FQCN, Level.DEBUG, message, null);
     }
 
@@ -61,7 +61,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    public void trace(final String message, final Throwable throwable) {
+    public void trace(final Object message, final Throwable throwable) {
         m_logger.log(FQCN, Level.DEBUG, message, throwable);
     }
 
@@ -79,7 +79,7 @@ public class Log4JLogger implements Logger {
      * 
      * @param message the message
      */
-    public void debug(final String message) {
+    public void debug(final Object message) {
         m_logger.log(FQCN, Level.DEBUG, message, null);
     }
 
@@ -89,7 +89,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    public void debug(final String message, final Throwable throwable) {
+    public void debug(final Object message, final Throwable throwable) {
         m_logger.log(FQCN, Level.DEBUG, message, throwable);
     }
 
@@ -107,7 +107,7 @@ public class Log4JLogger implements Logger {
      * 
      * @param message the message
      */
-    public void info(final String message) {
+    public void info(final Object message) {
         m_logger.log(FQCN, Level.INFO, message, null);
     }
 
@@ -117,7 +117,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    public void info(final String message, final Throwable throwable) {
+    public void info(final Object message, final Throwable throwable) {
         m_logger.log(FQCN, Level.INFO, message, throwable);
     }
 
@@ -135,7 +135,7 @@ public class Log4JLogger implements Logger {
      * 
      * @param message the message
      */
-    public void warn(final String message) {
+    public void warn(final Object message) {
         m_logger.log(FQCN, Level.WARN, message, null);
     }
 
@@ -145,7 +145,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    public void warn(final String message, final Throwable throwable) {
+    public void warn(final Object message, final Throwable throwable) {
         m_logger.log(FQCN, Level.WARN, message, throwable);
     }
 
@@ -163,7 +163,7 @@ public class Log4JLogger implements Logger {
      * 
      * @param message the message
      */
-    public void error(final String message) {
+    public void error(final Object message) {
         m_logger.log(FQCN, Level.ERROR, message, null);
     }
 
@@ -173,7 +173,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    public void error(final String message, final Throwable throwable) {
+    public void error(final Object message, final Throwable throwable) {
         m_logger.log(FQCN, Level.ERROR, message, throwable);
     }
 
@@ -193,7 +193,6 @@ public class Log4JLogger implements Logger {
      * @return the child logger
      */
     public Logger getChildLogger(final String name) {
-
         return new Log4JLogger(org.apache.log4j.Logger.getLogger(m_logger.getName() + "." + name));
     }
 }

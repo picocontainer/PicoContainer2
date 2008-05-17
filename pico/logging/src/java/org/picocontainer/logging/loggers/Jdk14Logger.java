@@ -7,6 +7,8 @@
  */ 
 package org.picocontainer.logging.loggers;
 
+import static java.lang.String.valueOf;
+
 import java.util.logging.Level;
 
 import org.picocontainer.logging.Logger;
@@ -45,8 +47,8 @@ public class Jdk14Logger implements Logger {
      * 
      * @param message the message
      */
-    public void trace(final String message) {
-        m_logger.log(Level.FINEST, message);
+    public void trace(final Object message) {
+        m_logger.log(Level.FINEST, valueOf(message));
     }
 
     /**
@@ -55,8 +57,8 @@ public class Jdk14Logger implements Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    public void trace(final String message, final Throwable throwable) {
-        m_logger.log(Level.FINEST, message, throwable);
+    public void trace(final Object message, final Throwable throwable) {
+        m_logger.log(Level.FINEST, valueOf(message), throwable);
     }
 
     /**
@@ -73,8 +75,8 @@ public class Jdk14Logger implements Logger {
      * 
      * @param message the message
      */
-    public void debug(final String message) {
-        m_logger.log(Level.FINE, message);
+    public void debug(final Object message) {
+        m_logger.log(Level.FINE, valueOf(message));
     }
 
     /**
@@ -83,8 +85,8 @@ public class Jdk14Logger implements Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    public void debug(final String message, final Throwable throwable) {
-        m_logger.log(Level.FINE, message, throwable);
+    public void debug(final Object message, final Throwable throwable) {
+        m_logger.log(Level.FINE, valueOf(message), throwable);
     }
 
     /**
@@ -101,8 +103,8 @@ public class Jdk14Logger implements Logger {
      * 
      * @param message the message
      */
-    public void info(final String message) {
-        m_logger.log(Level.INFO, message);
+    public void info(final Object message) {
+        m_logger.log(Level.INFO, valueOf(message));
     }
 
     /**
@@ -111,8 +113,8 @@ public class Jdk14Logger implements Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    public void info(final String message, final Throwable throwable) {
-        m_logger.log(Level.INFO, message, throwable);
+    public void info(final Object message, final Throwable throwable) {
+        m_logger.log(Level.INFO, valueOf(message), throwable);
     }
 
     /**
@@ -129,8 +131,8 @@ public class Jdk14Logger implements Logger {
      * 
      * @param message the message
      */
-    public void warn(final String message) {
-        m_logger.log(Level.WARNING, message);
+    public void warn(final Object message) {
+        m_logger.log(Level.WARNING, valueOf(message));
     }
 
     /**
@@ -139,8 +141,8 @@ public class Jdk14Logger implements Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    public void warn(final String message, final Throwable throwable) {
-        m_logger.log(Level.WARNING, message, throwable);
+    public void warn(final Object message, final Throwable throwable) {
+        m_logger.log(Level.WARNING, valueOf(message), throwable);
     }
 
     /**
@@ -157,8 +159,8 @@ public class Jdk14Logger implements Logger {
      * 
      * @param message the message
      */
-    public void error(final String message) {
-        m_logger.log(Level.SEVERE, message);
+    public void error(final Object message) {
+        m_logger.log(Level.SEVERE, valueOf(message));
     }
 
     /**
@@ -167,8 +169,8 @@ public class Jdk14Logger implements Logger {
      * @param message the message
      * @param throwable the throwable
      */
-    public void error(final String message, final Throwable throwable) {
-        m_logger.log(Level.SEVERE, message, throwable);
+    public void error(final Object message, final Throwable throwable) {
+        m_logger.log(Level.SEVERE, valueOf(message), throwable);
     }
 
     /**
