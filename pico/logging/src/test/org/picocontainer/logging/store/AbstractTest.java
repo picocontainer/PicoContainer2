@@ -1,11 +1,12 @@
 /*
- * Copyright (C) PicoContainer Organization. All rights reserved.            
- * ------------------------------------------------------------------------- 
- * The software in this package is published under the terms of the BSD      
- * style license a copy of which has been included with this distribution in 
- * the LICENSE.txt file.                                                     
- */ 
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * --------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ */
 package org.picocontainer.logging.store;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -115,9 +116,9 @@ public abstract class AbstractTest {
      *            <code>null</code> if none required
      * @param systemId the String encoding the systemId required by the
      *            InputSource - or <code>null</code> if none required
-     * @throws ParserConfigurationException 
-     * @throws IOException 
-     * @throws SAXException 
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
      */
     protected static Element buildElement(final InputStream resource, final EntityResolver resolver,
             final String systemId) throws ParserConfigurationException, SAXException, IOException {
@@ -160,31 +161,31 @@ public abstract class AbstractTest {
         final URL url = getClass().getResource(inputFile);
         assertEquals("URL is of file type", url.getProtocol(), "file");
 
-        final HashMap<String,Object> config = new HashMap<String,Object>();
+        final HashMap<String, Object> config = new HashMap<String, Object>();
         config.put(LoggerStoreFactory.URL_LOCATION, url.toExternalForm());
         config.putAll(inputData);
         runFactoryTest(factory, level, config, outputFile);
-        final HashMap<String,Object> config2 = new HashMap<String,Object>();
+        final HashMap<String, Object> config2 = new HashMap<String, Object>();
         config2.put(URL.class.getName(), url);
         config2.putAll(inputData);
         runFactoryTest(factory, level, config2, outputFile);
         final String filename = url.toExternalForm().substring(5);
-        final HashMap<String,Object> config3 = new HashMap<String,Object>();
+        final HashMap<String, Object> config3 = new HashMap<String, Object>();
         config3.put(LoggerStoreFactory.FILE_LOCATION, filename);
         config3.putAll(inputData);
         runFactoryTest(factory, level, config3, outputFile);
-        final HashMap<String,Object> config4 = new HashMap<String,Object>();
+        final HashMap<String, Object> config4 = new HashMap<String, Object>();
         config4.put(File.class.getName(), new File(filename));
         config4.putAll(inputData);
         runFactoryTest(factory, level, config4, outputFile);
-        final HashMap<String,Object> config5 = new HashMap<String,Object>();
+        final HashMap<String, Object> config5 = new HashMap<String, Object>();
         config5.put(InputStream.class.getName(), new FileInputStream(filename));
         config5.putAll(inputData);
         runFactoryTest(factory, level, config5, outputFile);
     }
 
-    protected void runFactoryTest(final LoggerStoreFactory factory, final int level, final HashMap<String, Object> config,
-            final String filename) throws IOException {
+    protected void runFactoryTest(final LoggerStoreFactory factory, final int level,
+            final HashMap<String, Object> config, final String filename) throws IOException {
         final LoggerStore store = factory.createLoggerStore(config);
         runLoggerTest(filename, store, level);
     }

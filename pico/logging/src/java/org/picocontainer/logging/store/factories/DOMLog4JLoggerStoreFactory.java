@@ -1,10 +1,10 @@
 /*
- * Copyright (C) PicoContainer Organization. All rights reserved.            
- * ------------------------------------------------------------------------- 
- * The software in this package is published under the terms of the BSD      
- * style license a copy of which has been included with this distribution in 
- * the LICENSE.txt file.                                                     
- */ 
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * --------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ */
 package org.picocontainer.logging.store.factories;
 
 import java.io.InputStream;
@@ -23,7 +23,7 @@ import org.w3c.dom.Element;
  */
 public class DOMLog4JLoggerStoreFactory extends AbstractLoggerStoreFactory {
 
-    protected LoggerStore doCreateLoggerStore(final Map<String,Object> config) {
+    protected LoggerStore doCreateLoggerStore(final Map<String, Object> config) {
         final Element element = (Element) config.get(Element.class.getName());
         if (null != element) {
             return new Log4JLoggerStore(element);

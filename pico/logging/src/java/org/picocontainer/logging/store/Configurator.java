@@ -1,10 +1,10 @@
 /*
- * Copyright (C) PicoContainer Organization. All rights reserved.            
- * ------------------------------------------------------------------------- 
- * The software in this package is published under the terms of the BSD      
- * style license a copy of which has been included with this distribution in 
- * the LICENSE.txt file.                                                     
- */                                                                           
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * --------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ */
 package org.picocontainer.logging.store;
 
 import java.io.InputStream;
@@ -18,9 +18,9 @@ import org.picocontainer.logging.store.factories.PropertyLog4JLoggerStoreFactory
 
 /**
  * Configurator is a collection of utility methods to create and configure
- * LoggerStore objects of different types using configuration resources. 
- * Log4J and JDK14 Loggers are supported. In the case of Log4J, both DOM and
- * Property configuration types are supported.
+ * LoggerStore objects of different types using configuration resources. Log4J
+ * and JDK14 Loggers are supported. In the case of Log4J, both DOM and Property
+ * configuration types are supported.
  * 
  * @author Mauro Talevi
  */

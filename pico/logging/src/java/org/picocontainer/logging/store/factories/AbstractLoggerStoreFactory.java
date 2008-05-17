@@ -1,10 +1,10 @@
 /*
- * Copyright (C) PicoContainer Organization. All rights reserved.            
- * ------------------------------------------------------------------------- 
- * The software in this package is published under the terms of the BSD      
- * style license a copy of which has been included with this distribution in 
- * the LICENSE.txt file.                                                     
- */ 
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * --------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ */
 package org.picocontainer.logging.store.factories;
 
 import java.io.File;
@@ -34,12 +34,12 @@ public abstract class AbstractLoggerStoreFactory implements LoggerStoreFactory {
      * @return the LoggerStore
      * @throws LoggerStoreCreationException if unable to create the LoggerStore
      */
-    public LoggerStore createLoggerStore(final Map<String,Object> config)  {
+    public LoggerStore createLoggerStore(final Map<String, Object> config) {
         final LoggerStore loggerStore = doCreateLoggerStore(config);
         return loggerStore;
     }
 
-    protected abstract LoggerStore doCreateLoggerStore(Map<String,Object> config);
+    protected abstract LoggerStore doCreateLoggerStore(Map<String, Object> config);
 
     /**
      * Utility method to throw exception indicating input data was invalid.
@@ -47,7 +47,7 @@ public abstract class AbstractLoggerStoreFactory implements LoggerStoreFactory {
      * @return never returns
      * @throws LoggerStoreCreationException indicating input data was invalid
      */
-    protected LoggerStore missingConfiguration()  {
+    protected LoggerStore missingConfiguration() {
         throw new LoggerStoreCreationException("Invalid configuration");
     }
 
@@ -69,9 +69,10 @@ public abstract class AbstractLoggerStoreFactory implements LoggerStoreFactory {
      * 
      * @param config the input map
      * @return the InputStream or null if no stream present
-     * @throws LoggerStoreCreationException if there was a problem getting the input stream
+     * @throws LoggerStoreCreationException if there was a problem getting the
+     *             input stream
      */
-    protected InputStream getInputStream(final Map<String,Object> config) {
+    protected InputStream getInputStream(final Map<String, Object> config) {
         try {
             final String urlLocation = (String) config.get(URL_LOCATION);
             URL url = null;
@@ -97,7 +98,7 @@ public abstract class AbstractLoggerStoreFactory implements LoggerStoreFactory {
             }
             return (InputStream) config.get(InputStream.class.getName());
         } catch (Exception e) {
-            final String message = "Failed to get input stream for configuration "+config;
+            final String message = "Failed to get input stream for configuration " + config;
             throw new LoggerStoreCreationException(message, e);
         }
     }

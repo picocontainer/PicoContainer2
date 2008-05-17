@@ -1,10 +1,10 @@
 /*
- * Copyright (C) PicoContainer Organization. All rights reserved.            
- * ------------------------------------------------------------------------- 
- * The software in this package is published under the terms of the BSD      
- * style license a copy of which has been included with this distribution in 
- * the LICENSE.txt file.                                                     
- */ 
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * --------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ */
 package org.picocontainer.logging.store.stores;
 
 import java.io.InputStream;
@@ -34,7 +34,8 @@ public class Log4JLoggerStore extends AbstractLoggerStore {
      * resource
      * 
      * @param resource the Element encoding the configuration resource
-     * @throws LoggerStoreCreationException if fails to create or configure Logger
+     * @throws LoggerStoreCreationException if fails to create or configure
+     *             Logger
      */
     public Log4JLoggerStore(final Element resource) {
         LogManager.resetConfiguration();
@@ -49,7 +50,8 @@ public class Log4JLoggerStore extends AbstractLoggerStore {
      * resource
      * 
      * @param resource the InputStream encoding the configuration resource
-     * @throws LoggerStoreCreationException if fails to create or configure Logger
+     * @throws LoggerStoreCreationException if fails to create or configure
+     *             Logger
      */
     public Log4JLoggerStore(final InputStream resource) {
         LogManager.resetConfiguration();
@@ -64,7 +66,8 @@ public class Log4JLoggerStore extends AbstractLoggerStore {
      * resource
      * 
      * @param resource the Properties encoding the configuration resource
-     * @throws LoggerStoreCreationException if fails to create or configure Logger
+     * @throws LoggerStoreCreationException if fails to create or configure
+     *             Logger
      */
     public Log4JLoggerStore(final Properties resource) {
         LogManager.resetConfiguration();

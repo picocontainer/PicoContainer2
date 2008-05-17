@@ -1,10 +1,10 @@
 /*
- * Copyright (C) PicoContainer Organization. All rights reserved.            
- * ------------------------------------------------------------------------- 
- * The software in this package is published under the terms of the BSD      
- * style license a copy of which has been included with this distribution in 
- * the LICENSE.txt file.                                                     
- */ 
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * --------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ */
 package org.picocontainer.logging.store.factories;
 
 import java.io.InputStream;
@@ -47,13 +47,14 @@ public class InitialLoggerStoreFactory implements LoggerStoreFactory {
      * 
      * @param config the input configuration
      * @return the LoggerStore
-     * @throws LoggerStoreCreationException if unable to create the LoggerStore for any reason.
+     * @throws LoggerStoreCreationException if unable to create the LoggerStore
+     *             for any reason.
      */
-    public LoggerStore createLoggerStore(final Map<String,Object> config) {
+    public LoggerStore createLoggerStore(final Map<String, Object> config) {
         final ClassLoader classLoader = getClassLoader(config);
 
         String type = (String) config.get(INITIAL_FACTORY);
-        Map<String,Object> data = config;
+        Map<String, Object> data = config;
         if (null == type) {
             data = loadDefaultConfig(data, classLoader);
             type = (String) data.get(INITIAL_FACTORY);
@@ -70,7 +71,7 @@ public class InitialLoggerStoreFactory implements LoggerStoreFactory {
      * @param data the configuration data
      * @return a ClassLoader
      */
-    private ClassLoader getClassLoader(final Map<String,Object> data) {
+    private ClassLoader getClassLoader(final Map<String, Object> data) {
         ClassLoader loader = (ClassLoader) data.get(ClassLoader.class.getName());
         if (null == loader) {
             loader = Thread.currentThread().getContextClassLoader();
@@ -107,7 +108,7 @@ public class InitialLoggerStoreFactory implements LoggerStoreFactory {
             map.putAll(initial);
             return map;
         } catch (Exception e) {
-            final String message = "Failed to load initial configuration "+initial;
+            final String message = "Failed to load initial configuration " + initial;
             throw new LoggerStoreCreationException(message, e);
         }
     }

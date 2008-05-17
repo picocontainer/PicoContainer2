@@ -1,10 +1,10 @@
 /*
- * Copyright (C) PicoContainer Organization. All rights reserved.            
- * ------------------------------------------------------------------------- 
- * The software in this package is published under the terms of the BSD      
- * style license a copy of which has been included with this distribution in 
- * the LICENSE.txt file.                                                     
- */ 
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * --------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ */
 package org.picocontainer.logging.loggers;
 
 import java.io.PrintStream;
@@ -13,7 +13,6 @@ import org.picocontainer.logging.Logger;
 
 /**
  * A simple logger facade that simply writes to the Console.
- * 
  */
 public class ConsoleLogger implements Logger {
     /**

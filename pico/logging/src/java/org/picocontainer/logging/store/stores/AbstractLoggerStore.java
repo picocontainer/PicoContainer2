@@ -1,10 +1,10 @@
 /*
- * Copyright (C) PicoContainer Organization. All rights reserved.            
- * ------------------------------------------------------------------------- 
- * The software in this package is published under the terms of the BSD      
- * style license a copy of which has been included with this distribution in 
- * the LICENSE.txt file.                                                     
- */ 
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * --------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ */
 package org.picocontainer.logging.store.stores;
 
 import java.util.HashMap;
@@ -13,7 +13,6 @@ import java.util.Map;
 import org.picocontainer.logging.Logger;
 import org.picocontainer.logging.store.LoggerNotFoundException;
 import org.picocontainer.logging.store.LoggerStore;
-
 
 /**
  * AbstractLoggerStore is an abstract implementation of LoggerStore for the
@@ -53,7 +52,7 @@ public abstract class AbstractLoggerStore implements LoggerStore {
         return logger;
     }
 
-    public Logger getLogger(final String name){
+    public Logger getLogger(final String name) {
         if (null == name) {
             throw new NullPointerException("name");
         }

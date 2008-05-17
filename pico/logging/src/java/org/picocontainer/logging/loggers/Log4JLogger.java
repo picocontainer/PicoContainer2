@@ -1,10 +1,10 @@
 /*
- * Copyright (C) PicoContainer Organization. All rights reserved.            
- * ------------------------------------------------------------------------- 
- * The software in this package is published under the terms of the BSD      
- * style license a copy of which has been included with this distribution in 
- * the LICENSE.txt file.                                                     
- */ 
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * --------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ */
 package org.picocontainer.logging.loggers;
 
 import org.apache.log4j.Level;
@@ -20,7 +20,6 @@ import org.picocontainer.logging.Logger;
  * <li>warn ==&gt; warn</li>
  * <li>error ==&gt; error</li>
  * </ul>
- * 
  */
 public class Log4JLogger implements Logger {
     /**

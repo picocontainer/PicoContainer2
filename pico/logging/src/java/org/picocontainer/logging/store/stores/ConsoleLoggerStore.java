@@ -1,10 +1,10 @@
 /*
- * Copyright (C) PicoContainer Organization. All rights reserved.            
- * ------------------------------------------------------------------------- 
- * The software in this package is published under the terms of the BSD      
- * style license a copy of which has been included with this distribution in 
- * the LICENSE.txt file.                                                     
- */ 
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * --------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ */
 package org.picocontainer.logging.store.stores;
 
 import org.picocontainer.logging.Logger;
@@ -23,9 +23,10 @@ public class ConsoleLoggerStore extends AbstractLoggerStore {
      * level.
      * 
      * @param level the debug level of ConsoleLoggerStore
-     * @throws LoggerStoreCreationException if fails to create or configure Logger
+     * @throws LoggerStoreCreationException if fails to create or configure
+     *             Logger
      */
-    public ConsoleLoggerStore(final int level){
+    public ConsoleLoggerStore(final int level) {
         setRootLogger(new ConsoleLogger(level));
     }
 

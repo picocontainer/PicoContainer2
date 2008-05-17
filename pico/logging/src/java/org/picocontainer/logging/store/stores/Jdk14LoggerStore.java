@@ -1,6 +1,6 @@
 /*
  * Copyright (C) PicoContainer Organization. All rights reserved.
- * ------------------------------------------------------------------------- 
+ * --------------------------------------------------------------------------
  * The software in this package is published under the terms of the BSD style
  * license a copy of which has been included with this distribution in the
  * LICENSE.txt file.
@@ -29,7 +29,8 @@ public class Jdk14LoggerStore extends AbstractLoggerStore {
      * resource.
      * 
      * @param resource the InputStream encoding the configuration resource
-     * @throws LoggerStoreCreationException if fails to create store or configure Logger
+     * @throws LoggerStoreCreationException if fails to create store or
+     *             configure Logger
      */
     public Jdk14LoggerStore(final InputStream resource) {
         try {
