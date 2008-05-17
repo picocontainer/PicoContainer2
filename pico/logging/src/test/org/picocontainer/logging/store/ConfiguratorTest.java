@@ -25,54 +25,56 @@ public class ConfiguratorTest extends AbstractTest {
 
     @Test
     public void testLog4JDOMConfigurator() throws IOException {
-        runLoggerTest("log4j-xml", Configurator.createLoggerStore(Configurator.LOG4J_DOM, getResource("log4j.xml")),
-                ConsoleLogger.LEVEL_DEBUG);
+        runLoggerTest("log4j-xml", Configurator.createLoggerStore(Configurator.LOG4J_DOM,
+                getResource("org/picocontainer/logging/store/log4j.xml")), ConsoleLogger.LEVEL_DEBUG);
     }
 
     @Test
     public void testLog4JDOMConfiguratorNoDebug() throws IOException {
-        runLoggerTest("log4j-xml", Configurator.createLoggerStore(Configurator.LOG4J_DOM, getResource("log4j.xml")),
-                ConsoleLogger.LEVEL_NONE);
+        runLoggerTest("log4j-xml", Configurator.createLoggerStore(Configurator.LOG4J_DOM,
+                getResource("org/picocontainer/logging/store/log4j.xml")), ConsoleLogger.LEVEL_NONE);
     }
 
     @Test
     public void testLog4JDOMConfiguratorNoLog() throws IOException {
-        runLoggerTest("log4j-xml", Configurator.createLoggerStore(Configurator.LOG4J_DOM, getResource("log4j.xml")));
+        runLoggerTest("log4j-xml", Configurator.createLoggerStore(Configurator.LOG4J_DOM,
+                getResource("org/picocontainer/logging/store/log4j.xml")));
     }
 
     @Test
     public void testLog4JPropertyConfigurator() throws IOException {
         runLoggerTest("log4j-properties", Configurator.createLoggerStore(Configurator.LOG4J_PROPERTY,
-                getResource("log4j.properties")), ConsoleLogger.LEVEL_DEBUG);
+                getResource("org/picocontainer/logging/store/log4j.properties")), ConsoleLogger.LEVEL_DEBUG);
     }
 
     @Test
     public void testLog4JPropertyConfiguratorNoDebug() throws IOException {
         runLoggerTest("log4j-properties", Configurator.createLoggerStore(Configurator.LOG4J_PROPERTY,
-                getResource("log4j.properties")), ConsoleLogger.LEVEL_NONE);
+                getResource("org/picocontainer/logging/store/log4j.properties")), ConsoleLogger.LEVEL_NONE);
     }
 
     @Test
     public void testLog4JPropertyConfiguratorNoLog() throws IOException {
         runLoggerTest("log4j-properties", Configurator.createLoggerStore(Configurator.LOG4J_PROPERTY,
-                getResource("log4j.properties")));
+                getResource("org/picocontainer/logging/store/log4j.properties")));
     }
 
     @Test
     public void testJDKConfigurator() throws IOException {
-        runLoggerTest("jdk", Configurator.createLoggerStore(Configurator.JDK, getResource("logging.properties")),
-                ConsoleLogger.LEVEL_DEBUG);
+        runLoggerTest("jdk", Configurator.createLoggerStore(Configurator.JDK,
+                getResource("org/picocontainer/logging/store/logging.properties")), ConsoleLogger.LEVEL_DEBUG);
     }
 
     @Test
     public void testJDKConfiguratorNoDebug() throws IOException {
-        runLoggerTest("jdk", Configurator.createLoggerStore(Configurator.JDK, getResource("logging.properties")),
-                ConsoleLogger.LEVEL_NONE);
+        runLoggerTest("jdk", Configurator.createLoggerStore(Configurator.JDK,
+                getResource("org/picocontainer/logging/store/logging.properties")), ConsoleLogger.LEVEL_NONE);
     }
 
     @Test
     public void testJDKConfiguratorNoLog() throws IOException {
-        runLoggerTest("jdk", Configurator.createLoggerStore(Configurator.JDK, getResource("logging.properties")));
+        runLoggerTest("jdk", Configurator.createLoggerStore(Configurator.JDK,
+                getResource("org/picocontainer/logging/store/logging.properties")));
     }
 
 }

@@ -9,6 +9,7 @@
   </parent>
   <artifactId>picocontainer-logging</artifactId>
   <name>PicoContainer Logging</name>
+  <description>Component that allow logging to be done in a truely IoC-fashion.</description>
   <packaging>jar</packaging>
   <dependencies>
     <dependency>

@@ -53,7 +53,8 @@ public abstract class AbstractTest {
     }
 
     protected final InputStream getResource(final String name) {
-        return getClass().getResourceAsStream(name);
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        return classLoader.getResourceAsStream(name);
     }
 
     protected void runLoggerTest(final String filename, final LoggerStore store, final int level) throws IOException {

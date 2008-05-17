@@ -80,7 +80,7 @@ public class LoggerStoreFactoryTest extends AbstractTest {
     @Test
     public void testJDKLoggerStoreFactoryWithProperties() throws IOException {
         final Properties properties = new Properties();
-        properties.load(getResource("logging.properties"));
+        properties.load(getResource("org/picocontainer/logging/store/logging.properties"));
         final HashMap<String, Object> config = new HashMap<String, Object>();
         config.put(Properties.class.getName(), properties);
         runFactoryTest(new JdkLoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG, config, "jdk");
@@ -88,8 +88,8 @@ public class LoggerStoreFactoryTest extends AbstractTest {
 
     @Test
     public void testJDKLoggerStoreFactoryWithStreams() throws IOException {
-        runStreamBasedFactoryTest("logging.properties", new JdkLoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG,
-                "jdk", new HashMap<String, Object>());
+        runStreamBasedFactoryTest("logging.properties", new JdkLoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG, "jdk",
+                new HashMap<String, Object>());
     }
 
 }
