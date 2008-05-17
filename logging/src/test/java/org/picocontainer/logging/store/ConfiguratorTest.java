@@ -7,6 +7,8 @@
  */
 package org.picocontainer.logging.store;
 
+import static org.picocontainer.logging.loggers.ConsoleLogger.LEVEL_DEBUG;
+import static org.picocontainer.logging.loggers.ConsoleLogger.LEVEL_NONE;
 import static org.picocontainer.logging.store.Configurator.JDK;
 import static org.picocontainer.logging.store.Configurator.LOG4J_DOM;
 import static org.picocontainer.logging.store.Configurator.LOG4J_PROPERTY;
@@ -15,7 +17,6 @@ import static org.picocontainer.logging.store.Configurator.createLoggerStore;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.picocontainer.logging.loggers.ConsoleLogger;
 
 /**
  * @author Mauro Talevi
@@ -37,14 +38,12 @@ public class ConfiguratorTest extends AbstractTest {
 
     @Test
     public void testLog4JDOMConfigurator() throws IOException {
-        runLoggerTest(LOG4J_XML_FILENAME, createLoggerStore(LOG4J_DOM, getInputStream(LOG4J_XML)),
-                ConsoleLogger.LEVEL_DEBUG);
+        runLoggerTest(LOG4J_XML_FILENAME, createLoggerStore(LOG4J_DOM, getInputStream(LOG4J_XML)), LEVEL_DEBUG);
     }
 
     @Test
     public void testLog4JDOMConfiguratorNoDebug() throws IOException {
-        runLoggerTest(LOG4J_XML_FILENAME, createLoggerStore(LOG4J_DOM, getInputStream(LOG4J_XML)),
-                ConsoleLogger.LEVEL_NONE);
+        runLoggerTest(LOG4J_XML_FILENAME, createLoggerStore(LOG4J_DOM, getInputStream(LOG4J_XML)), LEVEL_NONE);
     }
 
     @Test
@@ -55,13 +54,13 @@ public class ConfiguratorTest extends AbstractTest {
     @Test
     public void testLog4JPropertyConfigurator() throws IOException {
         runLoggerTest(LOG4J_PROPERTIES_FILENAME, createLoggerStore(LOG4J_PROPERTY, getInputStream(LOG4J_PROPERTIES)),
-                ConsoleLogger.LEVEL_DEBUG);
+                LEVEL_DEBUG);
     }
 
     @Test
     public void testLog4JPropertyConfiguratorNoDebug() throws IOException {
         runLoggerTest(LOG4J_PROPERTIES_FILENAME, createLoggerStore(LOG4J_PROPERTY, getInputStream(LOG4J_PROPERTIES)),
-                ConsoleLogger.LEVEL_NONE);
+                LEVEL_NONE);
     }
 
     @Test
@@ -71,14 +70,12 @@ public class ConfiguratorTest extends AbstractTest {
 
     @Test
     public void testJDKConfigurator() throws IOException {
-        runLoggerTest(JDK_FILENAME, createLoggerStore(JDK, getInputStream(LOGGING_PROPERTIES)),
-                ConsoleLogger.LEVEL_DEBUG);
+        runLoggerTest(JDK_FILENAME, createLoggerStore(JDK, getInputStream(LOGGING_PROPERTIES)), LEVEL_DEBUG);
     }
 
     @Test
     public void testJDKConfiguratorNoDebug() throws IOException {
-        runLoggerTest(JDK_FILENAME, createLoggerStore(JDK, getInputStream(LOGGING_PROPERTIES)),
-                ConsoleLogger.LEVEL_NONE);
+        runLoggerTest(JDK_FILENAME, createLoggerStore(JDK, getInputStream(LOGGING_PROPERTIES)), LEVEL_NONE);
     }
 
     @Test

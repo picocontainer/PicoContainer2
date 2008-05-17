@@ -7,9 +7,10 @@
  */
 package org.picocontainer.logging.store.factories;
 
+import static org.picocontainer.logging.loggers.ConsoleLogger.LEVEL_INFO;
+
 import java.util.Map;
 
-import org.picocontainer.logging.loggers.ConsoleLogger;
 import org.picocontainer.logging.store.LoggerStore;
 import org.picocontainer.logging.store.stores.ConsoleLoggerStore;
 
@@ -21,7 +22,6 @@ import org.picocontainer.logging.store.stores.ConsoleLoggerStore;
 public class ConsoleLoggerStoreFactory extends AbstractLoggerStoreFactory {
 
     protected LoggerStore doCreateLoggerStore(final Map<String, Object> config) {
-        final int level = ConsoleLogger.LEVEL_INFO;
-        return new ConsoleLoggerStore(level);
+        return new ConsoleLoggerStore(LEVEL_INFO);
     }
 }

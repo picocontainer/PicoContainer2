@@ -7,6 +7,9 @@
  */
 package org.picocontainer.logging.store;
 
+import static org.picocontainer.logging.store.LoggerStoreFactory.FILE_LOCATION;
+import static org.picocontainer.logging.store.factories.InitialLoggerStoreFactory.INITIAL_FACTORY;
+
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,8 +50,8 @@ public class Configurator {
     public static LoggerStore createLoggerStore(final String configuratorType, final String resource) {
         final InitialLoggerStoreFactory factory = new InitialLoggerStoreFactory();
         final Map<String, Object> data = new HashMap<String, Object>();
-        data.put(InitialLoggerStoreFactory.INITIAL_FACTORY, getFactoryClassName(configuratorType));
-        data.put(LoggerStoreFactory.FILE_LOCATION, resource);
+        data.put(INITIAL_FACTORY, getFactoryClassName(configuratorType));
+        data.put(FILE_LOCATION, resource);
         return factory.createLoggerStore(data);
     }
 
@@ -64,7 +67,7 @@ public class Configurator {
     public static LoggerStore createLoggerStore(final String configuratorType, final InputStream resource) {
         final InitialLoggerStoreFactory factory = new InitialLoggerStoreFactory();
         final Map<String, Object> data = new HashMap<String, Object>();
-        data.put(InitialLoggerStoreFactory.INITIAL_FACTORY, getFactoryClassName(configuratorType));
+        data.put(INITIAL_FACTORY, getFactoryClassName(configuratorType));
         data.put(InputStream.class.getName(), resource);
         return factory.createLoggerStore(data);
     }

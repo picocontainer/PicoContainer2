@@ -12,6 +12,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.picocontainer.logging.store.LoggerStoreFactory.FILE_LOCATION;
+import static org.picocontainer.logging.store.LoggerStoreFactory.URL_LOCATION;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -131,7 +133,7 @@ public abstract class AbstractTest {
         assertEquals("URL is of file type", url.getProtocol(), "file");
 
         final HashMap<String, Object> config = new HashMap<String, Object>();
-        config.put(LoggerStoreFactory.URL_LOCATION, url.toExternalForm());
+        config.put(URL_LOCATION, url.toExternalForm());
         config.putAll(inputData);
         runFactoryTest(factory, config, outputFile, level);
         final HashMap<String, Object> config2 = new HashMap<String, Object>();
@@ -140,7 +142,7 @@ public abstract class AbstractTest {
         runFactoryTest(factory, config2, outputFile, level);
         final String filename = url.toExternalForm().substring(5);
         final HashMap<String, Object> config3 = new HashMap<String, Object>();
-        config3.put(LoggerStoreFactory.FILE_LOCATION, filename);
+        config3.put(FILE_LOCATION, filename);
         config3.putAll(inputData);
         runFactoryTest(factory, config3, outputFile, level);
         final HashMap<String, Object> config4 = new HashMap<String, Object>();
