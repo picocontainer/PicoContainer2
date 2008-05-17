@@ -7,8 +7,7 @@
  */ 
 package org.picocontainer.logging.store;
 
-import static org.junit.Assert.fail;
-
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -25,18 +24,15 @@ import org.picocontainer.logging.store.factories.Jdk14LoggerStoreFactory;
 public class LoggerStoreFactoryTest extends AbstractTest {
 
     // InitialLoggerStoreFactory tests
-    @Test public void testInitialLoggerStoreFactoryUsingDefaults() throws Exception {
+    @Test(expected=LoggerStoreCreationException.class)
+    public void testInitialLoggerStoreFactoryUsingDefaults() {
         final HashMap<String,Object> config = new HashMap<String,Object>();
         config.put(ClassLoader.class.getName(), ClassLoader.getSystemClassLoader().getParent());
         final InitialLoggerStoreFactory factory = new InitialLoggerStoreFactory();
-        try {
-            factory.createLoggerStore(config);
-            fail("Expected to not be able to create LoggerStoreFactory as no type was specified or on ClassPath");
-        } catch (final Exception e) {
-        }
+        factory.createLoggerStore(config);
     }
 
-    @Test public void testInitialLoggerStoreFactoryUsingSpecifiedType() throws Exception {
+    @Test public void testInitialLoggerStoreFactoryUsingSpecifiedType() {
         final HashMap<String,Object> config = new HashMap<String,Object>();
         config.put(InitialLoggerStoreFactory.INITIAL_FACTORY, ConsoleLoggerStoreFactory.class.getName());
         final InitialLoggerStoreFactory factory = new InitialLoggerStoreFactory();
@@ -44,26 +40,23 @@ public class LoggerStoreFactoryTest extends AbstractTest {
         performConsoleTest(store, ConsoleLogger.LEVEL_DEBUG);
     }
 
-    @Test public void testInitialLoggerStoreFactoryWithInvalidType() throws Exception {
+    @Test(expected=LoggerStoreCreationException.class)
+    public void testInitialLoggerStoreFactoryWithInvalidType() {
         final HashMap<String,Object> config = new HashMap<String,Object>();
         config.put(InitialLoggerStoreFactory.INITIAL_FACTORY, "Blah");
         final InitialLoggerStoreFactory factory = new InitialLoggerStoreFactory();
-        try {
-            factory.createLoggerStore(config);
-            fail("Expected exception as invalid type specified");
-        } catch (final Exception e) {
-        }
+        factory.createLoggerStore(config);
     }
 
     //@Test TODO
-    public void testInitialLoggerStoreFactoryFromConfigurerClassLoader() throws Exception {
+    public void testInitialLoggerStoreFactoryFromConfigurerClassLoader() throws IOException {
         Thread.currentThread().setContextClassLoader(null);
         final HashMap<String,Object> config = new HashMap<String,Object>();
         runFactoryTest(new InitialLoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG, config, "log4j-properties");
     }
 
     //@Test TODO
-    public void testInitialLoggerStoreFactoryFromSpecifiedClassLoader() throws Exception {
+    public void testInitialLoggerStoreFactoryFromSpecifiedClassLoader() throws IOException {
         Thread.currentThread().setContextClassLoader(null);
         final HashMap<String,Object> config = new HashMap<String,Object>();
         config.put(ClassLoader.class.getName(), InitialLoggerStoreFactory.class.getClassLoader());
@@ -71,7 +64,7 @@ public class LoggerStoreFactoryTest extends AbstractTest {
     }
 
     //@Test TODO
-    public void testInitialLoggerStoreFactoryFromContextClassLoader() throws Exception {
+    public void testInitialLoggerStoreFactoryFromContextClassLoader() throws IOException {
         Thread.currentThread().setContextClassLoader(InitialLoggerStoreFactory.class.getClassLoader());
         final HashMap<String,Object> config = new HashMap<String,Object>();
         runFactoryTest(new InitialLoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG, config, "log4j-properties");
@@ -82,16 +75,15 @@ public class LoggerStoreFactoryTest extends AbstractTest {
         runInvalidInputData(new Jdk14LoggerStoreFactory());
     }
 
-    @Test public void testJDK14LoggerStoreFactoryWithProperties() throws Exception {
+    @Test public void testJDK14LoggerStoreFactoryWithProperties() throws IOException {
         final Properties properties = new Properties();
         properties.load(getResource("logging.properties"));
         final HashMap<String,Object> config = new HashMap<String,Object>();
         config.put(Properties.class.getName(), properties);
-
         runFactoryTest(new Jdk14LoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG, config, "jdk14");
     }
 
-    @Test public void testJDK14LoggerStoreFactoryWithStreams() throws Exception {
+    @Test public void testJDK14LoggerStoreFactoryWithStreams() throws IOException {
         runStreamBasedFactoryTest("logging.properties", new Jdk14LoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG,
                 "jdk14", new HashMap<String,Object>());
     }

@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     
  */ 
 package org.picocontainer.logging.store;
-import static org.junit.Assert.fail;
+import java.io.IOException;
 
 import org.junit.Test;
 import org.picocontainer.logging.loggers.ConsoleLogger;
@@ -17,54 +17,51 @@ import org.picocontainer.logging.loggers.ConsoleLogger;
  */
 public class ConfiguratorTest extends AbstractTest {
 
-    @Test public void testInvalidConfiguratorType() throws Exception {
-        try {
-            Configurator.createLoggerStore("blah", "org/picocontainer/logging/store/logging.properties");
-            fail("Expected exception as invalid type specified");
-        } catch (final Exception e) {
-        }
+    @Test(expected=LoggerStoreCreationException.class)
+    public void testInvalidConfiguratorType() throws IOException {
+        Configurator.createLoggerStore("blah", "org/picocontainer/logging/store/logging.properties");        
     }
 
-    @Test public void testLog4JDOMConfigurator() throws Exception {
+    @Test public void testLog4JDOMConfigurator() throws IOException {
         runLoggerTest("log4j-xml", Configurator.createLoggerStore(Configurator.LOG4J_DOM, getResource("log4j.xml")),
                 ConsoleLogger.LEVEL_DEBUG);
     }
 
-    @Test public void testLog4JDOMConfiguratorNoDebug() throws Exception {
+    @Test public void testLog4JDOMConfiguratorNoDebug() throws IOException {
         runLoggerTest("log4j-xml", Configurator.createLoggerStore(Configurator.LOG4J_DOM, getResource("log4j.xml")),
                 ConsoleLogger.LEVEL_NONE);
     }
 
-    @Test public void testLog4JDOMConfiguratorNoLog() throws Exception {
+    @Test public void testLog4JDOMConfiguratorNoLog() throws IOException {
         runLoggerTest("log4j-xml", Configurator.createLoggerStore(Configurator.LOG4J_DOM, getResource("log4j.xml")));
     }
 
-    @Test public void testLog4JPropertyConfigurator() throws Exception {
+    @Test public void testLog4JPropertyConfigurator() throws IOException {
         runLoggerTest("log4j-properties", Configurator.createLoggerStore(Configurator.LOG4J_PROPERTY,
                 getResource("log4j.properties")), ConsoleLogger.LEVEL_DEBUG);
     }
 
-    @Test public void testLog4JPropertyConfiguratorNoDebug() throws Exception {
+    @Test public void testLog4JPropertyConfiguratorNoDebug() throws IOException {
         runLoggerTest("log4j-properties", Configurator.createLoggerStore(Configurator.LOG4J_PROPERTY,
                 getResource("log4j.properties")), ConsoleLogger.LEVEL_NONE);
     }
 
-    @Test public void testLog4JPropertyConfiguratorNoLog() throws Exception {
+    @Test public void testLog4JPropertyConfiguratorNoLog() throws IOException {
         runLoggerTest("log4j-properties", Configurator.createLoggerStore(Configurator.LOG4J_PROPERTY,
                 getResource("log4j.properties")));
     }
 
-    @Test public void testJDK14Configurator() throws Exception {
+    @Test public void testJDK14Configurator() throws IOException {
         runLoggerTest("jdk14", Configurator.createLoggerStore(Configurator.JDK14, getResource("logging.properties")),
                 ConsoleLogger.LEVEL_DEBUG);
     }
 
-    @Test public void testJDK14ConfiguratorNoDebug() throws Exception {
+    @Test public void testJDK14ConfiguratorNoDebug() throws IOException {
         runLoggerTest("jdk14", Configurator.createLoggerStore(Configurator.JDK14, getResource("logging.properties")),
                 ConsoleLogger.LEVEL_NONE);
     }
 
-    @Test public void testJDK14ConfiguratorNoLog() throws Exception {
+    @Test public void testJDK14ConfiguratorNoLog() throws IOException {
         runLoggerTest("jdk14", Configurator.createLoggerStore(Configurator.JDK14, getResource("logging.properties")));
     }
 

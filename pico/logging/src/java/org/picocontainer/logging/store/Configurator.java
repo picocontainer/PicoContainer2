@@ -74,6 +74,7 @@ public class Configurator {
      * specified type of Logger.
      * 
      * @param type the type of Configurator
+     * @throws LoggerStoreCreationException if type not known
      */
     private static String getFactoryClassName(final String type) {
         if (LOG4J_DOM.equals(type)) {
@@ -84,7 +85,7 @@ public class Configurator {
             return Jdk14LoggerStoreFactory.class.getName();
         } else {
             final String message = "Unknown type " + type;
-            throw new IllegalArgumentException(message);
+            throw new LoggerStoreCreationException(message);
         }
     }
 }

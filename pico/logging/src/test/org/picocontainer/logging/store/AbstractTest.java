@@ -15,6 +15,7 @@ import static org.junit.Assert.fail;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -22,7 +23,7 @@ import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.FactoryConfigurationError;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.Before;
 import org.picocontainer.logging.Logger;
@@ -31,6 +32,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * @author Mauro Talevi
@@ -53,11 +55,11 @@ public abstract class AbstractTest {
         return getClass().getResourceAsStream(name);
     }
 
-    protected void runLoggerTest(final String filename, final LoggerStore store, final int level) throws Exception {
+    protected void runLoggerTest(final String filename, final LoggerStore store, final int level) throws IOException {
         runLoggerTest(filename, store);
     }
 
-    protected void runLoggerTest(final String filename, final LoggerStore store) throws Exception {
+    protected void runLoggerTest(final String filename, final LoggerStore store) throws IOException {
         BufferedReader reader = null;
         try {
             final Logger logger = store.getLogger();
@@ -113,36 +115,28 @@ public abstract class AbstractTest {
      *            <code>null</code> if none required
      * @param systemId the String encoding the systemId required by the
      *            InputSource - or <code>null</code> if none required
+     * @throws ParserConfigurationException 
+     * @throws IOException 
+     * @throws SAXException 
      */
     protected static Element buildElement(final InputStream resource, final EntityResolver resolver,
-            final String systemId) throws Exception {
-        DocumentBuilderFactory dbf = null;
-        try {
-            dbf = DocumentBuilderFactory.newInstance();
-        } catch (FactoryConfigurationError e) {
-            final String message = "Failed to create a DocumentBuilderFactory";
-            throw new Exception(message, e);
-        }
+            final String systemId) throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-        try {
-            dbf.setValidating(true);
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            if (resolver != null) {
-                db.setEntityResolver(resolver);
-            }
-            InputSource source = new InputSource(resource);
-            if (systemId != null) {
-                source.setSystemId(systemId);
-            }
-            Document doc = db.parse(source);
-            return doc.getDocumentElement();
-        } catch (Exception e) {
-            final String message = "Failed to parse Document";
-            throw new Exception(message, e);
+        dbf.setValidating(true);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        if (resolver != null) {
+            db.setEntityResolver(resolver);
         }
+        InputSource source = new InputSource(resource);
+        if (systemId != null) {
+            source.setSystemId(systemId);
+        }
+        Document doc = db.parse(source);
+        return doc.getDocumentElement();
     }
 
-    protected void performConsoleTest(final LoggerStore store, final int level) throws Exception {
+    protected void performConsoleTest(final LoggerStore store, final int level) {
         final Logger logger = store.getLogger();
         assertNotNull("rootLogger for console", logger);
         logger.info(MESSAGE);
@@ -161,7 +155,7 @@ public abstract class AbstractTest {
     }
 
     protected void runStreamBasedFactoryTest(final String inputFile, final LoggerStoreFactory factory, final int level,
-            final String outputFile, final HashMap<String, Object> inputData) throws Exception {
+            final String outputFile, final HashMap<String, Object> inputData) throws IOException {
         // URL Should in file: format
         final URL url = getClass().getResource(inputFile);
         assertEquals("URL is of file type", url.getProtocol(), "file");
@@ -190,7 +184,7 @@ public abstract class AbstractTest {
     }
 
     protected void runFactoryTest(final LoggerStoreFactory factory, final int level, final HashMap<String, Object> config,
-            final String filename) throws Exception {
+            final String filename) throws IOException {
         final LoggerStore store = factory.createLoggerStore(config);
         runLoggerTest(filename, store, level);
     }

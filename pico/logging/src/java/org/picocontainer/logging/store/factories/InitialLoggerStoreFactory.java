@@ -121,14 +121,14 @@ public class InitialLoggerStoreFactory implements LoggerStoreFactory {
     private LoggerStoreFactory createLoggerStoreFactory(final String type, final ClassLoader classLoader) {
         if (null == type) {
             final String message = "No LoggerStoreFactory type specified.";
-            throw new IllegalStateException(message);
+            throw new LoggerStoreCreationException(message);
         }
 
         try {
             return (LoggerStoreFactory) classLoader.loadClass(type).newInstance();
         } catch (final Exception e) {
             final String message = "Failed to created LoggerStoreFactory " + type;
-            throw new IllegalArgumentException(message);
+            throw new LoggerStoreCreationException(message);
         }
     }
 }
