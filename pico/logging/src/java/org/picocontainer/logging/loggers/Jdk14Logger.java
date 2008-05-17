@@ -28,7 +28,7 @@ public class Jdk14Logger implements Logger {
     /**
      * The JDK1.4 logger.
      */
-    private final java.util.logging.Logger m_logger;
+    private final java.util.logging.Logger logger;
 
     /**
      * Create an instance of JDK14Logger facade.
@@ -39,7 +39,7 @@ public class Jdk14Logger implements Logger {
         if (null == logger) {
             throw new NullPointerException("logger");
         }
-        m_logger = logger;
+        this.logger = logger;
     }
 
     /**
@@ -48,7 +48,7 @@ public class Jdk14Logger implements Logger {
      * @param message the message
      */
     public void trace(final Object message) {
-        m_logger.log(Level.FINEST, valueOf(message));
+        this.logger.log(Level.FINEST, valueOf(message));
     }
 
     /**
@@ -58,7 +58,7 @@ public class Jdk14Logger implements Logger {
      * @param throwable the throwable
      */
     public void trace(final Object message, final Throwable throwable) {
-        m_logger.log(Level.FINEST, valueOf(message), throwable);
+        this.logger.log(Level.FINEST, valueOf(message), throwable);
     }
 
     /**
@@ -67,7 +67,7 @@ public class Jdk14Logger implements Logger {
      * @return true if message will be logged
      */
     public boolean isTraceEnabled() {
-        return m_logger.isLoggable(Level.FINEST);
+        return this.logger.isLoggable(Level.FINEST);
     }
 
     /**
@@ -76,7 +76,7 @@ public class Jdk14Logger implements Logger {
      * @param message the message
      */
     public void debug(final Object message) {
-        m_logger.log(Level.FINE, valueOf(message));
+        this.logger.log(Level.FINE, valueOf(message));
     }
 
     /**
@@ -86,7 +86,7 @@ public class Jdk14Logger implements Logger {
      * @param throwable the throwable
      */
     public void debug(final Object message, final Throwable throwable) {
-        m_logger.log(Level.FINE, valueOf(message), throwable);
+        this.logger.log(Level.FINE, valueOf(message), throwable);
     }
 
     /**
@@ -95,7 +95,7 @@ public class Jdk14Logger implements Logger {
      * @return true if message will be logged
      */
     public boolean isDebugEnabled() {
-        return m_logger.isLoggable(Level.FINE);
+        return this.logger.isLoggable(Level.FINE);
     }
 
     /**
@@ -104,7 +104,7 @@ public class Jdk14Logger implements Logger {
      * @param message the message
      */
     public void info(final Object message) {
-        m_logger.log(Level.INFO, valueOf(message));
+        this.logger.log(Level.INFO, valueOf(message));
     }
 
     /**
@@ -114,7 +114,7 @@ public class Jdk14Logger implements Logger {
      * @param throwable the throwable
      */
     public void info(final Object message, final Throwable throwable) {
-        m_logger.log(Level.INFO, valueOf(message), throwable);
+        this.logger.log(Level.INFO, valueOf(message), throwable);
     }
 
     /**
@@ -123,7 +123,7 @@ public class Jdk14Logger implements Logger {
      * @return true if message will be logged
      */
     public boolean isInfoEnabled() {
-        return m_logger.isLoggable(Level.INFO);
+        return this.logger.isLoggable(Level.INFO);
     }
 
     /**
@@ -132,7 +132,7 @@ public class Jdk14Logger implements Logger {
      * @param message the message
      */
     public void warn(final Object message) {
-        m_logger.log(Level.WARNING, valueOf(message));
+        this.logger.log(Level.WARNING, valueOf(message));
     }
 
     /**
@@ -142,7 +142,7 @@ public class Jdk14Logger implements Logger {
      * @param throwable the throwable
      */
     public void warn(final Object message, final Throwable throwable) {
-        m_logger.log(Level.WARNING, valueOf(message), throwable);
+        this.logger.log(Level.WARNING, valueOf(message), throwable);
     }
 
     /**
@@ -151,7 +151,7 @@ public class Jdk14Logger implements Logger {
      * @return true if message will be logged
      */
     public boolean isWarnEnabled() {
-        return m_logger.isLoggable(Level.WARNING);
+        return this.logger.isLoggable(Level.WARNING);
     }
 
     /**
@@ -160,7 +160,7 @@ public class Jdk14Logger implements Logger {
      * @param message the message
      */
     public void error(final Object message) {
-        m_logger.log(Level.SEVERE, valueOf(message));
+        this.logger.log(Level.SEVERE, valueOf(message));
     }
 
     /**
@@ -170,7 +170,7 @@ public class Jdk14Logger implements Logger {
      * @param throwable the throwable
      */
     public void error(final Object message, final Throwable throwable) {
-        m_logger.log(Level.SEVERE, valueOf(message), throwable);
+        this.logger.log(Level.SEVERE, valueOf(message), throwable);
     }
 
     /**
@@ -179,7 +179,7 @@ public class Jdk14Logger implements Logger {
      * @return true if message will be logged
      */
     public boolean isErrorEnabled() {
-        return m_logger.isLoggable(Level.SEVERE);
+        return this.logger.isLoggable(Level.SEVERE);
     }
 
     /**
@@ -189,7 +189,7 @@ public class Jdk14Logger implements Logger {
      * @return the child logger
      */
     public Logger getChildLogger(final String name) {
-        final String childName = m_logger.getName() + "." + name;
+        final String childName = this.logger.getName() + "." + name;
         return new Jdk14Logger(java.util.logging.Logger.getLogger(childName));
     }
 }

@@ -79,12 +79,12 @@ public class ConsoleLogger implements Logger {
     /**
      * The log level.
      */
-    private final int m_level;
+    private final int level;
 
     /**
      * The output location.
      */
-    private final PrintStream m_output;
+    private final PrintStream output;
 
     /**
      * Create a Console Logger that logs all messages.
@@ -112,8 +112,8 @@ public class ConsoleLogger implements Logger {
         if (null == output) {
             throw new NullPointerException("output");
         }
-        m_level = level;
-        m_output = output;
+        this.level = level;
+        this.output = output;
     }
 
     /**
@@ -141,7 +141,7 @@ public class ConsoleLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isTraceEnabled() {
-        return m_level <= LEVEL_TRACE;
+        return this.level <= LEVEL_TRACE;
     }
 
     /**
@@ -169,7 +169,7 @@ public class ConsoleLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isDebugEnabled() {
-        return m_level <= LEVEL_DEBUG;
+        return this.level <= LEVEL_DEBUG;
     }
 
     /**
@@ -197,7 +197,7 @@ public class ConsoleLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isInfoEnabled() {
-        return m_level <= LEVEL_INFO;
+        return this.level <= LEVEL_INFO;
     }
 
     /**
@@ -225,7 +225,7 @@ public class ConsoleLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isWarnEnabled() {
-        return m_level <= LEVEL_WARN;
+        return this.level <= LEVEL_WARN;
     }
 
     /**
@@ -253,7 +253,7 @@ public class ConsoleLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isErrorEnabled() {
-        return m_level <= LEVEL_ERROR;
+        return this.level <= LEVEL_ERROR;
     }
 
     /**
@@ -275,7 +275,7 @@ public class ConsoleLogger implements Logger {
      * @param throwable the throwable, may be null
      */
     private void output(final int level, final String type, final Object message, final Throwable throwable) {
-        if (m_level <= level) {
+        if (this.level <= level) {
             doOutput(type, message, throwable);
         }
     }
@@ -289,9 +289,9 @@ public class ConsoleLogger implements Logger {
      */
     void doOutput(final String type, final Object message, final Throwable throwable) {
         synchronized (System.out) {
-            m_output.println("[" + type + "] " + message);
+            this.output.println("[" + type + "] " + message);
             if (null != throwable) {
-                throwable.printStackTrace(m_output);
+                throwable.printStackTrace(this.output);
             }
         }
     }
@@ -302,7 +302,7 @@ public class ConsoleLogger implements Logger {
      * @return log level of logger
      */
     final int getLevel() {
-        return m_level;
+        return this.level;
     }
 
 }

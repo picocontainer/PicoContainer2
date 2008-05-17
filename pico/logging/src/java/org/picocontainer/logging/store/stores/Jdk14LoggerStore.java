@@ -24,7 +24,7 @@ public class Jdk14LoggerStore
     extends AbstractLoggerStore
 {
     /** The LogManager repository */
-    private final LogManager m_manager;
+    private final LogManager manager;
 
     /**
      * Creates a <code>Log4JLoggerStore</code> using the configuration
@@ -36,9 +36,9 @@ public class Jdk14LoggerStore
     public Jdk14LoggerStore( final InputStream resource )
         throws Exception
     {
-        m_manager = LogManager.getLogManager();
-        m_manager.readConfiguration( resource );
-        setRootLogger( new Jdk14Logger( m_manager.getLogger( "global" ) ) );
+        this.manager = LogManager.getLogManager();
+        this.manager.readConfiguration( resource );
+        setRootLogger( new Jdk14Logger( this.manager.getLogger( "global" ) ) );
     }
 
     /**
@@ -54,6 +54,6 @@ public class Jdk14LoggerStore
      */
     public void close()
     {
-        m_manager.reset();
+        this.manager.reset();
     }
 }

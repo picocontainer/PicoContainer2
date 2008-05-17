@@ -37,15 +37,15 @@ public abstract class AbstractTest extends TestCase {
     protected static final String MESSAGE = "Testing Logger";
     protected static final String MESSAGE2 = "This occurs in sub-category";
 
-    private File m_logsDir;
+    private File logsDir;
 
     public AbstractTest(final String name) {
         super(name);
     }
 
     protected void setUp() throws Exception {
-        m_logsDir = new File("logs/");
-        m_logsDir.mkdirs();
+        this.logsDir = new File("logs/");
+        this.logsDir.mkdirs();
     }
 
     protected final InputStream getResource(final String name) {
@@ -75,7 +75,7 @@ public abstract class AbstractTest extends TestCase {
                 assertEquals("NullPointer message", "name", npe.getMessage());
             }
 
-            final File logFile = new File(m_logsDir, filename + ".log");
+            final File logFile = new File(this.logsDir, filename + ".log");
             assertTrue("Checking LogFile Exists: " + filename, logFile.exists());
 
             reader = new BufferedReader(new InputStreamReader(new FileInputStream(logFile)));
@@ -89,7 +89,7 @@ public abstract class AbstractTest extends TestCase {
                 final Logger nejney = store.getLogger("nejney");
                 nejney.info(MESSAGE);
 
-                final File logFile2 = new File(m_logsDir, filename + "2.log");
+                final File logFile2 = new File(this.logsDir, filename + "2.log");
                 reader = new BufferedReader(new InputStreamReader(new FileInputStream(logFile2)));
                 assertEquals("First line Contents for nejney logger" + filename, MESSAGE, reader.readLine());
                 assertNull("Second Line Contents for nejney logger" + filename, reader.readLine());

@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
  */
 public class Log4JLoggerStore extends AbstractLoggerStore {
     /** The logger repository */
-    private final LoggerRepository m_repository;
+    private final LoggerRepository repository;
 
     /**
      * Creates a <code>Log4JLoggerStore</code> using the configuration
@@ -37,10 +37,10 @@ public class Log4JLoggerStore extends AbstractLoggerStore {
      */
     public Log4JLoggerStore(final Element resource) throws Exception {
         LogManager.resetConfiguration();
-        m_repository = LogManager.getLoggerRepository();
+        this.repository = LogManager.getLoggerRepository();
         final DOMConfigurator configurator = new DOMConfigurator();
-        configurator.doConfigure(resource, m_repository);
-        setRootLogger(new Log4JLogger(m_repository.getRootLogger()));
+        configurator.doConfigure(resource, this.repository);
+        setRootLogger(new Log4JLogger(this.repository.getRootLogger()));
     }
 
     /**
@@ -52,10 +52,10 @@ public class Log4JLoggerStore extends AbstractLoggerStore {
      */
     public Log4JLoggerStore(final InputStream resource) throws Exception {
         LogManager.resetConfiguration();
-        m_repository = LogManager.getLoggerRepository();
+        this.repository = LogManager.getLoggerRepository();
         final DOMConfigurator configurator = new DOMConfigurator();
-        configurator.doConfigure(resource, m_repository);
-        setRootLogger(new Log4JLogger(m_repository.getRootLogger()));
+        configurator.doConfigure(resource, this.repository);
+        setRootLogger(new Log4JLogger(this.repository.getRootLogger()));
     }
 
     /**
@@ -67,23 +67,23 @@ public class Log4JLoggerStore extends AbstractLoggerStore {
      */
     public Log4JLoggerStore(final Properties resource) throws Exception {
         LogManager.resetConfiguration();
-        m_repository = LogManager.getLoggerRepository();
+        this.repository = LogManager.getLoggerRepository();
         final PropertyConfigurator configurator = new PropertyConfigurator();
-        configurator.doConfigure(resource, m_repository);
-        setRootLogger(new Log4JLogger(m_repository.getRootLogger()));
+        configurator.doConfigure(resource, this.repository);
+        setRootLogger(new Log4JLogger(this.repository.getRootLogger()));
     }
 
     /**
      * Creates new Log4JLogger for the given category.
      */
     protected Logger createLogger(final String categoryName) {
-        return new Log4JLogger(m_repository.getLogger(categoryName));
+        return new Log4JLogger(this.repository.getLogger(categoryName));
     }
 
     /**
      * Closes the LoggerStore and shuts down the logger hierarchy.
      */
     public void close() {
-        m_repository.shutdown();
+        this.repository.shutdown();
     }
 }

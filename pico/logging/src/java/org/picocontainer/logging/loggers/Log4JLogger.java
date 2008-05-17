@@ -32,7 +32,7 @@ public class Log4JLogger implements Logger {
     /**
      * The log4j logger instance.
      */
-    private final org.apache.log4j.Logger m_logger;
+    private final org.apache.log4j.Logger logger;
 
     /**
      * Create an instance of Log4J facade.
@@ -43,7 +43,7 @@ public class Log4JLogger implements Logger {
         if (null == logger) {
             throw new NullPointerException("logger");
         }
-        m_logger = logger;
+        this.logger = logger;
     }
 
     /**
@@ -52,7 +52,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      */
     public void trace(final Object message) {
-        m_logger.log(FQCN, Level.DEBUG, message, null);
+        this.logger.log(FQCN, Level.DEBUG, message, null);
     }
 
     /**
@@ -62,7 +62,7 @@ public class Log4JLogger implements Logger {
      * @param throwable the throwable
      */
     public void trace(final Object message, final Throwable throwable) {
-        m_logger.log(FQCN, Level.DEBUG, message, throwable);
+        this.logger.log(FQCN, Level.DEBUG, message, throwable);
     }
 
     /**
@@ -71,7 +71,7 @@ public class Log4JLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isTraceEnabled() {
-        return m_logger.isDebugEnabled();
+        return this.logger.isDebugEnabled();
     }
 
     /**
@@ -80,7 +80,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      */
     public void debug(final Object message) {
-        m_logger.log(FQCN, Level.DEBUG, message, null);
+        this.logger.log(FQCN, Level.DEBUG, message, null);
     }
 
     /**
@@ -90,7 +90,7 @@ public class Log4JLogger implements Logger {
      * @param throwable the throwable
      */
     public void debug(final Object message, final Throwable throwable) {
-        m_logger.log(FQCN, Level.DEBUG, message, throwable);
+        this.logger.log(FQCN, Level.DEBUG, message, throwable);
     }
 
     /**
@@ -99,7 +99,7 @@ public class Log4JLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isDebugEnabled() {
-        return m_logger.isDebugEnabled();
+        return this.logger.isDebugEnabled();
     }
 
     /**
@@ -108,7 +108,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      */
     public void info(final Object message) {
-        m_logger.log(FQCN, Level.INFO, message, null);
+        this.logger.log(FQCN, Level.INFO, message, null);
     }
 
     /**
@@ -118,7 +118,7 @@ public class Log4JLogger implements Logger {
      * @param throwable the throwable
      */
     public void info(final Object message, final Throwable throwable) {
-        m_logger.log(FQCN, Level.INFO, message, throwable);
+        this.logger.log(FQCN, Level.INFO, message, throwable);
     }
 
     /**
@@ -127,7 +127,7 @@ public class Log4JLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isInfoEnabled() {
-        return m_logger.isInfoEnabled();
+        return this.logger.isInfoEnabled();
     }
 
     /**
@@ -136,7 +136,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      */
     public void warn(final Object message) {
-        m_logger.log(FQCN, Level.WARN, message, null);
+        this.logger.log(FQCN, Level.WARN, message, null);
     }
 
     /**
@@ -146,7 +146,7 @@ public class Log4JLogger implements Logger {
      * @param throwable the throwable
      */
     public void warn(final Object message, final Throwable throwable) {
-        m_logger.log(FQCN, Level.WARN, message, throwable);
+        this.logger.log(FQCN, Level.WARN, message, throwable);
     }
 
     /**
@@ -155,7 +155,7 @@ public class Log4JLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isWarnEnabled() {
-        return m_logger.isEnabledFor(Level.WARN);
+        return this.logger.isEnabledFor(Level.WARN);
     }
 
     /**
@@ -164,7 +164,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      */
     public void error(final Object message) {
-        m_logger.log(FQCN, Level.ERROR, message, null);
+        this.logger.log(FQCN, Level.ERROR, message, null);
     }
 
     /**
@@ -174,7 +174,7 @@ public class Log4JLogger implements Logger {
      * @param throwable the throwable
      */
     public void error(final Object message, final Throwable throwable) {
-        m_logger.log(FQCN, Level.ERROR, message, throwable);
+        this.logger.log(FQCN, Level.ERROR, message, throwable);
     }
 
     /**
@@ -183,7 +183,7 @@ public class Log4JLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isErrorEnabled() {
-        return m_logger.isEnabledFor(Level.ERROR);
+        return this.logger.isEnabledFor(Level.ERROR);
     }
 
     /**
@@ -193,6 +193,6 @@ public class Log4JLogger implements Logger {
      * @return the child logger
      */
     public Logger getChildLogger(final String name) {
-        return new Log4JLogger(org.apache.log4j.Logger.getLogger(m_logger.getName() + "." + name));
+        return new Log4JLogger(org.apache.log4j.Logger.getLogger(this.logger.getName() + "." + name));
     }
 }

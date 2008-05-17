@@ -22,13 +22,13 @@ import org.picocontainer.logging.store.LoggerStore;
  */
 public abstract class AbstractLoggerStore implements LoggerStore {
     /** Map of Loggers held in the store */
-    private final Map<String, Logger> m_loggers = new HashMap<String, Logger>();
+    private final Map<String, Logger> loggers = new HashMap<String, Logger>();
 
     /** The Logger used by LogEnabled. */
-    private Logger m_logger;
+    private Logger logger;
 
     /** The root Logger */
-    private Logger m_rootLogger;
+    private Logger rootLogger;
 
     /**
      * Provide a logger.
@@ -36,7 +36,7 @@ public abstract class AbstractLoggerStore implements LoggerStore {
      * @param logger the logger
      */
     public void enableLogging(final Logger logger) {
-        m_logger = logger;
+        this.logger = logger;
     }
 
     /**
@@ -46,9 +46,9 @@ public abstract class AbstractLoggerStore implements LoggerStore {
      * @throws Exception if unable to retrieve Logger
      */
     public Logger getLogger() throws Exception {
-        if (m_logger != null && m_logger.isDebugEnabled()) {
+        if (this.logger != null && this.logger.isDebugEnabled()) {
             final String message = "Root Logger returned";
-            m_logger.debug(message);
+            this.logger.debug(message);
         }
         final Logger logger = getRootLogger();
         if (logger == null) {
@@ -71,14 +71,14 @@ public abstract class AbstractLoggerStore implements LoggerStore {
         }
         Logger logger = retrieveLogger(name);
         if (logger == null) {
-            if (m_logger != null && m_logger.isDebugEnabled()) {
+            if (this.logger != null && this.logger.isDebugEnabled()) {
                 final String message = "Logger named '" + name + "' not defined in configuration. New Logger "
                         + "created and returned.";
-                m_logger.debug(message);
+                this.logger.debug(message);
             }
             logger = createLogger(name);
             final Logger logger1 = logger;
-            m_loggers.put(name, logger1);
+            this.loggers.put(name, logger1);
         }
         return logger;
     }
@@ -93,7 +93,7 @@ public abstract class AbstractLoggerStore implements LoggerStore {
      * Sets the root Logger.
      */
     protected final void setRootLogger(final Logger rootLogger) {
-        m_rootLogger = rootLogger;
+        this.rootLogger = rootLogger;
     }
 
     /**
@@ -102,7 +102,7 @@ public abstract class AbstractLoggerStore implements LoggerStore {
      * @return the root logger.
      */
     protected final Logger getRootLogger() {
-        return m_rootLogger;
+        return this.rootLogger;
     }
 
     /**
@@ -112,11 +112,11 @@ public abstract class AbstractLoggerStore implements LoggerStore {
      * @return the Logger instance or <code>null</code> if not found in map.
      */
     private Logger retrieveLogger(final String name) {
-        Logger logger = (Logger) m_loggers.get(name);
+        Logger logger = (Logger) this.loggers.get(name);
         if (null != logger) {
-            if (null != m_logger && m_logger.isDebugEnabled()) {
+            if (null != this.logger && this.logger.isDebugEnabled()) {
                 final String message = "Retrieved Logger named: " + name;
-                m_logger.debug(message);
+                this.logger.debug(message);
             }
         }
 
