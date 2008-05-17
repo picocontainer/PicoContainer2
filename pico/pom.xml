@@ -74,6 +74,12 @@
 				<artifactId>picocontainer-tck</artifactId>
 				<version>${pom.version}</version>
 			</dependency>
+            <!-- For JavaEE5 annotations -->
+            <dependency>
+                <groupId>javax.annotation</groupId>
+                <artifactId>jsr250-api</artifactId>
+                <version>1.0</version>
+            </dependency>
 			<!-- For paranamer -->
 			<dependency>
 				<groupId>com.thoughtworks.paranamer</groupId>
