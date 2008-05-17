@@ -52,9 +52,14 @@ public abstract class AbstractTest {
         this.logsDir.mkdirs();
     }
 
-    protected final InputStream getResource(final String name) {
+    protected final InputStream getInputStream(final String name) {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         return classLoader.getResourceAsStream(name);
+    }
+
+    protected final URL getURL(final String name) {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        return classLoader.getResource(name);
     }
 
     protected void runConsoleLoggerTest(final LoggerStore store, final int level) {
@@ -121,8 +126,8 @@ public abstract class AbstractTest {
 
     protected void runStreamBasedFactoryTest(final String inputFile, final LoggerStoreFactory factory,
             final String outputFile, final HashMap<String, Object> inputData, final int level) throws IOException {
-        // URL Should in file: format
-        final URL url = getClass().getResource(inputFile);
+        // URL should be in file: format
+        final URL url = getURL(inputFile);
         assertEquals("URL is of file type", url.getProtocol(), "file");
 
         final HashMap<String, Object> config = new HashMap<String, Object>();
@@ -154,18 +159,6 @@ public abstract class AbstractTest {
         runLoggerTest(filename, store, level);
     }
 
-    /**
-     * Builds an Element from a resource
-     * 
-     * @param resource the InputStream of the configuration resource
-     * @param resolver the EntityResolver required by the DocumentBuilder - or
-     *            <code>null</code> if none required
-     * @param systemId the String encoding the systemId required by the
-     *            InputSource - or <code>null</code> if none required
-     * @throws ParserConfigurationException
-     * @throws IOException
-     * @throws SAXException
-     */
     protected static Element buildElement(final InputStream resource, final EntityResolver resolver,
             final String systemId) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

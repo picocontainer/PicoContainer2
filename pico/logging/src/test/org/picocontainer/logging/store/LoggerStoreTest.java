@@ -25,6 +25,13 @@ import org.xml.sax.SAXException;
  */
 public class LoggerStoreTest extends AbstractTest {
 
+    private static final String LOG4J_XML_FILENAME = "log4j-xml";
+    private static final String LOG4J_XML = "org/picocontainer/logging/store/log4j.xml";
+    private static final String LOG4J_PROPERTIES_FILENAME = "log4j-properties";
+    private static final String LOG4J_PROPERTIES = "org/picocontainer/logging/store/log4j.properties";
+    private static final String JDK_FILENAME = "jdk";
+    private static final String LOGGING_PROPERTIES = "org/picocontainer/logging/store/logging.properties";
+
     @Test(expected = LoggerNotFoundException.class)
     public void testNullRootLogger() {
         final LoggerStore store = new MalformedLoggerStore();
@@ -47,87 +54,84 @@ public class LoggerStoreTest extends AbstractTest {
     // Log4JLoggerStore tests
     @Test
     public void testLog4JElementConfiguration() throws IOException, ParserConfigurationException, SAXException {
-        final LoggerStore store = new Log4JLoggerStore(buildElement(
-                getResource("org/picocontainer/logging/store/log4j.xml"), new org.apache.log4j.xml.Log4jEntityResolver(),
-                null));
-        runLoggerTest("log4j-xml", store, ConsoleLogger.LEVEL_DEBUG);
+        final LoggerStore store = new Log4JLoggerStore(buildElement(getInputStream(LOG4J_XML),
+                new org.apache.log4j.xml.Log4jEntityResolver(), null));
+        runLoggerTest(LOG4J_XML_FILENAME, store, ConsoleLogger.LEVEL_DEBUG);
     }
 
     @Test
     public void testLog4JElementConfigurationNoDebug() throws IOException, ParserConfigurationException, SAXException {
-        final LoggerStore store = new Log4JLoggerStore(buildElement(
-                getResource("org/picocontainer/logging/store/log4j.xml"), new org.apache.log4j.xml.Log4jEntityResolver(),
-                null));
-        runLoggerTest("log4j-xml", store, ConsoleLogger.LEVEL_NONE);
+        final LoggerStore store = new Log4JLoggerStore(buildElement(getInputStream(LOG4J_XML),
+                new org.apache.log4j.xml.Log4jEntityResolver(), null));
+        runLoggerTest(LOG4J_XML_FILENAME, store, ConsoleLogger.LEVEL_NONE);
     }
 
     @Test
     public void testLog4JElementConfigurationNoLog() throws IOException, ParserConfigurationException, SAXException {
-        final LoggerStore store = new Log4JLoggerStore(buildElement(
-                getResource("org/picocontainer/logging/store/log4j.xml"), new org.apache.log4j.xml.Log4jEntityResolver(),
-                null));
-        runLoggerTest("log4j-xml", store);
+        final LoggerStore store = new Log4JLoggerStore(buildElement(getInputStream(LOG4J_XML),
+                new org.apache.log4j.xml.Log4jEntityResolver(), null));
+        runLoggerTest(LOG4J_XML_FILENAME, store);
     }
 
     @Test
     public void testLog4JInputStreamConfiguration() throws IOException {
-        final LoggerStore store = new Log4JLoggerStore(getResource("org/picocontainer/logging/store/log4j.xml"));
-        runLoggerTest("log4j-xml", store, ConsoleLogger.LEVEL_DEBUG);
+        final LoggerStore store = new Log4JLoggerStore(getInputStream(LOG4J_XML));
+        runLoggerTest(LOG4J_XML_FILENAME, store, ConsoleLogger.LEVEL_DEBUG);
     }
 
     @Test
     public void testLog4JInputStreamConfigurationNoDebug() throws IOException {
-        final LoggerStore store = new Log4JLoggerStore(getResource("org/picocontainer/logging/store/log4j.xml"));
-        runLoggerTest("log4j-xml", store, ConsoleLogger.LEVEL_NONE);
+        final LoggerStore store = new Log4JLoggerStore(getInputStream(LOG4J_XML));
+        runLoggerTest(LOG4J_XML_FILENAME, store, ConsoleLogger.LEVEL_NONE);
     }
 
     @Test
     public void testLog4JInputStreamConfigurationNoLog() throws IOException {
-        final LoggerStore store = new Log4JLoggerStore(getResource("org/picocontainer/logging/store/log4j.xml"));
-        runLoggerTest("log4j-xml", store);
+        final LoggerStore store = new Log4JLoggerStore(getInputStream(LOG4J_XML));
+        runLoggerTest(LOG4J_XML_FILENAME, store);
     }
 
     @Test
     public void testLog4JPropertiesConfiguration() throws IOException {
         final Properties properties = new Properties();
-        properties.load(getResource("org/picocontainer/logging/store/log4j.properties"));
+        properties.load(getInputStream(LOG4J_PROPERTIES));
         final LoggerStore store = new Log4JLoggerStore(properties);
-        runLoggerTest("log4j-properties", store, ConsoleLogger.LEVEL_DEBUG);
+        runLoggerTest(LOG4J_PROPERTIES_FILENAME, store, ConsoleLogger.LEVEL_DEBUG);
     }
 
     @Test
     public void testLog4JPropertiesConfigurationNoDebug() throws IOException {
         final Properties properties = new Properties();
-        properties.load(getResource("org/picocontainer/logging/store/log4j.properties"));
+        properties.load(getInputStream(LOG4J_PROPERTIES));
         final LoggerStore store = new Log4JLoggerStore(properties);
-        runLoggerTest("log4j-properties", store, ConsoleLogger.LEVEL_NONE);
+        runLoggerTest(LOG4J_PROPERTIES_FILENAME, store, ConsoleLogger.LEVEL_NONE);
     }
 
     @Test
     public void testLog4JPropertiesConfigurationNoLog() throws IOException {
         final Properties properties = new Properties();
-        properties.load(getResource("org/picocontainer/logging/store/log4j.properties"));
+        properties.load(getInputStream(LOG4J_PROPERTIES));
         final LoggerStore store = new Log4JLoggerStore(properties);
-        runLoggerTest("log4j-properties", store);
+        runLoggerTest(LOG4J_PROPERTIES_FILENAME, store);
     }
 
     // JDKLoggerStore tests
     @Test
     public void testJDKConfiguration() throws IOException {
-        final LoggerStore store = new JdkLoggerStore(getResource("org/picocontainer/logging/store/logging.properties"));
-        runLoggerTest("jdk", store, ConsoleLogger.LEVEL_DEBUG);
+        final LoggerStore store = new JdkLoggerStore(getInputStream(LOGGING_PROPERTIES));
+        runLoggerTest(JDK_FILENAME, store, ConsoleLogger.LEVEL_DEBUG);
     }
 
     @Test
     public void testJDKConfigurationNoDebug() throws IOException {
-        final LoggerStore store = new JdkLoggerStore(getResource("org/picocontainer/logging/store/logging.properties"));
-        runLoggerTest("jdk", store, ConsoleLogger.LEVEL_NONE);
+        final LoggerStore store = new JdkLoggerStore(getInputStream(LOGGING_PROPERTIES));
+        runLoggerTest(JDK_FILENAME, store, ConsoleLogger.LEVEL_NONE);
     }
 
     @Test
     public void testJDKConfigurationNoLog() throws IOException {
-        final LoggerStore store = new JdkLoggerStore(getResource("org/picocontainer/logging/store/logging.properties"));
-        runLoggerTest("jdk", store);
+        final LoggerStore store = new JdkLoggerStore(getInputStream(LOGGING_PROPERTIES));
+        runLoggerTest(JDK_FILENAME, store);
     }
 
 }
