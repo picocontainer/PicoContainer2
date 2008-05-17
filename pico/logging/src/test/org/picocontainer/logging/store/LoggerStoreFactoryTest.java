@@ -8,6 +8,7 @@
 package org.picocontainer.logging.store;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -16,6 +17,7 @@ import org.picocontainer.logging.loggers.ConsoleLogger;
 import org.picocontainer.logging.store.factories.ConsoleLoggerStoreFactory;
 import org.picocontainer.logging.store.factories.InitialLoggerStoreFactory;
 import org.picocontainer.logging.store.factories.JdkLoggerStoreFactory;
+import org.picocontainer.logging.store.factories.PropertyLog4JLoggerStoreFactory;
 
 /**
  * @author Mauro Talevi
@@ -23,9 +25,10 @@ import org.picocontainer.logging.store.factories.JdkLoggerStoreFactory;
  */
 public class LoggerStoreFactoryTest extends AbstractTest {
 
-    private static final String LOGGING_PROPERTIES = "org/picocontainer/logging/store/logging.properties";
     private static final String JDK_FILENAME = "jdk";
+    private static final String LOGGING_PROPERTIES = "org/picocontainer/logging/store/logging.properties";
     private static final String LOG4J_PROPERTIES_FILENAME = "log4j-properties";
+    private static final String LOG4J_PROPERTIES = "org/picocontainer/logging/store/log4j.properties";
 
     // InitialLoggerStoreFactory tests
     @Test(expected = LoggerStoreCreationException.class)
@@ -53,25 +56,35 @@ public class LoggerStoreFactoryTest extends AbstractTest {
         factory.createLoggerStore(config);
     }
 
-    // @Test TODO
+    @Test 
     public void testInitialLoggerStoreFactoryFromConfigurerClassLoader() throws IOException {
-        Thread.currentThread().setContextClassLoader(null);
         final HashMap<String, Object> config = new HashMap<String, Object>();
+        config.put(InitialLoggerStoreFactory.INITIAL_FACTORY, PropertyLog4JLoggerStoreFactory.class.getName());
+        config.put(InputStream.class.getName(), getInputStream(LOG4J_PROPERTIES));
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(null);
         runFactoryTest(new InitialLoggerStoreFactory(), config, LOG4J_PROPERTIES_FILENAME, ConsoleLogger.LEVEL_DEBUG);
+        Thread.currentThread().setContextClassLoader(classLoader);
     }
 
-    // @Test TODO
+    @Test
     public void testInitialLoggerStoreFactoryFromSpecifiedClassLoader() throws IOException {
-        Thread.currentThread().setContextClassLoader(null);
         final HashMap<String, Object> config = new HashMap<String, Object>();
-        config.put(ClassLoader.class.getName(), InitialLoggerStoreFactory.class.getClassLoader());
+        config.put(InitialLoggerStoreFactory.INITIAL_FACTORY, PropertyLog4JLoggerStoreFactory.class.getName());
+        config.put(InputStream.class.getName(), getInputStream(LOG4J_PROPERTIES));
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(null);
+        config.put(ClassLoader.class.getName(), classLoader);
         runFactoryTest(new InitialLoggerStoreFactory(), config, LOG4J_PROPERTIES_FILENAME, ConsoleLogger.LEVEL_DEBUG);
+        Thread.currentThread().setContextClassLoader(classLoader);
     }
 
-    // @Test TODO
+    @Test
     public void testInitialLoggerStoreFactoryFromContextClassLoader() throws IOException {
         Thread.currentThread().setContextClassLoader(InitialLoggerStoreFactory.class.getClassLoader());
         final HashMap<String, Object> config = new HashMap<String, Object>();
+        config.put(InitialLoggerStoreFactory.INITIAL_FACTORY, PropertyLog4JLoggerStoreFactory.class.getName());
+        config.put(InputStream.class.getName(), getInputStream(LOG4J_PROPERTIES));
         runFactoryTest(new InitialLoggerStoreFactory(), config, LOG4J_PROPERTIES_FILENAME, ConsoleLogger.LEVEL_DEBUG);
     }
 
