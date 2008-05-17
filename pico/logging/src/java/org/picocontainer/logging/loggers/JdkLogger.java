@@ -14,14 +14,15 @@ import java.util.logging.Level;
 import org.picocontainer.logging.Logger;
 
 /**
- * Logger implementation that delegates to JDK logging. The following lists the
- * mapping to the JDK log levels.
+ * Logger implementation that delegates to JDK logger, using the following
+ * mapping to the JDK log levels:
  * <ul>
  * <li>trace ==&gt; finest</li>
  * <li>debug ==&gt; fine</li>
  * <li>info ==&gt; info</li>
  * <li>warn ==&gt; warning</li>
  * <li>error ==&gt; severe</li>
+ * <li>fatal ==&gt; severe</li>
  * </ul>
  */
 public class JdkLogger implements Logger {
@@ -31,7 +32,7 @@ public class JdkLogger implements Logger {
     private final java.util.logging.Logger logger;
 
     /**
-     * Create an instance of JdkLogger
+     * Create JdkLogger with a given JDK logger
      * 
      * @param logger the JDK logger.
      */
@@ -179,6 +180,34 @@ public class JdkLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isErrorEnabled() {
+        return this.logger.isLoggable(Level.SEVERE);
+    }
+
+    /**
+     * Log a fatal message.
+     * 
+     * @param message the message
+     */
+    public void fatal(final Object message) {
+        this.logger.log(Level.SEVERE, valueOf(message));
+    }
+
+    /**
+     * Log a fatal message with an associated throwable.
+     * 
+     * @param message the message
+     * @param throwable the throwable
+     */
+    public void fatal(final Object message, final Throwable throwable) {
+        this.logger.log(Level.SEVERE, valueOf(message), throwable);
+    }
+
+    /**
+     * Return true if a fatal message will be logged.
+     * 
+     * @return true if message will be logged
+     */
+    public boolean isFatalEnabled() {
         return this.logger.isLoggable(Level.SEVERE);
     }
 

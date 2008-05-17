@@ -11,20 +11,20 @@ import org.apache.log4j.Level;
 import org.picocontainer.logging.Logger;
 
 /**
- * Logger implementation that delegates to Apache Log4J loggers. The following
- * lists the mapping to the Log4J log levels.
+ * Logger implementation that delegates to Apache Log4J logger, using the
+ * following mapping to the Log4J log levels:
  * <ul>
  * <li>trace ==&gt; debug</li>
  * <li>debug ==&gt; debug</li>
  * <li>info ==&gt; info</li>
  * <li>warn ==&gt; warn</li>
  * <li>error ==&gt; error</li>
+ * <li>fatal ==&gt; fatal</li>
  * </ul>
  */
 public class Log4JLogger implements Logger {
     /**
-     * The fully qualified name of the current class so Log4J will not include
-     * it in traces.
+     * The fully qualified name to be included in the Log4J logs
      */
     private static final String FQCN = Log4JLogger.class.getName();
 
@@ -34,7 +34,7 @@ public class Log4JLogger implements Logger {
     private final org.apache.log4j.Logger logger;
 
     /**
-     * Create an instance of Log4J facade.
+     * Create a Log4JLogger with a given log4j logger
      * 
      * @param logger the log4j logger
      */
@@ -183,6 +183,34 @@ public class Log4JLogger implements Logger {
      */
     public boolean isErrorEnabled() {
         return this.logger.isEnabledFor(Level.ERROR);
+    }
+
+    /**
+     * Log a fatal message.
+     * 
+     * @param message the message
+     */
+    public void fatal(final Object message) {
+        this.logger.log(FQCN, Level.FATAL, message, null);
+    }
+
+    /**
+     * Log a fatal message with an associated throwable.
+     * 
+     * @param message the message
+     * @param throwable the throwable
+     */
+    public void fatal(final Object message, final Throwable throwable) {
+        this.logger.log(FQCN, Level.FATAL, message, throwable);
+    }
+
+    /**
+     * Return true if a fatal message will be logged.
+     * 
+     * @return true if message will be logged
+     */
+    public boolean isFatalEnabled() {
+        return this.logger.isEnabledFor(Level.FATAL);
     }
 
     /**

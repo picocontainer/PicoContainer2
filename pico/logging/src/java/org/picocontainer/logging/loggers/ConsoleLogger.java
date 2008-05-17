@@ -44,11 +44,16 @@ public class ConsoleLogger implements Logger {
      * Constant to indicate that the logger must log all levels ERROR and above.
      */
     public static final int LEVEL_ERROR = 5;
+    
+    /**
+     * Constant to indicate that the logger must log all levels FATAL and above.
+     */
+    public static final int LEVEL_FATAL = 6;
 
     /**
      * Constant to indicate that the logger must not log any messages.
      */
-    public static final int LEVEL_NONE = 6;
+    public static final int LEVEL_NONE = 7;
 
     /**
      * String constant used to output TRACE messages.
@@ -74,6 +79,11 @@ public class ConsoleLogger implements Logger {
      * String constant used to output ERROR messages.
      */
     private static final String LEVEL_ERROR_STR = "ERROR";
+
+    /**
+     * String constant used to output FATAL messages.
+     */
+    private static final String LEVEL_FATAL_STR = "FATAL";
 
     /**
      * The log level.
@@ -253,6 +263,34 @@ public class ConsoleLogger implements Logger {
      */
     public boolean isErrorEnabled() {
         return this.level <= LEVEL_ERROR;
+    }
+    
+    /**
+     * Log a fatal message.
+     * 
+     * @param message the message
+     */
+    public void fatal(final Object message) {
+        fatal(message, null);
+    }
+
+    /**
+     * Log a fatal message with an associated throwable.
+     * 
+     * @param message the message
+     * @param throwable the throwable
+     */
+    public void fatal(final Object message, final Throwable throwable) {
+        output(LEVEL_FATAL, LEVEL_FATAL_STR, message, throwable);
+    }
+
+    /**
+     * Return true if a fatal message will be logged.
+     * 
+     * @return true if message will be logged
+     */
+    public boolean isFatalEnabled() {
+        return this.level <= LEVEL_FATAL;
     }
 
     /**

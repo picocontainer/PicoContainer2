@@ -8,7 +8,10 @@
 package org.picocontainer.logging;
 
 /**
- * Facade for different Logger systems.
+ * Facade for different Logger systems
+ * 
+ * @author Mauro Talevi
+ * @author Peter Donald 
  */
 public interface Logger {
     /**
@@ -120,6 +123,28 @@ public interface Logger {
      * @return true if message will be logged
      */
     boolean isErrorEnabled();
+
+    /**
+     * Log a fatal message.
+     * 
+     * @param message the message
+     */
+    void fatal(Object message);
+
+    /**
+     * Log a fatal message with an associated throwable.
+     * 
+     * @param message the message
+     * @param throwable the throwable
+     */
+    void fatal(Object message, Throwable throwable);
+
+    /**
+     * Return true if a fatal message will be logged.
+     * 
+     * @return true if message will be logged
+     */
+    boolean isFatalEnabled();
 
     /**
      * Get the child logger with specified name.
