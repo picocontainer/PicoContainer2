@@ -38,7 +38,7 @@ public class LoggerStoreFactoryTest extends AbstractTest {
         config.put(InitialLoggerStoreFactory.INITIAL_FACTORY, ConsoleLoggerStoreFactory.class.getName());
         final InitialLoggerStoreFactory factory = new InitialLoggerStoreFactory();
         final LoggerStore store = factory.createLoggerStore(config);
-        performConsoleTest(store, ConsoleLogger.LEVEL_DEBUG);
+        runConsoleLoggerTest(store, ConsoleLogger.LEVEL_DEBUG);
     }
 
     @Test(expected = LoggerStoreCreationException.class)
@@ -53,7 +53,7 @@ public class LoggerStoreFactoryTest extends AbstractTest {
     public void testInitialLoggerStoreFactoryFromConfigurerClassLoader() throws IOException {
         Thread.currentThread().setContextClassLoader(null);
         final HashMap<String, Object> config = new HashMap<String, Object>();
-        runFactoryTest(new InitialLoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG, config, "log4j-properties");
+        runFactoryTest(new InitialLoggerStoreFactory(), config, "log4j-properties", ConsoleLogger.LEVEL_DEBUG);
     }
 
     // @Test TODO
@@ -61,20 +61,20 @@ public class LoggerStoreFactoryTest extends AbstractTest {
         Thread.currentThread().setContextClassLoader(null);
         final HashMap<String, Object> config = new HashMap<String, Object>();
         config.put(ClassLoader.class.getName(), InitialLoggerStoreFactory.class.getClassLoader());
-        runFactoryTest(new InitialLoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG, config, "log4j-properties");
+        runFactoryTest(new InitialLoggerStoreFactory(), config, "log4j-properties", ConsoleLogger.LEVEL_DEBUG);
     }
 
     // @Test TODO
     public void testInitialLoggerStoreFactoryFromContextClassLoader() throws IOException {
         Thread.currentThread().setContextClassLoader(InitialLoggerStoreFactory.class.getClassLoader());
         final HashMap<String, Object> config = new HashMap<String, Object>();
-        runFactoryTest(new InitialLoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG, config, "log4j-properties");
+        runFactoryTest(new InitialLoggerStoreFactory(), config, "log4j-properties", ConsoleLogger.LEVEL_DEBUG);
     }
 
     // JDKLoggerStoreFactory tests
     @Test
     public void testJDKLoggerStoreFactoryInvalidInput() throws Exception {
-        runInvalidInputData(new JdkLoggerStoreFactory());
+        createLoggerStoreWithEmptyConfiguration(new JdkLoggerStoreFactory());
     }
 
     @Test
@@ -83,13 +83,13 @@ public class LoggerStoreFactoryTest extends AbstractTest {
         properties.load(getResource("org/picocontainer/logging/store/logging.properties"));
         final HashMap<String, Object> config = new HashMap<String, Object>();
         config.put(Properties.class.getName(), properties);
-        runFactoryTest(new JdkLoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG, config, "jdk");
+        runFactoryTest(new JdkLoggerStoreFactory(), config, "jdk", ConsoleLogger.LEVEL_DEBUG);
     }
 
     @Test
     public void testJDKLoggerStoreFactoryWithStreams() throws IOException {
-        runStreamBasedFactoryTest("logging.properties", new JdkLoggerStoreFactory(), ConsoleLogger.LEVEL_DEBUG, "jdk",
-                new HashMap<String, Object>());
+        runStreamBasedFactoryTest("logging.properties", new JdkLoggerStoreFactory(), "jdk", new HashMap<String, Object>(),
+                ConsoleLogger.LEVEL_DEBUG);
     }
 
 }

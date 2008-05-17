@@ -35,13 +35,13 @@ public class LoggerStoreTest extends AbstractTest {
     @Test
     public void testConsoleLoggerStore() {
         final LoggerStore store = new ConsoleLoggerStore(ConsoleLogger.LEVEL_DEBUG);
-        performConsoleTest(store, ConsoleLogger.LEVEL_DEBUG);
+        runConsoleLoggerTest(store, ConsoleLogger.LEVEL_DEBUG);
     }
 
     @Test
     public void testConsoleLoggerStoreNoDebug() {
         final LoggerStore store = new ConsoleLoggerStore(ConsoleLogger.LEVEL_DEBUG);
-        performConsoleTest(store, ConsoleLogger.LEVEL_NONE);
+        runConsoleLoggerTest(store, ConsoleLogger.LEVEL_NONE);
     }
 
     // Log4JLoggerStore tests

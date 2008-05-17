@@ -48,7 +48,7 @@ public abstract class AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        this.logsDir = new File("logs/");
+        this.logsDir = new File("logs");
         this.logsDir.mkdirs();
     }
 
@@ -57,8 +57,14 @@ public abstract class AbstractTest {
         return classLoader.getResourceAsStream(name);
     }
 
-    protected void runLoggerTest(final String filename, final LoggerStore store, final int level) throws IOException {
-        runLoggerTest(filename, store);
+    protected void runConsoleLoggerTest(final LoggerStore store, final int level) {
+        final Logger logger = store.getLogger();
+        assertNotNull("rootLogger for console", logger);
+        logger.info(MESSAGE);
+        final Logger noExistLogger = store.getLogger("no-exist");
+        assertNotNull("noExistLogger for console", noExistLogger);
+        noExistLogger.info(MESSAGE2);
+        store.close();
     }
 
     protected void runLoggerTest(final String filename, final LoggerStore store) throws IOException {
@@ -81,7 +87,7 @@ public abstract class AbstractTest {
             }
 
             final File logFile = new File(this.logsDir, filename + ".log");
-            assertTrue("Checking LogFile Exists: " + filename, logFile.exists());
+            assertTrue("Log file should exist: " + logFile, logFile.exists());
 
             reader = new BufferedReader(new InputStreamReader(new FileInputStream(logFile)));
             assertEquals("First line Contents for logger" + filename, MESSAGE, reader.readLine());
@@ -107,6 +113,45 @@ public abstract class AbstractTest {
                 reader.close();
             }
         }
+    }
+
+    protected void runLoggerTest(final String filename, final LoggerStore store, final int level) throws IOException {
+        runLoggerTest(filename, store);
+    }
+
+    protected void runStreamBasedFactoryTest(final String inputFile, final LoggerStoreFactory factory,
+            final String outputFile, final HashMap<String, Object> inputData, final int level) throws IOException {
+        // URL Should in file: format
+        final URL url = getClass().getResource(inputFile);
+        assertEquals("URL is of file type", url.getProtocol(), "file");
+
+        final HashMap<String, Object> config = new HashMap<String, Object>();
+        config.put(LoggerStoreFactory.URL_LOCATION, url.toExternalForm());
+        config.putAll(inputData);
+        runFactoryTest(factory, config, outputFile, level);
+        final HashMap<String, Object> config2 = new HashMap<String, Object>();
+        config2.put(URL.class.getName(), url);
+        config2.putAll(inputData);
+        runFactoryTest(factory, config2, outputFile, level);
+        final String filename = url.toExternalForm().substring(5);
+        final HashMap<String, Object> config3 = new HashMap<String, Object>();
+        config3.put(LoggerStoreFactory.FILE_LOCATION, filename);
+        config3.putAll(inputData);
+        runFactoryTest(factory, config3, outputFile, level);
+        final HashMap<String, Object> config4 = new HashMap<String, Object>();
+        config4.put(File.class.getName(), new File(filename));
+        config4.putAll(inputData);
+        runFactoryTest(factory, config4, outputFile, level);
+        final HashMap<String, Object> config5 = new HashMap<String, Object>();
+        config5.put(InputStream.class.getName(), new FileInputStream(filename));
+        config5.putAll(inputData);
+        runFactoryTest(factory, config5, outputFile, level);
+    }
+
+    protected void runFactoryTest(final LoggerStoreFactory factory, final HashMap<String, Object> config,
+            final String filename, final int level) throws IOException {
+        final LoggerStore store = factory.createLoggerStore(config);
+        runLoggerTest(filename, store, level);
     }
 
     /**
@@ -138,56 +183,13 @@ public abstract class AbstractTest {
         return doc.getDocumentElement();
     }
 
-    protected void performConsoleTest(final LoggerStore store, final int level) {
-        final Logger logger = store.getLogger();
-        assertNotNull("rootLogger for console", logger);
-        logger.info(MESSAGE);
-        final Logger noExistLogger = store.getLogger("no-exist");
-        assertNotNull("noExistLogger for console", noExistLogger);
-        noExistLogger.info(MESSAGE2);
-        store.close();
-    }
-
-    protected void runInvalidInputData(final LoggerStoreFactory factory) {
+    protected void createLoggerStoreWithEmptyConfiguration(final LoggerStoreFactory factory) {
         try {
             factory.createLoggerStore(new HashMap<String, Object>());
-            fail("Expected createLoggerStore to fail with invalid input data");
-        } catch (Exception e) {
+            fail("Expected LoggerStoreCreationException");
+        } catch (LoggerStoreCreationException e) {
+            // expected
         }
     }
 
-    protected void runStreamBasedFactoryTest(final String inputFile, final LoggerStoreFactory factory, final int level,
-            final String outputFile, final HashMap<String, Object> inputData) throws IOException {
-        // URL Should in file: format
-        final URL url = getClass().getResource(inputFile);
-        assertEquals("URL is of file type", url.getProtocol(), "file");
-
-        final HashMap<String, Object> config = new HashMap<String, Object>();
-        config.put(LoggerStoreFactory.URL_LOCATION, url.toExternalForm());
-        config.putAll(inputData);
-        runFactoryTest(factory, level, config, outputFile);
-        final HashMap<String, Object> config2 = new HashMap<String, Object>();
-        config2.put(URL.class.getName(), url);
-        config2.putAll(inputData);
-        runFactoryTest(factory, level, config2, outputFile);
-        final String filename = url.toExternalForm().substring(5);
-        final HashMap<String, Object> config3 = new HashMap<String, Object>();
-        config3.put(LoggerStoreFactory.FILE_LOCATION, filename);
-        config3.putAll(inputData);
-        runFactoryTest(factory, level, config3, outputFile);
-        final HashMap<String, Object> config4 = new HashMap<String, Object>();
-        config4.put(File.class.getName(), new File(filename));
-        config4.putAll(inputData);
-        runFactoryTest(factory, level, config4, outputFile);
-        final HashMap<String, Object> config5 = new HashMap<String, Object>();
-        config5.put(InputStream.class.getName(), new FileInputStream(filename));
-        config5.putAll(inputData);
-        runFactoryTest(factory, level, config5, outputFile);
-    }
-
-    protected void runFactoryTest(final LoggerStoreFactory factory, final int level,
-            final HashMap<String, Object> config, final String filename) throws IOException {
-        final LoggerStore store = factory.createLoggerStore(config);
-        runLoggerTest(filename, store, level);
-    }
 }
