@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.picocontainer.logging.Logger;
+import org.picocontainer.logging.store.LoggerNotFoundException;
 import org.picocontainer.logging.store.LoggerStore;
 
 
@@ -39,13 +40,7 @@ public abstract class AbstractLoggerStore implements LoggerStore {
         this.logger = logger;
     }
 
-    /**
-     * Retrieves the root Logger from the store.
-     * 
-     * @return the Logger
-     * @throws Exception if unable to retrieve Logger
-     */
-    public Logger getLogger() throws Exception {
+    public Logger getLogger() {
         if (this.logger != null && this.logger.isDebugEnabled()) {
             final String message = "Root Logger returned";
             this.logger.debug(message);
@@ -53,19 +48,12 @@ public abstract class AbstractLoggerStore implements LoggerStore {
         final Logger logger = getRootLogger();
         if (logger == null) {
             final String message = "Root Logger is not defined";
-            throw new Exception(message);
+            throw new LoggerNotFoundException(message);
         }
         return logger;
     }
 
-    /**
-     * Retrieves a Logger hierarchy from the store for a given category name.
-     * 
-     * @param name the name of the logger.
-     * @return the Logger
-     * @throws Exception if unable to retrieve Logger
-     */
-    public Logger getLogger(final String name) throws Exception {
+    public Logger getLogger(final String name){
         if (null == name) {
             throw new NullPointerException("name");
         }

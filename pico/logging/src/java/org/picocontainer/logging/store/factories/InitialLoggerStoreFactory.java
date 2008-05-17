@@ -13,7 +13,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
 import org.picocontainer.logging.store.LoggerStore;
+import org.picocontainer.logging.store.LoggerStoreCreationException;
 import org.picocontainer.logging.store.LoggerStoreFactory;
 
 /**
@@ -45,9 +47,9 @@ public class InitialLoggerStoreFactory implements LoggerStoreFactory {
      * 
      * @param config the input configuration
      * @return the LoggerStore
-     * @throws Exception if unable to create the LoggerStore for any reason.
+     * @throws LoggerStoreCreationException if unable to create the LoggerStore for any reason.
      */
-    public LoggerStore createLoggerStore(final Map<String,Object> config) throws Exception {
+    public LoggerStore createLoggerStore(final Map<String,Object> config) {
         final ClassLoader classLoader = getClassLoader(config);
 
         String type = (String) config.get(INITIAL_FACTORY);
@@ -85,27 +87,29 @@ public class InitialLoggerStoreFactory implements LoggerStoreFactory {
      * @param initial the input data
      * @param classLoader the classLoader to load properties files from
      * @return the new configuration data
-     * @throws Exception if unable to load properties
+     * @throws LoggerStoreCreationException if unable to load properties
      */
     @SuppressWarnings("unchecked")
-    private Map<String, Object> loadDefaultConfig(final Map<String, Object> initial, final ClassLoader classLoader)
-            throws Exception {
-        final HashMap<String, Object> map = new HashMap<String, Object>();
-
-        final Enumeration<URL> resources = classLoader.getResources(DEFAULT_PROPERTIES);
-        while (resources.hasMoreElements()) {
-            final URL url = resources.nextElement();
-            final InputStream stream = url.openStream();
-            final Properties properties = new Properties();
-            properties.load(stream);
-            for ( Enumeration e = properties.keys(); e.hasMoreElements(); ){
-                String key = e.nextElement().toString();
-                map.put(key, properties.getProperty(key));
+    private Map<String, Object> loadDefaultConfig(final Map<String, Object> initial, final ClassLoader classLoader) {
+        try {
+            final HashMap<String, Object> map = new HashMap<String, Object>();
+            final Enumeration<URL> resources = classLoader.getResources(DEFAULT_PROPERTIES);
+            while (resources.hasMoreElements()) {
+                final URL url = resources.nextElement();
+                final InputStream stream = url.openStream();
+                final Properties properties = new Properties();
+                properties.load(stream);
+                for (Enumeration e = properties.keys(); e.hasMoreElements();) {
+                    String key = e.nextElement().toString();
+                    map.put(key, properties.getProperty(key));
+                }
             }
+            map.putAll(initial);
+            return map;
+        } catch (Exception e) {
+            final String message = "Failed to load initial configuration "+initial;
+            throw new LoggerStoreCreationException(message, e);
         }
-
-        map.putAll(initial);
-        return map;
     }
 
     /**

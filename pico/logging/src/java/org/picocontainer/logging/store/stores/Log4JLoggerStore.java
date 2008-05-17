@@ -16,6 +16,7 @@ import org.apache.log4j.spi.LoggerRepository;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.picocontainer.logging.Logger;
 import org.picocontainer.logging.loggers.Log4JLogger;
+import org.picocontainer.logging.store.LoggerStoreCreationException;
 import org.w3c.dom.Element;
 
 /**
@@ -33,9 +34,9 @@ public class Log4JLoggerStore extends AbstractLoggerStore {
      * resource
      * 
      * @param resource the Element encoding the configuration resource
-     * @throws Exception if fails to create or configure Logger
+     * @throws LoggerStoreCreationException if fails to create or configure Logger
      */
-    public Log4JLoggerStore(final Element resource) throws Exception {
+    public Log4JLoggerStore(final Element resource) {
         LogManager.resetConfiguration();
         this.repository = LogManager.getLoggerRepository();
         final DOMConfigurator configurator = new DOMConfigurator();
@@ -48,9 +49,9 @@ public class Log4JLoggerStore extends AbstractLoggerStore {
      * resource
      * 
      * @param resource the InputStream encoding the configuration resource
-     * @throws Exception if fails to create or configure Logger
+     * @throws LoggerStoreCreationException if fails to create or configure Logger
      */
-    public Log4JLoggerStore(final InputStream resource) throws Exception {
+    public Log4JLoggerStore(final InputStream resource) {
         LogManager.resetConfiguration();
         this.repository = LogManager.getLoggerRepository();
         final DOMConfigurator configurator = new DOMConfigurator();
@@ -63,9 +64,9 @@ public class Log4JLoggerStore extends AbstractLoggerStore {
      * resource
      * 
      * @param resource the Properties encoding the configuration resource
-     * @throws Exception if fails to create or configure Logger
+     * @throws LoggerStoreCreationException if fails to create or configure Logger
      */
-    public Log4JLoggerStore(final Properties resource) throws Exception {
+    public Log4JLoggerStore(final Properties resource) {
         LogManager.resetConfiguration();
         this.repository = LogManager.getLoggerRepository();
         final PropertyConfigurator configurator = new PropertyConfigurator();

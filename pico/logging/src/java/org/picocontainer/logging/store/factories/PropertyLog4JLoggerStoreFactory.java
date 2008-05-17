@@ -7,10 +7,12 @@
  */ 
 package org.picocontainer.logging.store.factories;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 import org.picocontainer.logging.store.LoggerStore;
+import org.picocontainer.logging.store.LoggerStoreCreationException;
 import org.picocontainer.logging.store.stores.Log4JLoggerStore;
 
 /**
@@ -21,28 +23,25 @@ import org.picocontainer.logging.store.stores.Log4JLoggerStore;
  * @author Peter Donald
  */
 public class PropertyLog4JLoggerStoreFactory extends AbstractLoggerStoreFactory {
-    /**
-     * Creates a LoggerStore from a given set of configuration parameters.
-     * 
-     * @param config the Map of parameters for the configuration of the store
-     * @return the LoggerStore
-     * @throws Exception if unable to create the LoggerStore
-     */
-    protected LoggerStore doCreateLoggerStore(final Map<String,Object> config) throws Exception {
-        final Properties properties = (Properties) config.get(Properties.class.getName());
-        if (null != properties) {
-            return new Log4JLoggerStore(properties);
-        }
 
-        final InputStream resource = getInputStream(config);
-        if (null != resource) {
-            return new Log4JLoggerStore(createPropertiesFromStream(resource));
+    protected LoggerStore doCreateLoggerStore(final Map<String,Object> config) {
+        try {
+            final Properties properties = (Properties) config.get(Properties.class.getName());
+            if (null != properties) {
+                return new Log4JLoggerStore(properties);
+            }
+            final InputStream resource = getInputStream(config);
+            if (null != resource) {
+                return new Log4JLoggerStore(createPropertiesFromStream(resource));
+            }
+            return missingConfiguration();
+        } catch (Exception e) {
+            final String message = "Failed to create logger store for configuration " + config;
+            throw new LoggerStoreCreationException(message, e);            
         }
-
-        return missingConfiguration();
     }
 
-    private Properties createPropertiesFromStream(final InputStream resource) throws Exception {
+    private Properties createPropertiesFromStream(final InputStream resource) throws IOException {
         final Properties properties = new Properties();
         properties.load(resource);
         return properties;

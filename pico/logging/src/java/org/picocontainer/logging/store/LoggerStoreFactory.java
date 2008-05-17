@@ -42,7 +42,7 @@ public interface LoggerStoreFactory {
      * 
      * @param config the Map of parameters for the configuration of the store
      * @return the LoggerStore
-     * @throws Exception if unable to create the LoggerStore
+     * @throws LoggerStoreCreationException if unable to create the LoggerStore
      */
-    LoggerStore createLoggerStore(Map<String, Object> config) throws Exception;
+    LoggerStore createLoggerStore(Map<String, Object> config);
 }

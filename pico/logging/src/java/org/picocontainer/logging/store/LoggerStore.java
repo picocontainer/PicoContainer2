@@ -31,18 +31,18 @@ public interface LoggerStore {
      * Retrieves the root Logger from the store.
      * 
      * @return the Logger
-     * @throws Exception if unable to retrieve Logger
+     * @throws LoggerNotFoundException if unable to retrieve Logger
      */
-    Logger getLogger() throws Exception;
+    Logger getLogger();
 
     /**
      * Retrieves a Logger hierarchy from the store for a given category name.
      * 
      * @param categoryName the name of the logger category.
      * @return the Logger
-     * @throws Exception if unable to retrieve Logger
+     * @throws LoggerNotFoundException if unable to retrieve Logger
      */
-    Logger getLogger(String categoryName) throws Exception;
+    Logger getLogger(String categoryName);
 
     /**
      * Closes the LoggerStore and shuts down the logger hierarchy.

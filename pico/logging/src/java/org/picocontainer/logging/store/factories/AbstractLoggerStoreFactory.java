@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.Map;
 
 import org.picocontainer.logging.store.LoggerStore;
+import org.picocontainer.logging.store.LoggerStoreCreationException;
 import org.picocontainer.logging.store.LoggerStoreFactory;
 
 /**
@@ -31,23 +32,23 @@ public abstract class AbstractLoggerStoreFactory implements LoggerStoreFactory {
      * 
      * @param config the parameter map to configuration of the store
      * @return the LoggerStore
-     * @throws Exception if unable to create the LoggerStore
+     * @throws LoggerStoreCreationException if unable to create the LoggerStore
      */
-    public LoggerStore createLoggerStore(final Map<String,Object> config) throws Exception {
+    public LoggerStore createLoggerStore(final Map<String,Object> config)  {
         final LoggerStore loggerStore = doCreateLoggerStore(config);
         return loggerStore;
     }
 
-    protected abstract LoggerStore doCreateLoggerStore(Map<String,Object> config) throws Exception;
+    protected abstract LoggerStore doCreateLoggerStore(Map<String,Object> config);
 
     /**
      * Utility method to throw exception indicating input data was invalid.
      * 
      * @return never returns
-     * @throws Exception indicating input data was invalid
+     * @throws LoggerStoreCreationException indicating input data was invalid
      */
-    protected LoggerStore missingConfiguration() throws Exception {
-        throw new Exception("Invalid configuration");
+    protected LoggerStore missingConfiguration()  {
+        throw new LoggerStoreCreationException("Invalid configuration");
     }
 
     /**
@@ -68,33 +69,36 @@ public abstract class AbstractLoggerStoreFactory implements LoggerStoreFactory {
      * 
      * @param config the input map
      * @return the InputStream or null if no stream present
-     * @throws Exception if there was a problem aquiring stream
+     * @throws LoggerStoreCreationException if there was a problem getting the input stream
      */
-    protected InputStream getInputStream(final Map<String,Object> config) throws Exception {
-        final String urlLocation = (String) config.get(URL_LOCATION);
-        URL url = null;
-        if (null != urlLocation) {
-            url = new URL(urlLocation);
+    protected InputStream getInputStream(final Map<String,Object> config) {
+        try {
+            final String urlLocation = (String) config.get(URL_LOCATION);
+            URL url = null;
+            if (null != urlLocation) {
+                url = new URL(urlLocation);
+            }
+            if (null == url) {
+                url = (URL) config.get(URL.class.getName());
+            }
+            if (null != url) {
+                return url.openStream();
+            }
+            final String fileLocation = (String) config.get(FILE_LOCATION);
+            File file = null;
+            if (null != fileLocation) {
+                file = new File(fileLocation);
+            }
+            if (null == file) {
+                file = (File) config.get(File.class.getName());
+            }
+            if (null != file) {
+                return new FileInputStream(file);
+            }
+            return (InputStream) config.get(InputStream.class.getName());
+        } catch (Exception e) {
+            final String message = "Failed to get input stream for configuration "+config;
+            throw new LoggerStoreCreationException(message, e);
         }
-        if (null == url) {
-            url = (URL) config.get(URL.class.getName());
-        }
-        if (null != url) {
-            return url.openStream();
-        }
-
-        final String fileLocation = (String) config.get(FILE_LOCATION);
-        File file = null;
-        if (null != fileLocation) {
-            file = new File(fileLocation);
-        }
-        if (null == file) {
-            file = (File) config.get(File.class.getName());
-        }
-        if (null != file) {
-            return new FileInputStream(file);
-        }
-
-        return (InputStream) config.get(InputStream.class.getName());
     }
 }

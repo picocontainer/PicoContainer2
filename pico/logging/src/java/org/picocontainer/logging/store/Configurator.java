@@ -42,9 +42,9 @@ public class Configurator {
      * @param resource the String encoding the path of the configuration
      *            resource
      * @return the configured LoggerStore
-     * @throws Exception if unable to create the LoggerStore
+     * @throws LoggerStoreCreationException if unable to create the LoggerStore
      */
-    public static LoggerStore createLoggerStore(final String configuratorType, final String resource) throws Exception {
+    public static LoggerStore createLoggerStore(final String configuratorType, final String resource) {
         final InitialLoggerStoreFactory factory = new InitialLoggerStoreFactory();
         final Map<String, Object> data = new HashMap<String, Object>();
         data.put(InitialLoggerStoreFactory.INITIAL_FACTORY, getFactoryClassName(configuratorType));
@@ -59,10 +59,9 @@ public class Configurator {
      * @param configuratorType the type of the configurator
      * @param resource the InputStream of the configuration resource
      * @return the configured LoggerStore
-     * @throws Exception if unable to create the LoggerStore
+     * @throws LoggerStoreCreationException if unable to create the LoggerStore
      */
-    public static LoggerStore createLoggerStore(final String configuratorType, final InputStream resource)
-            throws Exception {
+    public static LoggerStore createLoggerStore(final String configuratorType, final InputStream resource) {
         final InitialLoggerStoreFactory factory = new InitialLoggerStoreFactory();
         final Map<String, Object> data = new HashMap<String, Object>();
         data.put(InitialLoggerStoreFactory.INITIAL_FACTORY, getFactoryClassName(configuratorType));
