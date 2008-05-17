@@ -4,7 +4,7 @@
 <log4j:configuration debug="true" xmlns:log4j="http://jakarta.apache.org/log4j/">
 
     <appender name="FILE1" class="org.apache.log4j.FileAppender">
-        <param name="File" value="logs/log4j-xml.log"/>
+        <param name="File" value="target/logs/log4j-xml.log"/>
         <param name="Append" value="false"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%m%n"/>
@@ -12,7 +12,7 @@
     </appender>
 
     <appender name="FILE2" class="org.apache.log4j.FileAppender">
-        <param name="File" value="logs/log4j-xml2.log"/>
+        <param name="File" value="target/logs/log4j-xml2.log"/>
         <param name="Append" value="false"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%m%n"/>

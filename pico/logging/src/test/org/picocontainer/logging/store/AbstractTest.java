@@ -48,7 +48,7 @@ public abstract class AbstractTest {
 
     @Before
     public void setUp() throws Exception {
-        this.logsDir = new File("logs");
+        this.logsDir = new File("target/logs");
         this.logsDir.mkdirs();
     }
 
