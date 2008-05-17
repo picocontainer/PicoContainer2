@@ -6,6 +6,11 @@
  * the LICENSE.txt file.                                                     
  */ 
 package org.picocontainer.logging.store;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,8 +24,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.FactoryConfigurationError;
 
-import junit.framework.TestCase;
-
+import org.junit.Before;
 import org.picocontainer.logging.Logger;
 import org.picocontainer.logging.store.stores.Jdk14LoggerStore;
 import org.w3c.dom.Document;
@@ -32,18 +36,15 @@ import org.xml.sax.InputSource;
  * @author Mauro Talevi
  * @author Peter Donald
  */
-public abstract class AbstractTest extends TestCase {
+public abstract class AbstractTest {
 
     protected static final String MESSAGE = "Testing Logger";
     protected static final String MESSAGE2 = "This occurs in sub-category";
 
     private File logsDir;
 
-    public AbstractTest(final String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         this.logsDir = new File("logs/");
         this.logsDir.mkdirs();
     }
