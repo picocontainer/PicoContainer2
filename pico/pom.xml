@@ -10,7 +10,6 @@
 		<module>container</module>
 		<module>tck</module>
 		<module>gems</module>
-        <module>logging</module>
 	</modules>
 	<organization>
 		<name>Codehaus</name>
