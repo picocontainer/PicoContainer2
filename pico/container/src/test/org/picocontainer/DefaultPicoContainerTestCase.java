@@ -889,6 +889,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     private static class SwedeFactoryInjector extends FactoryInjector<Swede> {
 
         public Swede getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {
+            // Mauro: you can do anything in here by way of startegy for injecting a specific logger :-)
             return new Swede() {
                 public String toString() {
                     return "Swede:" + ((Class) into).getName();
