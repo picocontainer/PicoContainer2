@@ -7,8 +7,8 @@
   <version>2.0-SNAPSHOT</version>
   <name>PicoContainer Logging</name>
   <description>
-    Component that allows logging to be done in a truely IoC-fashion. It does not depend on PicoContainer and can be used
-    by any container wanting to avoid static lookups.
+    Component that allows logging to be done in a truely IoC-fashion. It does not depend on PicoContainer and can be
+    used by any container wanting to avoid static lookups.
   </description>
   <packaging>jar</packaging>
   <organization>
@@ -40,11 +40,16 @@
     </snapshotRepository>
     <site>
       <id>codehaus.org</id>
-      <url>dav:https://dav.codehaus.org/picocontainer/maven/</url>
+      <url>dav:https://dav.codehaus.org/picocontainer/logging/</url>
     </site>
   </distributionManagement>
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging-api</artifactId>
+        <version>1.1</version>
+      </dependency>
       <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
@@ -62,6 +67,10 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging-api</artifactId>
+    </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
@@ -261,6 +270,66 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
           </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <configuration>
+              <includeProjectDocumentation>false</includeProjectDocumentation>
+            </configuration>
+            <executions>
+              <execution>
+                <phase>install</phase>
+                <goals>
+                  <goal>site</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <overWriteReleases>false</overWriteReleases>
+                  <overWriteSnapshots>true</overWriteSnapshots>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>${pom.groupId}</groupId>
+                      <artifactId>picocontainer-logging</artifactId>
+                      <version>${pom.version}</version>
+                      <classifier>javadoc</classifier>
+                      <outputDirectory>${project.build.directory}/site/javadoc</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.xsite</groupId>
+            <artifactId>xsite-maven-plugin</artifactId>
+            <configuration>
+              <sourceDirectoryPath>${basedir}/src/site</sourceDirectoryPath>
+              <sitemapPath>content/sitemap.xml</sitemapPath>
+              <skinPath>templates/skin.html</skinPath>
+              <resourcePaths>resources</resourcePaths>
+              <outputDirectoryPath>${project.build.directory}/site</outputDirectoryPath>
+            </configuration>
+            <executions>
+              <execution>
+                <phase>install</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
       </build>
       <reporting>
@@ -290,13 +359,6 @@
           </plugin>
         </plugins>
       </reporting>
-    </profile>
-    <profile>
-      <!-- Distribution profile -->
-      <id>distribution</id>
-      <modules>
-        <module>distribution</module>
-      </modules>
     </profile>
   </profiles>
 </project>

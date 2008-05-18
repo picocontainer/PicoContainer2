@@ -7,13 +7,15 @@
  */
 package org.picocontainer.logging;
 
+import org.apache.commons.logging.Log;
+
 /**
  * Facade for different Logger systems
  * 
  * @author Mauro Talevi
  * @author Peter Donald 
  */
-public interface Logger {
+public interface Logger extends Log {
     /**
      * Log a trace message.
      * 
