@@ -15,8 +15,6 @@ import static org.picocontainer.monitors.ComponentMonitorHelper.memberToString;
 import static org.picocontainer.monitors.ComponentMonitorHelper.methodToString;
 import static org.picocontainer.monitors.ComponentMonitorHelper.parmsToString;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
@@ -37,6 +35,10 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * A {@link ComponentMonitor} which writes to a Commons Logging {@link Log Log} instance.
  * The Log instance can either be injected or, if not set, the {@link LogFactory LogFactory}
  * will be used to retrieve it at every invocation of the monitor.
+ * <h4>Note on Serialization</h4>
+ * <p>Commons Logging does <em>not</em> guarantee Serialization.  It is supported when using Log4j
+ * as a back end, but you should write a test case to determine if your particular logger implementation
+ * is supported if you plan on serializing this ComponentMonitor.</p>
  * 
  * @author Paul Hammant
  * @author Mauro Talevi
@@ -90,8 +92,6 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
 
     /**
      * Creates a CommonsLoggingComponentMonitor with a given Log instance
-     * <p><strong>Bug.</strong>  It doesn't appear that there's a way to serialize a CommonsLogging Log
-     * and bring it back. (There's no category name).</p>
      * @param log the Log to write to
      */
     public CommonsLoggingComponentMonitor(Log log) {
@@ -122,10 +122,8 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     /**
-     * Creates a CommonsLoggingComponentMonitor with a given Log instance
-     * <p><strong>Bug.</strong>  It doesn't appear that there's a way to serialize a CommonsLogging Log
-     * and bring it back. (There's no category name).</p>
-     * @param log the Log to write to
+     * Creates a CommonsLoggingComponentMonitor with a given Log instance.
+     * @param log the Log with which to write events.
      * @param delegate the delegate
      */
     public CommonsLoggingComponentMonitor(Log log, ComponentMonitor delegate) {
