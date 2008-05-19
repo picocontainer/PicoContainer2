@@ -391,7 +391,7 @@ configuration if you like.</p>
 ...
 pico = new DefaultPicoContainer(new PropertyApplying());
 pico.addComponent(Foo.class);
-PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
+PropertyApplicator pa = (PropertyApplicator) pico.getComponentAdapter(Foo.class);
 pa.setProperty("message", "hello");
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
@@ -399,7 +399,7 @@ System.out.println(pico.getComponent(Foo.class)); // prints hello
 <div class="source">
 <pre>pico = new DefaultPicoContainer();
 pico.as(APPLY_PROPERTIES).addComponent(Foo.class);
-PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
+PropertyApplicator pa = (PropertyApplicator) pico.getComponentAdapter(Foo.class);
 pa.setProperty("message", "hello");
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
@@ -407,7 +407,7 @@ System.out.println(pico.getComponent(Foo.class)); // prints hello
 <div class="source">
 <pre>pico = new PicoBuilder().withProperties().build();
 pico.addComponent(Foo.class);
-PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
+PropertyApplicator pa = (PropertyApplicator) pico.getComponentAdapter(Foo.class);
 pa.setProperty("message", "hello");
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
@@ -417,7 +417,7 @@ System.out.println(pico.getComponent(Foo.class)); // prints hello
 ...
 pico = new PicoBuilder().withBehaviors(propertyApplying()).build();
 pico.addComponent(Foo.class);
-PropertyApplicator pa = (PropertyApplicator) pico.getAdapter(Foo.class);
+PropertyApplicator pa = (PropertyApplicator) pico.getComponentAdapter(Foo.class);
 pa.setProperty("message", "hello");
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
@@ -428,7 +428,7 @@ import static org.picocontainer.behaviors.Behaviors.propertyApplying;
 ...
 pico = new PicoBuilder().withBehaviors(caching(), propertyApplying()).build();
 pico.addComponent(Foo.class);
-Cached cached = (Cached) pico.getAdapter(Foo.class);
+Cached cached = (Cached) pico.getComponentAdapter(Foo.class);
 PropertyApplicator pa = (PropertyApplicator) getDelegate(PropertyApplicator.class);
 pa.setProperty("message", "hello");
 System.out.println(pico.getComponent(Foo.class)); // prints hello
