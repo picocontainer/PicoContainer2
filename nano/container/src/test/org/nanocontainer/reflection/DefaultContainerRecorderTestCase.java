@@ -104,8 +104,8 @@ public class DefaultContainerRecorderTestCase {
         MutablePicoContainer child = new DefaultPicoContainer(parent);
         DefaultContainerRecorder grandchild = new DefaultContainerRecorder(child);
 
-        new XMLContainerBuilder(new StringReader(""
-                + "<container>"
+        new XMLContainerBuilder(new StringReader(
+                  "<container>"
                 + "  <component-implementation key='fred' class='"+FredImpl.class.getName()+"'>"
                 + "     <parameter key='wilma'/>"
                + "  </component-implementation>"
