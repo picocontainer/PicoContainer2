@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
@@ -42,6 +43,10 @@ public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedCo
 
     private class TestPicoContainer implements PicoContainer {
         public Object getComponent(Object componentKey) {
+            return null;
+        }
+
+        public Object getComponent(Object o, Type type) {
             return null;
         }
 

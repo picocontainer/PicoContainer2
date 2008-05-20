@@ -30,6 +30,7 @@ import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -442,6 +443,10 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
 
         public Object getComponent(Object componentKeyOrType) {
             return DefaultNanoContainer.this.getComponent(componentKeyOrType);
+        }
+
+        public Object getComponent(Object componentKeyOrType, Type into) {
+            return DefaultNanoContainer.this.getComponent(componentKeyOrType, into);
         }
 
         public <T> T getComponent(Class<T> componentType) {
