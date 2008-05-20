@@ -2,7 +2,6 @@ package org.nanocontainer.reflection;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
@@ -20,7 +19,6 @@ import org.nanocontainer.integrationkit.ContainerRecorder;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.nanocontainer.testmodel.FredImpl;
 import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
-import org.nanocontainer.testmodel.Wilma;
 import org.nanocontainer.testmodel.WilmaImpl;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
@@ -81,27 +79,17 @@ public class DefaultContainerRecorderTestCase {
         
         MutablePicoContainer parent = new DefaultPicoContainer(new Caching());
 
-        DefaultContainerRecorder parentRecorder = new DefaultContainerRecorder(parent);
-
         new XMLContainerBuilder(new StringReader(""
                 + "<container>"
                 + "  <component-implementation key='wilma' class='"+WilmaImpl.class.getName()+"'/>"
                 + "</container>"
-                ), Thread.currentThread().getContextClassLoader()).populateContainer(parentRecorder.getContainerProxy());
+                ), Thread.currentThread().getContextClassLoader()).populateContainer(parent);
 
-        MutablePicoContainer recordingParent = parentRecorder.getContainerProxy();
-
-        assertNotSame("one should be a proxy of the other", recordingParent, parent);
-        assertEquals("as one is a proxy of the other, equals() should be true", recordingParent, parent);
-
-        assertNull(recordingParent.getComponent("fred"));
-        assertNotNull(recordingParent.getComponent("wilma"));
 
         assertNull(parent.getComponent("fred"));
         assertNotNull(parent.getComponent("wilma"));
 
         MutablePicoContainer child = new DefaultPicoContainer(parent);
-        DefaultContainerRecorder grandchild = new DefaultContainerRecorder(child);
 
         new XMLContainerBuilder(new StringReader(
                   "<container>"
@@ -109,16 +97,10 @@ public class DefaultContainerRecorderTestCase {
                 + "     <parameter key='wilma'/>"
                + "  </component-implementation>"
                 + "</container>"
-                ), Thread.currentThread().getContextClassLoader()).populateContainer(grandchild.getContainerProxy());
+                ), Thread.currentThread().getContextClassLoader()).populateContainer(child);
 
-        MutablePicoContainer recordingChild = grandchild.getContainerProxy();
-
-        assertNotNull(recordingChild.getComponent("fred"));
-        assertNotNull(recordingChild.getComponent("wilma"));
-        
-        FredImpl fred = (FredImpl)recordingChild.getComponent("fred");
-        Wilma wilma = (Wilma)recordingChild.getComponent("wilma");
-        assertSame(wilma, fred.wilma());
+        FredImpl fred = (FredImpl) child.getComponent("fred");
+        assertSame(parent.getComponent("wilma"), fred.wilma());
     }
 
 }
