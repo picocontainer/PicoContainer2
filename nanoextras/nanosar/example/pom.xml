@@ -56,29 +56,40 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>deploy sar</id>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <tasks>
-                                <delete file="${jboss.deploy.dir}/${pom.artifactId}-${pom.version}.sar"/>
-                                <copy
-                                        file="${project.build.directory}/${pom.artifactId}-${pom.version}.jboss-sar"
-                                        todir="${jboss.deploy.dir}"
-                                        overwrite="true" />
-
-                            </tasks>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
+    <profiles>
+    	<profile>
+    		<id>jboss-it</id>
+    		<activation>
+    			<property>jboss.deploy.dir</property>
+    		</activation>
+    		<build>
+    			<plugins>
+		            <plugin>
+		                <artifactId>maven-antrun-plugin</artifactId>
+		                <executions>
+		                    <execution>
+		                        <id>deploy sar</id>
+		                        <phase>integration-test</phase>
+		                        <goals>
+		                            <goal>run</goal>
+		                        </goals>
+		                        <configuration>
+		                            <tasks>
+		                                <delete file="${jboss.deploy.dir}/${pom.artifactId}-${pom.version}.sar"/>
+		                                <copy
+		                                        file="${project.build.directory}/${pom.artifactId}-${pom.version}.jboss-sar"
+		                                        todir="${jboss.deploy.dir}"
+		                                        overwrite="true" />
+		                            </tasks>
+		                        </configuration>
+		                    </execution>
+		                </executions>
+		            </plugin>
+    			</plugins>
+    		</build>
+    	</profile>
+    </profiles>
 
 </project>
