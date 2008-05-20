@@ -14,7 +14,6 @@ import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 
 import org.junit.Test;
-import org.nanocontainer.integrationkit.ContainerPopulator;
 import org.nanocontainer.script.xml.XMLContainerBuilder;
 import org.nanocontainer.testmodel.FredImpl;
 import org.nanocontainer.testmodel.ThingThatTakesParamsInConstructor;
