@@ -40,30 +40,30 @@ public class StoringContainerTestCase {
 
         // This test case is not testing Storing. Its just testing that a Caching parent does so.
 
-        DefaultPicoContainer recorded = new DefaultPicoContainer(new Caching());
-        recorded.addComponent("fruit", "apple");
-        recorded.addComponent("int", 239);
-        recorded.addComponent("thing",
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
+        parent.addComponent("fruit", "apple");
+        parent.addComponent("int", 239);
+        parent.addComponent("thing",
                 ThingThatTakesParamsInConstructor.class,
                 ComponentParameter.DEFAULT,
                 ComponentParameter.DEFAULT);
 
         Storing storing1 = new Storing();
-        DefaultPicoContainer replayed = new DefaultPicoContainer(storing1, recorded);
+        DefaultPicoContainer child1 = new DefaultPicoContainer(storing1, parent);
         assertEquals("store should be empty", 0, storing1.getCacheSize());
-        Object a1 = replayed.getComponent("fruit");
+        Object a1 = child1.getComponent("fruit");
         assertEquals("store should still be empty: its not used", 0, storing1.getCacheSize());
-        ThingThatTakesParamsInConstructor a2 = (ThingThatTakesParamsInConstructor) replayed.getComponent("thing");
+        ThingThatTakesParamsInConstructor a2 = (ThingThatTakesParamsInConstructor) child1.getComponent("thing");
         assertEquals("apple", a1);
         assertEquals("apple239", a2.getValue());
 
         // test that we can replay once more
         Storing storing2 = new Storing();
-        DefaultPicoContainer anotherReplayed = new DefaultPicoContainer(storing2, recorded);
+        DefaultPicoContainer child2 = new DefaultPicoContainer(storing2, parent);
         assertEquals("store should be empty", 0, storing2.getCacheSize());
-        Object b1 = anotherReplayed.getComponent("fruit");
+        Object b1 = child2.getComponent("fruit");
         assertEquals("store should still be empty: its not used", 0, storing2.getCacheSize());
-        ThingThatTakesParamsInConstructor b2 = (ThingThatTakesParamsInConstructor) anotherReplayed.getComponent("thing");
+        ThingThatTakesParamsInConstructor b2 = (ThingThatTakesParamsInConstructor) child2.getComponent("thing");
         assertEquals("apple", b1);
         assertEquals("apple239", b2.getValue());
 
