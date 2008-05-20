@@ -10,7 +10,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 
@@ -90,37 +89,40 @@ public class StoringContainerTestCase {
     }
 
 
-    @Test public void testXMLRecorderHierarchy() {
-        MutablePicoContainer recorded = new DefaultPicoContainer(new Caching());
-        DefaultPicoContainer parentReplayed = new DefaultPicoContainer(new Storing(), recorded);
-        StringReader parentResource = new StringReader("" 
-                + "<container>" 
+    @Test public void scriptedPopulationOfContainerHierarchy() {
+
+        MutablePicoContainer parent = new DefaultPicoContainer(new Caching());
+
+        // parent has nothing populated in it.
+
+        DefaultPicoContainer child = new DefaultPicoContainer(new Storing(), parent);
+
+        new XMLContainerBuilder(new StringReader(""
+                + "<container>"
                 + "  <component-implementation key='wilma' class='"+WilmaImpl.class.getName()+"'/>"
-                + "</container>" 
-                );
+                + "</container>"
+                ), Thread.currentThread().getContextClassLoader()).populateContainer(child);
 
-        populateXMLContainer(parentReplayed, parentResource);        
-        assertNull(parentReplayed.getComponent("fred"));
-        assertNotNull(parentReplayed.getComponent("wilma"));
+        assertNull(child.getComponent("fred"));
+        assertNotNull(child.getComponent("wilma"));
 
-        DefaultPicoContainer childReplayed = new DefaultPicoContainer(new Storing(), parentReplayed);
-        StringReader childResource = new StringReader("" 
-                + "<container>" 
+        DefaultPicoContainer grandchild = new DefaultPicoContainer(new Storing(), child);
+
+        new XMLContainerBuilder(new StringReader(""
+                + "<container>"
                 + "  <component-implementation key='fred' class='"+FredImpl.class.getName()+"'>"
-                + "     <parameter key='wilma'/>"  
-               + "  </component-implementation>"
-                + "</container>" 
-                );
-        populateXMLContainer(childReplayed, childResource);
-        assertNotNull(childReplayed.getComponent("fred"));
-        assertNotNull(childReplayed.getComponent("wilma"));
-        FredImpl fred = (FredImpl)childReplayed.getComponent("fred");
-        Wilma wilma = (Wilma)childReplayed.getComponent("wilma");
+                + "     <parameter key='wilma'/>"
+                + "  </component-implementation>"
+                + "</container>"
+                ), Thread.currentThread().getContextClassLoader()).populateContainer(grandchild);
+
+        assertNotNull(grandchild.getComponent("fred"));
+        assertNotNull(grandchild.getComponent("wilma"));
+
+        FredImpl fred = (FredImpl)grandchild.getComponent("fred");
+        Wilma wilma = (Wilma)grandchild.getComponent("wilma");
+
         assertSame(wilma, fred.wilma());
     }
-                       
-    private void populateXMLContainer(MutablePicoContainer container, Reader resource) {
-        ContainerPopulator populator = new XMLContainerBuilder(resource, Thread.currentThread().getContextClassLoader());
-        populator.populateContainer(container);
-    }       
+
 }

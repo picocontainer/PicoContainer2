@@ -4,13 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertNotSame;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 
@@ -79,39 +79,47 @@ public class DefaultContainerRecorderTestCase {
 
 
     @Test public void testXMLRecorderHierarchy() {
-        MutablePicoContainer parentPrototype = new DefaultPicoContainer(new Caching());
-        DefaultContainerRecorder parentRecorder = new DefaultContainerRecorder(parentPrototype);
-        StringReader parentResource = new StringReader("" 
-                + "<container>" 
+        
+        MutablePicoContainer parent = new DefaultPicoContainer(new Caching());
+
+        DefaultContainerRecorder parentRecorder = new DefaultContainerRecorder(parent);
+
+        new XMLContainerBuilder(new StringReader(""
+                + "<container>"
                 + "  <component-implementation key='wilma' class='"+WilmaImpl.class.getName()+"'/>"
-                + "</container>" 
-                );
+                + "</container>"
+                ), Thread.currentThread().getContextClassLoader()).populateContainer(parentRecorder.getContainerProxy());
 
-        populateXMLContainer(parentRecorder, parentResource);
-        MutablePicoContainer parentContainer = parentRecorder.getContainerProxy();
-        assertNull(parentContainer.getComponent("fred"));
-        assertNotNull(parentContainer.getComponent("wilma"));
+        MutablePicoContainer recordingParent = parentRecorder.getContainerProxy();
 
-        MutablePicoContainer childPrototype = new DefaultPicoContainer(parentPrototype);
-        DefaultContainerRecorder childRecorder = new DefaultContainerRecorder(childPrototype);
-        StringReader childResource = new StringReader("" 
-                + "<container>" 
+        assertNotSame("one should be a proxy of the other", recordingParent, parent);
+        assertEquals("as one is a proxy of the other, equals() should be true", recordingParent, parent);
+
+        assertNull(recordingParent.getComponent("fred"));
+        assertNotNull(recordingParent.getComponent("wilma"));
+
+        assertNull(parent.getComponent("fred"));
+        assertNotNull(parent.getComponent("wilma"));
+
+        MutablePicoContainer child = new DefaultPicoContainer(parent);
+        DefaultContainerRecorder grandchild = new DefaultContainerRecorder(child);
+
+        new XMLContainerBuilder(new StringReader(""
+                + "<container>"
                 + "  <component-implementation key='fred' class='"+FredImpl.class.getName()+"'>"
-                + "     <parameter key='wilma'/>"  
+                + "     <parameter key='wilma'/>"
                + "  </component-implementation>"
-                + "</container>" 
-                );
-        populateXMLContainer(childRecorder, childResource);
-        MutablePicoContainer childContainer = childRecorder.getContainerProxy();
-        assertNotNull(childContainer.getComponent("fred"));
-        assertNotNull(childContainer.getComponent("wilma"));
-        FredImpl fred = (FredImpl)childContainer.getComponent("fred");
-        Wilma wilma = (Wilma)childContainer.getComponent("wilma");
+                + "</container>"
+                ), Thread.currentThread().getContextClassLoader()).populateContainer(grandchild.getContainerProxy());
+
+        MutablePicoContainer recordingChild = grandchild.getContainerProxy();
+
+        assertNotNull(recordingChild.getComponent("fred"));
+        assertNotNull(recordingChild.getComponent("wilma"));
+        
+        FredImpl fred = (FredImpl)recordingChild.getComponent("fred");
+        Wilma wilma = (Wilma)recordingChild.getComponent("wilma");
         assertSame(wilma, fred.wilma());
     }
-                       
-    private void populateXMLContainer(ContainerRecorder recorder, Reader resource) {
-        ContainerPopulator populator = new XMLContainerBuilder(resource, Thread.currentThread().getContextClassLoader());
-        populator.populateContainer(recorder.getContainerProxy());
-    }       
+
 }
