@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 
 import org.apache.log4j.Logger;
 
@@ -272,6 +273,26 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
         }
 
         Object result = delegate.getComponent(componentKeyOrType);
+        if (result == null) {
+            onKeyOrTypeDoesNotExistInContainer(componentKeyOrType, logger);
+        }
+
+        return result;
+    }
+
+    public Object getComponent(final Object componentKeyOrType, Type into) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Attempting to load component instance with "
+                         + (componentKeyOrType instanceof Class ? "type" : "key")
+                         + ": "
+                         + (componentKeyOrType instanceof Class
+                            ? ((Class)componentKeyOrType).getName()
+                            : componentKeyOrType)
+                         + " for container "
+                         + delegate);
+
+        }
+        Object result = delegate.getComponent(componentKeyOrType, into);
         if (result == null) {
             onKeyOrTypeDoesNotExistInContainer(componentKeyOrType, logger);
         }

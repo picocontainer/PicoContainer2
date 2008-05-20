@@ -24,6 +24,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.adapters.NullCA;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
@@ -49,7 +50,7 @@ public final class ParameterTestCase {
                                                                                                                  (NameBinding) null);
         assertNotNull(adapter);
         assertNotNull(pico.getComponent(Touchable.class));
-        Touchable touchable = (Touchable) ComponentParameter.DEFAULT.resolveInstance(pico, null, Touchable.class, pn,
+        Touchable touchable = (Touchable) ComponentParameter.DEFAULT.resolveInstance(pico, new NullCA(String.class), Touchable.class, pn,
                                                                                      false, null);
         assertNotNull(touchable);
     }
@@ -92,8 +93,8 @@ public final class ParameterTestCase {
         ComponentAdapter adapter = picoContainer.addComponent("glarch", 239).getComponentAdapter("glarch");
         assertNotNull(adapter);
 		Parameter parameter = new ComponentParameter("glarch");
-		assertNotNull(parameter.resolveInstance(picoContainer,null,Integer.TYPE, pn, false, null));
-		assertEquals(239, ((Integer)parameter.resolveInstance(picoContainer,null,Integer.TYPE, pn, false, null)).intValue());
+		assertNotNull(parameter.resolveInstance(picoContainer,adapter,Integer.TYPE, pn, false, null));
+		assertEquals(239, ((Integer)parameter.resolveInstance(picoContainer,adapter,Integer.TYPE, pn, false, null)).intValue());
 	}
 
     @Test public void testConstantParameterRespectsExpectedType() {

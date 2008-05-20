@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Properties;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -243,6 +244,22 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
         }
 
         Object result = delegate.getComponent(componentKeyOrType);
+        if (result == null) {
+            onKeyOrTypeDoesNotExistInContainer(componentKeyOrType, log);
+        }
+
+        return result;
+    }
+
+    public Object getComponent(Object componentKeyOrType, Type into) {
+        if (log.isDebugEnabled()) {
+            log.debug("Attempting to load component instance with "
+                      + (componentKeyOrType instanceof Class ? "type" : "key")
+                      + ": " + componentKeyOrType + " for container " + delegate);
+
+        }
+
+        Object result = delegate.getComponent(componentKeyOrType, into);
         if (result == null) {
             onKeyOrTypeDoesNotExistInContainer(componentKeyOrType, log);
         }

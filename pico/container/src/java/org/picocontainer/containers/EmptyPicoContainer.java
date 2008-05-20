@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 
 /**
  * empty pico container serving as recoil damper in situations where you
@@ -31,6 +32,10 @@ public class EmptyPicoContainer implements PicoContainer, Serializable {
     private static final long serialVersionUID = -2225539108410682231L;
 
     public Object getComponent(Object componentKeyOrType) {
+        return null;
+    }
+
+    public Object getComponent(Object componentKeyOrType, Type into) {
         return null;
     }
 

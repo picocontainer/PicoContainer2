@@ -14,6 +14,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.adapters.NullCA;
 
 /**
  * test that config parameter does the right job
@@ -73,8 +74,8 @@ public class ConfigParameterTestCase {
 		ComponentParameter parameter = new ComponentParameter("gloo.blum");
 
 		assertEquals(new Integer(239), parameter.resolveInstance(container,
-				null, Integer.class, paramNameBinding, false, null));
-		assertEquals("239", parameter.resolveInstance(container, null,
+				new NullCA(Integer.class), Integer.class, paramNameBinding, false, null));
+		assertEquals("239", parameter.resolveInstance(container, new NullCA(String.class),
 				String.class, paramNameBinding, false, null));
 	}
 

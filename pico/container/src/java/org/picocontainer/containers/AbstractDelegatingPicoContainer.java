@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.NameBinding;
@@ -54,7 +55,11 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
 		return delegate.getComponent(componentKeyOrType);
 	}
 
-	public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType,
+    public Object getComponent(Object componentKeyOrType, Type into) {
+        return delegate.getComponent(componentKeyOrType, into);
+    }
+
+    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType,
 			NameBinding componentNameBinding) {
 		return delegate.getComponentAdapter(componentType,
                                             componentNameBinding);

@@ -94,6 +94,7 @@ public class Storing extends AbstractBehaviorFactory {
             return new HashMap();
         }
     }
+
     public static class StoreWrapper implements Serializable {
         private Map wrapped;
         private static final long serialVersionUID = -6905236785850006947L;

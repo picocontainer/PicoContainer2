@@ -811,7 +811,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         container.addAdapter(new SwedeFactoryInjector());
         Turnip t = container.getComponent(Turnip.class);
         assertNotNull(t);
-        assertEquals("Swede:" + Swede.class.getName(), t.getSwede().toString());
+        assertEquals("Swede for " + Turnip.class.getName(), t.getSwede().toString());
         assertEquals("foo", t.getFoo());
 
     }
@@ -823,7 +823,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         container.addAdapter(new SwedeFactoryInjector());
         Turnip2 t = container.getComponent(Turnip2.class);
         assertNotNull(t);
-        assertEquals("Swede:" + Swede.class.getName(), t.getSwede().toString());
+        assertEquals("Swede for " + Turnip2.class.getName(), t.getSwede().toString());
         assertEquals("foo", t.getFoo());
 
     }
@@ -892,7 +892,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
             // Mauro: you can do anything in here by way of startegy for injecting a specific logger :-)
             return new Swede() {
                 public String toString() {
-                    return "Swede:" + ((Class) into).getName();
+                    return "Swede for " + ((Class) into).getName();
                 }
             };
         }

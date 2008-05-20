@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Collection;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 
 /**
 * wrap pico container to achieve immutability
@@ -39,6 +40,10 @@ public final class ImmutablePicoContainer implements PicoContainer, Serializable
 
     public Object getComponent(Object componentKeyOrType) {
         return delegate.getComponent(componentKeyOrType);
+    }
+
+    public Object getComponent(Object componentKeyOrType, Type into) {
+        return delegate.getComponent(componentKeyOrType, into);
     }
 
     public <T> T getComponent(Class<T> componentType) {

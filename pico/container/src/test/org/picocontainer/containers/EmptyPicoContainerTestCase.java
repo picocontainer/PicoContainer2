@@ -28,8 +28,8 @@ public class EmptyPicoContainerTestCase {
         assertNull(pico.getComponentAdapter(null, (NameBinding) null));
         assertTrue(pico.getComponentAdapters().isEmpty());
         assertTrue(pico.getComponentAdapters(null).isEmpty());
-        assertNull(pico.getComponent(null));
-        assertNull(pico.getComponent(null));
+        assertNull(pico.getComponent((Class) null));
+        assertNull(pico.getComponent((Class) null));
         assertTrue(pico.getComponents().isEmpty());
         assertTrue(pico.getComponents(null).isEmpty());
         assertNull(pico.getParent());

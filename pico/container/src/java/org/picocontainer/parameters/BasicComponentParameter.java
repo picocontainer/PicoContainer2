@@ -144,7 +144,7 @@ public class BasicComponentParameter implements Parameter, Serializable {
         final ComponentAdapter componentAdapter =
             resolveAdapter(container, adapter, (Class<?>)expectedType, expectedNameBinding, useNames, binding);
         if (componentAdapter != null) {
-            Object o = container.getComponent(componentAdapter.getComponentKey());
+            Object o = container.getComponent(componentAdapter.getComponentKey(), adapter.getComponentImplementation());
             if (o instanceof String && expectedType != String.class) {
                 Converter converter = stringConverters.get(expectedType);
                 return (T) converter.convert((String) o);

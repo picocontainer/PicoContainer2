@@ -12,6 +12,7 @@ package org.picocontainer;
 import java.util.Collection;
 import java.util.List;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 
 
 /**
@@ -36,6 +37,8 @@ public interface PicoContainer {
      *         key.
      */
     Object getComponent(Object componentKeyOrType);
+
+    Object getComponent(Object componentKeyOrType, Type into);
 
     /**
      * Retrieve a component keyed by the component type.

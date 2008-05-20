@@ -27,6 +27,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -127,6 +128,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
 	protected final List<ComponentAdapter<?>> orderedComponentAdapters = new ArrayList<ComponentAdapter<?>>();
+
+
+    private transient IntoThreadLocal intoThreadLocal = new IntoThreadLocal();
+
 
     /**
      * Creates a new container with a custom ComponentFactory and a parent container.
@@ -516,6 +521,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return getComponent(componentKeyOrType, null);
     }
 
+    public Object getComponent(final Object componentKeyOrType, Type into) {
+        synchronized (this) {
+            if (intoThreadLocal == null) {
+                intoThreadLocal = new IntoThreadLocal();
+            }
+        }
+        intoThreadLocal.set(into);
+        return getComponent(componentKeyOrType, (Class<? extends Annotation>) null);
+    }
+
     public Object getComponent(final Object componentKeyOrType, final Class<? extends Annotation> annotation) {
         Object retVal;
         if (annotation != null) {
@@ -554,8 +569,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             Object instance;
             try {
                 if (componentAdapter instanceof FactoryInjector) {
-                    instance = ((FactoryInjector) componentAdapter).getComponentInstance(this, componentKey);
+                    instance = ((FactoryInjector) componentAdapter).getComponentInstance(this, intoThreadLocal.get());
                 } else {
+                    synchronized (this) {
+                        if (intoThreadLocal == null) {
+                            intoThreadLocal = new IntoThreadLocal();
+                        }
+                    }
+                    intoThreadLocal.set(componentAdapter.getComponentImplementation());
                     instance = componentAdapter.getComponentInstance(this);
                 }
             } catch (AbstractInjector.CyclicDependencyException e) {
@@ -974,5 +995,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             return DefaultPicoContainer.this.addAdapter(componentAdapter, properties);
         }
     }
+
+    private static class IntoThreadLocal extends ThreadLocal<Type> implements Serializable {
+        protected Type initialValue() {
+            return ComponentAdapter.NOTHING.class;
+        }
+    }
+
 
 }
