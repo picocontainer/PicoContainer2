@@ -62,7 +62,9 @@
     	<profile>
     		<id>jboss-it</id>
     		<activation>
-    			<property>jboss.deploy.dir</property>
+    			<property>
+					<name>jboss.deploy.dir</name>
+				</property>
     		</activation>
     		<build>
     			<plugins>
