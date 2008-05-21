@@ -23,6 +23,12 @@
         <module>nanowar-struts2</module>
         <module>nanowar-webwork</module>
         <module>nanowar-webwork2</module>
+        <module>examples/nanowar-sample</module>
+        <module>examples/nanowar-jsf-webapp</module>
+        <module>examples/nanowar-nanoweb-webapp</module>
+        <module>examples/nanowar-struts-webapp</module>
+        <module>examples/nanowar-webwork-webapp</module>
+        <module>examples/nanowar-webwork2-webapp</module>
     </modules>
 
     <description>

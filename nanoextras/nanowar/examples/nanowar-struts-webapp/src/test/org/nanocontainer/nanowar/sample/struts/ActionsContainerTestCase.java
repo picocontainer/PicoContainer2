@@ -11,6 +11,9 @@ import org.picocontainer.references.SimpleReference;
 import java.io.Reader;
 import java.io.StringReader;
 
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
+
 /**
  * @author Mauro Talevi
  */
