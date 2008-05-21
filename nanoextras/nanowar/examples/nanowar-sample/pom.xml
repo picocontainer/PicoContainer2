@@ -9,6 +9,7 @@
         <version>2.0-SNAPSHOT</version>
     </parent>
     <artifactId>nanocontainer-nanowar-example</artifactId>
+    <packaging>jar</packaging>
     <name>Nanowar Sample</name>
     <dependencies>
         <dependency>
