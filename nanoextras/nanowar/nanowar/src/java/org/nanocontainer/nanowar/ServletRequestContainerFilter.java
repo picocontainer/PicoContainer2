@@ -70,19 +70,19 @@ public class ServletRequestContainerFilter implements Filter {
     public void destroy() {
     }
 
-    public class SessionInjector extends FactoryInjector<HttpSession> {
+    public static class SessionInjector extends FactoryInjector<HttpSession> {
         public HttpSession getComponentInstance(PicoContainer container, Type clazz) {
             return currentSession.get();
         }
     }
 
-    public class RequestInjector extends FactoryInjector<HttpServletRequest> {
+    public static class RequestInjector extends FactoryInjector<HttpServletRequest> {
         public HttpServletRequest getComponentInstance(PicoContainer container, Type clazz) {
             return currentRequest.get();
         }
     }
 
-    public class ResponseInjector extends FactoryInjector<HttpServletResponse> {
+    public static class ResponseInjector extends FactoryInjector<HttpServletResponse> {
         public HttpServletResponse getComponentInstance(PicoContainer container, Type clazz) {
             return currentResponse.get();
         }
