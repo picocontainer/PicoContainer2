@@ -6,16 +6,19 @@
 <body>
 <p>PicoContainer tries to determine what to inject into the constructor of each component as it instantiates (or setters/fields for other injection types). Sometimes there can be two or more classes that could equally satisfy a constructor: </p>
 <div class="source">
-  <pre>pico.add(new Apple(&quot;Braeburn&quot;));
-pico.add(new Apple(&quot;Granny Smith&quot;));
-pico.add(Pie.class); // needs Apple
+  <pre>pico.addComponent(new Apple(&quot;Braeburn&quot;));
+pico.addComponent(new Apple(&quot;Granny Smith&quot;));
+pico.addComponent(Pie.class); // needs Apple
 Pie pie = pico.getComponent(Pie.class); // throws AmbiguousComponentResolutionException citing there are two Apples.
 </pre>
 </div>
 
 <p>The best advice is don't setup PicoContainer in a way that would allow ambiguities  (just put in one Apple in the case above).</p>
+<h2>Strategies to solve this</h2>
+<h3>Custom Parameters</h3>
 <p>An alternative strategy would be to use custom parameters (TODO)</p>
-<p>One more strategy would be to use names parameters </p>
+<h3>Named Parameters</h3>
+<p>One more strategy would be to use named parameters </p>
 <div class="source">
   <pre>class Pie {
   Pie(Apple grannySmith) {
@@ -27,10 +30,9 @@ Pie pie = pico.getComponent(Pie.class); // throws AmbiguousComponentResolutionEx
 
 ...
 
-
-pico.add(&quot;braeburn&quot;, new Apple(&quot;Braeburn&quot;));
-pico.add(&quot;grannySmith&quot;, new Apple(&quot;Granny Smith&quot;));
-pico.add(Pie.class); // needs Apple, specifically a Granny Smith.
+pico.addComponent(&quot;braeburn&quot;, new Apple(&quot;Braeburn&quot;));
+pico.addComponent(&quot;grannySmith&quot;, new Apple(&quot;Granny Smith&quot;));
+pico.as(USE_NAMES).addComponent(Pie.class); // needs Apple, specifically a Granny Smith.
 Pie pie = pico.getComponent(Pie.class); // OK this time.
 </pre>
 </div>
