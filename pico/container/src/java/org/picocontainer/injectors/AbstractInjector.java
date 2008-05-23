@@ -344,7 +344,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         @Override
 		public String getMessage() {
             StringBuffer msg = new StringBuffer();
-            msg.append(component);
+            msg.append(component != null ? component : "<no-component>");
             msg.append(" needs a '");
             msg.append(ambiguousDependency.getName());
             msg.append("' injected, but there are too many choices to inject. These:");

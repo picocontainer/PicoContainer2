@@ -25,6 +25,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.tck.AbstractPicoContainerTest;
 
 
@@ -56,10 +57,5 @@ public class DefaultPicoContainerTreeSerializationTestCase extends AbstractPicoC
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
         child = (MutablePicoContainer) ois.readObject();
         assertNotNull(child.getParent());
-    }
-    
-    @Test
-    public void testAcceptImplementsBreadthFirstStrategy() {
-        super.testAcceptImplementsBreadthFirstStrategy();
     }
 }
