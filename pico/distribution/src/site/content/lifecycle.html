@@ -80,6 +80,35 @@ Apple a = pico.getComponent(Apple.class);
 
 <p>If you have other synonyms for start/stop/dispose, just extend
 the ReflectionLifecycleStrategy class and provide them.</p>
+
+<h3>Java EE 5 annotation based start/dispose</h3>
+<p>This works without an interface, but with annotations in front of the designated methods</p>
+
+<div class="source"><pre>public class Apple {
+  @PostConstruct
+  public void startUp() {
+    // listen on socket, start thread etc.
+  }
+  @PreDestroy
+  public void allOver() {
+    // stop listening on socket, kill thread etc.
+  }
+}
+
+
+...
+
+
+pico = new DefaultPicoContainer(new JavaEE5LifecycleStrategy());
+pico.addComponent(Apple.class);
+pico.start();
+// start gets called
+
+Apple a = pico.getComponent(Apple.class);
+</pre></div>
+
+<p>These annotations are supplied with Java 6, but come in a jar for Java 5 and below. See <a href="http://mvnrepository.com/artifact/javax.annotation/jsr250-api">http://mvnrepository.com/artifact/javax.annotation/jsr250-api</a></p>
+
 <h3>No Lifecycle</h3>
 <p>DefaultPicoContainer does sets StartableLifecycleStrategy by
 default. You can specify NullLifecycleStrategy instead if you are sure
