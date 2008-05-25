@@ -20,7 +20,7 @@ import org.picocontainer.PicoVisitor;
  */
 public abstract class AbstractDelegatingPicoContainer implements PicoContainer, Serializable{
 
-	private PicoContainer delegate;
+    private PicoContainer delegate;
     private static final long serialVersionUID = 6444995393199283475L;
 
     public AbstractDelegatingPicoContainer(PicoContainer delegate) {
@@ -101,5 +101,8 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
 	public PicoContainer getParent() {
 		return delegate.getParent();
 	}
-	
+    
+    public String toString() {
+        return "D<" + delegate.toString();
+    }
 }

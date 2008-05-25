@@ -102,8 +102,11 @@ public final class ImmutablePicoContainer implements PicoContainer, Serializable
             ;
     }
 
-
     public int hashCode() {
         return delegate.hashCode();
+    }
+
+    public String toString() {
+        return "I<" + delegate.toString();
     }
 }

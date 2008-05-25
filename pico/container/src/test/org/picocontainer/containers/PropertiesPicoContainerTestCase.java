@@ -6,10 +6,13 @@ import static org.junit.Assert.assertSame;
 import java.util.Properties;
 import java.io.IOException;
 import java.io.FileInputStream;
+import java.io.StringWriter;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Characteristics;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
 
 /**
  * test that properties container works properly
@@ -53,7 +56,6 @@ public class PropertiesPicoContainerTestCase {
        properties.put("portNumber", 1);
        properties.put("hostName", "string");
        properties.put("agentName", "agent0");
-       System.out.println("Properties: " + properties);
        DefaultPicoContainer container = new DefaultPicoContainer(new PropertiesPicoContainer(properties));
        container.as(Characteristics.USE_NAMES).addComponent(Dependant.class);
        container.as(Characteristics.USE_NAMES).addComponent(Dependency.class);
@@ -86,5 +88,21 @@ public class PropertiesPicoContainerTestCase {
                return "Number: " + number + " String: " + string + " Dependency: " + dependency;
            }
        }
+
+    @Test public void testRepresentationOfContainerTree() {
+        Properties properties = new Properties();
+        properties.put("portNumber", 1);
+        properties.put("hostName", "string");
+        properties.put("agentName", "agent0");
+
+        PropertiesPicoContainer parent = new PropertiesPicoContainer(properties);
+        parent.setName("parent");
+        DefaultPicoContainer child = new DefaultPicoContainer(parent);
+        child.setName("child");
+		child.addComponent("hello", "goodbye");
+        child.addComponent("bonjour", "aurevior");
+        assertEquals("child:2<I<D<parent:3<|", child.toString());
+    }
+
 
 }

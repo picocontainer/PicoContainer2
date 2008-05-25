@@ -16,6 +16,7 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Properties;
 
 import org.junit.Test;
 import org.picocontainer.Characteristics;
@@ -189,5 +190,16 @@ public class CommandLineArgumentsPicoContainerTestCase {
         assertEquals(2, needsAFew.b);
         assertEquals(true, needsAFew.c);
     }
+
+    @Test public void testRepresentationOfContainerTree() {
+        CommandLineArgumentsPicoContainer parent = new CommandLineArgumentsPicoContainer(new String[] {"a=a", "b=2", "c=true"});
+        parent.setName("parent");
+        DefaultPicoContainer child = new DefaultPicoContainer(parent);
+        child.setName("child");
+		child.addComponent("hello", "goodbye");
+        child.addComponent("bonjour", "aurevior");
+        assertEquals("child:2<I<D<parent:3<|", child.toString());
+    }
+
 
 }

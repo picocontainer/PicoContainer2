@@ -36,12 +36,17 @@ public class PropertiesPicoContainer extends AbstractDelegatingPicoContainer {
 			((MutablePicoContainer)getDelegate()).addComponent(key,properties.get(key));
 		}
 	}
-	
-	/**
+
+    /**
 	 * construct without a parent
 	 * @param properties
 	 */
 	public PropertiesPicoContainer(Properties properties) {
 		this(properties,null);
 	}
+
+    public void setName(String s) {
+        ((DefaultPicoContainer)getDelegate()).setName(s);
+    }
+
 }

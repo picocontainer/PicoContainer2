@@ -4,8 +4,11 @@ import org.junit.Test;
 import static org.junit.Assert.fail;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
 import static org.picocontainer.BindKey.bindKey;
 import org.picocontainer.annotations.Bind;
 import org.picocontainer.injectors.AbstractInjector;
@@ -14,6 +17,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.annotation.ElementType;
+import java.io.StringWriter;
 
 public class TieringPicoContainerTestCase {
     
@@ -167,6 +171,16 @@ public class TieringPicoContainerTestCase {
         assertNotNull(dd.tiredPerson);
         assertTrue(dd.tiredPerson instanceof PoliteTiredPerson);
 
+    }
+
+    @Test public void testRepresentationOfContainerTree() {
+		TieringPicoContainer parent = new TieringPicoContainer();
+        parent.setName("parent");
+        TieringPicoContainer child = new TieringPicoContainer(parent);
+        child.setName("child");
+		parent.addComponent("st", SimpleTouchable.class);
+		child.addComponent("dot", DependsOnTouchable.class);
+        assertEquals("child:1<I<parent:1<|", child.toString());
     }
 
 

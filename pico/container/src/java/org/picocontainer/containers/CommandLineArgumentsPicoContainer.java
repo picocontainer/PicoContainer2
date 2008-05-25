@@ -102,4 +102,9 @@ public class CommandLineArgumentsPicoContainer extends AbstractDelegatingPicoCon
     public MutablePicoContainer getDelegate() {
     	return (MutablePicoContainer) super.getDelegate();
     }
+
+    public void setName(String s) {
+        ((DefaultPicoContainer)getDelegate()).setName(s);
+    }
+
 }

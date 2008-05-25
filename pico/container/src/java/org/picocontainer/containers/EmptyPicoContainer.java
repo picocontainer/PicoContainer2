@@ -89,4 +89,7 @@ public class EmptyPicoContainer implements PicoContainer, Serializable {
         return Collections.emptyList();
     }
 
+    public String toString() {
+        return "(empty)";
+    }
 }

@@ -44,7 +44,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @author Aslak Helles&oslash;y
+ * @author Aslak Helles&oslashp;y
  * @author Paul Hammant
  * @author Ward Cunningham
  * @author Mauro Talevi
@@ -86,7 +86,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		} catch (final AbstractInjector.UnsatisfiableDependenciesException e) {
 			assertEquals(ComponentB.class, e.getUnsatisfiedDependencyType());
 		}
-	}
+
+    }
 
 	@Test public void testComponentsCanBeRemovedByInstance() {
 		MutablePicoContainer pico = createPicoContainer(null);
@@ -226,9 +227,22 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		DependsOnTouchable dot = (DependsOnTouchable) child.getComponent("dot");
 		assertNotNull(dot);
 		assertTrue("writer not empty", writer.toString().length() > 0);
-	}
 
-	@Test public void testStartCapturedByMonitor() {
+    }
+
+    @Test
+    public void testRepresentationOfContainerTree() {
+        StringWriter writer = new StringWriter();
+        DefaultPicoContainer parent = new DefaultPicoContainer();
+        parent.setName("parent");
+        DefaultPicoContainer child = new DefaultPicoContainer(parent);
+        child.setName("child");
+        parent.addComponent("st", SimpleTouchable.class);
+        child.addComponent("dot", DependsOnTouchable.class);
+        assertEquals("child:1<I<parent:1<|", child.toString());
+    }
+
+    @Test public void testStartCapturedByMonitor() {
 		final StringBuffer sb = new StringBuffer();
 		DefaultPicoContainer dpc = new DefaultPicoContainer(
 				new NullComponentMonitor() {

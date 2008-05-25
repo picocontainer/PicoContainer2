@@ -71,6 +71,7 @@ import java.util.Set;
  */
 public class DefaultPicoContainer implements MutablePicoContainer, ComponentMonitorStrategy, Serializable  {
 
+    private String name;
     /**
 	 * Serialization UUID.
 	 */
@@ -949,6 +950,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 	protected List<ComponentAdapter<?>> getModifiableComponentAdapterList() {
 		return componentAdapters;
 	}
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String toString() {
+        return String.format("%s:%d<%s", (name != null ? name : super.toString()), this.componentAdapters.size(), (parent != null ? parent.toString() : "|"));
+    }
+
 
     private class AsPropertiesPicoContainer extends AbstractDelegatingMutablePicoContainer {
         /**
