@@ -1,29 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.nanocontainer</groupId>
         <artifactId>nanocontainer-nanowar-parent</artifactId>
         <version>2.0-SNAPSHOT</version>
     </parent>
-    <packaging>war</packaging>    
+    <packaging>war</packaging>
     <artifactId>nanowar-struts-webapp</artifactId>
     <name>Nanowar Struts Webapp</name>
     <dependencies>
         <dependency>
-			<groupId>${pom.groupId}</groupId>
+            <groupId>${pom.groupId}</groupId>
             <artifactId>nanocontainer-nanowar-struts</artifactId>
             <version>${pom.version}</version>
         </dependency>
         <dependency>
-			<groupId>${pom.groupId}</groupId>
+            <groupId>${pom.groupId}</groupId>
             <artifactId>nanocontainer-nanowar-example</artifactId>
             <version>${pom.version}</version>
         </dependency>
     </dependencies>
     <build>
         <finalName>nanowar-struts-webapp</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-servlet_2.5_spec</artifactId>
+                        <version>1.2</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <connectors>
+                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                            <port>8080</port>
+                            <maxIdleTime>3600000</maxIdleTime>
+                        </connector>
+                    </connectors>
+                    <scanIntervalSeconds>5</scanIntervalSeconds>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
