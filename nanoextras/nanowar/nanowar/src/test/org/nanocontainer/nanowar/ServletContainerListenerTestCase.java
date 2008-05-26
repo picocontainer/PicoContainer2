@@ -127,14 +127,12 @@ public final class ServletContainerListenerTestCase implements KeyConstants {
         mockery.checking(new Expectations(){{
     		one(servletContext).getInitParameterNames();
     		will(returnValue(initParams.elements()));
-    		one(servletContext).log(with(any(String.class)), with(any(Exception.class)));
     	}});        
         try {
-            listener.contextInitialized(new ServletContextEvent(
-                    (ServletContext) servletContext));
+            listener.contextInitialized(new ServletContextEvent((ServletContext) servletContext));
             fail("PicoCompositionException expected");
         } catch (PicoCompositionException e) {
-            assertEquals("Couldn't create a builder from context parameters in web.xml", e.getCause().getMessage());
+            assertEquals("Couldn't create a builder from context parameters in web.xml", e.getMessage());
         }
     }
 
@@ -145,14 +143,13 @@ public final class ServletContainerListenerTestCase implements KeyConstants {
         mockery.checking(new Expectations(){{
     		one(servletContext).getInitParameterNames();
     		will(returnValue(initParams.elements()));
-    		one(servletContext).log(with(any(String.class)), with(any(Exception.class)));
-    	}});        
+    	}});
         try {
             listener.contextInitialized(new ServletContextEvent(
                     (ServletContext) servletContext));
             fail("PicoCompositionException expected");
         } catch (PicoCompositionException e) {
-            assertEquals("Couldn't create a builder from context parameters in web.xml", e.getCause().getMessage());
+            assertEquals("Couldn't create a builder from context parameters in web.xml", e.getMessage());
         }
     }       
 
@@ -175,14 +172,13 @@ public final class ServletContainerListenerTestCase implements KeyConstants {
     		one(servletContext).getInitParameter(with(equal(PROPERTIES_CONTAINER)));
     		will(returnValue(null)); 		
     		one(servletContext).setAttribute(with(equal(BUILDER)), with(any(XMLContainerBuilder.class)));
-    		one(servletContext).log(with(any(String.class)), with(any(Exception.class)));
     	}});      
         try {
             listener.contextInitialized(new ServletContextEvent(
                     (ServletContext) servletContext));
             fail("PicoCompositionException expected");
-        } catch (PicoCompositionException e) {
-            assertTrue(e.getCause() instanceof NanoContainerMarkupException);
+        } catch (NanoContainerMarkupException e) {
+            assertTrue(e.getMessage().contains("Class not found"));
         }
     }       
     
