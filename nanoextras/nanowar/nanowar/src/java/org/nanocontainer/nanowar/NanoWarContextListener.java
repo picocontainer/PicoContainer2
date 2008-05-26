@@ -12,6 +12,7 @@ package org.nanocontainer.nanowar;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -83,7 +84,6 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
 	 */
     public void contextInitialized(ServletContextEvent event) {
         ServletContext context = event.getServletContext();
-        try {
             ContainerBuilder containerBuilder = createContainerBuilder(context);
             ObjectReference<ContainerBuilder> builderRef = new ApplicationScopeReference<ContainerBuilder>(context, BUILDER);
             builderRef.set(containerBuilder);
@@ -99,20 +99,17 @@ public class NanoWarContextListener extends AbstractNanoWarListener implements S
             String propertiesResource = context.getInitParameter(PROPERTIES_CONTAINER);
             if(propertiesResource != null) {
             	Properties properties = new Properties();
-            	properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(propertiesResource));
-            	parentRef.set(new PropertiesPicoContainer(properties,parentRef.get()));
+                try {
+                    properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(propertiesResource));
+                } catch (IOException e) {
+                    event.getServletContext().log(e.getMessage(), e);
+                    throw new PicoCompositionException(e);
+                }
+                parentRef.set(new PropertiesPicoContainer(properties,parentRef.get()));
             }
             
             ObjectReference containerRef = new ApplicationScopeReference(context, APPLICATION_CONTAINER);
             containerBuilder.buildContainer(containerRef, parentRef, context, false);
-        // TODO bad catch - PH
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("--> " + e.getMessage());
-            // Not all servlet containers print the nested exception. Do it here.
-            event.getServletContext().log(e.getMessage(), e);
-            throw new PicoCompositionException(e);
-        }
     }
 
     /**
