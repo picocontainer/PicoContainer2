@@ -90,7 +90,7 @@ public final class NanoBuilder {
         return this;
     }
 
-    public NanoBuilder withAnnotationInjection() {
+    public NanoBuilder withAnnotatedMethodInjection() {
         picoBuilder.withAnnotatedMethodInjection();
         return this;
     }

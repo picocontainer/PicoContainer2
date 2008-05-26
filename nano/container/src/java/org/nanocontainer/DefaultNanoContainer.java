@@ -141,10 +141,11 @@ public class DefaultNanoContainer extends AbstractDelegatingMutablePicoContainer
      *                                will be called instead.
      */
     public DefaultNanoContainer(ComponentFactory componentFactory,
-                                LifecycleStrategy lifecycleStrategy, PicoContainer parent, ClassLoader cl)
+                                LifecycleStrategy lifecycleStrategy, PicoContainer parent,
+                                ClassLoader cl, ComponentMonitor componentMonitor)
     {
 
-        super(new DefaultPicoContainer(componentFactory, lifecycleStrategy, parent));
+        super(new DefaultPicoContainer(componentFactory, lifecycleStrategy, parent, componentMonitor));
         parentClassLoader = (cl != null) ? cl : DefaultNanoContainer.class.getClassLoader();
     }
 

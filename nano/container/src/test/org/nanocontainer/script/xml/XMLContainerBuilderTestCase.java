@@ -31,8 +31,9 @@ import java.util.Map;
 import javax.swing.JButton;
 
 import org.junit.Test;
-import org.nanocontainer.PrettyXmlRepresentation;
 import org.nanocontainer.TestHelper;
+import org.nanocontainer.NanoContainer;
+import org.nanocontainer.DefaultNanoContainer;
 import org.nanocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.nanocontainer.script.NanoContainerMarkupException;
 import org.nanocontainer.testmodel.CustomerEntityImpl;
@@ -48,10 +49,16 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.monitors.WriterComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.w3c.dom.Element;
@@ -604,11 +611,6 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "</container>");
         MutablePicoContainer pico = (MutablePicoContainer)buildContainer(script);
 
-        String s = new PrettyXmlRepresentation().simplifyRepresentation(pico);
-        System.out.println("xml rep\n\n" + s);
-
-
-
 
         assertNotNull(pico.getComponent("beanKey"));
         TestBeanComposer composer = (TestBeanComposer) pico.getComponent("beanKey");
@@ -672,15 +674,12 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script);
 
-        assertEquals("org.picocontainer.DefaultPicoContainer\n" +
-                     "  componentFactory=org.picocontainer.behaviors.Caching\n" +
-                     "    delegate=org.picocontainer.injectors.ConstructorInjection\n" +
-                     "  parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                     "  STARTED\n" + 
-                     "  lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
-                     "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                     "  componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/org.picocontainer.DefaultPicoContainer/lifecycleStrategy/componentMonitor\n",
-                     new PrettyXmlRepresentation().simplifyRepresentation(pico));
+        NullComponentMonitor cm = new NullComponentMonitor();
+        DefaultPicoContainer expected = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()),new StartableLifecycleStrategy(cm), new EmptyPicoContainer(), cm);
+        expected.start();
+
+        XStream xs = new XStream();
+        assertEquals(xs.toXML(expected),xs.toXML(pico));
 
     }
 

@@ -5,6 +5,10 @@ import static org.junit.Assert.fail;
 import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implementationHiding;
 import static org.picocontainer.injectors.Injectors.SDI;
+import org.picocontainer.injectors.AdaptingInjection;
+import org.picocontainer.injectors.SetterInjection;
+import org.picocontainer.injectors.AnnotatedMethodInjection;
+import org.picocontainer.injectors.ConstructorInjection;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,84 +21,54 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
+import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.behaviors.ImplementationHiding;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.behaviors.Synchronizing;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
+import com.thoughtworks.xstream.XStream;
 
 public class NanoBuilderTestCase {
 
-    PrettyXmlRepresentation pxr;
-
-    @Before public void setUp() throws Exception {
-        pxr = new PrettyXmlRepresentation();
-    }
+    XStream xs = new XStream();
 
     @Test public void testBasic() throws IOException {
         NanoContainer nc = new NanoBuilder().build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "",foo);
+        NullComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new AdaptingInjection(),new NullLifecycleStrategy(), new EmptyPicoContainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @Test public void testWithStartableLifecycle() throws IOException {
         NanoContainer nc = new NanoBuilder().withLifecycle().build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.StartableLifecycleStrategy\n" +
-                "      componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/org.nanocontainer.DefaultNanoContainer/delegate/lifecycleStrategy/componentMonitor\n",
-                foo);
+        NullComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new AdaptingInjection(),new StartableLifecycleStrategy(cm), new EmptyPicoContainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @Test public void testWithReflectionLifecycle() throws IOException {
         NanoContainer nc = new NanoBuilder().withReflectionLifecycle().build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.ReflectionLifecycleStrategy\n" +
-                "      methodNames\n" +
-                "        string:start\n" +
-                "        string:stop\n" +
-                "        string:dispose\n" +
-                "      componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor reference=/org.nanocontainer.DefaultNanoContainer/delegate/lifecycleStrategy/componentMonitor\n",
-                foo);
+        NullComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new AdaptingInjection(),new ReflectionLifecycleStrategy(cm), new EmptyPicoContainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @Test public void testWithConsoleMonitor() throws IOException {
         NanoContainer nc = new NanoBuilder().withConsoleMonitor().build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor\n" +
-                "      delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "",foo);
+        ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new AdaptingInjection(),new NullLifecycleStrategy(), new EmptyPicoContainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @Test public void testWithCustomMonitorByClass() throws IOException {
         NanoContainer nc = new NanoBuilder().withMonitor(ConsoleComponentMonitor.class).build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.ConsoleComponentMonitor\n" +
-                "      delegate=org.picocontainer.monitors.NullComponentMonitor\n" +
-                "",foo);
+        ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new AdaptingInjection(),new NullLifecycleStrategy(), new EmptyPicoContainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -110,43 +84,24 @@ public class NanoBuilderTestCase {
 
     @Test public void testWithImplementationHiding() throws IOException {
         NanoContainer nc = new NanoBuilder().withHiddenImplementations().build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.behaviors.ImplementationHiding\n" +
-                "      delegate=org.picocontainer.injectors.AdaptingInjection\n" +
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",foo);
+        ComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new ImplementationHiding().wrap(new AdaptingInjection()),new NullLifecycleStrategy(), new EmptyPicoContainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
 
     @Test public void testWithImplementationHidingInstance() throws IOException {
         NanoContainer nc = new NanoBuilder().withComponentFactory(new ImplementationHiding()).build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.behaviors.ImplementationHiding\n" +
-                "      delegate=org.picocontainer.injectors.AdaptingInjection\n" +
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
-                foo);
+        ComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new ImplementationHiding().wrap(new AdaptingInjection()),new NullLifecycleStrategy(), new EmptyPicoContainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @Test public void testWithComponentFactoriesListChainThingy() throws IOException{
         NanoContainer nc = new NanoBuilder(SDI()).withComponentAdapterFactories(caching(), implementationHiding()).build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.behaviors.Caching\n" +
-                "      delegate=org.picocontainer.behaviors.ImplementationHiding\n" +
-                "        delegate=org.picocontainer.injectors.SetterInjection\n" +
-                "          set\n" +
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
-                foo);
+        ComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new Caching().wrap(new ImplementationHiding().wrap(new SetterInjection())),new NullLifecycleStrategy(), new EmptyPicoContainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @SuppressWarnings("serial")
@@ -155,117 +110,66 @@ public class NanoBuilderTestCase {
 
     @Test public void testWithCustomParentContainer() throws IOException {
         NanoContainer nc = new NanoBuilder(new CustomParentcontainer()).build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                "    parent=org.nanocontainer.NanoBuilderTestCase$CustomParentcontainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n", foo);
+        ComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new AdaptingInjection(),new NullLifecycleStrategy(), new CustomParentcontainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @Test public void testWithBogusParentContainerBehavesAsIfNotSet() throws IOException {
         NanoContainer nc = new NanoBuilder((PicoContainer)null).build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                     "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                     "    componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                     "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                     "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                     "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n" +
-                     "", foo);
+        ComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new AdaptingInjection(),new NullLifecycleStrategy(), new EmptyPicoContainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
 
     @Test public void testWithSetterDI() throws IOException {
         NanoContainer nc = new NanoBuilder().withSetterInjection().build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.injectors.SetterInjection\n" +
-                "      set\n" +
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
-                foo);
+        ComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new SetterInjection(),new NullLifecycleStrategy(), new EmptyPicoContainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @Test public void testWithAnnotationDI() throws IOException {
-        NanoContainer nc = new NanoBuilder().withAnnotationInjection().build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.injectors.AnnotatedMethodInjection\n" +
-                "      org.picocontainer.annotations.Inject\n" +
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
-                foo);
+        NanoContainer nc = new NanoBuilder().withAnnotatedMethodInjection().build();
+        ComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new AnnotatedMethodInjection(),new NullLifecycleStrategy(), new EmptyPicoContainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @Test public void testWithCtorDI() throws IOException {
         NanoContainer nc = new NanoBuilder().withConstructorInjection().build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.injectors.ConstructorInjection\n" +
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",foo);
+        ComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new ConstructorInjection(),new NullLifecycleStrategy(), new EmptyPicoContainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @Test public void testWithImplementationHidingAndSetterDI() throws IOException {
         NanoContainer nc = new NanoBuilder().withHiddenImplementations().withSetterInjection().build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.behaviors.ImplementationHiding\n" +
-                "      delegate=org.picocontainer.injectors.SetterInjection\n" +
-                "        set\n" +
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
-                foo);
+        ComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new ImplementationHiding().wrap(new SetterInjection()),new NullLifecycleStrategy(), new EmptyPicoContainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @Test public void testWithCachingImplementationHidingAndSetterDI() throws IOException {
         NanoContainer nc = new NanoBuilder().withCaching().withHiddenImplementations().withSetterInjection().build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.behaviors.Caching\n" +
-                "      delegate=org.picocontainer.behaviors.ImplementationHiding\n" +
-                "        delegate=org.picocontainer.injectors.SetterInjection\n" +
-                "          set\n" +                
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
-                foo);
+        ComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new Caching().wrap(new ImplementationHiding().wrap(new SetterInjection())),new NullLifecycleStrategy(), new EmptyPicoContainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @Test public void testWithThreadSafety() throws IOException {
         NanoContainer nc = new NanoBuilder().withThreadSafety().build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.DefaultNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.behaviors.Synchronizing\n" +
-                "      delegate=org.picocontainer.injectors.AdaptingInjection\n" +
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
-                foo);
+        ComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new DefaultNanoContainer(new Synchronizing().wrap(new AdaptingInjection()),new NullLifecycleStrategy(), new EmptyPicoContainer(), null, cm);
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @Test public void testWithCustomNanoContainer() throws IOException {
         NanoContainer nc = new NanoBuilder().implementedBy(TestNanoContainer.class).build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.NanoBuilderTestCase_-TestNanoContainer\n" +
-                "  delegate=org.picocontainer.DefaultPicoContainer\n" +
-                "    componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
-                foo);
+        ComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new TestNanoContainer(null,new DefaultPicoContainer(new AdaptingInjection(),new NullLifecycleStrategy(), new EmptyPicoContainer()));
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
 
@@ -278,14 +182,9 @@ public class NanoBuilderTestCase {
 
     @Test public void testWithCustomNanoAndPicoContainer() throws IOException {
         NanoContainer nc = new NanoBuilder().implementedBy(TestNanoContainer.class).picoImplementedBy(TestPicoContainer.class).build();
-        String foo = pxr.simplifyRepresentation(nc);
-        assertEquals("org.nanocontainer.NanoBuilderTestCase_-TestNanoContainer\n" +
-                "  delegate=org.nanocontainer.NanoBuilderTestCase$TestPicoContainer\n" +
-                "    componentFactory=org.picocontainer.injectors.AdaptingInjection\n" +
-                "    parent=org.picocontainer.containers.EmptyPicoContainer\n" +
-                "    lifecycleStrategy=org.picocontainer.lifecycle.NullLifecycleStrategy\n" +
-                "    componentMonitor=org.picocontainer.monitors.NullComponentMonitor\n",
-                foo);
+        ComponentMonitor cm = new NullComponentMonitor();
+        NanoContainer expected = new TestNanoContainer(null, new TestPicoContainer(new AdaptingInjection(), new NullComponentMonitor(), new NullLifecycleStrategy(), new EmptyPicoContainer()));
+        assertEquals(xs.toXML(expected),xs.toXML(nc));
     }
 
     @SuppressWarnings("serial")
