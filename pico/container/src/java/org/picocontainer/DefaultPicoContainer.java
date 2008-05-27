@@ -20,8 +20,8 @@ import org.picocontainer.containers.*;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.lifecycle.LifecycleState;
-import static org.picocontainer.lifecycle.LifecycleState.*;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
+import org.picocontainer.lifecycle.DefaultLifecycleState;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.io.Serializable;
@@ -96,9 +96,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     /**
      * Current state of the container.
      */
-    private LifecycleState lifecycleState = CONSTRUCTED;
-    
-    /** 
+    private LifecycleState lifecycleState = new DefaultLifecycleState();
+
+    /**
      * Keeps track of child containers started status.
      */
     private final Set<WeakReference<PicoContainer>> childrenStarted = new HashSet<WeakReference<PicoContainer>>();
@@ -384,14 +384,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     /** {@inheritDoc} **/
     public <T> ComponentAdapter<T> removeComponent(final Object componentKey) {
-        if (lifecycleState == STARTED) {
-            throw new PicoCompositionException("Cannot remove components after the container has started");
-        }
-        
-        if (lifecycleState == DISPOSED) {
-            throw new PicoCompositionException("Cannot remove components after the container has been disposed");        	
-        }
-        
+        lifecycleState.removingComponent();
+
         ComponentAdapter<T> adapter = (ComponentAdapter<T>) getComponentKeyToAdapterCache().remove(componentKey);
         getModifiableComponentAdapterList().remove(adapter);
         getOrderedComponentAdapters().remove(adapter);    	
@@ -632,12 +626,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @see #removeChildContainer(PicoContainer)
      */
     public void start() {
-    	
-    	if (!lifecycleState.isStartAllowed()) {
-			throw new IllegalStateException("Cannot start.  Current container state was: " + lifecycleState);    		
-    	}
 
-    	lifecycleState = STARTED;
+        lifecycleState.starting();
 
         startAdapters();
         childrenStarted.clear();
@@ -665,11 +655,10 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @see #removeChildContainer(PicoContainer)
      */
     public void stop() {
-    	if (!lifecycleState.isStopAllowed()) {
-			throw new IllegalStateException("Cannot stop.  Current container state was: " + lifecycleState);    		
-    	}
 
-    	for (PicoContainer child : children) {
+        lifecycleState.stopping();
+
+        for (PicoContainer child : children) {
             if (childStarted(child)) {
                 if (child instanceof Startable) {
                     ((Startable)child).stop();
@@ -677,7 +666,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             }
         }
         stopAdapters();
-        lifecycleState = STOPPED;
+        lifecycleState.stopped();
     }
 
     /**
@@ -719,10 +708,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     	if (lifecycleState.isStarted()) {
     		stop();
     	}
-    	
-    	if (!lifecycleState.isDisposedAllowed()) {
-			throw new IllegalStateException("Cannot dispose.  Current lifecycle state is: " + lifecycleState);    		
-    	}
+
+        lifecycleState.disposing();
 
         for (PicoContainer child : children) {
             if (child instanceof MutablePicoContainer) {
@@ -730,7 +717,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             }
         }
         disposeAdapters();
-        lifecycleState = DISPOSED;
+
+        lifecycleState.disposed();
+    }
+
+    public void setLifecycleState(LifecycleState lifecycleState) {
+        this.lifecycleState = lifecycleState;
     }
 
     public MutablePicoContainer makeChildContainer() {
@@ -775,7 +767,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     	checkCircularChildDependencies(child);
     	if (children.add(child)) {
             // @todo Should only be added if child container has also be started
-            if (lifecycleState == STARTED) {
+            if (lifecycleState.isStarted()) {
                 childrenStarted.add(new WeakReference<PicoContainer>(child));
             }
         }
