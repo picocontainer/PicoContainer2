@@ -17,25 +17,33 @@ import org.picocontainer.DefaultPicoContainer;
 
 public class InterceptingTestCase {
 
-    public static interface Foo {
-        void one();
-        String two(String a, int b);
+    public static interface Person {
+        String greeting();
+        String parting(String who);
+        void sleep(int howLong);
     }
 
-    public static class FooImpl implements Foo {
+    public static class Englishman implements Person {
         private StringBuilder sb;
 
-        public FooImpl(StringBuilder sb) {
+        public Englishman(StringBuilder sb) {
             this.sb = sb;
         }
 
-        public void one() {
-            sb.append("call-one(),");
+        public String greeting() {
+            String phrase = "How do you do?";
+            sb.append(phrase);
+            return phrase;
         }
 
-        public String two(String a, int b) {
-            sb.append("call-two('"+a+"',"+b+"),");
-            return "two";
+        public String parting(String who) {
+            String phrase = "Goodbye " + who + ".";
+            sb.append(phrase);
+            return phrase;
+        }
+
+        public void sleep(int howLong) {
+            sb.append("Nap for " + howLong);
         }
     }
 
@@ -43,116 +51,159 @@ public class InterceptingTestCase {
         final StringBuilder sb = new StringBuilder();
         DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
         pico.addComponent(StringBuilder.class, sb);
-        pico.addComponent(Foo.class, FooImpl.class);
+        pico.addComponent(Person.class, Englishman.class);
 
-        Intercepted intercepted = pico.getComponentAdapter(Foo.class).findAdapterOfType(Intercepted.class);
+        Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepted.class);
         final Intercepted.Controller interceptor = intercepted.getController();
-        intercepted.addPreInvocation(Foo.class, new Foo() {
-            public void one() {
-                sb.append("pre-one(),");
-            }
-            public String two(String a, int b) {
-                sb.append("pre-two('"+a+"',"+b+"),");
+        intercepted.addPostInvocation(Person.class, new Person() {
+            public String greeting() {
+                sb.append("</english-greeting>");
                 return null;
+            }
+            public String parting(String a) {
+                return null;
+            }
+
+            public void sleep(int howLong) {
             }
         });
-        intercepted.addPostInvocation(Foo.class, new Foo() {
-            public void one() {
-                sb.append("post-one(),");
-            }
-            public String two(String a, int b) {
-                assertEquals("two", interceptor.getOriginalRetVal());
-                sb.append("post-two('"+a+"',"+b+"),");
+        intercepted.addPreInvocation(Person.class, new Person() {
+            public String greeting() {
+                sb.append("<english-greeting>");
                 return null;
+            }
+            public String parting(String who) {
+                return null;
+            }
+
+            public void sleep(int howLong) {
             }
         });
 
-        Foo foo = pico.getComponent(Foo.class);
+
+        Person foo = pico.getComponent(Person.class);
         assertNotNull(foo);
-        foo.one();
-        assertEquals("two", foo.two("hello", 99));
-        assertEquals("pre-one(),call-one(),post-one(),pre-two('hello',99),call-two('hello',99),post-two('hello',99),", sb.toString());
-        assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("How do you do?", foo.greeting());
+        assertEquals("<english-greeting>How do you do?</english-greeting>", sb.toString());
+        assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
     }
 
-    @Test public void testPreCanBlockInvocationWithAlternateReturnValue() {
+    @Test public void testPreAndPostObservationWithParameter() {
         final StringBuilder sb = new StringBuilder();
         DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
-        pico.addComponent(Foo.class, FooImpl.class);
         pico.addComponent(StringBuilder.class, sb);
+        pico.addComponent(Person.class, Englishman.class);
 
-        Intercepted intercepted = pico.getComponentAdapter(Foo.class).findAdapterOfType(Intercepted.class);
+        Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepted.class);
         final Intercepted.Controller interceptor = intercepted.getController();
-        intercepted.addPreInvocation(Foo.class, new Foo() {
-            public void one() {
-                interceptor.veto();
-                sb.append("veto-one(),");
+        intercepted.addPostInvocation(Person.class, new Person() {
+            public String greeting() {
+                return null;
             }
-
-            public String two(String a, int b) {
-                interceptor.veto();
-                sb.append("veto-two('"+a+"',"+b+"),");
-                return "isVetoed";
+            public String parting(String a) {
+                assertEquals("Goodbye Fred.", interceptor.getOriginalRetVal().toString());
+                sb.append("</english-parting>");
+                return null;
+            }
+            public void sleep(int howLong) {
+            }
+        });
+        intercepted.addPreInvocation(Person.class, new Person() {
+            public String greeting() {
+                return null;
+            }
+            public String parting(String who) {
+                sb.append("<english-parting who='"+who+"'>");
+                return null;
+            }
+            public void sleep(int howLong) {
             }
         });
 
-        Foo foo = pico.getComponent(Foo.class);
+        Person foo = pico.getComponent(Person.class);
         assertNotNull(foo);
-        foo.one();
-        assertEquals("isVetoed", foo.two("hello", 99));
-        assertEquals("veto-one(),veto-two('hello',99),", sb.toString());
-        assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Goodbye Fred.", foo.parting("Fred").trim());
+        assertEquals("<english-parting who='Fred'>Goodbye Fred.</english-parting>", sb.toString());
+        assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
+    }
+
+    @Test public void testPreCanPreventInvocationWithAlternateReturnValue() {
+        final StringBuilder sb = new StringBuilder();
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
+        pico.addComponent(Person.class, Englishman.class);
+        pico.addComponent(StringBuilder.class, sb);
+
+        Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepted.class);
+        final Intercepted.Controller interceptor = intercepted.getController();
+        intercepted.addPreInvocation(Person.class, new Person() {
+            public String greeting() {
+                return null;
+            }
+            public String parting(String who) {
+                interceptor.veto();
+                return "Au revoir " + who + ".";
+            }
+            public void sleep(int howLong) {
+            }
+        });
+
+        Person foo = pico.getComponent(Person.class);
+        assertNotNull(foo);
+        assertEquals("Au revoir Fred.", foo.parting("Fred"));
+        assertEquals("", sb.toString());
+        assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
     }
 
     @Test public void testOverrideOfReturnValue() {
         final StringBuilder sb = new StringBuilder();
         DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
-        pico.addComponent(Foo.class, FooImpl.class);
+        pico.addComponent(Person.class, Englishman.class);
         pico.addComponent(StringBuilder.class, sb);
-        Intercepted intercepted = pico.getComponentAdapter(Foo.class).findAdapterOfType(Intercepted.class);
+        Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepted.class);
         final Intercepted.Controller interceptor = intercepted.getController();
-        intercepted.addPreInvocation(Foo.class, new Foo() {
-            public void one() {
-                sb.append("pre-one(),");
-            }
-
-            public String two(String a, int b) {
-                sb.append("pre-two('"+a+"',"+b+"),");
+        intercepted.addPreInvocation(Person.class, new Person() {
+            public String greeting() {
                 return null;
             }
+            public String parting(String who) {
+                sb.append("[Before parting]");
+                return null;
+            }
+            public void sleep(int howLong) {
+            }
         });
-        intercepted.addPostInvocation(Foo.class, new Foo() {
-            public void one() {
-                interceptor.override();
-                sb.append("override-one(),");
+        intercepted.addPostInvocation(Person.class, new Person() {
+            public String greeting() {
+                return null;
              }
 
-            public String two(String a, int b) {
+            public String parting(String who) {
                 interceptor.override();
-                sb.append("override-two('"+a+"',"+b+"),");
-                return "x";
+                sb.append("[After parting]");
+                return "Arrivederci " + who;
+            }
+
+            public void sleep(int howLong) {
             }
         });
 
-        Foo foo = pico.getComponent(Foo.class);
+        Person foo = pico.getComponent(Person.class);
         assertNotNull(foo);
-        foo.one();
-        assertEquals("x", foo.two("hello", 99));
-        assertEquals("pre-one(),call-one(),override-one(),pre-two('hello',99),call-two('hello',99),override-two('hello',99),", sb.toString());
-        assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Arrivederci Fred", foo.parting("Fred"));
+        assertEquals("[Before parting]Goodbye Fred.[After parting]", sb.toString());
+        assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
     }
 
     @Test public void testNothingHappensIfNoPreOrPost() {
         final StringBuilder sb = new StringBuilder();
         DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
-        pico.addComponent(Foo.class, FooImpl.class);
+        pico.addComponent(Person.class, Englishman.class);
         pico.addComponent(StringBuilder.class, sb);
-        Foo foo = pico.getComponent(Foo.class);
+        Person foo = pico.getComponent(Person.class);
         assertNotNull(foo);
-        foo.one();
-        assertEquals("two", foo.two("hello", 99));
-        assertEquals("call-one(),call-two('hello',99),", sb.toString());
-        assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Goodbye Fred.", foo.parting("Fred"));
+        assertEquals("Goodbye Fred.", sb.toString());
+        assertEquals("Intercepted:ConstructorInjector-interface org.picocontainer.behaviors.InterceptingTestCase$Person", pico.getComponentAdapter(Person.class).toString());
     }
 
 
