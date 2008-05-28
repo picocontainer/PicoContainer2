@@ -9,20 +9,21 @@
 
 package org.picocontainer.struts2;
 
-import com.opensymphony.xwork2.ObjectFactory;
-import com.opensymphony.xwork2.config.entities.InterceptorConfig;
-import com.opensymphony.xwork2.config.ConfigurationException;
-import com.opensymphony.xwork2.interceptor.Interceptor;
-import com.opensymphony.xwork2.inject.Inject;
+import java.util.Map;
+
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Storing;
 
-import java.util.Map;
+import com.opensymphony.xwork2.ObjectFactory;
+import com.opensymphony.xwork2.config.ConfigurationException;
+import com.opensymphony.xwork2.config.entities.InterceptorConfig;
+import com.opensymphony.xwork2.inject.Inject;
+import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
  * XWork ObjectFactory implementation to deleegate action/component/bean lookups to PicoContainer.
@@ -100,7 +101,7 @@ public class PicoStruts2ObjectFactory extends ObjectFactory {
     }
 
     public Interceptor buildInterceptor(InterceptorConfig config, Map params) throws ConfigurationException {
-        System.out.println("-->buildInterceptor: " + config.getClassName() + " " + params.);
+        System.out.println("-->buildInterceptor: " + config.getClassName() + " " + params);
         return super.buildInterceptor(config, params);
     }
 
