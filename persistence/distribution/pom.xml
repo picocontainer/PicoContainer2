@@ -89,36 +89,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>bin</id>
-            <phase>install</phase>
-            <goals>
-              <goal>assembly</goal>
-            </goals>
-            <configuration>
-              <descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
-              <finalName>persistence-${pom.version}</finalName>
-              <workDirectory>target/assembly/bin</workDirectory>
-            </configuration>
-          </execution>
-          <execution>
-            <id>src</id>
-            <phase>install</phase>
-            <goals>
-              <goal>assembly</goal>
-            </goals>
-            <configuration>
-              <descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
-              <finalName>persistence-${pom.version}</finalName>
-              <workDirectory>target/assembly/src</workDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.codehaus.xsite</groupId>
         <artifactId>xsite-maven-plugin</artifactId>
         <configuration>
@@ -134,6 +104,36 @@
             <goals>
               <goal>run</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>bin</id>
+            <phase>install</phase>
+            <goals>
+              <goal>assembly</goal>
+            </goals>
+            <configuration>
+              <descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
+              <finalName>picocontainer-persistence-${pom.version}</finalName>
+              <workDirectory>target/assembly/bin</workDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>src</id>
+            <phase>install</phase>
+            <goals>
+              <goal>assembly</goal>
+            </goals>
+            <configuration>
+              <descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
+              <finalName>picocontainer-persistence-${pom.version}</finalName>
+              <workDirectory>target/assembly/src</workDirectory>
+            </configuration>
           </execution>
         </executions>
       </plugin>

@@ -12,8 +12,8 @@
 			</includes>
 		</fileSet>
         <fileSet>
-            <directory>target/javadoc</directory>
-            <outputDirectory>/javadoc</outputDirectory>
+            <directory>target/site</directory>
+            <outputDirectory>/docs</outputDirectory>
         </fileSet>
     </fileSets>
 	<dependencySets>

@@ -50,11 +50,11 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.0-alpha-1</version>
         <executions>
           <execution>
-            <id>unpack</id>
+            <id>unpack-javadoc</id>
             <phase>generate-resources</phase>
             <goals>
               <goal>unpack</goal>
@@ -68,49 +68,68 @@
                   <artifactId>picocontainer-web-core</artifactId>
                   <version>${pom.version}</version>
                   <classifier>javadoc</classifier>
-                  <outputDirectory>${project.build.directory}/javadoc/core</outputDirectory>
+                  <outputDirectory>${project.build.directory}/site/javadoc/core</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.web</groupId>
                   <artifactId>picocontainer-web-axis</artifactId>
                   <version>${pom.version}</version>
                   <classifier>javadoc</classifier>
-                  <outputDirectory>${project.build.directory}/javadoc/axis</outputDirectory>
+                  <outputDirectory>${project.build.directory}/site/javadoc/axis</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.web</groupId>
                   <artifactId>picocontainer-web-jsf</artifactId>
                   <version>${pom.version}</version>
                   <classifier>javadoc</classifier>
-                  <outputDirectory>${project.build.directory}/javadoc/jsf</outputDirectory>
+                  <outputDirectory>${project.build.directory}/site/javadoc/jsf</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.web</groupId>
                   <artifactId>picocontainer-web-struts</artifactId>
                   <version>${pom.version}</version>
                   <classifier>javadoc</classifier>
-                  <outputDirectory>${project.build.directory}/javadoc/struts</outputDirectory>
+                  <outputDirectory>${project.build.directory}/site/javadoc/struts</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.web</groupId>
                   <artifactId>picocontainer-web-struts2</artifactId>
                   <version>${pom.version}</version>
                   <classifier>javadoc</classifier>
-                  <outputDirectory>${project.build.directory}/javadoc/struts2</outputDirectory>
+                  <outputDirectory>${project.build.directory}/site/javadoc/struts2</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.web</groupId>
                   <artifactId>picocontainer-web-webwork</artifactId>
                   <version>${pom.version}</version>
                   <classifier>javadoc</classifier>
-                  <outputDirectory>${project.build.directory}/javadoc/webwork</outputDirectory>
+                  <outputDirectory>${project.build.directory}/site/javadoc/webwork</outputDirectory>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.picocontainer.web</groupId>
                   <artifactId>picocontainer-web-webwork2</artifactId>
                   <version>${pom.version}</version>
                   <classifier>javadoc</classifier>
-                  <outputDirectory>${project.build.directory}/javadoc/webwork2</outputDirectory>
+                  <outputDirectory>${project.build.directory}/site/javadoc/webwork2</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>unpack-site-resources</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.picocontainer</groupId>
+                  <artifactId>picocontainer-site-resources</artifactId>
+                  <version>2.0-SNAPSHOT</version>
+                  <outputDirectory>${project.build.directory}/site</outputDirectory>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -118,8 +137,27 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.codehaus.xsite</groupId>
+        <artifactId>xsite-maven-plugin</artifactId>
+        <configuration>
+          <sourceDirectoryPath>${basedir}/src/site</sourceDirectoryPath>
+          <sitemapPath>content/sitemap.xml</sitemapPath>
+          <skinPath>templates/skin.html</skinPath>
+          <resourcePaths>resources</resourcePaths>
+          <outputDirectoryPath>${project.build.directory}/site</outputDirectoryPath>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>install</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.1</version>
         <executions>
           <execution>
             <id>bin</id>
@@ -129,7 +167,7 @@
             </goals>
             <configuration>
               <descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
-              <finalName>nanowar-${pom.version}</finalName>
+              <finalName>picocontainer-web-${pom.version}</finalName>
               <workDirectory>target/assembly/bin</workDirectory>
             </configuration>
           </execution>
@@ -141,7 +179,7 @@
             </goals>
             <configuration>
               <descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
-              <finalName>nanowar-${pom.version}</finalName>
+              <finalName>picocontainer-web-${pom.version}</finalName>
               <workDirectory>target/assembly/src</workDirectory>
             </configuration>
           </execution>
