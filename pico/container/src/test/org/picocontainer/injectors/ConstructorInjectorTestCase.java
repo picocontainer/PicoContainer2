@@ -400,19 +400,17 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
         rememberChosenCtor = true;
         with = timeIt();
         System.out.println("-->testSpeedOfRememberedConstructor(): durations:" + with + " " + without);
-        assertTrue("with should be < without but were " + with + " and " + without, with < without);
+        assertTrue("'with' should be less than 'without' but they were in fact: " + with + ", and " + without, with < without);
     }
 
     boolean rememberChosenCtor;
     private long timeIt() {
         int iterations = 20000;
         long with;
-        DefaultPicoContainer dpc = new DefaultPicoContainer();
+        DefaultPicoContainer dpc = new DefaultPicoContainer(new ConstructorInjection(rememberChosenCtor));
         Two two = new Two();
         dpc.addComponent(two);
-        dpc.addAdapter(new ConstructorInjector(One.class, One.class, null,
-                    new NullComponentMonitor(),
-                    new NullLifecycleStrategy(), false, rememberChosenCtor));
+        dpc.addComponent(One.class);
         long start = System.currentTimeMillis();
         for (int x = 0; x < iterations; x++) {
                 One one = dpc.getComponent(One.class);

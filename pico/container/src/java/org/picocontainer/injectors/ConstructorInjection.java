@@ -26,15 +26,25 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  * A {@link org.picocontainer.InjectionFactory} for constructors.
  * The factory creates {@link ConstructorInjector}.
  * 
- *  @author Paul Hammant 
+ * @author Paul Hammant 
  * @author Jon Tirs&eacute;n
  */
 public class ConstructorInjection extends AbstractInjectionFactory  {
     private static final long serialVersionUID = -6044681748649376149L;
 
+    private final boolean rememberChosenConstructor;
+
+    public ConstructorInjection(boolean rememberChosenConstructor) {
+        this.rememberChosenConstructor = rememberChosenConstructor;
+    }
+
+    public ConstructorInjection() {
+        this(true);
+    }
+
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties properties, Object componentKey,
                                                    Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
         boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(properties, Characteristics.USE_NAMES);
-        return componentMonitor.newInjectionFactory(new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, useNames));
+        return componentMonitor.newInjectionFactory(new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, useNames, rememberChosenConstructor));
     }
 }
