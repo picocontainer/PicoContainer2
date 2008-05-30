@@ -310,7 +310,7 @@
                 </configuration>
               </execution>
               <execution>
-                <id>unpack-resources</id>
+                <id>unpack-site-resources</id>
                 <phase>generate-resources</phase>
                 <goals>
                   <goal>unpack</goal>
