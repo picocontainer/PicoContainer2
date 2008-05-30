@@ -56,7 +56,7 @@ all instances of <code>Dao</code> in the container:
     pico.registerComponent(Dao.class, DaoImpl.class);
     pico.registerInterceptor(cuts.instancesOf(Dao.class), cuts.allMethods(), logger);
 
-    Dao dao = (Dao) pico.getComponentInstance(Dao.class);
+    Dao dao = (Dao) pico.getComponent(Dao.class);
     dao.aMethod(); // will print 'startend'
 </pre>
 

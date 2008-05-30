@@ -14,7 +14,7 @@ import org.picocontainer.aop.PointcutsFactory;
 
 /**
  * Provides implementations of pointcut factory methods not supplied by the
- * 'back-end' (nanning, dynop, etc.).
+ * 'back-end' (eg dynaop).
  *
  * @author Stephen Molitor
  */

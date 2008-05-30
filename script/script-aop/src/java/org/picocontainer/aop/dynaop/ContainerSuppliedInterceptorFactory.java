@@ -9,13 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.aop.dynaop;
 
-import dynaop.Interceptor;
-import dynaop.InterceptorFactory;
-import dynaop.Proxy;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.picocontainer.PicoContainer;
 
-import java.util.Properties;
+import dynaop.Interceptor;
+import dynaop.InterceptorFactory;
+import dynaop.Proxy;
 
 /**
  * Manufactures interceptors from a <code>PicoContainer</code>. Useful when
