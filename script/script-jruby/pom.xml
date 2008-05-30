@@ -7,7 +7,7 @@
     <version>2.0-SNAPSHOT</version>
   </parent>
   <artifactId>picocontainer-script-jruby</artifactId>
-  <name>PicoContainer JRuby script support</name>
+  <name>PicoContainer Script JRuby</name>
   <packaging>jar</packaging>
   <dependencies>
     <dependency>

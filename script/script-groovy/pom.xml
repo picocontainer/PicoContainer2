@@ -7,7 +7,7 @@
     <version>2.0-SNAPSHOT</version>
   </parent>
   <artifactId>picocontainer-script-groovy</artifactId>
-  <name>PicoContainer Groovy script support</name>
+  <name>PicoContainer Script Groovy</name>
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
