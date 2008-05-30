@@ -9,8 +9,11 @@ ttp://maven.apache.org/maven-v4_0_0.xsd">
    <packaging>pom</packaging>
    <url>http://www.picocontainer.org</url>
    <modules>
-       <module>pico</module>
-       <module>nano</module>
-       <module>nanoextras</module>
+        <module>site-resources</module>
+ 	<module>logging</module> 
+	<module>pico</module>
+        <module>persistence</module>
+        <module>script</module>
+        <module>web</module>
    </modules>
 </project>
