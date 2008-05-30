@@ -37,6 +37,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.InjectionFactory;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -392,22 +393,22 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 
     @Test public void testSpeedOfRememberedConstructor()  {
         long with, without;
+        injectionFactory = new ForgetfulConstructorInjection();
         timeIt(); // discard
         timeIt(); // discard
         timeIt(); // discard
-        rememberChosenCtor = false;
         without = timeIt();
-        rememberChosenCtor = true;
+        injectionFactory = new ConstructorInjection();
         with = timeIt();
         System.out.println("-->testSpeedOfRememberedConstructor(): durations:" + with + " " + without);
         assertTrue("'with' should be less than 'without' but they were in fact: " + with + ", and " + without, with < without);
     }
 
-    boolean rememberChosenCtor;
+    InjectionFactory injectionFactory;
     private long timeIt() {
         int iterations = 20000;
         long with;
-        DefaultPicoContainer dpc = new DefaultPicoContainer(new ConstructorInjection(rememberChosenCtor));
+        DefaultPicoContainer dpc = new DefaultPicoContainer(injectionFactory);
         Two two = new Two();
         dpc.addComponent(two);
         dpc.addComponent(One.class);

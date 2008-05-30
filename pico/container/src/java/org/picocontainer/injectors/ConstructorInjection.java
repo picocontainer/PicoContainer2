@@ -23,8 +23,12 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 /**
- * A {@link org.picocontainer.InjectionFactory} for constructors.
+ * A {@link org.picocontainer.InjectionFactory} for constructor injection.
  * The factory creates {@link ConstructorInjector}.
+ *
+ * If there is more than one constructor for the component, the one with the
+ * most satisfiable parameters will be used.  By default, the choice of
+ * constructor for the component in question will be remembered between usages.
  * 
  * @author Paul Hammant 
  * @author Jon Tirs&eacute;n
@@ -34,10 +38,19 @@ public class ConstructorInjection extends AbstractInjectionFactory  {
 
     private final boolean rememberChosenConstructor;
 
+    /**
+     *
+     * @param rememberChosenConstructor whether 'which constructor?' should be remembered
+     *                                  from use to use for the associated injector.
+     */
     public ConstructorInjection(boolean rememberChosenConstructor) {
         this.rememberChosenConstructor = rememberChosenConstructor;
     }
 
+    /**
+     * Will remember which constructor to use between usages on the associated
+     * Injector.
+     */
     public ConstructorInjection() {
         this(true);
     }
