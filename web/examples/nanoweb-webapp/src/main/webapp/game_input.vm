@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- START SNIPPET: view -->
+<html>
+    <body>
+        <p>
+            ${action.hint}
+        </p>
+        <form action="play.groovy">
+            <input name="guess" type="text" value="${action.guess}"/>
+            <input type="submit" value="Guess"/>
+        </form>
+    </body>
+</html>
+<!-- END SNIPPET: view -->

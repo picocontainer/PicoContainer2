@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.picocontainer.web</groupId>
+    <artifactId>picocontainer-web-examples</artifactId>
+    <version>2.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>webwork2-webapp</artifactId>
+  <name>WebWork 2 Webapp</name>
+  <packaging>war</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.picocontainer.web</groupId>
+      <artifactId>picocontainer-web-webwork2</artifactId>
+      <version>${pom.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.picocontainer.web</groupId>
+      <artifactId>picocontainer-web-example</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>opensymphony</groupId>
+      <artifactId>oscore</artifactId>
+      <version>2.2.4</version>
+    </dependency>
+    <dependency>
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+      <version>2.6.7</version>
+    </dependency>
+  </dependencies> 
+</project>
