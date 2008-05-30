@@ -1,4 +1,0 @@
-// purposefully misspelled
-instace = new BadScriptableDemoBean();
-instace.rememberMyKey(componentKey);
-instace.setWhatever(picoContainer.getComponentInstance("whatever"));
