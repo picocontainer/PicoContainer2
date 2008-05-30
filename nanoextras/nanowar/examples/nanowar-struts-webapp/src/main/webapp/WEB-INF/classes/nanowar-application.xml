@@ -1,7 +1,0 @@
-<!-- Define here application-scoped components -->
-<container>
-	<!-- Only one component is defined at application scope - the other is defined at session scope -->
-	<component-implementation key='org.nanocontainer.nanowar.sample.dao.CheeseDao'
-			class='org.nanocontainer.nanowar.sample.dao.simple.MemoryCheeseDao'> 
-	</component-implementation>
-</container>

@@ -1,5 +1,0 @@
-<container>
-	<component-implementation key='org.nanocontainer.nanowar.sample.dao.CheeseDao'
-			class='org.nanocontainer.nanowar.sample.dao.simple.MemoryCheeseDao'> 
-	</component-implementation>
-</container>

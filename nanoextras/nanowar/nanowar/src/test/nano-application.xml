@@ -1,6 +1,0 @@
-<container>
-    <instance key="applicationScopedInstance">
-        <string>foo bar</string>
-    </instance>
-    <implementation class="org.nanocontainer.nanowar.Foo" key="testFoo" />
-</container>

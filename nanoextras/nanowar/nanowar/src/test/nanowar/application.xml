@@ -1,5 +1,0 @@
-<container component-instance-factory='org.nanocontainer.script.xml.XStreamComponentInstanceFactory'>
-    <component-instance key="applicationScopedInstance2">
-        <string>foo bar</string>
-    </component-instance>
-</container>

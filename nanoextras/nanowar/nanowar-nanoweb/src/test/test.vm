@@ -1,3 +1,0 @@
-#foreach($car in $action.cars)
-$car.name
-#end
