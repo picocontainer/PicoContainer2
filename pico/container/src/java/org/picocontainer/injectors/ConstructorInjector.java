@@ -47,12 +47,13 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
     /**
 	 * Serialization UUID.
 	 */
-	private static final long serialVersionUID = 3663020107106785481L;
+    private static final long serialVersionUID = 3663020107106785481L;
 	
 	private transient List<Constructor<T>> sortedMatchingConstructors;
     private transient ThreadLocalCyclicDependencyGuard<T> instantiationGuard;
-    
-    
+    private boolean rememberChosenConstructor = true;
+    private transient Constructor<T> chosenConstructor;
+
     /**
      * Constructor injector that uses no monitor and no lifecycle adapter.  This is a more
      * convenient constructor for use when instantiating a constructor injector directly.
@@ -80,6 +81,26 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
     public ConstructorInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
                                LifecycleStrategy lifecycleStrategy, boolean useNames) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
+    }
+
+    /**
+     * Creates a ConstructorInjector
+     *
+     * @param componentKey            the search key for this implementation
+     * @param componentImplementation the concrete implementation
+     * @param parameters              the parameters to use for the initialization
+     * @param monitor                 the component monitor used by this addAdapter
+     * @param lifecycleStrategy       the component lifecycle strategy used by this addAdapter
+     * @param useNames                use argument names when looking up dependencies
+     * @param rememberChosenCtor      remember the chosen constructor (to speed up second/subsequent calls)
+     * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
+     *                              if the implementation is not a concrete class.
+     * @throws NullPointerException if one of the parameters is <code>null</code>
+     */
+    public ConstructorInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
+                               LifecycleStrategy lifecycleStrategy, boolean useNames, boolean rememberChosenCtor) throws  NotConcreteRegistrationException {
+        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
+        this.rememberChosenConstructor = rememberChosenCtor;
     }
 
     protected Constructor<T> getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
@@ -145,34 +166,42 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         return greediestConstructor;
     }
 
-
     public T getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
                 public T run() {
-                    Constructor<T> constructor;
+                    Constructor<T> ctor = null;
                     try {
-                        constructor = getGreediestSatisfiableConstructor(guardedContainer);
+                        if (chosenConstructor == null) {
+                            ctor = getGreediestSatisfiableConstructor(guardedContainer);
+                        }
+                        if (rememberChosenConstructor) {
+                            if (chosenConstructor == null) {
+                                chosenConstructor = ctor;
+                            } else {
+                                ctor = chosenConstructor;
+                            }
+                        }
                     } catch (AmbiguousComponentResolutionException e) {
                         e.setComponent(getComponentImplementation());
                         throw e;
                     }
                     ComponentMonitor componentMonitor = currentMonitor();
                     try {
-                        Object[] parameters = getMemberArguments(guardedContainer, constructor);
-                        constructor = componentMonitor.instantiating(container, ConstructorInjector.this, constructor);
-                        if(constructor == null) {
+                        Object[] parameters = getMemberArguments(guardedContainer, ctor);
+                        ctor = componentMonitor.instantiating(container, ConstructorInjector.this, ctor);
+                        if(ctor == null) {
                             throw new NullPointerException("Component Monitor " + componentMonitor 
-                                            + " returned a null constructor from method 'instantiating' after passing in " + constructor);
+                                            + " returned a null constructor from method 'instantiating' after passing in " + ctor);
                         }
                         long startTime = System.currentTimeMillis();
-                        T inst = instantiate(constructor, parameters);
+                        T inst = instantiate(ctor, parameters);
                         componentMonitor.instantiated(container,
                                                       ConstructorInjector.this,
-                                                      constructor, inst, parameters, System.currentTimeMillis() - startTime);
+                                ctor, inst, parameters, System.currentTimeMillis() - startTime);
                         return inst;
                     } catch (InvocationTargetException e) {
-                        componentMonitor.instantiationFailed(container, ConstructorInjector.this, constructor, e);
+                        componentMonitor.instantiationFailed(container, ConstructorInjector.this, ctor, e);
                         if (e.getTargetException() instanceof RuntimeException) {
                             throw (RuntimeException) e.getTargetException();
                         } else if (e.getTargetException() instanceof Error) {
@@ -180,9 +209,9 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                         }
                         throw new PicoCompositionException(e.getTargetException());
                     } catch (InstantiationException e) {
-                        return caughtInstantiationException(componentMonitor, constructor, e, container);
+                        return caughtInstantiationException(componentMonitor, ctor, e, container);
                     } catch (IllegalAccessException e) {
-                        return caughtIllegalAccessException(componentMonitor, constructor, e, container);
+                        return caughtIllegalAccessException(componentMonitor, ctor, e, container);
 
                     }
                 }

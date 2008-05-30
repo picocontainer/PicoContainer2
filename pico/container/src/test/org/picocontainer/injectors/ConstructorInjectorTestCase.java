@@ -373,4 +373,53 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
         cica.dispose(touchable);
         assertEquals("<start<stop<dispose", strategy.recording());
     }
+
+    public static class One {
+        public One(Two two) {
+            two.inc();
+        }
+    }
+    public static class Two {
+        private int inc;
+        public void inc() {
+            inc++;
+        }
+
+        public long howMany() {
+            return inc;
+        }
+    }
+
+    @Test public void testSpeedOfRememberedConstructor()  {
+        long with, without;
+        timeIt(); // discard
+        timeIt(); // discard
+        timeIt(); // discard
+        rememberChosenCtor = false;
+        without = timeIt();
+        rememberChosenCtor = true;
+        with = timeIt();
+        System.out.println("-->testSpeedOfRememberedConstructor(): durations:" + with + " " + without);
+        assertTrue("with should be < without but were " + with + " and " + without, with < without);
+    }
+
+    boolean rememberChosenCtor;
+    private long timeIt() {
+        int iterations = 20000;
+        long with;
+        DefaultPicoContainer dpc = new DefaultPicoContainer();
+        Two two = new Two();
+        dpc.addComponent(two);
+        dpc.addAdapter(new ConstructorInjector(One.class, One.class, null,
+                    new NullComponentMonitor(),
+                    new NullLifecycleStrategy(), false, rememberChosenCtor));
+        long start = System.currentTimeMillis();
+        for (int x = 0; x < iterations; x++) {
+                One one = dpc.getComponent(One.class);
+            }
+        long end = System.currentTimeMillis();
+        assertEquals(iterations, two.howMany());
+        return end-start;
+    }
+
 }

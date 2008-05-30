@@ -119,6 +119,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Constructor-Injection>\n" +
+                     "  <rememberChosenConstructor>true</rememberChosenConstructor>\n" +
                      "  <lifecycleStrategy class=RLS/>\n" +
                      "  <useNames>false</useNames>\n" +
                      "  <componentKey class=java-class>java.util.Map</componentKey>\n" +
