@@ -48,7 +48,7 @@ public abstract class AbstractConnection implements Connection {
      * @param cause
      * @return
      */
-	protected SQLException handleException(Exception cause) throws RuntimeException {
+	protected SQLException handleSQLException(Exception cause) throws RuntimeException {
 		try {
 			invalidateDelegatedConnection();
 		} catch (Exception e) {
@@ -73,7 +73,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().createStatement();
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -84,7 +84,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().prepareStatement(sql);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -95,7 +95,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().prepareCall(sql);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -106,7 +106,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().nativeSQL(sql);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -117,7 +117,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			getDelegatedConnection().setAutoCommit(autoCommit);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -128,7 +128,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().getAutoCommit();
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -139,7 +139,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			getDelegatedConnection().commit();
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -150,7 +150,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			getDelegatedConnection().rollback();
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -161,7 +161,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			getDelegatedConnection().close();
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -172,7 +172,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().isClosed();
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -183,7 +183,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().getMetaData();
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -194,7 +194,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			getDelegatedConnection().setReadOnly(readOnly);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -205,7 +205,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().isReadOnly();
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -216,7 +216,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			getDelegatedConnection().setCatalog(catalog);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -228,7 +228,7 @@ public abstract class AbstractConnection implements Connection {
 
 			return getDelegatedConnection().getCatalog();
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -239,7 +239,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			getDelegatedConnection().setTransactionIsolation(level);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -250,7 +250,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().getTransactionIsolation();
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -261,7 +261,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().getWarnings();
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -272,7 +272,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			getDelegatedConnection().clearWarnings();
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -283,7 +283,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().createStatement(resultSetType, resultSetConcurrency);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -294,7 +294,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().prepareStatement(sql, resultSetType, resultSetConcurrency);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -305,7 +305,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().prepareCall(sql, resultSetType, resultSetConcurrency);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -316,7 +316,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().getTypeMap();
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -327,7 +327,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			getDelegatedConnection().setTypeMap(map);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -338,7 +338,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			getDelegatedConnection().setHoldability(holdability);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -349,7 +349,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().getHoldability();
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -360,7 +360,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().setSavepoint();
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -371,7 +371,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().setSavepoint(name);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -382,7 +382,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			getDelegatedConnection().rollback(savepoint);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -393,7 +393,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			getDelegatedConnection().releaseSavepoint(savepoint);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -404,7 +404,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -415,7 +415,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().prepareStatement(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -426,7 +426,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().prepareCall(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -437,7 +437,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().prepareStatement(sql, autoGeneratedKeys);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -448,7 +448,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().prepareStatement(sql, columnIndexes);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
@@ -459,7 +459,7 @@ public abstract class AbstractConnection implements Connection {
 		try {
 			return getDelegatedConnection().prepareStatement(sql, columnNames);
 		} catch (Exception e) {
-			throw handleException(e);
+			throw handleSQLException(e);
 		}
 	}
 
