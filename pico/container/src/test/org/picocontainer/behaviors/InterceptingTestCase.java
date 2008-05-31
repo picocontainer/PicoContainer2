@@ -21,6 +21,17 @@ public class InterceptingTestCase {
         String greeting();
         String parting(String who);
         void sleep(int howLong);
+        public static class nullobject implements Person {
+            public String greeting() {
+                return null;
+            }
+            public String parting(String who) {
+                return null;
+            }
+            public void sleep(int howLong) {
+            }
+        }
+
     }
 
     public static class Englishman implements Person {
@@ -55,28 +66,16 @@ public class InterceptingTestCase {
 
         Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepted.class);
         final Intercepted.Controller interceptor = intercepted.getController();
-        intercepted.addPostInvocation(Person.class, new Person() {
+        intercepted.addPostInvocation(Person.class, new Person.nullobject() {
             public String greeting() {
                 sb.append("</english-greeting>");
                 return null;
             }
-            public String parting(String a) {
-                return null;
-            }
-
-            public void sleep(int howLong) {
-            }
         });
-        intercepted.addPreInvocation(Person.class, new Person() {
+        intercepted.addPreInvocation(Person.class, new Person.nullobject() {
             public String greeting() {
                 sb.append("<english-greeting>");
                 return null;
-            }
-            public String parting(String who) {
-                return null;
-            }
-
-            public void sleep(int howLong) {
             }
         });
 
@@ -96,27 +95,17 @@ public class InterceptingTestCase {
 
         Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepted.class);
         final Intercepted.Controller interceptor = intercepted.getController();
-        intercepted.addPostInvocation(Person.class, new Person() {
-            public String greeting() {
-                return null;
-            }
+        intercepted.addPostInvocation(Person.class, new Person.nullobject() {
             public String parting(String a) {
                 assertEquals("Goodbye Fred.", interceptor.getOriginalRetVal().toString());
                 sb.append("</english-parting>");
                 return null;
             }
-            public void sleep(int howLong) {
-            }
         });
-        intercepted.addPreInvocation(Person.class, new Person() {
-            public String greeting() {
-                return null;
-            }
+        intercepted.addPreInvocation(Person.class, new Person.nullobject() {
             public String parting(String who) {
                 sb.append("<english-parting who='"+who+"'>");
                 return null;
-            }
-            public void sleep(int howLong) {
             }
         });
 
@@ -135,15 +124,10 @@ public class InterceptingTestCase {
 
         Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepted.class);
         final Intercepted.Controller interceptor = intercepted.getController();
-        intercepted.addPreInvocation(Person.class, new Person() {
-            public String greeting() {
-                return null;
-            }
+        intercepted.addPreInvocation(Person.class, new Person.nullobject() {
             public String parting(String who) {
                 interceptor.veto();
                 return "Au revoir " + who + ".";
-            }
-            public void sleep(int howLong) {
             }
         });
 
@@ -161,15 +145,10 @@ public class InterceptingTestCase {
         pico.addComponent(StringBuilder.class, sb);
         Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepted.class);
         final Intercepted.Controller interceptor = intercepted.getController();
-        intercepted.addPreInvocation(Person.class, new Person() {
-            public String greeting() {
-                return null;
-            }
+        intercepted.addPreInvocation(Person.class, new Person.nullobject() {
             public String parting(String who) {
                 sb.append("[Before parting]");
                 return null;
-            }
-            public void sleep(int howLong) {
             }
         });
         intercepted.addPostInvocation(Person.class, new Person() {
