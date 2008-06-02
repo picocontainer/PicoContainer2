@@ -7,6 +7,8 @@
  *****************************************************************************/
 package org.picocontainer.persistence.jdbc;
 
+import org.picocontainer.persistence.ExceptionHandler;
+
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -15,17 +17,7 @@ import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Savepoint;
 import java.sql.Statement;
-import java.sql.Struct;
-import java.sql.SQLClientInfoException;
-import java.sql.Clob;
-import java.sql.SQLXML;
-import java.sql.NClob;
-import java.sql.Blob;
-import java.sql.Array;
 import java.util.Map;
-import java.util.Properties;
-
-import org.picocontainer.persistence.ExceptionHandler;
 
 /**
  * Base class for Connection components. It delegates all calls to the connection obtained by getDelegatedConnection
