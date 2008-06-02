@@ -7,10 +7,13 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
-import org.picocontainer.*;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Disposable;
+import org.picocontainer.PicoLifecycleException;
+import org.picocontainer.Startable;
 
 /**
  * Startable lifecycle strategy.  Starts and stops component if Startable,

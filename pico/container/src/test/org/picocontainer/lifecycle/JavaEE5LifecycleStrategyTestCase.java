@@ -7,27 +7,19 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
-import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+import static org.junit.Assert.assertEquals;
 
-import java.io.Serializable;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
-import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JMock;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import org.junit.runner.RunWith;
-import org.picocontainer.*;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
-import static org.picocontainer.Characteristics.CACHE;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
-
-import javax.annotation.PreDestroy;
-import javax.annotation.PostConstruct;
 
 /**
  *

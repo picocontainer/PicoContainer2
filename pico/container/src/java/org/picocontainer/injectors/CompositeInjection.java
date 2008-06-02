@@ -8,11 +8,17 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.*;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
-
-import java.io.Serializable;
 import java.util.Properties;
+
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.InjectionFactory;
+import org.picocontainer.Injector;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 /**
  * A Composite of other types on InjectionFactories - pass them into the varargs constructor.

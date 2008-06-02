@@ -15,16 +15,22 @@ import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import org.hamcrest.Description;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
-import org.jmock.api.Invocation;
 import org.jmock.api.Action;
+import org.jmock.api.Invocation;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picocontainer.*;
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.DefaultPicoContainerTestCase;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.Startable;
 import org.picocontainer.injectors.AbstractInjector;
-import org.hamcrest.Description;
 
 @RunWith(JMock.class)
 public class Issue0265TestCase {

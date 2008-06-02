@@ -9,25 +9,14 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.picocontainer.Characteristics.CDI;
 import static org.picocontainer.Characteristics.SDI;
-import org.picocontainer.injectors.FactoryInjector;
-import org.picocontainer.annotations.Inject;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.behaviors.Decorating;
-import org.picocontainer.behaviors.FieldDecorating;
-import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.injectors.*;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.monitors.WriterComponentMonitor;
-import org.picocontainer.tck.AbstractPicoContainerTest;
-import org.picocontainer.testmodel.DecoratedTouchable;
-import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
 
 import java.io.Serializable;
 import java.io.StringWriter;
@@ -42,6 +31,26 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import org.junit.Test;
+import org.picocontainer.annotations.Inject;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.behaviors.Decorating;
+import org.picocontainer.behaviors.FieldDecorating;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.injectors.FactoryInjector;
+import org.picocontainer.injectors.MultiInjection;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.monitors.WriterComponentMonitor;
+import org.picocontainer.tck.AbstractPicoContainerTest;
+import org.picocontainer.testmodel.DecoratedTouchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 
 /**
  * @author Aslak Helles&oslashp;y

@@ -7,6 +7,10 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.Characteristics.CACHE;
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import java.io.Serializable;
@@ -16,12 +20,11 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import org.junit.runner.RunWith;
-import org.picocontainer.*;
-import static org.picocontainer.Characteristics.CACHE;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Disposable;
+import org.picocontainer.PicoLifecycleException;
+import org.picocontainer.Startable;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 

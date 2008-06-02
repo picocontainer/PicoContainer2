@@ -9,21 +9,6 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import org.picocontainer.injectors.FactoryInjector;
-import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
-import org.picocontainer.behaviors.AdaptingBehavior;
-import org.picocontainer.behaviors.Cached;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.behaviors.HiddenImplementation;
-import org.picocontainer.containers.*;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.AdaptingInjection;
-import org.picocontainer.lifecycle.LifecycleState;
-import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.picocontainer.lifecycle.DefaultLifecycleState;
-import org.picocontainer.monitors.NullComponentMonitor;
-
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
@@ -38,6 +23,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+
+import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.behaviors.AbstractBehaviorFactory;
+import org.picocontainer.behaviors.AdaptingBehavior;
+import org.picocontainer.behaviors.Cached;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.behaviors.HiddenImplementation;
+import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
+import org.picocontainer.containers.AbstractDelegatingPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.containers.ImmutablePicoContainer;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.AdaptingInjection;
+import org.picocontainer.injectors.FactoryInjector;
+import org.picocontainer.lifecycle.DefaultLifecycleState;
+import org.picocontainer.lifecycle.LifecycleState;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 /**
  * <p/>

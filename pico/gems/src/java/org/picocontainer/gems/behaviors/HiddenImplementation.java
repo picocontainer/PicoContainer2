@@ -9,20 +9,20 @@
  *****************************************************************************/
 package org.picocontainer.gems.behaviors;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.AbstractBehavior;
-import org.picocontainer.behaviors.Cached;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
-
-import java.lang.reflect.*;
-import java.util.Set;
-import java.util.HashSet;
-
-import org.objectweb.asm.*;
+import org.objectweb.asm.Opcodes;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.behaviors.Cached;
 
 
 /**

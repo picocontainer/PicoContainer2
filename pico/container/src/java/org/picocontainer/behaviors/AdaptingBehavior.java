@@ -9,14 +9,23 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import org.picocontainer.BehaviorFactory;
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.annotations.Cache;
 import org.picocontainer.injectors.AdaptingInjection;
-
-import java.io.Serializable;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Properties;
 
 public class AdaptingBehavior implements BehaviorFactory, Serializable {
     private static final long serialVersionUID = -8816083046196376743L;

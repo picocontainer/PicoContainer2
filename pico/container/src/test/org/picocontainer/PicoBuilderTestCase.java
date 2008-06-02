@@ -15,7 +15,6 @@ import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implementationHiding;
 import static org.picocontainer.behaviors.Behaviors.synchronizing;
 import static org.picocontainer.injectors.Injectors.SDI;
-import org.picocontainer.injectors.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,11 +23,20 @@ import java.util.Properties;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.picocontainer.behaviors.*;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.behaviors.ImplementationHiding;
+import org.picocontainer.behaviors.Locking;
+import org.picocontainer.behaviors.PropertyApplying;
+import org.picocontainer.behaviors.Synchronizing;
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.injectors.AdaptingInjection;
+import org.picocontainer.injectors.AnnotatedFieldInjection;
+import org.picocontainer.injectors.AnnotatedMethodInjection;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 

@@ -7,13 +7,17 @@
  *****************************************************************************/
 package org.picocontainer.visitors;
 
-import org.picocontainer.*;
-import org.picocontainer.visitors.TraversalCheckingVisitor;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVerificationException;
+import org.picocontainer.PicoVisitor;
 
 
 /**

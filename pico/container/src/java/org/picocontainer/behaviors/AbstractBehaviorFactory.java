@@ -7,12 +7,20 @@
  ******************************************************************************/
 package org.picocontainer.behaviors;
 
-import org.picocontainer.*;
-import org.picocontainer.injectors.AdaptingInjection;
-
 import java.io.Serializable;
-import java.util.Properties;
 import java.util.Enumeration;
+import java.util.Properties;
+
+import org.picocontainer.BehaviorFactory;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.injectors.AdaptingInjection;
 
 public class AbstractBehaviorFactory implements ComponentFactory, Serializable, BehaviorFactory {
 

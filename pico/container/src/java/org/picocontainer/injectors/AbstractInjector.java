@@ -19,7 +19,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.picocontainer.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Injector;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.ObjectReference;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.parameters.ComponentParameter;
 

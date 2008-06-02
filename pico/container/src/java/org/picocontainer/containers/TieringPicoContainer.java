@@ -1,8 +1,19 @@
 package org.picocontainer.containers;
 
-import org.picocontainer.*;
-
 import java.lang.annotation.Annotation;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.NameBinding;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.behaviors.AdaptingBehavior;
+import org.picocontainer.behaviors.Cached;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.injectors.AdaptingInjection;
 
 public class TieringPicoContainer extends DefaultPicoContainer {
     private static final long serialVersionUID = -5151515447097626792L;

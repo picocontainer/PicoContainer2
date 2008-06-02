@@ -10,11 +10,15 @@
 
 package org.picocontainer.injectors;
 
-import java.io.Serializable;
 import java.lang.reflect.AccessibleObject;
 import java.util.Properties;
 
-import org.picocontainer.*;
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
