@@ -1,0 +1,142 @@
+Index: src/java/org/picocontainer/persistence/jdbc/AbstractConnection.java
+===================================================================
+--- src/java/org/picocontainer/persistence/jdbc/AbstractConnection.java	(revision 4563)
++++ src/java/org/picocontainer/persistence/jdbc/AbstractConnection.java	(working copy)
+@@ -471,137 +471,4 @@
+ 		}
+ 	}
+ 
+-    // Java 6 methods ....
+-
+-    public Struct createStruct(String sql, Object[] objects) throws SQLException {
+-        try {
+-            return getDelegatedConnection().createStruct(sql, objects);
+-        } catch (Exception e) {
+-            throw handleSQLException(e);
+-        }
+-    }
+-
+-    public Array createArrayOf(String sql, Object[] objects) throws SQLException {
+-        try {
+-            return getDelegatedConnection().createArrayOf(sql, objects);
+-        } catch (Exception e) {
+-            throw handleSQLException(e);
+-        }
+-    }
+-
+-    public void setClientInfo(String sql, String s1) throws SQLClientInfoException {
+-        try {
+-            getDelegatedConnection().setClientInfo(sql, s1);
+-        } catch (Exception e) {
+-            throw handleSQLClientInfoException(e);
+-        }
+-
+-    }
+-
+-    public void setClientInfo(Properties properties) throws SQLClientInfoException {
+-        try {
+-            getDelegatedConnection().setClientInfo(properties);
+-        } catch (Exception e) {
+-            throw handleSQLClientInfoException(e);
+-        }
+-    }
+-
+-    public String getClientInfo(String sql) throws SQLException {
+-        try {
+-            return getDelegatedConnection().getClientInfo(sql);
+-        } catch (Exception e) {
+-            throw handleSQLException(e);
+-        }
+-    }
+-
+-    public Properties getClientInfo() throws SQLException {
+-        try {
+-            return getDelegatedConnection().getClientInfo();
+-        } catch (Exception e) {
+-            throw handleSQLException(e);
+-        }
+-    }
+-
+-    public Clob createClob() throws SQLException {
+-        try {
+-            return getDelegatedConnection().createClob();
+-        } catch (Exception e) {
+-            throw handleSQLException(e);
+-        }
+-    }
+-
+-    public Blob createBlob() throws SQLException {
+-        try {
+-            return getDelegatedConnection().createBlob();
+-        } catch (Exception e) {
+-            throw handleSQLException(e);
+-        }
+-    }
+-
+-    public NClob createNClob() throws SQLException {
+-        try {
+-            return getDelegatedConnection().createNClob();
+-        } catch (Exception e) {
+-            throw handleSQLException(e);
+-        }
+-    }
+-
+-    public SQLXML createSQLXML() throws SQLException {
+-        try {
+-            return getDelegatedConnection().createSQLXML();
+-        } catch (Exception e) {
+-            throw handleSQLException(e);
+-        }
+-    }
+-
+-    public boolean isValid(int i) throws SQLException {
+-        try {
+-            return getDelegatedConnection().isValid(i);
+-        } catch (Exception e) {
+-            throw handleSQLException(e);
+-        }
+-    }
+-
+-    public <T> T unwrap(Class<T> tClass) throws SQLException {
+-        try {
+-            return getDelegatedConnection().unwrap(tClass);
+-        } catch (Exception e) {
+-            throw handleSQLException(e);
+-        }
+-    }
+-
+-    public boolean isWrapperFor(Class<?> aClass) throws SQLException {
+-        try {
+-            return getDelegatedConnection().isWrapperFor(aClass);
+-        } catch (Exception e) {
+-            throw handleSQLException(e);
+-        }
+-    }
+-
+-     /**
+-     * Invalidates the connection calling {@link #invalidateDelegatedConnection()} and convert the <code>cause</code>
+-     * using a {@link ExceptionHandler}. if it's available otherwise just return the <code>cause</code> back.
+-     * @throws RuntimeException
+-     * @param cause
+-     * @return
+-     */
+-    protected SQLClientInfoException handleSQLClientInfoException(Exception cause) throws RuntimeException {
+-        try {
+-            invalidateDelegatedConnection();
+-        } catch (Exception e) {
+-            // Do nothing, only the original exception should be reported.
+-        }
+-
+-        if (jdbcExceptionHandler == null) {
+-            if (cause instanceof SQLException) {
+-                return (SQLClientInfoException) cause;
+-            }
+-
+-            throw (RuntimeException) cause;
+-        }
+-
+-        throw jdbcExceptionHandler.handle(cause);
+-    }
+-
+-
+ }
