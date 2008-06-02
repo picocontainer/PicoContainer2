@@ -13,7 +13,7 @@ package org.picocontainer.script;
  * 
  * @author Paul Hammant
  */
-public class ClassName {
+public class ClassName implements CharSequence {
     final String className;
 
     public ClassName(String className) {
@@ -22,5 +22,29 @@ public class ClassName {
 
     public String getClassName() {
         return className;
+    }
+
+    public int length() {
+        return className.length();
+    }
+
+    public char charAt(int ix) {
+        return className.charAt(ix);
+    }
+
+    public CharSequence subSequence(int from, int to) {
+        return className.subSequence(from, to);
+    }
+
+    public String toString() {
+        return className.toString();
+    }
+
+    public int hashCode() {
+        return className.hashCode();
+    }
+
+    public boolean equals(Object o) {
+        return className.equals(o);
     }
 }
