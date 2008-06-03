@@ -37,7 +37,6 @@ public class PicoGemsBuilderTestCase {
     @Before
     public void setUp() throws Exception {
         xs = new XStream();
-        xs.alias("PICO", DefaultPicoContainer.class);
         xs.setMode(XStream.XPATH_ABSOLUTE_REFERENCES);
     }
 
