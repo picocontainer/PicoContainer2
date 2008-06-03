@@ -54,23 +54,6 @@ public class PicoBuilderTestCase {
     @Before
     public void setUp() throws Exception {
         xs = new XStream();
-        xs.alias("PICO", DefaultPicoContainer.class);
-        xs.registerConverter(new Converter() {
-            public boolean canConvert(Class aClass) {
-                return aClass.getName().equals("org.picocontainer.DefaultPicoContainer$1") ||
-                       aClass.getName().equals("org.picocontainer.Properties") ||
-                       aClass == Boolean.class ||
-                       aClass == HashSet.class ||
-                       aClass == ArrayList.class;
-            }
-
-            public void marshal(Object o, HierarchicalStreamWriter hierarchicalStreamWriter, MarshallingContext marshallingContext) {
-            }
-
-            public Object unmarshal(HierarchicalStreamReader hierarchicalStreamReader, UnmarshallingContext unmarshallingContext) {
-                return null;
-            }
-        });
         xs.setMode(XStream.XPATH_ABSOLUTE_REFERENCES);
     }
 
