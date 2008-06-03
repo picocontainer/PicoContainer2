@@ -145,7 +145,7 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
     public final Object getComponent(Object componentKeyOrType) throws PicoException {
 
         if (componentKeyOrType instanceof ClassName) {
-            componentKeyOrType = loadClass(((ClassName) componentKeyOrType).className);
+            componentKeyOrType = loadClass(componentKeyOrType.toString());
         }
 
         Object instance = getDelegate().getComponent(componentKeyOrType);
@@ -238,8 +238,7 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
 
     public MutablePicoContainer addComponent(Object implOrInstance) {
         if (implOrInstance instanceof ClassName) {
-            String className = ((ClassName) implOrInstance).className;
-            super.addComponent(loadClass(className));
+            super.addComponent(loadClass(implOrInstance.toString()));
         } else {
             super.addComponent(implOrInstance);
         }
@@ -255,7 +254,7 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
 
     private Object classNameToClassIfApplicable(Object key) {
         if (key instanceof ClassName) {
-            key = loadClass(((ClassName) key).getClassName());
+            key = loadClass(key.toString());
         }
         return key;
     }
@@ -326,7 +325,7 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
     public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
         Object componentKey2 = componentKey;
         if (componentKey instanceof ClassName) {
-            componentKey2 = loadClass(((ClassName) componentKey).className);
+            componentKey2 = loadClass(componentKey.toString());
         }
         return super.getComponentAdapter(componentKey2);
     }

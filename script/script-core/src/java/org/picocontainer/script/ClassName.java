@@ -14,14 +14,10 @@ package org.picocontainer.script;
  * @author Paul Hammant
  */
 public class ClassName implements CharSequence {
-    final String className;
+    private final String className;
 
     public ClassName(String className) {
         this.className = className;
-    }
-
-    public String getClassName() {
-        return className;
     }
 
     public int length() {
