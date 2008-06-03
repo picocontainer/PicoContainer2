@@ -49,7 +49,10 @@
 		<page>TieringPicoContainer.html</page>
     </section>
     <section>
-         <name>Making Larger Applications</name>
+         <name>Scripting PicoContainer</name>
+    </section>
+    <section>
+         <name>Web Applications</name>
          <page>web-frameworks.html</page>
     </section>
     <section>
