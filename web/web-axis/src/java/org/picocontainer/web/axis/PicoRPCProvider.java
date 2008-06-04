@@ -7,42 +7,27 @@
  ******************************************************************************/
 package org.picocontainer.web.axis;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.axis.MessageContext;
 import org.apache.axis.providers.java.RPCProvider;
-import org.apache.axis.transport.http.HTTPConstants;
 import org.apache.axis.utils.cache.ClassCache;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.web.PicoServletContainerFilter;
 
 /**
- * Axis provider for RPC-style services that uses the servlet container
- * hierarchy to instantiate service classes and resolve their dependencies.
+ * Axis provider for RPC-style services that uses the PicoServletContainerFilter
+ * to instantiate service classes and resolve their dependencies.
  * 
  * @author <a href="mailto:evan@bottch.com">Evan Bottcher</a>
  */
-public class NanoRPCProvider extends RPCProvider {
+@SuppressWarnings("serial")
+public class PicoRPCProvider extends RPCProvider {
 
     protected Object makeNewServiceObject(MessageContext msgContext, String clsName) throws Exception {
 
         ClassLoader cl = msgContext.getClassLoader();
         ClassCache cache = msgContext.getAxisEngine().getClassCache();
-        Class svcClass = cache.lookup(clsName, cl).getJavaClass();
+        Class<?> svcClass = cache.lookup(clsName, cl).getJavaClass();
 
-        return instantiateService(svcClass, msgContext);
-
-    }
-
-    private Object instantiateService(Class svcClass, MessageContext msgContext) {
-
-        HttpServletRequest request = (HttpServletRequest) msgContext.getProperty(HTTPConstants.MC_HTTP_SERVLETREQUEST);
-        MutablePicoContainer requestContainer = PicoServletContainerFilter.getRequestContainerForThread();
-
-        MutablePicoContainer container = new DefaultPicoContainer(requestContainer);
-        container.addComponent(svcClass);
-        return container.getComponent(svcClass);
+        return PicoServletContainerFilter.getRequestComponentForThread(svcClass);
     }
 
 }

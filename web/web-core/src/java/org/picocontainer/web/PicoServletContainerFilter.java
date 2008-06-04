@@ -13,6 +13,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Storing;
 
@@ -31,6 +32,13 @@ public class PicoServletContainerFilter implements Filter, Serializable {
         return currentRequestContainer.get();
     }
 
+    public static Object getRequestComponentForThread(Class<?> type) {
+        MutablePicoContainer requestContainer = getRequestContainerForThread();
+        MutablePicoContainer container = new DefaultPicoContainer(requestContainer);
+        container.addComponent(type);
+        return container.getComponent(type);
+    }
+    
     private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
 
     public static MutablePicoContainer getSessionContainerForThread() {
