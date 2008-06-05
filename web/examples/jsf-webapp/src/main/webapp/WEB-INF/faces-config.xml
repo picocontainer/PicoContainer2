@@ -6,7 +6,7 @@
 <faces-config>
 	<application>
 		<variable-resolver>
-			org.picocontainer.web.jsf.NanoWarDelegatingVariableResolver
+			org.picocontainer.web.jsf.PicoDelegatingVariableResolver
 		</variable-resolver>
 	</application>
 	<managed-bean>
