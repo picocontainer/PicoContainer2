@@ -1,11 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html><head>
+<html>
+<head>
 <title>WebWork2</title>
 </head>
 <body>
-<p>To configure PicoContainer to handle the dependency injection of WebWork2, refer to the fragment of web.xml below.  For a start there is a slightly different listener to the one defined in the <a href="index.html">main page</a>.  Also, instead of using WebWork2's servlet, use ours.  Everything else from the standard WebWork2 setup is appropriate.</p>	
-<div class="source">
-<pre><listener>
+<p>To configure PicoContainer to handle the dependency injection of
+WebWork2, refer to the fragment of web.xml below. For a start there is a
+slightly different listener to the one defined in the <a
+	href="index.html">main page</a>. Also, instead of using WebWork2's
+servlet, use ours. Everything else from the standard WebWork2 setup is
+appropriate.</p>
+<div class="source"><pre><listener>
   <listener-class>org.picocontainer.web.webwork2.WebWork2PicoServletContainerListener</listener-class>
 </listener>
 
@@ -19,7 +24,6 @@
   <url-pattern>*.action</url-pattern>
 </servlet-mapping>
 
-</pre>
-</div>
+</pre></div>
 </body>
 </html>

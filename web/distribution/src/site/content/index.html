@@ -1,43 +1,50 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-<title>Web Applications with PicoContainer</title>
+<title>Pico Web Applications</title>
 </head>
 
 <body>
-<p>This page follows on from the PicoContainer <a href="http://picocontainer.org/scopes.html">scopes</a> page</p>
-<h2>Web Containers / Web Frameworks</h2>
-<p>There are only about a million Java web-frameworks for Java. There
-more recent and sophisticated ones try to do Dependency Injection for
-'actions' or 'controllers'. </p>
-<p>If you want to use PicoContainer for a web framework, then you're
-likely to end up with three container levels. The root container would
-be common to all and known as the <strong>application scoped</strong> container. Next is a <strong>session-scoped</strong> one, with the app one marked as its parent. Lastly a <strong>request scoped</strong>
-one, with the session one marked as its parent. There are two
-not-so-subtle variations on how they would be used. One, we pioneered
-with PicoContainer 1.x in 2003, the other introduced with PicoContainer
-2.x in 2007.</p>
-<h3>PicoContainer and web frameworks - the old way.</h3>
-<p>You make one instance of the app container. For each new HTTP
-Session you make a new session level container, and put it into the
-session itself - refer HttpSession.setAttribute(key,val). For each
-request, you make a new Request level container and discard it at the
-end of the request. For as long as it lives, the request level
-container's parent would be the session container.</p>
-<p>There are two downsides of this approach. 1) you have to repeatedly
-add components to the session and request containers as they are
-instantiated. 2) the serialization of the session (by Tomcat etc) might
-cause more things to be serialized than you intend - i.e. the session
-container refers to the application container.</p>
-<h3>PicoContainer and web frameworks - the new way.</h3>
-<p>We make one instance of the app, session and request containers as
-the web app loads. For the Application one, Caching is set.
-For the session and request level ones, we store instantiated components 
-for those scopes in ThreadLocal. For the session container, the same components 
-are stored in the HttpSession as an attribute).</p>
+<p>This page follows on from the PicoContainer <a
+	href="http://picocontainer.org/scopes.html">scopes</a> page</p>
+<h2>Web Containers and Web Frameworks</h2>
+<p>There are only about a million Java web-frameworks for Java.
+There more recent and sophisticated ones try to do Dependency Injection
+for 'actions' or 'controllers'.</p>
+<p>The most logical and commonly adopted paradigm when using
+Dependency Injection in a web framework is to define three container,
+one for each webapp scope:
+<ul>
+	<li><strong>application-scoped</strong> container: the root
+	container created when the context is initialised</li>
+	<li><strong>session-scoped</strong> container: the session
+	container, created when the session is initialised, and having the
+	application container as its parent</li>
+	<li><strong>request-scoped</strong> container: the request
+	container, created upon each request, and having the session one as its
+	parent.
+	</p>
+	</li>
+</ul>
+The
+<code>WebappComposer</code>
+interface allows the user to define which components are registered at
+each scope. These can either be defined programmatically, ie in Java, or
+read from scripts using the
+<code>ScriptedWebappComposer</code>
+.
+</p>
+<p>The <code>PicoServletContainerListener</code> is the servlet
+listener that manages te instantiation, assembly and disposal of the the
+appropriate PicoContainers when applications/sessions start/stop. It
+actually creates a single instance of the scoped containers as the web
+app loads. For the application one, caching is set. For the session and
+request level ones, we store instantiated components for those scopes in
+ThreadLocal. For the session container, the same components are stored
+in the HttpSession as an attribute.</p>
 <p>Here is a view of web.xml</p>
-<div class="source">
-  <pre><!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<div class="source"><pre>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd" >
 <web-app>
 
   <context-param>
@@ -60,8 +67,9 @@ are stored in the HttpSession as an attribute).</p>
   </listener>
 
 </web-app>
-</pre>
-</div>
-<p>The above is not complete.  It is just the core of PicoContainer web enablement. Refer to the left-nav for bindings to existing web-frameworks like Struts2 etc</p>
+</pre></div>
+<p>The above is not complete. It is just the core of PicoContainer
+web enablement. Refer to the left-nav for bindings to supported web
+frameworks.</p>
 </body>
 </html>
