@@ -3,5 +3,23 @@
 <title>WebWork1</title>
 </head>
 <body>
+	<p>To configure PicoContainer to handle the dependency injection of WebWork1, refer to the fragment of web.xml below.  For a start there is a slightly different listener to the one defined in the <a href="index.html">main page</a>.  Also, instead of using WebWork1's servlet, use ours.  Everything else from the standard WebWork1 setup is appropriate.</p>	
+	<div class="source">
+	<pre><listener>
+	  <listener-class>org.picocontainer.web.webwork.WebWorkPicoServletContainerListener</listener-class>
+	</listener>
+
+	<servlet>
+	  <servlet-name>WebWork</servlet-name>
+	  <servlet-class>webwork.dispatcher.ServletDispatcher</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+	  <servlet-name>WebWork</servlet-name>
+	  <url-pattern>*.action</url-pattern>
+	</servlet-mapping>
+
+	</pre>
+	</div>
 </body>
 </html>
