@@ -17,7 +17,7 @@
             type="org.picocontainer.web.sample.struts.CheeseAction"
             name="cheeseForm"
             scope="request">
-      <forward name="next" path="/index.jsp"/>
+      <forward name="next" path="/cheese.jsp"/>
     </action>
   </action-mappings>
 
