@@ -49,11 +49,9 @@
 		<page>TieringPicoContainer.html</page>
     </section>
     <section>
-         <name>Scripting PicoContainer</name>
-    </section>
-    <section>
-         <name>Web Applications</name>
-         <page>web-frameworks.html</page>
+         <name>Dependant Technologies</name>
+         <link title="Web Frameworks">http://picocontainer.org/web</link>
+         <link title="Scripting Support">http://picocontainer.org/script</link>
     </section>
     <section>
          <name>Anti-patterns</name>
