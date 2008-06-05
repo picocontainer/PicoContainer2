@@ -42,9 +42,8 @@ app loads. For the application one, caching is set. For the session and
 request level ones, we store instantiated components for those scopes in
 ThreadLocal. For the session container, the same components are stored
 in the HttpSession as an attribute.</p>
-<p>Here is a view of web.xml</p>
+<p>Here is a view of web.xml:</p>
 <div class="source"><pre>
-<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd" >
 <web-app>
 
   <context-param>
@@ -68,8 +67,7 @@ in the HttpSession as an attribute.</p>
 
 </web-app>
 </pre></div>
-<p>The above is not complete. It is just the core of PicoContainer
-web enablement. Refer to the left-nav for bindings to supported web
-frameworks.</p>
+<p>The above web.xml may not be sufficient for all web frameworks.
+Refer to the menu for details of each supported web framework.</p>
 </body>
 </html>
