@@ -2,6 +2,8 @@
   <section>
     <name>About</name>
     <page>index.html</page>
+    <page>composition.html</page> 
+    <page>script-composition.html</page> 
     <page>javadoc.html</page>
     <page>downloads.html</page>
   </section>
