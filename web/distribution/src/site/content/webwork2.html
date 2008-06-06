@@ -5,7 +5,7 @@
 </head>
 <body>
 <p>To configure PicoContainer to handle the dependency injection of
-WebWork2, refer to the fragment of web.xml below. For a start there is a
+WebWork2 actions, refer to the fragment of web.xml below. For a start there is a
 slightly different listener to the one defined in the <a
 	href="index.html">main page</a>. Also, instead of using WebWork2's
 servlet, use ours. Everything else from the standard WebWork2 setup is
@@ -24,6 +24,19 @@ appropriate.</p>
   <url-pattern>*.action</url-pattern>
 </servlet-mapping>
 
+</pre></div>
+<p>The Maven example project is <a
+	href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/webwork2-webapp/">here</a>.
+Make sure you make and configure your own <a
+	href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/web-example/src/java/org/picocontainer/web/sample/ExampleWebappComposer.java">WebappComposer</a></p>
+<p>Use the following Maven2 POM fragment for the dependencies
+picocontainer-web-webwork jar (and transitive dependencies)</p>
+<div class="source"><pre>	
+	<dependency>
+      <groupId>org.picocontainer.web</groupId>
+      <artifactId>picocontainer-web-webwork2</artifactId>
+      <version>[version]</version>
+    </dependency>
 </pre></div>
 </body>
 </html>
