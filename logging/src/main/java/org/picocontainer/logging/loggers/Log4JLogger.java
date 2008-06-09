@@ -7,7 +7,12 @@
  */
 package org.picocontainer.logging.loggers;
 
-import org.apache.log4j.Level;
+import static org.apache.log4j.Level.DEBUG;
+import static org.apache.log4j.Level.ERROR;
+import static org.apache.log4j.Level.FATAL;
+import static org.apache.log4j.Level.INFO;
+import static org.apache.log4j.Level.WARN;
+
 import org.picocontainer.logging.Logger;
 
 /**
@@ -51,7 +56,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      */
     public void trace(final Object message) {
-        this.logger.log(FQCN, Level.DEBUG, message, null);
+        this.logger.log(FQCN, DEBUG, message, null);
     }
 
     /**
@@ -61,7 +66,7 @@ public class Log4JLogger implements Logger {
      * @param throwable the throwable
      */
     public void trace(final Object message, final Throwable throwable) {
-        this.logger.log(FQCN, Level.DEBUG, message, throwable);
+        this.logger.log(FQCN, DEBUG, message, throwable);
     }
 
     /**
@@ -79,7 +84,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      */
     public void debug(final Object message) {
-        this.logger.log(FQCN, Level.DEBUG, message, null);
+        this.logger.log(FQCN, DEBUG, message, null);
     }
 
     /**
@@ -89,7 +94,7 @@ public class Log4JLogger implements Logger {
      * @param throwable the throwable
      */
     public void debug(final Object message, final Throwable throwable) {
-        this.logger.log(FQCN, Level.DEBUG, message, throwable);
+        this.logger.log(FQCN, DEBUG, message, throwable);
     }
 
     /**
@@ -107,7 +112,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      */
     public void info(final Object message) {
-        this.logger.log(FQCN, Level.INFO, message, null);
+        this.logger.log(FQCN, INFO, message, null);
     }
 
     /**
@@ -117,7 +122,7 @@ public class Log4JLogger implements Logger {
      * @param throwable the throwable
      */
     public void info(final Object message, final Throwable throwable) {
-        this.logger.log(FQCN, Level.INFO, message, throwable);
+        this.logger.log(FQCN, INFO, message, throwable);
     }
 
     /**
@@ -135,7 +140,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      */
     public void warn(final Object message) {
-        this.logger.log(FQCN, Level.WARN, message, null);
+        this.logger.log(FQCN, WARN, message, null);
     }
 
     /**
@@ -145,7 +150,7 @@ public class Log4JLogger implements Logger {
      * @param throwable the throwable
      */
     public void warn(final Object message, final Throwable throwable) {
-        this.logger.log(FQCN, Level.WARN, message, throwable);
+        this.logger.log(FQCN, WARN, message, throwable);
     }
 
     /**
@@ -154,7 +159,7 @@ public class Log4JLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isWarnEnabled() {
-        return this.logger.isEnabledFor(Level.WARN);
+        return this.logger.isEnabledFor(WARN);
     }
 
     /**
@@ -163,7 +168,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      */
     public void error(final Object message) {
-        this.logger.log(FQCN, Level.ERROR, message, null);
+        this.logger.log(FQCN, ERROR, message, null);
     }
 
     /**
@@ -173,7 +178,7 @@ public class Log4JLogger implements Logger {
      * @param throwable the throwable
      */
     public void error(final Object message, final Throwable throwable) {
-        this.logger.log(FQCN, Level.ERROR, message, throwable);
+        this.logger.log(FQCN, ERROR, message, throwable);
     }
 
     /**
@@ -182,7 +187,7 @@ public class Log4JLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isErrorEnabled() {
-        return this.logger.isEnabledFor(Level.ERROR);
+        return this.logger.isEnabledFor(ERROR);
     }
 
     /**
@@ -191,7 +196,7 @@ public class Log4JLogger implements Logger {
      * @param message the message
      */
     public void fatal(final Object message) {
-        this.logger.log(FQCN, Level.FATAL, message, null);
+        this.logger.log(FQCN, FATAL, message, null);
     }
 
     /**
@@ -201,7 +206,7 @@ public class Log4JLogger implements Logger {
      * @param throwable the throwable
      */
     public void fatal(final Object message, final Throwable throwable) {
-        this.logger.log(FQCN, Level.FATAL, message, throwable);
+        this.logger.log(FQCN, FATAL, message, throwable);
     }
 
     /**
@@ -210,7 +215,7 @@ public class Log4JLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isFatalEnabled() {
-        return this.logger.isEnabledFor(Level.FATAL);
+        return this.logger.isEnabledFor(FATAL);
     }
 
     /**

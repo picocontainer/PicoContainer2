@@ -8,8 +8,11 @@
 package org.picocontainer.logging.loggers;
 
 import static java.lang.String.valueOf;
-
-import java.util.logging.Level;
+import static java.util.logging.Level.FINE;
+import static java.util.logging.Level.FINEST;
+import static java.util.logging.Level.INFO;
+import static java.util.logging.Level.SEVERE;
+import static java.util.logging.Level.WARNING;
 
 import org.picocontainer.logging.Logger;
 
@@ -49,7 +52,7 @@ public class JdkLogger implements Logger {
      * @param message the message
      */
     public void trace(final Object message) {
-        this.logger.log(Level.FINEST, valueOf(message));
+        this.logger.log(FINEST, valueOf(message));
     }
 
     /**
@@ -59,7 +62,7 @@ public class JdkLogger implements Logger {
      * @param throwable the throwable
      */
     public void trace(final Object message, final Throwable throwable) {
-        this.logger.log(Level.FINEST, valueOf(message), throwable);
+        this.logger.log(FINEST, valueOf(message), throwable);
     }
 
     /**
@@ -68,7 +71,7 @@ public class JdkLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isTraceEnabled() {
-        return this.logger.isLoggable(Level.FINEST);
+        return this.logger.isLoggable(FINEST);
     }
 
     /**
@@ -77,7 +80,7 @@ public class JdkLogger implements Logger {
      * @param message the message
      */
     public void debug(final Object message) {
-        this.logger.log(Level.FINE, valueOf(message));
+        this.logger.log(FINE, valueOf(message));
     }
 
     /**
@@ -87,7 +90,7 @@ public class JdkLogger implements Logger {
      * @param throwable the throwable
      */
     public void debug(final Object message, final Throwable throwable) {
-        this.logger.log(Level.FINE, valueOf(message), throwable);
+        this.logger.log(FINE, valueOf(message), throwable);
     }
 
     /**
@@ -96,7 +99,7 @@ public class JdkLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isDebugEnabled() {
-        return this.logger.isLoggable(Level.FINE);
+        return this.logger.isLoggable(FINE);
     }
 
     /**
@@ -105,7 +108,7 @@ public class JdkLogger implements Logger {
      * @param message the message
      */
     public void info(final Object message) {
-        this.logger.log(Level.INFO, valueOf(message));
+        this.logger.log(INFO, valueOf(message));
     }
 
     /**
@@ -115,7 +118,7 @@ public class JdkLogger implements Logger {
      * @param throwable the throwable
      */
     public void info(final Object message, final Throwable throwable) {
-        this.logger.log(Level.INFO, valueOf(message), throwable);
+        this.logger.log(INFO, valueOf(message), throwable);
     }
 
     /**
@@ -124,7 +127,7 @@ public class JdkLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isInfoEnabled() {
-        return this.logger.isLoggable(Level.INFO);
+        return this.logger.isLoggable(INFO);
     }
 
     /**
@@ -133,7 +136,7 @@ public class JdkLogger implements Logger {
      * @param message the message
      */
     public void warn(final Object message) {
-        this.logger.log(Level.WARNING, valueOf(message));
+        this.logger.log(WARNING, valueOf(message));
     }
 
     /**
@@ -143,7 +146,7 @@ public class JdkLogger implements Logger {
      * @param throwable the throwable
      */
     public void warn(final Object message, final Throwable throwable) {
-        this.logger.log(Level.WARNING, valueOf(message), throwable);
+        this.logger.log(WARNING, valueOf(message), throwable);
     }
 
     /**
@@ -152,7 +155,7 @@ public class JdkLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isWarnEnabled() {
-        return this.logger.isLoggable(Level.WARNING);
+        return this.logger.isLoggable(WARNING);
     }
 
     /**
@@ -161,7 +164,7 @@ public class JdkLogger implements Logger {
      * @param message the message
      */
     public void error(final Object message) {
-        this.logger.log(Level.SEVERE, valueOf(message));
+        this.logger.log(SEVERE, valueOf(message));
     }
 
     /**
@@ -171,7 +174,7 @@ public class JdkLogger implements Logger {
      * @param throwable the throwable
      */
     public void error(final Object message, final Throwable throwable) {
-        this.logger.log(Level.SEVERE, valueOf(message), throwable);
+        this.logger.log(SEVERE, valueOf(message), throwable);
     }
 
     /**
@@ -180,7 +183,7 @@ public class JdkLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isErrorEnabled() {
-        return this.logger.isLoggable(Level.SEVERE);
+        return this.logger.isLoggable(SEVERE);
     }
 
     /**
@@ -189,7 +192,7 @@ public class JdkLogger implements Logger {
      * @param message the message
      */
     public void fatal(final Object message) {
-        this.logger.log(Level.SEVERE, valueOf(message));
+        this.logger.log(SEVERE, valueOf(message));
     }
 
     /**
@@ -199,7 +202,7 @@ public class JdkLogger implements Logger {
      * @param throwable the throwable
      */
     public void fatal(final Object message, final Throwable throwable) {
-        this.logger.log(Level.SEVERE, valueOf(message), throwable);
+        this.logger.log(SEVERE, valueOf(message), throwable);
     }
 
     /**
@@ -208,7 +211,7 @@ public class JdkLogger implements Logger {
      * @return true if message will be logged
      */
     public boolean isFatalEnabled() {
-        return this.logger.isLoggable(Level.SEVERE);
+        return this.logger.isLoggable(SEVERE);
     }
 
     /**
