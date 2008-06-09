@@ -5,11 +5,8 @@ import org.picocontainer.logging.Logger;
 import org.picocontainer.logging.loggers.NullLogger;
 
 /**
- * Created by IntelliJ IDEA.
- * User: paul
- * Date: May 17, 2008
- * Time: 1:49:01 PM
- * To change this template use File | Settings | File Templates.
+ * 
+ * @author Paul Hammant
  */
 public class ContrastingEndUserExamplesTest {
 
