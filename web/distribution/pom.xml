@@ -166,7 +166,9 @@
               <goal>assembly</goal>
             </goals>
             <configuration>
-              <descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
+              <descriptors>
+                <descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
+              </descriptors>
               <finalName>picocontainer-web-${pom.version}</finalName>
               <workDirectory>target/assembly/bin</workDirectory>
             </configuration>
@@ -178,7 +180,9 @@
               <goal>assembly</goal>
             </goals>
             <configuration>
-              <descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
+              <descriptors>
+                <descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
+              </descriptors>
               <finalName>picocontainer-web-${pom.version}</finalName>
               <workDirectory>target/assembly/src</workDirectory>
             </configuration>
