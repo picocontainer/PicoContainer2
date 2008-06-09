@@ -205,8 +205,6 @@
           <configuration>
             <links>
               <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
-              <link>http://proxytoys.codehaus.org/apidocs/</link>
-              <link>http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/docs/apidocs/</link>
             </links>
             <stylesheet>maven</stylesheet>
             <header>
@@ -233,10 +231,6 @@
                 <value>${basedir}/../script-core/src/test-comp/TestComp.jar</value>
               </property>
             </systemProperties>
-            <excludes>
-              <exclude>**/Abstract*Test.java</exclude>
-              <exclude>**/Abstract*TestCase.java</exclude>
-            </excludes>
             <includes>
               <include>**/*Test.java</include>
               <include>**/*TestCase.java</include>
