@@ -14,6 +14,7 @@
     <dependency>
       <groupId>org.picocontainer.persistence</groupId>
       <artifactId>picocontainer-persistence-core</artifactId>
+      <version>${pom.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>

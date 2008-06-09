@@ -46,12 +46,7 @@
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer</artifactId>
-        <version>2.2</version>
-      </dependency>
-      <dependency>
-        <groupId>org.picocontainer.persistence</groupId>
-        <artifactId>picocontainer-persistence-core</artifactId>
-        <version>${pom.version}</version>
+        <version>2.3</version>
       </dependency>
       <dependency>
         <groupId>cglib</groupId>
@@ -133,11 +128,6 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>com.thoughtworks.paranamer</groupId>
-          <artifactId>paranamer-maven-plugin</artifactId>
-          <version>1.1.1</version>
-        </plugin>
-        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>2.0.2</version>
@@ -192,16 +182,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.3.1</version>
+          <version>2.4.3</version>
           <configuration>
             <junitArtifactName>junit:junit-dep</junitArtifactName>
             <fork>pertest</fork>
             <workingDirectory>${basedir}</workingDirectory>
             <systemProperties>
-              <property>
-                <name>test.src.dir</name>
-                <value>${basedir}/src/test</value>
-              </property>
               <property>
                 <name>java.awt.headless</name>
                 <value>true</value>
@@ -211,10 +197,6 @@
                 <value>${basedir}/../script-core/src/test-comp/TestComp.jar</value>
               </property>
             </systemProperties>
-            <excludes>
-              <exclude>**/Abstract*Test.java</exclude>
-              <exclude>**/Abstract*TestCase.java</exclude>
-            </excludes>
             <includes>
               <include>**/*Test.java</include>
               <include>**/*TestCase.java</include>
