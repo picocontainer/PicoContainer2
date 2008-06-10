@@ -348,10 +348,8 @@
               <reportSet>
                 <reports>
                   <report>dependencies</report>
-                  <report>project-team</report>
                   <report>license</report>
                   <report>mailing-list</report>
-                  <!--<report>scm</report>-->
                 </reports>
               </reportSet>
             </reportSets>

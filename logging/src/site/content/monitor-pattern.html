@@ -12,5 +12,52 @@ to avoid the logging framework references are sprinkled all over the code.  Inst
 abstract monitor allows not only to swiftly change from one logging framework to another - should the need arise - but also to easily provide
 for, say, localisation of the logged messages.
 </p>
+<p>Let's look at an example.  Let's assume that we are developing a persistence layer for some persistable object.  A simple monitor interface
+might look like:
+ <div class="source"><pre>
+public interface PersistenceMonitor {
+
+  void persistedObjectRetrieved(Object persistable);
+  
+  void retrievalFailed(String key, Exception cause);
+  
+}
+</pre></div>
+Note that the monitor interface purely expresses the business logic of the component, or at least the business logic that we want to
+monitor.   The logging implementation will be along the lines of:
+ <div class="source"><pre>
+public class LoggingPersistenceMonitor implements PersistenceMonitor {
+
+    private String loggerName;
+    private LoggerStore loggerStore;
+
+    /**
+     * Creates an LoggingPersistenceMonitor with logger name and configuration
+     * 
+     * @param loggerName the logical name of the logger instance
+     * @param configuration the LoggingMonitorConfiguration
+     */
+    protected LoggingPersistenceMonitor(String loggerName, LoggingMonitorConfiguration configuration){
+        this.loggerName = loggerName;
+        this.loggerStore = Configurator.createLoggerStore(configuration.getType(), resourceAsStream(configuration.getResource()));
+    }
+
+    private InputStream resourceAsStream(String resource) {
+        return Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
+    }
+    
+    public void persistedObjectRetrieved(Object persistable){
+        loggerStore.getLogger(loggerName).debug("Retrieved persisted object "+persistable);
+    }
+  
+    public retrievalFailed(String key, Exception cause){
+        loggerStore.getLogger(loggerName).warn("Retrieval for key "+key+" failed:  "+cause.getMessage(), cause);
+    }
+}
+</pre></div>
+The logging monitor configuration holds two properties:  one is the type of logging configuration resource supported by the 
+<a href="javadoc/org/picocontainer/logging/store/Configurator.html">Configurator</a> (eg "jdk"), the other is the name of the configuration resource,
+which can be different for each instance of the monitor (eg "logging-persistence.properties").
+</p>
 </body>
 </html>
