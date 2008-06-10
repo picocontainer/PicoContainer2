@@ -12,9 +12,8 @@
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
-      <groupId>org.picocontainer.persistence</groupId>
-      <artifactId>picocontainer-persistence-core</artifactId>
-      <version>${pom.version}</version>
+      <groupId>org.picocontainer</groupId>
+      <artifactId>picocontainer</artifactId>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
