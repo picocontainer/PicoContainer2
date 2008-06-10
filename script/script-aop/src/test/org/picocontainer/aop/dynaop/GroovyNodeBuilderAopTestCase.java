@@ -7,7 +7,7 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.picocontainer.script.groovy;
+package org.picocontainer.aop.dynaop;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

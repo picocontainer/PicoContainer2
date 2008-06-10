@@ -17,10 +17,6 @@ import java.util.Map;
  * such as
  * {@link org.picocontainer.script.groovy.GroovyNodeBuilder GroovyNodeBuilder}.
  * 
- * The
- * {@link org.picocontainer.aop.defaults.AopNodeBuilderDecorator AopNodeBuilderDecorator}
- * allows the scripting of aspects.
- * 
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */

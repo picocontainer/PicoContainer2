@@ -7,26 +7,27 @@
  *                                                                           *
  * Idea by Rachel Davies, Original code by various                           *
  *****************************************************************************/
-package org.picocontainer.script.groovy;
+package org.picocontainer.aop.dynaop;
 
-import org.picocontainer.aop.defaults.AopNodeBuilderDecorator;
-import org.picocontainer.aop.dynaop.DynaopAspectsManager;
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 
 /**
- * A {@link org.picocontainer.script.groovy.GroovyNodeBuilder GroovyNodeBuilder} that supports
- * scripting of aspects via dynaop.
- *
  * @author Stephen Molitor
  */
-public class DynaopGroovyNodeBuilder extends GroovyNodeBuilder {
+public class LoggingInterceptor implements MethodInterceptor {
 
-    /**
-     * Creates a new DynaopGroovyNodeBuilder that will use
-     * a {@link DynaopAspectsManager} to apply aspects.
-     */
-    public DynaopGroovyNodeBuilder() {
-        super(new AopNodeBuilderDecorator(new DynaopAspectsManager()), GroovyNodeBuilder.SKIP_ATTRIBUTE_VALIDATION);
+    private final StringBuffer log;
+
+    public LoggingInterceptor(StringBuffer log) {
+        this.log = log;
     }
 
+    public Object invoke(MethodInvocation invocation) throws Throwable {
+        log.append("start");
+        Object result = invocation.proceed();
+        log.append("end");
+        return result;
+    }
 
 }

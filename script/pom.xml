@@ -12,7 +12,6 @@
     <module>script-testmodel</module>
     <module>script-core</module>
     <module>script-tck</module>
-    <module>script-aop</module>
     <module>script-bsh</module>
     <module>script-groovy</module>
     <module>script-jruby</module>

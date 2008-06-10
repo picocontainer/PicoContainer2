@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved. 
- * --------------------------------------------------------------------------- 
+ * Copyright (C) PicoContainer Organization. All rights reserved.
+ * ---------------------------------------------------------------------------
  * The software in this package is published under the terms of the BSD style
  * license a copy of which has been included with this distribution in the
- * LICENSE.txt file. 
+ * LICENSE.txt file.
  ******************************************************************************/
 package org.picocontainer.script.groovy;
 
@@ -37,7 +37,8 @@ import org.picocontainer.script.groovy.nodes.NewBuilderNode;
 /**
  * Builds node trees of PicoContainers and Pico components using GroovyMarkup.
  * <p>
- * Simple example usage in your groovy script: 
+ * Simple example usage in your groovy script:
+ * 
  * <pre>
  * builder = new org.picocontainer.script.groovy.GroovyNodeBuilder()
  * pico = builder.container(parent:parent) {
@@ -45,13 +46,14 @@ import org.picocontainer.script.groovy.nodes.NewBuilderNode;
  *   component(class:org.picocontainer.script.testmodel.WebServerImpl)
  * }
  * </pre>
+ * 
  * </p>
  * <h4>Extending/Enhancing GroovyNodeBuilder</h4>
  * <p>
  * Often-times people need there own assembly commands that are needed for
- * extending/enhancing the node builder tree. The perfect example of this is
- * <tt>DynaopGroovyNodeBuilder</tt> which provides a new vocabulary for the
- * groovy node builder with terms such as 'aspect', 'pointcut', etc.
+ * extending/enhancing the node builder tree. For example, a typical extension
+ * may be to provide AOP vocabulary for the node builder with terms such as
+ * 'aspect', 'pointcut', etc.
  * </p>
  * <p>
  * GroovyNodeBuilder provides two primary ways of enhancing the nodes supported
@@ -277,8 +279,8 @@ public class GroovyNodeBuilder extends BuilderSupport {
      * Returns an appropriate node handler for a given node and
      * 
      * @param tagName String
-     * @return BuilderNode the appropriate node builder for the given tag
-     *         name, or null if no handler exists. (In which case, the Delegate
+     * @return BuilderNode the appropriate node builder for the given tag name,
+     *         or null if no handler exists. (In which case, the Delegate
      *         receives the createChildContainer() call)
      */
     public synchronized BuilderNode getNode(final String tagName) {
