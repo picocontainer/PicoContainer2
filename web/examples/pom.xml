@@ -14,7 +14,6 @@
   <modules>
     <module>web-example</module>
     <module>jsf-webapp</module>
-    <module>nanoweb-webapp</module>
     <module>struts-webapp</module>
     <module>struts2-webapp</module>
     <module>webwork-webapp</module>
