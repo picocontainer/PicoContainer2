@@ -16,21 +16,9 @@
       <version>${pom.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.picocontainer.script</groupId>
-      <artifactId>picocontainer-script-aop</artifactId>
-      <version>${pom.version}</version>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all-minimal</artifactId>
       <version>1.5.6</version>
-    </dependency>
-    <dependency>
-      <groupId>dynaop</groupId>
-      <artifactId>dynaop</artifactId>
-      <version>1.0</version>
-      <optional>true</optional>
     </dependency>
     <!-- test scoped dependencies -->
     <dependency>

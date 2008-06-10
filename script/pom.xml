@@ -41,11 +41,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/sandbox/picocontainer-script</connection>
-    <developerConnection>
-      scm:svn:https://svn.codehaus.org/picocontainer/java/sandbox/picocontainer-script
-    </developerConnection>
-    <url>https://svn.codehaus.org/picocontainer/java/sandbox/picocontainer-script</url>
+    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/script</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/script</developerConnection>
+    <url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/script</url>
   </scm>
 
   <repositories>
@@ -59,33 +57,7 @@
       <name>Codehaus Snapshots Repository</name>
       <url>http://snapshots.repository.codehaus.org</url>
     </repository>
-    <repository>
-      <id>codehaus-dist-repository</id>
-      <name>Codehaus Dist Repository</name>
-      <url>http://dist.codehaus.org</url>
-      <layout>legacy</layout>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>jetty-release-repository</id>
-      <name>Jetty Release Repository</name>
-      <url>http://jetty.mortbay.org/maven2/release</url>
-    </repository>
-
   </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>codehaus-plugin-snapshots-repository</id>
-      <name>Codehaus Plugin Snapshots Repository</name>
-      <url>http://snapshots.maven.codehaus.org/maven2/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
 
   <distributionManagement>
     <repository>
@@ -332,10 +304,8 @@
               <reportSet>
                 <reports>
                   <report>dependencies</report>
-                  <report>project-team</report>
                   <report>license</report>
                   <report>mailing-list</report>
-                  <!--<report>scm</report>-->
                 </reports>
               </reportSet>
             </reportSets>
