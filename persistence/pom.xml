@@ -22,11 +22,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/picocontainer-persistence</connection>
-    <developerConnection>
-      scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/picocontainer-persistence
-    </developerConnection>
-    <url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/picocontainer-persistence</url>
+    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/persistence</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/persistence</developerConnection>
+    <url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/persistence</url>
   </scm>
 
   <repositories>
@@ -70,7 +68,7 @@
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer-tck</artifactId>
-        <version>2.2</version>
+        <version>2.3</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -192,10 +190,6 @@
                 <name>java.awt.headless</name>
                 <value>true</value>
               </property>
-              <property>
-                <name>testcomp.jar</name>
-                <value>${basedir}/../script-core/src/test-comp/TestComp.jar</value>
-              </property>
             </systemProperties>
             <includes>
               <include>**/*Test.java</include>
@@ -299,10 +293,8 @@
               <reportSet>
                 <reports>
                   <report>dependencies</report>
-                  <report>project-team</report>
                   <report>license</report>
                   <report>mailing-list</report>
-                  <!--<report>scm</report>-->
                 </reports>
               </reportSet>
             </reportSets>
