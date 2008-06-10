@@ -11,12 +11,17 @@
   <name>PicoContainer Web Core</name>
   <dependencies>
     <dependency>
+      <groupId>org.picocontainer</groupId>
+      <artifactId>picocontainer</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-testmodel</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.script</groupId>

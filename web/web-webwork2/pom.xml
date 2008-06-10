@@ -13,19 +13,12 @@
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-core</artifactId>
+      <version>${pom.version}</version>      
     </dependency>
     <dependency>
       <groupId>org.picocontainer</groupId>
       <artifactId>picocontainer-gems</artifactId>
       <optional>false</optional>
-    </dependency>
-    <dependency>
-      <groupId>velocity</groupId>
-      <artifactId>velocity</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>velocity-tools</groupId>
-      <artifactId>velocity-tools-view</artifactId>
     </dependency>
     <dependency>
       <groupId>opensymphony</groupId>

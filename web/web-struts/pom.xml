@@ -13,6 +13,7 @@
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-core</artifactId>
+      <version>${pom.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.struts</groupId>
