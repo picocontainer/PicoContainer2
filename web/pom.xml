@@ -13,7 +13,6 @@
     <module>web-core</module>
     <module>web-axis</module>
     <module>web-jsf</module>
-    <module>web-nanoweb</module>
     <module>web-struts</module>
     <module>web-struts2</module>
     <module>web-webwork</module>
