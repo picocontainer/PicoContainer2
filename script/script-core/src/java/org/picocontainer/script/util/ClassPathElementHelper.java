@@ -5,7 +5,7 @@
  * license a copy of which has been included with this distribution in the
  * LICENSE.txt file. 
  ******************************************************************************/
-package org.picocontainer.script;
+package org.picocontainer.script.util;
 
 
 import java.net.URL;
@@ -13,6 +13,10 @@ import java.net.MalformedURLException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.io.File;
+
+import org.picocontainer.script.ClassPathElement;
+import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 public class ClassPathElementHelper {
     public static final String HTTP = "http://";

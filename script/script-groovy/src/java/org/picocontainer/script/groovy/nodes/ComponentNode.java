@@ -13,9 +13,9 @@ import java.util.Properties;
 
 import org.picocontainer.Parameter;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.script.ComponentElementHelper;
 import org.picocontainer.script.NodeBuilderDecorator;
 import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.script.util.ComponentElementHelper;
 
 /**
  * Creates a component node

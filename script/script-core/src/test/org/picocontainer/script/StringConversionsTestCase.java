@@ -16,6 +16,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 
 import org.junit.Test;
+import org.picocontainer.script.util.StringConversions;
 
 public final class StringConversionsTestCase {
     private final StringConversions converter = new StringConversions();

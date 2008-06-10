@@ -10,8 +10,8 @@ package org.picocontainer.script.groovy.nodes;
 import java.util.Map;
 
 import org.picocontainer.script.ClassPathElement;
-import org.picocontainer.script.ClassPathElementHelper;
 import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.script.util.ClassPathElementHelper;
 
 
 /**

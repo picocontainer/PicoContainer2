@@ -18,11 +18,6 @@
     </dependency>
     <dependency>
       <groupId>org.picocontainer.script</groupId>
-      <artifactId>picocontainer-script-aop</artifactId>
-      <version>${pom.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.picocontainer.script</groupId>
       <artifactId>picocontainer-script-bsh</artifactId>
       <version>${pom.version}</version>
     </dependency>

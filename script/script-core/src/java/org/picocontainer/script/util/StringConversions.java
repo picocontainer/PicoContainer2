@@ -9,7 +9,7 @@
  *****************************************************************************/
 
 
-package org.picocontainer.script;
+package org.picocontainer.script.util;
 
 import org.picocontainer.PicoCompositionException;
 

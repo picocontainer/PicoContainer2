@@ -5,9 +5,12 @@
  * license a copy of which has been included with this distribution in the
  * LICENSE.txt file. 
  ******************************************************************************/
-package org.picocontainer.script;
+package org.picocontainer.script.util;
 
 import org.picocontainer.Parameter;
+import org.picocontainer.script.ClassName;
+import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 import java.util.Properties;
 
