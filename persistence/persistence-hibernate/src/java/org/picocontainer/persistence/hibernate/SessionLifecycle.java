@@ -8,10 +8,8 @@
 
 package org.picocontainer.persistence.hibernate;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.picocontainer.Startable;
-import org.picocontainer.persistence.PersistenceException;
 
 /**
  * Component providing session lifecycle to be registered in container containing session in
@@ -30,11 +28,9 @@ public final class SessionLifecycle implements Startable {
     public void start() {}
 
     public void stop() {
-        try {
+        if (session != null ){
             session.flush();
-            session.close();
-        } catch (HibernateException e) {
-            throw new PersistenceException(e);
+            session.close();            
         }
     }
 

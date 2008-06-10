@@ -15,7 +15,6 @@ import org.hibernate.Session;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Test;
-import org.picocontainer.persistence.PersistenceException;
 
 /**
  * Test that lifecycle closes session factory
@@ -35,7 +34,7 @@ public class SessionLifecycleTestCase {
         lifecycle.stop();
     }
     
-    @Test(expected=PersistenceException.class)
+    @Test(expected=HibernateException.class)
     public void cannotCloseSessionOnStop() throws Exception {
         final Session session = mockery.mock(Session.class);
         mockery.checking(new Expectations(){{

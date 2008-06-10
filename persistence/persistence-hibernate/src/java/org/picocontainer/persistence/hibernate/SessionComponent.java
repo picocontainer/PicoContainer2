@@ -26,7 +26,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.stat.SessionStatistics;
 import org.picocontainer.Startable;
-import org.picocontainer.persistence.ExceptionHandler;
 
 /**
  * Session component with failover behaviour in case of hibernate exception. Old
@@ -42,30 +41,14 @@ public final class SessionComponent implements Session, Startable {
 
     private final SessionFactory sessionFactory;
     private final Interceptor interceptor;
-    protected final ExceptionHandler hibernateExceptionHandler;
 
     public SessionComponent(final SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-        hibernateExceptionHandler = new PingPongExceptionHandler();
-        interceptor = null;
-    }
-
-    public SessionComponent(final SessionFactory sessionFactory, final ExceptionHandler hibernateExceptionHandler) {
-        this.sessionFactory = sessionFactory;
-        this.hibernateExceptionHandler = hibernateExceptionHandler;
         interceptor = null;
     }
 
     public SessionComponent(final SessionFactory sessionFactory, final Interceptor interceptor) {
         this.sessionFactory = sessionFactory;
-        hibernateExceptionHandler = new PingPongExceptionHandler();
-        this.interceptor = interceptor;
-    }
-
-    public SessionComponent(final SessionFactory sessionFactory, final ExceptionHandler hibernateExceptionHandler,
-            final Interceptor interceptor) {
-        this.sessionFactory = sessionFactory;
-        this.hibernateExceptionHandler = hibernateExceptionHandler;
         this.interceptor = interceptor;
     }
 
@@ -113,9 +96,8 @@ public final class SessionComponent implements Session, Startable {
     }
 
     /**
-     * Invalidates the session calling {@link #invalidateDelegatedSession()} and
-     * convert the <code>cause</code> using a {@link ExceptionHandler} if it's
-     * available otherwise just return the <code>cause</code> back.
+     * Invalidates the session calling {@link #invalidateDelegatedSession()} 
+     * and return the <code>cause</code> back.
      * 
      * @return
      * @param cause
@@ -124,10 +106,9 @@ public final class SessionComponent implements Session, Startable {
         try {
             invalidateDelegatedSession();
         } catch (RuntimeException e) {
-            // Do nothing, only the original exception should be reported.
+            return e;
         }
-
-        return hibernateExceptionHandler.handle(cause);
+        return cause;
     }
 
     /**
@@ -676,17 +657,6 @@ public final class SessionComponent implements Session, Startable {
         } catch (RuntimeException ex) {
             throw handleException(ex);
         }
-    }
-
-    /**
-     * A not to do "if (handler == null)" ping-pong ExceptionHandler version.
-     */
-    private class PingPongExceptionHandler implements ExceptionHandler {
-
-        public RuntimeException handle(Throwable ex) {
-            return (RuntimeException) ex;
-        }
-
     }
 
 }

@@ -9,7 +9,6 @@
   <packaging>pom</packaging>
   <url>http://www.picocontainer.org/persistence</url>
   <modules>
-    <module>persistence-core</module>
     <module>persistence-hibernate</module>
     <module>persistence-hibernate-annotations</module>
   </modules>

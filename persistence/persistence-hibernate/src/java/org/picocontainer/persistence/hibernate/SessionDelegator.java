@@ -24,7 +24,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.stat.SessionStatistics;
-import org.picocontainer.persistence.ExceptionHandler;
+
 
 /**
  * Abstract base class for session delegators. delegates all calls to session
@@ -33,14 +33,8 @@ import org.picocontainer.persistence.ExceptionHandler;
  */
 public abstract class SessionDelegator implements Session {
 
-    protected final ExceptionHandler hibernateExceptionHandler;
-
     public SessionDelegator() {
-        hibernateExceptionHandler = new PingPongExceptionHandler();
-    }
-
-    public SessionDelegator(ExceptionHandler hibernateExceptionHandler) {
-        this.hibernateExceptionHandler = hibernateExceptionHandler;
+       
     }
 
     /**
@@ -57,8 +51,7 @@ public abstract class SessionDelegator implements Session {
 
     /**
      * Invalidates the session calling {@link #invalidateDelegatedSession()} and
-     * convert the <code>cause</code> using a {@link ExceptionHandler} if it's
-     * available otherwise just return the <code>cause</code> back.
+     * just return the <code>cause</code> back.
      * 
      * @return
      * @param cause
@@ -67,10 +60,9 @@ public abstract class SessionDelegator implements Session {
         try {
             invalidateDelegatedSession();
         } catch (RuntimeException e) {
-            // Do nothing, only the original exception should be reported.
+            return e;
         }
-
-        return hibernateExceptionHandler.handle(cause);
+        return cause;
     }
 
     public Transaction beginTransaction() {
@@ -593,15 +585,5 @@ public abstract class SessionDelegator implements Session {
         }
     }
 
-    /**
-     * A not to do "if (handler == null)" ping-pong ExceptionHandler version.
-     */
-    private class PingPongExceptionHandler implements ExceptionHandler {
-
-        public RuntimeException handle(Throwable ex) {
-            return (RuntimeException) ex;
-        }
-
-    }
-
+  
 }
