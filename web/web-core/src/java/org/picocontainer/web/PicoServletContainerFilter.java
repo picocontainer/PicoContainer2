@@ -21,6 +21,10 @@ import org.picocontainer.behaviors.Storing;
 public class PicoServletContainerFilter implements Filter, Serializable {
 
     public void init(FilterConfig filterConfig) throws ServletException {
+        ServletContext servletContext = filterConfig.getServletContext();
+        ApplicationContainerHolder ach = (ApplicationContainerHolder) servletContext
+                .getAttribute(ApplicationContainerHolder.class.getName());
+        currentAppContainer.set(ach.getContainer());
     }
 
     public void destroy() {

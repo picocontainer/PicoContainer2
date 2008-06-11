@@ -5,6 +5,7 @@ import org.picocontainer.web.WebappComposer;
 import org.picocontainer.web.sample.dao.CheeseDao;
 import org.picocontainer.web.sample.dao.simple.MemoryCheeseDao;
 import org.picocontainer.web.sample.service.defaults.DefaultCheeseService;
+import org.picocontainer.web.sample.service.CheeseService;
 
 public class ExampleWebappComposer implements WebappComposer {
 
@@ -13,7 +14,7 @@ public class ExampleWebappComposer implements WebappComposer {
     }
 
     public void composeSession(MutablePicoContainer sessionContainer) {
-        sessionContainer.addComponent(DefaultCheeseService.class);
+        sessionContainer.addComponent(CheeseService.class, DefaultCheeseService.class);
     }
 
     public void composeRequest(MutablePicoContainer requestContainer) {

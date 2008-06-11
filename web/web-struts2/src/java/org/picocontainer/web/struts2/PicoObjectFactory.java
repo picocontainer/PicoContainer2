@@ -41,14 +41,15 @@ public class PicoObjectFactory extends ObjectFactory {
 
         synchronized (this) {
 
-            MutablePicoContainer requestContainer = PicoServletContainerFilter.getRequestContainerForThread();
-            if ( requestContainer == null){
+            MutablePicoContainer appContainer = PicoServletContainerFilter.getApplicationContainerForThread();
+            if ( appContainer == null){
                 return;
             }
-            ComponentAdapter ca = requestContainer.getComponentAdapter(clazz);
+            ComponentAdapter ca = appContainer.getComponentAdapter(clazz);
             if (ca == null) {
                 try {
-                    requestContainer.addComponent(clazz);
+                    System.out.println("--> Adding " + clazz.getName());
+                    appContainer.addComponent(clazz);
                 } catch (NoClassDefFoundError e) {
                     if (e.getMessage().equals("org/apache/velocity/context/Context")) {
                         // half expected. XWork seems to setup stuff that cannot
@@ -66,7 +67,14 @@ public class PicoObjectFactory extends ObjectFactory {
 
         MutablePicoContainer requestContainer = PicoServletContainerFilter.getRequestContainerForThread();
         if ( requestContainer == null ){
-            return null;
+            MutablePicoContainer appContainer = PicoServletContainerFilter.getApplicationContainerForThread();
+            Object comp = appContainer.getComponent(clazz);
+            if (comp == null) {
+                appContainer.addComponent(clazz);
+                comp = appContainer.getComponent(clazz);
+            }
+            return comp;
+
         }
         return requestContainer.getComponent(clazz);
 
