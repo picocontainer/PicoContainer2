@@ -17,7 +17,8 @@ import org.junit.Test;
 
 public class ConstructableConfigurationTestCase {
 
-    @Test public void testDefaultConstruction() throws Exception {
+    @Test 
+    public void canLoadDefaultConfiguration() throws Exception {
         ConstructableConfiguration config = new ConstructableConfiguration();
         assertNotNull(config);
 		attemptWrite(config);

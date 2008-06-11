@@ -17,22 +17,15 @@ import org.hibernate.SessionFactory;
 import org.junit.Test;
 
 /**
- * Constructable Configuration Test case for Annotations.
  * @author Michael Rimov
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz> 
+ * @author Mauro Talevi
  */
 public class ConstructableAnnotationConfigurationTestCase {
 
-    @Test public void testDefaultConstruction() throws Exception {
-        //Should Will load hibernate.hbm.xml
-        ConstructableAnnotationConfiguration config = new ConstructableAnnotationConfiguration();
-        assertNotNull(config);
-        attemptWrite(config);
-    }
-
-
-    @Test public void testResourceConstruction() throws Exception {
-        ConstructableAnnotationConfiguration config = new ConstructableAnnotationConfiguration("/hibernate.cfg.xml");
+    @Test 
+    public void canLoadConfigurationWithAnnotatedEntity() throws Exception {
+        ConstructableAnnotationConfiguration config = new ConstructableAnnotationConfiguration("/hibernate-annotations.cfg.xml");
         attemptWrite(config);
     }
     

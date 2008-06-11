@@ -15,7 +15,7 @@ import org.w3c.dom.Document;
 
 /**
  * This class handles the configuration with Hibernate's Annotation configuration.
- * See respective {@link org.hibernate.cfg.AnnotationConfiguration configure methods}.
+ * See respective {@link org.hibernate.cfg.AnnotationConfiguration AnnotationConfiguration} methods.
  * 
  * @author Michael Rimov
  * @author Jose Peleteiro <juzepeleteiro@intelli.biz> 

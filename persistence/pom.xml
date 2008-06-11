@@ -10,7 +10,6 @@
   <url>http://www.picocontainer.org/persistence</url>
   <modules>
     <module>persistence-hibernate</module>
-    <module>persistence-hibernate-annotations</module>
   </modules>
 
   <description><![CDATA[Please refer to the <a href="http://picocontainer.org/persistence">main website</a> for documentation.]]></description>
@@ -45,24 +44,6 @@
         <artifactId>picocontainer</artifactId>
         <version>2.3</version>
       </dependency>
-      <dependency>
-        <groupId>cglib</groupId>
-        <artifactId>cglib-nodep</artifactId>
-        <version>2.1_3</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>commons-dbcp</groupId>
-        <artifactId>commons-dbcp</artifactId>
-        <version>1.2</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.geronimo.specs</groupId>
-        <artifactId>geronimo-jta_1.1_spec</artifactId>
-        <version>1.0</version>
-        <scope>provided</scope>
-      </dependency>
       <!-- test scoped dependencies -->
       <dependency>
         <groupId>org.picocontainer</groupId>
@@ -80,18 +61,6 @@
   </dependencyManagement>
 
   <dependencies>
-    <dependency>
-      <groupId>cglib</groupId>
-      <artifactId>cglib-nodep</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>commons-dbcp</groupId>
-      <artifactId>commons-dbcp</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-jta_1.1_spec</artifactId>
-    </dependency>
     <!-- test scoped dependencies -->
     <dependency>
       <groupId>hsqldb</groupId>
