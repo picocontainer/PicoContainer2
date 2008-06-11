@@ -18,7 +18,7 @@ import org.w3c.dom.Document;
  * See respective {@link org.hibernate.cfg.AnnotationConfiguration AnnotationConfiguration} methods.
  * 
  * @author Michael Rimov
- * @author Jose Peleteiro <juzepeleteiro@intelli.biz> 
+ * @author Jose Peleteiro
  */
 @SuppressWarnings("serial")
 public class ConstructableAnnotationConfiguration extends AnnotationConfiguration {

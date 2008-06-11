@@ -29,128 +29,131 @@ import org.hibernate.stat.Statistics;
 import org.picocontainer.PicoCompositionException;
 
 /**
- * Delegates everything to session factory obtained from confiuration. this class is necessary
- * because component adapters are really ugly when it comes to scripting.
+ * Session factory implementation that uses a delegate session factory 
+ * created from configuration.
+ * 
+ * @author Jose Peleteiro
+ * @author Mauro Talevi
  */
 @SuppressWarnings("serial")
-public final class SessionFactoryDelegator implements SessionFactory {
+public final class ConfigurableSessionFactory implements SessionFactory {
 
     private final SessionFactory sessionFactory;
 
-    public SessionFactoryDelegator(Configuration configuration) {
+    public ConfigurableSessionFactory(Configuration configuration) {
         try {
-            this.sessionFactory = configuration.buildSessionFactory();
-        } catch (HibernateException ex) {
-            throw new PicoCompositionException(ex);
+            sessionFactory = configuration.buildSessionFactory();
+        } catch (HibernateException e) {
+            throw new PicoCompositionException(e);
         }
     }
 
-    public SessionFactory getDelegatedSessionFactory() {
-        return this.sessionFactory;
+    public SessionFactory getDelegate() {
+        return sessionFactory;
     }
 
     public void close() {
-        this.getDelegatedSessionFactory().close();
+        sessionFactory.close();
     }
 
     public void evict(Class persistentClass) {
-        this.getDelegatedSessionFactory().evict(persistentClass);
+        sessionFactory.evict(persistentClass);
     }
 
     public void evict(Class persistentClass, Serializable id) {
-        this.getDelegatedSessionFactory().evict(persistentClass, id);
+        sessionFactory.evict(persistentClass, id);
     }
 
     public void evictCollection(String roleName) {
-        this.getDelegatedSessionFactory().evictCollection(roleName);
+        sessionFactory.evictCollection(roleName);
     }
 
     public void evictCollection(String roleName, Serializable id) {
-        this.getDelegatedSessionFactory().evictCollection(roleName, id);
+        sessionFactory.evictCollection(roleName, id);
     }
 
     public void evictEntity(String entityName) {
-        this.getDelegatedSessionFactory().evictEntity(entityName);
+        sessionFactory.evictEntity(entityName);
     }
 
     public void evictEntity(String entityName, Serializable id) {
-        this.getDelegatedSessionFactory().evictEntity(entityName, id);
+        sessionFactory.evictEntity(entityName, id);
     }
 
     public void evictQueries() {
-        this.getDelegatedSessionFactory().evictQueries();
+        sessionFactory.evictQueries();
     }
 
     public void evictQueries(String cacheRegion) {
-        this.getDelegatedSessionFactory().evictQueries(cacheRegion);
+        sessionFactory.evictQueries(cacheRegion);
     }
 
     public Map getAllClassMetadata() {
-        return this.getDelegatedSessionFactory().getAllClassMetadata();
+        return sessionFactory.getAllClassMetadata();
     }
 
     public Map getAllCollectionMetadata() {
-        return this.getDelegatedSessionFactory().getAllCollectionMetadata();
+        return sessionFactory.getAllCollectionMetadata();
     }
 
     public ClassMetadata getClassMetadata(Class persistentClass) {
-        return this.getDelegatedSessionFactory().getClassMetadata(persistentClass);
+        return sessionFactory.getClassMetadata(persistentClass);
     }
 
     public ClassMetadata getClassMetadata(String entityName) {
-        return this.getDelegatedSessionFactory().getClassMetadata(entityName);
+        return sessionFactory.getClassMetadata(entityName);
     }
 
     public CollectionMetadata getCollectionMetadata(String roleName) {
-        return this.getDelegatedSessionFactory().getCollectionMetadata(roleName);
+        return sessionFactory.getCollectionMetadata(roleName);
     }
 
 	public Session getCurrentSession() {
-		return this.getDelegatedSessionFactory().getCurrentSession();
+		return sessionFactory.getCurrentSession();
 	}
 
     public Set getDefinedFilterNames() {
-        return this.getDelegatedSessionFactory().getDefinedFilterNames();
+        return sessionFactory.getDefinedFilterNames();
     }
 
     public FilterDefinition getFilterDefinition(String filterName) throws HibernateException {
-        return this.getDelegatedSessionFactory().getFilterDefinition(filterName);
+        return sessionFactory.getFilterDefinition(filterName);
     }
 
     public Reference getReference() throws NamingException {
-        return this.getDelegatedSessionFactory().getReference();
+        return sessionFactory.getReference();
     }
 
     public Statistics getStatistics() {
-        return this.getDelegatedSessionFactory().getStatistics();
+        return sessionFactory.getStatistics();
     }
 
 	public boolean isClosed() {
-		return this.getDelegatedSessionFactory().isClosed();
+		return sessionFactory.isClosed();
 	}
 
     public Session openSession() {
-        return this.getDelegatedSessionFactory().openSession();
+        return sessionFactory.openSession();
     }
 
     public Session openSession(Connection connection) {
-        return this.getDelegatedSessionFactory().openSession(connection);
+        return sessionFactory.openSession(connection);
     }
 
     public Session openSession(Connection connection, Interceptor interceptor) {
-        return this.getDelegatedSessionFactory().openSession(connection, interceptor);
+        return sessionFactory.openSession(connection, interceptor);
     }
 
     public Session openSession(Interceptor interceptor) {
-        return this.getDelegatedSessionFactory().openSession(interceptor);
+        return sessionFactory.openSession(interceptor);
     }
 
     public StatelessSession openStatelessSession() {
-        return this.getDelegatedSessionFactory().openStatelessSession();
+        return sessionFactory.openStatelessSession();
     }
 
     public StatelessSession openStatelessSession(Connection connection) {
-        return this.getDelegatedSessionFactory().openStatelessSession(connection);
+        return sessionFactory.openStatelessSession(connection);
     }
 
 }

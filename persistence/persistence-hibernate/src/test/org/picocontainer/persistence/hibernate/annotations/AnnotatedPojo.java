@@ -9,10 +9,13 @@
 package org.picocontainer.persistence.hibernate.annotations;
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
+import org.picocontainer.persistence.hibernate.Pojo;
 
 /**
  * Just a pojo to make hibernate happy.
@@ -21,13 +24,12 @@ import javax.persistence.Id;
  * @author Michael Rimov
  */
 @Entity
-public class Pojo implements Serializable {
+public class AnnotatedPojo extends Pojo implements Serializable {
 
     /**
      * Serialization UID
      */
     private static final long serialVersionUID = 1L;
-
 
     @Id
     @GeneratedValue
@@ -37,7 +39,7 @@ public class Pojo implements Serializable {
     @Column(name="Foo", length=34)
     private String foo;
 
-    public Pojo() {
+    public AnnotatedPojo() {
         super();
     }
 

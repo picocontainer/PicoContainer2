@@ -16,7 +16,7 @@ import org.w3c.dom.Document;
 
 /**
  * Constructable Hibernate configuration. Just a wrapper around various
- * configure() methods. See respective {@link org.hibernate.cfg.Configuration configure methods}.
+ * configure() methods. See respective {@link org.hibernate.cfg.Configuration Configuration} methods.
  * 
  * @author Jose Peleteiro
  * @see org.hibernate.cfg.Configuration

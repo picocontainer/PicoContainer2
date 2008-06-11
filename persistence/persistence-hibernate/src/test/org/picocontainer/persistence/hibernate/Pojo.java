@@ -13,7 +13,7 @@ package org.picocontainer.persistence.hibernate;
  * 
  * @author Konstantin Pribluda
  */
-public class Pojo {
+public class Pojo implements Fooable {
 
     private Integer id;
     private String foo;
