@@ -38,122 +38,122 @@ import org.picocontainer.PicoCompositionException;
 @SuppressWarnings("serial")
 public final class ConfigurableSessionFactory implements SessionFactory {
 
-    private final SessionFactory sessionFactory;
+    private final SessionFactory delegate;
 
     public ConfigurableSessionFactory(Configuration configuration) {
         try {
-            sessionFactory = configuration.buildSessionFactory();
+            delegate = configuration.buildSessionFactory();
         } catch (HibernateException e) {
             throw new PicoCompositionException(e);
         }
     }
 
     public SessionFactory getDelegate() {
-        return sessionFactory;
+        return delegate;
     }
 
     public void close() {
-        sessionFactory.close();
+        delegate.close();
     }
 
     public void evict(Class persistentClass) {
-        sessionFactory.evict(persistentClass);
+        delegate.evict(persistentClass);
     }
 
     public void evict(Class persistentClass, Serializable id) {
-        sessionFactory.evict(persistentClass, id);
+        delegate.evict(persistentClass, id);
     }
 
     public void evictCollection(String roleName) {
-        sessionFactory.evictCollection(roleName);
+        delegate.evictCollection(roleName);
     }
 
     public void evictCollection(String roleName, Serializable id) {
-        sessionFactory.evictCollection(roleName, id);
+        delegate.evictCollection(roleName, id);
     }
 
     public void evictEntity(String entityName) {
-        sessionFactory.evictEntity(entityName);
+        delegate.evictEntity(entityName);
     }
 
     public void evictEntity(String entityName, Serializable id) {
-        sessionFactory.evictEntity(entityName, id);
+        delegate.evictEntity(entityName, id);
     }
 
     public void evictQueries() {
-        sessionFactory.evictQueries();
+        delegate.evictQueries();
     }
 
     public void evictQueries(String cacheRegion) {
-        sessionFactory.evictQueries(cacheRegion);
+        delegate.evictQueries(cacheRegion);
     }
 
     public Map getAllClassMetadata() {
-        return sessionFactory.getAllClassMetadata();
+        return delegate.getAllClassMetadata();
     }
 
     public Map getAllCollectionMetadata() {
-        return sessionFactory.getAllCollectionMetadata();
+        return delegate.getAllCollectionMetadata();
     }
 
     public ClassMetadata getClassMetadata(Class persistentClass) {
-        return sessionFactory.getClassMetadata(persistentClass);
+        return delegate.getClassMetadata(persistentClass);
     }
 
     public ClassMetadata getClassMetadata(String entityName) {
-        return sessionFactory.getClassMetadata(entityName);
+        return delegate.getClassMetadata(entityName);
     }
 
     public CollectionMetadata getCollectionMetadata(String roleName) {
-        return sessionFactory.getCollectionMetadata(roleName);
+        return delegate.getCollectionMetadata(roleName);
     }
 
 	public Session getCurrentSession() {
-		return sessionFactory.getCurrentSession();
+		return delegate.getCurrentSession();
 	}
 
     public Set getDefinedFilterNames() {
-        return sessionFactory.getDefinedFilterNames();
+        return delegate.getDefinedFilterNames();
     }
 
     public FilterDefinition getFilterDefinition(String filterName) throws HibernateException {
-        return sessionFactory.getFilterDefinition(filterName);
+        return delegate.getFilterDefinition(filterName);
     }
 
     public Reference getReference() throws NamingException {
-        return sessionFactory.getReference();
+        return delegate.getReference();
     }
 
     public Statistics getStatistics() {
-        return sessionFactory.getStatistics();
+        return delegate.getStatistics();
     }
 
 	public boolean isClosed() {
-		return sessionFactory.isClosed();
+		return delegate.isClosed();
 	}
 
     public Session openSession() {
-        return sessionFactory.openSession();
+        return delegate.openSession();
     }
 
     public Session openSession(Connection connection) {
-        return sessionFactory.openSession(connection);
+        return delegate.openSession(connection);
     }
 
     public Session openSession(Connection connection, Interceptor interceptor) {
-        return sessionFactory.openSession(connection, interceptor);
+        return delegate.openSession(connection, interceptor);
     }
 
     public Session openSession(Interceptor interceptor) {
-        return sessionFactory.openSession(interceptor);
+        return delegate.openSession(interceptor);
     }
 
     public StatelessSession openStatelessSession() {
-        return sessionFactory.openStatelessSession();
+        return delegate.openStatelessSession();
     }
 
     public StatelessSession openStatelessSession(Connection connection) {
-        return sessionFactory.openStatelessSession(connection);
+        return delegate.openStatelessSession(connection);
     }
 
 }
