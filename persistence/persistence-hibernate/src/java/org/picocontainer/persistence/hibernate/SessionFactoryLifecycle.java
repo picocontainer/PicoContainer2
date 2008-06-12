@@ -12,9 +12,9 @@ import org.hibernate.SessionFactory;
 import org.picocontainer.Startable;
 
 /**
- * Component organising lifecycle for session factory.
+ * Add lifecycle methods to the delegate factory
  * 
- * @author Jose Peleteiro <juzepeleteiro@intelli.biz>
+ * @author Jose Peleteiro
  * @author Mauro Talevi
  */
 public final class SessionFactoryLifecycle implements Startable {
@@ -29,8 +29,8 @@ public final class SessionFactoryLifecycle implements Startable {
     }
 
     public void stop() {
-        if ( sessionFactory != null ){
-            sessionFactory.close();            
+        if (sessionFactory != null) {
+            sessionFactory.close();
         }
     }
 }
