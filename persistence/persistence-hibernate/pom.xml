@@ -29,7 +29,7 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-annotations</artifactId>
-      <version>3.3.0.ga</version>
+      <version>3.3.1.GA</version>
       <exclusions>
         <exclusion>
           <groupId>org.hibernate</groupId>
@@ -40,7 +40,7 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate</artifactId>
-      <version>3.2.5.ga</version>
+      <version>3.2.6.ga</version>
     </dependency>
   </dependencies>
 </project>
