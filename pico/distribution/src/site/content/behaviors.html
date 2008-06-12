@@ -225,15 +225,16 @@ a code snippet to illustrate that:</p>
 <pre>storing = new Storing();
 pico = new DefaultPicoContainer(sc);
 ....
-storing.putCacheForThread(httpRequest.getSession().getAttribute("sessionComponentStore");
+storing.putCacheForThread(httpRequest.getSession().getAttribute(&quot;sessionComponentStore&quot;);
 // do other methods that process request in session concept and may do getComponent(..) from the sesion container.
-httpRequest.getSession().setAttribute("sessionComponentStore", sc.getCacheForThread());</pre>
+httpRequest.getSession().setAttribute(&quot;sessionComponentStore&quot;, sc.getCacheForThread());</pre>
 </div>
 <p>See <a href="scopes.html">scopes</a> for
 another example for a web framework</p>
 <h2><a name="hasi" id="hasi"></a>Hiding
 and Swapping of Implementations</h2>
-<h3>Implementation Hiding</h3>
+<h3>Implementation Hiding
+<span class="subheading">(Located in PicoContainer Gems)</span></h3>
 <p>This is where the implementation of the component is hidden
 from other components using it. The instance cannot be cast back to the
 implementation. It only works if the type has an interface that it
@@ -274,7 +275,7 @@ Apple a1 = pico.getComponent(Apple.class);
 called <span class="style1">AsmImplemenationHiding</span>
 that leverages ASM to make 'more concrete' hidden implementations than
 is possible via reflection. It generates real classes using <a href="http://asm.objectweb.org/">ASM</a></p>
-<h3>Hot Swapping</h3>
+<h3>Hot Swapping <span class="subheading">(Located in PicoContainer Gems)</span></h3>
 <p>This builds on the <span class="style1">ASMImplementationHiding</span>
 behavior above, but also allows the hot swapping of component
 implementations during use. It has implicit caching behavior too.</p>
@@ -282,11 +283,11 @@ implementations during use. It has implicit caching behavior too.</p>
 <pre>DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwapping());
 pico.addComponent(Map.class, HashMap.class);
 Map firstMap = pico.getComponent(Map.class);
-firstMap.put("foo", "bar");
+firstMap.put(&quot;foo&quot;, &quot;bar&quot;);
 HotSwappable hs = (HotSwappable) pico.getComponentAdapter(Map.class);
 Object oldMap = hs.getSwappable().swap(new HashMap());
 Map secondMap = pico.getComponent(Map.class);
-secondMap.put("apple", "orange");
+secondMap.put(&quot;apple&quot;, &quot;orange&quot;);
 
 // first map and second map are the same
 // 'foo' is not a key in the map, wereas 'apple' is</pre>
@@ -392,7 +393,7 @@ configuration if you like.</p>
 pico = new DefaultPicoContainer(new PropertyApplying());
 pico.addComponent(Foo.class);
 PropertyApplicator pa = (PropertyApplicator) pico.getComponentAdapter(Foo.class);
-pa.setProperty("message", "hello");
+pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
 </div>
@@ -400,7 +401,7 @@ System.out.println(pico.getComponent(Foo.class)); // prints hello
 <pre>pico = new DefaultPicoContainer();
 pico.as(APPLY_PROPERTIES).addComponent(Foo.class);
 PropertyApplicator pa = (PropertyApplicator) pico.getComponentAdapter(Foo.class);
-pa.setProperty("message", "hello");
+pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
 </div>
@@ -408,7 +409,7 @@ System.out.println(pico.getComponent(Foo.class)); // prints hello
 <pre>pico = new PicoBuilder().withProperties().build();
 pico.addComponent(Foo.class);
 PropertyApplicator pa = (PropertyApplicator) pico.getComponentAdapter(Foo.class);
-pa.setProperty("message", "hello");
+pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
 </div>
@@ -418,10 +419,11 @@ System.out.println(pico.getComponent(Foo.class)); // prints hello
 pico = new PicoBuilder().withBehaviors(propertyApplying()).build();
 pico.addComponent(Foo.class);
 PropertyApplicator pa = (PropertyApplicator) pico.getComponentAdapter(Foo.class);
-pa.setProperty("message", "hello");
+pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
 </div>
+Handling Behavior Chains
 <div class="source">
 <pre>import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.propertyApplying;
@@ -430,7 +432,7 @@ pico = new PicoBuilder().withBehaviors(caching(), propertyApplying()).build();
 pico.addComponent(Foo.class);
 Cached cached = (Cached) pico.getComponentAdapter(Foo.class);
 PropertyApplicator pa = (PropertyApplicator) getDelegate(PropertyApplicator.class);
-pa.setProperty("message", "hello");
+pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
 System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
 </div>
@@ -450,29 +452,29 @@ nest-of-singletons to dependency injection in stages.</p>
 <pre>class Foo {
 
  public Foo() {
- System.out.println("Foo was instantiated");
+ System.out.println(&quot;Foo was instantiated&quot;);
  }
 }
 
 ...
 pico = new DefaultPicoContainer(new Automatic());
 pico.addComponent(Foo.class);
-pico.addComponent("bar", String.class);
-pico.getComponent("bar"); // Foo instantiated too.
+pico.addComponent(&quot;bar&quot;, String.class);
+pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
 </pre>
 </div>
 <div class="source">
 <pre>pico = new DefaultPicoContainer();
 pico.as(AUTOMATIC).addComponent(Foo.class);
-pico.addComponent("bar", String.class);
-pico.getComponent("bar"); // Foo instantiated too.
+pico.addComponent(&quot;bar&quot;, String.class);
+pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
 </pre>
 </div>
 <div class="source">
 <pre>pico = new PicoBuilder().withAutomatic().build();
 pico.addComponent(Foo.class);
-pico.addComponent("bar", String.class);
-pico.getComponent("bar"); // Foo instantiated too.
+pico.addComponent(&quot;bar&quot;, String.class);
+pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
 </pre>
 </div>
 <div class="source">
@@ -480,10 +482,13 @@ pico.getComponent("bar"); // Foo instantiated too.
 ...
 pico = new PicoBuilder().withBehaviors(automatic()).build();
 pico.addComponent(Foo.class);
-pico.addComponent("bar", String.class);
-pico.getComponent("bar"); // Foo instantiated too.
+pico.addComponent(&quot;bar&quot;, String.class);
+pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
 </pre>
 </div>
+<h3>Handling Nested Chains of Behavior</h3>
+<p>&nbsp;</p>
+<h3>&nbsp;</h3>
 <h3>Where Next?</h3>
 <span class="callout">
 The <a href="lifecycle.html">Component Lifecycle</a>
