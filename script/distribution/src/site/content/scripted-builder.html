@@ -74,9 +74,9 @@ container {
     component(:class => DefaultWebServerConfig)
     component(:class => WebServerImpl)
 }</textarea></li>
-	<li><a href="http://jython.org">Jython</a>: note that <code>org.picocontainer.script.*</code>
-	classes are imported by default <textarea
+	<li><a href="http://jython.org">Jython</a>: <textarea
 		class="java:nogutter:nocontrols" name="code">
+from org.picocontainer.script import *
 from org.picocontainer.script.testmodel import *
 pico = DefaultPicoContainer(parent);
 pico.registerComponent(DefaultWebServerConfig);

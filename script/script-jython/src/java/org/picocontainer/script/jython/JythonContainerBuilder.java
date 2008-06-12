@@ -53,8 +53,6 @@ public class JythonContainerBuilder extends ScriptedContainerBuilder {
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         try {
             PythonInterpreter interpreter = new PythonInterpreter();
-            interpreter.exec("from org.picocontainer.script import *");
-            interpreter.exec("from java.net import *");
             interpreter.set("parent", parentContainer);
             interpreter.set("assemblyScope", assemblyScope);
             interpreter.execfile(getScriptInputStream(), "picocontainer.py");

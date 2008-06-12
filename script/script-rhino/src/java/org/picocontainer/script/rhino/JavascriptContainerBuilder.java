@@ -66,7 +66,6 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
         cx = Context.enter(cx);
 
         try {
-        	
             Scriptable scope = new ImporterTopLevel(cx);
             scope.put("parent", scope, parentContainer);
             scope.put("assemblyScope", scope, assemblyScope);
