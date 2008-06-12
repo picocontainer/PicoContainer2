@@ -13,17 +13,7 @@
   <dependencies>
     <dependency>
       <groupId>org.picocontainer.persistence</groupId>
-      <artifactId>picocontainer-persistence-core</artifactId>
-      <version>${pom.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.picocontainer.persistence</groupId>
       <artifactId>picocontainer-persistence-hibernate</artifactId>
-      <version>${pom.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.picocontainer.persistence</groupId>
-      <artifactId>picocontainer-persistence-hibernate-annotations</artifactId>
       <version>${pom.version}</version>
     </dependency>
   </dependencies>
@@ -45,24 +35,10 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>org.picocontainer.persistence</groupId>
-                  <artifactId>picocontainer-persistence-core</artifactId>
-                  <version>${pom.version}</version>
-                  <classifier>javadoc</classifier>
-                  <outputDirectory>${project.build.directory}/site/javadoc/core</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.picocontainer.persistence</groupId>
                   <artifactId>picocontainer-persistence-hibernate</artifactId>
                   <version>${pom.version}</version>
                   <classifier>javadoc</classifier>
                   <outputDirectory>${project.build.directory}/site/javadoc/hibernate</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.picocontainer.persistence</groupId>
-                  <artifactId>picocontainer-persistence-hibernate-annotations</artifactId>
-                  <version>${pom.version}</version>
-                  <classifier>javadoc</classifier>
-                  <outputDirectory>${project.build.directory}/site/javadoc/hibernate-annotations</outputDirectory>
                 </artifactItem>
               </artifactItems>
             </configuration>
