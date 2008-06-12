@@ -32,24 +32,22 @@ public class PicoObjectFactory extends ObjectFactory {
     @SuppressWarnings("unchecked")
     public Class getClassInstance(String name) throws ClassNotFoundException {
         Class clazz = super.getClassInstance(name);
-        register(clazz);
+        registerAction(clazz);
         return clazz;
     }
 
-    @SuppressWarnings("unchecked")
-    private void register(Class clazz) throws NoClassDefFoundError {
+    private void registerAction(Class clazz) throws NoClassDefFoundError {
 
         synchronized (this) {
 
-            MutablePicoContainer appContainer = PicoServletContainerFilter.getApplicationContainerForThread();
-            if ( appContainer == null){
+            MutablePicoContainer reqContainer = PicoServletContainerFilter.getRequestContainerForThread();
+            if ( reqContainer == null){
                 return;
             }
-            ComponentAdapter ca = appContainer.getComponentAdapter(clazz);
+            ComponentAdapter ca = reqContainer.getComponentAdapter(clazz);
             if (ca == null) {
                 try {
-                    System.out.println("--> Adding " + clazz.getName());
-                    appContainer.addComponent(clazz);
+                    reqContainer.addComponent(clazz);
                 } catch (NoClassDefFoundError e) {
                     if (e.getMessage().equals("org/apache/velocity/context/Context")) {
                         // half expected. XWork seems to setup stuff that cannot
@@ -82,7 +80,6 @@ public class PicoObjectFactory extends ObjectFactory {
 
     @SuppressWarnings("unchecked")
     public Interceptor buildInterceptor(InterceptorConfig config, Map params) throws ConfigurationException {
-        System.out.println("-->buildInterceptor: " + config.getClassName() + " " + params);
         return super.buildInterceptor(config, params);
     }
 
