@@ -26,6 +26,7 @@ import org.hibernate.engine.FilterDefinition;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.stat.Statistics;
+import org.picocontainer.Disposable;
 import org.picocontainer.PicoCompositionException;
 
 /**
@@ -36,7 +37,7 @@ import org.picocontainer.PicoCompositionException;
  * @author Mauro Talevi
  */
 @SuppressWarnings("serial")
-public final class ConfigurableSessionFactory implements SessionFactory {
+public final class ConfigurableSessionFactory implements SessionFactory, Disposable {
 
     private final SessionFactory delegate;
 
@@ -52,108 +53,147 @@ public final class ConfigurableSessionFactory implements SessionFactory {
         return delegate;
     }
 
+	/** {@inheritDoc} **/
     public void close() {
         delegate.close();
     }
 
-    public void evict(Class persistentClass) {
+	/** {@inheritDoc} **/
+    @SuppressWarnings("unchecked")
+	public void evict(Class persistentClass) {
         delegate.evict(persistentClass);
     }
 
-    public void evict(Class persistentClass, Serializable id) {
+	/** {@inheritDoc} **/
+    @SuppressWarnings("unchecked")
+	public void evict(Class persistentClass, Serializable id) {
         delegate.evict(persistentClass, id);
     }
 
+	/** {@inheritDoc} **/
     public void evictCollection(String roleName) {
         delegate.evictCollection(roleName);
     }
 
+	/** {@inheritDoc} **/
     public void evictCollection(String roleName, Serializable id) {
         delegate.evictCollection(roleName, id);
     }
 
+	/** {@inheritDoc} **/
     public void evictEntity(String entityName) {
         delegate.evictEntity(entityName);
     }
 
+	/** {@inheritDoc} **/
     public void evictEntity(String entityName, Serializable id) {
         delegate.evictEntity(entityName, id);
     }
 
+	/** {@inheritDoc} **/
     public void evictQueries() {
         delegate.evictQueries();
     }
 
+	/** {@inheritDoc} **/
     public void evictQueries(String cacheRegion) {
         delegate.evictQueries(cacheRegion);
     }
 
-    public Map getAllClassMetadata() {
+	/** {@inheritDoc} **/
+    @SuppressWarnings("unchecked")
+	public Map getAllClassMetadata() {
         return delegate.getAllClassMetadata();
     }
 
-    public Map getAllCollectionMetadata() {
+	/** {@inheritDoc} **/
+    @SuppressWarnings("unchecked")
+	public Map getAllCollectionMetadata() {
         return delegate.getAllCollectionMetadata();
     }
 
-    public ClassMetadata getClassMetadata(Class persistentClass) {
+	/** {@inheritDoc} **/
+    @SuppressWarnings("unchecked")
+	public ClassMetadata getClassMetadata(Class persistentClass) {
         return delegate.getClassMetadata(persistentClass);
     }
 
+	/** {@inheritDoc} **/
     public ClassMetadata getClassMetadata(String entityName) {
         return delegate.getClassMetadata(entityName);
     }
 
+	/** {@inheritDoc} **/
     public CollectionMetadata getCollectionMetadata(String roleName) {
         return delegate.getCollectionMetadata(roleName);
     }
 
+	/** {@inheritDoc} **/
 	public Session getCurrentSession() {
 		return delegate.getCurrentSession();
 	}
 
-    public Set getDefinedFilterNames() {
+	/** {@inheritDoc} **/
+    @SuppressWarnings("unchecked")
+	public Set getDefinedFilterNames() {
         return delegate.getDefinedFilterNames();
     }
 
-    public FilterDefinition getFilterDefinition(String filterName) throws HibernateException {
+	/** {@inheritDoc} **/
+   public FilterDefinition getFilterDefinition(String filterName) throws HibernateException {
         return delegate.getFilterDefinition(filterName);
     }
 
+	/** {@inheritDoc} **/
     public Reference getReference() throws NamingException {
         return delegate.getReference();
     }
 
+	/** {@inheritDoc} **/
     public Statistics getStatistics() {
         return delegate.getStatistics();
     }
 
+	/** {@inheritDoc} **/
 	public boolean isClosed() {
 		return delegate.isClosed();
 	}
 
+	/** {@inheritDoc} **/
     public Session openSession() {
         return delegate.openSession();
     }
 
+	/** {@inheritDoc} **/
     public Session openSession(Connection connection) {
         return delegate.openSession(connection);
     }
 
+	/** {@inheritDoc} **/
     public Session openSession(Connection connection, Interceptor interceptor) {
         return delegate.openSession(connection, interceptor);
     }
 
+	/** {@inheritDoc} **/
     public Session openSession(Interceptor interceptor) {
         return delegate.openSession(interceptor);
     }
 
+	/** {@inheritDoc} **/
     public StatelessSession openStatelessSession() {
         return delegate.openStatelessSession();
     }
 
+	/** {@inheritDoc} **/
     public StatelessSession openStatelessSession(Connection connection) {
         return delegate.openStatelessSession(connection);
     }
+
+    /**
+     * Clears the session factory when the container is disposed.
+     */
+	public void dispose() {
+		close();
+	}
 
 }
