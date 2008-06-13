@@ -24,16 +24,16 @@ import org.codehaus.groovy.runtime.InvokerHelper;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.script.LifecycleMode;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedContainerBuilder;
-import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.DefaultPicoContainer;
 
 /**
  * {@inheritDoc}
- * The groovy script has to return an instance of {@link ScriptedPicoContainer}.
+ * The groovy script has to return an instance of {@link org.picocontainer.classname.ClassLoadingPicoContainer}.
  * There is an implicit variable named "parent" that may contain a reference to a parent
  * container. 
  *
@@ -66,7 +66,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
 
         Binding binding = new Binding();
         if ( parentContainer == null ){
-            parentContainer = new DefaultScriptedPicoContainer(getClassLoader(), new DefaultPicoContainer(new Caching(), new EmptyPicoContainer()));
+            parentContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), new DefaultPicoContainer(new Caching(), new EmptyPicoContainer()));
         }
         binding.setVariable("parent", parentContainer);
         binding.setVariable("builder", createNodeBuilder());
@@ -134,8 +134,8 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
 
         if (picoVariable instanceof PicoContainer) {
             return (PicoContainer) picoVariable;
-        } else if (picoVariable instanceof ScriptedPicoContainer) {
-            return ((ScriptedPicoContainer) picoVariable);
+        } else if (picoVariable instanceof ClassLoadingPicoContainer) {
+            return ((ClassLoadingPicoContainer) picoVariable);
         } else {
             throw new ScriptedPicoContainerMarkupException("Bad type for pico:" + picoVariable.getClass().getName());
         }

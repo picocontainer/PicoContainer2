@@ -3,7 +3,7 @@ package org.picocontainer.script;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.picocontainer.script.ClassName;
+import org.picocontainer.classname.ClassName;
 
 /**
  * 

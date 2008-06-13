@@ -7,7 +7,7 @@ import java.io.FilePermission;
 import java.net.URL;
 
 import org.junit.Test;
-import org.picocontainer.script.ClassPathElement;
+import org.picocontainer.classname.ClassPathElement;
 
 /**
  * 

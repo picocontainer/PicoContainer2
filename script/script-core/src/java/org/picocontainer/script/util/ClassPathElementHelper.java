@@ -14,14 +14,14 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.io.File;
 
-import org.picocontainer.script.ClassPathElement;
-import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.classname.ClassPathElement;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 public class ClassPathElementHelper {
     public static final String HTTP = "http://";
 
-    public static ClassPathElement addClassPathElement(final String path, ScriptedPicoContainer container) {
+    public static ClassPathElement addClassPathElement(final String path, ClassLoadingPicoContainer container) {
         URL pathURL;
         try {
             if (path.toLowerCase().startsWith(HTTP)) {

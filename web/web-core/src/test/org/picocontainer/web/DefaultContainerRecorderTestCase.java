@@ -18,7 +18,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.parameters.ComponentParameter;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.script.testmodel.FredImpl;
 import org.picocontainer.script.testmodel.ThingThatTakesParamsInConstructor;
 import org.picocontainer.script.testmodel.WilmaImpl;
@@ -32,7 +32,7 @@ import org.picocontainer.web.DefaultContainerRecorder;
  */
 public class DefaultContainerRecorderTestCase {
     @Test public void testInvocationsCanBeRecordedAndReplayedOnADifferentContainerInstance() throws Exception {
-        ContainerRecorder recorder = new DefaultContainerRecorder(new DefaultScriptedPicoContainer());
+        ContainerRecorder recorder = new DefaultContainerRecorder(new DefaultClassLoadingPicoContainer());
         MutablePicoContainer recorded = recorder.getContainerProxy();
 
         recorded.addComponent("fruit", "apple");

@@ -19,10 +19,10 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.monitors.AbstractComponentMonitor;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.NodeBuilderDecorator;
-import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.ComponentMonitorStrategy;
 
 /**
@@ -103,7 +103,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
      */
     public Object createNewNode(Object current, Map attributes) throws ScriptedPicoContainerMarkupException {
 
-        return createChildContainer(attributes, (ScriptedPicoContainer) current);
+        return createChildContainer(attributes, (ClassLoadingPicoContainer) current);
     }
 
     /**
@@ -129,7 +129,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
      * @param parent The parent container
      * @return The PicoContainer
      */
-    protected ScriptedPicoContainer createChildContainer(Map<String,Object> attributes, ScriptedPicoContainer parent) {
+    protected ClassLoadingPicoContainer createChildContainer(Map<String,Object> attributes, ClassLoadingPicoContainer parent) {
 
         ClassLoader parentClassLoader;
         MutablePicoContainer childContainer;
@@ -169,7 +169,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
             Class<?> clazz = (Class<?>) attributes.get(CLASS);
             return createPicoContainer(clazz, decoratedPico, parentClassLoader);
         } else {
-            return new DefaultScriptedPicoContainer(parentClassLoader, decoratedPico);
+            return new DefaultClassLoadingPicoContainer(parentClassLoader, decoratedPico);
         }
     }
 
@@ -179,14 +179,14 @@ public class ChildContainerNode extends AbstractBuilderNode {
         }
     }
 
-    private ScriptedPicoContainer createPicoContainer(Class<?> clazz, MutablePicoContainer decoratedPico,
+    private ClassLoadingPicoContainer createPicoContainer(Class<?> clazz, MutablePicoContainer decoratedPico,
             ClassLoader parentClassLoader) {
         DefaultPicoContainer instantiatingContainer = new DefaultPicoContainer();
         instantiatingContainer.addComponent(ClassLoader.class, parentClassLoader);
         instantiatingContainer.addComponent(MutablePicoContainer.class, decoratedPico);
-        instantiatingContainer.addComponent(ScriptedPicoContainer.class, clazz);
-        Object componentInstance = instantiatingContainer.getComponent(ScriptedPicoContainer.class);
-        return (ScriptedPicoContainer) componentInstance;
+        instantiatingContainer.addComponent(ClassLoadingPicoContainer.class, clazz);
+        Object componentInstance = instantiatingContainer.getComponent(ClassLoadingPicoContainer.class);
+        return (ClassLoadingPicoContainer) componentInstance;
     }
 
     private ComponentFactory createComponentFactory(Map<String,Object> attributes) {

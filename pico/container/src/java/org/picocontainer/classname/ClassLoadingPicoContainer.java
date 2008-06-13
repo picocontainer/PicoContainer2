@@ -5,22 +5,21 @@
  * license a copy of which has been included with this distribution in the
  * LICENSE.txt file. 
  ******************************************************************************/
-package org.picocontainer.script;
+package org.picocontainer.classname;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.classname.ClassPathElement;
 
 import java.net.URL;
 
 /**
- * A ScriptedPicoContainer is used primarily by the various
- * {@link org.picocontainer.script.ScriptedContainerBuilder ScriptedContainerBuilder}
- * implementations in the org.picocontainer.script.[scripting engine] packages.
+ * A ClassLoadingPicoContainer extends PicoContainer with classloader juggling capability
  * 
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */
-public interface ScriptedPicoContainer extends MutablePicoContainer {
+public interface ClassLoadingPicoContainer extends MutablePicoContainer {
 
     /**
      * Adds a new URL that will be used in classloading
@@ -44,7 +43,7 @@ public interface ScriptedPicoContainer extends MutablePicoContainer {
      * @param name the container name
      * @return The ScriptedPicoContainer
      */
-    ScriptedPicoContainer makeChildContainer(String name);
+    ClassLoadingPicoContainer makeChildContainer(String name);
 
     /**
      * Addes a child container with a given name
@@ -52,6 +51,6 @@ public interface ScriptedPicoContainer extends MutablePicoContainer {
      * @param name the container name
      * @param child the child PicoContainer
      */
-    ScriptedPicoContainer addChildContainer(String name, PicoContainer child);
+    ClassLoadingPicoContainer addChildContainer(String name, PicoContainer child);
 
 }

@@ -35,9 +35,10 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
 
     @Test public void testDependenciesAreSatisfiable() {
         Reader script = new StringReader(
-                "from org.picocontainer.script import *\n" +                
+                "from org.picocontainer.classname import *\n" +
+                "from org.picocontainer.script import *\n" +
                 "from org.picocontainer.script.testmodel import *\n" +
-                "pico = DefaultScriptedPicoContainer()\n" +
+                "pico = DefaultClassLoadingPicoContainer()\n" +
                 "pico.addComponent(WebServerImpl)\n" +
                 "pico.addComponent(DefaultWebServerConfig)\n");
         PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
@@ -46,10 +47,11 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
 
     @Test public void testDependenciesAreSatisfiableByParentContainer() {
         Reader script = new StringReader("" +
-                "from org.picocontainer.script import *\n" +                
+                "from org.picocontainer.classname import *\n" +
+                "from org.picocontainer.script import *\n" +
                 "from org.picocontainer.script.testmodel import *\n" +
                 "from org.picocontainer import Parameter\n"+
-                "pico = DefaultScriptedPicoContainer()\n" +
+                "pico = DefaultClassLoadingPicoContainer()\n" +
                 "pico.addComponent(DefaultWebServerConfig)\n" +
                 "child = pico.makeChildContainer()\n" +
                 "child.addComponent(WebServerImpl)\n" +
@@ -62,8 +64,9 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
     public void testDependenciesAreUnsatisfiable() {
         Reader script = new StringReader("" +
                 "from org.picocontainer.script.testmodel import *\n" +
+                "from org.picocontainer.classname import *\n" +
                 "from org.picocontainer.script import *\n" +      
-                "pico = DefaultScriptedPicoContainer()\n" +
+                "pico = DefaultClassLoadingPicoContainer()\n" +
                 "pico.addComponent(WebServerImpl)\n");
         PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         pico.getComponent(WebServer.class);
@@ -71,7 +74,8 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
 
     @Test public void testContainerCanBeBuiltWithParent() {
         Reader script = new StringReader("" +
-                "from org.picocontainer.script import *\n" +                
+                "from org.picocontainer.script import *\n" +
+                "from org.picocontainer.classname import *\n" +
                 "from org.picocontainer.script.testmodel import *\n" +
                 "pico = ScriptedBuilder(parent).withLifecycle().build()\n");
         PicoContainer parent = new DefaultPicoContainer();
@@ -83,7 +87,8 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
 	@Test public void testAutoStartingContainerBuilderStarts() {
         A.reset();
         Reader script = new StringReader("" +
-                "from org.picocontainer.script import *\n" +                
+                "from org.picocontainer.script import *\n" +
+                "from org.picocontainer.classname import *\n" +
                 "from org.picocontainer.script.testmodel import *\n" +
                 "pico = parent.makeChildContainer() \n" +
                 "pico.addComponent(A)\n" +
@@ -100,6 +105,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
         A.reset();
         Reader script = new StringReader("" +
                 "from org.picocontainer.script.testmodel import *\n" +
+                "from org.picocontainer.classname import *\n" +
                 "from org.picocontainer.script import *\n" +                
                 "pico = parent.makeChildContainer() \n" +
                 "pico.addComponent(A)\n" +

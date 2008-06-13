@@ -9,8 +9,8 @@ package org.picocontainer.script.groovy.nodes;
 
 import java.util.Map;
 
-import org.picocontainer.script.ClassPathElement;
-import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.classname.ClassPathElement;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.script.util.ClassPathElementHelper;
 
 
@@ -37,10 +37,10 @@ public class ClasspathNode extends AbstractBuilderNode {
 
 
     public Object createNewNode(Object current, Map attributes) {
-        return createClassPathElementNode(attributes, (ScriptedPicoContainer) current);
+        return createClassPathElementNode(attributes, (ClassLoadingPicoContainer) current);
     }
 
-    private ClassPathElement createClassPathElementNode(Map attributes, ScriptedPicoContainer container) {
+    private ClassPathElement createClassPathElementNode(Map attributes, ClassLoadingPicoContainer container) {
 
         final String path = (String) attributes.remove(PATH);
         return ClassPathElementHelper.addClassPathElement(path, container);

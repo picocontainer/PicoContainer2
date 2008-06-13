@@ -8,8 +8,8 @@
 package org.picocontainer.script.util;
 
 import org.picocontainer.Parameter;
-import org.picocontainer.script.ClassName;
-import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.ClassName;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 import java.util.Properties;
@@ -17,10 +17,10 @@ import java.util.Properties;
 
 public class ComponentElementHelper {
 
-    public static Object makeComponent(Object classNamekey, Object key, Parameter[] parameters, Object classValue, ScriptedPicoContainer current, Object instance, Properties[] properties) {
-        ScriptedPicoContainer container = current;
+    public static Object makeComponent(Object classNamekey, Object key, Parameter[] parameters, Object classValue, ClassLoadingPicoContainer current, Object instance, Properties[] properties) {
+        ClassLoadingPicoContainer container = current;
         if (properties.length != 0) {
-            container = (ScriptedPicoContainer) current.as(properties);
+            container = (ClassLoadingPicoContainer) current.as(properties);
         }
         if (classNamekey != null)  {
             key = new ClassName((String)classNamekey);
@@ -46,7 +46,7 @@ public class ComponentElementHelper {
                                        Object key,
                                        Parameter[] parameters,
                                        Object classValue,
-                                       ScriptedPicoContainer container, Object instance) {
+                                       ClassLoadingPicoContainer container, Object instance) {
         return makeComponent(classNameKey, key, parameters, classValue, container, instance, new Properties[0]);
     }
 }

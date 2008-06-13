@@ -16,11 +16,11 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.script.ClassName;
+import org.picocontainer.classname.ClassName;
 import org.picocontainer.script.ContainerBuilder;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
-import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.web.WebappComposer;
 
 /**
@@ -79,7 +79,7 @@ public class ScriptedWebappComposer implements WebappComposer {
     }
 
     private ContainerBuilder createContainerBuilder(Reader reader) {
-        ScriptedPicoContainer scripted = new DefaultScriptedPicoContainer(getClassLoader());
+        ClassLoadingPicoContainer scripted = new DefaultClassLoadingPicoContainer(getClassLoader());
         Parameter[] parameters = new Parameter[] { new ConstantParameter(reader),
                 new ConstantParameter(getClassLoader()) };
         scripted.addComponent(containerBuilderClassName, new ClassName(containerBuilderClassName), parameters);

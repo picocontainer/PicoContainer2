@@ -16,6 +16,8 @@ import java.net.URL;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
+import org.picocontainer.classname.ClassName;
 
 /**
  * Factory class for scripted container builders of various scripting languages.
@@ -165,7 +167,7 @@ public class ScriptedContainerBuilderFactory {
      * @param classLoader the Classloader to use for instantiation
      */
     private void createContainerBuilder(Object composition, String builderClassName, ClassLoader classLoader) {
-        DefaultScriptedPicoContainer defaultScriptedContainer;
+        DefaultClassLoadingPicoContainer defaultScriptedContainer;
         {
             // transient.
             DefaultPicoContainer factory = new DefaultPicoContainer();
@@ -185,7 +187,7 @@ public class ScriptedContainerBuilderFactory {
             // If we don't specify the classloader here, some of the things that
             // make up a scripted container may bomb. And we're only talking a
             // reload within a webapp! -MR
-            defaultScriptedContainer = new DefaultScriptedPicoContainer(classLoader, factory);
+            defaultScriptedContainer = new DefaultClassLoadingPicoContainer(classLoader, factory);
         }
         ClassName className = new ClassName(builderClassName);
         MutablePicoContainer mutablePicoContainer = defaultScriptedContainer.addComponent(className, className);

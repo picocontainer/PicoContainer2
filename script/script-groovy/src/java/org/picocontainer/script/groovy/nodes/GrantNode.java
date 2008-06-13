@@ -10,7 +10,7 @@ package org.picocontainer.script.groovy.nodes;
 import java.util.Map;
 import java.security.Permission;
 
-import org.picocontainer.script.ClassPathElement;
+import org.picocontainer.classname.ClassPathElement;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 
 /**

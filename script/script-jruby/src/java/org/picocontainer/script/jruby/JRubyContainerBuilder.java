@@ -23,7 +23,7 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.script.LifecycleMode;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.ScriptedContainerBuilder;
@@ -76,7 +76,7 @@ public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
 		if (parentContainer == null) {
 			parentContainer = new EmptyPicoContainer();
 		}
-		parentContainer = new DefaultScriptedPicoContainer(getClassLoader(), new DefaultPicoContainer(new Caching(),
+		parentContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), new DefaultPicoContainer(new Caching(),
 		        parentContainer));
 
 		

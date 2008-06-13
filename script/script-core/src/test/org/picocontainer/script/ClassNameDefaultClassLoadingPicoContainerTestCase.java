@@ -20,19 +20,19 @@ import org.junit.Test;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoException;
-import org.picocontainer.script.ClassName;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
-import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
+import org.picocontainer.classname.ClassName;
 import org.picocontainer.script.testmodel.WebServerImpl;
 
 /**
  * @author Paul Hammant
  */
-public class ClassNameDefaultScriptedPicoContainerTestCase {
+public class ClassNameDefaultClassLoadingPicoContainerTestCase {
 
     @Test
     public void testBasic() throws PicoCompositionException {
-        ScriptedPicoContainer container = new DefaultScriptedPicoContainer();
+        ClassLoadingPicoContainer container = new DefaultClassLoadingPicoContainer();
         container.addComponent(new ClassName("org.picocontainer.script.testmodel.DefaultWebServerConfig"));
         container.addComponent("org.picocontainer.script.testmodel.WebServer", new ClassName(
                 "org.picocontainer.script.testmodel.WebServerImpl"));
@@ -40,7 +40,7 @@ public class ClassNameDefaultScriptedPicoContainerTestCase {
 
     @Test
     public void testProvision() throws PicoException {
-        ScriptedPicoContainer container = new DefaultScriptedPicoContainer();
+        ClassLoadingPicoContainer container = new DefaultClassLoadingPicoContainer();
         container.addComponent(new ClassName("org.picocontainer.script.testmodel.DefaultWebServerConfig"));
         container.addComponent(new ClassName("org.picocontainer.script.testmodel.WebServerImpl"));
 
@@ -50,7 +50,7 @@ public class ClassNameDefaultScriptedPicoContainerTestCase {
 
     @Test
     public void testNoGenerationRegistration() throws PicoCompositionException {
-        ScriptedPicoContainer container = new DefaultScriptedPicoContainer();
+        ClassLoadingPicoContainer container = new DefaultClassLoadingPicoContainer();
         try {
             container.addComponent(new ClassName("Ping"));
             fail("should have failed");
@@ -63,7 +63,7 @@ public class ClassNameDefaultScriptedPicoContainerTestCase {
     public void testThatTestCompIsNotNaturallyInTheClassPathForTesting() {
         // the following tests try to load the jar containing TestComp - it
         // won't do to have the class already available in the classpath
-        DefaultScriptedPicoContainer dfca = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer dfca = new DefaultClassLoadingPicoContainer();
         try {
             dfca.addComponent("foo", new ClassName("TestComp"));
             Object o = dfca.getComponent("foo");
@@ -80,7 +80,7 @@ public class ClassNameDefaultScriptedPicoContainerTestCase {
         File testCompJar = TestHelper.getTestCompJarFile();
 
         // Set up parent
-        ScriptedPicoContainer parentContainer = new DefaultScriptedPicoContainer();
+        ClassLoadingPicoContainer parentContainer = new DefaultClassLoadingPicoContainer();
         parentContainer.addClassLoaderURL(testCompJar.toURL());
         parentContainer.addComponent("parentTestComp", new ClassName("TestComp"));
         parentContainer.addComponent(new ClassName("java.lang.StringBuffer"));
@@ -89,7 +89,7 @@ public class ClassNameDefaultScriptedPicoContainerTestCase {
         assertEquals("TestComp", parentTestComp.getClass().getName());
 
         // Set up child
-        ScriptedPicoContainer childContainer = (ScriptedPicoContainer) parentContainer.makeChildContainer();
+        ClassLoadingPicoContainer childContainer = (ClassLoadingPicoContainer) parentContainer.makeChildContainer();
         File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
         // System.err.println("--> " + testCompJar2.getAbsolutePath());
         childContainer.addClassLoaderURL(testCompJar2.toURL());
@@ -126,7 +126,7 @@ public class ClassNameDefaultScriptedPicoContainerTestCase {
 
     @Test
     public void testClassLoaderJugglingIsPossible() throws MalformedURLException {
-        ScriptedPicoContainer parentContainer = new DefaultScriptedPicoContainer();
+        ClassLoadingPicoContainer parentContainer = new DefaultClassLoadingPicoContainer();
 
         File testCompJar = TestHelper.getTestCompJarFile();
 
@@ -136,7 +136,7 @@ public class ClassNameDefaultScriptedPicoContainerTestCase {
         assertEquals("org.picocontainer.script.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass()
                 .getName());
 
-        ScriptedPicoContainer childContainer = new DefaultScriptedPicoContainer(parentContainer);
+        ClassLoadingPicoContainer childContainer = new DefaultClassLoadingPicoContainer(parentContainer);
         childContainer.addClassLoaderURL(testCompJar.toURL());
         childContainer.addComponent("bar", new ClassName("TestComp"));
 
@@ -164,7 +164,7 @@ public class ClassNameDefaultScriptedPicoContainerTestCase {
 
     //TODO @Test
     public void testSecurityManagerCanPreventOperations() throws MalformedURLException {
-        ScriptedPicoContainer parentContainer = new DefaultScriptedPicoContainer();
+        ClassLoadingPicoContainer parentContainer = new DefaultClassLoadingPicoContainer();
 
         String testcompJarFileName = System.getProperty("testcomp.jar");
         assertNotNull("The testcomp.jar system property does not exist", testcompJarFileName);
@@ -177,7 +177,7 @@ public class ClassNameDefaultScriptedPicoContainerTestCase {
         assertEquals("org.picocontainer.script.testmodel.DefaultWebServerConfig", fooWebServerConfig.getClass()
                 .getName());
 
-        ScriptedPicoContainer childContainer = new DefaultScriptedPicoContainer(parentContainer);
+        ClassLoadingPicoContainer childContainer = new DefaultClassLoadingPicoContainer(parentContainer);
         childContainer.addClassLoaderURL(testCompJar.toURL());
         // TODO childContainer.setPermission(some permission list, that includes
         // the preventing of general file access);

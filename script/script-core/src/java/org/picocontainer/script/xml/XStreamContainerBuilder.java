@@ -22,11 +22,11 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
 import org.picocontainer.script.LifecycleMode;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
@@ -326,7 +326,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
                 componentFactory = (ComponentFactory) componentFactoryClass.newInstance();
             }
             MutablePicoContainer picoContainer = new DefaultPicoContainer(componentFactory);
-            DefaultScriptedPicoContainer scripted = new DefaultScriptedPicoContainer(getClassLoader(), picoContainer);
+            DefaultClassLoadingPicoContainer scripted = new DefaultClassLoadingPicoContainer(getClassLoader(), picoContainer);
             populateContainer(scripted);
             return scripted;
         } catch (ClassNotFoundException e) {

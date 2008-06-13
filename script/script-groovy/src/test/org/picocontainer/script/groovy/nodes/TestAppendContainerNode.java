@@ -19,9 +19,9 @@ import java.util.HashMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.script.groovy.nodes.AppendContainerNode;
 
 /**
@@ -50,9 +50,9 @@ public class TestAppendContainerNode {
 
     @Test public void testCreateNodeWithParmeterReturnsParameter() throws ScriptedPicoContainerMarkupException {
         HashMap params = new HashMap();
-        ScriptedPicoContainer scripted = new DefaultScriptedPicoContainer();
+        ClassLoadingPicoContainer scripted = new DefaultClassLoadingPicoContainer();
         params.put(AppendContainerNode.CONTAINER, scripted);
-        ScriptedPicoContainer scripted2 = (ScriptedPicoContainer)appendContainerNode.createNewNode(null,params);
+        ClassLoadingPicoContainer scripted2 = (ClassLoadingPicoContainer)appendContainerNode.createNewNode(null,params);
         assertTrue(scripted == scripted2);
     }
 

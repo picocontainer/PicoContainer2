@@ -14,7 +14,7 @@ import java.util.Properties;
 import org.picocontainer.Parameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.script.NodeBuilderDecorator;
-import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.script.util.ComponentElementHelper;
 
 /**
@@ -89,7 +89,7 @@ public class ComponentNode extends AbstractBuilderNode {
         Object properties = attributes.remove(PROPERTIES);
 
         return ComponentElementHelper.makeComponent(classNameKey, key, getParameters(parameters), classValue,
-                (ScriptedPicoContainer) current, instance, getProperties(properties));
+                (ClassLoadingPicoContainer) current, instance, getProperties(properties));
     }
 
     private static Parameter[] getParameters(Object params) {

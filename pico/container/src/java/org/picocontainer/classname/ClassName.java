@@ -5,7 +5,7 @@
  * license a copy of which has been included with this distribution in the
  * LICENSE.txt file. 
  ******************************************************************************/
-package org.picocontainer.script;
+package org.picocontainer.classname;
 
 /**
  * ClassName is a simple wrapper for a class name which is used as a key in

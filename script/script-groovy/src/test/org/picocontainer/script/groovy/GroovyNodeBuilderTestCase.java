@@ -40,9 +40,9 @@ import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.script.TestHelper;
 import org.picocontainer.script.groovy.GroovyCompilationException;
 import org.picocontainer.script.groovy.GroovyContainerBuilder;
@@ -399,7 +399,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     @Test public void testCustomComponentMonitorCanBeSpecifiedWhenParentIsSpecified() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
@@ -419,7 +419,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     @Test public void testCustomComponentMonitorCanBeSpecifiedWhenParentAndCAFAreSpecified() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "import java.io.StringWriter\n" +
@@ -483,7 +483,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     @Test public void testBuildContainerWithParentAttribute() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
         parent.addComponent("hello", "world");
 
         Reader script = new StringReader("" +
@@ -500,7 +500,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     @Test public void testBuildContainerWithParentDependencyAndAssemblyScope() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
         parent.addComponent("a", A.class);
 
         Reader script = new StringReader("" +
@@ -535,7 +535,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
                 "}\n");
 
         Reader script = new StringReader(scriptValue);
-        ScriptedPicoContainer parent = new DefaultScriptedPicoContainer(
+        ClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(
             buildContainer(script, null, new ParentAssemblyScope()));
 
         assertNotNull(parent.getComponentAdapter(A.class, (NameBinding) null));
@@ -548,7 +548,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     @Test public void testBuildContainerWhenExpectedParentDependencyIsNotFound() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new Caching());
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(new Caching());
 
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
@@ -568,7 +568,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     @Test public void testBuildContainerWithParentAttributesPropagatesComponentFactory() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new SetterInjection() );
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(new SetterInjection() );
         Reader script = new StringReader("" +
                 "scripted = builder.container(parent:parent) {\n" +
                 "}\n");
@@ -582,7 +582,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     @Test public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new SetterInjection() );
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(new SetterInjection() );
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
                 "import org.picocontainer.script.testmodel.*\n" +
@@ -603,7 +603,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
     // TODO
     @Test public void testSpuriousAttributes() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
 
         Reader script = new StringReader("" +
                 "package org.picocontainer.script.groovy\n" +
@@ -623,7 +623,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     @Test public void testWithDynamicClassPathThatDoesNotExist() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
         try {
             Reader script = new StringReader("" +
                     "        child = null\n" +
@@ -642,7 +642,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     @Test public void testWithDynamicClassPath() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new Caching());
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(new Caching());
         Reader script = new StringReader(
                 "        builder = new org.picocontainer.script.groovy.GroovyNodeBuilder()\n"
               + "        File testCompJar = org.picocontainer.script.TestHelper.getTestCompJarFile()\n"
@@ -664,7 +664,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     @Test public void testWithDynamicClassPathWithPermissions() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new Caching());
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(new Caching());
         Reader script = new StringReader(
                 ""
                 + "        builder = new org.picocontainer.script.groovy.GroovyNodeBuilder()\n"
@@ -687,7 +687,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
 
     @Test public void testGrantPermissionInWrongPlace() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new Caching());
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(new Caching());
         try {
             Reader script = new StringReader("" +
                     "        builder = new org.picocontainer.script.groovy.GroovyNodeBuilder()\n" +
@@ -749,7 +749,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     @Test public void testValidationTurnedOnThrowsExceptionForUnknownAttributes() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
         Reader script = new StringReader(
             "import org.picocontainer.script.NullNodeBuilderDecorator\n" +
             "import org.picocontainer.script.groovy.GroovyNodeBuilder\n" +
@@ -771,7 +771,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
     }
 
     @Test public void testValidationTurnedOffDoesntThrowExceptionForUnknownAttributes() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
         Reader script = new StringReader(
             "import org.picocontainer.script.NullNodeBuilderDecorator\n" +
             "import org.picocontainer.script.groovy.GroovyNodeBuilder\n" +

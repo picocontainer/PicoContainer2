@@ -8,7 +8,7 @@
  * Original code by Paul Hammant                                             *
  *****************************************************************************/
 
-package org.picocontainer.script;
+package org.picocontainer.classname;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -21,18 +21,18 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
-import org.picocontainer.script.ScriptedPicoContainer;
 import org.picocontainer.tck.AbstractPicoContainerTest;
 
 /**
  * @author Paul Hammant
  */
-public class DefaultScriptedPicoContainerTestCase extends AbstractPicoContainerTest {
+public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContainerTest {
 
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
-        return new DefaultScriptedPicoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new Caching(), parent));
+        return new DefaultClassLoadingPicoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new Caching(), parent));
     }
 
     protected Properties[] getProperties() {
@@ -41,9 +41,9 @@ public class DefaultScriptedPicoContainerTestCase extends AbstractPicoContainerT
 
     @Test public void testNamedChildContainerIsAccessible()  {
         StringBuffer sb = new StringBuffer();
-        final ScriptedPicoContainer parent = (ScriptedPicoContainer) createPicoContainer(null);
+        final ClassLoadingPicoContainer parent = (ClassLoadingPicoContainer) createPicoContainer(null);
         parent.addComponent(sb);
-        final ScriptedPicoContainer child = (ScriptedPicoContainer) parent.makeChildContainer("foo");
+        final ClassLoadingPicoContainer child = (ClassLoadingPicoContainer) parent.makeChildContainer("foo");
         child.addComponent(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
         LifeCycleMonitoring o = (LifeCycleMonitoring) parent.getComponent((Object)("foo/*" + LifeCycleMonitoring.class.getName()));
         assertNotNull(o);
@@ -51,7 +51,7 @@ public class DefaultScriptedPicoContainerTestCase extends AbstractPicoContainerT
 
     @Test public void testNamedChildContainerIsAccessibleForStringKeys() {
         StringBuffer sb = new StringBuffer();
-        final ScriptedPicoContainer parent = (ScriptedPicoContainer) createPicoContainer(null);
+        final ClassLoadingPicoContainer parent = (ClassLoadingPicoContainer) createPicoContainer(null);
         parent.addComponent(sb);
         final MutablePicoContainer child = parent.makeChildContainer("foo");
         child.addComponent("lcm",LifeCycleMonitoring.class);
@@ -62,7 +62,7 @@ public class DefaultScriptedPicoContainerTestCase extends AbstractPicoContainerT
 
     @Test public void testNamedChildContainerIsAccessibleForClassKeys() {
         StringBuffer sb = new StringBuffer();
-        final ScriptedPicoContainer parent = (ScriptedPicoContainer) createPicoContainer(null);
+        final ClassLoadingPicoContainer parent = (ClassLoadingPicoContainer) createPicoContainer(null);
         parent.addComponent(sb);
         final MutablePicoContainer child = parent.makeChildContainer("foo");
         child.addComponent(LifeCycleMonitoring.class,LifeCycleMonitoring.class);
@@ -72,7 +72,7 @@ public class DefaultScriptedPicoContainerTestCase extends AbstractPicoContainerT
     }
 
     @Test public void testMakeRemoveChildContainer() {
-        final ScriptedPicoContainer parent = (ScriptedPicoContainer) createPicoContainer(null);
+        final ClassLoadingPicoContainer parent = (ClassLoadingPicoContainer) createPicoContainer(null);
         parent.addComponent("java.lang.String", "This is a test");
         MutablePicoContainer pico = parent.makeChildContainer();
         // Verify they are indeed wired together.
@@ -87,7 +87,7 @@ public class DefaultScriptedPicoContainerTestCase extends AbstractPicoContainerT
     }
 
     protected void addContainers(List expectedList) {
-        expectedList.add(DefaultScriptedPicoContainer.class);
+        expectedList.add(DefaultClassLoadingPicoContainer.class);
         expectedList.add(DefaultPicoContainer.class);
     }
 

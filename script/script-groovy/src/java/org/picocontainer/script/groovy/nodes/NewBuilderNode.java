@@ -12,9 +12,9 @@ import java.util.Map;
 import groovy.lang.GroovyObject;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.script.ClassName;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
-import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
+import org.picocontainer.classname.ClassName;
 
 /**
  * Handles the child of container 'newBuilder' node.
@@ -58,8 +58,8 @@ public class NewBuilderNode extends AbstractBuilderNode {
     public Object createNewNode(final Object current, final Map<String,Object> attributes) {
         Object builderClass = attributes.remove(CLASS_ATTRIBUTE);
 
-        ScriptedPicoContainer factory = new DefaultScriptedPicoContainer();
-        MutablePicoContainer parentPico = ((ScriptedPicoContainer) current);
+        ClassLoadingPicoContainer factory = new DefaultClassLoadingPicoContainer();
+        MutablePicoContainer parentPico = ((ClassLoadingPicoContainer) current);
         factory.addComponent(MutablePicoContainer.class, parentPico);
         if (builderClass instanceof String) {
             factory.addComponent(GroovyObject.class, new ClassName((String) builderClass));

@@ -11,7 +11,7 @@ import java.util.Map;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
 
 /**
  * Sometimes it is worthwhile to split apart node building into functions. For
@@ -84,7 +84,7 @@ public class AppendContainerNode extends AbstractBuilderNode {
         }
 
         Object attributeValue = attributes.get(CONTAINER);
-        if (!(attributeValue instanceof ScriptedPicoContainer) && !(attributeValue instanceof PicoContainer)) {
+        if (!(attributeValue instanceof ClassLoadingPicoContainer) && !(attributeValue instanceof PicoContainer)) {
             throw new ClassCastException(attributeValue.toString()
                     + " must be a derivative of ScriptedPicoContainer or PicoContainer.  Got: "
                     + attributeValue.getClass().getName() + " instead.");

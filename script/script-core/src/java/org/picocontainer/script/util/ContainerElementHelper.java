@@ -10,9 +10,9 @@ package org.picocontainer.script.util;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
-import org.picocontainer.script.ScriptedPicoContainer;
 import org.picocontainer.behaviors.Caching;
 
 import java.util.Set;
@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class ContainerElementHelper {
 
-    public static ScriptedPicoContainer makeScriptedPicoContainer(ComponentFactory componentFactory,
+    public static ClassLoadingPicoContainer makeScriptedPicoContainer(ComponentFactory componentFactory,
             PicoContainer parent, ClassLoader classLoader) {
         if (parent == null) {
             parent = new EmptyPicoContainer();
@@ -34,7 +34,7 @@ public class ContainerElementHelper {
         if (componentFactory == null) {
             componentFactory = new Caching();
         }
-        return new DefaultScriptedPicoContainer(classLoader, new DefaultPicoContainer(componentFactory, parent));
+        return new DefaultClassLoadingPicoContainer(classLoader, new DefaultPicoContainer(componentFactory, parent));
 
     }
 

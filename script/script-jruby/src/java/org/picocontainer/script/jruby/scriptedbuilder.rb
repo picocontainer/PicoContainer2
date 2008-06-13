@@ -15,7 +15,7 @@
 #
 module Scripted
   Parameter = org.picocontainer.Parameter
-  DefaultScriptedPicoContainer = org.picocontainer.script.DefaultScriptedPicoContainer
+  DefaultScriptedPicoContainer = org.picocontainer.classname.DefaultClassLoadingPicoContainer
   DefaultPicoContainer = org.picocontainer.DefaultPicoContainer
   ComponentParameter = org.picocontainer.parameters.ComponentParameter
   ConstantParameter = org.picocontainer.parameters.ConstantParameter

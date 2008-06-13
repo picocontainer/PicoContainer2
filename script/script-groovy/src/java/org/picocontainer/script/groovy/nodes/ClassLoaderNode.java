@@ -9,8 +9,8 @@ package org.picocontainer.script.groovy.nodes;
 
 import java.util.Map;
 
-import org.picocontainer.script.DefaultScriptedPicoContainer;
-import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
 
 /**
  * @author Paul Hammant
@@ -26,8 +26,8 @@ public class ClassLoaderNode extends AbstractBuilderNode {
 
     public Object createNewNode(Object current, Map<String, Object> attributes) {
 
-        ScriptedPicoContainer container = (ScriptedPicoContainer) current;
-        return new DefaultScriptedPicoContainer(container.getComponentClassLoader(), container);
+        ClassLoadingPicoContainer container = (ClassLoadingPicoContainer) current;
+        return new DefaultClassLoadingPicoContainer(container.getComponentClassLoader(), container);
     }
 
 }

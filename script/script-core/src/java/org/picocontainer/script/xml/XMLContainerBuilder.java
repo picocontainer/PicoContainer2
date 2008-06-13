@@ -30,19 +30,19 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.classname.ClassPathElement;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.script.ClassName;
-import org.picocontainer.script.ClassPathElement;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
+import org.picocontainer.classname.ClassName;
 import org.picocontainer.script.LifecycleMode;
 import org.picocontainer.script.ScriptedBuilder;
 import org.picocontainer.script.ScriptedContainerBuilder;
-import org.picocontainer.script.ScriptedPicoContainer;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -174,8 +174,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             if (parentClass != null && !EMPTY.equals(parentClass)) {
                 classLoader = classLoader.loadClass(parentClass).getClassLoader();
             }
-            ScriptedPicoContainer scriptedContainer = new DefaultScriptedPicoContainer(classLoader, container);
-            registerComponentsAndChildContainers(scriptedContainer, rootElement, new DefaultScriptedPicoContainer(getClassLoader()));
+            ClassLoadingPicoContainer scriptedContainer = new DefaultClassLoadingPicoContainer(classLoader, container);
+            registerComponentsAndChildContainers(scriptedContainer, rootElement, new DefaultClassLoadingPicoContainer(getClassLoader()));
         } catch (ClassNotFoundException e) {
             throw new ScriptedPicoContainerMarkupException("Class not found: " + e.getMessage(), e);
         } catch (IOException e) {
@@ -185,9 +185,9 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
     }
 
-    private void registerComponentsAndChildContainers(ScriptedPicoContainer parentContainer, Element containerElement, ScriptedPicoContainer knownComponentAdapterFactories) throws ClassNotFoundException, IOException, SAXException {
+    private void registerComponentsAndChildContainers(ClassLoadingPicoContainer parentContainer, Element containerElement, ClassLoadingPicoContainer knownComponentAdapterFactories) throws ClassNotFoundException, IOException, SAXException {
 
-        ScriptedPicoContainer metaContainer = new DefaultScriptedPicoContainer(getClassLoader(), knownComponentAdapterFactories);
+        ClassLoadingPicoContainer metaContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), knownComponentAdapterFactories);
         NodeList children = containerElement.getChildNodes();
         // register classpath first, regardless of order in the document.
         for (int i = 0; i < children.getLength(); i++) {
@@ -205,7 +205,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                 String name = childElement.getNodeName();
                 if (CONTAINER.equals(name)) {
                     MutablePicoContainer childContainer = parentContainer.makeChildContainer();
-                    ScriptedPicoContainer childPicoContainer = new DefaultScriptedPicoContainer(parentContainer.getComponentClassLoader(), childContainer);
+                    ClassLoadingPicoContainer childPicoContainer = new DefaultClassLoadingPicoContainer(parentContainer.getComponentClassLoader(), childContainer);
                     registerComponentsAndChildContainers(childPicoContainer, childElement, metaContainer);
                 } else if (COMPONENT_IMPLEMENTATION.equals(name)
                         || COMPONENT.equals(name)) {
@@ -226,7 +226,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
     }
 
 
-    private void addComponentFactory(Element element, ScriptedPicoContainer metaContainer) throws MalformedURLException, ClassNotFoundException {
+    private void addComponentFactory(Element element, ClassLoadingPicoContainer metaContainer) throws MalformedURLException, ClassNotFoundException {
         if (notSet(element.getAttribute(KEY))) {
             throw new ScriptedPicoContainerMarkupException("'" + KEY + "' attribute not specified for " + element.getNodeName());
         }
@@ -257,17 +257,17 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         registerComponent(metaContainer, node);
     }
 
-    private void registerClassLoader(ScriptedPicoContainer parentContainer, Element childElement, ScriptedPicoContainer metaContainer) throws IOException, SAXException, ClassNotFoundException {
+    private void registerClassLoader(ClassLoadingPicoContainer parentContainer, Element childElement, ClassLoadingPicoContainer metaContainer) throws IOException, SAXException, ClassNotFoundException {
         String parentClass = childElement.getAttribute("parentclassloader");
         ClassLoader parentClassLoader = parentContainer.getComponentClassLoader();
         if (parentClass != null && !EMPTY.equals(parentClass)) {
             parentClassLoader = parentClassLoader.loadClass(parentClass).getClassLoader();
         }
-        ScriptedPicoContainer scripted = new DefaultScriptedPicoContainer(parentClassLoader, parentContainer);
+        ClassLoadingPicoContainer scripted = new DefaultClassLoadingPicoContainer(parentClassLoader, parentContainer);
         registerComponentsAndChildContainers(scripted, childElement, metaContainer);
     }
 
-    private void registerClasspath(ScriptedPicoContainer container, Element classpathElement) throws IOException, ClassNotFoundException {
+    private void registerClasspath(ClassLoadingPicoContainer container, Element classpathElement) throws IOException, ClassNotFoundException {
         NodeList children = classpathElement.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             if (children.item(i) instanceof Element) {
@@ -310,7 +310,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
 
     }
 
-    private void registerComponent(ScriptedPicoContainer container, Element element) throws ClassNotFoundException, MalformedURLException {
+    private void registerComponent(ClassLoadingPicoContainer container, Element element) throws ClassNotFoundException, MalformedURLException {
         String className = element.getAttribute(CLASS);
         if (notSet(className)) {
             throw new ScriptedPicoContainerMarkupException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
@@ -336,7 +336,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
 
 
 
-    private Parameter[] createChildParameters(ScriptedPicoContainer container, Element element) throws ClassNotFoundException, MalformedURLException {
+    private Parameter[] createChildParameters(ClassLoadingPicoContainer container, Element element) throws ClassNotFoundException, MalformedURLException {
         List<Parameter> parametersList = new ArrayList<Parameter>();
         NodeList children = element.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
@@ -446,7 +446,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
     }
 
 
-    private void registerComponentInstance(ScriptedPicoContainer container, Element element) throws ClassNotFoundException, PicoCompositionException, MalformedURLException {
+    private void registerComponentInstance(ClassLoadingPicoContainer container, Element element) throws ClassNotFoundException, PicoCompositionException, MalformedURLException {
         Object instance = createInstance(container, element);
         String key = element.getAttribute(KEY);
         String classKey = element.getAttribute(CLASS_NAME_KEY);
@@ -504,7 +504,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
     }
 
-    private void registerComponentAdapter(ScriptedPicoContainer container, Element element, ScriptedPicoContainer metaContainer) throws ClassNotFoundException, PicoCompositionException, MalformedURLException {
+    private void registerComponentAdapter(ClassLoadingPicoContainer container, Element element, ClassLoadingPicoContainer metaContainer) throws ClassNotFoundException, PicoCompositionException, MalformedURLException {
         String className = element.getAttribute(CLASS);
         if (notSet(className)) {
             throw new ScriptedPicoContainerMarkupException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
@@ -525,7 +525,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         container.as(Characteristics.NONE).addAdapter(componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), key, implementationClass, parameters));
     }
 
-    private ComponentFactory createComponentFactory(String factoryName, ScriptedPicoContainer metaContainer) throws PicoCompositionException {
+    private ComponentFactory createComponentFactory(String factoryName, ClassLoadingPicoContainer metaContainer) throws PicoCompositionException {
         if ( notSet(factoryName)) {
             return new Caching().wrap(new ConstructorInjection());
         }

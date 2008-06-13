@@ -41,7 +41,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
 
         Reader script = new StringReader("" +
         		"importPackage(Packages.org.picocontainer.script) \n" +
-                "var pico = new DefaultScriptedPicoContainer()\n" +
+                "var pico = new DefaultClassLoadingPicoContainer()\n" +
                 "pico.addComponent(Packages.org.picocontainer.script.testmodel.DefaultWebServerConfig)\n");
 
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
@@ -54,7 +54,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         Reader script = new StringReader("" +
         		"importPackage(Packages.org.picocontainer.script) \n" +
         		"importPackage(Packages.org.picocontainer.injectors) \n" +
-                "var pico = new DefaultScriptedPicoContainer(new ConstructorInjection())\n" +
+                "var pico = new DefaultClassLoadingPicoContainer(new ConstructorInjection())\n" +
                 "pico.addComponent(Packages.org.picocontainer.script.testmodel.DefaultWebServerConfig)\n" +
                 "pico.addComponent(Packages.org.picocontainer.script.testmodel.WebServerImpl)\n");
 
@@ -81,7 +81,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         		"importPackage(Packages.org.picocontainer) \n" +
         		"importPackage(Packages.org.picocontainer.injectors) \n" +
         		"\n" +
-                "var pico = new DefaultScriptedPicoContainer()\n" +
+                "var pico = new DefaultClassLoadingPicoContainer()\n" +
                 "pico.addComponent('parentComponent', Packages." + FooTestComp.class.getName() + ", Parameter.ZERO)\n" +
                 "child = pico.makeChildContainer()\n" +
                 "url = new File('" + testCompJarPath + "').toURL()\n" +
@@ -116,7 +116,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
         Reader script = new StringReader("" +
         		"importPackage(Packages.org.picocontainer.script) \n" +
         		"importPackage(Packages.org.picocontainer) \n" +
-                "var pico = new DefaultScriptedPicoContainer()\n" +
+                "var pico = new DefaultClassLoadingPicoContainer()\n" +
                 "pico.addComponent( new Packages." + FooTestComp.class.getName() + "())\n" +
                 "pico.addComponent( 'foo', new Packages." + FooTestComp.class.getName() + "(), java.lang.reflect.Array.newInstance(Parameter,0))\n");
 
@@ -133,7 +133,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
     @Test public void testContainerCanBeBuiltWithParent() {
         Reader script = new StringReader("" +
         		"importPackage(Packages.org.picocontainer.script) \n" +
-                "var pico = new DefaultScriptedPicoContainer(parent)\n");
+                "var pico = new DefaultClassLoadingPicoContainer(parent)\n");
         PicoContainer parent = new DefaultPicoContainer();
         PicoContainer ipc = new ImmutablePicoContainer(parent);
         PicoContainer pico = buildContainer(new JavascriptContainerBuilder(script, getClass().getClassLoader()), ipc, "SOME_SCOPE");

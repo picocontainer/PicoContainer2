@@ -18,10 +18,10 @@ import java.util.Map;
 
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.script.NodeBuilderDecorator;
 import org.picocontainer.script.NullNodeBuilderDecorator;
-import org.picocontainer.script.ScriptedPicoContainer;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.picocontainer.script.groovy.nodes.AppendContainerNode;
 import org.picocontainer.script.groovy.nodes.BeanNode;
@@ -246,22 +246,22 @@ public class GroovyNodeBuilder extends BuilderSupport {
      * @return ScriptedPicoContainer, never null.
      * @throws ScriptedPicoContainerMarkupException
      */
-    private ScriptedPicoContainer extractOrCreateValidRootPicoContainer(final Map attributes)
+    private ClassLoadingPicoContainer extractOrCreateValidRootPicoContainer(final Map attributes)
             throws ScriptedPicoContainerMarkupException {
         Object parentAttribute = attributes.get(PARENT);
         //
         // NanoPicoContainer implements MutablePicoCotainer AND PicoContainer
         // So we want to check for PicoContainer first.
         //
-        if (parentAttribute instanceof ScriptedPicoContainer) {
+        if (parentAttribute instanceof ClassLoadingPicoContainer) {
             // we're not in an enclosing scope - look at parent attribute
             // instead
-            return (ScriptedPicoContainer) parentAttribute;
+            return (ClassLoadingPicoContainer) parentAttribute;
         }
         if (parentAttribute instanceof MutablePicoContainer) {
             // we're not in an enclosing scope - look at parent attribute
             // instead
-            return new DefaultScriptedPicoContainer((MutablePicoContainer) parentAttribute);
+            return new DefaultClassLoadingPicoContainer((MutablePicoContainer) parentAttribute);
         }
         return null;
     }

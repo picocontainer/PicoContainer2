@@ -16,6 +16,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.InjectionFactory;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
 
 /**
@@ -25,9 +27,9 @@ import org.picocontainer.containers.TransientPicoContainer;
  */
 public final class ScriptedBuilder {
 
-    private Class<? extends ScriptedPicoContainer> scriptClass = DefaultScriptedPicoContainer.class;
+    private Class<? extends ClassLoadingPicoContainer> scriptClass = DefaultClassLoadingPicoContainer.class;
     private final PicoBuilder picoBuilder;
-    private ClassLoader classLoader = DefaultScriptedPicoContainer.class.getClassLoader();
+    private ClassLoader classLoader = DefaultClassLoadingPicoContainer.class.getClassLoader();
 
     public ScriptedBuilder(PicoContainer parentcontainer, InjectionFactory injectionType) {
         picoBuilder = new PicoBuilder(parentcontainer, injectionType);
@@ -45,12 +47,12 @@ public final class ScriptedBuilder {
         picoBuilder = new PicoBuilder();
     }
 
-    public ScriptedPicoContainer build() {
+    public ClassLoadingPicoContainer build() {
         DefaultPicoContainer tpc = new TransientPicoContainer();
         tpc.addComponent(ClassLoader.class, classLoader);
         tpc.addComponent("sc", scriptClass);
         tpc.addComponent(MutablePicoContainer.class, buildPico());
-        return (ScriptedPicoContainer)tpc.getComponent("sc");
+        return (ClassLoadingPicoContainer)tpc.getComponent("sc");
     }
 
     public MutablePicoContainer buildPico() {
@@ -117,7 +119,7 @@ public final class ScriptedBuilder {
         return this;
     }
 
-    public ScriptedBuilder implementedBy(Class<? extends ScriptedPicoContainer> scriptedContainerClass) {
+    public ScriptedBuilder implementedBy(Class<? extends ClassLoadingPicoContainer> scriptedContainerClass) {
         scriptClass = scriptedContainerClass;
         return this;
     }

@@ -748,7 +748,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
         String xml = new XStream().toXML(pico).replace('\"','\'');
 
-        assertEquals("<org.picocontainer.script.DefaultScriptedPicoContainer>\n" +
+        assertEquals("<org.picocontainer.classname.DefaultClassLoadingPicoContainer>\n" +
                 "  <namedChildContainers/>\n" +
                 "  <delegate class='org.picocontainer.DefaultPicoContainer'>\n" +
                 "    <componentKeyToAdapterCache/>\n" +
@@ -773,7 +773,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "    </componentCharacteristic>\n" +
                 "    <componentMonitor class='org.picocontainer.monitors.NullComponentMonitor' reference='../lifecycleStrategy/componentMonitor'/>\n" +
                 "  </delegate>\n" +
-                "</org.picocontainer.script.DefaultScriptedPicoContainer>", xml);
+                "</org.picocontainer.classname.DefaultClassLoadingPicoContainer>", xml);
 
         // This test suggests that testComponentCanUsePredefinedNestedCAF() is not testing what it hopes to test
     }

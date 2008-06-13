@@ -13,7 +13,7 @@ package org.picocontainer.script;
 import org.picocontainer.PicoException;
 
 /**
- * Exception thrown when invalid markup is encountered when assembling {@link org.picocontainer.script.ScriptedPicoContainer ScriptedPicoContainer}s.
+ * Exception thrown when invalid markup is encountered when assembling {@link org.picocontainer.classname.ClassLoadingPicoContainer ScriptedPicoContainer}s.
  *
  * @author <a href="mailto:james@coredevelopers.net">James Strachan</a>
  * @author Aslak Helles&oslash;y

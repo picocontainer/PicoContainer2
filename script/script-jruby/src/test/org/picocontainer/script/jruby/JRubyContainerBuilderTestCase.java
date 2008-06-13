@@ -43,10 +43,10 @@ import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
-import org.picocontainer.script.DefaultScriptedPicoContainer;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.script.LifecycleMode;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
-import org.picocontainer.script.ScriptedPicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.script.TestHelper;
 import org.picocontainer.script.testmodel.A;
 import org.picocontainer.script.testmodel.B;
@@ -301,7 +301,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testCustomComponentMonitorCanBeSpecifiedWhenParentIsSpecified() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
         Reader script = new StringReader(
                                          "A = org.picocontainer.script.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
@@ -319,7 +319,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testCustomComponentMonitorCanBeSpecifiedWhenParentAndCAFAreSpecified() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
         Reader script = new StringReader(
                                          "A = org.picocontainer.script.testmodel.A\n" +
                                          "StringWriter = java.io.StringWriter\n" +
@@ -383,7 +383,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testBuildContainerWithParentAttribute() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
         parent.addComponent("hello", "world");
 
         Reader script = new StringReader(
@@ -398,7 +398,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testBuildContainerWithParentDependencyAndAssemblyScope() throws Exception {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
         parent.addComponent("a", A.class);
 
         String source =
@@ -441,7 +441,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
                              "}\n";
 
         Reader script = new StringReader(scriptValue);
-        ScriptedPicoContainer parent = new DefaultScriptedPicoContainer(
+        ClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(
             buildContainer(script, null, new ParentAssemblyScope()));
         assertNotNull(parent.getComponentAdapter(A.class, (NameBinding) null));
 
@@ -483,7 +483,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     
 
     public void FAILING_testBuildContainerWithParentAttributesPropagatesComponentFactory() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new SetterInjection());
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(new SetterInjection());
         Reader script = new StringReader("container(:parent => $parent)\n");
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, parent, ASSEMBLY_SCOPE);
@@ -494,7 +494,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer(new SetterInjection());
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(new SetterInjection());
         Reader script = new StringReader(
                                          "A = org.picocontainer.script.testmodel.A\n" +
                                          "B = org.picocontainer.script.testmodel.B\n" +
@@ -515,7 +515,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
     //TODO
     @Test public void testSpuriousAttributes() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
 
         Reader script = new StringReader(
                                          "container(:jim => 'Jam', :foo => 'bar')");
@@ -528,7 +528,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testWithDynamicClassPathThatDoesNotExist() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
         try {
             Reader script = new StringReader(
                                              "container {\n" +
@@ -545,7 +545,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testWithDynamicClassPath() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
         Reader script = new StringReader(
             "TestHelper = org.picocontainer.script.TestHelper\n"
             + "testCompJar = TestHelper.getTestCompJarFile()\n"
@@ -563,7 +563,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testWithDynamicClassPathWithPermissions() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
         Reader script = new StringReader(
             "TestHelper = org.picocontainer.script.TestHelper\n" +
             "SocketPermission = java.net.SocketPermission\n"
@@ -584,7 +584,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
 
     @Test public void testGrantPermissionInWrongPlace() {
-        DefaultScriptedPicoContainer parent = new DefaultScriptedPicoContainer();
+        DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
         try {
             Reader script = new StringReader(
                 "TestHelper = org.picocontainer.script.TestHelper\n" +
