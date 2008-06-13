@@ -3,6 +3,28 @@
 <title>Composition</title>
 </head>
 <body>
-	
+<p>Webapps that leverage PicoContainer-Web, will require some composition of components mapped to application, session and request.  
+	Typically, request scoped components are 'actions'.</p>
+<div class="source"><pre>
+	public class ExampleWebappComposer implements WebappComposer {
+
+	    public void composeApplication(MutablePicoContainer appContainer) {
+	        appContainer.addComponent(CheeseDao.class, MemoryCheeseDao.class);
+	    }
+
+	    public void composeSession(MutablePicoContainer sessionContainer) {
+	        sessionContainer.addComponent(CheeseService.class, DefaultCheeseService.class);
+	    }
+
+	    public void composeRequest(MutablePicoContainer requestContainer) {
+		    // for Struts1 &amp; 2 and Webwork 1 &amp; 2 the request level components are added lazily
+		    // as they have their own XML for defining action mappings.
+		    // Waffle does not have XML in that way so would need actions added here.
+	    }
+	}	
+</pre></div>
+<p>
+Here is a real composition class that is used by the Struts1 &amp; 2 and Webwork 1 &amp; 2 examples: <a
+	href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/web-example/src/java/org/picocontainer/web/sample/ExampleWebappComposer.java">ExampleWebappComposer.java</a></p>
 </body>
 </html>
