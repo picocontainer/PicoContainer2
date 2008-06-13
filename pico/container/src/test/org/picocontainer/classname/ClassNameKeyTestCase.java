@@ -1,4 +1,4 @@
-package org.picocontainer.script;
+package org.picocontainer.classname;
 
 import static org.junit.Assert.assertEquals;
 
