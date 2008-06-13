@@ -283,11 +283,12 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
         return this;
     }
 
-    public void addChildContainer(String name, PicoContainer child) {
+    public ScriptedPicoContainer addChildContainer(String name, PicoContainer child) {
 
         super.addChildContainer(child);
 
         namedChildContainers.put(name, child);
+        return this;
     }
 
     private Class<?> loadClass(final String className) {
@@ -358,9 +359,8 @@ public class DefaultScriptedPicoContainer extends AbstractDelegatingMutablePicoC
             return DefaultScriptedPicoContainer.this.makeChildContainer(name);
         }
 
-        public void addChildContainer(String name, PicoContainer child) {
-            DefaultScriptedPicoContainer.this.addChildContainer(child);
-
+        public ScriptedPicoContainer addChildContainer(String name, PicoContainer child) {
+            return (ScriptedPicoContainer) DefaultScriptedPicoContainer.this.addChildContainer(child);
         }
 
         public MutablePicoContainer addComponent(Object componentKey, Object componentImplementationOrInstance,

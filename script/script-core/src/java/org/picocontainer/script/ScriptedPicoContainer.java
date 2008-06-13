@@ -52,6 +52,6 @@ public interface ScriptedPicoContainer extends MutablePicoContainer {
      * @param name the container name
      * @param child the child PicoContainer
      */
-    void addChildContainer(String name, PicoContainer child);
+    ScriptedPicoContainer addChildContainer(String name, PicoContainer child);
 
 }
