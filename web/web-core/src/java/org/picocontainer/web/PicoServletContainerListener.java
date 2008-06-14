@@ -18,6 +18,8 @@ import javax.servlet.http.HttpSessionListener;
 
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Storing;
 
@@ -72,7 +74,7 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
      * Default constructor used in webapp containers
      */
     public PicoServletContainerListener() {
-        applicationContainer = new DefaultPicoContainer(new Caching());
+        applicationContainer = new DefaultPicoContainer(new Caching(), makeParentContainer());
         sessionStoring = new Storing();
         sessionContainer = new DefaultPicoContainer(sessionStoring, applicationContainer);
         requestStoring = new Storing();
@@ -98,6 +100,10 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         this.sessionStoring = sessionStoring;
         this.requestStoring = requestStoring;
         useCompositionClass = false;
+    }
+
+    protected PicoContainer makeParentContainer() {
+        return new EmptyPicoContainer();
     }
 
     public void contextInitialized(final ServletContextEvent event) {
