@@ -1,24 +1,22 @@
-/*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- *****************************************************************************/
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved. 
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.web.webwork2;
 
-import com.opensymphony.xwork.ObjectFactory;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ObjectReference;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.web.PicoServletContainerFilter;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
-import java.util.HashMap;
+import com.opensymphony.xwork.ObjectFactory;
 
 /**
  * <p>
@@ -33,38 +31,24 @@ import java.util.HashMap;
  */
 public class PicoObjectFactory extends ObjectFactory {
 
-    private final Map classCache = new HashMap();
+    private final Map<String, Class<?>> classCache = new HashMap<String, Class<?>>();
 
     public boolean isNoArgConstructorRequired() {
         return false;
     }
 
-    /**
-     * Webwork-2.2 / XWork-1.1 method. ExtraContext can be ignored.
-     * @throws Exception
-     * @param clazz
-     * @param extraContext
-     * @return
-     */
+    @SuppressWarnings("unchecked")
     public Object buildBean(Class clazz, Map extraContext) throws Exception {
         return buildBean(clazz);
     }
 
-    /**
-     * Webwork-2.2 / XWork-1.1 method. ExtraContext can be ignored.
-     * @return
-     * @param extraContext
-     * @throws Exception
-     * @param className
-     */
+    @SuppressWarnings("unchecked")
     public Object buildBean(String className, Map extraContext) throws Exception {
         return buildBean(className);
     }
 
-    /**
-     * Webwork-2.2 / XWork-1.1 method. Used to validate a class be loaded.
-     * Using actionsContainerFactory for consistency with build methods.
-     */
+
+    @SuppressWarnings("unchecked")
     public Class getClassInstance(String className) {
         return getActionClass(className);
     }
@@ -76,7 +60,7 @@ public class PicoObjectFactory extends ObjectFactory {
      * 
      * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.Class)
      */
-    public Object buildBean(Class actionClass) throws Exception {
+    public Object buildBean(Class<?> actionClass) throws Exception {
         PicoContainer actionsContainer = PicoServletContainerFilter.getRequestContainerForThread();
         Object action = actionsContainer.getComponent(actionClass);
 
@@ -100,11 +84,10 @@ public class PicoObjectFactory extends ObjectFactory {
      * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.String)
      */
     public Object buildBean(String className) throws Exception {
-        Class actionClass = getActionClass(className);
-        return buildBean(actionClass);
+        return buildBean(getActionClass(className));
     }
 
-    public Class getActionClass(String className) throws PicoCompositionException {
+    public Class<?> getActionClass(String className) throws PicoCompositionException {
         try {
             return loadClass(className);
         } catch (ClassNotFoundException e) {
@@ -112,12 +95,11 @@ public class PicoObjectFactory extends ObjectFactory {
         }
     }
 
-    protected Class loadClass(String className) throws ClassNotFoundException {
+    protected Class<?> loadClass(String className) throws ClassNotFoundException {
         if (classCache.containsKey(className)) {
-            return (Class) classCache.get(className);
+            return (Class<?>) classCache.get(className);
         } else {
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            Class result = classLoader.loadClass(className);
+            Class<?> result = Thread.currentThread().getContextClassLoader().loadClass(className);
             classCache.put(className, result);
             return result;
         }

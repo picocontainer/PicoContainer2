@@ -21,7 +21,7 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
 
 /**
  * XWork2 ObjectFactory implementation to delegate action/component/bean lookups
- * to PicoContainer. 
+ * to PicoContainer.
  * 
  * @author Paul Hammant
  * @author Mauro Talevi
@@ -36,15 +36,15 @@ public class PicoObjectFactory extends ObjectFactory {
         return clazz;
     }
 
-    private void registerAction(Class clazz) throws NoClassDefFoundError {
+    private void registerAction(Class<?> clazz) throws NoClassDefFoundError {
 
         synchronized (this) {
 
             MutablePicoContainer reqContainer = PicoServletContainerFilter.getRequestContainerForThread();
-            if ( reqContainer == null){
+            if (reqContainer == null) {
                 return;
             }
-            ComponentAdapter ca = reqContainer.getComponentAdapter(clazz);
+            ComponentAdapter<?> ca = reqContainer.getComponentAdapter(clazz);
             if (ca == null) {
                 try {
                     reqContainer.addComponent(clazz);
@@ -52,6 +52,8 @@ public class PicoObjectFactory extends ObjectFactory {
                     if (e.getMessage().equals("org/apache/velocity/context/Context")) {
                         // half expected. XWork seems to setup stuff that cannot
                         // work
+                        // TODO if this is the case we should make configurable
+                        // the list of classes we "expect" not to find.  Odd!
                     } else {
                         throw e;
                     }
@@ -64,7 +66,7 @@ public class PicoObjectFactory extends ObjectFactory {
     public Object buildBean(Class clazz, Map extraContext) throws Exception {
 
         MutablePicoContainer requestContainer = PicoServletContainerFilter.getRequestContainerForThread();
-        if ( requestContainer == null ){
+        if (requestContainer == null) {
             MutablePicoContainer appContainer = PicoServletContainerFilter.getApplicationContainerForThread();
             Object comp = appContainer.getComponent(clazz);
             if (comp == null) {

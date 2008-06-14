@@ -1,11 +1,10 @@
-/*****************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved.            *
- * ------------------------------------------------------------------------- *
- * The software in this package is published under the terms of the BSD      *
- * style license a copy of which has been included with this distribution in *
- * the LICENSE.txt file.                                                     *
- *                                                                           *
- *****************************************************************************/
+/*******************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved. 
+ * ---------------------------------------------------------------------------
+ * The software in this package is published under the terms of the BSD style
+ * license a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ ******************************************************************************/
 package org.picocontainer.web.webwork;
 
 import java.util.HashMap;
@@ -19,24 +18,24 @@ import webwork.action.Action;
 import webwork.action.factory.ActionFactory;
 
 /**
- * Replacement for the standard WebWork JavaActionFactory that uses a 
+ * Replacement for the standard WebWork JavaActionFactory that uses a
  * PicoContainer to resolve all of the dependencies an Action may have.
- *
+ * 
  * @author Joe Walnes
  * @author Mauro Talevi
  */
 public final class PicoActionFactory extends ActionFactory {
 
-    private final Map classCache = new HashMap();
+    private final Map<String, Class<?>> classCache = new HashMap<String, Class<?>>();
 
     public Action getActionImpl(String className) {
         try {
-            Class actionClass = getActionClass(className);
+            Class<?> actionClass = getActionClass(className);
             Action action = null;
             try {
                 action = instantiateAction(actionClass);
             } catch (Exception e) {
-                //swallow these exceptions and return null action
+                // swallow these exceptions and return null action
             }
             return action;
         } catch (PicoCompositionException e) {
@@ -44,10 +43,10 @@ public final class PicoActionFactory extends ActionFactory {
         }
     }
 
-    protected Action instantiateAction(Class actionClass) {
+    protected Action instantiateAction(Class<?> actionClass) {
         MutablePicoContainer actionsContainer = PicoServletContainerFilter.getRequestContainerForThread();
         Action action = (Action) actionsContainer.getComponent(actionClass);
-        
+
         if (action == null) {
             // The action wasn't registered. Attempt to instantiate it.
             actionsContainer.addComponent(actionClass);
@@ -56,7 +55,7 @@ public final class PicoActionFactory extends ActionFactory {
         return action;
     }
 
-        public Class getActionClass(String className) throws PicoCompositionException {
+    public Class<?> getActionClass(String className) throws PicoCompositionException {
         try {
             return loadClass(className);
         } catch (ClassNotFoundException e) {
@@ -64,15 +63,14 @@ public final class PicoActionFactory extends ActionFactory {
         }
     }
 
-    protected Class loadClass(String className) throws ClassNotFoundException {
+    protected Class<?> loadClass(String className) throws ClassNotFoundException {
         if (classCache.containsKey(className)) {
-            return (Class) classCache.get(className);
+            return (Class<?>) classCache.get(className);
         } else {
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            Class result = classLoader.loadClass(className);
+            Class<?> result = Thread.currentThread().getContextClassLoader().loadClass(className);
             classCache.put(className, result);
             return result;
         }
-    } 
+    }
 
 }
