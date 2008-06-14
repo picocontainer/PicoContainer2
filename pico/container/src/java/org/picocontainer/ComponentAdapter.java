@@ -11,11 +11,16 @@ import java.lang.reflect.Type;
 
 /**
  * A component adapter is responsible for providing a specific component
- * instance of type <T>. An instance of an implementation of this interface is
+ * instance of type &lt;T&gt;. An instance of an implementation of this interface is
  * used inside a {@link PicoContainer} for every registered component or
  * instance. Each <code>ComponentAdapter</code> instance has to have a key
  * which is unique within that container. The key itself is either a class type
  * (normally an interface) or an identifier.
+ * <p>In a overly simplistic sense, the ComponentAdapter can be thought of us a type of
+ * an object factory.  If you need to modify how your object is constructed, use and appropriate
+ * ComponentAdapter or roll your own since the API is purposely kept rather simple.  See
+ * <a href="http://www.picocontainer.org/adapters.html">http://www.picocontainer.org/adapters.html</a>
+ * for more information.</p>
  *
  * @author Jon Tirs&eacute;n
  * @author Paul Hammant
