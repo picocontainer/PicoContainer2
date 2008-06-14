@@ -920,4 +920,45 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
             };
         }
     }
+
+    private abstract class Footle<T> {
+        private class ServiceConnectionInjector extends FactoryInjector<T> {
+            public T getComponentInstance(PicoContainer container, Type into) {
+                System.out.println("**** injector called for " + into);
+                return null;
+            }
+        }
+        private void addAdapter(MutablePicoContainer mpc) {
+            mpc.addAdapter(new ServiceConnectionInjector());
+        }
+    }
+
+    public static interface Tree {
+        String leafColor();
+    }
+    public static class OakTree implements Tree {
+        private String leafColor;
+
+        public OakTree(String leafColor) {
+            this.leafColor = leafColor;
+        }
+
+        public String leafColor() {
+            return leafColor;
+        }
+    }
+
+    @Test public void ensureSophistcatedFactorInjectorCaseIsPossible() {
+
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        pico.addConfig("leafColor", "green");
+        pico.addComponent(Tree.class, OakTree.class);
+
+        Footle<Map> ft = new Footle<Map>(){};
+
+        ft.addAdapter(pico);
+
+        Tree tree = pico.getComponent(Tree.class);
+    }
+
 }
