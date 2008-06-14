@@ -139,6 +139,7 @@
           <configuration>
             <links>
               <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
+			  <link>http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/docs/apidocs/</link>
             </links>
             <stylesheet>maven</stylesheet>
             <header><![CDATA[<img class="logo" src="http://www.picocontainer.org/images/pico-logo.png"></img>]]></header>
@@ -246,19 +247,10 @@
       </build>
     </profile>
     <profile>
-      <!-- reporting profile -->
-      <id>reporting</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-          </plugin>
-          <plugin>
+		<id>distribution</id>
+		<build>
+			<plugins>
+		          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-site-plugin</artifactId>
             <configuration>
@@ -273,7 +265,7 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>
+          <plugin>			  
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
@@ -289,7 +281,7 @@
                   <artifactItems>
                     <artifactItem>
                       <groupId>${pom.groupId}</groupId>
-                      <artifactId>picocontainer-logging</artifactId>
+                      <artifactId>${pom.artifactId}</artifactId>
                       <version>${pom.version}</version>
                       <classifier>javadoc</classifier>
                       <outputDirectory>${project.build.directory}/site/javadoc</outputDirectory>
@@ -336,6 +328,22 @@
                 </goals>
               </execution>
             </executions>
+          </plugin>
+          </plugins>
+		</build>
+    </profile>
+    <profile>
+      <!-- reporting profile -->
+      <id>reporting</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
           </plugin>
         </plugins>
       </build>
