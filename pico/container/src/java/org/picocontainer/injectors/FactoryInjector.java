@@ -41,6 +41,8 @@ public abstract class FactoryInjector<T> implements Injector<T> {
         }
     }
 
+    // from http://www.artima.com/weblogs/viewpost.jsp?thread=208860
+
     public static Class<?> getClass(Type type) {
         if (type instanceof Class) {
             return (Class) type;
