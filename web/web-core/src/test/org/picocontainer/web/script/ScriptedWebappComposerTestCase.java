@@ -29,7 +29,7 @@ public class ScriptedWebappComposerTestCase {
     @Test
     public void canComposedHierarchyWithXStreamBuilder() {
         assertComposedHierarchy(new ScriptedWebappComposer(XStreamContainerBuilder.class.getName(),
-                "nano-application.xml", "nano-session.xml", "nano-request.xml"));
+                "pico-application-xstream.xml", "pico-session-xstream.xml", "pico-request-xstream.xml"));
     }
 
     @Test
