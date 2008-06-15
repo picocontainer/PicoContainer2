@@ -43,7 +43,9 @@ urchinTracker();
 </div>
 
 <div id="leftColumn">
-<div id="navColumn"><#list sitemap.sections as section>
+<div id="navColumn">
+	<h1><a href="..">PicoContainer<br/>homepage</a></h1>
+	<#list sitemap.sections as section>
 <h1>${section.name}</h1>
 <ul>
   <#list section.pages as otherPage> <#if otherPage = page>

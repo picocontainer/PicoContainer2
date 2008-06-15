@@ -1,6 +1,6 @@
 <sitemap>
   <section>
-    <name>About</name>
+    <name>Pico Web Applications</name>
     <page>index.html</page>
     <page>composition.html</page> 
     <page>script-composition.html</page> 
