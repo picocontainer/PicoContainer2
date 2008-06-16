@@ -26,26 +26,26 @@ import org.picocontainer.PicoContainer;
  * 
  */
 @SuppressWarnings("serial")
-public class CommandLineArgumentsPicoContainer extends AbstractDelegatingPicoContainer {
-    public CommandLineArgumentsPicoContainer(String separator, String[] arguments) {
+public class CommandLinePicoContainer extends AbstractDelegatingPicoContainer {
+    public CommandLinePicoContainer(String separator, String[] arguments) {
     	this(separator,arguments,null);
     }
 
-    public CommandLineArgumentsPicoContainer(String separator, String[] arguments, PicoContainer parent ) {
+    public CommandLinePicoContainer(String separator, String[] arguments, PicoContainer parent ) {
     	super(new DefaultPicoContainer(parent));
         for (String argument : arguments) {
             processArgument(argument, separator);
         }
     }
-    public CommandLineArgumentsPicoContainer(String separator, StringReader argumentsProps) throws IOException {
+    public CommandLinePicoContainer(String separator, StringReader argumentsProps) throws IOException {
         this(separator, argumentsProps, new String[0]);
     }
     
-    public CommandLineArgumentsPicoContainer(String separator, StringReader argumentProperties, String[] arguments) throws IOException{
+    public CommandLinePicoContainer(String separator, StringReader argumentProperties, String[] arguments) throws IOException{
     	this(separator,argumentProperties,arguments,null);
     }
 
-    public CommandLineArgumentsPicoContainer(String separator, StringReader argumentProperties, String[] arguments, PicoContainer parent)
+    public CommandLinePicoContainer(String separator, StringReader argumentProperties, String[] arguments, PicoContainer parent)
         throws IOException {
     	super(new DefaultPicoContainer(parent));
     	
@@ -60,11 +60,11 @@ public class CommandLineArgumentsPicoContainer extends AbstractDelegatingPicoCon
         }
     }
     
-    public CommandLineArgumentsPicoContainer(String[] arguments) {
+    public CommandLinePicoContainer(String[] arguments) {
         this("=", arguments);
     }
 
-    public CommandLineArgumentsPicoContainer(String[] arguments, PicoContainer parent) {
+    public CommandLinePicoContainer(String[] arguments, PicoContainer parent) {
     	this("=", arguments,parent);
     }
 

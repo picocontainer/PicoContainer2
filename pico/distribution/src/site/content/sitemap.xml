@@ -42,7 +42,7 @@
     <section>
         <name>Containers Choices</name>
         <page>DefaultPicoContainer.html</page>
-	    <page>CommandLineArgumentsPicoContainer.html</page>
+	    <page>CommandLinePicoContainer.html</page>
 		<page>PropertiesPicoContainer.html</page>
 		<page>SystemPropertiesPicoContainer.html</page>
 		<page>TransientPicoContainer.html</page>
