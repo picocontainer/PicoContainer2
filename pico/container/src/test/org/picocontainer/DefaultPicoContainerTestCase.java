@@ -851,6 +851,18 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     }
 
+    @Test public void testThatComponentCanHaveAProvidedDependencyViaConstructorADifferentWay() {
+        MutablePicoContainer container = new DefaultPicoContainer();
+        container.addComponent(String.class, "foo");
+        container.addComponent(Turnip2.class);
+        container.addAdapter(new Swede2FactoryInjector()); // this injector defines Swede2 as key in its ctor
+        Turnip2 t = container.getComponent(Turnip2.class);
+        assertNotNull(t);
+        assertEquals("Swede for " + Turnip2.class.getName(), t.getSwede().toString());
+        assertEquals("foo", t.getFoo());
+
+    }
+
     @Test
     public void testThatComponentCanHaveAProvidedDependencyViaDecoratorBehavior() {
         MutablePicoContainer container = new DefaultPicoContainer(new SwedeDecorating().wrap(new ConstructorInjection()));
@@ -910,7 +922,20 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     }
 
     private static class SwedeFactoryInjector extends FactoryInjector<Swede> {
+        public Swede getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {
+            // Mauro: you can do anything in here by way of startegy for injecting a specific logger :-)
+            return new Swede() {
+                public String toString() {
+                    return "Swede for " + ((Class) into).getName();
+                }
+            };
+        }
+    }
 
+    private static class Swede2FactoryInjector extends FactoryInjector {
+        private Swede2FactoryInjector() {
+            super(Swede.class);
+        }
         public Swede getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {
             // Mauro: you can do anything in here by way of startegy for injecting a specific logger :-)
             return new Swede() {

@@ -41,6 +41,10 @@ public abstract class FactoryInjector<T> implements Injector<T> {
         }
     }
 
+    public FactoryInjector(Class<T> key) {
+        this.key = key;
+    }
+
     // from http://www.artima.com/weblogs/viewpost.jsp?thread=208860
 
     public static Class<?> getClass(Type type) {
