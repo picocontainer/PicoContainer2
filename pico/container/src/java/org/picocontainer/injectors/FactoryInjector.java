@@ -46,7 +46,6 @@ public abstract class FactoryInjector<T> implements Injector<T> {
     }
 
     // from http://www.artima.com/weblogs/viewpost.jsp?thread=208860
-
     public static Class<?> getClass(Type type) {
         if (type instanceof Class) {
             return (Class) type;
@@ -68,16 +67,16 @@ public abstract class FactoryInjector<T> implements Injector<T> {
     /**
    * Get the actual type arguments a child class has used to extend a generic base class.
    *
-   * @param baseClass the base class
-   * @param childClass the child class
+   * @param class1 the base class
+   * @param class2 the child class
    * @return a list of the raw classes for the actual type arguments.
    */
   public static <T> List<Class<?>> getTypeArguments(
-    Class<T> baseClass, Class<? extends T> childClass) {
+    Class<FactoryInjector> class1, Class<? extends Object> class2) {
     Map<Type, Type> resolvedTypes = new HashMap<Type, Type>();
-    Type type = childClass;
+    Type type = class2;
     // start walking up the inheritance hierarchy until we hit baseClass
-    while (! getClass(type).equals(baseClass)) {
+    while (! getClass(type).equals(class1)) {
       if (type instanceof Class) {
         // there is no useful information for us in raw types, so just keep going.
         type = ((Class) type).getGenericSuperclass();
@@ -92,7 +91,7 @@ public abstract class FactoryInjector<T> implements Injector<T> {
           resolvedTypes.put(typeParameters[i], actualTypeArguments[i]);
         }
 
-        if (!rawType.equals(baseClass)) {
+        if (!rawType.equals(class1)) {
           type = rawType.getGenericSuperclass();
         }
       }
