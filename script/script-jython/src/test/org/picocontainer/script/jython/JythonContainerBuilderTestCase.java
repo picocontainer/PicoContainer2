@@ -9,14 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.script.jython;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-
 import java.io.Reader;
 import java.io.StringReader;
 
-import org.junit.Before;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoBuilder;
@@ -33,13 +29,7 @@ import org.picocontainer.script.testmodel.WebServerImpl;
  * @author Mauro Talevi
  */
 public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBuilderTestCase {
-
-    @Before
-    public void before(){
-        //See http://jython.org/Project/userguide.html#the-jython-registry
-        System.setProperty("python.cachedir", "target/cachedir");
-    }
-    
+ 
     @Test public void testDependenciesAreSatisfiable() {
         Reader script = new StringReader(
                 "from org.picocontainer.classname import *\n" +

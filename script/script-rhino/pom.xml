@@ -9,36 +9,6 @@
   <artifactId>picocontainer-script-rhino</artifactId>
   <name>PicoContainer Script Rhino</name>
   <packaging>jar</packaging>
-    <build>
-      <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-             <!--
-            <version>2.4.3</version>
-            <configuration>
-              <junitArtifactName>junit:junit-dep</junitArtifactName>
-              <forkMode>once</forkMode>
-              <workingDirectory>${basedir}</workingDirectory>
-              <systemProperties>
-                <property>
-                  <name>java.awt.headless</name>
-                  <value>true</value>
-                </property>
-                <property>
-                  <name>testcomp.jar</name>
-                  <value>${basedir}/../script-core/src/test-comp/TestComp.jar</value>
-                </property>
-              </systemProperties>
-              <includes>
-                <include>**/*Test.java</include>
-                <include>**/*TestCase.java</include>
-              </includes>
-            </configuration>
-            -->
-          </plugin>
-      </plugins>
-    </build>
   <dependencies>
     <dependency>
       <groupId>org.picocontainer.script</groupId>
