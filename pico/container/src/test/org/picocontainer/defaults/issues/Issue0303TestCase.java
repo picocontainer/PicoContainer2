@@ -31,7 +31,7 @@ public class Issue0303TestCase {
 	}
 
 	public static class Starter implements Startable {
-		@Override
+
 		public void start() {
 			throw new RuntimeException("deliberate exception");
 		}
@@ -39,7 +39,6 @@ public class Issue0303TestCase {
 		/**
 		 * {@inheritDoc}
 		 */
-		@Override
 		public void stop() {
 			// empty
 		}
