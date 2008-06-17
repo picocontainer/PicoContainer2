@@ -18,6 +18,7 @@ import java.lang.reflect.Type;
 /**
  * component adapter to test script instantiation.
  */
+@SuppressWarnings({ "serial", "unchecked" })
 public final class TestAdapter extends AbstractAdapter {
 
     final String foo;

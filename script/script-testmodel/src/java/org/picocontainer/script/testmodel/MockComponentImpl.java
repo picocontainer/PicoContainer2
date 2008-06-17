@@ -16,7 +16,7 @@ import java.util.Collection;
 public final class MockComponentImpl implements MockComponent {
     private int port = 0;
     private String server = null;
-    private final Collection registers = new ArrayList();
+    private final Collection<Integer> registers = new ArrayList<Integer>();
 
     public int getPort() {
         return port;

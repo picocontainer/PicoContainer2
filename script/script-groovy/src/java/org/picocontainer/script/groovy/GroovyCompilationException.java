@@ -33,7 +33,7 @@ public final class GroovyCompilationException extends ScriptedPicoContainerMarku
     public String getMessage() {
         StringBuffer sb = new StringBuffer();
         sb.append(super.getMessage()).append("\n");
-        List errors = getErrors(compilationFailedException);
+        List<?> errors = getErrors(compilationFailedException);
         for (Object error : errors) {
             if (error instanceof ExceptionMessage) {
                 ExceptionMessage em = (ExceptionMessage) error;
@@ -49,12 +49,12 @@ public final class GroovyCompilationException extends ScriptedPicoContainerMarku
      * @param e the CompilationFailedException
      * @return A List of errors
      */
-    private List getErrors(CompilationFailedException e) {
+    private List<?> getErrors(CompilationFailedException e) {
         ProcessingUnit unit = e.getUnit();
         if ( unit != null ){
             ErrorCollector collector = unit.getErrorCollector();
             if ( collector != null ){
-                List errors = collector.getErrors();
+                List<?> errors = collector.getErrors();
                 if ( errors != null ){
                     return errors;
                 }

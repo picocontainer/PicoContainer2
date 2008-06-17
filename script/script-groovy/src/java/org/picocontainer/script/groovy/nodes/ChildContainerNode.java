@@ -35,6 +35,7 @@ import org.picocontainer.ComponentMonitorStrategy;
  * @author Michael Rimov
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class ChildContainerNode extends AbstractBuilderNode {
 
     /**
@@ -101,6 +102,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
      * @return Object
      * @throws ScriptedPicoContainerMarkupException
      */
+    @SuppressWarnings("unchecked")
     public Object createNewNode(Object current, Map attributes) throws ScriptedPicoContainerMarkupException {
 
         return createChildContainer(attributes, (ClassLoadingPicoContainer) current);
@@ -129,6 +131,7 @@ public class ChildContainerNode extends AbstractBuilderNode {
      * @param parent The parent container
      * @return The PicoContainer
      */
+    @SuppressWarnings("unchecked")
     protected ClassLoadingPicoContainer createChildContainer(Map<String,Object> attributes, ClassLoadingPicoContainer parent) {
 
         ClassLoader parentClassLoader;

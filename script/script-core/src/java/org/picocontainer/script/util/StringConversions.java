@@ -30,7 +30,7 @@ public class StringConversions {
     }
 }
 
-    private final Map<Class, StringConverter> converters = new HashMap<Class, StringConverter>();
+    private final Map<Class<?>, StringConverter<?>> converters = new HashMap<Class<?>, StringConverter<?>>();
 
     public StringConversions() {
         register(String.class, new StringConverter<String>() {
@@ -62,15 +62,15 @@ public class StringConversions {
         });
     }
 
-    public Object convertTo(Class desiredClass, String inputString) {
-        StringConverter converter = converters.get(desiredClass);
+    public Object convertTo(Class<?> desiredClass, String inputString) {
+        StringConverter<?> converter = converters.get(desiredClass);
         if (converter == null) {
             throw new InvalidConversionException("Cannot convert to type " + desiredClass.getName());
         }
         return converter.convert(inputString);
     }
 
-    public void register(Class type, StringConverter converter) {
+    public void register(Class<?> type, StringConverter<?> converter) {
         converters.put(type, converter);
     }
 }

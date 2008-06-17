@@ -18,6 +18,7 @@ import java.util.Map;
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  */
+@SuppressWarnings("unchecked")
 public class NullNodeBuilderDecorator implements NodeBuilderDecorator {
     public ComponentFactory decorate(ComponentFactory componentFactory, Map attributes) {
         return componentFactory;

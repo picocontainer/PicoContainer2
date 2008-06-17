@@ -72,6 +72,7 @@ import org.picocontainer.script.groovy.nodes.NewBuilderNode;
  * @author Michael Rimov
  * @author Mauro Talevi
  */
+@SuppressWarnings("unchecked")
 public class GroovyNodeBuilder extends BuilderSupport {
 
     private static final String CLASS = "class";

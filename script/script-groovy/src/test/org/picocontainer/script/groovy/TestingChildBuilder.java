@@ -27,6 +27,7 @@ public final class TestingChildBuilder extends NodeBuilder {
         this.toOperateOn = toOperateOn;
     }
 
+    @SuppressWarnings("unchecked")
     protected Object createNode(Object name, Map map) {
         if (name.equals("component")) {
             return toOperateOn.addComponent(map.remove("key"), map.remove("class"));

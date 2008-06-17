@@ -93,7 +93,7 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
                 "</container>");
 
         PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
-        Cached ca = (Cached) pico.getComponentAdapter(TestAdapter.class, (NameBinding) null);
+        Cached<TestAdapter> ca = (Cached<TestAdapter>) pico.getComponentAdapter(TestAdapter.class, (NameBinding) null);
 
         assertNotNull((TestAdapter)ca.getDelegate());
     }
@@ -136,10 +136,11 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
         "</container>"
         );
         
-       PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null,null);
-        ComponentAdapter componentAdapter = pico.getComponentAdapter("foo");
-        AbstractBehavior adapter = (AbstractBehavior) componentAdapter;
-       assertNotNull(adapter);
+        PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null,
+                null);
+        ComponentAdapter<?> componentAdapter = pico.getComponentAdapter("foo");
+        AbstractBehavior<?> adapter = (AbstractBehavior<?>) componentAdapter;
+        assertNotNull(adapter);
     }
     
     

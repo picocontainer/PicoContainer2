@@ -19,8 +19,7 @@ import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.script.bsh.BeanShellAdapter;
-import org.picocontainer.script.bsh.BeanShellScriptCompositionException;
+import org.picocontainer.Parameter;
 
 /**
  * @author <a href="mail at leosimons dot com">Leo Simons</a>
@@ -30,17 +29,17 @@ public class BeanShellComponentAdapterTestCase {
 
     private MutablePicoContainer pico;
 
-    ComponentAdapter setupComponentAdapter(Class implementation) {
+    ComponentAdapter<?> setupComponentAdapter(Class<?> implementation) {
         pico = new DefaultPicoContainer();
         pico.addComponent("whatever", ArrayList.class);
 
-        ComponentAdapter adapter = new BeanShellAdapter("thekey", implementation, null);
+        ComponentAdapter<?> adapter = new BeanShellAdapter("thekey", implementation, (Parameter[])null);
         pico.addAdapter(adapter);
         return adapter;
     }
 
     @Test public void testGetComponentInstance() {
-        ComponentAdapter adapter = setupComponentAdapter(ScriptableDemoBean.class);
+        ComponentAdapter<?> adapter = setupComponentAdapter(ScriptableDemoBean.class);
 
         ScriptableDemoBean bean = (ScriptableDemoBean) adapter.getComponentInstance(pico, null);
 
@@ -50,7 +49,7 @@ public class BeanShellComponentAdapterTestCase {
     }
 
     @Test public void testGetComponentInstanceBadScript() {
-        ComponentAdapter adapter = setupComponentAdapter(BadScriptableDemoBean.class);
+        ComponentAdapter<?> adapter = setupComponentAdapter(BadScriptableDemoBean.class);
 
         try {
             adapter.getComponentInstance(pico, null);

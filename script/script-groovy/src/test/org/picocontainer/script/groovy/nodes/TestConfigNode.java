@@ -18,6 +18,7 @@ import org.picocontainer.script.groovy.nodes.ConfigNode;
  * @author k.pribluda
  *
  */
+@SuppressWarnings("unchecked")
 public class TestConfigNode {
 
 	ConfigNode node;
@@ -30,7 +31,7 @@ public class TestConfigNode {
 	 * node shall accept only predefined parameters
 	 *
 	 */
-	@Test public void testThatNoParametersAreRefused() {
+    @Test public void testThatNoParametersAreRefused() {
 		// no parameters are bombed
 		try {
 			node.validateScriptedAttributes(Collections.EMPTY_MAP);

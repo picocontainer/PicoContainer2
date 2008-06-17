@@ -92,6 +92,7 @@ public class ComponentNode extends AbstractBuilderNode {
                 (ClassLoadingPicoContainer) current, instance, getProperties(properties));
     }
 
+    @SuppressWarnings("unchecked")
     private static Parameter[] getParameters(Object params) {
         if (params == null) {
             return null;
@@ -119,6 +120,7 @@ public class ComponentNode extends AbstractBuilderNode {
         return obj instanceof Parameter ? (Parameter) obj : new ConstantParameter(obj);
     }
 
+    @SuppressWarnings("unchecked")
     private static Properties[] getProperties(Object props) {
         if (props == null) {
             return new Properties[0];

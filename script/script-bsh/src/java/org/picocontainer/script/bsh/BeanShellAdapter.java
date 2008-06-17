@@ -47,6 +47,7 @@ import java.lang.reflect.Type;
  * @author <a href="mail at leosimons dot com">Leo Simons</a>
  * @author Aslak Hellesoy
  */
+@SuppressWarnings({ "unchecked", "serial" })
 public class BeanShellAdapter extends AbstractAdapter {
     private final Parameter[] parameters;
 
@@ -57,13 +58,13 @@ public class BeanShellAdapter extends AbstractAdapter {
      */
     private final ClassLoader classLoader;
 
-    public BeanShellAdapter(final Object componentKey, final Class componentImplementation, final Parameter[] parameters, final ClassLoader classLoader) {
+    public BeanShellAdapter(final Object componentKey, final Class<?> componentImplementation, final Parameter[] parameters, final ClassLoader classLoader) {
         super(componentKey, componentImplementation);
         this.parameters = parameters;
         this.classLoader = classLoader;
     }
 
-    public BeanShellAdapter(final Object componentKey, final Class componentImplementation, final Parameter... parameters) {
+    public BeanShellAdapter(final Object componentKey, final Class<?> componentImplementation, final Parameter... parameters) {
         this(componentKey, componentImplementation, parameters, BeanShellAdapter.class.getClassLoader());
     }
 

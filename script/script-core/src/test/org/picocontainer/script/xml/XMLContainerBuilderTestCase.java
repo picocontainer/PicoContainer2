@@ -411,7 +411,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "</container>");
 
         PicoContainer pico = buildContainer(script);
-        Map map = pico.getComponent(Map.class);
+        Map<?,?> map = pico.getComponent(Map.class);
         assertNotNull(map);
         assertEquals("bar", map.get("foo"));
     }
@@ -623,7 +623,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "  <component-adapter class='org.picocontainer.script.xml.TestBeanComposer'/>" +
                 "</container>");
         PicoContainer pico = buildContainer(script);
-        ComponentAdapter adapter = pico.getComponentAdapters().iterator().next();
+        ComponentAdapter<?> adapter = pico.getComponentAdapters().iterator().next();
         assertSame(TestBeanComposer.class, adapter.getComponentImplementation());
     }
 
@@ -719,16 +719,19 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     }
 
 
+    @SuppressWarnings("serial")
     public static class MyComponentFactory extends ConstructorInjection {
         public MyComponentFactory() {
             super();
         }
     }
+    @SuppressWarnings("serial")
     public static class MyComponentFactory2 extends AbstractBehaviorFactory {
         public MyComponentFactory2(ComponentFactory delegate) {
             wrap(delegate);
         }
     }
+    @SuppressWarnings("serial")
     public static class MyComponentFactory3 extends AbstractBehaviorFactory {
         public MyComponentFactory3(ComponentFactory delegate) {
             wrap(delegate);

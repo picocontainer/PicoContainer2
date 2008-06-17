@@ -20,6 +20,7 @@ import java.util.Map;
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  */
+@SuppressWarnings("unchecked")
 public interface NodeBuilderDecorator {
 
     ComponentFactory decorate(ComponentFactory componentFactory, Map attributes);

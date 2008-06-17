@@ -255,7 +255,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         final ComponentFactory componentFactory = mockery.mock(ComponentFactory.class);
         mockery.checking(new Expectations(){{
         	one(componentFactory).createComponentAdapter(with(any(ComponentMonitor.class)), with(any(LifecycleStrategy.class)), with(any(Properties.class)), with(same(A.class)), with(same(A.class)), with(aNull(Parameter[].class)));
-            will(returnValue(new InstanceAdapter(A.class, a, new NullLifecycleStrategy(), new NullComponentMonitor())));
+            will(returnValue(new InstanceAdapter<A>(A.class, a, new NullLifecycleStrategy(), new NullComponentMonitor())));
         }});
                                                                         
         PicoContainer pico = buildContainer(script, null, componentFactory);
@@ -488,7 +488,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, parent, ASSEMBLY_SCOPE);
         // Should be able to get instance that was registered in the parent container
-        ComponentAdapter componentAdapter = pico.addComponent(String.class).getComponentAdapter(String.class, (NameBinding) null);
+        ComponentAdapter<?> componentAdapter = pico.addComponent(String.class).getComponentAdapter(String.class, (NameBinding) null);
         assertTrue("ComponentAdapter should be originally defined by parent",
                    componentAdapter instanceof SetterInjector);
     }
@@ -608,7 +608,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         URLClassLoader classLoader = new URLClassLoader(new URL[]{testCompJar.toURL()},
                                                         this.getClass().getClassLoader());
-        Class testComp = null;
+        Class<?> testComp = null;
 
         try {
             testComp = classLoader.loadClass("TestComp");
@@ -644,7 +644,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 	    assertTrue("Cannot find TestComp.jar. " + testCompJar.getAbsolutePath() + " Please set testcomp.jar system property before running.", testCompJar.exists());
 	    //System.err.println("--> " + testCompJar.getAbsolutePath());
 	    URLClassLoader classLoader = new URLClassLoader(new URL[] {testCompJar.toURI().toURL()}, this.getClass().getClassLoader());
-	    Class testComp = null;
+	    Class<?> testComp = null;
 	    PicoContainer parent = new DefaultPicoContainer();
 	
 	    try {

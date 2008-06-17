@@ -38,14 +38,14 @@ public class ContainerElementHelper {
 
     }
 
-    public static void debug(List arg0, Map arg1) {
+    public static void debug(List<?> arg0, Map<?,?> arg1) {
         System.out.println("-->debug " + arg0.size() + " " + arg1.size());
         for (int i = 0; i < arg0.size(); i++) {
             Object o = arg0.get(i);
             System.out.println("--> arg0[" + i + "] " + o);
 
         }
-        Set keys = arg1.keySet();
+        Set<?> keys = arg1.keySet();
         int i = 0;
         for (Object o : keys) {
             System.out.println("--> arg1[" + i++ + "] " + o + ", " + arg1.get(o));

@@ -107,7 +107,7 @@ public class JavascriptContainerBuilderTestCase extends AbstractScriptedContaine
           parent container cl
             child container cl -> loads TestComp
         */
-        Class aClass = childComponent.getClass();
+        Class<?> aClass = childComponent.getClass();
         ClassLoader loader2 = aClass.getClassLoader();
         ClassLoader loader1 = loader2.getParent();
         ClassLoader loader = loader1.getParent();

@@ -12,6 +12,7 @@ import java.util.Properties;
 /**
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public final class TestInjection extends AdaptingInjection {
 
     public final StringBuffer sb;
@@ -20,6 +21,7 @@ public final class TestInjection extends AdaptingInjection {
         this.sb = sb;
     }
 
+    @SuppressWarnings("unchecked")
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
                     Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
         sb.append("called");

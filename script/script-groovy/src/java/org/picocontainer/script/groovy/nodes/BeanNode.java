@@ -56,6 +56,7 @@ public class BeanNode extends AbstractBuilderNode {
      * @param attributes Map
      * @return Object resulting JavaBean.
      */
+    @SuppressWarnings("unchecked")
     protected Object createBean(final  Map<String, Object> attributes) {
         Class<?> type = (Class<?>) attributes.remove(BEAN_CLASS);
         if (type == null) {

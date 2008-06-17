@@ -10,6 +10,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 
+@SuppressWarnings("serial")
 public class FooDecoratingPicoContainer extends AbstractDelegatingMutablePicoContainer {
     public FooDecoratingPicoContainer(MutablePicoContainer delegate) {
         super(delegate);

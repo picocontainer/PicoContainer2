@@ -56,6 +56,7 @@ public final class StringConversionsTestCase {
         assertEquals(Boolean.FALSE, converter.convertTo(Boolean.class, "I'm a lumberjack and I'm okay"));
     }
 
+    @SuppressWarnings("unchecked")
     @Test public void testCustomConversionsCanBeRegistered() {
         converter.register(File.class, new StringConversions.StringConverter() {
             public Object convert(String in) {

@@ -350,7 +350,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         final ComponentFactory componentFactory = mockery.mock(ComponentFactory.class);
         mockery.checking(new Expectations(){{
         	one(componentFactory).createComponentAdapter(with(any(ComponentMonitor.class)), with(any(LifecycleStrategy.class)), with(any(Properties.class)), with(same(A.class)), with(same(A.class)), with(aNull(Parameter[].class)));
-            will(returnValue(new InstanceAdapter(A.class, a, new NullLifecycleStrategy(), new NullComponentMonitor())));
+            will(returnValue(new InstanceAdapter<A>(A.class, a, new NullLifecycleStrategy(), new NullComponentMonitor())));
         }});
         PicoContainer pico = buildContainer(script, null, componentFactory);
         assertSame(a, pico.getComponent(A.class));
@@ -575,7 +575,7 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
         MutablePicoContainer pico = (MutablePicoContainer)buildContainer(script, parent, ASSEMBLY_SCOPE);
         // Should be able to get instance that was registered in the parent container
-        ComponentAdapter componentAdapter = pico.addComponent(String.class).getComponentAdapter(String.class, (NameBinding) null);
+        ComponentAdapter<String> componentAdapter = pico.addComponent(String.class).getComponentAdapter(String.class, (NameBinding) null);
         assertTrue("ComponentAdapter should be originally defined by parent" , componentAdapter instanceof SetterInjector);
     }
 
@@ -723,13 +723,13 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
 
     @Test public void testWithParentClassPathPropagatesWithNoParentContainer()throws IOException {
     	System.err.println("testcomp.jar:" + System.getProperty("testcomp.jar"));
-    	Class aClass = TestHelper.class;
+    	Class<?> aClass = TestHelper.class;
     	File base = new File(aClass.getProtectionDomain().getCodeSource().getLocation().getFile());
     	System.err.println("base:" + base);
         File testCompJar = TestHelper.getTestCompJarFile();
 
         URLClassLoader classLoader = new URLClassLoader(new URL[] {testCompJar.toURL()}, this.getClass().getClassLoader());
-        Class testComp = null;
+        Class<?> testComp = null;
 
         try {
             testComp = classLoader.loadClass("TestComp");

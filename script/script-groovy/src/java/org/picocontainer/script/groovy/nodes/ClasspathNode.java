@@ -21,6 +21,7 @@ import org.picocontainer.script.util.ClassPathElementHelper;
  * @author Michael Rimov
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class ClasspathNode extends AbstractBuilderNode {
 
     public static final String NODE_NAME = "classPathElement";
@@ -36,10 +37,12 @@ public class ClasspathNode extends AbstractBuilderNode {
     }
 
 
+    @SuppressWarnings("unchecked")
     public Object createNewNode(Object current, Map attributes) {
         return createClassPathElementNode(attributes, (ClassLoadingPicoContainer) current);
     }
 
+    @SuppressWarnings("unchecked")
     private ClassPathElement createClassPathElementNode(Map attributes, ClassLoadingPicoContainer container) {
 
         final String path = (String) attributes.remove(PATH);

@@ -42,6 +42,7 @@ import org.xml.sax.SAXException;
 // TODO to rename?
 public class NonMutablePicoContainerContainerTestCase extends AbstractScriptedContainerBuilderTestCase {
 
+    @SuppressWarnings("unchecked")
     private class TestPicoContainer implements PicoContainer {
         public Object getComponent(Object componentKey) {
             return null;

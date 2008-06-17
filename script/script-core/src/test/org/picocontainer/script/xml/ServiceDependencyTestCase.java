@@ -13,6 +13,7 @@ import org.picocontainer.injectors.SetterInjection;
 
 public class ServiceDependencyTestCase extends AbstractScriptedContainerBuilderTestCase {
 
+    @SuppressWarnings("serial")
     public static class MySetterInjection extends SetterInjection {
         public MySetterInjection() {
         }

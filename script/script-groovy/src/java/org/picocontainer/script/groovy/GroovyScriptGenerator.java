@@ -30,11 +30,11 @@ public class GroovyScriptGenerator {
         groovy.append("pico = new org.picocontainer.classname.DefaultClassLoadingPicoContainer()\n");
 
         Collection<ComponentAdapter<?>> componentAdapters = pico.getComponentAdapters();
-        for (ComponentAdapter componentAdapter : componentAdapters) {
+        for (ComponentAdapter<?> componentAdapter : componentAdapters) {
             Object componentKey = componentAdapter.getComponentKey();
             String groovyKey = null;
             if (componentKey instanceof Class) {
-                groovyKey = ((Class) componentKey).getName();
+                groovyKey = ((Class<?>) componentKey).getName();
             } else if (componentKey instanceof String) {
                 groovyKey = "\"" + componentKey + "\"";
             }

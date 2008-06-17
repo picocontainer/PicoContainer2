@@ -14,6 +14,7 @@ import org.picocontainer.PicoCompositionException;
 /**
  * @author <a href="mail at leosimons dot com">Leo Simons</a>
  */
+@SuppressWarnings("serial")
 public class BeanShellScriptCompositionException
     extends PicoCompositionException
 {

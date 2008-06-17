@@ -28,6 +28,7 @@ import org.picocontainer.script.groovy.nodes.AppendContainerNode;
  * Tests node marking and exceptions
  * @author Michael Rimov
  */
+@SuppressWarnings("unchecked")
 public class TestAppendContainerNode {
     private AppendContainerNode appendContainerNode = null;
 
