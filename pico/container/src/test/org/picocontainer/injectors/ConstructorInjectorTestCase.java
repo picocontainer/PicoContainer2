@@ -400,21 +400,19 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
         without = timeIt();
         injectionFactory = new ConstructorInjection();
         with = timeIt();
-        System.out.println("-->testSpeedOfRememberedConstructor(): durations:" + with + " " + without);
         assertTrue("'with' should be less than 'without' but they were in fact: " + with + ", and " + without, with < without);
     }
 
     InjectionFactory injectionFactory;
     private long timeIt() {
         int iterations = 20000;
-        long with;
         DefaultPicoContainer dpc = new DefaultPicoContainer(injectionFactory);
         Two two = new Two();
         dpc.addComponent(two);
         dpc.addComponent(One.class);
         long start = System.currentTimeMillis();
         for (int x = 0; x < iterations; x++) {
-                One one = dpc.getComponent(One.class);
+                dpc.getComponent(One.class);
             }
         long end = System.currentTimeMillis();
         assertEquals(iterations, two.howMany());
