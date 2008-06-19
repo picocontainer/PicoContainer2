@@ -28,11 +28,6 @@
     </dependency>
     <dependency>
       <groupId>org.picocontainer.web</groupId>
-      <artifactId>picocontainer-web-nanoweb</artifactId>
-      <version>${pom.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-struts</artifactId>
       <version>${pom.version}</version>
     </dependency>
