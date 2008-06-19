@@ -50,9 +50,10 @@
 		<page>TieringPicoContainer.html</page>
     </section>
     <section>
-         <name>Dependant Technologies</name>
+         <name>Dependant &amp; Related</name>
          <link title="Web Frameworks">http://picocontainer.org/web</link>
          <link title="Scripting Support">http://picocontainer.org/script</link>
+         <link title="Logging">http://picocontainer.org/logging</link>
     </section>
     <section>
          <name>Anti-patterns</name>
