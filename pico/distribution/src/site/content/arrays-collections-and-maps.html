@@ -10,9 +10,7 @@
   <div class="wiki-content">
     <!-- wiki content -->
 
-    <p>Authors: <a href="/display/~rinkrank">Aslak
-    Helles&Atilde;&cedil;y</a>, <a href=
-    "/display/~joehni">J&Atilde;&para;rg Schaible</a></p>
+    <p>Authors: Aslak Helles&tilde;&cedil;y and J&tilde;&para;rg Schaible</p>
 
     <h2><a name=
     "Arrays%2CCollectionsandMaps-SupportedCollectiveTypes"></a>Supported
@@ -27,9 +25,7 @@
     provided. For the examples we use following classes (just
     ignore the fact that the classes are static):</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 public static interface Fish {
 }
 
@@ -41,7 +37,6 @@ public static class Shark
         implements Fish {
 }
 </pre>
-      </div>
     </div>
 
     <h3><a name=
@@ -51,9 +46,7 @@ public static class Shark
     specific type automatically. Example code for the Bowl class in
     use:</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 public static class Bowl {
     private final Fish[] fishes;
     private final Cod[] cods;
@@ -72,30 +65,24 @@ public static class Bowl {
     }
 }
 </pre>
-      </div>
     </div>
 
     <p>Example usage:</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 pico.addComponent(Shark.class);
 pico.addComponent(Cod.class);
 pico.addComponent(Bowl.class);
 
 Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
 </pre>
-      </div>
     </div>
 
     <p>PicoContainer will instantiate the arrays and populate them
     with all components that matches the array type. Behind the
     scenes something similar to the following is happening:</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 Shark shark = new Shark();
 Cod cod = new Cod();
 
@@ -104,7 +91,6 @@ Cod[] cods = new Cod[]{cod};
 
 Bowl bowl = new Bowl(fishes, cods);
 </pre>
-      </div>
     </div>
 
     <h3><a name=
@@ -113,9 +99,7 @@ Bowl bowl = new Bowl(fishes, cods);
     <p>PicoContainer supports automatically generated Collection
     types. Example code for the Bowl class in use:</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 public static class Bowl {
     private final LinkedList fishes;
     private final Collection cods;
@@ -134,7 +118,6 @@ public static class Bowl {
     }
 }
 </pre>
-      </div>
     </div>
 
     <p>Unfortunately there is no way of detecting the type of the
@@ -144,15 +127,12 @@ public static class Bowl {
     "http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/defaults/ComponentParameter.html">
     ComponentParameter</a> and define the component's type:</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 pico.addComponent(Shark.class);
 pico.addComponent(Cod.class);
 pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
         new ComponentParameter(Fish.class, false), new ComponentParameter(Cod.class, false)});
 </pre>
-      </div>
     </div>
 
     <p>The boolean argument defines, that the Collection cannot be
@@ -166,9 +146,7 @@ pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
     <p>PicoContainer also supports automatically generated Map
     types. Example code for the Bowl class in this case:</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 public static class Bowl {
     private final TreeMap fishes;
     private final Map cods;
@@ -187,7 +165,6 @@ public static class Bowl {
     }
 }
 </pre>
-      </div>
     </div>
 
     <p>As for Collection types, PicoContainer cannot detect the
@@ -196,9 +173,7 @@ public static class Bowl {
     <a href="http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/defaults/ComponentParameter.html">
     ComponentParameter</a> and define the component's type:</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 pico.addComponent(<span>"Shark"</span>, Shark.class);
 pico.addComponent(<span>"Cod"</span>, Cod.class);
 pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
@@ -206,7 +181,6 @@ pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
     new ComponentParameter(Cod.class, false)
 });
 </pre>
-      </div>
     </div>
 
     <p>The boolean argument defines, that the Map cannot be empty.
@@ -235,28 +209,22 @@ pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
     empty collective type as a satisfying argument. Example code
     for an Array:</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 Parameter parameter = CollectionComponentParameter.ARRAY_ALLOW_EMPTY;
 pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{parameter, parameter});
 
 Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
 </pre>
-      </div>
     </div>
 
     <p>Example code for a Collection (Map is analogous):</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
         new ComponentParameter(Fish.class, true), new ComponentParameter(Cod.class, true)});
 
 Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
 </pre>
-      </div>
     </div>
 
     <p>Note that in both examples no other component was
@@ -273,9 +241,7 @@ Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
     overwrite the dependency resolution (see example for a native
     Array):</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 pico.addComponent(Shark.class);
 pico.addComponent(Cod.class);
 pico.addComponent(Bowl.class);
@@ -283,29 +249,23 @@ pico.addComponent(new Fish[]{});
 
 Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
 </pre>
-      </div>
     </div>
 
     <p>Demonstrated with this unit test:</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 List cods = Arrays.asList(bowl.getCods());
 assertEquals(1, cods.size());
 
 List fishes = Arrays.asList(bowl.getFishes());
 assertEquals(0, fishes.size());
 </pre>
-      </div>
     </div>
 
     <p>See same example code for a Collection (Map is again
     analogous):</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 final Set set = new HashSet();
 pico.addComponent(Shark.class);
 pico.addComponent(Cod.class);
@@ -315,12 +275,9 @@ pico.addComponent(set);
 
 Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
 </pre>
-      </div>
     </div>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 Collection cods = bowl.getCods();
 assertEquals(0, cods.size());
 assertSame(set, cods);
@@ -328,7 +285,6 @@ assertSame(set, cods);
 Collection fishes = bowl.getFishes();
 assertEquals(2, fishes.size());
 </pre>
-      </div>
     </div>
 
     <p>But how can you circumvent such a situation and ensure that
@@ -338,9 +294,7 @@ assertEquals(2, fishes.size());
     CollectionComponentParameter</a>. Example code for an
     Array:</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 pico.addComponent(Shark.class);
 pico.addComponent(Cod.class);
 Parameter parameter = new CollectionComponentParameter();
@@ -350,26 +304,23 @@ pico.addComponent(new Cod[]{});
 
 Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
 </pre>
-      </div>
     </div>
 
     <p>And here the example code for a Collection (Map is still
     analogous):</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 pico.addComponent(Shark.class);
 pico.addComponent(Cod.class);
 pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
-        new CollectionComponentParameter(Fish.class, false), new CollectionComponentParameter(Cod.class, false)});
+        new CollectionComponentParameter(Fish.class, false), 
+        new CollectionComponentParameter(Cod.class, false)});
 <span class=
 "code-comment">// This component will match both arguments of Bowl's constructor
 </span>pico.addComponent(new LinkedList());
 
 Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
 </pre>
-      </div>
     </div>
 
     <h3><a name="Arrays%2CCollectionsandMaps-Scope"></a>Scope</h3>
@@ -378,9 +329,7 @@ Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
     complete container hierarchy. See example code for Map types as
     a unit test:</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 MutablePicoContainer parent = new DefaultPicoContainer();
 parent.addComponent(<span>"Tom"</span>, Cod.class);
 parent.addComponent(<span>"Harry"</span>, Cod.class);
@@ -394,7 +343,6 @@ Bowl bowl = (Bowl) child.getComponent(Bowl.class);
 assertEquals(3, bowl.fishes.size());
 assertEquals(3, bowl.cods.size());
 </pre>
-      </div>
     </div>
 
     <p>All Cods have been found and put into the bowl. If two
@@ -403,9 +351,7 @@ assertEquals(3, bowl.cods.size());
     component is not part of the collection. See example code again
     as unit test:</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 MutablePicoContainer parent = new DefaultPicoContainer();
 parent.addComponent(<span>"Tom"</span>, Cod.class);
 parent.addComponent(<span>"Dick"</span>, Cod.class);
@@ -420,7 +366,6 @@ Bowl bowl = (Bowl) child.getComponent(Bowl.class);
 assertEquals(3, bowl.fishes.size());
 assertEquals(2, bowl.cods.size());
 </pre>
-      </div>
     </div>
 
     <p><em>Dick the Shark</em> took precedence over <em>Dick the
@@ -436,9 +381,7 @@ assertEquals(2, bowl.cods.size());
     using the constructors of ComponentParameter. See the example
     code:</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 pico.addComponent(Shark.class);
 pico.addComponent(<span>"Nemo"</span>, Cod.class);
 pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
@@ -448,15 +391,12 @@ pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
 
 Bowl bowl = (Bowl) pico.getComponentOfType(Bowl.class);
 </pre>
-      </div>
     </div>
 
     <p>The unit test demonstrates that only <b>named</b> fishes are
     in the fish bowl:</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 Cod cod = (Cod) pico.getComponentOfType(Cod.class);
 Map fishMap = bowl.getFishes();
 Map codMap = bowl.getCods();
@@ -465,7 +405,6 @@ assertEquals(1, codMap.size());
 assertEquals(fishMap, codMap);
 assertSame(cod,fishMap.get(<span>"Nemo"</span>));
 </pre>
-      </div>
     </div>
 
     <p>But this key type selection does not only work with Map
@@ -473,16 +412,13 @@ assertSame(cod,fishMap.get(<span>"Nemo"</span>));
     Array! See the unit test for the Array (although the ValueType
     parameter will be ignored for a native Array):</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 List fishes = Arrays.asList(bowl.getFishes());
 List cods = Arrays.asList(bowl.getCods());
 assertEquals(1, fishes.size());
 assertEquals(1, cods.size());
 assertEquals(fishes, cods);
 </pre>
-      </div>
     </div>
 
     <h3><a name=
@@ -497,9 +433,7 @@ assertEquals(fishes, cods);
     See the example code to filter out the Cod named
     <em>Tom</em>:</p>
 
-    <div>
-      <div>
-        <pre>
+    <div class="source"><pre>
 MutablePicoContainer mpc = new DefaultPicoContainer();
 mpc.addComponent(<span>"Tom"</span>, Cod.class);
 mpc.addComponent(<span>"Dick"</span>, Cod.class);
@@ -518,7 +452,6 @@ Bowl bowl = (Bowl) mpc.getComponent(Bowl.class);
 assertTrue(bowl.fishes.values().contains(tom));
 assertFalse(bowl.cods.values().contains(tom));
 </pre>
-      </div>
     </div>
 
     <p>An even more advanced filter mechanism is using the <a href=
