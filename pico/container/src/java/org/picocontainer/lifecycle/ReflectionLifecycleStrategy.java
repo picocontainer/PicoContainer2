@@ -25,7 +25,7 @@ import org.picocontainer.ComponentMonitor;
  * @see org.picocontainer.Disposable
  * @see org.picocontainer.lifecycle.StartableLifecycleStrategy
  */
-public final class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
+public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
 
     /**
 	 * Serialization UUID.
