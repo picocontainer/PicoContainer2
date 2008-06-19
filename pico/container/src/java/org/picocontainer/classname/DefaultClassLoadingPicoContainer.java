@@ -50,7 +50,7 @@ import java.util.Properties;
  * @author Michael Rimov
  */
 public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutablePicoContainer implements
-        ClassLoadingPicoContainer {
+        ClassLoadingPicoContainer, ComponentMonitorStrategy {
 
     private static final long serialVersionUID = 1982303317963088547L;
 
@@ -99,13 +99,14 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         parentClassLoader = DefaultClassLoadingPicoContainer.class.getClassLoader();
     }
 
+    
     public DefaultClassLoadingPicoContainer(PicoContainer parent) {
         super(new DefaultPicoContainer(parent));
         parentClassLoader = DefaultClassLoadingPicoContainer.class.getClassLoader();
     }
 
-    public DefaultClassLoadingPicoContainer(MutablePicoContainer pico) {
-        super(pico);
+    public DefaultClassLoadingPicoContainer(MutablePicoContainer delegate) {
+        super(delegate);
         parentClassLoader = DefaultClassLoadingPicoContainer.class.getClassLoader();
     }
 
@@ -133,12 +134,49 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return container;
     }
 
+    /**
+     * Propagates the monitor change down the delegate chain if a delegate that implements ComponentMonitorStrategy
+     * exists.  Because of the ComponentMonitorStrategy API, not all delegates can have their API changed.  If
+     * a delegate implementing ComponentMonitorStrategy cannot be found, an exception is thrown.
+     * @throws IllegalStateException if no delegate can be found that implements ComponentMonitorStrategy.
+     * @param monitor the monitor to swap.
+     */
     public void changeMonitor(ComponentMonitor monitor) {
-        ((ComponentMonitorStrategy) getDelegate()).changeMonitor(monitor);
+    	
+    	MutablePicoContainer picoDelegate = getDelegate();
+    	while (picoDelegate != null) {
+    		if (picoDelegate instanceof ComponentMonitorStrategy) {
+    			((ComponentMonitorStrategy)picoDelegate).changeMonitor(monitor);
+    			return;
+    		}
+    		
+    		if (picoDelegate instanceof AbstractDelegatingMutablePicoContainer) {
+    			picoDelegate = ((AbstractDelegatingMutablePicoContainer)picoDelegate).getDelegate();
+    		} else {
+    			break;
+    		}
+    	}
+    	
+    	throw new IllegalStateException("Could not find delegate picocontainer that implemented ComponentMonitorStrategy");
+    	
+    	
     }
 
     public ComponentMonitor currentMonitor() {
-        return ((ComponentMonitorStrategy) getDelegate()).currentMonitor();
+    	MutablePicoContainer picoDelegate = getDelegate();
+    	while (picoDelegate != null) {
+    		if (picoDelegate instanceof ComponentMonitorStrategy) {
+    			return ((ComponentMonitorStrategy)picoDelegate).currentMonitor();
+    		}
+    		
+    		if (picoDelegate instanceof AbstractDelegatingMutablePicoContainer) {
+    			picoDelegate = ((AbstractDelegatingMutablePicoContainer)picoDelegate).getDelegate();
+    		} else {
+    			break;
+    		}
+    	}
+    	
+    	throw new IllegalStateException("Could not find delegate picocontainer that implemented ComponentMonitorStrategy");
     }
 
     public final Object getComponent(Object componentKeyOrType) throws PicoException {

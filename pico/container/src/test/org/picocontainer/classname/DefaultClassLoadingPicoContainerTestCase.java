@@ -16,7 +16,13 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Properties;
 
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.api.Expectation;
+import org.jmock.integration.junit4.JMock;
+import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
@@ -24,13 +30,18 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.behaviors.Caching;
+import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.tck.AbstractPicoContainerTest;
 
 /**
  * @author Paul Hammant
  */
+@RunWith(JMock.class)
 public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContainerTest {
 
+	private Mockery context = new JUnit4Mockery();
+
+	
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultClassLoadingPicoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new Caching(), parent));
     }
@@ -84,6 +95,23 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
     // test methods inherited. This container is otherwise fully compliant.
     @Test public void testAcceptImplementsBreadthFirstStrategy() {
         super.testAcceptImplementsBreadthFirstStrategy();
+    }
+    
+    @Test(expected=IllegalStateException.class)
+    public void testSwapComponentMonitorWithNoComponentMonitorStrategyDelegateThrowsIllegalStateException() {
+    	MutablePicoContainer delegate = context.mock(MutablePicoContainer.class);
+    	//Delegate it twice for effect.
+    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer(new DefaultClassLoadingPicoContainer(delegate));
+    	pico.changeMonitor(new ConsoleComponentMonitor());
+    }
+    
+    @Test(expected=IllegalStateException.class)
+    public void testCurrentMonitorWithNoComponentMonitorStrategyDelegateThrowsIllegalStateException() {
+    	Mockery context = new JUnit4Mockery();
+    	MutablePicoContainer delegate = context.mock(MutablePicoContainer.class);
+    	//Delegate it twice for effect.
+    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer(new DefaultClassLoadingPicoContainer(delegate));
+    	pico.currentMonitor();    	
     }
 
     protected void addContainers(List expectedList) {
