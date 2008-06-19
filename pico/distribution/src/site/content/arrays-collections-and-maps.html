@@ -29,18 +29,15 @@
 public static interface Fish {
 }
 
-public static class Cod
-        implements Fish {
+public static class Cod implements Fish {
 }
 
-public static class Shark
-        implements Fish {
+public static class Shark implements Fish {
 }
 </pre>
     </div>
 
-    <h3><a name=
-    "Arrays%2CCollectionsandMaps-Arrays"></a>Arrays</h3>
+    <h3>Arrays</h3>
 
     <p>PicoContainer can create a native array of components of a
     specific type automatically. Example code for the Bowl class in
@@ -93,8 +90,7 @@ Bowl bowl = new Bowl(fishes, cods);
 </pre>
     </div>
 
-    <h3><a name=
-    "Arrays%2CCollectionsandMaps-Collections"></a>Collections</h3>
+    <h3>Collections</h3>
 
     <p>PicoContainer supports automatically generated Collection
     types. Example code for the Bowl class in use:</p>
@@ -124,14 +120,15 @@ public static class Bowl {
     components being part of the collection as it is done for
     native arrays. Therefore you must use a special constructor of
     <a href=
-    "http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/defaults/ComponentParameter.html">
+    "http://www.picocontainer.org/javadoc/core/org/picocontainer/parameters/ComponentParameter.html">
     ComponentParameter</a> and define the component's type:</p>
 
     <div class="source"><pre>
 pico.addComponent(Shark.class);
 pico.addComponent(Cod.class);
 pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
-        new ComponentParameter(Fish.class, false), new ComponentParameter(Cod.class, false)});
+        new ComponentParameter(Fish.class, false), 
+        new ComponentParameter(Cod.class, false)});
 </pre>
     </div>
 
@@ -141,7 +138,7 @@ pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
     just the interface itself and PicoContainer will provide a
     matching Collection instance.</p>
 
-    <h3><a name="Arrays%2CCollectionsandMaps-Maps"></a>Maps</h3>
+    <h3>Maps</h3>
 
     <p>PicoContainer also supports automatically generated Map
     types. Example code for the Bowl class in this case:</p>
@@ -170,12 +167,12 @@ public static class Bowl {
     <p>As for Collection types, PicoContainer cannot detect the
     type of the components, that should be part of the collection
     on its own. Again you must use a special constructor of
-    <a href="http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/defaults/ComponentParameter.html">
+    <a href="http://www.picocontainer.org/javadoc/core/org/picocontainer/parameters/ComponentParameter.html">
     ComponentParameter</a> and define the component's type:</p>
 
     <div class="source"><pre>
-pico.addComponent(<span>"Shark"</span>, Shark.class);
-pico.addComponent(<span>"Cod"</span>, Cod.class);
+pico.addComponent("Shark", Shark.class);
+pico.addComponent("Cod", Cod.class);
 pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
     new ComponentParameter(Fish.class, false),
     new ComponentParameter(Cod.class, false)
@@ -191,16 +188,13 @@ pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
     the Map. The component adapter's key is used also as key in the
     injected Map.</p>
 
-    <h2><a name="Arrays%2CCollectionsandMaps-UseCases"></a>Use
-    Cases</h2>
+    <h2>Use Cases</h2>
 
     <p>While the usage of this collective types is straight
     forward, there are some special cases to consider. These
     special use cases are explained here.</p>
 
-    <h3><a name=
-    "Arrays%2CCollectionsandMaps-EmptyCollectiveInstances"></a>Empty
-    Collective Instances</h3>
+    <h3>Empty Collective Instances</h3>
 
     <p>Normally the dependency resolution for a collective type
     will fail, if no component of the specific component type is
@@ -221,7 +215,8 @@ Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
 
     <div class="source"><pre>
 pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
-        new ComponentParameter(Fish.class, true), new ComponentParameter(Cod.class, true)});
+        new ComponentParameter(Fish.class, true), 
+        new ComponentParameter(Cod.class, true)});
 
 Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
 </pre>
@@ -233,8 +228,7 @@ Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
     listener is configured, the monitor component is still
     instantiatable.</p>
 
-    <h3><a name=
-    "Arrays%2CCollectionsandMaps-Precedence"></a>Precedence</h3>
+    <h3>Precedence</h3>
 
     <p>PicoContainer will only generate a collective type on the
     fly, if no such type was registered before. So you can
@@ -270,7 +264,8 @@ final Set set = new HashSet();
 pico.addComponent(Shark.class);
 pico.addComponent(Cod.class);
 pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
-        new ComponentParameter(Fish.class, false), new ComponentParameter(Cod.class, false)});
+        new ComponentParameter(Fish.class, false), 
+        new ComponentParameter(Cod.class, false)});
 pico.addComponent(set);
 
 Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
@@ -290,7 +285,7 @@ assertEquals(2, fishes.size());
     <p>But how can you circumvent such a situation and ensure that
     the collective type is generated even if one of the same type
     was registered? Make usage of the <a href=
-    "http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/defaults/CollectionComponentParameter.html">
+    "http://www.picocontainer.org/javadoc/core/org/picocontainer/parameters/CollectionComponentParameter.html">
     CollectionComponentParameter</a>. Example code for an
     Array:</p>
 
@@ -315,15 +310,14 @@ pico.addComponent(Cod.class);
 pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
         new CollectionComponentParameter(Fish.class, false), 
         new CollectionComponentParameter(Cod.class, false)});
-<span class=
-"code-comment">// This component will match both arguments of Bowl's constructor
-</span>pico.addComponent(new LinkedList());
+// This component will match both arguments of Bowl's constructor
+pico.addComponent(new LinkedList());
 
 Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
 </pre>
     </div>
 
-    <h3><a name="Arrays%2CCollectionsandMaps-Scope"></a>Scope</h3>
+    <h3>Scope</h3>
 
     <p>Any collective types will collect its components from the
     complete container hierarchy. See example code for Map types as
@@ -331,10 +325,10 @@ Bowl bowl = (Bowl) pico.getComponent(Bowl.class);
 
     <div class="source"><pre>
 MutablePicoContainer parent = new DefaultPicoContainer();
-parent.addComponent(<span>"Tom"</span>, Cod.class);
-parent.addComponent(<span>"Harry"</span>, Cod.class);
+parent.addComponent("Tom", Cod.class);
+parent.addComponent("Harry", Cod.class);
 MutablePicoContainer child = new DefaultPicoContainer(parent);
-child.addComponent(<span>"Dick"</span>, Cod.class);
+child.addComponent("Dick", Cod.class);
 child.addComponent(Bowl.class, Bowl.class, new Parameter[]{
     new ComponentParameter(Fish.class, false),
     new ComponentParameter(Cod.class, false)
@@ -353,11 +347,11 @@ assertEquals(3, bowl.cods.size());
 
     <div class="source"><pre>
 MutablePicoContainer parent = new DefaultPicoContainer();
-parent.addComponent(<span>"Tom"</span>, Cod.class);
-parent.addComponent(<span>"Dick"</span>, Cod.class);
-parent.addComponent(<span>"Harry"</span>, Cod.class);
+parent.addComponent("Tom", Cod.class);
+parent.addComponent("Dick", Cod.class);
+parent.addComponent("Harry", Cod.class);
 MutablePicoContainer child = new DefaultPicoContainer(parent);
-child.addComponent(<span>"Dick"</span>, Shark.class);
+child.addComponent("Dick", Shark.class);
 child.addComponent(Bowl.class, Bowl.class, new Parameter[]{
     new ComponentParameter(Fish.class, false),
     new ComponentParameter(Cod.class, false)
@@ -371,9 +365,7 @@ assertEquals(2, bowl.cods.size());
     <p><em>Dick the Shark</em> took precedence over <em>Dick the
     Cod</em>.</p>
 
-    <h3><a name=
-    "Arrays%2CCollectionsandMaps-FilterbasedonKeyType"></a>Filter
-    based on Key Type</h3>
+    <h3>Filter based on Key Type</h3>
 
     <p>A generated map automatically deliver the component
     adapter's key as key of the map entry. As for the generic types
@@ -383,9 +375,9 @@ assertEquals(2, bowl.cods.size());
 
     <div class="source"><pre>
 pico.addComponent(Shark.class);
-pico.addComponent(<span>"Nemo"</span>, Cod.class);
+pico.addComponent("Nemo", Cod.class);
 pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
-    new ComponentParameter(<span>String</span>.class, Fish.class, false),
+    new ComponentParameter(String.class, Fish.class, false),
     new ComponentParameter(Cod.class, false)
 });
 
@@ -403,7 +395,7 @@ Map codMap = bowl.getCods();
 assertEquals(1, fishMap.size());
 assertEquals(1, codMap.size());
 assertEquals(fishMap, codMap);
-assertSame(cod,fishMap.get(<span>"Nemo"</span>));
+assertSame(cod,fishMap.get("Nemo"));
 </pre>
     </div>
 
@@ -421,33 +413,31 @@ assertEquals(fishes, cods);
 </pre>
     </div>
 
-    <h3><a name=
-    "Arrays%2CCollectionsandMaps-IndividualFilter"></a>Individual
-    Filter</h3>
+    <h3>Individual Filter</h3>
 
     <p>Although filtering on component type or key type is useful,
     it might not be enough. Therefore you can add an additional and
     completely individual filter by overloading <a href=
-    "http://www.picocontainer.org/picocontainer/latest/picocontainer/apidocs/org/picocontainer/defaults/CollectionComponentParameter.html#evaluate(org.picocontainer.ComponentAdapter)">
+    "http://www.picocontainer.org/javadoc/core/org/picocontainer/parameters/CollectionComponentParameter.html#evaluate(org.picocontainer.ComponentAdapter)">
     CollectionComponentParameter.evaluate(ComponentAdapter)</a>.
     See the example code to filter out the Cod named
     <em>Tom</em>:</p>
 
     <div class="source"><pre>
 MutablePicoContainer mpc = new DefaultPicoContainer();
-mpc.addComponent(<span>"Tom"</span>, Cod.class);
-mpc.addComponent(<span>"Dick"</span>, Cod.class);
-mpc.addComponent(<span>"Harry"</span>, Cod.class);
-mpc.addComponent(<span>"Sharky"</span>, Shark.class);
+mpc.addComponent("Tom", Cod.class);
+mpc.addComponent("Dick", Cod.class);
+mpc.addComponent("Harry", Cod.class);
+mpc.addComponent("Sharky", Shark.class);
 mpc.addComponent(Bowl.class, Bowl.class, new Parameter[]{
     new CollectionComponentParameter(Fish.class, false),
     new CollectionComponentParameter(Cod.class, false) {
-        <span class="code-keyword">protected</span> <span>boolean</span> evaluate(ComponentAdapter adapter) {
-            return !<span>"Tom"</span>.equals(adapter.getComponentKey());
+        protected boolean evaluate(ComponentAdapter adapter) {
+            return !"Tom".equals(adapter.getComponentKey());
         }
     }
 });
-Cod tom = (Cod) mpc.getComponent(<span>"Tom"</span>);
+Cod tom = (Cod) mpc.getComponent("Tom");
 Bowl bowl = (Bowl) mpc.getComponent(Bowl.class);
 assertTrue(bowl.fishes.values().contains(tom));
 assertFalse(bowl.cods.values().contains(tom));
@@ -455,7 +445,7 @@ assertFalse(bowl.cods.values().contains(tom));
     </div>
 
     <p>An even more advanced filter mechanism is using the <a href=
-    "http://nanocontainer.codehaus.org/reports/components/picocontainer-gems/apidocs/org/picocontainer/gems/constraints/package-summary.html"
+    "http://www.picocontainer.org/javadoc/gems/org/picocontainer/gems/constraints/package-summary.html"
     rel="nofollow">Constraint</a> extension as provided in the
     <a href=
     "http://www.nanocontainer.org/reports/components/picocontainer-gems/index.html"
