@@ -56,7 +56,7 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>prefuse</groupId>
+      <groupId>org.prefuse</groupId>
       <artifactId>prefuse</artifactId>
       <optional>true</optional>
     </dependency>

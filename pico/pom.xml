@@ -33,16 +33,7 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</developerConnection>
     <url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</url>
   </scm>
-  <!-- Note:  only use repositories for released artifacts.  Snapshots should be  accessed by configuring snapshot repositories via a settings profile -->
-  <repositories>
-    <repository>
-      <!-- profuse is not on central yet -->
-      <layout>legacy</layout>
-      <id>astrogrid.org-repository</id>
-      <name>Astrogrid Repository</name>
-      <url>http://www.astrogrid.org/maven</url>
-    </repository>
-  </repositories>
+
   <distributionManagement>
     <repository>
       <id>codehaus.org</id>
@@ -106,9 +97,9 @@
         <version>1.2.14</version>
       </dependency>
       <dependency>
-        <groupId>prefuse</groupId>
+        <groupId>org.prefuse</groupId>
         <artifactId>prefuse</artifactId>
-        <version>2006.07.15</version>
+        <version>beta-20060220</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
