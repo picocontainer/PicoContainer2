@@ -67,7 +67,7 @@ B b = (B) pico.getComponent(&quot;b&quot;);</pre>
     <ul>
       <li>Missing the historical context of PicoContainer, Dependency Injection and Inversion of Control.</li> 
 	  <li>Love of 'God class' designs.</li>
-    <ul>
+    </ul>
 </div>
 <div>
     <h2>What to do</h2>
@@ -89,6 +89,46 @@ B b = (B) pico.getComponent(&quot;b&quot;);</pre>
     </div>
     <p>PicoContainer will figure out that BImpl needs an A instance, and will pass in the AImpl, as this is an
        implementation of A.</p>
-    </div>
+     
+    <h2>The One Major Exception</h2>
+    <p>When you go to integrate all your components into a single application, SOMETHING is going to have to wire all these components together. In Pico-land, we call that the &quot;bootstrap&quot; script. (Script, is a loose term, it could easily be a reference to PicoContainer inside a class' main() function.) The pattern of this code will often look like this:</p>
+<div class="source">
+<pre>
+public class Bootstrap {
+	
+   private PicoContainer pico = new PicoBuilder().withLifecycle().withCaching().build();
+
+
+	public static void main(String[] args) {
+		Bootstrap bootstrap = new BootStap();
+		bootstrap.start();
+	}
+
+
+	public void start() {
+		/*  pico.addComponent(A.class), pico.addComponent(B.class) */
+		/*  etc. */
+
+		
+		pico.start();
+		//enter some sort of event loop.
+
+
+		//Event loop broken.
+
+  		pico.stop(); 
+ 	}
+
+
+	public void stop() {
+		pico.stop();
+		pico.dispose();
+	}
+}
+</pre>
+</div>
+    <p>PicoContainer has a sample project called &quot;bootstrap&quot; that does just this sort of thing. For web applications, Pico uses a WebappContextListener to bootstrap an application-level container, and a Servlet filter to bootstrap a request-level container.<br>
+    </p>
+</div>
 </body>
 </html>
