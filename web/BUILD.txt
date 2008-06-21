@@ -26,3 +26,4 @@ it is the responsibility of the user building the code to ensure that these are 
 and then build (just once) with the corresponding profiles to retrieve the dependency.  
 A good practice is to leave a note next to dependency declaration where it is found, if not in central repo.
 Another option is to define a picocontainer profile with all the remote repositories needed by project and activate it on demand.
+A settings.xml template is found at http://svn.codehaus.org/picocontainer/java/2.x/trunk/pico/distribution/src/config/settings.xml.
