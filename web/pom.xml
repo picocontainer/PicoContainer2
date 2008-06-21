@@ -33,24 +33,6 @@
     <url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/web</url>
   </scm>
 
-  <repositories>
-    <repository>
-      <id>codehaus-repository</id>
-      <name>Codehaus Repository</name>
-      <url>http://repository.codehaus.org</url>
-    </repository>
-    <repository>
-      <id>codehaus-snapshots-repository</id>
-      <name>Codehaus Snapshots Repository</name>
-      <url>http://snapshots.repository.codehaus.org</url>
-    </repository>
-    <repository>
-      <id>glassfish-repository</id>
-      <name>Glassfish Repository</name>
-      <url>https://maven-repository.dev.java.net/nonav/repository</url>
-    </repository>
-  </repositories>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -61,7 +43,7 @@
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer-gems</artifactId>
-        <version>2.3</version>
+        <version>2.4-SNAPSHOT</version>
         <optional>true</optional>
       </dependency>
       <dependency>
@@ -86,7 +68,7 @@
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer-tck</artifactId>
-        <version>2.3</version>
+        <version>2.4-SNAPSHOT</version>
         <scope>test</scope>
       </dependency>
       <dependency>
