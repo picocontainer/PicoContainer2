@@ -18,7 +18,7 @@
           <systemProperties>
             <property>
               <name>python.cachedir</name>
-              <value>${basedir}/target/cachedir</value>
+              <value>${pom.build.outputDirectory}/cachedir</value>
             </property>
           </systemProperties>
         </configuration>
