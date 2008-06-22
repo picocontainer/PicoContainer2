@@ -66,6 +66,7 @@ import org.picocontainer.testmodel.Touchable;
 import org.picocontainer.testmodel.Washable;
 import org.picocontainer.testmodel.WashableTouchable;
 import org.picocontainer.visitors.AbstractPicoVisitor;
+import org.picocontainer.visitors.TraversalCheckingVisitor;
 import org.picocontainer.visitors.VerifyingVisitor;
 
 /** This test tests (at least it should) all the methods in MutablePicoContainer. */
@@ -719,8 +720,9 @@ public abstract class AbstractPicoContainerTest {
             this.list = list;
         }
 
-        public void visitContainer(PicoContainer pico) {
+        public boolean visitContainer(PicoContainer pico) {
             list.add(pico.getClass());
+            return CONTINUE_TRAVERSAL;
         }
 
         public void visitComponentAdapter(ComponentAdapter componentAdapter) {
@@ -782,6 +784,41 @@ public abstract class AbstractPicoContainerTest {
             assertTrue(visitedList.remove(c));
         }
         assertEquals(0, visitedList.size());
+    }
+    
+    /**
+     * Verifies that you can halt a container traversal.
+     */
+    @Test
+    public void testAcceptIsAbortable() {
+        final MutablePicoContainer parent = createPicoContainer(null);
+        final MutablePicoContainer child = parent.makeChildContainer();
+        child.addComponent("This is a test");
+        
+        TraversalCheckingVisitor visitor = new TraversalCheckingVisitor() {
+        	private int containerCount = 0;
+        	
+			@Override
+			public void visitComponentAdapter(ComponentAdapter<?> componentAdapter) {
+				if (containerCount == 0) {
+					fail("Should have visited a container first");
+				}
+				fail("Should never have visited an adapter.");
+			}
+
+			@Override
+			public boolean visitContainer(PicoContainer pico) {
+				containerCount++;
+				if (containerCount > 1) {
+					return ABORT_TRAVERSAL;
+				}
+				
+				return CONTINUE_TRAVERSAL;
+			}
+        	
+        };
+    	
+        visitor.traverse(parent);        
     }
 
     protected void addContainers(List expectedList) {

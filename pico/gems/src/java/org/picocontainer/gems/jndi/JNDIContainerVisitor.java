@@ -15,7 +15,6 @@ import javax.management.MBeanServer;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
 import org.picocontainer.visitors.TraversalCheckingVisitor;
 
 /**
@@ -40,15 +39,17 @@ public class JNDIContainerVisitor extends TraversalCheckingVisitor {
 		if(componentAdapter instanceof JNDIExposed) {
 			componentAdapter.getComponentInstance(container);
 		}
+
 	}
 
 	/**
      * Provides the PicoContainer, that can resolve the components to register as MBean.
      * @see org.picocontainer.PicoVisitor#visitContainer(org.picocontainer.PicoContainer)
      */
-    public void visitContainer(final PicoContainer pico) {
+    public boolean visitContainer(final PicoContainer pico) {
         super.visitContainer(pico);
         container = pico;
+        return CONTINUE_TRAVERSAL;
     }
 
     /**

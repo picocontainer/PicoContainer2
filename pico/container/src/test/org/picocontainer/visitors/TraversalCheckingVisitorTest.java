@@ -120,9 +120,10 @@ public class TraversalCheckingVisitorTest {
         final int expectedNumberOfContainers = 2;
 
         PicoVisitor containerCollector = new TraversalCheckingVisitor() {
-            public void visitContainer(PicoContainer pico) {
+            public boolean visitContainer(PicoContainer pico) {
                 super.visitContainer(pico); //Calls checkTraversal for us.
                 allContainers.add(pico);
+                return CONTINUE_TRAVERSAL;
             }
         };
 

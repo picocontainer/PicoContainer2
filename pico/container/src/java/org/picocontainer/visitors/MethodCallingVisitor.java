@@ -29,7 +29,7 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
     // TODO: we must serialize method with read/writeObject ... and are our parent serializable ???
     private transient Method method;
     private final Object[] arguments;
-    private final Class type;
+    private final Class<?> type;
     private final boolean visitInInstantiationOrder;
     private final List componentInstances;
     private static final long serialVersionUID = 2988472264483878674L;
@@ -43,7 +43,7 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
      * @param arguments the arguments for the method invocation (may be <code>null</code>)
      * @throws NullPointerException if <tt>method</tt>, or <tt>ofType</tt> is <code>null</code>
      */
-    public MethodCallingVisitor(Method method, Class ofType, Object[] arguments, boolean visitInInstantiationOrder) {
+    public MethodCallingVisitor(Method method, Class<?> ofType, Object[] arguments, boolean visitInInstantiationOrder) {
         if (method == null) {
             throw new NullPointerException();
         }
@@ -82,9 +82,10 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
         return Void.TYPE;
     }
 
-    public void visitContainer(PicoContainer pico) {
+    public boolean visitContainer(PicoContainer pico) {
         super.visitContainer(pico);
         componentInstances.addAll(pico.getComponents(type));
+        return CONTINUE_TRAVERSAL;
     }
 
     protected Method getMethod() {

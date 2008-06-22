@@ -811,7 +811,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public void accept(final PicoVisitor visitor) {
-        visitor.visitContainer(this);
+    	
+    	//Pico 3 todo, change accept signatures to allow abort at any point in the traversal.
+        boolean shouldContinue = visitor.visitContainer(this);
+        if (!shouldContinue) {
+        	return;
+        }
+        
+        
         componentFactory.accept(visitor); // will cascade through behaviors
         final List<ComponentAdapter<?>> componentAdapters = new ArrayList<ComponentAdapter<?>>(getComponentAdapters());
         for (ComponentAdapter<?> componentAdapter : componentAdapters) {

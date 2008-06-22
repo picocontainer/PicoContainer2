@@ -519,8 +519,9 @@ public abstract class AbstractComponentAdapterTest  {
     static class RecordingVisitor extends AbstractPicoVisitor {
         private final List visitedElements = new LinkedList();
 
-        public void visitContainer(PicoContainer pico) {
+        public boolean visitContainer(PicoContainer pico) {
             visitedElements.add(pico);
+            return CONTINUE_TRAVERSAL;
         }
 
         public void visitComponentAdapter(ComponentAdapter componentAdapter) {

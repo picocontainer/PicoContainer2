@@ -55,7 +55,7 @@ public class ImmutablePicoContainerTestCase {
 
         final PicoVisitor fooVisitor = mockery.mock(PicoVisitor.class);
         mockery.checking(new Expectations() {{
-            one(fooVisitor).visitContainer(with(same(pico)));
+            one(fooVisitor).visitContainer(with(same(pico))); will(returnValue(true));
         	one(fooVisitor).visitComponentFactory(with(same(ai)));
         	one(fooVisitor).visitComponentAdapter(with(same(componentAdapter)));
         }});

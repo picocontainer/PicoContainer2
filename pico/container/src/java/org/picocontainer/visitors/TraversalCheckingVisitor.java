@@ -27,30 +27,36 @@ import org.picocontainer.visitors.AbstractPicoVisitor;
  * final List allContainers = new ArrayList();
  *
  * PicoVisitor visitor = new TraversalCheckingVisitor() {
- *     public void visitContainer(PicoContainer pico) {
+ *     public boolean visitContainer(PicoContainer pico) {
  *         super.visitContainer(pico);  //Calls checkTraversal for us.
  *         allContainers.add(pico);
+ *         return true;
  *     }
  * }
  * </pre>
  *
- * @author Micheal Rimov
+ * @author Michael Rimov
  */
 public class TraversalCheckingVisitor
         extends AbstractPicoVisitor {
 
-    public void visitContainer(PicoContainer pico) {
+	/** {@inheritDoc} **/
+    public boolean visitContainer(PicoContainer pico) {
+        checkTraversal();
+        return CONTINUE_TRAVERSAL;
+    }
+
+	/** {@inheritDoc} **/
+    public void visitComponentAdapter(ComponentAdapter<?> componentAdapter) {
         checkTraversal();
     }
 
-    public void visitComponentAdapter(ComponentAdapter componentAdapter) {
-        checkTraversal();
-    }
-
+	/** {@inheritDoc} **/
     public void visitComponentFactory(ComponentFactory componentFactory) {
         checkTraversal();
     }
 
+	/** {@inheritDoc} **/
     public void visitParameter(Parameter parameter) {
         checkTraversal();
     }

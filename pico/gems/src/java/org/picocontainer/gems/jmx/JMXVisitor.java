@@ -86,10 +86,11 @@ public class JMXVisitor extends TraversalCheckingVisitor {
      * Provides the PicoContainer, that can resolve the components to register as MBean.
      * @see org.picocontainer.PicoVisitor#visitContainer(org.picocontainer.PicoContainer)
      */
-    public void visitContainer(final PicoContainer pico) {
+    public boolean visitContainer(final PicoContainer pico) {
         super.visitContainer(pico);
         picoContainer = pico;
         visited.clear();
+        return CONTINUE_TRAVERSAL;
     }
 
     /**
@@ -112,6 +113,7 @@ public class JMXVisitor extends TraversalCheckingVisitor {
                 }
             }
         }
+
     }
 
     /**

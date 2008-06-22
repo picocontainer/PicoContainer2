@@ -27,7 +27,7 @@ import org.picocontainer.PicoVisitor;
  */
 public class VerifyingVisitor extends TraversalCheckingVisitor {
 
-    private final List nestedVerificationExceptions;
+    private final List<RuntimeException> nestedVerificationExceptions;
     private final Set<ComponentAdapter> verifiedComponentAdapters;
     private final Set<ComponentFactory> verifiedComponentFactories;
     private final PicoVisitor componentAdapterCollector;
@@ -37,7 +37,7 @@ public class VerifyingVisitor extends TraversalCheckingVisitor {
      * Construct a VerifyingVisitor.
      */
     public VerifyingVisitor() {
-        nestedVerificationExceptions = new ArrayList();
+        nestedVerificationExceptions = new ArrayList<RuntimeException>();
         verifiedComponentAdapters = new HashSet<ComponentAdapter>();
         verifiedComponentFactories = new HashSet<ComponentFactory>();
         componentAdapterCollector = new ComponentAdapterCollector();
@@ -55,7 +55,7 @@ public class VerifyingVisitor extends TraversalCheckingVisitor {
         try {
             super.traverse(node);
             if (!nestedVerificationExceptions.isEmpty()) {
-                throw new PicoVerificationException(new ArrayList(nestedVerificationExceptions));
+                throw new PicoVerificationException(new ArrayList<RuntimeException>(nestedVerificationExceptions));
             }
         } finally {
             nestedVerificationExceptions.clear();
@@ -64,12 +64,13 @@ public class VerifyingVisitor extends TraversalCheckingVisitor {
         return Void.TYPE;
     }
 
-    public void visitContainer(PicoContainer pico) {
+    public boolean visitContainer(PicoContainer pico) {
         super.visitContainer(pico);
         currentPico = pico;
+        return CONTINUE_TRAVERSAL;
     }
 
-    public void visitComponentAdapter(ComponentAdapter componentAdapter) {
+    public void visitComponentAdapter(ComponentAdapter<?> componentAdapter) {
         super.visitComponentAdapter(componentAdapter);
         if (!verifiedComponentAdapters.contains(componentAdapter)) {
             try {
@@ -79,6 +80,7 @@ public class VerifyingVisitor extends TraversalCheckingVisitor {
             }
             componentAdapter.accept(componentAdapterCollector);
         }
+
     }
 
     public void visitComponentFactory(ComponentFactory componentFactory) {
@@ -92,6 +94,7 @@ public class VerifyingVisitor extends TraversalCheckingVisitor {
             }
             componentFactory.accept(componentAdapterCollector);
         }
+
     }
 
 
@@ -102,7 +105,8 @@ public class VerifyingVisitor extends TraversalCheckingVisitor {
             return null;
         }
 
-        public void visitContainer(PicoContainer pico) {
+        public boolean visitContainer(PicoContainer pico) {
+            return CONTINUE_TRAVERSAL;
         }
 
         // /CLOVER:ON
@@ -116,6 +120,7 @@ public class VerifyingVisitor extends TraversalCheckingVisitor {
         }
 
         public void visitParameter(Parameter parameter) {
+
         }
     }
 }

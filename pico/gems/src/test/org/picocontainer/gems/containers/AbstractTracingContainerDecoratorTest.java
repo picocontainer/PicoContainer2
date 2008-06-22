@@ -124,7 +124,7 @@ public abstract class AbstractTracingContainerDecoratorTest  {
                 throw new UnsupportedOperationException();
             }
 
-            public void visitContainer(PicoContainer pico) {
+            public boolean visitContainer(PicoContainer pico) {
 				throw new UnsupportedOperationException();
 			}
 

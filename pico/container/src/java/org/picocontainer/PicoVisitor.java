@@ -16,6 +16,20 @@ package org.picocontainer;
  * @author J&ouml;rg Schaible
  */
 public interface PicoVisitor {
+	
+	
+	/**
+	 * Constant that indicates that the traversal should continue after the 
+	 * visit*() method has been called.
+	 */
+	boolean CONTINUE_TRAVERSAL = true;
+	
+	/**
+	 * Constant that indicates that the traversal should abort after the 
+	 * visit*() method has been called.
+	 */
+	boolean ABORT_TRAVERSAL = false;
+	
     /**
      * Entry point for the PicoVisitor traversal. The given node is the first object, that is 
      * asked for acceptance. Only objects of type {@link PicoContainer}, {@link ComponentAdapter},
@@ -31,16 +45,18 @@ public interface PicoVisitor {
      * Visit a {@link PicoContainer} that has to accept the visitor.
      * 
      * @param pico the visited container.
+     * @return CONTINUE_TRAVERSAL if the traversal should continue.  
+     * Any visitor callback that returns ABORT_TRAVERSAL indicates
+     * the desire to abort any further traversal.
      */
-
-    void visitContainer(PicoContainer pico);
+    boolean visitContainer(PicoContainer pico);
 
     /**
      * Visit a {@link ComponentAdapter} that has to accept the visitor.
      * 
      * @param componentAdapter the visited ComponentAdapter.
      */
-    void visitComponentAdapter(ComponentAdapter componentAdapter);
+    void visitComponentAdapter(ComponentAdapter<?> componentAdapter);
 
     /**
      * Visit a {@link ComponentAdapter} that has to accept the visitor.
