@@ -10,13 +10,11 @@
 package org.picocontainer.gems.containers;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.picocontainer.Behavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentMonitor;
@@ -28,7 +26,6 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.Stored;
-import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 
 /**
  * Normal PicoContainers are meant to be created, started, stopped, disposed and
@@ -67,45 +64,45 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 		super();
 	}
 
-	public ReusablePicoContainer(ComponentFactory componentFactory,
-			LifecycleStrategy lifecycleStrategy, PicoContainer parent,
-			ComponentMonitor componentMonitor) {
+	public ReusablePicoContainer(final ComponentFactory componentFactory,
+			final LifecycleStrategy lifecycleStrategy, final PicoContainer parent,
+			final ComponentMonitor componentMonitor) {
 		super(componentFactory, lifecycleStrategy, parent, componentMonitor);
 	}
 
-	public ReusablePicoContainer(ComponentFactory componentFactory,
-			LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+	public ReusablePicoContainer(final ComponentFactory componentFactory,
+			final LifecycleStrategy lifecycleStrategy, final PicoContainer parent) {
 		super(componentFactory, lifecycleStrategy, parent);
 	}
 
-	public ReusablePicoContainer(ComponentFactory componentFactory,
-			PicoContainer parent) {
+	public ReusablePicoContainer(final ComponentFactory componentFactory,
+			final PicoContainer parent) {
 		super(componentFactory, parent);
 	}
 
-	public ReusablePicoContainer(ComponentFactory componentFactory) {
+	public ReusablePicoContainer(final ComponentFactory componentFactory) {
 		super(componentFactory);
 	}
 
-	public ReusablePicoContainer(ComponentMonitor monitor,
-			LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+	public ReusablePicoContainer(final ComponentMonitor monitor,
+			final LifecycleStrategy lifecycleStrategy, final PicoContainer parent) {
 		super(monitor, lifecycleStrategy, parent);
 	}
 
-	public ReusablePicoContainer(ComponentMonitor monitor, PicoContainer parent) {
+	public ReusablePicoContainer(final ComponentMonitor monitor, final PicoContainer parent) {
 		super(monitor, parent);
 	}
 
-	public ReusablePicoContainer(ComponentMonitor monitor) {
+	public ReusablePicoContainer(final ComponentMonitor monitor) {
 		super(monitor);
 	}
 
-	public ReusablePicoContainer(LifecycleStrategy lifecycleStrategy,
-			PicoContainer parent) {
+	public ReusablePicoContainer(final LifecycleStrategy lifecycleStrategy,
+			final PicoContainer parent) {
 		super(lifecycleStrategy, parent);
 	}
 
-	public ReusablePicoContainer(PicoContainer parent) {
+	public ReusablePicoContainer(final PicoContainer parent) {
 		super(parent);
 	}
 
@@ -151,7 +148,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 	 * Precalculates all references to Stored behaviors.
 	 * @param key the object key.
 	 */
-	private void addStoredReference(Object key) {
+	private void addStoredReference(final Object key) {
 		ComponentAdapter<?> ca = this.getComponentAdapter(key);
 		Stored<?> stored =  ca.findAdapterOfType(Stored.class);
 	    if (stored != null) {
@@ -177,7 +174,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 	}
 
 	@Override
-    public MutablePicoContainer addAdapter(ComponentAdapter<?> componentAdapter, Properties properties) {
+    public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter, final Properties properties) {
 		super.addAdapter(componentAdapter, properties);
 		if (componentAdapter.findAdapterOfType(InstanceAdapter.class) != null) {
 			this.instanceRegistrations.add(componentAdapter);
@@ -189,7 +186,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
     }
 
 	@Override
-    public MutablePicoContainer addAdapter(ComponentAdapter<?> componentAdapter) {
+    public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter) {
 		super.addAdapter(componentAdapter);
 		if (componentAdapter.findAdapterOfType(InstanceAdapter.class) != null) {
 			this.instanceRegistrations.add(componentAdapter);
@@ -200,12 +197,12 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 		return this;
     }
 	
-	private void removeLocalReferences(ComponentAdapter<?> ca) {
+	private void removeLocalReferences(final ComponentAdapter<?> ca) {
 		this.storedReferences.remove(ca);
 	}
 
 	@Override
-    public <T> ComponentAdapter<T> removeComponent(Object componentKey) {
+    public <T> ComponentAdapter<T> removeComponent(final Object componentKey) {
 		ComponentAdapter<T> result =  super.removeComponent(componentKey);
 		if (result != null) {
 			removeLocalReferences(result);
@@ -215,7 +212,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
     }
 
 	@Override
-    public <T> ComponentAdapter<T> removeComponentByInstance(T componentInstance) {
+    public <T> ComponentAdapter<T> removeComponentByInstance(final T componentInstance) {
 		ComponentAdapter<T> result =  super.removeComponentByInstance(componentInstance);
 		if (result != null) {
 			removeLocalReferences(result);
@@ -224,7 +221,8 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 		return result;
     }
 
-    public MutablePicoContainer makeChildContainer() {
+    @Override
+	public MutablePicoContainer makeChildContainer() {
         ReusablePicoContainer pc = new ReusablePicoContainer(componentFactory, lifecycleStrategy, this);
         addChildContainer(pc);
         return pc;

@@ -21,7 +21,8 @@ import java.lang.reflect.Type;
  */
 public class Slf4JInjector extends FactoryInjector<Logger> {
 
-    public Logger getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {
+    @Override
+	public Logger getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
         return LoggerFactory.getLogger(((Class) into).getName());
     }
 }

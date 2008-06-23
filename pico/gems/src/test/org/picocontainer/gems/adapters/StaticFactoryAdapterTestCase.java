@@ -26,8 +26,8 @@ import org.picocontainer.DefaultPicoContainer;
 public class StaticFactoryAdapterTestCase {
 
     @Test public void testStaticFactoryInAction() {
-        ComponentAdapter componentAdapter = new StaticFactoryAdapter(Registry.class, new StaticFactory() {
-            public Object get() {
+        ComponentAdapter<Registry> componentAdapter = new StaticFactoryAdapter<Registry>(Registry.class, new StaticFactory<Registry>() {
+            public Registry get() {
                 try {
                     return LocateRegistry.getRegistry();
                 } catch (RemoteException e) {

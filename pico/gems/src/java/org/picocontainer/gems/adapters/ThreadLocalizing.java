@@ -58,6 +58,10 @@ import java.util.Properties;
 public final class ThreadLocalizing extends AbstractBehaviorFactory {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1258601060691978120L;
+	/**
      * <code>ENSURE_THREAD_LOCALITY</code> is the constant for created {@link ComponentAdapter} instances, that ensure
      * unique instances of the component by delivering a proxy for the component.
      */
@@ -106,8 +110,9 @@ public final class ThreadLocalizing extends AbstractBehaviorFactory {
         proxyFactory = factory;
     }
 
-    public ComponentAdapter createComponentAdapter(
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
+    @Override
+	public ComponentAdapter createComponentAdapter(
+            final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
             throws PicoCompositionException
     {
         final ComponentAdapter componentAdapter;
@@ -122,10 +127,11 @@ public final class ThreadLocalizing extends AbstractBehaviorFactory {
     }
 
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
-                                                LifecycleStrategy lifecycleStrategy,
-                                                Properties componentProperties,
-                                                ComponentAdapter adapter) {
+    @Override
+	public ComponentAdapter addComponentAdapter(final ComponentMonitor componentMonitor,
+                                                final LifecycleStrategy lifecycleStrategy,
+                                                final Properties componentProperties,
+                                                final ComponentAdapter adapter) {
         if (ensureThreadLocal) {
             return new ThreadLocalized(super.addComponentAdapter(componentMonitor,
                                                                      lifecycleStrategy,

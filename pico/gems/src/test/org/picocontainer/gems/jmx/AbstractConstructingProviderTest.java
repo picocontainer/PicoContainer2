@@ -54,19 +54,23 @@ public class AbstractConstructingProviderTest {
 
     private class ConstructingProvider extends AbstractConstructingProvider {
 
-        protected ObjectNameFactory getObjectNameFactory() {
+        @Override
+		protected ObjectNameFactory getObjectNameFactory() {
             return objectNameFactory;
         }
 
-        protected MBeanInfoProvider[] getMBeanInfoProviders() {
+        @Override
+		protected MBeanInfoProvider[] getMBeanInfoProviders() {
             return mBeanInfoProviders;
         }
 
-        protected DynamicMBeanFactory getMBeanFactory() {
+        @Override
+		protected DynamicMBeanFactory getMBeanFactory() {
             return dynamicMBeanFactory;
         }
 
-        protected Class getManagementInterface(final Class implementation, final MBeanInfo mBeanInfo)
+        @Override
+		protected Class getManagementInterface(final Class implementation, final MBeanInfo mBeanInfo)
                 throws ClassNotFoundException {
             if (implementation.equals(Person.class)) {
                 return PersonMBean.class;

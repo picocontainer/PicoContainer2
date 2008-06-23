@@ -50,7 +50,12 @@ import prefuse.visual.VisualItem;
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
 public class AggregateDemoHacks extends Display {
-    private static final int LIGHT_BLUE = ColorLib.rgba(200, 200, 255, 150);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2806927681111108361L;
+
+	private static final int LIGHT_BLUE = ColorLib.rgba(200, 200, 255, 150);
 
     private static final int LIGHT_GREEN = ColorLib.rgba(200, 255, 200, 150);
 
@@ -70,7 +75,7 @@ public class AggregateDemoHacks extends Display {
 
     private final int BLACK = ColorLib.gray(0);
 
-    public AggregateDemoHacks(Graph g) throws IOException {
+    public AggregateDemoHacks(final Graph g) throws IOException {
 
         super(new Visualization());
         initDataGroups(g);
@@ -143,11 +148,13 @@ public class AggregateDemoHacks extends Display {
         ActionList all = new ActionList(Activity.INFINITY);
         all.add(colors);
         all.add(new ForceDirectedLayout(GRAPH) {
-            protected float getSpringLength(EdgeItem e) {
+            @Override
+			protected float getSpringLength(final EdgeItem e) {
                 return -0.3f;
             }
 
-            protected float getMassValue(VisualItem n) {
+            @Override
+			protected float getMassValue(final VisualItem n) {
                 return 5.0f;
             }
         });
@@ -157,7 +164,7 @@ public class AggregateDemoHacks extends Display {
         return all;
     }
 
-    private void initDataGroups(Graph graph) {
+    private void initDataGroups(final Graph graph) {
 
         VisualGraph vg = m_vis.addGraph(GRAPH, graph);
         m_vis.setInteractive(EDGES, null, false);
@@ -185,7 +192,7 @@ public class AggregateDemoHacks extends Display {
         System.out.println("done!");
     }
 
-    public static JFrame demo(Graph graph) throws IOException {
+    public static JFrame demo(final Graph graph) throws IOException {
         AggregateDemoHacks ad = new AggregateDemoHacks(graph);
         JFrame frame = new JFrame("p r e f u s e  |  a g g r e g a t e d");
         frame.getContentPane().add(ad);
@@ -207,7 +214,7 @@ final class AggregateLayout extends Layout {
 
     private double[] m_pts; // buffer for computing convex hulls
 
-    public AggregateLayout(String aggrGroup) {
+    public AggregateLayout(final String aggrGroup) {
         super(aggrGroup);
     }
 
@@ -215,7 +222,8 @@ final class AggregateLayout extends Layout {
      * @see edu.berkeley.guir.prefuse.action.Action#run(edu.berkeley.guir.prefuse.ItemRegistry,
      *      double)
      */
-    public void run(double frac) {
+    @Override
+	public void run(final double frac) {
 
         AggregateTable aggr = (AggregateTable) m_vis.getGroup(m_group);
         // do we have any to process?
@@ -270,7 +278,7 @@ final class AggregateLayout extends Layout {
         }
     }
 
-    private static void addPoint(double[] pts, int idx, VisualItem item, int growth) {
+    private static void addPoint(final double[] pts, final int idx, final VisualItem item, final int growth) {
         Rectangle2D b = item.getBounds();
         double minX = (b.getMinX()) - growth, minY = (b.getMinY()) - growth;
         double maxX = (b.getMaxX()) + growth, maxY = (b.getMaxY()) + growth;
@@ -310,7 +318,8 @@ final class AggregateDragControl extends ControlAdapter {
      * @see prefuse.controls.Control#itemEntered(prefuse.visual.VisualItem,
      *      java.awt.event.MouseEvent)
      */
-    public void itemEntered(VisualItem item, MouseEvent e) {
+    @Override
+	public void itemEntered(final VisualItem item, final MouseEvent e) {
         Display d = (Display) e.getSource();
         d.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         activeItem = item;
@@ -322,7 +331,8 @@ final class AggregateDragControl extends ControlAdapter {
      * @see prefuse.controls.Control#itemExited(prefuse.visual.VisualItem,
      *      java.awt.event.MouseEvent)
      */
-    public void itemExited(VisualItem item, MouseEvent e) {
+    @Override
+	public void itemExited(final VisualItem item, final MouseEvent e) {
         if (activeItem == item) {
             activeItem = null;
             setFixed(item, false);
@@ -335,7 +345,8 @@ final class AggregateDragControl extends ControlAdapter {
      * @see prefuse.controls.Control#itemPressed(prefuse.visual.VisualItem,
      *      java.awt.event.MouseEvent)
      */
-    public void itemPressed(VisualItem item, MouseEvent e) {
+    @Override
+	public void itemPressed(final VisualItem item, final MouseEvent e) {
         if (!SwingUtilities.isLeftMouseButton(e))
             return;
         dragged = false;
@@ -349,7 +360,8 @@ final class AggregateDragControl extends ControlAdapter {
      * @see prefuse.controls.Control#itemReleased(prefuse.visual.VisualItem,
      *      java.awt.event.MouseEvent)
      */
-    public void itemReleased(VisualItem item, MouseEvent e) {
+    @Override
+	public void itemReleased(final VisualItem item, final MouseEvent e) {
         if (!SwingUtilities.isLeftMouseButton(e))
             return;
         if (dragged) {
@@ -363,7 +375,8 @@ final class AggregateDragControl extends ControlAdapter {
      * @see prefuse.controls.Control#itemDragged(prefuse.visual.VisualItem,
      *      java.awt.event.MouseEvent)
      */
-    public void itemDragged(VisualItem item, MouseEvent e) {
+    @Override
+	public void itemDragged(final VisualItem item, final MouseEvent e) {
         if (!SwingUtilities.isLeftMouseButton(e))
             return;
         dragged = true;
@@ -377,7 +390,7 @@ final class AggregateDragControl extends ControlAdapter {
         down.setLocation(temp);
     }
 
-    protected static void setFixed(VisualItem item, boolean fixed) {
+    protected static void setFixed(final VisualItem item, final boolean fixed) {
         if (item instanceof AggregateItem) {
             Iterator items = ((AggregateItem) item).items();
             while (items.hasNext()) {
@@ -388,7 +401,7 @@ final class AggregateDragControl extends ControlAdapter {
         }
     }
 
-    protected static void move(VisualItem item, double dx, double dy) {
+    protected static void move(final VisualItem item, final double dx, final double dy) {
         if (item instanceof AggregateItem) {
             Iterator items = ((AggregateItem) item).items();
             while (items.hasNext()) {

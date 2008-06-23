@@ -44,7 +44,7 @@ public final class ThreadLocalReferenceTest {
          * 
          * @param reference
          */
-        public RunIt(ObjectReference reference) {
+        public RunIt(final ObjectReference reference) {
             super();
             m_reference = reference;
         }

@@ -26,11 +26,11 @@ public final class DependencySet implements ComponentDependencyListener {
 
     private final ComponentDependencyListener listener;
 
-    public DependencySet(ComponentDependencyListener listener) {
+    public DependencySet(final ComponentDependencyListener listener) {
         this.listener = listener;
     }
 
-    public void addDependency(Dependency dependency) {
+    public void addDependency(final Dependency dependency) {
         if (uniqueDependencies.add(dependency)) {
             listener.addDependency(dependency);
         }

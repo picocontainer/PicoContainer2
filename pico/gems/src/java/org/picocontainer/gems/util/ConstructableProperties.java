@@ -22,12 +22,16 @@ import java.io.InputStream;
 public class ConstructableProperties extends Properties {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8236887910502086485L;
+	/**
      * create properties from classpath resource using context classloader
      *
      * @param resource         resource name
      * @exception IOException passed from Properties.load()
      */
-    public ConstructableProperties(String resource) throws IOException {
+    public ConstructableProperties(final String resource) throws IOException {
         super();
         load(Thread.currentThread().getContextClassLoader().getResourceAsStream(resource));
     }
@@ -37,7 +41,7 @@ public class ConstructableProperties extends Properties {
      * @param defaults default properties
      * @throws IOException can be thrown if something goes wrong
      */
-    public ConstructableProperties(String resource, Properties defaults) throws IOException {
+    public ConstructableProperties(final String resource, final Properties defaults) throws IOException {
         super(defaults);
         load(Thread.currentThread().getContextClassLoader().getResourceAsStream(resource));   
     }
@@ -47,7 +51,7 @@ public class ConstructableProperties extends Properties {
      * @param stream to read from 
      * @throws IOException can be thrown by properties objkect
      */
-    public ConstructableProperties(InputStream stream) throws IOException {
+    public ConstructableProperties(final InputStream stream) throws IOException {
         super();
         load(stream);
     }
@@ -57,7 +61,7 @@ public class ConstructableProperties extends Properties {
      * @param defaults default properties
      * @throws IOException can be thrown by properties object
      */
-    public ConstructableProperties(InputStream stream, Properties defaults) throws IOException {
+    public ConstructableProperties(final InputStream stream, final Properties defaults) throws IOException {
         super(defaults);
         load(stream);
     }

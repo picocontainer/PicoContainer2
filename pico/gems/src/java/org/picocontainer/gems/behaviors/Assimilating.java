@@ -32,7 +32,11 @@ import java.util.Properties;
  */
 public class Assimilating extends AbstractBehaviorFactory {
 
-    private final ProxyFactory proxyFactory;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8854940817360913988L;
+	private final ProxyFactory proxyFactory;
     private final Class assimilationType;
 
     /**
@@ -62,18 +66,20 @@ public class Assimilating extends AbstractBehaviorFactory {
      * 
      * @see ComponentFactory#createComponentAdapter(ComponentMonitor,LifecycleStrategy,Properties,Object,Class,Parameter...)
      */
-    public ComponentAdapter createComponentAdapter(
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
+    @Override
+	public ComponentAdapter createComponentAdapter(
+            final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
             throws PicoCompositionException {
         return new Assimilated(assimilationType, super.createComponentAdapter(
                 componentMonitor, lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters), proxyFactory);
     }
 
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
-                                                LifecycleStrategy lifecycleStrategy,
-                                                Properties componentProperties,
-                                                ComponentAdapter adapter) {
+    @Override
+	public ComponentAdapter addComponentAdapter(final ComponentMonitor componentMonitor,
+                                                final LifecycleStrategy lifecycleStrategy,
+                                                final Properties componentProperties,
+                                                final ComponentAdapter adapter) {
         return new Assimilated(assimilationType, super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,

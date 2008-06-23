@@ -18,18 +18,23 @@ import org.picocontainer.ComponentAdapter;
  * @author J&ouml;rg Schaible
  */
 public final class IsKeyType extends AbstractConstraint {
-    private final Class type;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6914878299159339280L;
+	private final Class type;
 
     /**
      * Creates a new <code>IsType</code> instance.
      *
      * @param c the <code>Class</code> to match
      */
-    public IsKeyType(Class c) {
+    public IsKeyType(final Class c) {
         this.type = c;
     }
 
-    public boolean evaluate(ComponentAdapter adapter) {
+    @Override
+	public boolean evaluate(final ComponentAdapter adapter) {
         return type.isAssignableFrom(adapter.getComponentKey().getClass());
     }
 

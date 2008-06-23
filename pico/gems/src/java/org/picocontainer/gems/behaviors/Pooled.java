@@ -39,7 +39,7 @@ import com.thoughtworks.proxy.toys.pool.Pool;
  * <p>
  * The implementation utilizes a delegated ComponentAdapter to create the instances of the pool. The
  * pool can be configured to grow unlimited or to a maximum size. If a component is requested from
- * this adapter, the implementation returns an availailabe instance from the pool or will create a
+ * this adapter, the implementation returns an available instance from the pool or will create a
  * new one, if the maximum pool size is not reached yet. If none is available, the implementation
  * can wait a defined time for a returned object before it throws a {@link PoolException}.
  * </p>
@@ -69,7 +69,7 @@ import com.thoughtworks.proxy.toys.pool.Pool;
  * @author J&ouml;rg Schaible
  * @author Aslak Helles&oslash;y
  */
-public final class Pooled extends AbstractBehavior implements Behavior {
+public final class Pooled<T> extends AbstractBehavior<T> {
 
     private static final long serialVersionUID = 1L;
 
@@ -226,7 +226,7 @@ public final class Pooled extends AbstractBehavior implements Behavior {
      * @throws IllegalArgumentException if the maximum pool size or the serialization mode is
      *             invalid
      */
-    public Pooled(ComponentAdapter delegate, Context context) {
+    public Pooled(final ComponentAdapter delegate, final Context context) {
         super(delegate);
         this.maxPoolSize = context.getMaxSize();
         this.waitMilliSeconds = context.getMaxWaitInMilliseconds();
@@ -270,16 +270,17 @@ public final class Pooled extends AbstractBehavior implements Behavior {
      * @throws PoolException if the pool is exhausted or waiting for a returning object timed out or
      *             was interrupted
      */
-    public Object getComponentInstance(PicoContainer container, Type into) {
+    @Override
+	public T getComponentInstance(final PicoContainer container, final Type into) {
         if (delegateHasLifecylce) {
             if (disposed) throw new IllegalStateException("Already disposed");
         }
-        Object componentInstance;
+        T componentInstance;
         long now = System.currentTimeMillis();
         boolean gc = autostartGC;
         while (true) {
             synchronized (pool) {
-                componentInstance = pool.get();
+                componentInstance = (T) pool.get();
                 if (componentInstance != null) {
                     break;
                 }
@@ -342,7 +343,7 @@ public final class Pooled extends AbstractBehavior implements Behavior {
             this.delegate = delegate;
         }
 
-        public boolean reset(Object object) {
+        public boolean reset(final Object object) {
             final boolean result = delegate.reset(object);
             if (!result || adapter.disposed) {
                 if (adapter.started) {
@@ -365,7 +366,8 @@ public final class Pooled extends AbstractBehavior implements Behavior {
      * 
      * @throws IllegalStateException if pool was already disposed
      */
-    public void start(final PicoContainer container) {
+    @Override
+	public void start(final PicoContainer container) {
         if (delegateHasLifecylce) {
             if (started) throw new IllegalStateException("Already started");
             if (disposed) throw new IllegalStateException("Already disposed");
@@ -385,7 +387,8 @@ public final class Pooled extends AbstractBehavior implements Behavior {
      * 
      * @throws IllegalStateException if pool was already disposed
      */
-    public void stop(final PicoContainer container) {
+    @Override
+	public void stop(final PicoContainer container) {
         if (delegateHasLifecylce) {
             if (!started) throw new IllegalStateException("Not started yet");
             if (disposed) throw new IllegalStateException("Already disposed");
@@ -403,7 +406,8 @@ public final class Pooled extends AbstractBehavior implements Behavior {
      * 
      * @throws IllegalStateException if pool was already disposed
      */
-    public void dispose(final PicoContainer container) {
+    @Override
+	public void dispose(final PicoContainer container) {
         if (delegateHasLifecylce) {
             if (started) throw new IllegalStateException("Not stopped yet");
             if (disposed) throw new IllegalStateException("Already disposed");
@@ -455,7 +459,7 @@ public final class Pooled extends AbstractBehavior implements Behavior {
          * @param message the explaining message
          * @param cause the originating cause
          */
-        public PoolException(String message, Throwable cause) {
+        public PoolException(final String message, final Throwable cause) {
             super(message, cause);
         }
 
@@ -464,7 +468,7 @@ public final class Pooled extends AbstractBehavior implements Behavior {
          *
          * @param message the explaining message
          */
-        public PoolException(String message) {
+        public PoolException(final String message) {
             super(message);
         }
 

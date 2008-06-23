@@ -16,7 +16,7 @@ import java.util.List;
 public final class DependsOnList {
     private final List list;
 
-    public DependsOnList(List l) {
+    public DependsOnList(final List l) {
         this.list = l;
     }
 

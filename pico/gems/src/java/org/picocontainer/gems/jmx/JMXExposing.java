@@ -84,8 +84,9 @@ public class JMXExposing extends AbstractBehaviorFactory {
      * {@link JMXExposed}.
      * @see org.picocontainer.ComponentFactory#createComponentAdapter(ComponentMonitor,LifecycleStrategy,Properties,Object,Class,Parameter...)
      */
-    public <T> ComponentAdapter<T> createComponentAdapter(
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters)
+    @Override
+	public <T> ComponentAdapter<T> createComponentAdapter(
+            final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object componentKey, final Class<T> componentImplementation, final Parameter... parameters)
             throws PicoCompositionException {
         final ComponentAdapter<T> delegateAdapter = super.createComponentAdapter(
                 componentMonitor, lifecycleStrategy,
@@ -99,10 +100,11 @@ public class JMXExposing extends AbstractBehaviorFactory {
     }
 
 
-    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
-                                                LifecycleStrategy lifecycleStrategy,
-                                                Properties componentProperties,
-                                                ComponentAdapter<T> adapter) {
+    @Override
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor componentMonitor,
+                                                final LifecycleStrategy lifecycleStrategy,
+                                                final Properties componentProperties,
+                                                final ComponentAdapter<T> adapter) {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_JMX)) {
             return super.addComponentAdapter(componentMonitor,
                                              lifecycleStrategy,

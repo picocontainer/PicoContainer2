@@ -13,7 +13,7 @@ package org.picocontainer.testmodel;
  */
 public final class DependsOnArray {
     private final Object[] array;
-    public DependsOnArray(Object[] a) {
+    public DependsOnArray(final Object[] a) {
         this.array = a;
     }
 

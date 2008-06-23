@@ -32,7 +32,12 @@ import org.apache.commons.logging.LogFactory;
 @Deprecated
 public class CommonsLoggingTracingContainerDecorator implements MutablePicoContainer, Serializable {
 
-    /** Wrapped container. */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8033653591540458032L;
+
+	/** Wrapped container. */
     private final MutablePicoContainer delegate;
 
     /** Logger instance used for writing events. */
@@ -165,7 +170,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
      * @see org.picocontainer.PicoContainer#getComponentAdapter(java.lang.Class)
      */
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {
+    public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final NameBinding componentNameBinding) {
         if (log.isDebugEnabled()) {
             log.debug("Locating component adapter with type " + componentType);
         }
@@ -209,7 +214,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
         return delegate.getComponentAdapters(componentType);
     }
 
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(final Class<T> componentType, final Class<? extends Annotation> binding) {
         if (log.isDebugEnabled()) {
             log.debug("Grabbing all component adapters for container: "
                       + delegate + " of type: " + componentType.getName() + ", binding:" + binding.getName());
@@ -217,7 +222,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
         return delegate.getComponentAdapters(componentType, binding);
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+    public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final Class<? extends Annotation> binding) {
         if (log.isDebugEnabled()) {
             log.debug("Grabbing component adapter for container: "
                       + delegate + " of type: " + componentType.getName() + ", binding:" + binding.getName());
@@ -251,7 +256,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
         return result;
     }
 
-    public Object getComponent(Object componentKeyOrType, Type into) {
+    public Object getComponent(final Object componentKeyOrType, final Type into) {
         if (log.isDebugEnabled()) {
             log.debug("Attempting to load component instance with "
                       + (componentKeyOrType instanceof Class ? "type" : "key")
@@ -267,11 +272,11 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
         return result;
     }
 
-    public <T> T getComponent(Class<T> componentType) {
+    public <T> T getComponent(final Class<T> componentType) {
         return componentType.cast(getComponent((Object)componentType));
     }
 
-    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
+    public <T> T getComponent(final Class<T> componentType, final Class<? extends Annotation> binding) {
         if (log.isDebugEnabled()) {
             log.debug("Grabbing component for container: "
                       + delegate + " of type: " + componentType.getName() + ", binding:" + binding.getName());
@@ -415,7 +420,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
         return delegate.addComponent(implOrInstance);
     }
 
-    public MutablePicoContainer addConfig(String name, Object val) {
+    public MutablePicoContainer addConfig(final String name, final Object val) {
         if (log.isDebugEnabled()) {
             log.debug("Registering config: " + name);
         }
@@ -515,11 +520,11 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 	        log = LogFactory.getLog(this.logCategory);
 	}
 
-    public MutablePicoContainer change(Properties... properties) {
+    public MutablePicoContainer change(final Properties... properties) {
         return delegate.change(properties);
     }
 
-    public MutablePicoContainer as(Properties... properties) {
+    public MutablePicoContainer as(final Properties... properties) {
         return delegate.as(properties);
     }
 }

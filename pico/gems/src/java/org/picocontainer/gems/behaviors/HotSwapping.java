@@ -29,18 +29,25 @@ import java.util.Properties;
  */
 public class HotSwapping extends AbstractBehaviorFactory {
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1263007839990337386L;
+
+	@Override
+	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object componentKey, final Class<T> componentImplementation, final Parameter... parameters)
             throws PicoCompositionException {
-        ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+        ComponentAdapter<T> componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                          componentProperties, componentKey, componentImplementation, parameters);
-        return new HotSwappable(componentAdapter);
+        return new HotSwappable<T>(componentAdapter);
     }
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
-                                                LifecycleStrategy lifecycleStrategy,
-                                                Properties componentProperties,
-                                                ComponentAdapter adapter) {
-        return new HotSwappable(super.addComponentAdapter(componentMonitor,
+    @Override
+	public <T> ComponentAdapter<T> addComponentAdapter(final ComponentMonitor componentMonitor,
+                                                final LifecycleStrategy lifecycleStrategy,
+                                                final Properties componentProperties,
+                                                final ComponentAdapter<T> adapter) {
+        return new HotSwappable<T>(super.addComponentAdapter(componentMonitor,
                                                                  lifecycleStrategy,
                                                                  componentProperties,
                                                                  adapter));

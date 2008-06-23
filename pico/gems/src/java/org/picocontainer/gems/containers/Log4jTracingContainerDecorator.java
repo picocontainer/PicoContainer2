@@ -64,7 +64,12 @@ import org.apache.log4j.Logger;
 @Deprecated
 public class Log4jTracingContainerDecorator implements MutablePicoContainer, Serializable {
 
-    /** Wrapped container. */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 565794433634958551L;
+
+	/** Wrapped container. */
     private final MutablePicoContainer delegate;
 
     /** Logger instance used for writing events. */
@@ -189,7 +194,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
      * @see org.picocontainer.PicoContainer#getComponentAdapter(java.lang.Class)
      */
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {
+    public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final NameBinding componentNameBinding) {
         if (logger.isDebugEnabled()) {
             logger.debug("Locating component adapter with type " + componentType);
         }
@@ -233,7 +238,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
         return delegate.getComponentAdapters(componentType);
     }
 
-    public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
+    public <T> List<ComponentAdapter<T>> getComponentAdapters(final Class<T> componentType, final Class<? extends Annotation> binding) {
         if (logger.isDebugEnabled()) {
             logger.debug("Grabbing all component adapters for container: " + delegate + " of type: "
                          + componentType.getName() + ", binding:" + binding.getName());
@@ -241,7 +246,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
         return delegate.getComponentAdapters(componentType, binding);
     }
 
-    public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
+    public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final Class<? extends Annotation> binding) {
         if (logger.isDebugEnabled()) {
             logger.debug("Grabbing component adapter for container: " + delegate + " of type: "
                          + componentType.getName() + ", binding:" + binding.getName());
@@ -280,7 +285,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
         return result;
     }
 
-    public Object getComponent(final Object componentKeyOrType, Type into) {
+    public Object getComponent(final Object componentKeyOrType, final Type into) {
         if (logger.isDebugEnabled()) {
             logger.debug("Attempting to load component instance with "
                          + (componentKeyOrType instanceof Class ? "type" : "key")
@@ -300,11 +305,11 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
         return result;
     }
 
-    public <T> T getComponent(Class<T> componentType) {
+    public <T> T getComponent(final Class<T> componentType) {
         return componentType.cast(getComponent((Object)componentType));
     }
 
-    public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
+    public <T> T getComponent(final Class<T> componentType, final Class<? extends Annotation> binding) {
         if (logger.isDebugEnabled()) {
             logger.debug("Attempting to load component instance with "
                          + "type"
@@ -471,7 +476,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
         return delegate.addComponent(implOrInstance);
     }
 
-    public MutablePicoContainer addConfig(String name, Object val) {
+    public MutablePicoContainer addConfig(final String name, final Object val) {
         if (logger.isDebugEnabled()) {
             logger.debug("Registering config: " + name);
         }
@@ -576,11 +581,11 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
         s.writeUTF(logger.getName());
     }
 
-    public MutablePicoContainer change(Properties... properties) {
+    public MutablePicoContainer change(final Properties... properties) {
         return delegate.change(properties);
     }
 
-    public MutablePicoContainer as(Properties... properties) {
+    public MutablePicoContainer as(final Properties... properties) {
         return delegate.as(properties);
     }
 }

@@ -29,17 +29,22 @@ import org.picocontainer.PicoCompositionException;
  */
 public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7975547176340734930L;
+
 	String name;
 
 	transient Context context;
 
-	public JNDIObjectReference(String name, Context ctx) {
+	public JNDIObjectReference(final String name, final Context ctx) {
 		super();
 		this.name = name;
 		this.context = ctx;
 	}
 
-	public JNDIObjectReference(String jndiName) throws NamingException {
+	public JNDIObjectReference(final String jndiName) throws NamingException {
 		this(jndiName,new InitialContext());
 	}
 
@@ -62,7 +67,7 @@ public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable
 	/**
 	 * store object in JNDI under specified name
 	 */
-	public void set(T item) {
+	public void set(final T item) {
 		try {
 			if (item == null) {
 				context.unbind(name);
@@ -113,7 +118,7 @@ public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	private void readObject(java.io.ObjectInputStream in)throws IOException, ClassNotFoundException {
+	private void readObject(final java.io.ObjectInputStream in)throws IOException, ClassNotFoundException {
 		try {
 			context = new InitialContext();
 		} catch (NamingException e) {
@@ -123,6 +128,7 @@ public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable
 	}
 	
 	
+	@Override
 	public String toString() {
 		return "(" + getName() + ")";
 	}

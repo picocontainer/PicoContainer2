@@ -23,8 +23,15 @@ import java.lang.reflect.Type;
  * @author J&ouml;rg Schaible
  * @author Leo Simmons
  */
-public final class StaticFactoryAdapter extends AbstractAdapter {
-    private final StaticFactory staticFactory;
+public final class StaticFactoryAdapter<T> extends AbstractAdapter<T> {
+    
+	/**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = -7676669475931143447L;
+	
+	
+	private final StaticFactory<T> staticFactory;
 
     /**
      * Construct a ComponentAdapter accessing a static factory creating the component.
@@ -32,7 +39,7 @@ public final class StaticFactoryAdapter extends AbstractAdapter {
      * @param type The type of the created component.
      * @param staticFactory Wrapper instance for the static factory.
      */
-    public StaticFactoryAdapter(Class type, StaticFactory staticFactory) {
+    public StaticFactoryAdapter(final Class<T> type, final StaticFactory<T> staticFactory) {
 
         this(type, type, staticFactory);
     }
@@ -45,7 +52,7 @@ public final class StaticFactoryAdapter extends AbstractAdapter {
      * @param type The type of the created component.
      * @param staticFactory Wrapper instance for the static factory.
      */
-    public StaticFactoryAdapter(Object componentKey, Class type, StaticFactory staticFactory) {
+    public StaticFactoryAdapter(final Object componentKey, final Class<T> type, final StaticFactory<T> staticFactory) {
         super(componentKey, type);
         this.staticFactory = staticFactory;
     }
@@ -54,7 +61,7 @@ public final class StaticFactoryAdapter extends AbstractAdapter {
      * @return Returns the component created by the static factory.
      * @see org.picocontainer.ComponentAdapter#getComponentInstance(org.picocontainer.PicoContainer)
      */
-    public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+    public T getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
         return staticFactory.get();
     }
 
@@ -63,7 +70,7 @@ public final class StaticFactoryAdapter extends AbstractAdapter {
      *
      * @see org.picocontainer.ComponentAdapter#verify(org.picocontainer.PicoContainer)
      */
-    public void verify(PicoContainer container) throws PicoVerificationException {
+    public void verify(final PicoContainer container) throws PicoVerificationException {
     }
 
     public String getDescriptor() {

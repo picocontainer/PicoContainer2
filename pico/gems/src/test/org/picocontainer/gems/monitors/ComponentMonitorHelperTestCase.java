@@ -24,7 +24,6 @@ import java.io.StringReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -119,13 +118,13 @@ public abstract class ComponentMonitorHelperTestCase {
     }
     
 
-    protected void assertFileContent(String line) throws IOException{
+    protected void assertFileContent(final String line) throws IOException{
         List lines = toLines( new StringReader( ForTestSakeAppender.CONTENT ) );
         String s = lines.toString();
         assertTrue("Line '" + line + "' not found.  Instead got: " + line, s.indexOf(line) > 0);
     }
     
-    protected List toLines(Reader resource) throws IOException {
+    protected List toLines(final Reader resource) throws IOException {
         BufferedReader br = new BufferedReader(resource);
         List lines = new ArrayList();
         String line = br.readLine();

@@ -19,7 +19,11 @@ import java.io.Serializable;
  * @author J&ouml;rg Schaible
  */
 public class CompatibleTouchable implements Serializable {
-    private boolean wasTouched;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -364907438040592500L;
+	private boolean wasTouched;
 
     public void touch() {
         wasTouched = true;

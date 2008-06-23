@@ -26,7 +26,7 @@ public class MX4JDynamicMBean extends AbstractDynamicMBean {
      * @param componentInstance the instance to expose.
      * @param mBeanInfo the MBeanInfo for the instance.
      */
-    public MX4JDynamicMBean(Object componentInstance, MBeanInfo mBeanInfo) {
+    public MX4JDynamicMBean(final Object componentInstance, final MBeanInfo mBeanInfo) {
         setResource(componentInstance);
         setMBeanInfo(mBeanInfo);
     }

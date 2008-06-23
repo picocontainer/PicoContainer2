@@ -22,7 +22,7 @@ public class Log4jTracingContainerDecoratorTestCase extends AbstractTracingConta
 
 	@Override
 	protected MutablePicoContainer createTracingContainerDecorator(
-			MutablePicoContainer picoContainer, String name) {
+			final MutablePicoContainer picoContainer, final String name) {
 		return new Log4jTracingContainerDecorator(picoContainer, log4jLogger);
 	}
 	

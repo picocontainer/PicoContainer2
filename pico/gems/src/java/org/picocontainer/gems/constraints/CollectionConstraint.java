@@ -20,22 +20,28 @@ import org.picocontainer.parameters.CollectionComponentParameter;
  * @author J&ouml;rg Schaible
  */
 public final class CollectionConstraint extends CollectionComponentParameter implements Constraint {
-    protected final Constraint constraint;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2054071316780187223L;
+	protected final Constraint constraint;
 
-    public CollectionConstraint(Constraint constraint) {
+    public CollectionConstraint(final Constraint constraint) {
         this(constraint, false);
     }
 
-    public CollectionConstraint(Constraint constraint, boolean emptyCollection) {
+    public CollectionConstraint(final Constraint constraint, final boolean emptyCollection) {
         super(Object.class, emptyCollection);
         this.constraint = constraint;
     }
 
-    public boolean evaluate(ComponentAdapter adapter) {
+    @Override
+	public boolean evaluate(final ComponentAdapter adapter) {
         return constraint.evaluate(adapter);
     }
 
-    public void accept(PicoVisitor visitor) {
+    @Override
+	public void accept(final PicoVisitor visitor) {
         super.accept(visitor);
         constraint.accept(visitor);
     }

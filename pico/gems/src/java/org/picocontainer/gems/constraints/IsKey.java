@@ -17,18 +17,23 @@ import org.picocontainer.ComponentAdapter;
  */
 public final class IsKey extends AbstractConstraint {
 
-    private final Object key;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6756170370224726787L;
+	private final Object key;
 
     /**
      * Creates a new <code>IsKey</code> instance.
      *
      * @param key the key to match
      */
-    public IsKey(Object key) {
+    public IsKey(final Object key) {
         this.key = key;
     }
 
-    public boolean evaluate(ComponentAdapter adapter) {
+    @Override
+	public boolean evaluate(final ComponentAdapter adapter) {
         return key.equals(adapter.getComponentKey());
     }
 

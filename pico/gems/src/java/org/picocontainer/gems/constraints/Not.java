@@ -17,21 +17,27 @@ import org.picocontainer.PicoVisitor;
  * @author Nick Sieger
  */
 public final class Not extends AbstractConstraint {
-    private final Constraint constraint;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5651583682858065995L;
+	private final Constraint constraint;
 
     /**
      * Creates a new <code>Not</code> instance.
      * @param con a <code>Constraint</code> value
      */
-    public Not(Constraint con) {
+    public Not(final Constraint con) {
         this.constraint = con;
     }
 
-    public boolean evaluate(ComponentAdapter comp) {
+    @Override
+	public boolean evaluate(final ComponentAdapter comp) {
         return ! constraint.evaluate(comp);
     }
 
-    public void accept(PicoVisitor visitor) {
+    @Override
+	public void accept(final PicoVisitor visitor) {
         super.accept(visitor);
         constraint.accept(visitor);
     }

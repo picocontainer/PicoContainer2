@@ -77,7 +77,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
      *
      * @param loggerClass the class of the Logger
      */
-    public Log4JComponentMonitor(Class<?> loggerClass) {
+    public Log4JComponentMonitor(final Class<?> loggerClass) {
         this(loggerClass.getName());
     }
 
@@ -87,7 +87,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
      *
      * @param loggerName the name of the Log
      */
-    public Log4JComponentMonitor(String loggerName) {
+    public Log4JComponentMonitor(final String loggerName) {
         this(LogManager.getLogger(loggerName));
     }
 
@@ -96,7 +96,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
      *
      * @param logger the Logger to write to
      */
-    public Log4JComponentMonitor(Logger logger) {
+    public Log4JComponentMonitor(final Logger logger) {
         this();
         this.logger = logger;
     }
@@ -108,7 +108,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
      * @param loggerClass the class of the Logger
      * @param delegate the delegate
      */
-    public Log4JComponentMonitor(Class<?> loggerClass, ComponentMonitor delegate) {
+    public Log4JComponentMonitor(final Class<?> loggerClass, final ComponentMonitor delegate) {
         this(loggerClass.getName(), delegate);
     }
 
@@ -119,7 +119,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
      * @param loggerName the name of the Log
      * @param delegate the delegate
      */
-    public Log4JComponentMonitor(String loggerName, ComponentMonitor delegate) {
+    public Log4JComponentMonitor(final String loggerName, final ComponentMonitor delegate) {
         this(LogManager.getLogger(loggerName), delegate);
     }
 
@@ -129,18 +129,18 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
      * @param logger the Logger to write to
      * @param delegate the delegate
      */
-    public Log4JComponentMonitor(Logger logger, ComponentMonitor delegate) {
+    public Log4JComponentMonitor(final Logger logger, final ComponentMonitor delegate) {
         this(delegate);
         this.logger = logger;
     }
 
-    public Log4JComponentMonitor(ComponentMonitor delegate) {
+    public Log4JComponentMonitor(final ComponentMonitor delegate) {
         this.delegate = delegate;
     }
 
     /** {@inheritDoc} **/
-    public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
-                                     Constructor<T> constructor
+    public <T> Constructor<T> instantiating(final PicoContainer container, final ComponentAdapter<T> componentAdapter,
+                                     final Constructor<T> constructor
     ) {
         Logger logger = getLogger(constructor);
         if (logger.isDebugEnabled()) {
@@ -150,11 +150,11 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
-                             Constructor<T> constructor,
-                             Object instantiated,
-                             Object[] parameters,
-                             long duration) {
+    public <T> void instantiated(final PicoContainer container, final ComponentAdapter<T> componentAdapter,
+                             final Constructor<T> constructor,
+                             final Object instantiated,
+                             final Object[] parameters,
+                             final long duration) {
         Logger logger = getLogger(constructor);
         if (logger.isDebugEnabled()) {
             logger.debug(format(ComponentMonitorHelper.INSTANTIATED, ctorToString(constructor), duration, instantiated.getClass().getName(), parmsToString(parameters)));
@@ -163,10 +163,10 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public <T> void instantiationFailed(PicoContainer container,
-                                    ComponentAdapter<T> componentAdapter,
-                                    Constructor<T> constructor,
-                                    Exception cause) {
+    public <T> void instantiationFailed(final PicoContainer container,
+                                    final ComponentAdapter<T> componentAdapter,
+                                    final Constructor<T> constructor,
+                                    final Exception cause) {
         Logger logger = getLogger(constructor);
         if (logger.isEnabledFor(Priority.WARN)) {
             logger.warn(format(ComponentMonitorHelper.INSTANTIATION_FAILED, ctorToString(constructor), cause.getMessage()), cause);
@@ -175,10 +175,10 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public void invoking(PicoContainer container,
-                         ComponentAdapter<?> componentAdapter,
-                         Member member,
-                         Object instance) {
+    public void invoking(final PicoContainer container,
+                         final ComponentAdapter<?> componentAdapter,
+                         final Member member,
+                         final Object instance) {
         Logger logger = getLogger(member);
         if (logger.isDebugEnabled()) {
             logger.debug(format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));
@@ -187,11 +187,11 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public void invoked(PicoContainer container,
-                        ComponentAdapter<?> componentAdapter,
-                        Method method,
-                        Object instance,
-                        long duration) {
+    public void invoked(final PicoContainer container,
+                        final ComponentAdapter<?> componentAdapter,
+                        final Method method,
+                        final Object instance,
+                        final long duration) {
         Logger logger = getLogger(method);
         if (logger.isDebugEnabled()) {
             logger.debug(format(ComponentMonitorHelper.INVOKED, methodToString(method), instance, duration));
@@ -200,7 +200,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public void invocationFailed(Member member, Object instance, Exception cause) {
+    public void invocationFailed(final Member member, final Object instance, final Exception cause) {
         Logger logger = getLogger(member);
         if (logger.isEnabledFor(Priority.WARN)) {
             logger.warn(format(ComponentMonitorHelper.INVOCATION_FAILED, memberToString(member), instance, cause.getMessage()), cause);
@@ -209,10 +209,10 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public void lifecycleInvocationFailed(MutablePicoContainer container,
-                                          ComponentAdapter<?> componentAdapter, Method method,
-                                          Object instance,
-                                          RuntimeException cause) {
+    public void lifecycleInvocationFailed(final MutablePicoContainer container,
+                                          final ComponentAdapter<?> componentAdapter, final Method method,
+                                          final Object instance,
+                                          final RuntimeException cause) {
         Logger logger = getLogger(method);
         if (logger.isEnabledFor(Priority.WARN)) {
             logger.warn(format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, methodToString(method), instance, cause.getMessage()), cause);
@@ -221,7 +221,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public Object noComponentFound(MutablePicoContainer container, Object componentKey) {
+    public Object noComponentFound(final MutablePicoContainer container, final Object componentKey) {
         Logger logger = this.logger != null ? this.logger : LogManager.getLogger(ComponentMonitor.class);
         if (logger.isEnabledFor(Priority.WARN)) {
             logger.warn(format(ComponentMonitorHelper.NO_COMPONENT, componentKey));
@@ -231,11 +231,11 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
+    public AbstractInjector newInjectionFactory(final AbstractInjector abstractInjector) {
         return delegate.newInjectionFactory(abstractInjector);
     }
 
-    protected Logger getLogger(Member member) {
+    protected Logger getLogger(final Member member) {
         if ( logger != null ){
             return logger;
         } 
@@ -248,7 +248,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
      * @param oos object output stream.
      * @throws IOException
      */
-    private void writeObject(ObjectOutputStream oos) throws IOException {
+    private void writeObject(final ObjectOutputStream oos) throws IOException {
     	oos.defaultWriteObject();
     	if (logger != null) {
     		oos.writeBoolean(true);
@@ -264,7 +264,7 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+    private void readObject(final ObjectInputStream ois) throws IOException, ClassNotFoundException {
     	ois.defaultReadObject();
     	boolean hasDefaultLogger = ois.readBoolean();
     	if (hasDefaultLogger) {

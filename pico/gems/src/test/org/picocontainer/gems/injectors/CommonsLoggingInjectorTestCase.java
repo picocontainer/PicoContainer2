@@ -11,7 +11,7 @@ public class CommonsLoggingInjectorTestCase {
 
     public static class Foo {
         private Log log;
-        public Foo(Log log) {
+        public Foo(final Log log) {
             this.log = log;
         }
     }

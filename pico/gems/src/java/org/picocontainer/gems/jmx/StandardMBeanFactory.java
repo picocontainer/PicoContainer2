@@ -61,7 +61,7 @@ public class StandardMBeanFactory implements DynamicMBeanFactory {
                 }
                 return mBean;
             } else {
-                final Class managementInterface = getManagementInterface(
+                final Class<?> managementInterface = getManagementInterface(
                         componentInstance.getClass(), management, mBeanInfo);
                 return new StandardNanoMBean(componentInstance, managementInterface, mBeanInfo);
             }

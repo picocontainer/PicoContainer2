@@ -42,9 +42,14 @@ import java.util.Set;
  * 
  * @author J&ouml;rg Schaible
  */
-public final class ThreadLocalized extends AbstractBehavior {
+public final class ThreadLocalized<T> extends AbstractBehavior<T> {
 
-    private transient Class[] interfaces;
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 1244453492851215482L;
+	
+	private transient Class[] interfaces;
     private final ProxyFactory proxyFactory;
 
     /**
@@ -54,10 +59,10 @@ public final class ThreadLocalized extends AbstractBehavior {
      * @param proxyFactory The {@link ProxyFactory} to use.
      * @throws PicoCompositionException Thrown if the component does not implement any interface.
      */
-    public ThreadLocalized(final ComponentAdapter delegate, final ProxyFactory proxyFactory)
+    public ThreadLocalized(final ComponentAdapter<T> delegate, final ProxyFactory proxyFactory)
             throws PicoCompositionException
     {
-        super(new Cached(delegate, new ThreadLocalReference()));
+        super(new Cached<T>(delegate, new ThreadLocalReference<T>()));
         this.proxyFactory = proxyFactory;
         interfaces = getInterfaces();
     }
@@ -68,26 +73,27 @@ public final class ThreadLocalized extends AbstractBehavior {
      * @param delegate The {@link ComponentAdapter} to delegate.
      * @throws PicoCompositionException Thrown if the component does not implement any interface.
      */
-    public ThreadLocalized(final ComponentAdapter delegate) throws PicoCompositionException {
-        this(new Cached(delegate, new ThreadLocalReference()), new StandardProxyFactory());
+    public ThreadLocalized(final ComponentAdapter<T> delegate) throws PicoCompositionException {
+        this(new Cached<T>(delegate, new ThreadLocalReference<T>()), new StandardProxyFactory());
     }
 
-    public Object getComponentInstance(final PicoContainer pico, Type into) throws PicoCompositionException {
+    @Override
+	public T getComponentInstance(final PicoContainer pico, final Type into) throws PicoCompositionException {
 
         if (interfaces == null) {
             interfaces = getInterfaces();
         }
 
         final Invoker invoker = new ThreadLocalInvoker(pico, getDelegate());
-        return proxyFactory.createProxy(interfaces, invoker);
+        return (T)proxyFactory.createProxy(interfaces, invoker);
     }
 
 
     private Class[] getInterfaces() {
         final Object componentKey = getComponentKey();
         final Class[] interfaces;
-        if (componentKey instanceof Class && ((Class)componentKey).isInterface()) {
-            interfaces = new Class[]{(Class)componentKey};
+        if (componentKey instanceof Class && ((Class<?>)componentKey).isInterface()) {
+            interfaces = new Class[]{(Class<?>)componentKey};
         } else {
             final Set allInterfaces = ReflectionUtils.getAllInterfaces(getComponentImplementation());
             interfaces = (Class[])allInterfaces.toArray(new Class[allInterfaces.size()]);
@@ -107,7 +113,11 @@ public final class ThreadLocalized extends AbstractBehavior {
 
     final static private class ThreadLocalInvoker implements Invoker {
 
-        private final PicoContainer pico;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -1690906076721888986L;
+		private final PicoContainer pico;
         private final ComponentAdapter delegate;
 
         private ThreadLocalInvoker(final PicoContainer pico, final ComponentAdapter delegate) {
@@ -116,7 +126,7 @@ public final class ThreadLocalized extends AbstractBehavior {
         }
 
         public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-            final Object delegatedInstance = delegate.getComponentInstance(pico);
+            final Object delegatedInstance = delegate.getComponentInstance(pico,null);
             if (method.equals(ReflectionUtils.equals)) { // necessary for JDK 1.3
                 return args[0] != null && args[0].equals(delegatedInstance);
             } else {

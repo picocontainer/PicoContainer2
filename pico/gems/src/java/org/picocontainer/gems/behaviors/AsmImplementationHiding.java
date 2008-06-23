@@ -21,12 +21,18 @@ import java.util.Properties;
 
 public class AsmImplementationHiding extends AbstractBehaviorFactory {
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
-                                                   LifecycleStrategy lifecycleStrategy,
-                                                   Properties componentProperties,
-                                                   Object componentKey,
-                                                   Class componentImplementation,
-                                                   Parameter... parameters) throws PicoCompositionException {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4626804053729853698L;
+
+	@Override
+	public ComponentAdapter createComponentAdapter(final ComponentMonitor componentMonitor,
+                                                   final LifecycleStrategy lifecycleStrategy,
+                                                   final Properties componentProperties,
+                                                   final Object componentKey,
+                                                   final Class componentImplementation,
+                                                   final Parameter... parameters) throws PicoCompositionException {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {
             return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                 componentProperties, componentKey, componentImplementation, parameters);
@@ -41,10 +47,11 @@ public class AsmImplementationHiding extends AbstractBehaviorFactory {
         return new HiddenImplementation(componentAdapter);
     }
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
-                                                LifecycleStrategy lifecycleStrategy,
-                                                Properties componentProperties,
-                                                ComponentAdapter adapter) {
+    @Override
+	public ComponentAdapter addComponentAdapter(final ComponentMonitor componentMonitor,
+                                                final LifecycleStrategy lifecycleStrategy,
+                                                final Properties componentProperties,
+                                                final ComponentAdapter adapter) {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {
             return super.addComponentAdapter(componentMonitor,
                                              lifecycleStrategy,

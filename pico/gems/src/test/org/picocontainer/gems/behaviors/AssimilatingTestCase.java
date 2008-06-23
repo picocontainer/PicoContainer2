@@ -36,7 +36,8 @@ public class AssimilatingTestCase extends AbstractComponentFactoryTest {
     /**
      * @see org.picocontainer.tck.AbstractComponentFactoryTestCase#createComponentFactory()
      */
-    protected ComponentFactory createComponentFactory() {
+    @Override
+	protected ComponentFactory createComponentFactory() {
         return new Assimilating(Touchable.class).wrap(new ConstructorInjection());
     }
 

@@ -15,9 +15,9 @@ package org.picocontainer.gems.adapters;
  * @author J&ouml;rg Schaible
  * @author Leo Simmons
  */
-public interface StaticFactory {
+public interface StaticFactory<T> {
     /**
      * @return Returns the instance created by the factory.
      */
-    public Object get();
+    public T get();
 }

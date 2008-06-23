@@ -29,18 +29,18 @@ import org.picocontainer.PicoVisitor;
 public class JNDIProviding implements ComponentFactory {
 
 	public <T> ComponentAdapter<T> createComponentAdapter(
-			ComponentMonitor componentMonitor,
-			LifecycleStrategy lifecycleStrategy,
-			Properties componentProperties, Object componentKey,
-			Class<T> componentImplementation, Parameter... parameters)
+			final ComponentMonitor componentMonitor,
+			final LifecycleStrategy lifecycleStrategy,
+			final Properties componentProperties, final Object componentKey,
+			final Class<T> componentImplementation, final Parameter... parameters)
 			throws PicoCompositionException {
 		return null;
 	}
 
-    public void verify(PicoContainer container) {
+    public void verify(final PicoContainer container) {
     }
 
-    public void accept(PicoVisitor visitor) {
+    public void accept(final PicoVisitor visitor) {
         visitor.visitComponentFactory(this);
     }
 }

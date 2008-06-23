@@ -21,7 +21,8 @@ import java.lang.reflect.Type;
  */
 public class CommonsLoggingInjector extends FactoryInjector<Log> {
 
-    public Log getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {
+    @Override
+	public Log getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
         return LogFactory.getLog(((Class) into).getName());
     }
 }

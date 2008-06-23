@@ -56,7 +56,7 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTest {
     public static class Wife implements Woman {
         public final Man partner;
 
-        public Wife(Man partner) {
+        public Wife(final Man partner) {
             this.partner = partner;
         }
 
@@ -110,7 +110,8 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTest {
     }
 
 
-    protected ComponentFactory createComponentFactory() {
+    @Override
+	protected ComponentFactory createComponentFactory() {
         return implementationHidingComponentFactory;
     }
 

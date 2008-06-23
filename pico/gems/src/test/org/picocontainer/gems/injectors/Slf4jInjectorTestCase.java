@@ -11,7 +11,7 @@ public class Slf4jInjectorTestCase {
 
     public static class Foo {
         private Logger logger;
-        public Foo(Logger logger) {
+        public Foo(final Logger logger) {
             this.logger = logger;
         }
     }

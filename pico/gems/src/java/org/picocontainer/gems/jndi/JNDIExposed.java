@@ -14,8 +14,6 @@ import javax.naming.NamingException;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.behaviors.Stored;
 
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
-
 /**
  * exposes component to JNDI basically does same thing as cached, but uses JNDI
  * reference instead. Maybe Cached shall be refactored? as there is little new
@@ -27,6 +25,11 @@ import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 public class JNDIExposed<T> extends Stored<T> {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3041683727306240880L;
+
+	/**
 	 * construct reference itself using vanilla initial context.
 	 * JNDI name is stringified component key
 	 * @param delegate
@@ -34,7 +37,7 @@ public class JNDIExposed<T> extends Stored<T> {
 
 	 * @throws NamingException
 	 */
-	public JNDIExposed(ComponentAdapter<T> delegate) throws NamingException {
+	public JNDIExposed(final ComponentAdapter<T> delegate) throws NamingException {
 		super(delegate, new JNDIObjectReference<T>(delegate.getComponentKey()
 				.toString(), new InitialContext()));
 	}
@@ -45,8 +48,8 @@ public class JNDIExposed<T> extends Stored<T> {
 	 * @param delegate
 	 * @param instanceReference
 	 */
-	public JNDIExposed(ComponentAdapter<T> delegate,
-			JNDIObjectReference<T> instanceReference) {
+	public JNDIExposed(final ComponentAdapter<T> delegate,
+			final JNDIObjectReference<T> instanceReference) {
 		super(delegate, instanceReference);
 	}
 
@@ -56,10 +59,11 @@ public class JNDIExposed<T> extends Stored<T> {
 	 * @param name
 	 * @throws NamingException
 	 */
-	public JNDIExposed(ComponentAdapter<T> delegate, String name) throws NamingException {
+	public JNDIExposed(final ComponentAdapter<T> delegate, final String name) throws NamingException {
 		super(delegate, new JNDIObjectReference<T>(name, new InitialContext()));
 	}
 	
+	@Override
 	public String toString() {
 		return "JNDI" + instanceReference.toString() +  super.toString();
 	}

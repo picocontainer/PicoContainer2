@@ -31,18 +31,19 @@ public final class DotDependencyGraphComponentMonitor extends AbstractComponentM
 	
 	final List<Instantiation> allInstantiated = new ArrayList<Instantiation>();
 
-    public DotDependencyGraphComponentMonitor(ComponentMonitor delegate) {
+    public DotDependencyGraphComponentMonitor(final ComponentMonitor delegate) {
         super(delegate);
     }
 
     public DotDependencyGraphComponentMonitor() {
     }
 
-    public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
-                             Constructor<T> constructor,
-                             Object instantiated,
-                             Object[] injected,
-                             long duration) {
+    @Override
+	public <T> void instantiated(final PicoContainer container, final ComponentAdapter<T> componentAdapter,
+                             final Constructor<T> constructor,
+                             final Object instantiated,
+                             final Object[] injected,
+                             final long duration) {
 
         this.allInstantiated.add(new Instantiation(constructor, instantiated, injected, duration));
 
@@ -67,7 +68,7 @@ public final class DotDependencyGraphComponentMonitor extends AbstractComponentM
         return sortLines(lines);
     }
 
-    private String sortLines(Set<String> lines) {
+    private String sortLines(final Set<String> lines) {
         List<String> list = new ArrayList<String>(lines);
         Collections.sort(list);
 
@@ -108,7 +109,7 @@ public final class DotDependencyGraphComponentMonitor extends AbstractComponentM
         return sortLines(lines);
     }
 
-    private String printClassName(Class<?> clazz) {
+    private String printClassName(final Class<?> clazz) {
         String className = clazz.getName();
         return "'" + className.substring(className.lastIndexOf(".")+1) + "\\n" + clazz.getPackage().getName() + "'";
 
@@ -120,7 +121,7 @@ public final class DotDependencyGraphComponentMonitor extends AbstractComponentM
         final Object[] injected;
         final long duration;
         
-        public Instantiation(Constructor<?> constructor, Object instantiated, Object[] injected, long duration) {
+        public Instantiation(final Constructor<?> constructor, final Object instantiated, final Object[] injected, final long duration) {
             this.constructor = constructor;
             this.instantiated = instantiated;
             this.injected = injected;

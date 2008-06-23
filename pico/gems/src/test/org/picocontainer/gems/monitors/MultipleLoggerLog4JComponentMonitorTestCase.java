@@ -21,23 +21,28 @@ public class MultipleLoggerLog4JComponentMonitorTestCase extends ComponentMonito
 
     String logPrefixName = String.class.getName();
 
-    protected ComponentMonitor makeComponentMonitor() {
+    @Override
+	protected ComponentMonitor makeComponentMonitor() {
         return new Log4JComponentMonitor();
     }
 
-    protected Method getMethod() throws NoSuchMethodException {
+    @Override
+	protected Method getMethod() throws NoSuchMethodException {
         return String.class.getMethod("toString");
     }
 
-    protected Constructor getConstructor() {
+    @Override
+	protected Constructor getConstructor() {
         return String.class.getConstructors()[0];
     }
 
-    protected String getLogPrefix() {
+    @Override
+	protected String getLogPrefix() {
         return "[" + logPrefixName + "] ";
     }
 
-    public void testShouldTraceNoComponent() throws IOException {
+    @Override
+	public void testShouldTraceNoComponent() throws IOException {
         logPrefixName = ComponentMonitor.class.getName();
         super.testShouldTraceNoComponent();
     }

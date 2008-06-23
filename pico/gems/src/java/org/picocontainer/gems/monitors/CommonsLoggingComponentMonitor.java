@@ -76,7 +76,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
      * 
      * @param logClass the class of the Log
      */
-    public CommonsLoggingComponentMonitor(Class<?> logClass) {
+    public CommonsLoggingComponentMonitor(final Class<?> logClass) {
         this(logClass.getName());
     }
 
@@ -86,7 +86,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
      * 
      * @param logName the name of the Log
      */
-    public CommonsLoggingComponentMonitor(String logName) {
+    public CommonsLoggingComponentMonitor(final String logName) {
         this(LogFactory.getLog(logName));
     }
 
@@ -94,7 +94,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
      * Creates a CommonsLoggingComponentMonitor with a given Log instance
      * @param log the Log to write to
      */
-    public CommonsLoggingComponentMonitor(Log log) {
+    public CommonsLoggingComponentMonitor(final Log log) {
         this();
         this.log = log;        
     }
@@ -106,7 +106,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
      * @param logClass the class of the Log
      * @param delegate the delegate
      */
-    public CommonsLoggingComponentMonitor(Class<?> logClass, ComponentMonitor delegate) {
+    public CommonsLoggingComponentMonitor(final Class<?> logClass, final ComponentMonitor delegate) {
         this(logClass.getName(), delegate);
     }
 
@@ -117,7 +117,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
      * @param logName the name of the Log
      * @param delegate the delegate
      */
-    public CommonsLoggingComponentMonitor(String logName, ComponentMonitor delegate) {
+    public CommonsLoggingComponentMonitor(final String logName, final ComponentMonitor delegate) {
         this(LogFactory.getLog(logName), delegate);
     }
 
@@ -126,15 +126,15 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
      * @param log the Log with which to write events.
      * @param delegate the delegate
      */
-    public CommonsLoggingComponentMonitor(Log log, ComponentMonitor delegate) {
+    public CommonsLoggingComponentMonitor(final Log log, final ComponentMonitor delegate) {
         this.log = log;
         this.delegate = delegate;
     }
 
 
     /** {@inheritDoc} **/
-   public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
-                                     Constructor<T> constructor
+   public <T> Constructor<T> instantiating(final PicoContainer container, final ComponentAdapter<T> componentAdapter,
+                                     final Constructor<T> constructor
     ) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
@@ -144,11 +144,11 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
    /** {@inheritDoc} **/
-    public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
-                             Constructor<T> constructor,
-                             Object instantiated,
-                             Object[] parameters,
-                             long duration) {
+    public <T> void instantiated(final PicoContainer container, final ComponentAdapter<T> componentAdapter,
+                             final Constructor<T> constructor,
+                             final Object instantiated,
+                             final Object[] parameters,
+                             final long duration) {
         Log log = getLog(constructor);
         if (log.isDebugEnabled()) {
             log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATED, ctorToString(constructor), duration, instantiated.getClass().getName(), parmsToString(parameters)));
@@ -157,10 +157,10 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     /** {@inheritDoc} **/
-    public <T> void instantiationFailed(PicoContainer container,
-                                    ComponentAdapter<T>  componentAdapter,
-                                    Constructor<T>  constructor,
-                                    Exception cause) {
+    public <T> void instantiationFailed(final PicoContainer container,
+                                    final ComponentAdapter<T>  componentAdapter,
+                                    final Constructor<T>  constructor,
+                                    final Exception cause) {
         Log log = getLog(constructor);
         if (log.isWarnEnabled()) {
             log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.INSTANTIATION_FAILED, ctorToString(constructor), cause.getMessage()), cause);
@@ -169,10 +169,10 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     /** {@inheritDoc} **/
-    public void invoking(PicoContainer container,
-                         ComponentAdapter<?> componentAdapter,
-                         Member member,
-                         Object instance) {
+    public void invoking(final PicoContainer container,
+                         final ComponentAdapter<?> componentAdapter,
+                         final Member member,
+                         final Object instance) {
         Log log = getLog(member);
         if (log.isDebugEnabled()) {
             log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));
@@ -181,11 +181,11 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     /** {@inheritDoc} **/
-    public void invoked(PicoContainer container,
-                        ComponentAdapter<?> componentAdapter,
-                        Method method,
-                        Object instance,
-                        long duration) {
+    public void invoked(final PicoContainer container,
+                        final ComponentAdapter<?> componentAdapter,
+                        final Method method,
+                        final Object instance,
+                        final long duration) {
         Log log = getLog(method);
         if (log.isDebugEnabled()) {
             log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, methodToString(method), instance, duration));
@@ -194,7 +194,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     /** {@inheritDoc} **/
-    public void invocationFailed(Member member, Object instance, Exception cause) {
+    public void invocationFailed(final Member member, final Object instance, final Exception cause) {
         Log log = getLog(member);
         if (log.isWarnEnabled()) {
             log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOCATION_FAILED, memberToString(member), instance, cause.getMessage()), cause);
@@ -203,10 +203,10 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     /** {@inheritDoc} **/
-    public void lifecycleInvocationFailed(MutablePicoContainer container,
-                                          ComponentAdapter<?> componentAdapter, Method method,
-                                          Object instance,
-                                          RuntimeException cause) {
+    public void lifecycleInvocationFailed(final MutablePicoContainer container,
+                                          final ComponentAdapter<?> componentAdapter, final Method method,
+                                          final Object instance,
+                                          final RuntimeException cause) {
         Log log = getLog(method);
         if (log.isWarnEnabled()) {
             log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.LIFECYCLE_INVOCATION_FAILED, methodToString(method), instance, cause.getMessage()), cause);
@@ -215,7 +215,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     /** {@inheritDoc} **/
-    public Object noComponentFound(MutablePicoContainer container, Object componentKey) {
+    public Object noComponentFound(final MutablePicoContainer container, final Object componentKey) {
         Log log = this.log != null ? this.log : LogFactory.getLog(ComponentMonitor.class);
         if (log.isWarnEnabled()) {
             log.warn(ComponentMonitorHelper.format(ComponentMonitorHelper.NO_COMPONENT, componentKey));
@@ -224,7 +224,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     /** {@inheritDoc} **/
-    public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
+    public AbstractInjector newInjectionFactory(final AbstractInjector abstractInjector) {
         return delegate.newInjectionFactory(abstractInjector); 
     }
 
@@ -233,7 +233,7 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
      * @param member constructor/method/field who's callback is required.
      * @return the Commons logging instance.
      */
-    protected Log getLog(Member member) {
+    protected Log getLog(final Member member) {
         if ( log != null ){
             return log;
         } 

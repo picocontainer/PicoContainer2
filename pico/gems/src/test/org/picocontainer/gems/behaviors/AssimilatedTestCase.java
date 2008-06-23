@@ -128,11 +128,13 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
 
     // -------- TCK -----------
 
-    protected Class getComponentAdapterType() {
+    @Override
+	protected Class getComponentAdapterType() {
         return Assimilated.class;
     }
 
-    protected int getComponentAdapterNature() {
+    @Override
+	protected int getComponentAdapterNature() {
         return super.getComponentAdapterNature() & ~(RESOLVING | VERIFYING | INSTANTIATING);
     }
 
@@ -141,25 +143,30 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
                 CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
     }
 
-    protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
+    @Override
+	protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(final MutablePicoContainer picoContainer) {
         return createComponentAdapterWithTouchable();
     }
 
-    protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer) {
+    @Override
+	protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(final MutablePicoContainer picoContainer) {
         return createComponentAdapterWithTouchable();
     }
 
-    protected ComponentAdapter prepDEF_visitable() {
+    @Override
+	protected ComponentAdapter prepDEF_visitable() {
         return createComponentAdapterWithTouchable();
     }
 
-    protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
+    @Override
+	protected ComponentAdapter prepSER_isSerializable(final MutablePicoContainer picoContainer) {
         return new Assimilated(Touchable.class, new InstanceAdapter<CompatibleTouchable>(
                 CompatibleTouchable.class, new CompatibleTouchable(), new NullLifecycleStrategy(),
                                                                         new NullComponentMonitor()), new CglibProxyFactory());
     }
 
-    protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {
+    @Override
+	protected ComponentAdapter prepSER_isXStreamSerializable(final MutablePicoContainer picoContainer) {
         return createComponentAdapterWithTouchable();
     }
 }

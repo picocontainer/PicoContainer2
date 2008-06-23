@@ -51,14 +51,16 @@ public class NamingConventionConstructingProvider extends AbstractConstructingPr
      * Return a {@link StandardMBeanFactory}.
      * @see org.picocontainer.gems.jmx.AbstractConstructingProvider#getMBeanFactory()
      */
-    protected DynamicMBeanFactory getMBeanFactory() {
+    @Override
+	protected DynamicMBeanFactory getMBeanFactory() {
         return mBeanFactory;
     }
 
     /**
      * @see org.picocontainer.gems.jmx.AbstractConstructingProvider#getObjectNameFactory()
      */
-    public ObjectNameFactory getObjectNameFactory() {
+    @Override
+	public ObjectNameFactory getObjectNameFactory() {
         return objectNameFactory;
     }
 
@@ -67,7 +69,8 @@ public class NamingConventionConstructingProvider extends AbstractConstructingPr
      * {@link ComponentTypeConventionMBeanInfoProvider}.
      * @see org.picocontainer.gems.jmx.AbstractConstructingProvider#getMBeanInfoProviders()
      */
-    public MBeanInfoProvider[] getMBeanInfoProviders() {
+    @Override
+	public MBeanInfoProvider[] getMBeanInfoProviders() {
         return mBeanProviders;
     }
 
@@ -78,7 +81,8 @@ public class NamingConventionConstructingProvider extends AbstractConstructingPr
      * @return Returns the management interface.
      * @throws ClassNotFoundException Thrown if no interface can be determined.
      */
-    protected Class getManagementInterface(final Class implementation, final MBeanInfo mBeanInfo)
+    @Override
+	protected Class getManagementInterface(final Class implementation, final MBeanInfo mBeanInfo)
             throws ClassNotFoundException {
         return mBeanFactory.getDefaultManagementInterface(implementation, mBeanInfo);
     }

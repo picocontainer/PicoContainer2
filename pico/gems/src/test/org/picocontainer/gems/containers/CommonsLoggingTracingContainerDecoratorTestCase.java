@@ -23,7 +23,7 @@ public class CommonsLoggingTracingContainerDecoratorTestCase extends AbstractTra
 	
 	@Override
 	protected MutablePicoContainer createTracingContainerDecorator(
-			MutablePicoContainer picoContainer, String name) {
+			final MutablePicoContainer picoContainer, final String name) {
 		return new CommonsLoggingTracingContainerDecorator(picoContainer, name);
 	}
 	

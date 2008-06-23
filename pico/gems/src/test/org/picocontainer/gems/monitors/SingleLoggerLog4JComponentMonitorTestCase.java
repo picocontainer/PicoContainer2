@@ -19,23 +19,28 @@ import org.picocontainer.ComponentMonitor;
  */
 public class SingleLoggerLog4JComponentMonitorTestCase extends ComponentMonitorHelperTestCase {
 
-    protected ComponentMonitor makeComponentMonitor() {
+    @Override
+	protected ComponentMonitor makeComponentMonitor() {
         return new Log4JComponentMonitor(Log4JComponentMonitor.class);
     }
 
-    protected Constructor getConstructor() throws NoSuchMethodException {
+    @Override
+	protected Constructor getConstructor() throws NoSuchMethodException {
         return getClass().getConstructor((Class[])null);
     }
 
-    protected Method getMethod() throws NoSuchMethodException {
+    @Override
+	protected Method getMethod() throws NoSuchMethodException {
         return getClass().getDeclaredMethod("makeComponentMonitor", (Class[])null);
     }
 
-    protected String getLogPrefix() {
+    @Override
+	protected String getLogPrefix() {
         return "[" + Log4JComponentMonitor.class.getName() + "] ";
     }
 
-    public void testShouldTraceNoComponent() throws IOException {
+    @Override
+	public void testShouldTraceNoComponent() throws IOException {
         super.testShouldTraceNoComponent();    
     }
 }

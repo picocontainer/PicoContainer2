@@ -20,9 +20,13 @@ import java.util.Properties;
 
 public class Pooling extends AbstractBehaviorFactory {
 
-    private final Pooled.Context poolContext;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7451446445848408124L;
+	private final Pooled.Context poolContext;
 
-    public Pooling(Pooled.Context poolContext) {
+    public Pooling(final Pooled.Context poolContext) {
         this.poolContext = poolContext;
     }
 
@@ -30,7 +34,8 @@ public class Pooling extends AbstractBehaviorFactory {
         poolContext = new Pooled.DefaultContext();
     }
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
+    @Override
+	public ComponentAdapter createComponentAdapter(final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
             throws PicoCompositionException {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                          componentProperties, componentKey, componentImplementation, parameters);
@@ -40,10 +45,11 @@ public class Pooling extends AbstractBehaviorFactory {
         return behavior;
     }
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
-                                                LifecycleStrategy lifecycleStrategy,
-                                                Properties componentProperties,
-                                                ComponentAdapter adapter) {
+    @Override
+	public ComponentAdapter addComponentAdapter(final ComponentMonitor componentMonitor,
+                                                final LifecycleStrategy lifecycleStrategy,
+                                                final Properties componentProperties,
+                                                final ComponentAdapter adapter) {
         return new Pooled(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,

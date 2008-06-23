@@ -52,7 +52,7 @@ public class DynamicMBeanComponentProvider implements DynamicMBeanProvider {
      */
     public JMXRegistrationInfo provide(final PicoContainer picoContainer, final ComponentAdapter componentAdapter) {
         if (DynamicMBean.class.isAssignableFrom(componentAdapter.getComponentImplementation())) {
-            final DynamicMBean mBean = (DynamicMBean)componentAdapter.getComponentInstance(picoContainer);
+            final DynamicMBean mBean = (DynamicMBean)componentAdapter.getComponentInstance(picoContainer,null);
             try {
                 final ObjectName objectName = objectNameFactory.create(componentAdapter.getComponentKey(), mBean);
                 if (objectName != null) {

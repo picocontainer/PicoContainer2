@@ -74,7 +74,8 @@ public class JMXVisitor extends TraversalCheckingVisitor {
      *         registered MBeans.
      * @see org.picocontainer.visitors.AbstractPicoVisitor#traverse(java.lang.Object)
      */
-    public Object traverse(final Object node) {
+    @Override
+	public Object traverse(final Object node) {
         super.traverse(node);
         picoContainer = null;
         final Set set = new HashSet(registeredInfo);
@@ -86,7 +87,8 @@ public class JMXVisitor extends TraversalCheckingVisitor {
      * Provides the PicoContainer, that can resolve the components to register as MBean.
      * @see org.picocontainer.PicoVisitor#visitContainer(org.picocontainer.PicoContainer)
      */
-    public boolean visitContainer(final PicoContainer pico) {
+    @Override
+	public boolean visitContainer(final PicoContainer pico) {
         super.visitContainer(pico);
         picoContainer = pico;
         visited.clear();
@@ -98,7 +100,8 @@ public class JMXVisitor extends TraversalCheckingVisitor {
      * MBean from the component.
      * @see org.picocontainer.PicoVisitor#visitComponentAdapter(org.picocontainer.ComponentAdapter)
      */
-    public void visitComponentAdapter(final ComponentAdapter componentAdapter) {
+    @Override
+	public void visitComponentAdapter(final ComponentAdapter componentAdapter) {
         super.visitComponentAdapter(componentAdapter);
         if (picoContainer == null) {
             throw new JMXRegistrationException("Cannot start JMXVisitor traversal with a ComponentAdapter");

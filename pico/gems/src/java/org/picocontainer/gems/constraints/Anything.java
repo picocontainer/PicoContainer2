@@ -16,12 +16,17 @@ import org.picocontainer.ComponentAdapter;
  * @author Nick Sieger
  */
 public class Anything extends AbstractConstraint {
-    public static final Anything ANYTHING = new Anything();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 142557419655786599L;
+	public static final Anything ANYTHING = new Anything();
 
     public Anything() {
     }
 
-    public boolean evaluate(ComponentAdapter adapter) {
+    @Override
+	public boolean evaluate(final ComponentAdapter adapter) {
         return true;
     }
 }

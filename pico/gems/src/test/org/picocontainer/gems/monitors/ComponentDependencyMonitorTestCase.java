@@ -38,7 +38,7 @@ public class ComponentDependencyMonitorTestCase implements ComponentDependencyLi
         assertEquals(new Dependency(DependsOnList.class, ArrayList.class), dependency);
     }
 
-    public void addDependency(Dependency dependency) {
+    public void addDependency(final Dependency dependency) {
         this.dependency = dependency;
     }
 

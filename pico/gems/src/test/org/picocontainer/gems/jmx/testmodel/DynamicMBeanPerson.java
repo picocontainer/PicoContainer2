@@ -33,7 +33,7 @@ public class DynamicMBeanPerson extends StandardMBean implements PersonMBean {
     /**
      * {@inheritDoc}
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 

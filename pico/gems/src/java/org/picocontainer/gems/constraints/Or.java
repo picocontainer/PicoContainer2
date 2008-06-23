@@ -18,27 +18,32 @@ import org.picocontainer.PicoVisitor;
  * @author Nick Sieger
  */
 public final class Or extends AbstractConstraint {
-    private final Constraint[] children;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3830605478813258523L;
+	private final Constraint[] children;
 
-    public Or(Constraint c1, Constraint c2) {
+    public Or(final Constraint c1, final Constraint c2) {
         children = new Constraint[2];
         children[0] = c1;
         children[1] = c2;
     }
 
-    public Or(Constraint c1, Constraint c2, Constraint c3) {
+    public Or(final Constraint c1, final Constraint c2, final Constraint c3) {
         children = new Constraint[3];
         children[0] = c1;
         children[1] = c2;
         children[2] = c3;
     }
 
-    public Or(Constraint[] cc) {
+    public Or(final Constraint[] cc) {
         children = new Constraint[cc.length];
         System.arraycopy(cc, 0, children, 0, cc.length);
     }
 
-    public boolean evaluate(ComponentAdapter adapter) {
+    @Override
+	public boolean evaluate(final ComponentAdapter adapter) {
         for (Constraint aChildren : children) {
             if (aChildren.evaluate(adapter)) {
                 return true;
@@ -47,7 +52,8 @@ public final class Or extends AbstractConstraint {
         return false;
     }
 
-    public void accept(PicoVisitor visitor) {
+    @Override
+	public void accept(final PicoVisitor visitor) {
         super.accept(visitor);
         for (Constraint aChildren : children) {
             aChildren.accept(visitor);

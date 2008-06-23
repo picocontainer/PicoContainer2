@@ -87,7 +87,8 @@ public class JMXExposed<T> extends AbstractBehavior<T> {
      *             {@link javax.management.DynamicMBean} in the {@link MBeanServer } fails.
      * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer)
      */
-    public T getComponentInstance(final PicoContainer container, Type into)
+    @Override
+	public T getComponentInstance(final PicoContainer container, final Type into)
             throws PicoCompositionException
     {
         final ComponentAdapter<T> componentAdapter = new Cached<T>(getDelegate());
@@ -121,7 +122,8 @@ public class JMXExposed<T> extends AbstractBehavior<T> {
         return "ExposedJMX";
     }
 
-    public void dispose(Object component) {
+    @Override
+	public void dispose(final Object component) {
         if( null != registeredObjectNames ) {
             for (Object registeredObjectName : registeredObjectNames) {
                 try {
@@ -139,7 +141,8 @@ public class JMXExposed<T> extends AbstractBehavior<T> {
 		}
 	}
 
-	public boolean hasLifecycle( Class<?> type ) {
+	@Override
+	public boolean hasLifecycle( final Class<?> type ) {
 		return true;
 	}
 

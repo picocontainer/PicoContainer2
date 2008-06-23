@@ -30,7 +30,8 @@ public class MX4JDynamicMBeanFactory extends StandardMBeanFactory {
      * @see org.picocontainer.gems.jmx.StandardMBeanFactory#create(java.lang.Object, java.lang.Class,
      *      javax.management.MBeanInfo)
      */
-    public DynamicMBean create(final Object componentInstance, final Class management, final MBeanInfo mBeanInfo) {
+    @Override
+	public DynamicMBean create(final Object componentInstance, final Class management, final MBeanInfo mBeanInfo) {
         if (management != null || mBeanInfo == null) {
             return super.create(componentInstance, management, mBeanInfo);
         } else {

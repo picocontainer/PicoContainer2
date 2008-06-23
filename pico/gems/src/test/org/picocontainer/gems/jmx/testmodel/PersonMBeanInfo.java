@@ -18,7 +18,11 @@ import javax.management.MBeanInfo;
  */
 public class PersonMBeanInfo extends MBeanInfo {
 
-    final static MBeanInfo INFO = Person.createMBeanInfo();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4064659252845568493L;
+	final static MBeanInfo INFO = Person.createMBeanInfo();
 
     public PersonMBeanInfo() {
         super(INFO.getClassName(), INFO.getDescription(), INFO.getAttributes(), INFO.getConstructors(), INFO

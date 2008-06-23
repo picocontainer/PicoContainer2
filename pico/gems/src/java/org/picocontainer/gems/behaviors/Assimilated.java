@@ -53,9 +53,13 @@ import java.lang.reflect.Type;
  * @author J&ouml;rg Schaible
  * @author Michael Ward
  */
-public final class Assimilated extends AbstractBehavior {
+public final class Assimilated<T> extends AbstractBehavior<T> {
 
-    private final Class type;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2656675827757115426L;
+	private final Class<T> type;
     private final ProxyFactory proxyFactory;
     private final boolean isCompatible;
 
@@ -68,12 +72,12 @@ public final class Assimilated extends AbstractBehavior {
      * @param proxyFactory The {@link ProxyFactory} to use.
      * @throws PicoCompositionException Thrown if the <code>type</code> is not compatible and cannot be proxied.
      */
-    public Assimilated(final Class type, final ComponentAdapter delegate, final ProxyFactory proxyFactory)
+    public Assimilated(final Class<T> type, final ComponentAdapter<T> delegate, final ProxyFactory proxyFactory)
             throws PicoCompositionException {
         super(delegate);
         this.type = type;
         this.proxyFactory = proxyFactory;
-        final Class delegationType = delegate.getComponentImplementation();
+        final Class<T> delegationType = delegate.getComponentImplementation();
         this.isCompatible = type.isAssignableFrom(delegationType);
         if (!isCompatible) {
             if (!proxyFactory.canProxy(type)) {
@@ -101,7 +105,7 @@ public final class Assimilated extends AbstractBehavior {
      * @param type The class type used as key.
      * @param delegate The delegated {@link ComponentAdapter}.
      */
-    public Assimilated(final Class type, final ComponentAdapter delegate) {
+    public Assimilated(final Class<T> type, final ComponentAdapter<T> delegate) {
         this(type, delegate, new StandardProxyFactory());
     }
 
@@ -111,10 +115,11 @@ public final class Assimilated extends AbstractBehavior {
      * 
      * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer)
      */
-    public Object getComponentInstance(final PicoContainer container, Type into)
+    @Override
+	public T getComponentInstance(final PicoContainer container, final Type into)
             throws PicoCompositionException  {
-        return isCompatible ? super.getComponentInstance(container, into) : Delegating.object(
-                type, super.getComponentInstance(container, into), proxyFactory);
+        return (T) (isCompatible ? super.getComponentInstance(container, into) : Delegating.object(
+                type, super.getComponentInstance(container, into), proxyFactory));
     }
 
     public String getDescriptor() {
@@ -127,7 +132,8 @@ public final class Assimilated extends AbstractBehavior {
      * 
      * @see AbstractBehavior#getComponentImplementation()
      */
-    public Class getComponentImplementation() {
+    @Override
+	public Class<T> getComponentImplementation() {
         return isCompatible ? super.getComponentImplementation() : type;
     }
 
@@ -137,7 +143,8 @@ public final class Assimilated extends AbstractBehavior {
      * 
      * @see AbstractBehavior#getComponentKey()
      */
-    public Object getComponentKey() {
+    @Override
+	public Object getComponentKey() {
         final Object key = super.getComponentKey();
         if (key instanceof Class && (!isCompatible || !type.isAssignableFrom((Class)key))) {
             return type;

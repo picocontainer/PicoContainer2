@@ -34,7 +34,7 @@ public class Multicaster {
      * @param proxyFactory the ProxyFactory to use
      * @return the Multicasting proxy
      */
-    public static Object object(PicoContainer pico, boolean callInInstantiationOrder, ProxyFactory proxyFactory) {
+    public static Object object(final PicoContainer pico, boolean callInInstantiationOrder, final ProxyFactory proxyFactory) {
         List copy = new ArrayList(pico.getComponents());
 
         if (!callInInstantiationOrder) {

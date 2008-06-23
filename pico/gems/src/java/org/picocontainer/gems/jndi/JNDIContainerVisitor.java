@@ -32,12 +32,12 @@ public class JNDIContainerVisitor extends TraversalCheckingVisitor {
 	 * done. 
 	 */
 	@Override
-	public void visitComponentAdapter(ComponentAdapter componentAdapter)
+	public void visitComponentAdapter(final ComponentAdapter componentAdapter)
 	{
 		super.visitComponentAdapter(componentAdapter);
 
 		if(componentAdapter instanceof JNDIExposed) {
-			componentAdapter.getComponentInstance(container);
+			componentAdapter.getComponentInstance(container,null);
 		}
 
 	}
@@ -46,7 +46,8 @@ public class JNDIContainerVisitor extends TraversalCheckingVisitor {
      * Provides the PicoContainer, that can resolve the components to register as MBean.
      * @see org.picocontainer.PicoVisitor#visitContainer(org.picocontainer.PicoContainer)
      */
-    public boolean visitContainer(final PicoContainer pico) {
+    @Override
+	public boolean visitContainer(final PicoContainer pico) {
         super.visitContainer(pico);
         container = pico;
         return CONTINUE_TRAVERSAL;
@@ -58,7 +59,8 @@ public class JNDIContainerVisitor extends TraversalCheckingVisitor {
      *         registered MBeans.
      * @see org.picocontainer.visitors.AbstractPicoVisitor#traverse(java.lang.Object)
      */
-    public Object traverse(final Object node) {
+    @Override
+	public Object traverse(final Object node) {
         super.traverse(node);
         container = null;
         return null;

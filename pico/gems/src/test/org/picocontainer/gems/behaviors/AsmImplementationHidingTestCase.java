@@ -41,7 +41,7 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
         DefaultPicoContainer pico =
             new DefaultPicoContainer(new AsmImplementationHiding().wrap(new ConstructorInjection()));
         pico.addComponent("foo", String.class);
-        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(HiddenImplementation.class, foo.getClass());
         assertEquals(ConstructorInjector.class, ((AbstractBehavior) foo).getDelegate().getClass());
     }
@@ -50,7 +50,7 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
         DefaultPicoContainer pico =
             new DefaultPicoContainer(new AsmImplementationHiding().wrap(new ConstructorInjection()));
         pico.change(Characteristics.HIDE_IMPL).addComponent("foo", String.class);
-        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(HiddenImplementation.class, foo.getClass());
         assertEquals(ConstructorInjector.class, ((AbstractBehavior) foo).getDelegate().getClass());
     }
@@ -59,7 +59,7 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
         DefaultPicoContainer pico =
             new DefaultPicoContainer(new AsmImplementationHiding().wrap(new ConstructorInjection()));
         pico.change(Characteristics.NO_HIDE_IMPL).addComponent("foo", String.class);
-        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(ConstructorInjector.class, foo.getClass());
     }
 
@@ -67,7 +67,7 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
         DefaultPicoContainer pico =
             new DefaultPicoContainer(new AsmImplementationHiding().wrap(new ConstructorInjection()));
         pico.addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
-        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(HiddenImplementation.class, foo.getClass());
         assertEquals(InstanceAdapter.class, ((AbstractBehavior) foo).getDelegate().getClass());
 
@@ -77,7 +77,7 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
         DefaultPicoContainer pico =
             new DefaultPicoContainer(new AsmImplementationHiding().wrap(new ConstructorInjection()));
         pico.change(Characteristics.HIDE_IMPL).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
-        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(HiddenImplementation.class, foo.getClass());
         assertEquals(InstanceAdapter.class, ((AbstractBehavior) foo).getDelegate().getClass());
     }
@@ -86,11 +86,12 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
         DefaultPicoContainer pico =
             new DefaultPicoContainer(new AsmImplementationHiding().wrap(new ConstructorInjection()));
         pico.change(Characteristics.NO_HIDE_IMPL).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
-        ComponentAdapter foo = pico.getComponentAdapter("foo");
+        ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(InstanceAdapter.class, foo.getClass());
     }
 
-    protected ComponentFactory createComponentFactory() {
+    @Override
+	protected ComponentFactory createComponentFactory() {
         return implementationHidingComponentFactory;
     }
 
@@ -107,14 +108,14 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
 
     }
 
-    private void assertions(Elephant foo) throws IOException {
+    private void assertions(final Elephant foo) throws IOException {
         assertEquals("onetwo", foo.objects("one", "two"));
         assertEquals("onetwo", foo.objectsArray(new String[]{"one"}, new String[]{"two"})[0]);
         assertEquals(3, foo.iint(1, 2));
         assertEquals(3, foo.llong(1, 2));
         assertEquals(6, foo.bbyte((byte) 1, (byte) 2, (byte) 3));
-        assertEquals((float) 10, foo.ffloat(1, 2, 3, 4));
-        assertEquals((double) 3, foo.ddouble(1, 2));
+        assertEquals(10, foo.ffloat(1, 2, 3, 4));
+        assertEquals(3, foo.ddouble(1, 2));
         assertEquals('c', foo.cchar('a', 'b'));
         assertEquals(3, foo.sshort((short) 1, (short) 2));
         assertEquals(true, foo.bboolean(true, true));

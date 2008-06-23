@@ -57,7 +57,7 @@ public abstract class AbstractConstructingProvider implements DynamicMBeanProvid
 			try {
 				// create MBean
 				final DynamicMBean mBean = getMBeanFactory().create(
-						componentAdapter.getComponentInstance(picoContainer), management, mBeanInfo);
+						componentAdapter.getComponentInstance(picoContainer,null), management, mBeanInfo);
 				final ObjectName objectName = getObjectNameFactory().create(componentAdapter.getComponentKey(), mBean);
 				if (objectName != null) {
 					return new JMXRegistrationInfo(objectName, mBean);

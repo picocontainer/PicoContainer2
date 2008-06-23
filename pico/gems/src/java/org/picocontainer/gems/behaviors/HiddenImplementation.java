@@ -33,21 +33,27 @@ import org.picocontainer.behaviors.Cached;
  *
  * @author Paul Hammant
  */
-public class HiddenImplementation extends AbstractBehavior implements Opcodes {
+public class HiddenImplementation<T> extends AbstractBehavior<T> implements Opcodes {
 
-    public HiddenImplementation(final ComponentAdapter delegate) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 167158029919261007L;
+
+	public HiddenImplementation(final ComponentAdapter<T> delegate) {
         super(delegate);
     }
 
-    public Object getComponentInstance(final PicoContainer container, java.lang.reflect.Type into) {
-        Object o = getDelegate().getComponentInstance(container, into);
+    @Override
+	public T getComponentInstance(final PicoContainer container, final java.lang.reflect.Type into) {
+        T o = getDelegate().getComponentInstance(container, into);
         Class[] interfaces = o.getClass().getInterfaces();
         if (interfaces.length != 0) {
             byte[] bytes = makeProxy("XX", interfaces, true);
             AsmClassLoader cl = new AsmClassLoader(HotSwappable.Swappable.class.getClassLoader());
             Class<?> pClazz = cl.defineClass("XX", bytes);
             try {
-                Constructor<?> ctor = pClazz.getConstructor(HotSwappable.Swappable.class);
+                Constructor<T> ctor = (Constructor<T>) pClazz.getConstructor(HotSwappable.Swappable.class);
                 final HotSwappable.Swappable swappable = getSwappable();
                 swappable.swap(o);
                 return ctor.newInstance(swappable);
@@ -68,7 +74,7 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         return new HotSwappable.Swappable();
     }
 
-    public byte[] makeProxy(String proxyName, Class[] interfaces, boolean setter) {
+    public byte[] makeProxy(final String proxyName, final Class[] interfaces, final boolean setter) {
 
         ClassWriter cw = new ClassWriter(0);
         FieldVisitor fv;
@@ -98,7 +104,7 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         return cw.toByteArray();
     }
 
-    private String[] getNames(Class[] interfaces) {
+    private String[] getNames(final Class[] interfaces) {
         String[] retVal = new String[interfaces.length];
         for (int i = 0; i < interfaces.length; i++) {
             retVal[i] = dotsToSlashes(interfaces[i]);
@@ -106,7 +112,7 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         return retVal;
     }
 
-    private void doConstructor(String proxyName, ClassWriter cw) {
+    private void doConstructor(final String proxyName, final ClassWriter cw) {
         MethodVisitor mv;
         mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(L"+ dotsToSlashes(HotSwappable.Swappable.class)+";)V", null, null);
         mv.visitCode();
@@ -120,7 +126,7 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         mv.visitEnd();
     }
 
-    private void doMethod(String proxyName, ClassWriter cw, Class iface, Method meth) {
+    private void doMethod(final String proxyName, final ClassWriter cw, final Class iface, final Method meth) {
         String signature = "(" + encodedParameterNames(meth) + ")" + encodedClassName(meth.getReturnType());
         String[] exceptions = encodedExceptionNames(meth.getExceptionTypes());
         MethodVisitor mv;
@@ -143,7 +149,7 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         mv.visitEnd();
     }
 
-    private int indexOf(int ix, int loadType) {
+    private int indexOf(final int ix, final int loadType) {
         if (loadType == LLOAD) {
             return ix + 2;
         } else if (loadType == DLOAD) {
@@ -158,7 +164,7 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         return 0;
     }
 
-    private String[] encodedExceptionNames(Class[] exceptionTypes) {
+    private String[] encodedExceptionNames(final Class[] exceptionTypes) {
         if (exceptionTypes.length == 0) {
             return null;
         }
@@ -170,7 +176,7 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         return retVal;
     }
 
-    private int whichReturn(Class clazz) {
+    private int whichReturn(final Class clazz) {
         if (!clazz.isPrimitive()) {
             return ARETURN;
         } else if (clazz.isArray()) {
@@ -198,7 +204,7 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         }
     }
 
-    private int whichLoad(Class clazz) {
+    private int whichLoad(final Class clazz) {
         if (!clazz.isPrimitive()) {
             return ALOAD;
         } else if (clazz.isArray()) {
@@ -224,7 +230,7 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         }
     }
 
-    private String encodedClassName(Class clazz) {
+    private String encodedClassName(final Class clazz) {
         if (clazz.getName().startsWith("[")) {
             return dotsToSlashes(clazz);
         } else if (!clazz.isPrimitive()) {
@@ -252,7 +258,7 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         }
     }
 
-    private String encodedParameterNames(Method meth) {
+    private String encodedParameterNames(final Method meth) {
         String retVal = "";
         for (Class type : meth.getParameterTypes()) {
             retVal += encodedClassName(type);
@@ -260,17 +266,17 @@ public class HiddenImplementation extends AbstractBehavior implements Opcodes {
         return retVal;
     }
 
-    private String dotsToSlashes(Class type) {
+    private String dotsToSlashes(final Class type) {
         return type.getName().replace('.', '/');
     }
 
     private static class AsmClassLoader extends ClassLoader {
 
-        public AsmClassLoader(ClassLoader parent) {
+        public AsmClassLoader(final ClassLoader parent) {
             super(parent);
         }
 
-        public Class<?> defineClass(String name, byte[] b) {
+        public Class<?> defineClass(final String name, final byte[] b) {
             return defineClass(name, b, 0, b.length);
         }
     }

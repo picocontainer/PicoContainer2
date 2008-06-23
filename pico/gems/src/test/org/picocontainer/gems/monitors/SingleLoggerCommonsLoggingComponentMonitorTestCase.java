@@ -14,19 +14,23 @@ import org.picocontainer.ComponentMonitor;
 
 public class SingleLoggerCommonsLoggingComponentMonitorTestCase extends ComponentMonitorHelperTestCase {
 
-    protected ComponentMonitor makeComponentMonitor() {
+    @Override
+	protected ComponentMonitor makeComponentMonitor() {
         return new CommonsLoggingComponentMonitor(CommonsLoggingComponentMonitor.class);
     }
 
-    protected Constructor getConstructor() throws NoSuchMethodException {
+    @Override
+	protected Constructor getConstructor() throws NoSuchMethodException {
         return getClass().getConstructor((Class[])null);
     }
 
-    protected Method getMethod() throws NoSuchMethodException {
+    @Override
+	protected Method getMethod() throws NoSuchMethodException {
         return getClass().getDeclaredMethod("makeComponentMonitor", (Class[])null);
     }
 
-    protected String getLogPrefix() {
+    @Override
+	protected String getLogPrefix() {
         return "[" + CommonsLoggingComponentMonitor.class.getName() + "] ";
     }
 

@@ -33,15 +33,16 @@ public final class ComponentDependencyMonitor extends AbstractComponentMonitor {
 	
 	private final ComponentDependencyListener listener;
 
-    public ComponentDependencyMonitor(ComponentDependencyListener listener) {
+    public ComponentDependencyMonitor(final ComponentDependencyListener listener) {
         this.listener = listener;
     }
 
-    public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
-                             Constructor<T> constructor,
-                             Object instantiated,
-                             Object[] injected,
-                             long duration) {
+    @Override
+	public <T> void instantiated(final PicoContainer container, final ComponentAdapter<T> componentAdapter,
+                             final Constructor<T> constructor,
+                             final Object instantiated,
+                             final Object[] injected,
+                             final long duration) {
         Class<?> componentType = instantiated.getClass();
         int count = injected.length;
 
@@ -68,16 +69,17 @@ public final class ComponentDependencyMonitor extends AbstractComponentMonitor {
 
         private final Class<?> dependencyType;
 
-        public Dependency(Class<?> componentType, Class<?> dependencyType) {
+        public Dependency(final Class<?> componentType, final Class<?> dependencyType) {
             this.componentType = componentType;
             this.dependencyType = dependencyType;
         }
 
-        public boolean dependsOn(Class<?> type) {
+        public boolean dependsOn(final Class<?> type) {
             return (type != null) && type.equals(dependencyType);
         }
 
-        public boolean equals(Object other) {
+        @Override
+		public boolean equals(final Object other) {
             if (other instanceof Dependency) {
                 Dependency otherDependency = (Dependency) other;
                 return areEqualOrNull(componentType, otherDependency.componentType)
@@ -94,11 +96,12 @@ public final class ComponentDependencyMonitor extends AbstractComponentMonitor {
             return dependencyType;
         }
 
-        public String toString() {
+        @Override
+		public String toString() {
             return componentType + " depends on " + dependencyType;
         }
 
-        private static boolean areEqualOrNull(Class<?> type, Class<?> otherType) {
+        private static boolean areEqualOrNull(final Class<?> type, final Class<?> otherType) {
             if (type != null) {
                 return type.equals(otherType);
             }

@@ -24,7 +24,7 @@ public class PicoMap implements Map {
 
     private final MutablePicoContainer mutablePicoContainer;
 
-    public PicoMap(MutablePicoContainer mutablePicoContainer) {
+    public PicoMap(final MutablePicoContainer mutablePicoContainer) {
         this.mutablePicoContainer = mutablePicoContainer;
     }
 
@@ -40,7 +40,7 @@ public class PicoMap implements Map {
         return mutablePicoContainer.getComponentAdapters().size() == 0;
     }
 
-    public boolean containsKey(Object o) {
+    public boolean containsKey(final Object o) {
         if (o instanceof Class) {
             return mutablePicoContainer.getComponent((Class<?>)o) != null;
         } else {
@@ -48,11 +48,11 @@ public class PicoMap implements Map {
         }
     }
 
-    public boolean containsValue(Object o) {
+    public boolean containsValue(final Object o) {
         return false;
     }
 
-    public Object get(Object o) {
+    public Object get(final Object o) {
         if (o instanceof Class) {
             return mutablePicoContainer.getComponent((Class<?>)o);
         } else {
@@ -60,13 +60,13 @@ public class PicoMap implements Map {
         }
     }
 
-    public Object put(Object o, Object o1) {
+    public Object put(final Object o, final Object o1) {
         Object object = remove(o);
         mutablePicoContainer.addComponent(o, o1);
         return object;
     }
 
-    public Object remove(Object o) {
+    public Object remove(final Object o) {
         ComponentAdapter adapter = mutablePicoContainer.removeComponent(o);
         if (adapter != null) {
             // if previously an instance was registered, return it, otherwise return the type
@@ -78,7 +78,7 @@ public class PicoMap implements Map {
         }
     }
 
-    public void putAll(Map map) {
+    public void putAll(final Map map) {
         for (Object o : map.entrySet()) {
             final Entry entry = (Entry) o;
             put(entry.getKey(), entry.getValue());
@@ -121,7 +121,7 @@ public class PicoMap implements Map {
                     return component;
                 }
 
-                public Object setValue(Object value) {
+                public Object setValue(final Object value) {
                     throw new UnsupportedOperationException("Cannot set addComponent");
                 }
             });

@@ -11,7 +11,6 @@ package org.picocontainer.gems;
 
 import org.picocontainer.gems.adapters.ThreadLocalizing;
 import org.picocontainer.gems.behaviors.AsmImplementationHiding;
-import org.picocontainer.gems.behaviors.Assimilating;
 import org.picocontainer.gems.behaviors.HotSwapping;
 import org.picocontainer.gems.jmx.JMXExposing;
 import org.picocontainer.gems.monitors.CommonsLoggingComponentMonitor;

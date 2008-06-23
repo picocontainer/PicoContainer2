@@ -192,7 +192,7 @@ public abstract class AbstractTracingContainerDecoratorTest  {
 		verifyLog("Could not find component ");
 	}
 	
-	private void verifyLog(String valueToExpect) {
+	private void verifyLog(final String valueToExpect) {
 		String result = logOutput.toString();
 		assertNotNull("Log output was null", result);
 		assertTrue("Could not find '" + valueToExpect + "' in log output.  Instead got '"

@@ -33,10 +33,12 @@ import org.picocontainer.tck.AbstractPicoContainerTest;
  */
 public class ReusableContainerTestCase extends AbstractPicoContainerTest {
 
-	protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
+	@Override
+	protected MutablePicoContainer createPicoContainer(final PicoContainer parent) {
 		return new ReusablePicoContainer(parent);
 	}
 
+	@Override
 	protected Properties[] getProperties() {
 		return new Properties[0];
 	}
@@ -112,7 +114,7 @@ public class ReusableContainerTestCase extends AbstractPicoContainerTest {
 		System.out.println("Completed iterations using ReusablePicoContainer.  Time: " + (endTime - startTime) + "m.s.");
 	}
 
-    private void addComponents(MutablePicoContainer pico) {
+    private void addComponents(final MutablePicoContainer pico) {
         pico.addComponent(ArrayList.class, ArrayList.class, Parameter.ZERO)
             .addComponent(HashSet.class, HashSet.class, Parameter.ZERO)
             .addComponent(RuntimeException.class, RuntimeException.class, Parameter.ZERO)
@@ -162,11 +164,13 @@ public class ReusableContainerTestCase extends AbstractPicoContainerTest {
 		System.out.println("Completed iterations using DefaultPicoContainer.  Time: " + (endTime - startTime) + "m.s.");
 	}
 
-    protected void addContainers(List expectedList) {
+    @Override
+	protected void addContainers(final List expectedList) {
         expectedList.add(ReusablePicoContainer.class);
     }
 
-    @Test public void testAcceptImplementsBreadthFirstStrategy() {
+    @Override
+	@Test public void testAcceptImplementsBreadthFirstStrategy() {
         super.testAcceptImplementsBreadthFirstStrategy();
     }
 }

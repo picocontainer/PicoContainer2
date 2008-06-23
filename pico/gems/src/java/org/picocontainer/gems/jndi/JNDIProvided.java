@@ -28,7 +28,12 @@ import org.picocontainer.PicoVisitor;
  */
 public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 
-	 JNDIObjectReference<T> jndiReference;
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4045275463532458768L;
+
+	JNDIObjectReference<T> jndiReference;
 	
 	 Object componentKey;
 	
@@ -37,7 +42,7 @@ public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 	 * @param componentKey component key
 	 * @param reference JNDI reference storing component
 	 */
-	public JNDIProvided(Object componentKey,JNDIObjectReference<T> reference) {
+	public JNDIProvided(final Object componentKey,final JNDIObjectReference<T> reference) {
 		this.componentKey = componentKey;
 		this.jndiReference = reference;
 	}
@@ -47,7 +52,7 @@ public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 	 * takes as key
 	 * @param reference JNDI reference storing component
 	 */
-	public JNDIProvided(JNDIObjectReference<T> reference) {
+	public JNDIProvided(final JNDIObjectReference<T> reference) {
 		this(reference.get().getClass(),reference);
 	}
 	
@@ -59,7 +64,7 @@ public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 	 * wrong in JNDI
 	 */
 	@SuppressWarnings("unchecked")
-	public JNDIProvided(String jndiName) throws NamingException {
+	public JNDIProvided(final String jndiName) throws NamingException {
 		this(new JNDIObjectReference(jndiName));
 	}
 	
@@ -72,14 +77,14 @@ public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 		return jndiReference.get().getClass();
 	}
 
-    public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
+    public T getComponentInstance(final PicoContainer container) throws PicoCompositionException {
         return getComponentInstance(container, null);
     }
 
     /**
 	 * retrieve instance out of JNDI
 	 */
-	public T getComponentInstance(PicoContainer container, Type into)
+	public T getComponentInstance(final PicoContainer container, final Type into)
 			throws PicoCompositionException {
 		return  jndiReference.get();
 	}
@@ -87,21 +92,21 @@ public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 	/**
 	 * we have nothing to verify here
 	 */
-	public void verify(PicoContainer container) throws PicoCompositionException {
+	public void verify(final PicoContainer container) throws PicoCompositionException {
 	}
 
 	/**
 	 * as there is no puprose of proceeding further down, 
 	 * we do nothing here
 	 */
-	public void accept(PicoVisitor visitor) {
+	public void accept(final PicoVisitor visitor) {
 	}
 
     public ComponentAdapter<T> getDelegate() {
         return null;
     }
 
-    public <U extends ComponentAdapter> U findAdapterOfType(Class<U> componentAdapterType) {
+    public <U extends ComponentAdapter> U findAdapterOfType(final Class<U> componentAdapterType) {
         return null;
     }
 

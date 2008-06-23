@@ -31,10 +31,11 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
         super(false);
     }
 
-    public Object resolveInstance(PicoContainer container,
-                                  ComponentAdapter adapter,
-                                  Class expectedType,
-                                  NameBinding expectedNameBinding, boolean useNames, Annotation binding) throws PicoCompositionException
+    @Override
+	public Object resolveInstance(final PicoContainer container,
+                                  final ComponentAdapter adapter,
+                                  final Class expectedType,
+                                  final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) throws PicoCompositionException
     {
         final Object[] array =
             (Object[])super.resolveInstance(container, adapter, getArrayType(expectedType), expectedNameBinding,
@@ -45,29 +46,33 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
         return null;
     }
 
-    public boolean isResolvable(PicoContainer container,
-                                ComponentAdapter adapter,
-                                Class expectedType,
-                                NameBinding expectedNameBinding, boolean useNames, Annotation binding) throws PicoCompositionException
+    @Override
+	public boolean isResolvable(final PicoContainer container,
+                                final ComponentAdapter adapter,
+                                final Class expectedType,
+                                final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) throws PicoCompositionException
     {
         return super.isResolvable(container, adapter, getArrayType(expectedType), expectedNameBinding, useNames,
                                   binding);
     }
 
-    public void verify(PicoContainer container,
-                       ComponentAdapter adapter,
-                       Class expectedType,
-                       NameBinding expectedNameBinding, boolean useNames, Annotation binding) throws PicoCompositionException
+    @Override
+	public void verify(final PicoContainer container,
+                       final ComponentAdapter adapter,
+                       final Class expectedType,
+                       final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) throws PicoCompositionException
     {
         super.verify(container, adapter, getArrayType(expectedType), expectedNameBinding, useNames, binding);
     }
 
-    public abstract boolean evaluate(ComponentAdapter adapter);
+    @Override
+	public abstract boolean evaluate(ComponentAdapter adapter);
 
-    protected Map<Object, ComponentAdapter<?>> getMatchingComponentAdapters(PicoContainer container,
-                                                                            ComponentAdapter adapter,
-                                                                            Class keyType,
-                                                                            Class valueType)
+    @Override
+	protected Map<Object, ComponentAdapter<?>> getMatchingComponentAdapters(final PicoContainer container,
+                                                                            final ComponentAdapter adapter,
+                                                                            final Class keyType,
+                                                                            final Class valueType)
     {
         final Map<Object, ComponentAdapter<?>> map =
             super.getMatchingComponentAdapters(container, adapter, keyType, valueType);
@@ -77,7 +82,7 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
         return map;
     }
 
-    private Class getArrayType(Class expectedType) {
+    private Class getArrayType(final Class expectedType) {
         return Array.newInstance(expectedType, 0).getClass();
     }
 }

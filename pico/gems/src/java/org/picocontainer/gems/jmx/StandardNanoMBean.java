@@ -40,7 +40,8 @@ public final class StandardNanoMBean extends StandardMBean {
      * Return the provided {@link MBeanInfo}.
      * @see javax.management.StandardMBean#getMBeanInfo()
      */
-    public MBeanInfo getMBeanInfo() {
+    @Override
+	public MBeanInfo getMBeanInfo() {
         return mBeanInfo;
     }
 }

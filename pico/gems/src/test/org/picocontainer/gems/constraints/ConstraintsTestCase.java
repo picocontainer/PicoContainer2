@@ -105,7 +105,7 @@ public class ConstraintsTestCase {
             new CollectionConstraint(
                 new And(new IsType(Touchable.class),
                 new Not(new IsType(DecoratedTouchable.class))));
-        Touchable[] touchables = (Touchable[]) c.resolveInstance(container, 
+        Touchable[] touchables = c.resolveInstance(container, 
                 container.getComponentAdapter(DependsOnTouchable.class,(NameBinding) null),
                 Touchable[].class, null, false, null);
         assertEquals(2, touchables.length);

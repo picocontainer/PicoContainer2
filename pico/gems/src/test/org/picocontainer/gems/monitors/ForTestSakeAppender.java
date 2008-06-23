@@ -26,7 +26,7 @@ public class ForTestSakeAppender implements Appender {
 
 	private ErrorHandler errorHandler;
 
-	public void addFilter(Filter filter) {
+	public void addFilter(final Filter filter) {
 	}
 	
 	public ForTestSakeAppender() {
@@ -56,7 +56,7 @@ public class ForTestSakeAppender implements Appender {
 	/**
 	 * @see org.apache.log4j.Appender#doAppend(org.apache.log4j.spi.LoggingEvent)
 	 */
-	public void doAppend(LoggingEvent e) {
+	public void doAppend(final LoggingEvent e) {
 		CONTENT += "\n" + layout.format(e);
 	}
 
@@ -70,7 +70,7 @@ public class ForTestSakeAppender implements Appender {
 	/**
 	 * @see org.apache.log4j.Appender#setErrorHandler(org.apache.log4j.spi.ErrorHandler)
 	 */
-	public void setErrorHandler(ErrorHandler value) {
+	public void setErrorHandler(final ErrorHandler value) {
 		errorHandler = value;
 	}
 
@@ -84,7 +84,7 @@ public class ForTestSakeAppender implements Appender {
 	/**
 	 * @see org.apache.log4j.Appender#setLayout(org.apache.log4j.Layout)
 	 */
-	public void setLayout(Layout value) {
+	public void setLayout(final Layout value) {
 		layout = value;
 	}
 
@@ -98,7 +98,7 @@ public class ForTestSakeAppender implements Appender {
 	/**
 	 * @see org.apache.log4j.Appender#setName(java.lang.String)
 	 */
-	public void setName(String value) {
+	public void setName(final String value) {
 		name = value;
 	}
 

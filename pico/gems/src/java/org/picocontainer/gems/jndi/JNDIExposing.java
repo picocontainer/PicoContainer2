@@ -32,9 +32,9 @@ public class JNDIExposing extends AbstractBehaviorFactory {
 
 	@Override
 	public <T> ComponentAdapter<T> addComponentAdapter(
-			ComponentMonitor componentMonitor,
-			LifecycleStrategy lifecycleStrategy,
-			Properties componentProperties, ComponentAdapter<T> adapter) {
+			final ComponentMonitor componentMonitor,
+			final LifecycleStrategy lifecycleStrategy,
+			final Properties componentProperties, final ComponentAdapter<T> adapter) {
 		try {
 			return new JNDIExposed<T>(super.addComponentAdapter(
 					componentMonitor, lifecycleStrategy, componentProperties,
@@ -47,10 +47,10 @@ public class JNDIExposing extends AbstractBehaviorFactory {
 
 	@Override
 	public <T> ComponentAdapter<T> createComponentAdapter(
-			ComponentMonitor componentMonitor,
-			LifecycleStrategy lifecycleStrategy,
-			Properties componentProperties, Object componentKey,
-			Class<T> componentImplementation, Parameter... parameters)
+			final ComponentMonitor componentMonitor,
+			final LifecycleStrategy lifecycleStrategy,
+			final Properties componentProperties, final Object componentKey,
+			final Class<T> componentImplementation, final Parameter... parameters)
 			throws PicoCompositionException {
 		// TODO Auto-generated method stub
 		ComponentAdapter<T> componentAdapter = super.createComponentAdapter(

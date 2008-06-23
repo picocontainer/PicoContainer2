@@ -17,18 +17,23 @@ import org.picocontainer.ComponentAdapter;
  * @author Nick Sieger
  */
 public final class IsExactType extends AbstractConstraint {
-    private final Class type;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7843652361547378269L;
+	private final Class type;
 
     /**
      * Creates a new <code>IsExactType</code> instance.
      *
      * @param c the <code>Class</code> to match
      */
-    public IsExactType(Class c) {
+    public IsExactType(final Class c) {
         this.type = c;
     }
 
-    public boolean evaluate(ComponentAdapter adapter) {
+    @Override
+	public boolean evaluate(final ComponentAdapter adapter) {
         return type == adapter.getComponentImplementation();
     }
 

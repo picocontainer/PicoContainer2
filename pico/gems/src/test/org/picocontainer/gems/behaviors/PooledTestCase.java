@@ -45,7 +45,11 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     }
 
     public static final class InstanceCounter implements Identifiable, Serializable {
-        private static int counter = 0;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -3546747707917494911L;
+		private static int counter = 0;
         private final int id;
 
         public InstanceCounter() {
@@ -56,7 +60,8 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
             return id;
         }
 
-        public boolean equals(Object arg) {
+        @Override
+		public boolean equals(final Object arg) {
             return arg instanceof Identifiable && id == ((Identifiable)arg).getId();
         }
     }
@@ -102,11 +107,13 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     public void testBlocksWhenExhausted() throws InterruptedException {
         final ComponentAdapter componentAdapter = new Pooled(new ConstructorInjector(
                 Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false), new Pooled.DefaultContext() {
-            public int getMaxSize() {
+            @Override
+			public int getMaxSize() {
                 return 2;
             }
 
-            public int getMaxWaitInMilliseconds() {
+            @Override
+			public int getMaxWaitInMilliseconds() {
                 return 3000;
             }
         });
@@ -116,7 +123,8 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
 
         final StringBuffer order = new StringBuffer();
         final Thread returner = new Thread() {
-            public void run() {
+            @Override
+			public void run() {
                 try {
                     synchronized (this) {
                         notifyAll();
@@ -160,11 +168,13 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     public void testTimeoutWhenExhausted() {
         final ComponentAdapter componentAdapter = new Pooled(new ConstructorInjector(
                 Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false), new Pooled.DefaultContext() {
-            public int getMaxSize() {
+            @Override
+			public int getMaxSize() {
                 return 2;
             }
 
-            public int getMaxWaitInMilliseconds() {
+            @Override
+			public int getMaxWaitInMilliseconds() {
                 return 250;
             }
         });
@@ -188,7 +198,8 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
                 new ConstructorInjector("foo", Object.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false),
                 new Pooled.DefaultContext() {
 
-                    public ProxyFactory getProxyFactory() {
+                    @Override
+					public ProxyFactory getProxyFactory() {
                         return new CglibProxyFactory();
                     }
                 });
@@ -229,7 +240,8 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
         final Pooled behavior = new Pooled(
                 new ConstructorInjector(Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false),
                 new Pooled.DefaultContext() {
-                    public int getMaxSize() {
+                    @Override
+					public int getMaxSize() {
                         return 2;
                     }
                 });
@@ -252,11 +264,13 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     public void testInternalGCCall() {
         ComponentAdapter componentAdapter = new Pooled(new ConstructorInjector(
                 Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false), new Pooled.DefaultContext() {
-            public int getMaxSize() {
+            @Override
+			public int getMaxSize() {
                 return 1;
             }
 
-            public boolean autostartGC() {
+            @Override
+			public boolean autostartGC() {
                 return true;
             }
         });
@@ -276,7 +290,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
      * @param picoContainer the container
      * @return the adapter to test
      */
-    private ComponentAdapter prepDEF_lifecycleManagerSupport(MutablePicoContainer picoContainer) {
+    private ComponentAdapter prepDEF_lifecycleManagerSupport(final MutablePicoContainer picoContainer) {
         picoContainer.addComponent(RecordingLifecycle.One.class);
         Pooled poolingBehavior = new Pooled(new ConstructorInjector(
                 RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false), new Pooled.DefaultContext());
@@ -312,7 +326,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
      * @param picoContainer the container
      * @return the adapter to test
      */
-    private ComponentAdapter prepRES_lifecycleManagerHonorsInstantiationSequence(MutablePicoContainer picoContainer) {
+    private ComponentAdapter prepRES_lifecycleManagerHonorsInstantiationSequence(final MutablePicoContainer picoContainer) {
         picoContainer.addComponent(RecordingLifecycle.One.class);
         Pooled poolingBehavior = new Pooled(new ConstructorInjector(
                 RecordingLifecycle.Recorder.class, RecordingLifecycle.Two.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false), new Pooled.DefaultContext());
@@ -341,11 +355,13 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
 
     // -------- TCK -----------
 
-    protected Class getComponentAdapterType() {
+    @Override
+	protected Class getComponentAdapterType() {
         return Pooled.class;
     }
 
-    protected int getComponentAdapterNature() {
+    @Override
+	protected int getComponentAdapterNature() {
         return super.getComponentAdapterNature() & ~(INSTANTIATING | RESOLVING | VERIFYING);
     }
 
@@ -354,15 +370,18 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
                 Touchable.class, SimpleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false), new Pooled.DefaultContext());
     }
 
-    protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
+    @Override
+	protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(final MutablePicoContainer picoContainer) {
         return createPoolOfTouchables();
     }
 
-    protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer) {
+    @Override
+	protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(final MutablePicoContainer picoContainer) {
         return createPoolOfTouchables();
     }
 
-    protected ComponentAdapter prepDEF_visitable() {
+    @Override
+	protected ComponentAdapter prepDEF_visitable() {
         return createPoolOfTouchables();
     }
 
@@ -371,11 +390,13 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
                 Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false), new Pooled.DefaultContext());
     }
 
-    protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
+    @Override
+	protected ComponentAdapter prepSER_isSerializable(final MutablePicoContainer picoContainer) {
         return createSerializable();
     }
 
-    protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {
+    @Override
+	protected ComponentAdapter prepSER_isXStreamSerializable(final MutablePicoContainer picoContainer) {
         return createSerializable();
     }
 

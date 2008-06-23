@@ -59,12 +59,12 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
     }
 
     @Override
-    protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
+    protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(final MutablePicoContainer picoContainer) {
         return createComponentAdapterWithSimpleTouchable();
     }
 
     @Override
-    protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer) {
+    protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(final MutablePicoContainer picoContainer) {
         return createComponentAdapterWithSimpleTouchable();
     }
 
@@ -74,18 +74,18 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
     }
 
     @Override
-    protected ComponentAdapter prepDEF_isAbleToTakeParameters(MutablePicoContainer picoContainer) {
+    protected ComponentAdapter prepDEF_isAbleToTakeParameters(final MutablePicoContainer picoContainer) {
         return new ThreadLocalized(new ConstructorInjector(
             List.class, ArrayList.class, new Parameter[] {new ConstantParameter(10)}, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
     }
 
     @Override
-    protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
+    protected ComponentAdapter prepSER_isSerializable(final MutablePicoContainer picoContainer) {
         return createComponentAdapterWithSimpleTouchable();
     }
 
     @Override
-    protected ComponentAdapter prepSER_isXStreamSerializable(MutablePicoContainer picoContainer) {
+    protected ComponentAdapter prepSER_isXStreamSerializable(final MutablePicoContainer picoContainer) {
         return createComponentAdapterWithSimpleTouchable();
     }
 
@@ -174,7 +174,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
         final MutablePicoContainer picoB = new DefaultPicoContainer();
         picoA.addAdapter(new ThreadLocalized(new ConstructorInjector(List.class, ArrayList.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false)));
         picoB.addAdapter(new ThreadLocalized(new ConstructorInjector(List.class, ArrayList.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false)));
-        final List<String> hello1 = (List<String>)picoA.getComponent(List.class);
+        final List<String> hello1 = picoA.getComponent(List.class);
         final List hello2 = picoA.getComponent(List.class);
         hello1.add("foo");
         assertEquals(hello1, hello2);

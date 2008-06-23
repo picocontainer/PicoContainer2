@@ -26,7 +26,8 @@ public final class PersonMBeanDescription extends MBeanDescriptionAdapter {
 
     private static final MBeanInfo MBEAN_INFO = Person.createMBeanInfo();
 
-    public String getAttributeDescription(final String attribute) {
+    @Override
+	public String getAttributeDescription(final String attribute) {
         MBeanAttributeInfo[] attributes = MBEAN_INFO.getAttributes();
         for (final MBeanAttributeInfo info : attributes) {
             if (info.getName().equals(attribute)) {
@@ -36,7 +37,8 @@ public final class PersonMBeanDescription extends MBeanDescriptionAdapter {
         return super.getAttributeDescription(attribute);
     }
 
-    public String getMBeanDescription() {
+    @Override
+	public String getMBeanDescription() {
         return MBEAN_INFO.getDescription();
     }
 }

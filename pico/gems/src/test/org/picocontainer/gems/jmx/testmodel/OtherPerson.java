@@ -11,7 +11,7 @@
 package org.picocontainer.gems.jmx.testmodel;
 
 public final class OtherPerson implements PersonMBean {
-    public void setName(String name) {
+    public void setName(final String name) {
     }
 
     public String getName() {

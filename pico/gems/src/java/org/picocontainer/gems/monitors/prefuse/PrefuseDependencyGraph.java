@@ -30,7 +30,7 @@ public final class PrefuseDependencyGraph implements ComponentDependencyListener
         this.nodes = new HashMap();
     }
 
-    public void addDependency(Dependency dependency) {
+    public void addDependency(final Dependency dependency) {
         Node componentNode = addNode(dependency.getComponentType());
         Node dependencyNode = addNode(dependency.getDependencyType());
         if (dependencyNode != null) {
@@ -46,7 +46,7 @@ public final class PrefuseDependencyGraph implements ComponentDependencyListener
         return (Node[]) nodes.values().toArray(new Node[nodes.size()]);
     }
 
-    private Node addNode(Class type) {
+    private Node addNode(final Class type) {
         if (type != null && !nodes.containsKey(type)) {
             Node node = graph.addNode();
             node.set("type", type);
@@ -59,7 +59,7 @@ public final class PrefuseDependencyGraph implements ComponentDependencyListener
         return getGraph(getSchema());
     }
 
-    private Graph getGraph(Schema schema) {
+    private Graph getGraph(final Schema schema) {
         graph = new Graph(true);
         graph.addColumns(schema);
         return graph;

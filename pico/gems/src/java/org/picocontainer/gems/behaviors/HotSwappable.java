@@ -28,29 +28,39 @@ import java.lang.reflect.Type;
  *
  * @author Paul Hammant
  */
-public class HotSwappable extends HiddenImplementation {
+public class HotSwappable<T> extends HiddenImplementation<T> {
 
-    private final Swappable swappable = new Swappable();
-    private Object instance;
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = -1697354800989616649L;
+	
+	private final Swappable swappable = new Swappable();
+    
+	private T instance;
 
-    public HotSwappable(ComponentAdapter delegate) {
+    public HotSwappable(final ComponentAdapter<T> delegate) {
         super(delegate);
     }
 
-    protected Swappable getSwappable() {
+    @Override
+	protected Swappable getSwappable() {
         return swappable;
     }
 
-    public Object swapRealInstance(Object instance) {
-        return swappable.swap(instance);
+    @SuppressWarnings("unchecked")
+	public T swapRealInstance(final T instance) {
+        return (T) swappable.swap(instance);
     }
 
-    public Object getRealInstance() {
-        return swappable.getInstance();
+    @SuppressWarnings("unchecked")
+	public T getRealInstance() {
+        return (T) swappable.getInstance();
     }
 
 
-    public Object getComponentInstance(PicoContainer container, Type into) {
+    @Override
+	public T getComponentInstance(final PicoContainer container, final Type into) {
         synchronized (swappable) {
             if (instance == null) {
                 instance = super.getComponentInstance(container, into);
@@ -59,7 +69,8 @@ public class HotSwappable extends HiddenImplementation {
         return instance;
     }
 
-    public String getDescriptor() {
+    @Override
+	public String getDescriptor() {
         return "HotSwappable";
     }
 
@@ -71,7 +82,7 @@ public class HotSwappable extends HiddenImplementation {
             return delegate;
         }
 
-        public Object swap(Object delegate) {
+        public Object swap(final Object delegate) {
             Object old = this.delegate;
             this.delegate = delegate;
             return old;
