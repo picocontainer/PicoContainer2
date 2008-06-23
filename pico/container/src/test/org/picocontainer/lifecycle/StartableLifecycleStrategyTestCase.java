@@ -84,6 +84,7 @@ public class StartableLifecycleStrategyTestCase {
     interface ThirdPartyStartable {
         void sstart() throws Exception;
         void sstop();
+        void ddispose();
     }
     public static class ThirdPartyStartableComponent implements ThirdPartyStartable {
         StringBuilder sb;
@@ -98,6 +99,10 @@ public class StartableLifecycleStrategyTestCase {
         public void sstop() {
             sb.append(">");
         }
+
+        public void ddispose() {
+            sb.append("!");
+        }
     }
 
     public static class ThirdPartyStartableComponent2 implements ThirdPartyStartable {
@@ -105,6 +110,9 @@ public class StartableLifecycleStrategyTestCase {
             throw new UnsupportedOperationException();
         }
         public void sstop() {
+        }
+
+        public void ddispose() {
         }
     }
 
@@ -114,16 +122,20 @@ public class StartableLifecycleStrategyTestCase {
         }
         public void sstop() {
         }
+
+        public void ddispose() {
+        }
     }
 
-    @Test public void testThirdPartyStartable() {
+    @Test public void testThirdPartyStartableAndDisposable() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new MyStartableLifecycleStrategy(), new EmptyPicoContainer());
         StringBuilder sb = new StringBuilder();
         pico.addComponent(sb);
         pico.as(CACHE).addComponent(ThirdPartyStartableComponent.class);
         pico.start();
         pico.stop();
-        assertEquals("<>", sb.toString());
+        pico.dispose();
+        assertEquals("<>!", sb.toString());
 
     }
 
@@ -173,7 +185,16 @@ public class StartableLifecycleStrategyTestCase {
             return "sstart";
         }
 
+        protected String getDisposeMethodName() {
+            return "ddispose";
+        }
+
+
         protected Class getStartableInterface() {
+            return ThirdPartyStartable.class;
+        }
+
+        protected Class getDisposableInterface() {
             return ThirdPartyStartable.class;
         }
     }

@@ -117,7 +117,7 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         doLifecycleMethod(component, stop);
     }
     protected void disposeComponent(final Object component) {
-        ((Disposable) component).dispose();
+        doLifecycleMethod(component, dispose);
     }
 
     /** {@inheritDoc} **/
