@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -24,7 +26,6 @@ public final class Characteristics {
     private static final String _METHOD = "method";
     private static final String _SETTER = "setter";
     private static final String _CACHE = "cache";
-    private static final String _JMX = "jmx";
     private static final String _SYNCHRONIZING = "synchronizing";
     private static final String _LOCKING = "locking";
     private static final String _HIDE_IMPL = "hide-impl";
@@ -32,8 +33,15 @@ public final class Characteristics {
     private static final String _AUTOMATIC = "automatic";
     private static final String _USE_NAMES = "use-parameter-names";    
 
-    private static final String FALSE = "false";
-    private static final String TRUE = "true";
+    /**
+     * Since properties use strings, we supply String constants for Boolean conditions.
+     */
+    public static final String FALSE = "false";
+
+    /**
+     * Since properties use strings, we supply String constants for Boolean conditions.
+     */
+    public static final String TRUE = "true";
 
     public static final Properties CDI = immutable(_INJECTION, _CONSTRUCTOR);
 
@@ -44,8 +52,6 @@ public final class Characteristics {
     public static final Properties NO_CACHE = immutable(_CACHE, FALSE);
 
     public static final Properties CACHE = immutable(_CACHE, TRUE);
-
-    public static final Properties NO_JMX = immutable(_JMX, FALSE);
 
     public static final Properties SYNCHRONIZE = immutable(_SYNCHRONIZING, TRUE);
 
@@ -65,24 +71,58 @@ public final class Characteristics {
 
     public static final Properties USE_NAMES = immutable(_USE_NAMES, TRUE);
 
+    
     public static Properties immutable(String name, String value) {
         return new ImmutableProperties(name, value);
     }
-
+    
+    /**
+     * Read only property set.  Once constructed, all methods that modify state will
+     * throw UnsupportedOperationException.
+     * @author Paul Hammant.
+     */
     public static class ImmutableProperties extends Properties {
         private static final long serialVersionUID = -6629995310407708747L;
+        
+        private boolean sealed = false;
 
         public ImmutableProperties(String name, String value) {
             super.setProperty(name, value);
+            sealed = true;
         }
 
+        @Override
         public Object remove(Object o) {
-            throw new UnsupportedOperationException();
+            throw new UnsupportedOperationException("immutable properties are read only");
         }
 
+        @Override
         public synchronized Object setProperty(String string, String string1) {
-            throw new UnsupportedOperationException();
+            throw new UnsupportedOperationException("immutable properties are read only");
         }
+
+		@Override
+		public synchronized void clear() {
+            throw new UnsupportedOperationException("immutable properties are read only");
+		}
+
+		@Override
+		public synchronized Object put(Object key, Object value) {
+			if (!sealed) {
+				//setProperty calls put, so until the object is fully constructed, we 
+				//cannot seal it.
+				return super.put(key, value);
+			}
+			
+            throw new UnsupportedOperationException("immutable properties are read only");
+		}
+
+		@Override
+		public synchronized void putAll(Map<? extends Object, ? extends Object> t) {
+            throw new UnsupportedOperationException("immutable properties are read only");
+		}
+        
+        
     }
 
 }
