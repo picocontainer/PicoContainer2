@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
@@ -65,6 +66,7 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTest {
     }
 
 
+    @Test
     public void testHotSwappingNaturaelyCaches() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwapping().wrap(new ConstructorInjection()));
         pico.addComponent(Map.class, HashMap.class);
@@ -73,6 +75,7 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTest {
         assertSame(firstMap, secondMap);
     }
 
+    @Test
     public void testHotSwappingNaturaelyCaches2() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwapping());
         pico.addComponent(Map.class, HashMap.class);
@@ -90,7 +93,7 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTest {
 
 
 
-
+    @Test
     public void testSwappingViaSwappableInterface() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         ConstructorInjector constructorInjector = new ConstructorInjector("l", ArrayList.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
