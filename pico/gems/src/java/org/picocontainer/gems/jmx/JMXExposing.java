@@ -13,13 +13,14 @@ package org.picocontainer.gems.jmx;
 import javax.management.MBeanServer;
 
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.GemsCharacteristics;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
+import java.lang.management.ManagementFactory;
 import java.util.Properties;
 
 
@@ -29,9 +30,23 @@ import java.util.Properties;
  */
 public class JMXExposing extends AbstractBehaviorFactory {
 
-    private final MBeanServer mBeanServer;
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = 7533072041416254082L;
+	
+	private final MBeanServer mBeanServer;
     private final DynamicMBeanProvider[] providers;
 
+    /**
+     * Constructs a JMXExposingComponentFactory that uses the system default MBean Server.
+     * @since PicoContainer-Gems 2.4
+     */
+    public JMXExposing() {
+    	this(ManagementFactory.getPlatformMBeanServer());
+    }
+    
+    
     /**
      * Construct a JMXExposingComponentFactory.
      * @param mBeanServer The {@link MBeanServer} used for registering the MBean.
@@ -62,37 +77,39 @@ public class JMXExposing extends AbstractBehaviorFactory {
             throws NullPointerException {
         this(mBeanServer, new DynamicMBeanProvider[]{new DynamicMBeanComponentProvider()});
     }
+    
 
     /**
      * Retrieve a {@link ComponentAdapter}. Wrap the instance retrieved by the delegate with an instance of a
      * {@link JMXExposed}.
      * @see org.picocontainer.ComponentFactory#createComponentAdapter(ComponentMonitor,LifecycleStrategy,Properties,Object,Class,Parameter...)
      */
-    public ComponentAdapter createComponentAdapter(
-            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
+    public <T> ComponentAdapter<T> createComponentAdapter(
+            ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
-        final ComponentAdapter componentAdapter = super.createComponentAdapter(
+        final ComponentAdapter<T> delegateAdapter = super.createComponentAdapter(
                 componentMonitor, lifecycleStrategy,
                 componentProperties, componentKey, componentImplementation, parameters);
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_JMX)) {
-            return componentAdapter;            
-        } else {
-            return new JMXExposed(componentAdapter, mBeanServer, providers);
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_JMX)) {
+            return delegateAdapter;            
+        } else {        	
+        	AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.JMX);
+            return new JMXExposed<T>(delegateAdapter, mBeanServer, providers);        		
         }
     }
 
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
-                                                ComponentAdapter adapter) {
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_JMX)) {
+                                                ComponentAdapter<T> adapter) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_JMX)) {
             return super.addComponentAdapter(componentMonitor,
                                              lifecycleStrategy,
                                              componentProperties,
                                              adapter);
         } else {
-            return new JMXExposed(super.addComponentAdapter(componentMonitor,
+            return new JMXExposed<T>(super.addComponentAdapter(componentMonitor,
                                                                      lifecycleStrategy,
                                                                      componentProperties,
                                                                      adapter), mBeanServer, providers);

@@ -11,6 +11,8 @@ package org.picocontainer.gems.jmx;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+import static org.picocontainer.GemsCharacteristics.JMX;
+import static org.picocontainer.GemsCharacteristics.NO_JMX;
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import java.util.Properties;
@@ -26,8 +28,12 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.picocontainer.BehaviorFactory;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoBuilder;
 import org.picocontainer.gems.jmx.testmodel.DynamicMBeanPerson;
 import org.picocontainer.gems.jmx.testmodel.PersonMBean;
 import org.picocontainer.injectors.ConstructorInjection;
@@ -54,10 +60,10 @@ public class JMXExposingTestCase  {
         	one(mBeanServer).registerMBean(with(any(DynamicMBeanPerson.class)), with(any(ObjectName.class)));
         }});
 
-        final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
-                new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, PersonMBean.class, DynamicMBeanPerson.class, null);
+        final ComponentAdapter<?> componentAdapter = componentFactory.createComponentAdapter(
+                new NullComponentMonitor(), new NullLifecycleStrategy(), Characteristics.CDI, PersonMBean.class, DynamicMBeanPerson.class, (Parameter[])null);
         assertNotNull(componentAdapter);
-        assertNotNull(componentAdapter.getComponentInstance(null));
+        assertNotNull(componentAdapter.getComponentInstance(null,null));
     }
 
     @Test public void testWillRegisterByDefaultComponentsThatAreMBeansUnlessNOJMX() throws NotCompliantMBeanException {
@@ -65,12 +71,40 @@ public class JMXExposingTestCase  {
                 mBeanServer);
         componentFactory.wrap(new ConstructorInjection());
 
-        final Properties rc = new Properties(Characteristics.NO_JMX);
+        final Properties rc = new Properties(NO_JMX);
 
-        final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
-                new NullComponentMonitor(), new NullLifecycleStrategy(), rc, PersonMBean.class, DynamicMBeanPerson.class, null);
+        final ComponentAdapter<?> componentAdapter = componentFactory.createComponentAdapter(
+                new NullComponentMonitor(), new NullLifecycleStrategy(), rc, PersonMBean.class, DynamicMBeanPerson.class, (Parameter[])null);
         assertNotNull(componentAdapter);
-        assertNotNull(componentAdapter.getComponentInstance(null));
+        assertNotNull(componentAdapter.getComponentInstance(null,null));
+    }
+    
+    @Test
+    public void testPicoContainerIntegration() throws Exception {
+        final BehaviorFactory componentFactory = new JMXExposing(mBeanServer);
+        
+        MutablePicoContainer pico = new PicoBuilder()
+        				.withBehaviors(componentFactory)
+        				.withConstructorInjection()
+        				.withLifecycle().build();
+        
+
+        pico.change(NO_JMX)
+        	.addComponent(DynamicMBeanPerson.class) //No Register
+        	.change(JMX)
+        	.addComponent(PersonMBean.class, DynamicMBeanPerson.class) //Register
+        	.as(NO_JMX)
+        	.addComponent("Test Person", DynamicMBeanPerson.class);  //No Register
+        
+        mockery.checking(new Expectations(){{
+        	one(mBeanServer).registerMBean(with(any(DynamicMBeanPerson.class)), with(any(ObjectName.class)));
+        }});
+    	
+        //Get instances to force registration.
+        pico.getComponent(DynamicMBeanPerson.class);
+        pico.getComponent(PersonMBean.class);
+        pico.getComponent("Test Person");
+        
     }
 
     @Test public void testConstructorThrowsNPE() {

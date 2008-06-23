@@ -31,11 +31,16 @@ import javax.management.InstanceNotFoundException;
  * {@link ComponentAdapter} that is exposing a component as MBean in a MBeanServer.
  * @author J&ouml;rg Schaible
  */
-public class JMXExposed extends AbstractBehavior {
+public class JMXExposed<T> extends AbstractBehavior<T> {
 
-    private final MBeanServer mBeanServer;
+    /**
+	 * Serialization UUID.
+	 */
+	private static final long serialVersionUID = -8334126007439793080L;
+	
+	private final MBeanServer mBeanServer;
     private final DynamicMBeanProvider[] providers;
-    private List registeredObjectNames;
+    private List<ObjectName> registeredObjectNames;
 
     /**
      * Construct a JMXExposed behaviour
@@ -47,7 +52,7 @@ public class JMXExposed extends AbstractBehavior {
      *             instances is null.
      */
     public JMXExposed(
-            final ComponentAdapter delegate, final MBeanServer mBeanServer, final DynamicMBeanProvider[] providers)
+            final ComponentAdapter<T> delegate, final MBeanServer mBeanServer, final DynamicMBeanProvider[] providers)
             throws NullPointerException {
         super(delegate);
         if (mBeanServer == null || providers == null) {
@@ -66,7 +71,7 @@ public class JMXExposed extends AbstractBehavior {
      * @throws NullPointerException Thrown if the {@link MBeanServer} or the array with the {@link DynamicMBeanProvider}
      *             instances is null.
      */
-    public JMXExposed(final ComponentAdapter delegate, final MBeanServer mBeanServer)
+    public JMXExposed(final ComponentAdapter<T> delegate, final MBeanServer mBeanServer)
             throws NullPointerException {
         this(delegate, mBeanServer, new DynamicMBeanProvider[]{new DynamicMBeanComponentProvider()});
     }
@@ -82,11 +87,11 @@ public class JMXExposed extends AbstractBehavior {
      *             {@link javax.management.DynamicMBean} in the {@link MBeanServer } fails.
      * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer)
      */
-    public Object getComponentInstance(final PicoContainer container, Type into)
+    public T getComponentInstance(final PicoContainer container, Type into)
             throws PicoCompositionException
     {
-        final ComponentAdapter componentAdapter = new Cached(getDelegate());
-        final Object componentInstance = componentAdapter.getComponentInstance(container, into);
+        final ComponentAdapter<T> componentAdapter = new Cached<T>(getDelegate());
+        final T componentInstance = componentAdapter.getComponentInstance(container, into);
         for (DynamicMBeanProvider provider : providers) {
             final JMXRegistrationInfo info = provider.provide(container, componentAdapter);
             if (info != null) {
@@ -101,7 +106,7 @@ public class JMXExposed extends AbstractBehavior {
                     exception = e;
                 }
                 if (null == registeredObjectNames) {
-                    registeredObjectNames = new ArrayList();
+                    registeredObjectNames = new ArrayList<ObjectName>();
                 }
                 registeredObjectNames.add(info.getObjectName());
                 if (exception != null) {
@@ -134,7 +139,7 @@ public class JMXExposed extends AbstractBehavior {
 		}
 	}
 
-	public boolean hasLifecycle( Class type ) {
+	public boolean hasLifecycle( Class<?> type ) {
 		return true;
 	}
 

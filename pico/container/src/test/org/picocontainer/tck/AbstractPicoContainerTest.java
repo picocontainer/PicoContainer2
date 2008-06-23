@@ -795,8 +795,10 @@ public abstract class AbstractPicoContainerTest {
         final MutablePicoContainer child = parent.makeChildContainer();
         child.addComponent("This is a test");
         
-        TraversalCheckingVisitor visitor = new TraversalCheckingVisitor() {
+        TraversalCheckingVisitor parentComponentCountingVisitor = new TraversalCheckingVisitor() {
         	private int containerCount = 0;
+        	
+        	private int componentInParentCount = 0;
         	
 			@Override
 			public void visitComponentAdapter(ComponentAdapter<?> componentAdapter) {
@@ -818,7 +820,7 @@ public abstract class AbstractPicoContainerTest {
         	
         };
     	
-        visitor.traverse(parent);        
+        parentComponentCountingVisitor.traverse(parent);        
     }
 
     protected void addContainers(List expectedList) {
