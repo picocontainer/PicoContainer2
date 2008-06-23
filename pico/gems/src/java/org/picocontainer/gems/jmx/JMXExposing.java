@@ -13,7 +13,7 @@ package org.picocontainer.gems.jmx;
 import javax.management.MBeanServer;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.GemsCharacteristics;
+import org.picocontainer.gems.GemsCharacteristics;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;

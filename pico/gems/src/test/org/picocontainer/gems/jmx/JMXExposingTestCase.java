@@ -11,8 +11,8 @@ package org.picocontainer.gems.jmx;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
-import static org.picocontainer.GemsCharacteristics.JMX;
-import static org.picocontainer.GemsCharacteristics.NO_JMX;
+import static org.picocontainer.gems.GemsCharacteristics.JMX;
+import static org.picocontainer.gems.GemsCharacteristics.NO_JMX;
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import java.util.Properties;

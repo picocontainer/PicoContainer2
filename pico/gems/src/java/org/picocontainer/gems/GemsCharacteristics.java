@@ -1,4 +1,4 @@
-package org.picocontainer;
+package org.picocontainer.gems;
 
 import static org.picocontainer.Characteristics.*;
 
