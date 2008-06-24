@@ -29,6 +29,8 @@ import java.util.Properties;
  * {@link ComponentAdapter} instances created by the delegate. This will assimilate every component for a specific type.
  * 
  * @author J&ouml;rg Schaible
+ * @todo Since assimilating is taking types that are not the result type, does this mean that we cannot use generics
+ * for this type?  I've been unable to actually get it working.
  */
 public class Assimilating extends AbstractBehaviorFactory {
 
@@ -37,7 +39,7 @@ public class Assimilating extends AbstractBehaviorFactory {
 	 */
 	private static final long serialVersionUID = 8854940817360913988L;
 	private final ProxyFactory proxyFactory;
-    private final Class assimilationType;
+    private final Class<?> assimilationType;
 
     /**
      * Construct an Assimilating. The instance will use the {@link StandardProxyFactory} using the JDK
@@ -45,7 +47,7 @@ public class Assimilating extends AbstractBehaviorFactory {
      * 
      * @param type The assimilated type.
      */
-    public Assimilating(final Class type) {
+    public Assimilating(final Class<?> type) {
         this(type, new StandardProxyFactory());
     }
 
@@ -55,7 +57,7 @@ public class Assimilating extends AbstractBehaviorFactory {
      * @param type The assimilated type.
      * @param proxyFactory The proxy factory to use.
      */
-    public Assimilating(final Class type, final ProxyFactory proxyFactory) {
+    public Assimilating(final Class<?> type, final ProxyFactory proxyFactory) {
         this.assimilationType = type;
         this.proxyFactory = proxyFactory;
     }
@@ -66,7 +68,7 @@ public class Assimilating extends AbstractBehaviorFactory {
      * 
      * @see ComponentFactory#createComponentAdapter(ComponentMonitor,LifecycleStrategy,Properties,Object,Class,Parameter...)
      */
-    @Override
+	@Override
 	public ComponentAdapter createComponentAdapter(
             final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object componentKey, final Class componentImplementation, final Parameter... parameters)
             throws PicoCompositionException {

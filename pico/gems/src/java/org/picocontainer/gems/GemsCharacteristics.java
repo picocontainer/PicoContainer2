@@ -13,15 +13,24 @@ public final class GemsCharacteristics {
 
 	private static String _JMX = "jmx";
 	
+    /**
+     * Turn off behavior for {@link org.picocontainer.gems.jmx.JMXExposing JMXExposing}
+     */
     public static final Properties NO_JMX = immutable(_JMX, FALSE);
 
+    /**
+     * Turn on behavior for {@link org.picocontainer.gems.jmx.JMXExposing JMXExposing}
+     */
     public static final Properties JMX = immutable(_JMX, TRUE);
     
-    private static final String _ASM_HIDING = "asm_hiding";
+    /**
+     * Turn on ASM-proxy based hidden implementation.  Also see the JDK 1.4-proxy version.
+     * @see org.picocontainer.behaviors.HiddenImplementation<T>
+     * @see 
+     */
+    private static final String _ASM_HIDE_IMPL = "asm-hide-impl";
     
-    public static final Properties ASM_HIDING = immutable(_ASM_HIDING, TRUE);
-    
-    public static final Properties NO_ASM_HIDING = immutable(_ASM_HIDING, FALSE);
+    public static final Properties NO_HIDE_IMPL = immutable(_ASM_HIDE_IMPL, FALSE);    
     
     private static final String _HOT_SWAP = "hotswap";
     

@@ -88,9 +88,7 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTest {
         assertSame(firstMap, secondMap);
         assertNull(firstMap.get("foo"));
         assertNotNull(firstMap.get("apple"));
-
     }
-
 
 
     @Test

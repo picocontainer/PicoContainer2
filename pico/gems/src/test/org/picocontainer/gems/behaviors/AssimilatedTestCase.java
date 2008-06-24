@@ -45,12 +45,12 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
     /**
      * Test if an instance can be assimilated.
      */
-    @Test public void testInstanceIsBorged() {
+    @Test public void testInstanceIsBorgedAndCompatibleWithGenerics() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         final ComponentAdapter<CompatibleTouchable> componentAdapter = new Cached<CompatibleTouchable>(new ConstructorInjector(
                 CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
-        mpc.addAdapter(new Assimilated(Touchable.class, componentAdapter));
-        final CompatibleTouchable compatibleTouchable = componentAdapter.getComponentInstance(mpc);
+        mpc.addAdapter(new Assimilated<Touchable>(Touchable.class, componentAdapter));
+        final CompatibleTouchable compatibleTouchable = componentAdapter.getComponentInstance(mpc,null);
         final Touchable touchable = mpc.getComponent(Touchable.class);
         assertFalse(compatibleTouchable.wasTouched());
         touchable.touch();
@@ -66,7 +66,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
         final ComponentAdapter<CompatibleTouchable> componentAdapter = new Cached<CompatibleTouchable>(new ConstructorInjector(
                 "Touchy", CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
         mpc.addAdapter(new Assimilated(Touchable.class, componentAdapter));
-        final CompatibleTouchable compatibleTouchable = componentAdapter.getComponentInstance(mpc);
+        final CompatibleTouchable compatibleTouchable = componentAdapter.getComponentInstance(mpc,null);
         final Touchable touchable = (Touchable)mpc.getComponent("Touchy");
         assertFalse(compatibleTouchable.wasTouched());
         touchable.touch();

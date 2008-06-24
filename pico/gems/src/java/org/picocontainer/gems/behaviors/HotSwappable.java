@@ -28,7 +28,7 @@ import java.lang.reflect.Type;
  *
  * @author Paul Hammant
  */
-public class HotSwappable<T> extends HiddenImplementation<T> {
+public class HotSwappable<T> extends AsmHiddenImplementation<T> {
 
     /**
 	 * Serialization UUID.

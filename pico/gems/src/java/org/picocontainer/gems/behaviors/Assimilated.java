@@ -24,9 +24,9 @@ import java.lang.reflect.Type;
 
 
 /**
- * ComponentAdapter, that assimilates a component for a specific type.
+ * ComponentAdapter that assimilates a component for a specific type.
  * <p>
- * Allows the instance of another {@link ComponentAdapter} to be converted into interfacte <code>type</code>, that the
+ * Allows the instance of another {@link ComponentAdapter} to be converted into interface <code>type</code>, that the
  * instance is not assignable from. In other words the instance of the delegated adapter does NOT necessarily implement the
  * <code>type</code> interface.
  * </p>
@@ -49,7 +49,6 @@ import java.lang.reflect.Type;
  * <p>
  * Notice how Bar does not implement the interface Foo. But Bar does have an identical <code>size()</code> method.
  * </p>
- * 
  * @author J&ouml;rg Schaible
  * @author Michael Ward
  */
@@ -72,7 +71,8 @@ public final class Assimilated<T> extends AbstractBehavior<T> {
      * @param proxyFactory The {@link ProxyFactory} to use.
      * @throws PicoCompositionException Thrown if the <code>type</code> is not compatible and cannot be proxied.
      */
-    public Assimilated(final Class<T> type, final ComponentAdapter<T> delegate, final ProxyFactory proxyFactory)
+    @SuppressWarnings("unchecked")
+    public Assimilated(final Class<T> type, final ComponentAdapter delegate, final ProxyFactory proxyFactory)
             throws PicoCompositionException {
         super(delegate);
         this.type = type;
@@ -104,8 +104,10 @@ public final class Assimilated<T> extends AbstractBehavior<T> {
      * 
      * @param type The class type used as key.
      * @param delegate The delegated {@link ComponentAdapter}.
+     * 
      */
-    public Assimilated(final Class<T> type, final ComponentAdapter<T> delegate) {
+    @SuppressWarnings("unchecked")
+	public Assimilated(final Class<T> type, final ComponentAdapter delegate) {
         this(type, delegate, new StandardProxyFactory());
     }
 
