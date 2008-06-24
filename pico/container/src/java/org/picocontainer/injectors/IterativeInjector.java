@@ -87,7 +87,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         final List<Object> matchingParameterList = new ArrayList<Object>(Collections.nCopies(injectionMembers.size(), null));
 
         final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes);
-        final Set<Integer> nonMatchingParameterPositions = checkForFailedDependencies(container, matchingParameterList, currentParameters);
+        final Set<Integer> nonMatchingParameterPositions = matchParameters(container, matchingParameterList, currentParameters);
 
         final Set<Class> unsatisfiableDependencyTypes = new HashSet<Class>();
         for (int i = 0; i < matchingParameterList.size(); i++) {
@@ -103,20 +103,20 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         return matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
     }
 
-    private Set<Integer> checkForFailedDependencies(PicoContainer container, List<Object> matchingParameterList, Parameter[] currentParameters) {
-        Set<Integer> nonMatchingParameterPositions = new HashSet<Integer>();
+    private Set<Integer> matchParameters(PicoContainer container, List<Object> matchingParameterList, Parameter[] currentParameters) {
+        Set<Integer> unmatchedParameters = new HashSet<Integer>();
         for (int i = 0; i < currentParameters.length; i++) {
             final Parameter parameter = currentParameters[i];
             boolean failedDependency = true;
-            failedDependency = checkForFailedDependency(container, matchingParameterList, parameter, failedDependency);
+            failedDependency = matchParameter(container, matchingParameterList, parameter, failedDependency);
             if (failedDependency) {
-                nonMatchingParameterPositions.add(i);
+                unmatchedParameters.add(i);
             }
         }
-        return nonMatchingParameterPositions;
+        return unmatchedParameters;
     }
 
-    private boolean checkForFailedDependency(PicoContainer container, List<Object> matchingParameterList, Parameter parameter, boolean failedDependency) {
+    private boolean matchParameter(PicoContainer container, List<Object> matchingParameterList, Parameter parameter, boolean failedDependency) {
         for (int j = 0; j < injectionTypes.length; j++) {
             Object o = matchingParameterList.get(j);
             AccessibleObject member = injectionMembers.get(j);
