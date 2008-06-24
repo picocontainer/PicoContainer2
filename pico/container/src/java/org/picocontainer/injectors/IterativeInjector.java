@@ -106,17 +106,14 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     private Set<Integer> matchParameters(PicoContainer container, List<Object> matchingParameterList, Parameter[] currentParameters) {
         Set<Integer> unmatchedParameters = new HashSet<Integer>();
         for (int i = 0; i < currentParameters.length; i++) {
-            final Parameter parameter = currentParameters[i];
-            boolean failedDependency = true;
-            failedDependency = matchParameter(container, matchingParameterList, parameter, failedDependency);
-            if (failedDependency) {
+            if (!matchParameter(container, matchingParameterList, currentParameters[i])) {
                 unmatchedParameters.add(i);
             }
         }
         return unmatchedParameters;
     }
 
-    private boolean matchParameter(PicoContainer container, List<Object> matchingParameterList, Parameter parameter, boolean failedDependency) {
+    private boolean matchParameter(PicoContainer container, List<Object> matchingParameterList, Parameter parameter) {
         for (int j = 0; j < injectionTypes.length; j++) {
             Object o = matchingParameterList.get(j);
             AccessibleObject member = injectionMembers.get(j);
@@ -128,11 +125,10 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
                                                bindings[j]);
             if (o == null && b) {
                 matchingParameterList.set(j, parameter);
-                failedDependency = false;
-                break;
+                return true;
             }
         }
-        return failedDependency;
+        return false;
     }
 
     protected NameBinding makeParameterNameImpl(AccessibleObject member) {
