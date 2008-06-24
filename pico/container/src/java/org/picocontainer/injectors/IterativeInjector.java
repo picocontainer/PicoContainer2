@@ -85,9 +85,9 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         }
 
         final List<Object> matchingParameterList = new ArrayList<Object>(Collections.nCopies(injectionMembers.size(), null));
-        final Set<Integer> nonMatchingParameterPositions = new HashSet<Integer>();
+
         final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes);
-        checkForFailedDependencies(container, matchingParameterList, nonMatchingParameterPositions, currentParameters);
+        final Set<Integer> nonMatchingParameterPositions = checkForFailedDependencies(container, matchingParameterList, currentParameters);
 
         final Set<Class> unsatisfiableDependencyTypes = new HashSet<Class>();
         for (int i = 0; i < matchingParameterList.size(); i++) {
@@ -103,7 +103,8 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         return matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
     }
 
-    private void checkForFailedDependencies(PicoContainer container, List<Object> matchingParameterList, Set<Integer> nonMatchingParameterPositions, Parameter[] currentParameters) {
+    private Set<Integer> checkForFailedDependencies(PicoContainer container, List<Object> matchingParameterList, Parameter[] currentParameters) {
+        Set<Integer> nonMatchingParameterPositions = new HashSet<Integer>();
         for (int i = 0; i < currentParameters.length; i++) {
             final Parameter parameter = currentParameters[i];
             boolean failedDependency = true;
@@ -112,6 +113,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
                 nonMatchingParameterPositions.add(i);
             }
         }
+        return nonMatchingParameterPositions;
     }
 
     private boolean checkForFailedDependency(PicoContainer container, List<Object> matchingParameterList, Parameter parameter, boolean failedDependency) {
