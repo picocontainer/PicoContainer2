@@ -87,28 +87,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         final List<Object> matchingParameterList = new ArrayList<Object>(Collections.nCopies(injectionMembers.size(), null));
         final Set<Integer> nonMatchingParameterPositions = new HashSet<Integer>();
         final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes);
-        for (int i = 0; i < currentParameters.length; i++) {
-            final Parameter parameter = currentParameters[i];
-            boolean failedDependency = true;
-            for (int j = 0; j < injectionTypes.length; j++) {
-                Object o = matchingParameterList.get(j);
-                AccessibleObject member = injectionMembers.get(i);
-                boolean b = parameter.isResolvable(container,
-                                                   this,
-                                                   injectionTypes[j],
-                                                   makeParameterNameImpl(member),
-                                                   useNames(),
-                                                   bindings[j]);
-                if (o == null && b) {
-                    matchingParameterList.set(j, parameter);
-                    failedDependency = false;
-                    break;
-                }
-            }
-            if (failedDependency) {
-                nonMatchingParameterPositions.add(i);
-            }
-        }
+        checkForFailedDependencies(container, matchingParameterList, nonMatchingParameterPositions, currentParameters);
 
         final Set<Class> unsatisfiableDependencyTypes = new HashSet<Class>();
         for (int i = 0; i < matchingParameterList.size(); i++) {
@@ -122,6 +101,36 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             throw new PicoCompositionException("Following parameters do not match any of the injectionMembers for " + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
         }
         return matchingParameterList.toArray(new Parameter[matchingParameterList.size()]);
+    }
+
+    private void checkForFailedDependencies(PicoContainer container, List<Object> matchingParameterList, Set<Integer> nonMatchingParameterPositions, Parameter[] currentParameters) {
+        for (int i = 0; i < currentParameters.length; i++) {
+            final Parameter parameter = currentParameters[i];
+            boolean failedDependency = true;
+            failedDependency = checkForFailedDependency(container, matchingParameterList, parameter, failedDependency);
+            if (failedDependency) {
+                nonMatchingParameterPositions.add(i);
+            }
+        }
+    }
+
+    private boolean checkForFailedDependency(PicoContainer container, List<Object> matchingParameterList, Parameter parameter, boolean failedDependency) {
+        for (int j = 0; j < injectionTypes.length; j++) {
+            Object o = matchingParameterList.get(j);
+            AccessibleObject member = injectionMembers.get(j);
+            boolean b = parameter.isResolvable(container,
+                                               this,
+                                               injectionTypes[j],
+                                               makeParameterNameImpl(member),
+                                               useNames(),
+                                               bindings[j]);
+            if (o == null && b) {
+                matchingParameterList.set(j, parameter);
+                failedDependency = false;
+                break;
+            }
+        }
+        return failedDependency;
     }
 
     protected NameBinding makeParameterNameImpl(AccessibleObject member) {
