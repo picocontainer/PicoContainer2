@@ -115,15 +115,10 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
     private boolean matchParameter(PicoContainer container, List<Object> matchingParameterList, Parameter parameter) {
         for (int j = 0; j < injectionTypes.length; j++) {
-            Object o = matchingParameterList.get(j);
-            AccessibleObject member = injectionMembers.get(j);
-            boolean b = parameter.isResolvable(container,
-                                               this,
-                                               injectionTypes[j],
-                                               makeParameterNameImpl(member),
-                                               useNames(),
-                                               bindings[j]);
-            if (o == null && b) {
+            if (matchingParameterList.get(j) == null
+                    && parameter.isResolvable(container, this, injectionTypes[j],
+                                               makeParameterNameImpl(injectionMembers.get(j)),
+                                               useNames(), bindings[j])) {
                 matchingParameterList.set(j, parameter);
                 return true;
             }
@@ -267,10 +262,9 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
         if (parameterAnnotations.length >= i +1 ) {
             Annotation[] o = parameterAnnotations[i];
-            for (int j = 0; j < o.length; j++) {
-                Annotation annotation = o[j];
-                if (o[j].annotationType().getAnnotation(Bind.class) != null) {
-                    return o[j];
+            for (Annotation annotation : o) {
+                if (annotation.annotationType().getAnnotation(Bind.class) != null) {
+                    return annotation;
                 }
             }
             return null;
