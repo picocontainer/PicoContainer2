@@ -59,7 +59,8 @@ public interface ComponentAdapter<T> {
      * @throws PicoCompositionException  if the component has dependencies which could not be resolved, or
      *                                     instantiation of the component lead to an ambigous situation within the
      *                                     container.
-     * @deprecated since PicoContainer 2.2
+     * @deprecated since PicoContainer 2.2.  Use {@link getComponentInstance(PicoContainer,Type)} with {@link ComponentAdapter.NOTHING.class} as type
+     * if no type available.
      */
     T getComponentInstance(PicoContainer container) throws PicoCompositionException;
 
