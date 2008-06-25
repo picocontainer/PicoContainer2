@@ -35,12 +35,9 @@ import org.picocontainer.injectors.AbstractInjector;
  * 
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class AbstractComponentMonitor implements ComponentMonitor, ComponentMonitorStrategy, Serializable {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 4978870257460414077L;
 	
 	/**
 	 * Delegate monitor to allow for component monitor chaining.

@@ -18,10 +18,10 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 
+@SuppressWarnings("serial")
 public class CompositeInjector<T> extends AbstractInjector<T> {
 
     private final Injector<T>[] injectors;
-    private static final long serialVersionUID = 6166206285207856443L;
 
     public CompositeInjector(Object componentKey, Class<?> componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy,
                              boolean useNames, Injector... injectors) {

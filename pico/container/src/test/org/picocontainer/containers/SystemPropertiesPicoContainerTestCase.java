@@ -6,9 +6,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 
-import java.io.StringWriter;
-import java.util.Properties;
-
 /**
  * test capabilities of system properties providing container. 
  * @author k.pribluda

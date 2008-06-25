@@ -26,12 +26,9 @@ import org.picocontainer.PicoVisitor;
  * @author Konstantin Pribluda
  *
  */
+@SuppressWarnings("serial")
 public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 
-	 /**
-	 * 
-	 */
-	private static final long serialVersionUID = 4045275463532458768L;
 
 	JNDIObjectReference<T> jndiReference;
 	

@@ -30,6 +30,7 @@ import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
+@SuppressWarnings("serial")
 public class AbstractInjectorTestCase {
 
     private AbstractInjector ai;

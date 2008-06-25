@@ -22,6 +22,7 @@ import javax.annotation.PostConstruct;
  *
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public final class JavaEE5LifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
 
     /**

@@ -44,7 +44,7 @@ public abstract class AbstractBehavior<T> implements Behavior<T>, ComponentMonit
                                                   LifecycleStrategy, Serializable {
 
     protected final ComponentAdapter<T> delegate;
-    private static final long serialVersionUID = 6272537369952256020L;
+
 
     public AbstractBehavior(ComponentAdapter<T> delegate) {
          this.delegate = delegate;

@@ -28,8 +28,8 @@ import java.lang.reflect.Type;
  *
  * @author Konstantin Pribluda
  */
+@SuppressWarnings("serial")
 public class EmptyPicoContainer implements PicoContainer, Serializable {
-    private static final long serialVersionUID = -2225539108410682231L;
 
     public Object getComponent(Object componentKeyOrType) {
         return null;

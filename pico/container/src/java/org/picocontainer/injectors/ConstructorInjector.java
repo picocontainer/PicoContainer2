@@ -43,11 +43,8 @@ import java.util.Set;
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class ConstructorInjector<T> extends SingleMemberInjector<T> {
-    /**
-	 * Serialization UUID.
-	 */
-    private static final long serialVersionUID = 3663020107106785481L;
 	
 	private transient List<Constructor<T>> sortedMatchingConstructors;
     private transient ThreadLocalCyclicDependencyGuard<T> instantiationGuard;

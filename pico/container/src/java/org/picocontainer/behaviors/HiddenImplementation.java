@@ -32,12 +32,8 @@ import org.picocontainer.behaviors.AbstractBehavior;
  * @author Paul Hammant
  * @see org.picocontainer.gems.adapters.HotSwappingComponentAdapter for a more feature-rich version of this class.
  */
+@SuppressWarnings("serial")
 public class HiddenImplementation<T> extends AbstractBehavior<T> {
-
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -9025725365839103497L;
 
 	/**
      * Creates an ImplementationHidingComponentAdapter with a delegate 

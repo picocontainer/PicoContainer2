@@ -9,13 +9,10 @@
 package org.picocontainer.injectors;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Characteristics;
 import static org.picocontainer.injectors.NamedFieldInjection.injectionFieldNames;
 import org.picocontainer.annotations.Inject;
 

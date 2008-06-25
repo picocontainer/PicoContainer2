@@ -23,8 +23,8 @@ import java.util.Properties;
  * @author Aslak Helles&oslash;y
  * @see org.picocontainer.gems.adapters.HotSwappingComponentFactory for a more feature-rich version of the class
  */
+@SuppressWarnings("serial")
 public class ImplementationHiding extends AbstractBehaviorFactory {
-    private static final long serialVersionUID = -2852005512328320861L;
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,

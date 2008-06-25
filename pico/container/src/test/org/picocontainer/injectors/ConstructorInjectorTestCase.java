@@ -50,6 +50,7 @@ import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 
+@SuppressWarnings("serial")
 public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 
 	private Mockery mockery = mockeryWithCountingNamingScheme();

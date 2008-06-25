@@ -8,8 +8,6 @@ import java.io.Serializable;
 
 public abstract class AbstractInjectionFactory implements InjectionFactory, Serializable {
 
-    private static final long serialVersionUID = 7771364390347050589L;
-
     public void verify(PicoContainer container) {
     }
 

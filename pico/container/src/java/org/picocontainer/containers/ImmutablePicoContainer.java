@@ -26,10 +26,10 @@ import java.lang.reflect.Type;
  *
  * @author Konstantin Pribluda
  */
+@SuppressWarnings("serial")
 public final class ImmutablePicoContainer implements PicoContainer, Serializable {
 
     private final PicoContainer delegate;
-    private static final long serialVersionUID = -2618754969124385717L;
 
     public ImmutablePicoContainer(PicoContainer delegate) {
         if (delegate == null) {

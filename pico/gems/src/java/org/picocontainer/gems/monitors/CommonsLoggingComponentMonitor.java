@@ -43,12 +43,9 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * @author Paul Hammant
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class CommonsLoggingComponentMonitor implements ComponentMonitor, Serializable {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 5863003718112457388L;
 
 	/**
 	 * Commons Logger.

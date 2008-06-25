@@ -50,10 +50,10 @@ import org.picocontainer.behaviors.Cached;
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class PropertyApplicator<T> extends AbstractBehavior<T> {
     private Map<String, String> properties;
     private transient Map<String, Method> setters = null;
-    private static final long serialVersionUID = -4148990543046181799L;
 
     /**
      * Construct a PropertyApplicator.

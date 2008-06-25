@@ -28,13 +28,9 @@ import java.lang.reflect.Type;
  *
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public class HotSwappable<T> extends AsmHiddenImplementation<T> {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -1697354800989616649L;
-	
 	private final Swappable swappable = new Swappable();
     
 	private T instance;

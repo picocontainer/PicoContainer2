@@ -28,13 +28,10 @@ import java.util.List;
  * Injection happens after instantiation, and through fields marked as injection points via an Annotation.
  * The default annotation of org.picocontainer.annotations.@Inject can be overridden.
  */
+@SuppressWarnings("serial")
 public class AnnotatedFieldInjector extends IterativeInjector {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -1995850745951708186L;
-	
+ 	
 	private final Class<? extends Annotation> injectionAnnotation;
 
     public AnnotatedFieldInjector(Object key,

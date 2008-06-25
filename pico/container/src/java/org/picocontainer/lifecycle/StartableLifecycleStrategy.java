@@ -27,14 +27,10 @@ import org.picocontainer.Startable;
  * @see Startable
  * @see Disposable
  */
+@SuppressWarnings("serial")
 public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 4967544912924651398L;
-
-
+ 
 	private transient Method start, stop, dispose;
 
     public StartableLifecycleStrategy(final ComponentMonitor monitor) {

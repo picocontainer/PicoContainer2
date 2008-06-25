@@ -23,12 +23,9 @@ import org.picocontainer.PicoContainer;
  * @author Peter Barry
  * @author Kent R. Spillner
  */
+@SuppressWarnings("serial")
 public final class ComponentDependencyMonitor extends AbstractComponentMonitor {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 9104656171384560235L;
 	
 	
 	private final ComponentDependencyListener listener;

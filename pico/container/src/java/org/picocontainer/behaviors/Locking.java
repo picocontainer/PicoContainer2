@@ -21,8 +21,8 @@ import java.util.Properties;
 /**
  * @author Aslak Helles&oslash;y
  */
+@SuppressWarnings("serial")
 public class Locking extends AbstractBehaviorFactory {
-    private static final long serialVersionUID = -448974638500050357L;
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,

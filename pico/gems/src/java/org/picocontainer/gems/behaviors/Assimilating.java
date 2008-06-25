@@ -32,12 +32,9 @@ import java.util.Properties;
  * @todo Since assimilating is taking types that are not the result type, does this mean that we cannot use generics
  * for this type?  I've been unable to actually get it working.
  */
+@SuppressWarnings("serial")
 public class Assimilating extends AbstractBehaviorFactory {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 8854940817360913988L;
 	private final ProxyFactory proxyFactory;
     private final Class<?> assimilationType;
 

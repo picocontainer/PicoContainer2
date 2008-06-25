@@ -15,9 +15,8 @@ import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 
 /** @author Paul Hammant */
+@SuppressWarnings("serial")
 public class ThreadLocalReference<T> extends ThreadLocal<T> implements ObjectReference<T>, Serializable {
-
-    private static final long serialVersionUID = 1L;
 
     private void writeObject(final ObjectOutputStream out) {
         if(out != null); // eliminate warning because of unused parameter

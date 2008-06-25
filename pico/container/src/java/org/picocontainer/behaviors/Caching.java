@@ -28,8 +28,8 @@ import java.util.Properties;
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  * @author Konstantin Pribluda
  */
+@SuppressWarnings("serial")
 public class Caching extends AbstractBehaviorFactory {
-    private static final long serialVersionUID = 1406297431996719245L;
 
     public <T> ComponentAdapter<T> createComponentAdapter(
 			ComponentMonitor componentMonitor,

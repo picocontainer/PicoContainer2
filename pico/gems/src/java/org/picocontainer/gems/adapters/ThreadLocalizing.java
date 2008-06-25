@@ -55,12 +55,10 @@ import java.util.Properties;
  * </p>
  * @author J&ouml;rg Schaible
  */
+@SuppressWarnings("serial")
 public final class ThreadLocalizing extends AbstractBehaviorFactory {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1258601060691978120L;
+
 	/**
      * <code>ENSURE_THREAD_LOCALITY</code> is the constant for created {@link ComponentAdapter} instances, that ensure
      * unique instances of the component by delivering a proxy for the component.

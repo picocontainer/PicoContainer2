@@ -11,18 +11,12 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
-import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Bind;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-
 import com.thoughtworks.paranamer.CachingParanamer;
-import com.thoughtworks.paranamer.Paranamer;
 
 /**
  * Injection will happen in a single member function on the component.
@@ -33,7 +27,6 @@ import com.thoughtworks.paranamer.Paranamer;
 public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
 
     private transient CachingParanamer paranamer = new CachingParanamer();
-    private static final long serialVersionUID = 6159718060308373858L;
 
     public SingleMemberInjector(Object componentKey,
                                 Class componentImplementation,

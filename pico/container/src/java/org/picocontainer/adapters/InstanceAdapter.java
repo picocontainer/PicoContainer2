@@ -35,12 +35,9 @@ import java.lang.reflect.Type;
  * @author Paul Hammant
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Behavior<T>, LifecycleStrategy {
     
-	/**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 481566707826011226L;
 
 	/**
 	 * The actual instance of the component.

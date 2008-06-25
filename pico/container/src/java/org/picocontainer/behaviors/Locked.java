@@ -21,11 +21,8 @@ import java.lang.reflect.Type;
 /**
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public class Locked<T> extends AbstractBehavior<T> {
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 2355716085957171021L;
 	
 	/**
 	 * Reentrant lock.

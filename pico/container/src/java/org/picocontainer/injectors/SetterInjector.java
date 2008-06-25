@@ -12,12 +12,10 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.PropertyApplicator;
 import org.picocontainer.behaviors.Cached;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.InvocationTargetException;
 
@@ -37,10 +35,10 @@ import java.lang.reflect.InvocationTargetException;
  * @author Mauro Talevi
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public class SetterInjector<T> extends IterativeInjector<T> {
 
     private final String setterMethodPrefix;
-    private static final long serialVersionUID = -5447112091453900667L;
 
     /**
      * Constructs a SetterInjector

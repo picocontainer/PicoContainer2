@@ -3,8 +3,6 @@ package org.picocontainer;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.HashMap;
-import java.util.Properties;
-
 import org.junit.Test;
 
 public class CharacteristicsTestCase  {

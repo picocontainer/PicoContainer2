@@ -22,12 +22,9 @@ import org.picocontainer.behaviors.Stored;
  * @author k.pribluda
  * 
  */
+@SuppressWarnings("serial")
 public class JNDIExposed<T> extends Stored<T> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3041683727306240880L;
 
 	/**
 	 * construct reference itself using vanilla initial context.

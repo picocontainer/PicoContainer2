@@ -22,13 +22,9 @@ import org.picocontainer.PicoContainer;
  *             instead.
  */
 @Deprecated
+@SuppressWarnings("serial")
 public final class CommandLineArgumentsPicoContainer extends
 		CommandLinePicoContainer {
-
-	/**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 5791801617108577150L;
 
 	/**
 	 * @param separator

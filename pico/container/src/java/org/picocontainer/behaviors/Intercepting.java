@@ -14,15 +14,12 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Properties;
-import java.io.Serializable;
 
 
 /** @author Paul Hammant */
+@SuppressWarnings("serial")
 public class Intercepting extends AbstractBehaviorFactory {
-    private static final long serialVersionUID = 8186483610012094244L;
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                           LifecycleStrategy lifecycleStrategy,

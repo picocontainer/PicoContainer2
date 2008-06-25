@@ -35,6 +35,7 @@ import org.picocontainer.monitors.AbstractComponentMonitor;
 /**
  * Unit tests for the several PicoException classes.
  */
+@SuppressWarnings("serial")
 public class PicoExceptionsTestCase {
 
     final static public String MESSAGE = "Message of the exception";

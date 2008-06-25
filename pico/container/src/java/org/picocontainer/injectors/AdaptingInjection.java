@@ -41,12 +41,9 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  * @see MethodInjection
  * @see ConstructorInjection
  */
+@SuppressWarnings("serial")
 public class AdaptingInjection extends AbstractInjectionFactory {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 8660775238892763896L;
 
 	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,

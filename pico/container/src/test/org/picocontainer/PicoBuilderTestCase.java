@@ -16,9 +16,7 @@ import static org.picocontainer.behaviors.Behaviors.implementationHiding;
 import static org.picocontainer.behaviors.Behaviors.synchronizing;
 import static org.picocontainer.injectors.Injectors.SDI;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Properties;
 
 import org.junit.Before;
@@ -41,12 +39,8 @@ import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.Converter;
-import com.thoughtworks.xstream.converters.MarshallingContext;
-import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
+@SuppressWarnings("serial")
 public class PicoBuilderTestCase {
 
     private XStream xs;

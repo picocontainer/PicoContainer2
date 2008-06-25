@@ -10,8 +10,6 @@
 
 package org.picocontainer.behaviors;
 
-import java.io.Serializable;
-
 import org.picocontainer.Behavior;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ObjectReference;
@@ -33,8 +31,9 @@ import org.picocontainer.references.SimpleReference;
  * 
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class Cached<T> extends Stored<T> {
-    private static final long serialVersionUID = -733344400276063938L;
+
 
     public Cached(ComponentAdapter delegate) {
 		this(delegate, new SimpleReference());

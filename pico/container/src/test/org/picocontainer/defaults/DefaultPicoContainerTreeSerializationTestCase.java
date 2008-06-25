@@ -25,7 +25,6 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.tck.AbstractPicoContainerTest;
 
 

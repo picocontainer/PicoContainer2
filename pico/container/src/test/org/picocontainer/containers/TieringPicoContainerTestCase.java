@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
 import static org.picocontainer.BindKey.bindKey;
@@ -17,7 +16,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.annotation.ElementType;
-import java.io.StringWriter;
 
 public class TieringPicoContainerTestCase {
     

@@ -24,6 +24,7 @@ import java.security.PrivilegedAction;
  * 
  * @author J&ouml;rg Schaible
  */
+@SuppressWarnings("serial")
 public abstract class AbstractPicoVisitor implements PicoVisitor {
     private boolean traversal;
 
@@ -79,7 +80,6 @@ public abstract class AbstractPicoVisitor implements PicoVisitor {
      */
     public static class PicoVisitorTraversalException
             extends PicoException {
-        private static final long serialVersionUID = -3111187206154933549L;
 
         /**
          * Construct the PicoVisitorTraversalException.

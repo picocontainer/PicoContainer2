@@ -19,10 +19,7 @@ import org.picocontainer.web.sample.service.CheeseService;
  * @author Michael Rimov
  */
 public class AddCheeseController implements Serializable {
-    /**
-     * Serial UUID.
-     */
-    private static final long serialVersionUID = 1L;
+
 
     /**
      * Name of the cheese to add.

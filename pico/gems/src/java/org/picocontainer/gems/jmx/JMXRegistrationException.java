@@ -17,12 +17,10 @@ import org.picocontainer.PicoCompositionException;
  * A registration exception caused trying to register the component with JMX.
  * @author Michael Ward
  */
+@SuppressWarnings("serial")
 public class JMXRegistrationException extends PicoCompositionException {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -2359710069960087512L;
+
 
 	/**
      * Construct a JMXRegistrationException with a particular message.

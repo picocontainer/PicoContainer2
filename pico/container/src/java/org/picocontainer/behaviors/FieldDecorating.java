@@ -28,7 +28,6 @@ import java.util.Properties;
  */
 public abstract class FieldDecorating extends AbstractBehaviorFactory implements FieldDecorated.Decorator {
     private final Class<?> fieldClass;
-    private static final long serialVersionUID = 4603185065453820475L;
 
     public FieldDecorating(Class<?> fieldClass) {
         this.fieldClass = fieldClass;

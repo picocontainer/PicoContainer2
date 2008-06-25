@@ -72,13 +72,10 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * @author Thomas Heller
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class DefaultPicoContainer implements MutablePicoContainer, ComponentMonitorStrategy, Serializable  {
 
     private String name;
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -8987815732600681148L;
 
 
 	/**
@@ -963,10 +960,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
     private class AsPropertiesPicoContainer extends AbstractDelegatingMutablePicoContainer {
-        /**
-		 * Serialization UUID.
-		 */
-		private static final long serialVersionUID = -4846748925372564136L;
 		
 		private final Properties properties;
 

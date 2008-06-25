@@ -58,6 +58,7 @@ import org.picocontainer.testmodel.Touchable;
  * @author Ward Cunningham
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTest {
 
 	protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
@@ -251,7 +252,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         assertEquals("child:1<I<parent:1<|", child.toString());
     }
 
-    @Test public void testStartCapturedByMonitor() {
+    @SuppressWarnings("serial")
+	@Test public void testStartCapturedByMonitor() {
 		final StringBuffer sb = new StringBuffer();
 		DefaultPicoContainer dpc = new DefaultPicoContainer(
 				new NullComponentMonitor() {
@@ -734,6 +736,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		assertions(donkey, rabbit, turtle);
 	}
 
+	@SuppressWarnings("serial")
 	@Test public void testNoComponentIsMonitoredAndPotentiallyLateProvided() {
 		final String[] missingKey = new String[1];
 
@@ -777,6 +780,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         assertEquals("doppleganger", dpc.getComponent(List.class).get(0));
     }
 
+    @SuppressWarnings("serial")
     private static class MyNullComponentMonitor extends NullComponentMonitor {
         public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
             if (abstractInjector.getComponentKey() == List.class) {

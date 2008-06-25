@@ -24,7 +24,6 @@ public abstract class AbstractMonitoringLifecycleStrategy implements LifecycleSt
 	 * Component monitor that receives lifecycle state.
 	 */
     private ComponentMonitor componentMonitor;
-    private static final long serialVersionUID = 8176408815431857194L;
 
 
     /**

@@ -10,8 +10,6 @@
 
 package org.picocontainer.behaviors;
 
-import java.io.Serializable;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.references.ThreadLocalReference;
 
@@ -22,8 +20,8 @@ import org.picocontainer.references.ThreadLocalReference;
  *
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public final class ThreadCached<T> extends Stored<T>{
-    private static final long serialVersionUID = 267851067019988875L;
 
     public ThreadCached(ComponentAdapter<T> delegate) {
         super(delegate, new ThreadLocalReference<T>());

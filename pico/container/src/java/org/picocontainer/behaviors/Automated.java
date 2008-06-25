@@ -14,12 +14,9 @@ import org.picocontainer.ComponentAdapter;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Automated<T> extends AbstractBehavior<T> implements Behavior<T>, Serializable {
 
-	/**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 36709276463500305L;
 
 	public Automated(ComponentAdapter<T> delegate) {
         super(delegate);

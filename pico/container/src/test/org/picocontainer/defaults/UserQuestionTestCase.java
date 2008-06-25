@@ -32,6 +32,7 @@ import org.picocontainer.injectors.ConstructorInjection;
  *
  * @author Aslak Helles&oslash;y
  */
+@SuppressWarnings("serial")
 public final class UserQuestionTestCase {
 
     // From Scott Farquahsr

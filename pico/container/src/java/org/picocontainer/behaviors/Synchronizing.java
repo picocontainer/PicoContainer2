@@ -21,9 +21,8 @@ import java.util.Properties;
 /**
  * @author Aslak Helles&oslash;y
  */
+@SuppressWarnings("serial")
 public class Synchronizing extends AbstractBehaviorFactory {
-    private static final long serialVersionUID = -9121725067999648124L;
-
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) {
         removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE);
         return new Synchronized(super.createComponentAdapter(

@@ -16,12 +16,9 @@ import org.picocontainer.PicoException;
  * 
  * @author Michael Rimov
  */
+@SuppressWarnings("serial")
 public class NoSuchMethodRuntimeException extends PicoException {
 
-	/**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -7033093964367172262L;
 
 	/**
 	 * 

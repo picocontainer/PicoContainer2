@@ -25,9 +25,8 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  * 
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public class CompositeInjection extends AbstractInjectionFactory {
-
-    private static final long serialVersionUID = 1962189227810901031L;    
 
     private final InjectionFactory[] injectionFactories;
 

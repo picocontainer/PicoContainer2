@@ -39,7 +39,7 @@ import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
 
-
+@SuppressWarnings("serial")
 public class SetterInjectorTestCase
     extends AbstractComponentAdapterTest {
 

@@ -43,11 +43,9 @@ import org.slf4j.LoggerFactory;
  * @author Mauro Talevi
  * @author Michael Rimov
  */
+@SuppressWarnings("serial")
 public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
-	/**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -4312191439604292585L;
+
 
 	/**
 	 * Slf4j Logger.

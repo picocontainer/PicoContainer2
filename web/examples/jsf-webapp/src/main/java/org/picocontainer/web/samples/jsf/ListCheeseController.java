@@ -26,10 +26,6 @@ import org.picocontainer.web.sample.service.CheeseService;
  */
 public class ListCheeseController implements Serializable {
     
-    /**
-     * Serialization UID so Eclipse stops whining.
-     */
-    private static final long serialVersionUID = 1L;
 
     /**
      * The Cheese Service we handle.

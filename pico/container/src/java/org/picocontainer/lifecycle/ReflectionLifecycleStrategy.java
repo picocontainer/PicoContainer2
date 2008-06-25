@@ -25,14 +25,10 @@ import org.picocontainer.ComponentMonitor;
  * @see org.picocontainer.Disposable
  * @see org.picocontainer.lifecycle.StartableLifecycleStrategy
  */
+@SuppressWarnings("serial")
 public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStrategy {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 1887156774166378597L;
-
-	/**
+ 	/**
 	 * Index in the methodnames array that contains the name of the 'start'
 	 * method.
 	 */

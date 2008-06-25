@@ -27,8 +27,8 @@ import java.util.Properties;
  * 
  * @author Aslak Helles&oslash;y
  */
+@SuppressWarnings("serial")
 public final class PropertyApplying extends AbstractBehaviorFactory {
-    private static final long serialVersionUID = -3588804888250841511L;
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
             LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,

@@ -62,12 +62,9 @@ import org.apache.log4j.Logger;
  * decorator provided.
  */
 @Deprecated
+@SuppressWarnings("serial")
 public class Log4jTracingContainerDecorator implements MutablePicoContainer, Serializable {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 565794433634958551L;
 
 	/** Wrapped container. */
     private final MutablePicoContainer delegate;

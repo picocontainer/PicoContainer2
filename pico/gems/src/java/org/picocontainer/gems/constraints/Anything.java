@@ -15,11 +15,9 @@ import org.picocontainer.ComponentAdapter;
  *
  * @author Nick Sieger
  */
+@SuppressWarnings("serial")
 public class Anything extends AbstractConstraint {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 142557419655786599L;
+
 	public static final Anything ANYTHING = new Anything();
 
     public Anything() {

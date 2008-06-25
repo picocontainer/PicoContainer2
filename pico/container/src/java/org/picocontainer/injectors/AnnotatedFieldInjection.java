@@ -14,13 +14,11 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.InjectionFactory;
 import org.picocontainer.Characteristics;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.annotations.Inject;
 
 import java.util.Properties;
-import java.io.Serializable;
 import java.lang.annotation.Annotation;
 
 /**
@@ -29,13 +27,9 @@ import java.lang.annotation.Annotation;
  *
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public class AnnotatedFieldInjection extends AbstractInjectionFactory {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -7470345740391531008L;
-	
 	private final Class<? extends Annotation> injectionAnnotation;
 
     public AnnotatedFieldInjection(Class<? extends Annotation> injectionAnnotation) {

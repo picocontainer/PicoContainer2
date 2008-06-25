@@ -23,13 +23,9 @@ import java.lang.reflect.Type;
  * @author J&ouml;rg Schaible
  * @author Leo Simmons
  */
+@SuppressWarnings("serial")
 public final class StaticFactoryAdapter<T> extends AbstractAdapter<T> {
     
-	/**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -7676669475931143447L;
-	
 	
 	private final StaticFactory<T> staticFactory;
 

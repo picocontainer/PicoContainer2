@@ -37,6 +37,7 @@ import org.picocontainer.containers.TransientPicoContainer;
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class WriterComponentMonitorTestCase  {
 	
     private Writer out;

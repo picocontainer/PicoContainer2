@@ -32,6 +32,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
 
 import com.thoughtworks.xstream.XStream;
 
+@SuppressWarnings("serial")
 public class AdaptingBehaviorTestCase {
 
     @Test public void testCachingBehaviorCanBeAddedByCharacteristics() {

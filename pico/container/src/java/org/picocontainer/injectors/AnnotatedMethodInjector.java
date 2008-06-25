@@ -18,14 +18,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.InvocationTargetException;
 
+@SuppressWarnings("serial")
 public class AnnotatedMethodInjector extends SetterInjector {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -1347829923043944701L;
-	
-	private final Class<? extends Annotation> injectionAnnotation;
+ 	private final Class<? extends Annotation> injectionAnnotation;
 
     public AnnotatedMethodInjector(Object key,
                                    Class<?> impl,

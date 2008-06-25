@@ -33,12 +33,9 @@ import org.picocontainer.behaviors.Cached;
  *
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public class AsmHiddenImplementation<T> extends AbstractBehavior<T> implements Opcodes {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 167158029919261007L;
 
 	public AsmHiddenImplementation(final ComponentAdapter<T> delegate) {
         super(delegate);

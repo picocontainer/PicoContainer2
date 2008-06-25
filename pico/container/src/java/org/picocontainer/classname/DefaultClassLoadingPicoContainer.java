@@ -27,7 +27,6 @@ import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 
-import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.net.URL;
@@ -49,10 +48,9 @@ import java.util.Properties;
  * @author Mauro Talevi
  * @author Michael Rimov
  */
+@SuppressWarnings("serial")
 public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutablePicoContainer implements
         ClassLoadingPicoContainer, ComponentMonitorStrategy {
-
-    private static final long serialVersionUID = 1982303317963088547L;
 
     /**
      * Conversion Map to allow for primitives to be boxed to Object types.

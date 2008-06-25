@@ -15,10 +15,8 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.InjectionFactory;
 import org.picocontainer.annotations.Inject;
 
-import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.Properties;
 
@@ -29,13 +27,10 @@ import java.util.Properties;
  *
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public class AnnotatedMethodInjection extends AbstractInjectionFactory {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 6225372552727902003L;
-	
+
 	private final Class<? extends Annotation> injectionAnnotation;
     private final boolean useNames;
 

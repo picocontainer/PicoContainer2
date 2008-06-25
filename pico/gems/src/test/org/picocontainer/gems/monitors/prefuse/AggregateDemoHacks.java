@@ -49,11 +49,8 @@ import prefuse.visual.VisualItem;
  * 
  * @author <a href="http://jheer.org">jeffrey heer</a>
  */
+@SuppressWarnings("serial")
 public class AggregateDemoHacks extends Display {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 2806927681111108361L;
 
 	private static final int LIGHT_BLUE = ColorLib.rgba(200, 200, 255, 150);
 

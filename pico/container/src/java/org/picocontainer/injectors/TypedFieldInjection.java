@@ -14,12 +14,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.InjectionFactory;
-import org.picocontainer.Characteristics;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
-
 import java.util.Properties;
-import java.io.Serializable;
 import static org.picocontainer.Characteristics.immutable;
 
 /**
@@ -31,10 +26,10 @@ import static org.picocontainer.Characteristics.immutable;
  *
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public class TypedFieldInjection extends AbstractInjectionFactory {
 
     private static final String INJECTION_FIELD_TYPES = "injectionFieldTypes";
-    private static final long serialVersionUID = -536396559663715962L;
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,

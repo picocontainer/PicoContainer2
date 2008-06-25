@@ -31,12 +31,9 @@ import javax.management.InstanceNotFoundException;
  * {@link ComponentAdapter} that is exposing a component as MBean in a MBeanServer.
  * @author J&ouml;rg Schaible
  */
+@SuppressWarnings("serial")
 public class JMXExposed<T> extends AbstractBehavior<T> {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -8334126007439793080L;
 	
 	private final MBeanServer mBeanServer;
     private final DynamicMBeanProvider[] providers;

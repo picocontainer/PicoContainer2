@@ -16,8 +16,6 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.Properties;
-
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;

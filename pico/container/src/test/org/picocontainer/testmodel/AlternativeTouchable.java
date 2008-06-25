@@ -16,6 +16,7 @@ import java.io.Serializable;
 /**
  * @author steve.freeman@m3p.co.uk
  */
+@SuppressWarnings("serial")
 public class AlternativeTouchable implements Touchable, Serializable {
 
     public boolean wasTouched = false;

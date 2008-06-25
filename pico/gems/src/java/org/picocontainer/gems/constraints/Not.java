@@ -16,11 +16,9 @@ import org.picocontainer.PicoVisitor;
  *
  * @author Nick Sieger
  */
+@SuppressWarnings("serial")
 public final class Not extends AbstractConstraint {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5651583682858065995L;
+
 	private final Constraint constraint;
 
     /**

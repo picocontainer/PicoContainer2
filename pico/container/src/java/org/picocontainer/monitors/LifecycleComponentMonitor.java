@@ -31,6 +31,7 @@ import org.picocontainer.injectors.AbstractInjector;
  * @author Paul Hammant
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public final class LifecycleComponentMonitor implements ComponentMonitor {
 
 	/**
@@ -121,11 +122,7 @@ public final class LifecycleComponentMonitor implements ComponentMonitor {
      */
     public final class LifecycleFailuresException extends PicoException {
 
-        /**
-		 * Serialization UUID. 
-		 */
-		private static final long serialVersionUID = -5627971463694211121L;
-		
+  		
 		private final List<RuntimeException> lifecycleFailures;
 
         public LifecycleFailuresException(List<RuntimeException> lifecycleFailures) {

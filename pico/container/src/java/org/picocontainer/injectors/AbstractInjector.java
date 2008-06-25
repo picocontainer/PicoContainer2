@@ -42,6 +42,7 @@ import org.picocontainer.parameters.ComponentParameter;
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements LifecycleStrategy, Injector<T> {
     /** The cycle guard for the verification. */
     protected transient ThreadLocalCyclicDependencyGuard verifyingGuard;
@@ -51,7 +52,6 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
     /** The strategy used to control the lifecycle */
     protected LifecycleStrategy lifecycleStrategy;
     private final boolean useNames;
-    private static final long serialVersionUID = -3329611066565987256L;
 
     /**
      * Constructs a new ComponentAdapter for the given key and implementation.
@@ -323,11 +323,10 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @author Aslak Helles&oslash;y
      * @author Jon Tirs&eacute;n
      */
+    @SuppressWarnings("serial")
     public static final class AmbiguousComponentResolutionException extends PicoCompositionException {
-        /**
-		 *
-		 */
-		private static final long serialVersionUID = 646859644465924465L;
+
+
 		private Class<?> component;
         private final Class<?> ambiguousDependency;
         private final Object[] ambiguousComponentKeys;
@@ -381,10 +380,6 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      */
     public static class UnsatisfiableDependenciesException extends PicoCompositionException {
 
-        /**
-		 * Serialization UUID.
-		 */
-		private static final long serialVersionUID = -8652053427387751791L;
 		
 		private final ComponentAdapter<?> instantiatingComponentAdapter;
         private final Set unsatisfiableDependencies;
@@ -429,10 +424,6 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @author Aslak Hellesoy
      */
     public static class NotConcreteRegistrationException extends PicoCompositionException {
-        /**
-		 * Serialization UUID.
-		 */
-		private static final long serialVersionUID = 6310754082738087791L;
 		
 		private final Class<?> componentImplementation;
 

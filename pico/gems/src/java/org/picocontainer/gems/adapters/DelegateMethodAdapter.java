@@ -81,11 +81,6 @@ import org.picocontainer.gems.util.DelegateMethod;
 public class DelegateMethodAdapter<T> implements ComponentAdapter<T> {
 
 	/**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 1116107951480600064L;
-
-	/**
 	 * The delegate method instance that will ultimately invoke via reflection some method
 	 * on targetInstance.
 	 */

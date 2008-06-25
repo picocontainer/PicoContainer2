@@ -54,6 +54,7 @@ import org.picocontainer.testmodel.Touchable;
  * @author J&ouml;rg Schaible
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 @RunWith(JMock.class)
 public class CollectionComponentParameterTestCase {
 

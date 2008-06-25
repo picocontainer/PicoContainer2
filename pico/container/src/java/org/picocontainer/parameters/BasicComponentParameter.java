@@ -41,8 +41,8 @@ import org.picocontainer.injectors.AbstractInjector;
  * @author J&ouml;rg Schaible
  * @author Thomas Heller
  */
+@SuppressWarnings("serial")
 public class BasicComponentParameter implements Parameter, Serializable {
-    private static final long serialVersionUID = 4083867096040233240L;
 
     private static interface Converter {
         Object convert(String paramValue);

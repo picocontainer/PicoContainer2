@@ -12,9 +12,8 @@ package org.picocontainer.injectors;
  * Constructor Injection where 'which constructor?' is re-calculated each time an
  * instance is asked to construct a component.
  */
+@SuppressWarnings("serial")
 public class ForgetfulConstructorInjection extends ConstructorInjection {
-
-    private static final long serialVersionUID = -5081591782793939553L;
 
     public ForgetfulConstructorInjection() {
         super(false);

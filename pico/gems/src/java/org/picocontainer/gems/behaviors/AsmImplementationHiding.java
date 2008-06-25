@@ -19,12 +19,9 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 import java.util.Properties;
 
+@SuppressWarnings("serial")
 public class AsmImplementationHiding extends AbstractBehaviorFactory {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -4626804053729853698L;
 
 	@Override
 	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor componentMonitor,

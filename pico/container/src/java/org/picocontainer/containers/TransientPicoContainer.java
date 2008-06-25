@@ -16,8 +16,8 @@ import org.picocontainer.behaviors.Caching;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
+@SuppressWarnings("serial")
 public class TransientPicoContainer extends DefaultPicoContainer {
-    private static final long serialVersionUID = -3250214227829116457L;
 
     public TransientPicoContainer() {
         super(new Caching().wrap(new ConstructorInjection()), new NullLifecycleStrategy(), null, new NullComponentMonitor());

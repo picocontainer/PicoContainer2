@@ -49,12 +49,8 @@ import org.picocontainer.behaviors.Stored;
  * storage location.</p>
  * @author Michael Rimov
  */
+@SuppressWarnings("serial")
 public class ReusablePicoContainer extends DefaultPicoContainer {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8709812314405695009L;
 
 	private final List<ComponentAdapter<?>> instanceRegistrations = new ArrayList<ComponentAdapter<?>>();
 

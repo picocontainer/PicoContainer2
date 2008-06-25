@@ -32,6 +32,7 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * 
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 @RunWith(JMock.class)
 public class StartableLifecycleStrategyTestCase {
 

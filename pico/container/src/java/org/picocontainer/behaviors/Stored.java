@@ -15,14 +15,9 @@ import java.lang.reflect.Type;
  *
  * @param <T>
  */
+@SuppressWarnings("serial")
 public class Stored<T> extends AbstractBehavior<T> {
 
-	    
-	/**
-	 * Serialization UUID. 
-	 */
-	private static final long serialVersionUID = -155678172730744032L;
-	
 	protected final boolean delegateHasLifecylce;
 	protected boolean disposed;
 	protected final ObjectReference<T> instanceReference;

@@ -17,12 +17,9 @@ import org.picocontainer.PicoException;
  * 
  * @author Michael Rimov
  */
+@SuppressWarnings("serial")
 public class InvocationTargetRuntimeException extends PicoException {
 
-	/**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 8848670185903485073L;
 
 	/**
 	 * 

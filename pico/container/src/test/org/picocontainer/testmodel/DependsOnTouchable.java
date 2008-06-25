@@ -17,6 +17,7 @@ import junit.framework.Assert;
 /**
  * @author steve.freeman@m3p.co.uk
  */
+@SuppressWarnings("serial")
 public class DependsOnTouchable implements Serializable {
     public final Touchable touchable;
 

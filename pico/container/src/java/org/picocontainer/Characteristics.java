@@ -9,7 +9,6 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
 
@@ -18,6 +17,7 @@ import java.util.Properties;
  * 
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public final class Characteristics {
 
     private static final String _INJECTION = "injection";
@@ -82,7 +82,6 @@ public final class Characteristics {
      * @author Paul Hammant.
      */
     public static class ImmutableProperties extends Properties {
-        private static final long serialVersionUID = -6629995310407708747L;
         
         private boolean sealed = false;
 

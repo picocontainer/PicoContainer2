@@ -13,11 +13,9 @@ import java.io.Serializable;
 import java.lang.annotation.Annotation;
 
 /** @author Paul Hammant */
+@SuppressWarnings("serial")
 public class BindKey<T> implements Serializable {
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 563408828534240087L;
+
 	
 	private final Class<T> type;
     private final Class<? extends Annotation> annotation;

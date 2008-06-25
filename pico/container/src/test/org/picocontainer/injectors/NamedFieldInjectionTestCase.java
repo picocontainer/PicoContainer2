@@ -10,7 +10,6 @@
 package org.picocontainer.injectors;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
@@ -20,7 +19,6 @@ import java.util.Properties;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;

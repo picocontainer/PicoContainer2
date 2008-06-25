@@ -18,9 +18,8 @@ package org.picocontainer;
  *   - a request for a component that is ambiguous.
  *
  */
+@SuppressWarnings("serial")
 public class PicoCompositionException extends PicoException {
-    private static final long serialVersionUID = -1344072099352037675L;
-
     /**
      * Construct a new exception with no cause and the specified detail message.  Note modern JVMs may still track the
      * exception that caused this one.

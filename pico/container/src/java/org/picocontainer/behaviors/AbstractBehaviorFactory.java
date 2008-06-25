@@ -22,10 +22,11 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.injectors.AdaptingInjection;
 
+@SuppressWarnings("serial")
 public class AbstractBehaviorFactory implements ComponentFactory, Serializable, BehaviorFactory {
 
     private ComponentFactory delegate;
-    private static final long serialVersionUID = -4004003021511725534L;
+
 
     public ComponentFactory wrap(ComponentFactory delegate) {
         this.delegate = delegate;

@@ -22,11 +22,9 @@ import java.lang.reflect.Type;
  * @author Aslak Helles&oslash;y
  * @author Manish Shah
  */
+@SuppressWarnings("serial")
 public class Synchronized<T> extends AbstractBehavior<T> {
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -3984071461712339652L;
+
 
 	public Synchronized(ComponentAdapter<T> delegate) {
         super(delegate);

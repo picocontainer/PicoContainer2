@@ -44,12 +44,9 @@ import org.picocontainer.monitors.NullComponentMonitor;
  * @author Paul Hammant
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
 
-	/**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 6974859796813059085L;
 
 	/**
 	 * Log4j Logger.

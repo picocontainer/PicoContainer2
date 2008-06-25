@@ -28,12 +28,9 @@ import java.util.Properties;
  * {@link org.picocontainer.ComponentFactory} that instantiates {@link JMXExposed} instances.
  * @author J&ouml;rg Schaible
  */
+@SuppressWarnings("serial")
 public class JMXExposing extends AbstractBehaviorFactory {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 7533072041416254082L;
 	
 	private final MBeanServer mBeanServer;
     private final DynamicMBeanProvider[] providers;

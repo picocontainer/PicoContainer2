@@ -10,13 +10,11 @@
 
 package org.picocontainer.injectors;
 
-import java.io.Serializable;
 import java.util.Properties;
 
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.InjectionFactory;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
@@ -29,10 +27,10 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  *
  * @author J&ouml;rg Schaible
  */
+@SuppressWarnings("serial")
 public class SetterInjection extends AbstractInjectionFactory {
 
     private final String setterMethodPrefix;
-    private static final long serialVersionUID = -7940916082786647148L;
 
     public SetterInjection(String setterMethodPrefix) {
         this.setterMethodPrefix = setterMethodPrefix;

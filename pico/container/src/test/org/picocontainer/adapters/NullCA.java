@@ -2,7 +2,6 @@ package org.picocontainer.adapters;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVisitor;
 
 import java.lang.reflect.Type;

@@ -15,12 +15,10 @@ import org.picocontainer.ComponentAdapter;
  *
  * @author Nick Sieger
  */
+@SuppressWarnings("serial")
 public final class IsKey extends AbstractConstraint {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 6756170370224726787L;
+
 	private final Object key;
 
     /**

@@ -22,12 +22,9 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 
+@SuppressWarnings("serial")
 public final class DotDependencyGraphComponentMonitor extends AbstractComponentMonitor implements ComponentMonitor {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 2220639049409365618L;
 	
 	final List<Instantiation> allInstantiated = new ArrayList<Instantiation>();
 

@@ -7,10 +7,10 @@ import org.picocontainer.PicoContainer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
+@SuppressWarnings("serial")
 public class FieldDecorated extends AbstractBehavior {
     private final Class<?> fieldClass;
     private final Decorator decorator;
-    private static final long serialVersionUID = -2439356685646794241L;
 
     public FieldDecorated(ComponentAdapter delegate, Class<?> fieldClass, Decorator decorator) {
         super(delegate);

@@ -10,18 +10,14 @@
 package org.picocontainer.injectors;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.math.BigDecimal;
-
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 

@@ -10,8 +10,6 @@
 package org.picocontainer.containers;
 
 import java.util.Properties;
-import java.lang.annotation.Annotation;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
@@ -23,8 +21,6 @@ import org.picocontainer.PicoContainer;
  * @author Paul Hammant
  */
 public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDelegatingPicoContainer implements MutablePicoContainer {
-    private static final long serialVersionUID = -4205331381194234032L;
-
 
     public AbstractDelegatingMutablePicoContainer(MutablePicoContainer delegate) {
 		super(delegate);

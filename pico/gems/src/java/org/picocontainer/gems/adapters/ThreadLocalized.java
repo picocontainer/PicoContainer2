@@ -42,13 +42,10 @@ import java.util.Set;
  * 
  * @author J&ouml;rg Schaible
  */
+@SuppressWarnings("serial")
 public final class ThreadLocalized<T> extends AbstractBehavior<T> {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 1244453492851215482L;
-	
+
 	private transient Class[] interfaces;
     private final ProxyFactory proxyFactory;
 
@@ -113,10 +110,6 @@ public final class ThreadLocalized<T> extends AbstractBehavior<T> {
 
     final static private class ThreadLocalInvoker implements Invoker {
 
-        /**
-		 * 
-		 */
-		private static final long serialVersionUID = -1690906076721888986L;
 		private final PicoContainer pico;
         private final ComponentAdapter delegate;
 

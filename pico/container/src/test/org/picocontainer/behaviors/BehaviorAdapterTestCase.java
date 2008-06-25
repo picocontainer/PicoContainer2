@@ -34,6 +34,7 @@ import org.picocontainer.testmodel.Touchable;
  * @author Mauro Talevi
  */
 @RunWith(JMock.class)
+@SuppressWarnings("serial")
 public class BehaviorAdapterTestCase {
 	
 	private Mockery mockery = mockeryWithCountingNamingScheme();

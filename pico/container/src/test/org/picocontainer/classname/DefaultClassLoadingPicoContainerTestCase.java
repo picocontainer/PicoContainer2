@@ -16,9 +16,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Properties;
 
-import org.jmock.Expectations;
 import org.jmock.Mockery;
-import org.jmock.api.Expectation;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;

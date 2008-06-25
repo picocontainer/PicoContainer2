@@ -9,9 +9,6 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import java.io.PrintStream;
-import java.io.PrintWriter;
-
 /**
  * Superclass for all Exceptions in PicoContainer. You can use this if you want to catch all exceptions thrown by
  * PicoContainer. Be aware that some parts of the PicoContainer API will also throw {@link NullPointerException} when
@@ -21,7 +18,6 @@ import java.io.PrintWriter;
  * @author Aslak Helles&oslash;y
  */
 public abstract class PicoException extends RuntimeException {
-    private static final long serialVersionUID = 735297118776661954L;
 
     /**
      * Construct a new exception with no cause and no detail message. Note modern JVMs may still track the exception

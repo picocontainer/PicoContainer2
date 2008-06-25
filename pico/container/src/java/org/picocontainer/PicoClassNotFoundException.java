@@ -9,8 +9,8 @@
  *****************************************************************************/
 package org.picocontainer;
 
+@SuppressWarnings("serial")
 public class PicoClassNotFoundException extends PicoException {
-    private static final long serialVersionUID = 5071403689809875642L;
 
     public PicoClassNotFoundException(final String className, final ClassNotFoundException cnfe) {
         super("Class '" + className + "' not found", cnfe);  

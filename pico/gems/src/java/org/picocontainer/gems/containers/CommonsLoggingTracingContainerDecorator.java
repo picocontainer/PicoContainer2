@@ -30,12 +30,10 @@ import org.apache.commons.logging.LogFactory;
  * @deprecated As of PicoContainer 2.3  ComponentMonitor now can do all jobs of tracing container.
  */
 @Deprecated
+@SuppressWarnings("serial")
 public class CommonsLoggingTracingContainerDecorator implements MutablePicoContainer, Serializable {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 8033653591540458032L;
+
 
 	/** Wrapped container. */
     private final MutablePicoContainer delegate;

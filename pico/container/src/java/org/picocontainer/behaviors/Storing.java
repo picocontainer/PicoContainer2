@@ -27,10 +27,10 @@ import java.util.Collections;
 /**
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public class Storing extends AbstractBehaviorFactory {
 
     private final StoreThreadLocal mapThreadLocalObjectReference = new StoreThreadLocal();
-    private static final long serialVersionUID = -7456904025565118202L;
 
     public <T> ComponentAdapter<T>  createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, Class<T> componentImplementation, Parameter... parameters)
 
@@ -97,7 +97,6 @@ public class Storing extends AbstractBehaviorFactory {
 
     public static class StoreWrapper implements Serializable {
         private Map wrapped;
-        private static final long serialVersionUID = -6905236785850006947L;
     }
 
 }

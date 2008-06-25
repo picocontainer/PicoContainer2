@@ -4,15 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import java.util.Properties;
-import java.io.IOException;
-import java.io.FileInputStream;
-import java.io.StringWriter;
-
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Characteristics;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.DependsOnTouchable;
 
 /**
  * test that properties container works properly

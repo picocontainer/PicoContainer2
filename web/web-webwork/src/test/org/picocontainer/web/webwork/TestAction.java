@@ -12,6 +12,7 @@ package org.picocontainer.web.webwork;
 import webwork.action.Action;
 
 
+@SuppressWarnings("serial")
 public final class TestAction implements Action {
     final String foo;
     public TestAction(String foo) {

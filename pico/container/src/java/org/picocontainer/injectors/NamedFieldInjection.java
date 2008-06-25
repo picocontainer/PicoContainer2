@@ -14,13 +14,9 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.InjectionFactory;
-import org.picocontainer.Characteristics;
-import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import static org.picocontainer.Characteristics.immutable;
 
 import java.util.Properties;
-import java.io.Serializable;
 
 /**
  * A {@link org.picocontainer.InjectionFactory} for named fields.
@@ -31,13 +27,9 @@ import java.io.Serializable;
  *
  * @author Paul Hammant
  */
+@SuppressWarnings("serial")
 public class NamedFieldInjection extends AbstractInjectionFactory {
 
-
-    /**
-	 * Serialization UUID.
-	 */
-    private static final long serialVersionUID = 5805385846324233960L;
 
     private static final String INJECTION_FIELD_NAMES = "injectionFieldNames";
 

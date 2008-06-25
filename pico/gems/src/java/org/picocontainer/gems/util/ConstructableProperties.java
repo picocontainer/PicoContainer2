@@ -19,12 +19,9 @@ import java.io.InputStream;
  *
  * @author Konstantin Pribluda
  */
+@SuppressWarnings("serial")
 public class ConstructableProperties extends Properties {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -8236887910502086485L;
 	/**
      * create properties from classpath resource using context classloader
      *

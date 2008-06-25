@@ -16,11 +16,9 @@ import org.picocontainer.ComponentAdapter;
  *
  * @author Nick Sieger
  */
+@SuppressWarnings("serial")
 public final class IsExactType extends AbstractConstraint {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -7843652361547378269L;
+
 	private final Class type;
 
     /**

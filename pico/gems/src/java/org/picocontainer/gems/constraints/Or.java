@@ -17,11 +17,8 @@ import org.picocontainer.PicoVisitor;
  *
  * @author Nick Sieger
  */
+@SuppressWarnings("serial")
 public final class Or extends AbstractConstraint {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 3830605478813258523L;
 	private final Constraint[] children;
 
     public Or(final Constraint c1, final Constraint c2) {

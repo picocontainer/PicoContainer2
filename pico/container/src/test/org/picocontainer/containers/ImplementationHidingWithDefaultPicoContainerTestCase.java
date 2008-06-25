@@ -23,7 +23,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.tck.AbstractImplementationHidingPicoContainerTest;
 
 /**

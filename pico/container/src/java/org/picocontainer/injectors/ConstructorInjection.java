@@ -10,13 +10,11 @@
 
 package org.picocontainer.injectors;
 
-import java.io.Serializable;
 import java.util.Properties;
 
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.InjectionFactory;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
@@ -33,8 +31,8 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  * @author Paul Hammant 
  * @author Jon Tirs&eacute;n
  */
+@SuppressWarnings("serial")
 public class ConstructorInjection extends AbstractInjectionFactory  {
-    private static final long serialVersionUID = -6044681748649376149L;
 
     private final boolean rememberChosenConstructor;
 

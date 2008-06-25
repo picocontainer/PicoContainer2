@@ -11,9 +11,8 @@ import org.picocontainer.PicoCompositionException;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class DefaultLifecycleState implements LifecycleState, Serializable {
-
-    private static final long serialVersionUID = 8340827708493546386L;
 
     /**
 	 * Default state of a container once it has been built.

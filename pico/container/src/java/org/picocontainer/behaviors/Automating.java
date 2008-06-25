@@ -19,8 +19,9 @@ import org.picocontainer.Characteristics;
 import java.io.Serializable;
 import java.util.Properties;
 
+@SuppressWarnings("serial")
 public class Automating extends AbstractBehaviorFactory implements Serializable {
-    private static final long serialVersionUID = -963250264296920405L;
+
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,

@@ -29,10 +29,22 @@ public class PicoGemsBuilder {
 
 	/**
 	 * Creates an {@link org.picocontainer.gems.behaviors.AsmImplementationHiding AsmImplementationHiding} behavior factory.
-	 * @return
+	 * @return a new AsmImplementationHiding() instance.
+	 * @deprecated renamed to ASM_IMPL_HIDING() to better differentiate between JDK Proxy implementation hiding
+	 * and ASM-based implementation hiding.
 	 */
+	@Deprecated
     public static BehaviorFactory IMPL_HIDING() {
         return new AsmImplementationHiding();
+    }
+    
+    /**
+	 * Creates an {@link org.picocontainer.gems.behaviors.AsmImplementationHiding AsmImplementationHiding} behavior factory.
+	 * @return a new AsmImplementationHiding() instance.
+	 * @since PicoContainer-Gems 2.4
+     */
+    public static BehaviorFactory ASM_IMPL_HIDING() {
+        return new AsmImplementationHiding();    	
     }
     
     /**

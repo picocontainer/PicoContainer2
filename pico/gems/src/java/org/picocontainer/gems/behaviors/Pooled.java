@@ -20,7 +20,6 @@ import java.util.List;
 import java.lang.reflect.Type;
 
 import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Behavior;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.LifecycleStrategy;
@@ -69,9 +68,10 @@ import com.thoughtworks.proxy.toys.pool.Pool;
  * @author J&ouml;rg Schaible
  * @author Aslak Helles&oslash;y
  */
+@SuppressWarnings("serial")
 public final class Pooled<T> extends AbstractBehavior<T> {
 
-    private static final long serialVersionUID = 1L;
+
 
     /**
      * Context of the Pooled used to initialize it.
@@ -334,7 +334,6 @@ public final class Pooled<T> extends AbstractBehavior<T> {
     }
 
     static final class LifecycleResetter implements Resetter, Serializable {
-        private static final long serialVersionUID = 1L;
         private final Resetter delegate;
         private final Pooled adapter;
 
@@ -451,7 +450,6 @@ public final class Pooled<T> extends AbstractBehavior<T> {
      */
     public static class PoolException extends PicoCompositionException {
 
-        private static final long serialVersionUID = 1L;
 
         /**
          * Construct a PoolException with an explaining message and a originalting cause.

@@ -9,7 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
@@ -26,10 +25,11 @@ import java.util.Properties;
  * 
  *  @author Paul Hammant 
  */
+@SuppressWarnings("serial")
 public class MethodInjection extends AbstractInjectionFactory {
 
     private final String injectionMethodName;
-    private static final long serialVersionUID = -2709009345398980376L;
+
 
     public MethodInjection(String injectionMethodName) {
         this.injectionMethodName = injectionMethodName;

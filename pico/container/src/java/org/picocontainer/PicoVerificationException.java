@@ -21,11 +21,8 @@ import java.util.List;
  * hierarchy. The verification is normally done with the
  * {@link org.picocontainer.visitors.VerifyingVisitor}, that will throw this exception.
  */
+@SuppressWarnings("serial")
 public class PicoVerificationException extends PicoException {
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -9008292036585394986L;
 	
 	/**
      * The exceptions that caused this one.

@@ -17,12 +17,9 @@ import org.picocontainer.injectors.AbstractInjectionFactory;
  * Mirrored AdaptorFactory for handling delegate methods.
  * @author Michael Rimov
  */
+@SuppressWarnings("serial")
 public class DelegateAdaptorFactory extends AbstractInjectionFactory {
 
-	/**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -8914738185639428500L;
     
 	/**
 	 * DelegateMethod instance key.

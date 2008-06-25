@@ -17,13 +17,10 @@ import org.picocontainer.LifecycleStrategy;
  * Lifecycle strategy that does nothing.
  *
  */
+@SuppressWarnings("serial")
 public class NullLifecycleStrategy implements LifecycleStrategy, Serializable {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -626149098386614685L;
-
+ 
     /** {@inheritDoc} **/
 	public void start(final Object component) {
 		//Does nothing

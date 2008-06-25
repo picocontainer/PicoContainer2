@@ -16,13 +16,14 @@ import java.util.List;
  * @author Steve.Freeman@m3p.co.uk
  */
 public final class InaccessibleStartComponent {
-    private final List messages;
+    private final List<String> messages;
 
-    public InaccessibleStartComponent(List messages) {
+    public InaccessibleStartComponent(List<String> messages) {
         this.messages = messages;
     }
 
-    private final void start() {
+    @SuppressWarnings("unused")
+	private final void start() {
         messages.add("started");
     }
 }

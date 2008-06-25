@@ -27,12 +27,9 @@ import java.util.Properties;
  * @author Aslak Helles&oslash;y
  * @see HotSwappable
  */
+@SuppressWarnings("serial")
 public class HotSwapping extends AbstractBehaviorFactory {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -1263007839990337386L;
 
 	@Override
 	public <T> ComponentAdapter<T> createComponentAdapter(final ComponentMonitor componentMonitor, final LifecycleStrategy lifecycleStrategy, final Properties componentProperties, final Object componentKey, final Class<T> componentImplementation, final Parameter... parameters)

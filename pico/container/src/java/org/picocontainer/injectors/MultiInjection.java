@@ -9,7 +9,6 @@
 package org.picocontainer.injectors;
 
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.InjectionFactory;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
@@ -17,13 +16,12 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
-import java.io.Serializable;
 import java.util.Properties;
 
 /** @author Paul Hammant */
+@SuppressWarnings("serial")
 public class MultiInjection extends AbstractInjectionFactory {
     private final String setterPrefix;
-    private static final long serialVersionUID = -2696923482238638163L;
 
     public MultiInjection(String setterPrefix) {
         this.setterPrefix = setterPrefix;

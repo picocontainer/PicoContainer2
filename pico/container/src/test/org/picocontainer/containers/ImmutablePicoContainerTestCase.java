@@ -26,7 +26,6 @@ import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.injectors.AdaptingInjection;
-import org.picocontainer.behaviors.AdaptingBehavior;
 
 
 /**

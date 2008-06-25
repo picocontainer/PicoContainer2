@@ -30,6 +30,7 @@ import org.picocontainer.annotations.Bind;
  * Injection happens after instantiation, and fields are marked as
  * injection points via a field type.
  */
+@SuppressWarnings("serial")
 public class TypedFieldInjector extends IterativeInjector {
 
     /**
@@ -37,7 +38,6 @@ public class TypedFieldInjector extends IterativeInjector {
 	 */
 
     private final List<String> classes;
-    private static final long serialVersionUID = 4579165430483092396L;
 
     public TypedFieldInjector(Object key,
                                   Class<?> impl,

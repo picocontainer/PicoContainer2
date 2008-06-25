@@ -16,13 +16,10 @@ import org.picocontainer.PicoException;
  * @author Paul Hammant
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class ReflectionLifecycleException extends PicoException {
 
-    /**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -4443264969618172775L;
-
+  
 	/**
      * Construct a new exception with the specified cause and the specified detail message.
      *

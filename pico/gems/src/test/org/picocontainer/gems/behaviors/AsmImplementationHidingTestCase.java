@@ -21,8 +21,10 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoBuilder;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.AbstractBehavior;
+import org.picocontainer.gems.PicoGemsBuilder;
 import org.picocontainer.gems.adapters.Elephant;
 import org.picocontainer.gems.adapters.ElephantImpl;
 import org.picocontainer.gems.adapters.ElephantProxy;
@@ -129,6 +131,14 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
         assertEquals(3, foo.sshort((short) 1, (short) 2));
         assertEquals(true, foo.bboolean(true, true));
         assertEquals(true, foo.bbooleanArray(new boolean[]{true}, new boolean[]{true})[0]);
+    }
+    
+    @Test
+    public void testPicoIntegration() {
+    	MutablePicoContainer mpc = new PicoBuilder().withBehaviors(PicoGemsBuilder.ASM_IMPL_HIDING())
+    		.withConstructorInjection().build();
+
+    	mpc.addComponent("foo", "bar");
     }
 
 }

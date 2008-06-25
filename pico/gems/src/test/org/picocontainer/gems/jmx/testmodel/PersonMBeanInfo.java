@@ -16,12 +16,9 @@ import javax.management.MBeanInfo;
 /**
  * @author J&ouml;rg Schaible
  */
+@SuppressWarnings("serial")
 public class PersonMBeanInfo extends MBeanInfo {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -4064659252845568493L;
 	final static MBeanInfo INFO = Person.createMBeanInfo();
 
     public PersonMBeanInfo() {

@@ -19,6 +19,7 @@ import org.junit.Test;
 
 import java.lang.reflect.Method;
 
+@SuppressWarnings("serial")
 public class Issue0303TestCase {
     
 	public static class SwallowingComponentMonitor extends NullComponentMonitor {

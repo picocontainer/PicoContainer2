@@ -38,6 +38,7 @@ import com.thoughtworks.proxy.toys.pool.Poolable;
 /**
  * @author J&ouml;rg Schaible
  */
+@SuppressWarnings("serial")
 public final class PooledTestCase extends AbstractComponentAdapterTest{
 
     public static interface Identifiable {
@@ -45,10 +46,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
     }
 
     public static final class InstanceCounter implements Identifiable, Serializable {
-        /**
-		 * 
-		 */
-		private static final long serialVersionUID = -3546747707917494911L;
+
 		private static int counter = 0;
         private final int id;
 

@@ -12,12 +12,9 @@ import org.picocontainer.ComponentAdapter;
  * @since PicoContainer 2.4
  */
 @Deprecated
+@SuppressWarnings("serial")
 public class HiddenImplementation<T> extends AsmHiddenImplementation<T> {
 
-	/**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 7407361288803019330L;
 
 	/**
 	 * @param delegate

@@ -2,7 +2,6 @@ package org.picocontainer.adapters;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.Serializable;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -16,7 +15,6 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.InjectionFactory;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
@@ -31,6 +29,7 @@ import org.picocontainer.injectors.AbstractInjectionFactory;
  * @author Paul Hammant
  * @author J&ouml;rg Schaible
  */
+@SuppressWarnings("serial")
 public class SimpleNamedBindingAnnotationTestCase {
 
     @Test public void testNamedBinding() {

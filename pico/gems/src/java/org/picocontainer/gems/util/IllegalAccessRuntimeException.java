@@ -17,12 +17,9 @@ import org.picocontainer.PicoException;
  * @author Michael Rimov
  * 
  */
+@SuppressWarnings("serial")
 public class IllegalAccessRuntimeException extends PicoException {
 
-	/**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = 5883276886324594282L;
 
 	/**
 	 * 

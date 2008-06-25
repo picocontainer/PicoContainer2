@@ -16,6 +16,7 @@ import org.picocontainer.PicoCompositionException;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("serial")
 public class StringConversions {
 
     public interface StringConverter<T> {
@@ -23,8 +24,6 @@ public class StringConversions {
     }
 
     public static class InvalidConversionException extends PicoCompositionException {
-        private static final long serialVersionUID = 1343091406791232802L;
-
         public InvalidConversionException(String message) {
         super(message);
     }

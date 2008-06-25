@@ -24,6 +24,7 @@ import java.util.List;
  * @author Aslak Helles&oslash;y
  * @author J&ouml;rg Schaible
  */
+@SuppressWarnings("serial")
 public class MethodCallingVisitor extends TraversalCheckingVisitor implements Serializable {
 
     // TODO: we must serialize method with read/writeObject ... and are our parent serializable ???
@@ -32,7 +33,6 @@ public class MethodCallingVisitor extends TraversalCheckingVisitor implements Se
     private final Class<?> type;
     private final boolean visitInInstantiationOrder;
     private final List componentInstances;
-    private static final long serialVersionUID = 2988472264483878674L;
 
     /**
      * Construct a MethodCallingVisitor for a method with arguments.

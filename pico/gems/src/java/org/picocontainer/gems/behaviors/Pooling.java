@@ -18,13 +18,10 @@ import org.picocontainer.PicoCompositionException;
 
 import java.util.Properties;
 
+@SuppressWarnings("serial")
 public class Pooling extends AbstractBehaviorFactory {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -7451446445848408124L;
-	private final Pooled.Context poolContext;
+ 	private final Pooled.Context poolContext;
 
     public Pooling(final Pooled.Context poolContext) {
         this.poolContext = poolContext;

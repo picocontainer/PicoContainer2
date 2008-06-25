@@ -27,12 +27,9 @@ import org.picocontainer.PicoCompositionException;
  * @author ko5tik
  * 
  */
+@SuppressWarnings("serial")
 public class JNDIObjectReference<T> implements ObjectReference<T> , Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7975547176340734930L;
 
 	String name;
 

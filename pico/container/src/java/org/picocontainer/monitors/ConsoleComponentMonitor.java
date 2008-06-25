@@ -38,12 +38,9 @@ import org.picocontainer.injectors.AbstractInjector;
  * @author Mauro Talevi
  * @todo  After serialization, the output printstream is null.  
  */
+@SuppressWarnings("serial")
 public final class ConsoleComponentMonitor implements ComponentMonitor, Serializable {
 
-	/**
-	 * Serialization UUID.
-	 */
-	private static final long serialVersionUID = -2541584067664868659L;
 
 	/**
 	 * The outgoing print stream.

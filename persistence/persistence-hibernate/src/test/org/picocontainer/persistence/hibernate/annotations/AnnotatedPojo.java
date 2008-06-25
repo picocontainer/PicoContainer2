@@ -24,12 +24,9 @@ import org.picocontainer.persistence.hibernate.Pojo;
  * @author Michael Rimov
  */
 @Entity
+@SuppressWarnings("serial")
 public class AnnotatedPojo extends Pojo implements Serializable {
 
-    /**
-     * Serialization UID
-     */
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue

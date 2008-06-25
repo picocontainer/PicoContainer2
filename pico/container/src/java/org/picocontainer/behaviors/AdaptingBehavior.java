@@ -27,8 +27,9 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.annotations.Cache;
 import org.picocontainer.injectors.AdaptingInjection;
 
+@SuppressWarnings("serial")
 public class AdaptingBehavior implements BehaviorFactory, Serializable {
-    private static final long serialVersionUID = -8816083046196376743L;
+
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,

@@ -52,12 +52,9 @@ import java.lang.reflect.Type;
  * @author J&ouml;rg Schaible
  * @author Michael Ward
  */
+@SuppressWarnings("serial")
 public final class Assimilated<T> extends AbstractBehavior<T> {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 2656675827757115426L;
 	private final Class<T> type;
     private final ProxyFactory proxyFactory;
     private final boolean isCompatible;

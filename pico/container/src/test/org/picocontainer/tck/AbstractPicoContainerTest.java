@@ -70,6 +70,7 @@ import org.picocontainer.visitors.TraversalCheckingVisitor;
 import org.picocontainer.visitors.VerifyingVisitor;
 
 /** This test tests (at least it should) all the methods in MutablePicoContainer. */
+@SuppressWarnings("serial")
 public abstract class AbstractPicoContainerTest {
 
     protected abstract MutablePicoContainer createPicoContainer(PicoContainer parent);

@@ -19,11 +19,9 @@ import org.picocontainer.parameters.CollectionComponentParameter;
  * @author Nick Sieger
  * @author J&ouml;rg Schaible
  */
+@SuppressWarnings("serial")
 public final class CollectionConstraint extends CollectionComponentParameter implements Constraint {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -2054071316780187223L;
+
 	protected final Constraint constraint;
 
     public CollectionConstraint(final Constraint constraint) {

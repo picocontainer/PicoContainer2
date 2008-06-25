@@ -62,6 +62,7 @@ import com.thoughtworks.xstream.io.xml.XppDriver;
  * 
  * @author J&ouml;rg Schaible
  */
+@SuppressWarnings("serial")
 public abstract class AbstractComponentAdapterTest  {
 
     public static final int SERIALIZABLE = 1;
