@@ -18,6 +18,7 @@ import org.picocontainer.MutablePicoContainer;
  * @author Mauro Talevi
  */
 @RunWith(JMock.class)
+@Deprecated
 public class Log4jTracingContainerDecoratorTestCase extends AbstractTracingContainerDecoratorTest {
 
 	@Override

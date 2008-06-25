@@ -60,6 +60,7 @@ import org.picocontainer.parameters.ConstantParameter;
  * @author Mauro Talevi
  */
 @RunWith(JMock.class)
+@Deprecated
 public abstract class AbstractTracingContainerDecoratorTest  {
 	
 	private Mockery mockery = mockeryWithCountingNamingScheme();
