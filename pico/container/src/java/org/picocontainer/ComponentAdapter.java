@@ -70,7 +70,7 @@ public interface ComponentAdapter<T> {
      * same instance.
      *
      * @param container the {@link org.picocontainer.PicoContainer}, that is used to resolve any possible dependencies of the instance.
-     * @param into the class that is about to be injected into.
+     * @param into the class that is about to be injected into. Use ComponentAdapter.NOTHING.class if this is not important to you.
      * @return the component instance.
      * @throws PicoCompositionException  if the component has dependencies which could not be resolved, or
      *                                     instantiation of the component lead to an ambiguous situation within the
