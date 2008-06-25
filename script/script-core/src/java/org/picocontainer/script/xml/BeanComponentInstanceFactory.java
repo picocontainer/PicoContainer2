@@ -47,7 +47,7 @@ public class BeanComponentInstanceFactory implements XMLComponentInstanceFactory
                     new PropertyApplicator(createComponentAdapter(className, classLoader));
             java.util.Properties properties = createProperties(element.getChildNodes());
             propertyAdapter.setProperties(properties);
-            instance = propertyAdapter.getComponentInstance(pico);
+            instance = propertyAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         }
         return instance;
     }

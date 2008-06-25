@@ -192,7 +192,7 @@ public class ScriptedContainerBuilderFactory {
         ClassName className = new ClassName(builderClassName);
         MutablePicoContainer mutablePicoContainer = defaultScriptedContainer.addComponent(className, className);
         ComponentAdapter<?> componentAdapter = mutablePicoContainer.getComponentAdapter(className);
-        containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultScriptedContainer);
+        containerBuilder = (ScriptedContainerBuilder) componentAdapter.getComponentInstance(defaultScriptedContainer, ComponentAdapter.NOTHING.class);
     }
 
     private static File fileExists(final File file) throws FileNotFoundException {
