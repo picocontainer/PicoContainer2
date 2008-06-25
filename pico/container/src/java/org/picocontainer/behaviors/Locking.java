@@ -19,19 +19,34 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import java.util.Properties;
 
 /**
+ * This behavior factory provides java.util.concurrent locks.  It is recommended to be used instead
+ * of {@link org.picocontainer.behaviors.Synchronizing} since it results in better performance.
  * @author Aslak Helles&oslash;y
+ * @author Paul Hammant.
  */
 @SuppressWarnings("serial")
 public class Locking extends AbstractBehaviorFactory {
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor,
+    /** {@inheritDoc} **/
+	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties,
                                                    Object componentKey,
-                                                   Class componentImplementation,
+                                                   Class<T> componentImplementation,
                                                    Parameter... parameters) {
-        removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE);
-        return new Locked(super.createComponentAdapter(
+    	
+        if (removePropertiesIfPresent(componentProperties, Characteristics.NO_LOCK)) {
+     	   return super.createComponentAdapter(
+     	            componentMonitor,
+     	            lifecycleStrategy,
+     	            componentProperties,
+     	            componentKey,
+     	            componentImplementation,
+     	            parameters);
+        }
+        
+        removePropertiesIfPresent(componentProperties, Characteristics.LOCK);
+        return new Locked<T>(super.createComponentAdapter(
             componentMonitor,
             lifecycleStrategy,
             componentProperties,
@@ -40,12 +55,20 @@ public class Locking extends AbstractBehaviorFactory {
             parameters));
     }
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+    /** {@inheritDoc} **/
+	public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
-                                                ComponentAdapter adapter) {
-        removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE);
-        return new Synchronized(super.addComponentAdapter(componentMonitor,
+                                                ComponentAdapter<T> adapter) {
+        if (removePropertiesIfPresent(componentProperties, Characteristics.NO_LOCK)) {
+        	return super.addComponentAdapter(componentMonitor,
+                    lifecycleStrategy,
+                    componentProperties,
+                    adapter);
+        }    	
+    	
+        removePropertiesIfPresent(componentProperties, Characteristics.LOCK);
+        return new Locked<T>(super.addComponentAdapter(componentMonitor,
                                                           lifecycleStrategy,
                                                           componentProperties,
                                                           adapter));

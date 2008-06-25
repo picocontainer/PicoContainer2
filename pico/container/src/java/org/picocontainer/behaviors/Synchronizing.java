@@ -19,13 +19,29 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import java.util.Properties;
 
 /**
+ * This behavior factory provides <strong>synchronized</strong> wrappers to control access to a particular component.
+ *  It is recommended that you use {@link org.picocontainer.behaviors.Locking} instead since it results in better performance
+ *  and does the same job.
  * @author Aslak Helles&oslash;y
  */
 @SuppressWarnings("serial")
 public class Synchronizing extends AbstractBehaviorFactory {
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) {
-        removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE);
-        return new Synchronized(super.createComponentAdapter(
+
+	
+    /** {@inheritDoc} **/
+	public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) {
+       if (removePropertiesIfPresent(componentProperties, Characteristics.NO_SYNCHRONIZE)) {
+    	   return super.createComponentAdapter(
+    	            componentMonitor,
+    	            lifecycleStrategy,
+    	            componentProperties,
+    	            componentKey,
+    	            componentImplementation,
+    	            parameters);
+       }
+    	
+    	removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE);
+        return new Synchronized<T>(super.createComponentAdapter(
             componentMonitor,
             lifecycleStrategy,
             componentProperties,
@@ -34,12 +50,20 @@ public class Synchronizing extends AbstractBehaviorFactory {
             parameters));
     }
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+    /** {@inheritDoc} **/
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
-                                                ComponentAdapter adapter) {
-        removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE);
-        return new Synchronized(super.addComponentAdapter(componentMonitor,
+                                                ComponentAdapter<T> adapter) {
+        if (removePropertiesIfPresent(componentProperties, Characteristics.NO_SYNCHRONIZE)) {
+        	return super.addComponentAdapter(componentMonitor,
+                    lifecycleStrategy,
+                    componentProperties,
+                    adapter);
+        }
+    	
+    	removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE);
+        return new Synchronized<T>(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,
                                          adapter));

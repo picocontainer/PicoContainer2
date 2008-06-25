@@ -456,7 +456,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     private void throwIfPropertiesLeft(final Properties tmpProperties) {
         if(tmpProperties.size() > 0) {
-            throw new PicoCompositionException("Unprocessed Characteristics:" + tmpProperties +", refer http://picocontainer.org/unprocessed-properties-help.html");
+            throw new PicoCompositionException("Unprocessed Characteristics:" + tmpProperties +", please refer to http://picocontainer.org/unprocessed-properties-help.html");
         }
     }
 
