@@ -90,7 +90,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
                                                             SimpleTouchable.class,
                                                             (Parameter[])null);
 
-        Object comp = componentAdapter.getComponentInstance(new DefaultPicoContainer());
+        Object comp = componentAdapter.getComponentInstance(new DefaultPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(comp);
         assertTrue(comp instanceof SimpleTouchable);
     }

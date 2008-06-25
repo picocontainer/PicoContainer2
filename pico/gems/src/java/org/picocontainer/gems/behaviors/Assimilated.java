@@ -112,7 +112,7 @@ public final class Assimilated<T> extends AbstractBehavior<T> {
      * Create and return a component instance. If the component instance and the type to assimilate is not compatible, a proxy
      * for the instance is generated, that implements the assimilated type.
      * 
-     * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer)
+     * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer, java.lang.Class into)
      */
     @Override
 	public T getComponentInstance(final PicoContainer container, final Type into)

@@ -148,8 +148,8 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
             }
         };
 
-        borrowed[0] = (Identifiable)componentAdapter.getComponentInstance(null);
-        borrowed[1] = (Identifiable)componentAdapter.getComponentInstance(null);
+        borrowed[0] = (Identifiable)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
+        borrowed[1] = (Identifiable)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         synchronized (returner) {
             returner.start();
             returner.wait();
@@ -157,7 +157,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
 
         // should block
         order.append("main ");
-        borrowed[2] = (Identifiable)componentAdapter.getComponentInstance(null);
+        borrowed[2] = (Identifiable)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         order.append("main");
 
         returner.join();

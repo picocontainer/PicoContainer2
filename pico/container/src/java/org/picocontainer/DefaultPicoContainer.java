@@ -77,7 +77,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     private String name;
 
-
 	/**
 	 * Component factory instance.
 	 */
@@ -498,7 +497,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     private <T> T getLocalInstance(final ComponentAdapter<T> typedComponentAdapter) {
-        T componentInstance = typedComponentAdapter.getComponentInstance(this);
+        T componentInstance = typedComponentAdapter.getComponentInstance(this, ComponentAdapter.NOTHING.class);
 
         // This is to ensure all are added. (Indirect dependencies will be added
         // from InstantiatingComponentAdapter).
@@ -572,7 +571,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                         }
                     }
                     intoThreadLocal.set(componentAdapter.getComponentImplementation());
-                    instance = componentAdapter.getComponentInstance(this);
+                    instance = componentAdapter.getComponentInstance(this, ComponentAdapter.NOTHING.class);
                 }
             } catch (AbstractInjector.CyclicDependencyException e) {
                 if (parent != null) {
@@ -872,7 +871,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                 Behavior<?> behaviorAdapter = (Behavior<?>)adapter;
                 if (behaviorAdapter.componentHasLifecycle()) {
                     // create an instance, it will be added to the ordered CA list
-                    adapter.getComponentInstance(DefaultPicoContainer.this);
+                    adapter.getComponentInstance(DefaultPicoContainer.this, ComponentAdapter.NOTHING.class);
                     addOrderedComponentAdapter(adapter);
                 }
             }
@@ -960,7 +959,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
     private class AsPropertiesPicoContainer extends AbstractDelegatingMutablePicoContainer {
-		
+
 		private final Properties properties;
 
         public AsPropertiesPicoContainer(final Properties... props) {

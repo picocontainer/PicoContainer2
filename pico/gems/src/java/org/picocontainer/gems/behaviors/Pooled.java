@@ -375,7 +375,7 @@ public final class Pooled<T> extends AbstractBehavior<T> {
             }
             started = true;
             if (pool.size() == 0) {
-                getComponentInstance(container);
+                getComponentInstance(container, ComponentAdapter.NOTHING.class);
             }
         }
     }

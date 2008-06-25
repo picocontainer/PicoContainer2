@@ -40,7 +40,7 @@ public class CachedTestCase {
         Cached adapter = new Cached(
                 mockComponentAdapterSupportingLifecycleStrategy(true, false, false));
         PicoContainer pico = new DefaultPicoContainer();
-        adapter.getComponentInstance(pico);
+        adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         adapter.start(pico);
     }
 
@@ -49,10 +49,10 @@ public class CachedTestCase {
                 mockComponentAdapterSupportingLifecycleStrategy(true, true, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
-        Object instanceAfterFirstStart = adapter.getComponentInstance(pico);
+        Object instanceAfterFirstStart = adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         adapter.stop(pico);
         adapter.start(pico);
-        Object instanceAfterSecondStart = adapter.getComponentInstance(pico);
+        Object instanceAfterSecondStart = adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         assertSame(instanceAfterFirstStart, instanceAfterSecondStart);
     }
 

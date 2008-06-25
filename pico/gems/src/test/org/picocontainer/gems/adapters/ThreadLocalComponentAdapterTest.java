@@ -137,7 +137,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
         final List<Touchable> list = Collections.synchronizedList(new ArrayList<Touchable>());
         final ComponentAdapter componentAdapter = new ThreadLocalized(new ConstructorInjector(
             Touchable.class, SimpleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
-        final Touchable touchable = (Touchable)componentAdapter.getComponentInstance(null);
+        final Touchable touchable = (Touchable)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
 
         final Thread[] threads = {
             new Thread(new Runner(touchable, list, set), "junit-1"),
@@ -164,7 +164,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
     public void testThreadLocalInstancesEqual() throws Exception {
         final ComponentAdapter componentAdapter = new ThreadLocalized(new ConstructorInjector(
             Touchable.class, SimpleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
-        final Touchable touchable = (Touchable)componentAdapter.getComponentInstance(null);
+        final Touchable touchable = (Touchable)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         assertEquals(touchable, touchable);
     }
 
@@ -218,7 +218,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
         final ComponentAdapter componentAdapter = new ThreadLocalized(new ConstructorInjector(
             TargetInvocationExceptionTester.class, ThrowingComponent.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
         final TargetInvocationExceptionTester tester =
-            (TargetInvocationExceptionTester)componentAdapter.getComponentInstance(null);
+            (TargetInvocationExceptionTester)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         try {
             tester.throwsCheckedException();
             fail("ClassNotFoundException expected");
@@ -243,7 +243,7 @@ public class ThreadLocalComponentAdapterTest extends AbstractComponentAdapterTes
     public final void testSimpleKeys() {
         final ComponentAdapter componentAdapter = new ThreadLocalized(new ConstructorInjector(
             "List", ArrayList.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
-        final List hello = (List)componentAdapter.getComponentInstance(null);
+        final List hello = (List)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         assertNotNull(hello);
     }
 }

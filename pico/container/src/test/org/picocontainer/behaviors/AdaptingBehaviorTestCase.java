@@ -41,9 +41,9 @@ public class AdaptingBehaviorTestCase {
         mergeInto(Characteristics.CACHE,cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof Cached);
-        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
+        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
-        Map map2 = (Map)ca.getComponentInstance(new EmptyPicoContainer());
+        Map map2 = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertSame(map, map2);
         assertEquals(0, cc.size());
         assertEquals("Cached:ConstructorInjector-interface java.util.Map",ca.toString());
@@ -54,9 +54,9 @@ public class AdaptingBehaviorTestCase {
         Properties cc = new Properties();
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, MyHashMap.class);
         assertTrue(ca instanceof Cached);
-        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
+        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
-        Map map2 = (Map)ca.getComponentInstance(new EmptyPicoContainer());
+        Map map2 = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertSame(map, map2);
         assertEquals(0, cc.size());
         assertEquals("Cached:ConstructorInjector-interface java.util.Map",ca.toString());
@@ -84,7 +84,7 @@ public class AdaptingBehaviorTestCase {
         mergeInto(Characteristics.HIDE_IMPL,cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof HiddenImplementation);
-        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
+        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
 
@@ -101,7 +101,7 @@ public class AdaptingBehaviorTestCase {
         assertTrue(ca instanceof PropertyApplicator);
         PropertyApplicator pa = (PropertyApplicator)ca;
         pa.setProperty("foo", "bar");
-        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
+        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertTrue(map instanceof HashMap);
         assertTrue(map instanceof MyHashMap2);
@@ -118,7 +118,7 @@ public class AdaptingBehaviorTestCase {
         mergeInto(Characteristics.SDI,cc);
         ComponentAdapter ca = abf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof SetterInjector);
-        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
+        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertEquals(0, cc.size());
         assertEquals("SetterInjector-interface java.util.Map",ca.toString());
@@ -166,7 +166,7 @@ public class AdaptingBehaviorTestCase {
         mergeInto(Characteristics.SYNCHRONIZE,cc);
         ComponentAdapter ca = cbf.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, Map.class, HashMap.class);
         assertTrue(ca instanceof Cached);
-        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
+        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
 
@@ -189,7 +189,7 @@ public class AdaptingBehaviorTestCase {
         mergeInto(Characteristics.SYNCHRONIZE,cc);
         ComponentAdapter ca = cbf.addComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), cc, new InstanceAdapter(Map.class, new HashMap(), new NullLifecycleStrategy(), new NullComponentMonitor()));
         assertTrue(ca instanceof Cached);
-        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer());
+        Map map = (Map)ca.getComponentInstance(new EmptyPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(map);
         assertTrue(!(map instanceof HashMap));
 

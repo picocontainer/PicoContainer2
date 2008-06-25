@@ -150,7 +150,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
     @Test public void testFailingSetter() {
         ComponentAdapter adapter = createAdapterCallingSetMessage(Failing.class);
         try {
-            adapter.getComponentInstance(null);
+            adapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
             fail();
         } catch (PicoCompositionException e) {
         }
@@ -262,7 +262,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
                                                                      Primitives.class,
                                                                      (Parameter[])null);
         adapter.setProperties(properties);
-        Primitives primitives = (Primitives)adapter.getComponentInstance(null);
+        Primitives primitives = (Primitives)adapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
 
         assertNotNull(primitives);
         assertEquals(1, primitives.byte_);

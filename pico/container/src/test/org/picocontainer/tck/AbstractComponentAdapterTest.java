@@ -180,7 +180,7 @@ public abstract class AbstractComponentAdapterTest  {
                 }
                 assertTrue("ComponentAdapter " + type + " supports parameters, provide some", hasParameters);
             }
-            final Object instance = componentAdapter.getComponentInstance(picoContainer);
+            final Object instance = componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instance);
         }
     }
@@ -205,7 +205,7 @@ public abstract class AbstractComponentAdapterTest  {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepSER_isSerializable(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
-            final Object instance = componentAdapter.getComponentInstance(picoContainer);
+            final Object instance = componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instance);
             final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             final ObjectOutputStream outputStream = new ObjectOutputStream(byteArrayOutputStream);
@@ -216,7 +216,7 @@ public abstract class AbstractComponentAdapterTest  {
             final ComponentAdapter serializedComponentAdapter = (ComponentAdapter)inputStream.readObject();
             inputStream.close();
             assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());
-            final Object instanceAfterSerialization = serializedComponentAdapter.getComponentInstance(picoContainer);
+            final Object instanceAfterSerialization = serializedComponentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instanceAfterSerialization);
             assertSame(instance.getClass(), instanceAfterSerialization.getClass());
         }
@@ -238,13 +238,13 @@ public abstract class AbstractComponentAdapterTest  {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepSER_isXStreamSerializable(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
-            final Object instance = componentAdapter.getComponentInstance(picoContainer);
+            final Object instance = componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instance);
             final XStream xstream = new XStream(new PureJavaReflectionProvider(), new XppDriver());
             final String xml = xstream.toXML(componentAdapter);
             final ComponentAdapter serializedComponentAdapter = (ComponentAdapter)xstream.fromXML(xml);
             assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());
-            final Object instanceAfterSerialization = serializedComponentAdapter.getComponentInstance(picoContainer);
+            final Object instanceAfterSerialization = serializedComponentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instanceAfterSerialization);
             assertSame(instance.getClass(), instanceAfterSerialization.getClass());
         }
@@ -255,13 +255,13 @@ public abstract class AbstractComponentAdapterTest  {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepSER_isXStreamSerializable(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
-            final Object instance = componentAdapter.getComponentInstance(picoContainer);
+            final Object instance = componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instance);
             final XStream xstream = new XStream(new XppDriver());
             final String xml = xstream.toXML(componentAdapter);
             final ComponentAdapter serializedComponentAdapter = (ComponentAdapter)xstream.fromXML(xml);
             assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());
-            final Object instanceAfterSerialization = serializedComponentAdapter.getComponentInstance(picoContainer);
+            final Object instanceAfterSerialization = serializedComponentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instanceAfterSerialization);
             assertSame(instance.getClass(), instanceAfterSerialization.getClass());
         }
@@ -296,7 +296,7 @@ public abstract class AbstractComponentAdapterTest  {
                 fail("PicoCompositionException expected, but got " + e.getClass().getName());
             }
             try {
-                componentAdapter.getComponentInstance(picoContainer);
+                componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
                 fail("PicoCompositionException or PicoCompositionException expected");
             } catch (PicoCompositionException e) {
             } catch (Exception e) {
@@ -326,10 +326,10 @@ public abstract class AbstractComponentAdapterTest  {
             final MutablePicoContainer picoContainer = new DefaultPicoContainer(createDefaultComponentFactory());
             final ComponentAdapter componentAdapter = prepINS_createsNewInstances(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
-            final Object instance = componentAdapter.getComponentInstance(picoContainer);
+            final Object instance = componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instance);
-            assertNotSame(instance, componentAdapter.getComponentInstance(picoContainer));
-            assertSame(instance.getClass(), componentAdapter.getComponentInstance(picoContainer).getClass());
+            assertNotSame(instance, componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class));
+            assertSame(instance.getClass(), componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class).getClass());
         }
     }
 
@@ -350,7 +350,7 @@ public abstract class AbstractComponentAdapterTest  {
             final ComponentAdapter componentAdapter = prepINS_errorIsRethrown(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             try {
-                componentAdapter.getComponentInstance(picoContainer);
+                componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
                 fail("Thrown Error excpected");
             } catch (final Error e) {
                 assertEquals("test", e.getMessage());
@@ -376,7 +376,7 @@ public abstract class AbstractComponentAdapterTest  {
             final ComponentAdapter componentAdapter = prepINS_runtimeExceptionIsRethrown(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             try {
-                componentAdapter.getComponentInstance(picoContainer);
+                componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
                 fail("Thrown RuntimeException excpected");
             } catch (final RuntimeException e) {
                 assertEquals("test", e.getMessage());
@@ -404,7 +404,7 @@ public abstract class AbstractComponentAdapterTest  {
             final ComponentAdapter componentAdapter = prepINS_normalExceptionIsRethrownInsidePicoInitializationException(picoContainer);
             assertSame(getComponentAdapterType(), componentAdapter.getClass());
             try {
-                componentAdapter.getComponentInstance(picoContainer);
+                componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
                 fail("Thrown PicoCompositionException excpected");
             } catch (final PicoCompositionException e) {
                 assertTrue(e.getCause() instanceof Exception);
@@ -439,7 +439,7 @@ public abstract class AbstractComponentAdapterTest  {
             assertFalse(picoContainer.getComponentAdapters().contains(componentAdapter));
             final PicoContainer wrappedPicoContainer = wrapComponentInstances(
                     CollectingBehavior.class, picoContainer, wrapperDependencies);
-            final Object instance = componentAdapter.getComponentInstance(wrappedPicoContainer);
+            final Object instance = componentAdapter.getComponentInstance(wrappedPicoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instance);
             assertTrue(dependencies.size() > 0);
         }
@@ -504,7 +504,7 @@ public abstract class AbstractComponentAdapterTest  {
             final PicoContainer wrappedPicoContainer = wrapComponentInstances(
                     CycleDetectorBehavior.class, picoContainer, wrapperDependencies);
             try {
-                componentAdapter.getComponentInstance(wrappedPicoContainer);
+                componentAdapter.getComponentInstance(wrappedPicoContainer, ComponentAdapter.NOTHING.class);
                 fail("Thrown CyclicDependencyException excpected");
             } catch (final AbstractInjector.CyclicDependencyException e) {
                 final Class[] dependencies = e.getDependencies();

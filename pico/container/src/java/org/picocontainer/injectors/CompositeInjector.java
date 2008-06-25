@@ -17,6 +17,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.ComponentAdapter;
 
 @SuppressWarnings("serial")
 public class CompositeInjector<T> extends AbstractInjector<T> {
@@ -39,7 +40,7 @@ public class CompositeInjector<T> extends AbstractInjector<T> {
         for (int i = 0; i < injectors.length; i++) {
             Injector<T> injector = injectors[i];
             if (instance == null) {
-                instance = injector.getComponentInstance(container);
+                instance = injector.getComponentInstance(container, ComponentAdapter.NOTHING.class);
             } else {
                 injector.decorateComponentInstance(container, into, instance);
             }

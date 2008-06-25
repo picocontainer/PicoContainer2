@@ -41,7 +41,7 @@ public class ThreadLocalizingTestCase {
         final ComponentFactory componentFactory = new ThreadLocalizing().wrap(new ConstructorInjection());
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
                 new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), List.class, ArrayList.class);
-        final List list = (List)componentAdapter.getComponentInstance(null);
+        final List list = (List)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         list.add(this);
         final List list2 = new ArrayList();
         final Thread thread = new Thread(new Runnable() {
@@ -68,7 +68,7 @@ public class ThreadLocalizingTestCase {
         final ComponentFactory componentFactory = new ThreadLocalizing(ThreadLocalizing.THREAD_ENSURES_LOCALITY).wrap(new ConstructorInjection());
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
                 new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), List.class, ArrayList.class);
-        final List list = (List)componentAdapter.getComponentInstance(null);
+        final List list = (List)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         list.add(this);
         final List list2 = new ArrayList();
         final Thread thread = new Thread(new Runnable() {
@@ -96,7 +96,7 @@ public class ThreadLocalizingTestCase {
         final ComponentFactory componentFactory = new ThreadLocalizing(ThreadLocalizing.THREAD_ENSURES_LOCALITY).wrap(new ConstructorInjection());
         final ComponentAdapter componentAdapter = componentFactory.createComponentAdapter(
                 new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), List.class, ArrayList.class);
-        final List list = (List)componentAdapter.getComponentInstance(null);
+        final List list = (List)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         list.add(this);
         final List list2 = new ArrayList();
         final Thread thread = new Thread(new Runnable() {
@@ -104,7 +104,7 @@ public class ThreadLocalizingTestCase {
              * @see java.lang.Runnable#run()
              */
             public void run() {
-                final List newList = (List)componentAdapter.getComponentInstance(null);
+                final List newList = (List)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
                 list2.addAll(newList);
                 final Thread junitThread = Thread.currentThread();
                 list2.add(junitThread);

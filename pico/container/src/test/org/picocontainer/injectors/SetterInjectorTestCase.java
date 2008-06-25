@@ -269,7 +269,7 @@ public class SetterInjectorTestCase
         pico.addAdapter(aAdapter);
 
         try {
-            aAdapter.getComponentInstance(pico);
+            aAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             assertTrue(e.getUnsatisfiableDependencies().contains(List.class));
             assertTrue(e.getUnsatisfiableDependencies().contains(String.class));
@@ -288,7 +288,7 @@ public class SetterInjectorTestCase
             .addAdapter(bAdapter)
             .addAdapter(aAdapter);
 
-        aAdapter.getComponentInstance(pico);
+        aAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
 
         assertNotNull(aAdapter);
 
@@ -405,9 +405,9 @@ public class SetterInjectorTestCase
         pico.addAdapter(cNullAdapter);
         pico.addComponent(ArrayList.class);
 
-        C c = (C) cAdapter.getComponentInstance(pico);
+        C c = (C) cAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         assertTrue(c.instantiatedAsBean());
-        C c0 = (C) cNullAdapter.getComponentInstance(pico);
+        C c0 = (C) cNullAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         assertTrue(c0.instantiatedAsBean());
     }
 

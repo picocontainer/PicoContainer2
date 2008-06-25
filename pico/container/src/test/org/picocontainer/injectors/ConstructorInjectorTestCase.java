@@ -319,7 +319,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 
         ConstructorInjector cica = new ConstructorInjector(
                 Map.class, HashMap.class, new Parameter[0], monitor, new NullLifecycleStrategy(), false);
-        cica.getComponentInstance(null);
+        cica.getComponentInstance(null, ComponentAdapter.NOTHING.class);
     }
 
     @Test public void testMonitoringHappensBeforeAndOnFailOfImpossibleComponentsInstantiation() throws NoSuchMethodException {
@@ -348,7 +348,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
         ConstructorInjector cica = new ConstructorInjector(
                 ActionListener.class, BarfingActionListener.class, new Parameter[0], monitor, new NullLifecycleStrategy(), false);
         try {
-            cica.getComponentInstance(null);
+            cica.getComponentInstance(null, ComponentAdapter.NOTHING.class);
             fail("Should barf");
         } catch (RuntimeException e) {
             assertEquals("Barf!", e.getMessage());
