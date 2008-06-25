@@ -53,6 +53,7 @@
          <name>Dependant &amp; Related</name>
          <link title="Web Frameworks">http://picocontainer.org/web</link>
          <link title="Scripting Support">http://picocontainer.org/script</link>
+         <link title="Persistence">http://picocontainer.org/persistence</link>
          <link title="Logging">http://picocontainer.org/logging</link>
     </section>
     <section>
