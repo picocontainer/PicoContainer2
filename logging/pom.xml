@@ -6,11 +6,9 @@
   <artifactId>picocontainer-logging</artifactId>
   <version>2.0-SNAPSHOT</version>
   <name>PicoContainer Logging</name>
-  <description>
-    Component that allows logging that honours the Dependency Injection paradigm. It does not depend on PicoContainer
-    and can be used by any container wanting to configure independent logging for different applications deployed in the
-    same JVM.
-  </description>
+  <description> Component that allows logging that honours the Dependency Injection paradigm. It does not depend on
+    PicoContainer and can be used by any container wanting to configure independent logging for different applications
+    deployed in the same JVM. </description>
   <packaging>jar</packaging>
   <organization>
     <name>Codehaus</name>
@@ -139,7 +137,7 @@
           <configuration>
             <links>
               <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
-			  <link>http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/docs/apidocs/</link>
+              <link>http://jakarta.apache.org/commons/logging/commons-logging-1.0.4/docs/apidocs/</link>
             </links>
             <stylesheet>maven</stylesheet>
             <header><![CDATA[<img class="logo" src="http://www.picocontainer.org/images/pico-logo.png"></img>]]></header>
@@ -247,10 +245,10 @@
       </build>
     </profile>
     <profile>
-		<id>distribution</id>
-		<build>
-			<plugins>
-		          <plugin>
+      <id>distribution</id>
+      <build>
+        <plugins>
+          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-site-plugin</artifactId>
             <configuration>
@@ -265,7 +263,7 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>			  
+          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
@@ -329,8 +327,8 @@
               </execution>
             </executions>
           </plugin>
-          </plugins>
-		</build>
+        </plugins>
+      </build>
     </profile>
     <profile>
       <!-- reporting profile -->
@@ -375,4 +373,3 @@
     </profile>
   </profiles>
 </project>
-

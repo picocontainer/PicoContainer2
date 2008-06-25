@@ -2,19 +2,19 @@
 
 <html>
 <head>
-<title>Monitor Pattern</title></head>
+<title>Monitor Pattern</title>
+</head>
 <body>
-<p>A Monitor is an interface that abstract certain events that are relevant to the business domain of then application.  It should express 
-the business logic of the events being monitored.  
-</p>
-<p>Although monitors can have implementations of very different types, one of the most common is a logging implementation.  This also helps 
-to avoid the logging framework references are sprinkled all over the code.  Instead, keeping the logging implementation centralised in one
-abstract monitor allows not only to swiftly change from one logging framework to another - should the need arise - but also to easily provide
-for, say, localisation of the logged messages.
-</p>
-<p>Let's look at an example.  Let's assume that we are developing a persistence layer for some persistable object.  A simple monitor interface
-might look like:
- <div class="source"><pre>
+<p>A Monitor is an interface that abstract certain events that are relevant to the business domain of then
+application. It should express the business logic of the events being monitored.</p>
+<p>Although monitors can have implementations of very different types, one of the most common is a logging
+implementation. This also helps to avoid the logging framework references are sprinkled all over the code. Instead,
+keeping the logging implementation centralised in one abstract monitor allows not only to swiftly change from one
+logging framework to another - should the need arise - but also to easily provide for, say, localisation of the logged
+messages.</p>
+<p>Let's look at an example. Let's assume that we are developing a persistence layer for some persistable object. A
+simple monitor interface might look like:
+<div class="source"><pre>
 public interface PersistenceMonitor {
 
   void persistedObjectRetrieved(Object persistable);
@@ -23,9 +23,9 @@ public interface PersistenceMonitor {
   
 }
 </pre></div>
-Note that the monitor interface purely expresses the business logic of the component, or at least the business logic that we want to
-monitor.   The logging implementation will be along the lines of:
- <div class="source"><pre>
+Note that the monitor interface purely expresses the business logic of the component, or at least the business logic
+that we want to monitor. The logging implementation will be along the lines of:
+<div class="source"><pre>
 public class LoggingPersistenceMonitor implements PersistenceMonitor {
 
     private String loggerName;
@@ -55,9 +55,11 @@ public class LoggingPersistenceMonitor implements PersistenceMonitor {
     }
 }
 </pre></div>
-The logging monitor configuration holds two properties:  one is the type of logging configuration resource supported by the 
-<a href="javadoc/org/picocontainer/logging/store/Configurator.html">Configurator</a> (eg "jdk"), the other is the name of the configuration resource,
-which can be different for each instance of the monitor (eg "logging-persistence.properties").
+The logging monitor configuration holds two properties: one is the type of logging configuration resource supported by
+the
+<a href="javadoc/org/picocontainer/logging/store/Configurator.html">Configurator</a>
+(eg "jdk"), the other is the name of the configuration resource, which can be different for each instance of the monitor
+(eg "logging-persistence.properties").
 </p>
 </body>
 </html>

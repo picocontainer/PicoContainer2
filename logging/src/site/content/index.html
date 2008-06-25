@@ -6,25 +6,18 @@
 
 <body>
 <h2>Why PicoContainer Logging?</h2>
-<p><a href="http://picocontainer.org">PicoContainer</a>'s primary
-mission statement is to provide an Inversion of Control (IoC) container
-for components honor the Dependency Injection (DI) pattern. Logging is
-an important and useful function of many enterprise-level applications.
-Yet the logging tools and frameworks available remain stubborly wed to
-the static lookup and discovery approach that defies the concepts of IoC
-and DI. The main problem with static lookup is that it allows only one
-configuration per JVM, even if there are completely different
-applications deployed. To compound problems, static lookup is often
-coupled with auto-discovery mechanisms of which logging framework is
-deployed by looking for classes in the classpath. This makes it
-impossible to use a chosen logging framework per application, as would
-be expected of any configurable system.</p>
+<p><a href="http://picocontainer.org">PicoContainer</a>'s primary mission statement is to provide an Inversion of
+Control (IoC) container for components honor the Dependency Injection (DI) pattern. Logging is an important and useful
+function of many enterprise-level applications. Yet the logging tools and frameworks available remain stubborly wed to
+the static lookup and discovery approach that defies the concepts of IoC and DI. The main problem with static lookup is
+that it allows only one configuration per JVM, even if there are completely different applications deployed. To compound
+problems, static lookup is often coupled with auto-discovery mechanisms of which logging framework is deployed by
+looking for classes in the classpath. This makes it impossible to use a chosen logging framework per application, as
+would be expected of any configurable system.</p>
 
-<p>Following the general PicoContainer philosophy, we strife to
-interoperate and are not trying to propose an alternative logging
-facade. Rather, we propose an alternative approach to logging, based on
-the <a href="monitor-pattern.html">Monitor pattern</a> to abstract the
-dependency on <i>any</i> logging framework.</p>
+<p>Following the general PicoContainer philosophy, we strife to interoperate and are not trying to propose an
+alternative logging facade. Rather, we propose an alternative approach to logging, based on the <a
+  href="monitor-pattern.html">Monitor pattern</a> to abstract the dependency on <i>any</i> logging framework.</p>
 
 </p>
 </body>
