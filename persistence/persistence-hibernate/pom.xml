@@ -41,6 +41,18 @@
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate</artifactId>
       <version>3.2.6.ga</version>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.transaction</groupId>
+          <artifactId>jta</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
-  </dependencies>
+    <dependency>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-jta_1.0.1B_spec</artifactId>
+      <version>1.1.1</version>
+      <scope>provided</scope>
+    </dependency>
+   </dependencies>
 </project>
