@@ -142,7 +142,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
 
     @Test public void testSetProperties() {
         ComponentAdapter adapter = createAdapterCallingSetMessage(Foo.class);
-        Foo foo = (Foo)adapter.getComponentInstance(null);
+        Foo foo = (Foo)adapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         assertNotNull(foo);
         assertEquals("hello", foo.message);
     }
@@ -176,7 +176,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
         properties.put("message", "hello");
         adapter.setProperties(properties);
 
-        Foo foo = (Foo)adapter.getComponentInstance(null);
+        Foo foo = (Foo)adapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
 
         assertEquals("hello", foo.message);
     }
@@ -194,7 +194,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
                                                                      (Parameter[])null);
         adapter.setProperty("message", "hello");
 
-        Foo foo = (Foo)adapter.getComponentInstance(null);
+        Foo foo = (Foo)adapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
 
         assertEquals("hello", foo.message);
     }
@@ -319,7 +319,7 @@ public class PropertyApplyingTestCase extends AbstractComponentFactoryTest {
 
         pa.setProperty("message", "hello");
 
-        Foo foo = (Foo)adapter.getComponentInstance(null);
+        Foo foo = (Foo)adapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
 
         assertEquals("hello", foo.message);
     }

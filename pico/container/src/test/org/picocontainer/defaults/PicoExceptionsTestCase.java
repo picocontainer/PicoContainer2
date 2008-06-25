@@ -48,7 +48,7 @@ public class PicoExceptionsTestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(MESSAGE);
         try {
-            final Exception exception = (Exception) componentAdapter.getComponentInstance(pico);
+            final Exception exception = (Exception) componentAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
             assertEquals(MESSAGE, exception.getMessage());
         } catch (final AbstractInjector.UnsatisfiableDependenciesException ex) {
             final Set<Object> set = new HashSet<Object>();
@@ -61,7 +61,7 @@ public class PicoExceptionsTestCase {
         pico = new DefaultPicoContainer();
         pico.addComponent(THROWABLE);
         try {
-            final PicoException exception = (PicoException) componentAdapter.getComponentInstance(pico);
+            final PicoException exception = (PicoException) componentAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
             assertSame(THROWABLE, exception.getCause());
         } catch (final AbstractInjector.UnsatisfiableDependenciesException ex) {
             final Set<Object> set = new HashSet<Object>();
@@ -72,7 +72,7 @@ public class PicoExceptionsTestCase {
             assertTrue(set.contains(String.class));
         }
         pico.addComponent(MESSAGE);
-        final PicoException exception = (PicoException) componentAdapter.getComponentInstance(pico);
+        final PicoException exception = (PicoException) componentAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         assertEquals(MESSAGE, exception.getMessage());
         assertSame(THROWABLE, exception.getCause());
     }

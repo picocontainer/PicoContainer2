@@ -58,7 +58,7 @@ public class RegisteredMBeanConstructingProvider implements DynamicMBeanProvider
         final Object key = componentAdapter.getComponentKey();
         final MBeanInfoWrapper wrapper = (MBeanInfoWrapper)registry.get(key);
         if (wrapper != null) {
-            final Object instance = componentAdapter.getComponentInstance(picoContainer);
+            final Object instance = componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             final Class management = wrapper.getManagementInterface() != null
                                                                              ? wrapper.getManagementInterface()
                                                                              : key instanceof Class

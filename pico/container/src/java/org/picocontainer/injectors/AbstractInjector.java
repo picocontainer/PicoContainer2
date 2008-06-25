@@ -33,7 +33,7 @@ import org.picocontainer.parameters.ComponentParameter;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to
- * {@link org.picocontainer.ComponentAdapter#getComponentInstance(PicoContainer)}.
+ * {@link org.picocontainer.ComponentAdapter#getComponentInstance(PicoContainer, Class)}.
  * That means that when used with a PicoContainer, getComponent will
  * return a new object each time.
  *

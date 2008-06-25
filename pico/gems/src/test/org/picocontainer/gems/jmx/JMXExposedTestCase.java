@@ -54,7 +54,7 @@ public class JMXExposedTestCase {
         	one(mBeanServer).registerMBean(with(same(person)), with(any(ObjectName.class)));
         }});
         
-        assertSame(person, componentAdapter.getComponentInstance(null));
+        assertSame(person, componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class));
     }
 
     @Test public void testWillRegisterAndUnRegisterByDefaultComponentsThatAreMBeans() throws NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException, InstanceNotFoundException {
@@ -66,7 +66,7 @@ public class JMXExposedTestCase {
         	one(mBeanServer).unregisterMBean(with(any(ObjectName.class)));
         }});
         
-        assertSame(person, componentAdapter.getComponentInstance(null));
+        assertSame(person, componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class));
         componentAdapter.dispose( person );
     }
 
@@ -89,7 +89,7 @@ public class JMXExposedTestCase {
         	one(mBeanServer).registerMBean(with(same(mBean)), with(equal(objectName)));
         }});
 
-        assertSame(person, componentAdapter.getComponentInstance(null));
+        assertSame(person, componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class));
     }
 
     @Test public void testThrowsPicoInitializationExceptionIfMBeanIsAlreadyRegistered() throws NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
@@ -103,7 +103,7 @@ public class JMXExposedTestCase {
         }});
         
         try {
-            assertSame(person, componentAdapter.getComponentInstance(null));
+            assertSame(person, componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class));
             fail("PicoCompositionException expected");
         } catch (final PicoCompositionException e) {
             assertSame(exception, e.getCause());
@@ -122,7 +122,7 @@ public class JMXExposedTestCase {
         }});
         
         try {
-            assertSame(person, componentAdapter.getComponentInstance(null));
+            assertSame(person, componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class));
             fail("PicoCompositionException expected");
         } catch (final PicoCompositionException e) {
             assertSame(exception, e.getCause());
@@ -142,7 +142,7 @@ public class JMXExposedTestCase {
         }});
         
         try {
-            assertSame(person, componentAdapter.getComponentInstance(null));
+            assertSame(person, componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class));
             fail("PicoCompositionException expected");
         } catch (final PicoCompositionException e) {
             assertSame(exception, e.getCause());

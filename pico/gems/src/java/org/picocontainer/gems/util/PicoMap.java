@@ -71,7 +71,7 @@ public class PicoMap implements Map {
         if (adapter != null) {
             // if previously an instance was registered, return it, otherwise return the type
             return adapter instanceof InstanceAdapter ? adapter
-                    .getComponentInstance(mutablePicoContainer) : adapter
+                    .getComponentInstance(mutablePicoContainer, ComponentAdapter.NOTHING.class) : adapter
                     .getComponentImplementation();
         } else {
             return null;

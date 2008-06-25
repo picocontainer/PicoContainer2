@@ -202,7 +202,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             }
         }
         if (componentAdapter != null) {
-            return componentAdapter.getComponentInstance(this);
+            return componentAdapter.getComponentInstance(this, ComponentAdapter.NOTHING.class);
         } else {
             return getComponentInstanceFromChildren(componentKeyOrType);
         }

@@ -76,8 +76,8 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
         ComponentAdapter componentAdapter = new Pooled(new ConstructorInjector(
                 Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false), new Pooled.DefaultContext());
 
-        Object borrowed0 = componentAdapter.getComponentInstance(null);
-        Object borrowed1 = componentAdapter.getComponentInstance(null);
+        Object borrowed0 = componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
+        Object borrowed1 = componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
 
         assertNotSame(borrowed0, borrowed1);
     }
@@ -87,9 +87,9 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
         ComponentAdapter componentAdapter = new Pooled(new ConstructorInjector(
                 Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false), new Pooled.DefaultContext());
 
-        Object borrowed0 = componentAdapter.getComponentInstance(null);
-        Object borrowed1 = componentAdapter.getComponentInstance(null);
-        Object borrowed2 = componentAdapter.getComponentInstance(null);
+        Object borrowed0 = componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
+        Object borrowed1 = componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
+        Object borrowed2 = componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
 
         assertNotSame(borrowed0, borrowed1);
         assertNotSame(borrowed1, borrowed2);
@@ -100,12 +100,12 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
         ComponentAdapter componentAdapter = new Pooled(new ConstructorInjector(
                 Identifiable.class, InstanceCounter.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false), new Pooled.DefaultContext());
 
-        Identifiable borrowed = (Identifiable)componentAdapter.getComponentInstance(null);
+        Identifiable borrowed = (Identifiable)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         assertEquals(0, borrowed.getId());
 
         ((Poolable)borrowed).returnInstanceToPool();
 
-        Object borrowedReloaded = componentAdapter.getComponentInstance(null);
+        Object borrowedReloaded = componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         assertEquals(borrowed, borrowedReloaded);
     }
 
@@ -186,13 +186,13 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
             }
         });
 
-        Identifiable borrowed0 = (Identifiable)componentAdapter.getComponentInstance(null);
-        Identifiable borrowed1 = (Identifiable)componentAdapter.getComponentInstance(null);
+        Identifiable borrowed0 = (Identifiable)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
+        Identifiable borrowed1 = (Identifiable)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         assertNotNull(borrowed0);
         assertFalse(borrowed0.getId() == borrowed1.getId());
         long time = System.currentTimeMillis();
         try {
-            componentAdapter.getComponentInstance(null);
+            componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
             fail("Thrown " + Pooled.PoolException.class.getName() + " expected");
         } catch (final Pooled.PoolException e) {
             assertTrue(e.getMessage().indexOf("Time out") >= 0);
@@ -218,7 +218,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
             int i;
             for (i = 0; i < max; ++i) {
                 assertEquals(i, behavior.size());
-                final Object object = behavior.getComponentInstance(null);
+                final Object object = behavior.getComponentInstance(null, ComponentAdapter.NOTHING.class);
                 set.add(object);
             }
             assertEquals(i, behavior.size());
@@ -232,7 +232,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
 
             for (i = 0; i < max; ++i) {
                 assertEquals(max, behavior.size());
-                final Object object = behavior.getComponentInstance(null);
+                final Object object = behavior.getComponentInstance(null, ComponentAdapter.NOTHING.class);
                 assertNotNull(object);
                 set.add(object);
             }
@@ -256,12 +256,12 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
                 });
 
         assertEquals(0, behavior.size());
-        Identifiable borrowed0 = (Identifiable)behavior.getComponentInstance(null);
+        Identifiable borrowed0 = (Identifiable)behavior.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         assertEquals(1, behavior.size());
-        Identifiable borrowed1 = (Identifiable)behavior.getComponentInstance(null);
+        Identifiable borrowed1 = (Identifiable)behavior.getComponentInstance(null, ComponentAdapter.NOTHING.class);
         assertEquals(2, behavior.size());
         try {
-            behavior.getComponentInstance(null);
+            behavior.getComponentInstance(null, ComponentAdapter.NOTHING.class);
             fail("Expected ExhaustedException, pool shouldn't be able to grow further.");
         } catch (Pooled.PoolException e) {
             assertTrue(e.getMessage().indexOf("exhausted") >= 0);
@@ -286,7 +286,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
         });
 
         for (int i = 0; i < 5; i++) {
-            final Identifiable borrowed = (Identifiable)componentAdapter.getComponentInstance(null);
+            final Identifiable borrowed = (Identifiable)componentAdapter.getComponentInstance(null, ComponentAdapter.NOTHING.class);
             assertNotNull(borrowed);
             assertEquals(0, borrowed.getId());
         }

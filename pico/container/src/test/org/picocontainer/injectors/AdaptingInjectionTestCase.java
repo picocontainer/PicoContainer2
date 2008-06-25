@@ -103,7 +103,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
                                                                                             "o",
                                                                                             Object.class,
                                                                                             (Parameter[])null);
-        Object component = componentAdapter.getComponentInstance(new DefaultPicoContainer());
+        Object component = componentAdapter.getComponentInstance(new DefaultPicoContainer(), ComponentAdapter.NOTHING.class);
         assertNotNull(component);
     }
 

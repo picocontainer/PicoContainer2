@@ -82,7 +82,7 @@ public class JMXExposed<T> extends AbstractBehavior<T> {
      * </p>
      * @throws PicoCompositionException Thrown by the delegate or if the registering of the
      *             {@link javax.management.DynamicMBean} in the {@link MBeanServer } fails.
-     * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer)
+     * @see AbstractBehavior#getComponentInstance(org.picocontainer.PicoContainer, java.lang.Class)
      */
     @Override
 	public T getComponentInstance(final PicoContainer container, final Type into)
