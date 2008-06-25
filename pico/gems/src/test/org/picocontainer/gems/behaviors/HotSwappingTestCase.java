@@ -24,6 +24,9 @@ import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoBuilder;
+import org.picocontainer.gems.GemsCharacteristics;
+import org.picocontainer.gems.PicoGemsBuilder;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
@@ -105,6 +108,16 @@ public final class HotSwappingTestCase extends AbstractComponentFactoryTest {
         assertTrue(l.isEmpty());
         l.add("World");
         assertEquals("World", l.get(0));
+    }
+    
+    @Test
+    public void testHotswapTurnOnTurnOfWithPicoContainer() {
+    	MutablePicoContainer pico = new PicoBuilder().withBehaviors(PicoGemsBuilder.HOT_SWAPPING()).build();
+    	pico.as(GemsCharacteristics.NO_HOT_SWAP).addComponent("firstMap", HashMap.class);
+    	pico.as(GemsCharacteristics.HOT_SWAP).addComponent("hotswapMap", HashMap.class);
+    	
+    	assertNull(pico.getComponentAdapter("firstMap").findAdapterOfType(HotSwappable.class));
+    	assertNotNull(pico.getComponentAdapter("hotswapMap").findAdapterOfType(HotSwappable.class));
     }
 
 

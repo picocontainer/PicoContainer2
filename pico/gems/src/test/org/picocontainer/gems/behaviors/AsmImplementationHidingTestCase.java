@@ -133,12 +133,5 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
         assertEquals(true, foo.bbooleanArray(new boolean[]{true}, new boolean[]{true})[0]);
     }
     
-    @Test
-    public void testPicoIntegration() {
-    	MutablePicoContainer mpc = new PicoBuilder().withBehaviors(PicoGemsBuilder.ASM_IMPL_HIDING())
-    		.withConstructorInjection().build();
-
-    	mpc.addComponent("foo", "bar");
-    }
 
 }

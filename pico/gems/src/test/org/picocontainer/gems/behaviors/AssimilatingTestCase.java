@@ -16,6 +16,7 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
+import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
@@ -44,6 +45,7 @@ public class AssimilatingTestCase extends AbstractComponentFactoryTest {
     /**
      * Test automatic assimilation of registered components.
      */
+    @Test
     public void testAutomaticAssimilation() {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
         picoContainer.addComponent(SimpleTouchable.class);
@@ -56,6 +58,7 @@ public class AssimilatingTestCase extends AbstractComponentFactoryTest {
     /**
      * Test automatic assimilation of registered components.
      */
+    @Test
     public void testOnlyOneTouchableComponentKeyPossible() {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
         picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
@@ -71,6 +74,7 @@ public class AssimilatingTestCase extends AbstractComponentFactoryTest {
     /**
      * Test automatic assimilation of registered components.
      */
+    @Test
     public void testMultipleAssimilatedComponentsWithUserDefinedKeys() {
         picoContainer = new DefaultPicoContainer(createComponentFactory());
         picoContainer.addComponent(Touchable.class, SimpleTouchable.class);
@@ -80,4 +84,5 @@ public class AssimilatingTestCase extends AbstractComponentFactoryTest {
         final List list = picoContainer.getComponents(Touchable.class);
         assertEquals(4, list.size());
     }
+
 }

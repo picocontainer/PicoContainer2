@@ -19,6 +19,12 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 import java.util.Properties;
 
+/**
+ * Because AsmImplementationHiding is the same type of behavior as HiddenImplementation, we use the same
+ * characteristic properties for turning on and off AsmImplementation Hiding.
+ * @see org.picocontainer.Characteristics.HIDE_IMPL
+ * @see org.picocontainer.Characteristics.NO_HIDE_IMPL
+ */
 @SuppressWarnings("serial")
 public class AsmImplementationHiding extends AbstractBehaviorFactory {
 

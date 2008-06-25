@@ -12,6 +12,7 @@ package org.picocontainer.gems;
 import org.picocontainer.gems.adapters.ThreadLocalizing;
 import org.picocontainer.gems.behaviors.AsmImplementationHiding;
 import org.picocontainer.gems.behaviors.HotSwapping;
+import org.picocontainer.gems.behaviors.Pooling;
 import org.picocontainer.gems.jmx.JMXExposing;
 import org.picocontainer.gems.monitors.CommonsLoggingComponentMonitor;
 import org.picocontainer.gems.monitors.Log4JComponentMonitor;
@@ -72,6 +73,13 @@ public class PicoGemsBuilder {
     	return new ThreadLocalizing();
     }
     
+    /**
+     * Creates an instance pooling adapter factory.
+     * @return 
+     */
+    public static BehaviorFactory POOLING() {
+    	return new Pooling();
+    }
     
     /**
      * Creates a log4j component monitor instance.  You will need Log4j in your classpath for this method to work. 
@@ -100,6 +108,6 @@ public class PicoGemsBuilder {
     }
     
     
-
+    
 
 }
