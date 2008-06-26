@@ -1,13 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html><head>
+<html>
+<head>
 <title>Struts2</title>
 </head>
 <body>
-<p>To configure PicoContainer to handle the dependency injection of
-Struts2 actions, refer to the fragment of web.xml below. For a start there is a
-slightly different listener to the one defined in the <a
-	href="index.html">main page</a>. Also, instead of using WebWork2's
-servlet, use ours. Everything else from the standard WebWork2 setup is
+<p>To configure PicoContainer to handle the dependency injection of Struts2 actions, refer to the fragment of
+web.xml below. For a start there is a slightly different listener to the one defined in the <a href="index.html">main
+page</a>. Also, instead of using WebWork2's servlet, use ours. Everything else from the standard WebWork2 setup is
 appropriate.</p>
 <div class="source"><pre><listener>
   <listener-class>org.picocontainer.web.webwork2.WebWork2PicoServletContainerListener</listener-class>
@@ -25,16 +24,8 @@ appropriate.</p>
 
 </pre></div>
 <p>The Maven example project is <a
-	href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/struts2-webapp/">here</a>.
-Make sure you make and configure your own <a href="composition.html">WebappComposer</a> implementation.</p>
-<p>Use the following Maven2 POM fragment for the dependencies
-picocontainer-web-struts2 jar (and transitive dependencies)</p>
-<div class="source"><pre>	
-	<dependency>
-      <groupId>org.picocontainer.web</groupId>
-      <artifactId>picocontainer-web-struts2</artifactId>
-      <version>2.0</version>
-    </dependency>
-</pre></div>
+  href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/struts2-webapp/">here</a>. Make sure you make
+and configure your own <a href="composition.html">WebappComposer</a> implementation.</p>
+<p>See <a href="downloads.html">downloads</a> on how to download the struts2 module either using Maven or by downloading full distribution.</p>
 </body>
 </html>

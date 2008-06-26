@@ -1,15 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html><head>
+<html>
+<head>
 <title>Struts1</title>
 </head>
 <body>
-<p>Struts 1 (or just 'Struts') has been
-superseded by Struts 2 in recent years. There is still a huge community for Struts 1
-web applications though.</p>
-<p>To configure PicoContainer to handle the dependency injection of
-Struts actions, refer to the fragment of web.xml below and to that of the <a
-	href="index.html">main page</a>. This looks like a standard
-Struts setup</p>
+<p>Struts 1 (or just 'Struts') has been superseded by Struts 2 in recent years. There is still a huge community for
+Struts 1 web applications though.</p>
+<p>To configure PicoContainer to handle the dependency injection of Struts actions, refer to the fragment of web.xml
+below and to that of the <a href="index.html">main page</a>. This looks like a standard Struts setup</p>
 <div class="source"><pre>
 	
   <servlet>
@@ -24,39 +22,25 @@ Struts setup</p>
 
 	</pre></div>
 <p>Things are different in the struts-config.xml file though - there is a PicoContainer enabled RequestProcessor:</p>
-	<div class="source"><pre>
+<div class="source"><pre>
 	  <form-beans>
-	    <form-bean name="cheeseForm"
-	               type="org.picocontainer.web.sample.struts.CheeseForm">
+	    <form-bean name="cheeseForm" type="org.picocontainer.web.sample.struts.CheeseForm">
 	    </form-bean>
 	  </form-beans>
 
 	  <action-mappings>
-	    <action path="/cheese"
-	            type="org.picocontainer.web.sample.struts.CheeseAction"
-	            name="cheeseForm"
-	            scope="request">
-	      <forward name="next" path="/cheese.jsp"/>
+	    <action path="/cheese" type="org.picocontainer.web.sample.struts.CheeseAction" name="cheeseForm" scope="request">
+	      <forward name="next" path="/cheese.jsp" />
 	    </action>
 	  </action-mappings>
 
-	  <controller processorClass="org.picocontainer.web.struts.PicoRequestProcessor"/>
+	  <controller processorClass="org.picocontainer.web.struts.PicoRequestProcessor" />
 		
 	</pre></div>
 
-<p>With this design you can use Constructor Injection and three tier
-container scoping for Struts web applications. Our Maven example
-project is <a
-	href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/struts-webapp/">here</a>.
+<p>With this design you can use Constructor Injection and three tier container scoping for Struts web applications.
+Our Maven example project is <a href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/struts-webapp/">here</a>.
 Make sure you make and configure your own <a href="composition.html">WebappComposer</a> implementation.</p>
-<p>Use the following Maven2 POM fragment for the dependencies
-picocontainer-web-struts jar (and transitive dependencies)</p>
-<div class="source"><pre>	
-	<dependency>
-      <groupId>org.picocontainer.web</groupId>
-      <artifactId>picocontainer-web-struts</artifactId>
-      <version>2.0</version>
-    </dependency>
-</pre></div>
+<p>See <a href="downloads.html">downloads</a> on how to download the struts module either using Maven or by downloading full distribution.</p>
 </body>
 </html>

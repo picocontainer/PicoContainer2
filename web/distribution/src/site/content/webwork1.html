@@ -4,15 +4,12 @@
 <title>WebWork1</title>
 </head>
 <body>
-<p>WebWork 1 is a little old now for a web technology. It has been
-superseded by WebWork 2 and Struts 2. In its day though, it was the
-pioneer of decent action frameworks for Java.</p>
-<p>To configure PicoContainer to handle the dependency injection of
-WebWork1 actions, refer to the fragment of web.xml below and to that of the <a
-	href="index.html">main page</a>. For WebWork1 there is a slightly
-different listener to the one defined in the <a href="index.html">main
-page</a>. Also, instead of using WebWork1's servlet, use ours. Everything
-else from the standard WebWork1 setup is appropriate.</p>
+<p>WebWork 1 is a little old now for a web technology. It has been superseded by WebWork 2 and Struts 2. In its day
+though, it was the pioneer of decent action frameworks for Java.</p>
+<p>To configure PicoContainer to handle the dependency injection of WebWork1 actions, refer to the fragment of
+web.xml below and to that of the <a href="index.html">main page</a>. For WebWork1 there is a slightly different listener
+to the one defined in the <a href="index.html">main page</a>. Also, instead of using WebWork1's servlet, use ours.
+Everything else from the standard WebWork1 setup is appropriate.</p>
 <div class="source"><pre>
 	<listener>
 	  <listener-class>org.picocontainer.web.webwork.WebWorkPicoServletContainerListener</listener-class>
@@ -29,19 +26,11 @@ else from the standard WebWork1 setup is appropriate.</p>
 	</servlet-mapping>
 
 	</pre></div>
-<p>With this design you can use Constructor Injection and three tier
-container scoping for WebWork1 web applications. Our Maven example
-project is <a
-	href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/webwork-webapp/">here</a>.
-Make sure you make and configure your own <a href="composition.html">WebappComposer</a> implementation.</p>
-<p>Use the following Maven2 POM fragment for the dependencies
-picocontainer-web-webwork jar (and transitive dependencies)</p>
-<div class="source"><pre>	
-	<dependency>
-      <groupId>org.picocontainer.web</groupId>
-      <artifactId>picocontainer-web-webwork</artifactId>
-      <version>2.0</version>
-    </dependency>
-</pre></div>
+<p>With this design you can use Constructor Injection and three tier container scoping for WebWork1 web
+applications. Our Maven example project is <a
+  href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/webwork-webapp/">here</a>. Make sure you make
+and configure your own <a href="composition.html">WebappComposer</a> implementation.</p>
+<p>See <a href="downloads.html">downloads</a> on how to download the webwork module either using Maven or by
+downloading full distribution.</p>
 </body>
 </html>
