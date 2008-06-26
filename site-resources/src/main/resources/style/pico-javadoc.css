@@ -21,12 +21,12 @@ a:active, a:hover {
 }
 
 /* Table colors */
-.TableHeadingColor     { background: #2aa256; color:#FFFFFF } /* Dark blue */
-.TableSubHeadingColor  { background: #7ee27c; color:#fff } /* Dark grey */
+.TableHeadingColor     { background: #3a961b; color:#FFFFFF } /* Green */
+.TableSubHeadingColor  { background: #838383; color:#fff } /* Grey */
 .TableRowColor         { background: #f5f4f1 } /* White */
-.TableHeadingColor td  { border: 1px solid #7ee27c }
-.TableSubHeadingColor td { border: 1px solid #2aa256 }
-.TableRowColor td      { border: 1px solid #2aa256 }
+.TableHeadingColor td  { border: 1px solid #838383 }
+.TableSubHeadingColor td { border: 1px solid #3a961b }
+.TableRowColor td      { border: 1px solid #3a961b }
 
 /* Font used in left-hand frame lists */
 .FrameTitleFont   { font-size: normal; font-family: Arial, Helvetica, sans-serif; color:#000000 }
@@ -37,8 +37,8 @@ a:active, a:hover {
 /* .FrameItemFont  { font-size: 10pt; font-family: Helvetica, Arial, sans-serif } */
 
 /* Navigation bar fonts and colors */
-.NavBarCell1    { background-color:#7ee27c;}/* Light mauve */
-.NavBarCell1Rev { background-color:#2aa256;}/* Dark Blue */
+.NavBarCell1    { background-color:#838383;}/* Grey */
+.NavBarCell1Rev { background-color:#3a961b;}/* Green */
 .NavBarFont1    { font-family: Arial, Helvetica, sans-serif; color:#000000;}
 .NavBarFont1Rev { font-family: Arial, Helvetica, sans-serif; color:#FFFFFF;}
 
@@ -46,5 +46,5 @@ a:active, a:hover {
 .NavBarCell3    { font-family: Arial, Helvetica, sans-serif; background-color:#FFFFFF;}
 
 table           { border-spacing:0; border-collapse:collapse; }
-hr              { border: 1px solid #2aa256 }
+hr              { border: 1px solid #3a961b }
 .logo           { width: 112px; height: 35px }
