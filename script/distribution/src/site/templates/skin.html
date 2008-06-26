@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-<title>${title}</title>
+<title>PicoContainer Script ${title}</title>
 
 <style type="text/css" media="all">
 @import url("./style/pico.css");
@@ -30,10 +30,15 @@ urchinTracker();
 
 <body class="composite">
 
-<div id="banner"><img src="images/pico-logo.png"
-  alt="PicoContainer" />
-<div class="clear">
-</div>
+<div id="banner">
+	<span>
+		<img src="images/picocontainer-web-logo.png" alt="PicoContainer" />
+		<span style="font-size: 72px; font-family: Geneva; font-weight: bold;">
+		    <span style="color: rgb(58, 150, 27);">Pico</span><span style="color: rgb(131, 131, 131);">Container</span>
+	        <span style="color: rgb(58, 150, 27);"> Script</span>
+	    </span>
+	</span>
+	<div class="clear"></div>
 </div>
 <div id="breadcrumbs">
 <div class="left">Published version: 2.0</div>
@@ -43,7 +48,9 @@ urchinTracker();
 </div>
 
 <div id="leftColumn">
-<div id="navColumn"><#list sitemap.sections as section>
+<div id="navColumn">
+	<h3><a href="/index.html"><img src="images/pico-logo.png" hspace="10" align="left"/>Up to..<br/>PicoContainer<br/>homepage</a></h3>
+	<#list sitemap.sections as section>
 <h1>${section.name}</h1>
 <ul>
   <#list section.pages as otherPage> <#if otherPage = page>
@@ -68,7 +75,7 @@ urchinTracker();
 <div id="bodyColumn">
 <div id="contentBox">
 <div class="section">
-<h2>${title}</h2>
+<h2>PicoContainer Script ${title}</h2>
 ${body}
 </div>
 </div>
