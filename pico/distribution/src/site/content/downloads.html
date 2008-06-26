@@ -15,4 +15,18 @@
 <hr />
 <p>Currently, the Core jar is ~247K, and the Gems jar is ~112K. The distribution zip contains all jars and documentation.</p>
 
+<h3>Using Maven Artifacts</h3>
+<p>If you use Maven as the build system (or one that is compatible with the Maven Repository), you can declare
+dependencies as
+
+<div class="source"><pre>
+  <dependency> 
+    <groupId>org.picontainer</groupId>
+    <artifactId>picocontainer[-gems]</artifactId>
+    <version>[version]</version>
+  </dependency>
+</pre></div>
+specifying the version. Declaring this dependency will pull in all other required dependencies (ie transitive
+dependencies). Note that PicoContainer core artifactId is simply "picocontainer".
+</p>
 </body></html>
