@@ -42,11 +42,11 @@ public final class GemsCharacteristics {
     /**
      * Turn on pooling behavior.
      */
-    public static final Properties POOLED = immutable(_POOL, TRUE);
+    public static final Properties POOL = immutable(_POOL, TRUE);
     
     /**
      * Turn off pooling behavior.
      */
-    public static final Properties NO_POOLED = immutable(_POOL, FALSE);
+    public static final Properties NO_POOL = immutable(_POOL, FALSE);
 
 }

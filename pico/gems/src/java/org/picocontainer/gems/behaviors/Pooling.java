@@ -38,11 +38,11 @@ public class Pooling extends AbstractBehaviorFactory {
         ComponentAdapter delegate = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                          componentProperties, componentKey, componentImplementation, parameters);
 
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_POOLED)) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_POOL)) {
         	return delegate;
 		} 
         
-        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.POOLED);
+        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.POOL);
         Pooled behavior = new Pooled(delegate, poolContext);
         //TODO
         //Characteristics.HIDE.setProcessedIn(componentCharacteristics);
@@ -55,14 +55,14 @@ public class Pooling extends AbstractBehaviorFactory {
                                                 final Properties componentProperties,
                                                 final ComponentAdapter adapter) {
 
-        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_POOLED)) {
+        if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.NO_POOL)) {
         	return super.addComponentAdapter(componentMonitor,
                     lifecycleStrategy,
                     componentProperties,
                     adapter);
 		} 
     	
-        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.POOLED);
+        AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.POOL);
     	return new Pooled(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,

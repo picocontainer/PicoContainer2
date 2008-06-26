@@ -18,8 +18,8 @@ public class PoolingTestCase extends AbstractComponentFactoryTest {
     @Test
     public void testPicoIntegration() {
     	MutablePicoContainer mpc = new PicoBuilder().withBehaviors(PicoGemsBuilder.POOLING()).build();
-    	mpc.as(GemsCharacteristics.NO_POOLED).addComponent("NoPool","a")
-    		.as(GemsCharacteristics.POOLED).addComponent("Pooled", "b");
+    	mpc.as(GemsCharacteristics.NO_POOL).addComponent("NoPool","a")
+    		.as(GemsCharacteristics.POOL).addComponent("Pooled", "b");
     	
     	assertNull(mpc.getComponentAdapter("NoPool").findAdapterOfType(Pooled.class));
     	assertNotNull(mpc.getComponentAdapter("Pooled").findAdapterOfType(Pooled.class));
