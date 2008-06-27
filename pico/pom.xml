@@ -273,6 +273,7 @@
           <configuration>
             <autoVersionSubmodules>true</autoVersionSubmodules>
             <preparationGoals>clean install</preparationGoals>
+            <goals>deploy</goals>
             <tagBase>https://svn.codehaus.org/picocontainer/java/2.x/tags/</tagBase>
           </configuration>
         </plugin>

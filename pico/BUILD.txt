@@ -24,15 +24,3 @@ A good practice is to leave a note next to dependency declaration where it is fo
 Another option is to define a picocontainer profile with all the remote repositories needed by project and activate it on demand.
 A settings.xml template is found at http://svn.codehaus.org/picocontainer/java/2.x/trunk/pico/distribution/src/config/settings.xml.
 
-RELEASE STEPS (mainly to workaround atrociously slow Dav access):
-1. mvn -Preporting,distribution release:prepare -> resolves dependencies and creates tag eg https://svn.codehaus.org/picocontainer/java/2.x/tags/picocontainer-2.4/.
-
-2. svn co https://svn.codehaus.org/picocontainer/java/2.x/tags/picocontainer-2.4
-cd picocontainer-2.4
-mvn deploy -Preporting,distribution -> deploys artifacts but not the site
-
-3. Manually copy distribution/target/site to https://dav.codehaus.org/picocontainer
-
-Note:  Releasing/deploying on Mac is affected by http://jira.codehaus.org/browse/MNG-3361 Brett's hack works though.
-(MT:  seems to be working fine with SVN 1.5 and OS X 10.5.3).
-
