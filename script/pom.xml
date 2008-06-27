@@ -51,10 +51,6 @@
       <name>Codehaus PicoContainer Snapshots Repository</name>
       <url>dav:https://dav.codehaus.org/snapshots.repository/picocontainer/</url>
     </snapshotRepository>
-    <site>
-      <id>codehaus.org</id>
-      <url>dav:https://dav.codehaus.org/picocontainer/script</url>
-    </site>
   </distributionManagement>
   <dependencyManagement>
     <dependencies>

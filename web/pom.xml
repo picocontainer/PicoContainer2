@@ -29,6 +29,18 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/scm/picocontainer/java/2.x/trunk/web</developerConnection>
     <url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/web</url>
   </scm>
+  <distributionManagement>
+    <repository>
+      <id>codehaus.org</id>
+      <name>Codehaus PicoContainer Repository</name>
+      <url>dav:https://dav.codehaus.org/repository/picocontainer/</url>
+    </repository>
+    <snapshotRepository>
+      <id>codehaus.org</id>
+      <name>Codehaus PicoContainer Snapshots Repository</name>
+      <url>dav:https://dav.codehaus.org/snapshots.repository/picocontainer/</url>
+    </snapshotRepository>
+  </distributionManagement>
   <dependencyManagement>
     <dependencies>
       <dependency>

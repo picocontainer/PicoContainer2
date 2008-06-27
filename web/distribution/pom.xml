@@ -186,5 +186,11 @@
       </plugin>
     </plugins>
   </build>
-
+  <distributionManagement>
+    <site>
+      <id>codehaus.org</id>
+      <url>dav:https://dav.codehaus.org/picocontainer/web</url>
+    </site>
+  </distributionManagement>
+</project>
 </project>

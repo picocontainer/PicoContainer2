@@ -11,20 +11,28 @@
   <modules>
     <module>persistence-hibernate</module>
   </modules>
-
   <description><![CDATA[Please refer to the <a href="http://picocontainer.org/persistence">main website</a> for documentation.]]></description>
-
   <issueManagement>
     <system>JIRA</system>
     <url>http://jira.codehaus.org/browse/NANOPERSISTENCE</url>
   </issueManagement>
-
   <scm>
     <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/persistence</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/persistence</developerConnection>
     <url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/persistence</url>
   </scm>
-
+  <distributionManagement>
+    <repository>
+      <id>codehaus.org</id>
+      <name>Codehaus PicoContainer Repository</name>
+      <url>dav:https://dav.codehaus.org/repository/picocontainer/</url>
+    </repository>
+    <snapshotRepository>
+      <id>codehaus.org</id>
+      <name>Codehaus PicoContainer Snapshots Repository</name>
+      <url>dav:https://dav.codehaus.org/snapshots.repository/picocontainer/</url>
+    </snapshotRepository>
+  </distributionManagement>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -47,7 +55,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
   <dependencies>
     <!-- test scoped dependencies -->
     <dependency>
@@ -59,7 +66,6 @@
       <artifactId>picocontainer-tck</artifactId>
     </dependency>
   </dependencies>
-
   <build>
     <sourceDirectory>src/java</sourceDirectory>
     <testSourceDirectory>src/test</testSourceDirectory>
@@ -172,7 +178,7 @@
           <configuration>
             <autoVersionSubmodules>true</autoVersionSubmodules>
             <preparationGoals>clean install</preparationGoals>
-            <goals>deploy</goals>  
+            <goals>deploy</goals>
             <tagBase>https://svn.codehaus.org/picocontainer/java/2.x/tags/</tagBase>
           </configuration>
         </plugin>
@@ -296,5 +302,4 @@
       </modules>
     </profile>
   </profiles>
-
 </project>
