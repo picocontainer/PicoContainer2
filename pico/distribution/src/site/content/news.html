@@ -6,6 +6,7 @@
 <p>PicoContainer 2.4 released (253K jar) </p>
 <p>New (since 2.3):</p>
 <ul>
+	<li>DefaultClassLoadingPicoContainer added. Components can now be referenced in different classloaders and by class name. This was formerly DefaultNanoContainer</li> 
 	<li>Locking behaviors are now characterizable as LOCK and NO_LOCK</li>
 	<li>Synchronizing behaviors are now characterizable as SYNCHRONIZE and NO_SYNCHRONIZE</li>
 	<li>Pooling behaviors are now characterizable as NO_POOL and POOL</li>
@@ -15,6 +16,11 @@
 <ul>
 	<li>Visitor for trees of PicoContainers, can issue a halt instruction now to stop the visitation early</li>
 	<li>PICO-0316 fixed, whereby iterative injectors would not always find the dependencies to inject, when there were present</li>
+	<li>AsmHiddenImplementation behavior in Gems replaces by HiddenImplementation</li>
+	<li>CommandLinePicoContainer replaces by CommandLineArgumentsPicoContainer (now deprecated)</li>
+	<li>ReflectionLifecycleStrategy can be subclassed now</li>
+	<li>PICO-0314 fixed - StartableLifecycleStrategy can now have custom Disposable alternate classes correctly</li>
+	<li>PICO-0303 fixed - ReflectionLifecycleStrategy was not bubbling lifecycle exceptions correctly</li>
 </ul>
 <p><strong>June 26, 2008</strong></p>
 <p>PicoContainer 2.4 released (241K jar) </p>
