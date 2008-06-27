@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.picocontainer</groupId>
   <artifactId>picocontainer-logging</artifactId>
-  <version>2.0</version>
+  <version>2.1-SNAPSHOT</version>
   <name>PicoContainer Logging</name>
   <description> Component that allows logging that honours the Dependency Injection paradigm. It does not depend on
     PicoContainer and can be used by any container wanting to configure independent logging for different applications
@@ -21,9 +21,9 @@
     </license>
   </licenses>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/tags/picocontainer-logging-2.0</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/tags/picocontainer-logging-2.0</developerConnection>
-    <url>https://svn.codehaus.org/picocontainer/java/2.x/tags/picocontainer-logging-2.0</url>
+    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/logging</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/logging</developerConnection>
+    <url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/logging</url>
   </scm>
   <distributionManagement>
     <repository>
