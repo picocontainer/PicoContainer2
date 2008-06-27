@@ -10,7 +10,7 @@
   
   <filter>
     <filter-name>picoFilter</filter-name>
-    <filter-class>org.picocontainer.web.PicoServletContainerFilter</filter-class>
+    <filter-class>org.picocontainer.web.struts.ActionFactory$ServletFilter</filter-class>
   </filter>
 
   <filter-mapping>

@@ -31,6 +31,32 @@ import com.opensymphony.xwork.ObjectFactory;
  */
 public class PicoObjectFactory extends ObjectFactory {
 
+    public static class ServletFilter extends PicoServletContainerFilter {
+        private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
+        private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
+        private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+
+        protected void setAppContainer(MutablePicoContainer container) {
+            currentAppContainer.set(container);
+        }
+        protected void setRequestContainer(MutablePicoContainer container) {
+            currentRequestContainer.set(container);
+        }
+        protected void setSessionContainer(MutablePicoContainer container) {
+            currentSessionContainer.set(container);
+        }
+
+        protected static MutablePicoContainer getRequestContainerForThread() {
+            return currentRequestContainer.get();
+        }
+        protected static MutablePicoContainer getSessionContainerForThread() {
+            return currentSessionContainer.get();
+        }
+        protected static MutablePicoContainer getApplicationContainerForThread() {
+            return currentAppContainer.get();
+        }
+    }
+
     private final Map<String, Class<?>> classCache = new HashMap<String, Class<?>>();
 
     public boolean isNoArgConstructorRequired() {
@@ -61,7 +87,7 @@ public class PicoObjectFactory extends ObjectFactory {
      * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.Class)
      */
     public Object buildBean(Class<?> actionClass) throws Exception {
-        PicoContainer actionsContainer = PicoServletContainerFilter.getRequestContainerForThread();
+        PicoContainer actionsContainer = ServletFilter.getRequestContainerForThread();
         Object action = actionsContainer.getComponent(actionClass);
 
         if (action == null) {

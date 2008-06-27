@@ -29,6 +29,33 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
 @SuppressWarnings("serial")
 public class PicoObjectFactory extends ObjectFactory {
 
+    public static class ServletFilter extends PicoServletContainerFilter {
+        private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
+        private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
+        private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+
+        protected void setAppContainer(MutablePicoContainer container) {
+            currentAppContainer.set(container);
+        }
+        protected void setRequestContainer(MutablePicoContainer container) {
+            currentRequestContainer.set(container);
+        }
+        protected void setSessionContainer(MutablePicoContainer container) {
+            currentSessionContainer.set(container);
+        }
+
+        protected static MutablePicoContainer getRequestContainerForThread() {
+            return currentRequestContainer.get();
+        }
+        protected static MutablePicoContainer getSessionContainerForThread() {
+            return currentSessionContainer.get();
+        }
+        protected static MutablePicoContainer getApplicationContainerForThread() {
+            return currentAppContainer.get();
+        }
+
+    }
+
     @SuppressWarnings("unchecked")
     public Class getClassInstance(String name) throws ClassNotFoundException {
         Class clazz = super.getClassInstance(name);
@@ -40,7 +67,7 @@ public class PicoObjectFactory extends ObjectFactory {
 
         synchronized (this) {
 
-            MutablePicoContainer reqContainer = PicoServletContainerFilter.getRequestContainerForThread();
+            MutablePicoContainer reqContainer = ServletFilter.getRequestContainerForThread();
             if (reqContainer == null) {
                 return;
             }
@@ -65,9 +92,9 @@ public class PicoObjectFactory extends ObjectFactory {
     @SuppressWarnings("unchecked")
     public Object buildBean(Class clazz, Map extraContext) throws Exception {
 
-        MutablePicoContainer requestContainer = PicoServletContainerFilter.getRequestContainerForThread();
+        MutablePicoContainer requestContainer = ServletFilter.getRequestContainerForThread();
         if (requestContainer == null) {
-            MutablePicoContainer appContainer = PicoServletContainerFilter.getApplicationContainerForThread();
+            MutablePicoContainer appContainer = ServletFilter.getApplicationContainerForThread();
             Object comp = appContainer.getComponent(clazz);
             if (comp == null) {
                 appContainer.addComponent(clazz);

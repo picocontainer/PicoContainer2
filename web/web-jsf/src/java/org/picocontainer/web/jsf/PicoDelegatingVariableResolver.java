@@ -14,6 +14,7 @@ import javax.faces.el.EvaluationException;
 import javax.faces.el.VariableResolver;
 
 import org.picocontainer.PicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.web.PicoServletContainerFilter;
 
 /**
@@ -113,6 +114,32 @@ import org.picocontainer.web.PicoServletContainerFilter;
  */
 public class PicoDelegatingVariableResolver extends VariableResolver {
 
+    public static class ServletFilter extends PicoServletContainerFilter {
+        private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
+        private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
+        private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+
+        protected void setAppContainer(MutablePicoContainer container) {
+            currentAppContainer.set(container);
+        }
+        protected void setRequestContainer(MutablePicoContainer container) {
+            currentRequestContainer.set(container);
+        }
+        protected void setSessionContainer(MutablePicoContainer container) {
+            currentSessionContainer.set(container);
+        }
+
+        protected static MutablePicoContainer getRequestContainerForThread() {
+            return currentRequestContainer.get();
+        }
+        protected static MutablePicoContainer getSessionContainerForThread() {
+            return currentSessionContainer.get();
+        }
+        protected static MutablePicoContainer getApplicationContainerForThread() {
+            return currentAppContainer.get();
+        }
+
+    }
     /**
      * The nested variable resolver.
      */
@@ -180,7 +207,7 @@ public class PicoDelegatingVariableResolver extends VariableResolver {
 
         // First check request map.
         if (requestAttributeMap != null) {
-            container = PicoServletContainerFilter.getRequestContainerForThread();
+            container = ServletFilter.getRequestContainerForThread();
         }
 
         if (requestAttributeMap == null || container == null) {
@@ -189,13 +216,13 @@ public class PicoDelegatingVariableResolver extends VariableResolver {
             Map sessionMap = facesContext.getExternalContext().getSessionMap();
             if (sessionMap != null) {
                 // If there is a session.
-                container = PicoServletContainerFilter.getSessionContainerForThread();
+                container = ServletFilter.getSessionContainerForThread();
             }
 
             if (sessionMap == null || container == null) {
 
                 // If that fails, check for App level container.
-                container = PicoServletContainerFilter.getApplicationContainerForThread();
+                container = ServletFilter.getApplicationContainerForThread();
                 if (container == null) {
                     // If that fails... Fail.
                     throw new EvaluationException(

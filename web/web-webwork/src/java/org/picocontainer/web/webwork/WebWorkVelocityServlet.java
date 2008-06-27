@@ -12,6 +12,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.tools.view.servlet.VelocityViewServlet;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.web.PicoServletContainerFilter;
 
@@ -31,6 +32,32 @@ import webwork.view.velocity.WebWorkUtil;
 @SuppressWarnings("serial")
 public final class WebWorkVelocityServlet extends VelocityViewServlet {
 
+    public static class ServletFilter extends PicoServletContainerFilter {
+        private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
+        private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
+        private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+
+        protected void setAppContainer(MutablePicoContainer container) {
+            currentAppContainer.set(container);
+        }
+        protected void setRequestContainer(MutablePicoContainer container) {
+            currentRequestContainer.set(container);
+        }
+        protected void setSessionContainer(MutablePicoContainer container) {
+            currentSessionContainer.set(container);
+        }
+
+        protected static MutablePicoContainer getRequestContainerForThread() {
+            return currentRequestContainer.get();
+        }
+        protected static MutablePicoContainer getSessionContainerForThread() {
+            return currentSessionContainer.get();
+        }
+        protected static MutablePicoContainer getApplicationContainerForThread() {
+            return currentAppContainer.get();
+        }
+    }
+
     static final String WEBWORK_UTIL = "webwork";
     // those have to be removed once dependency problem is solved.
     // will bomb anyway.
@@ -41,7 +68,7 @@ public final class WebWorkVelocityServlet extends VelocityViewServlet {
 
     protected Context createContext(javax.servlet.http.HttpServletRequest request,
             javax.servlet.http.HttpServletResponse response) {
-        Context ctx = new NanocontainerVelocityContext(PicoServletContainerFilter.getRequestContainerForThread(),
+        Context ctx = new NanocontainerVelocityContext(ServletFilter.getRequestContainerForThread(),
                 ServletValueStack.getStack(request));
         ctx.put(REQUEST, request);
         ctx.put(RESPONSE, response);

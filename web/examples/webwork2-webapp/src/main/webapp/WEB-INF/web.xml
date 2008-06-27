@@ -10,7 +10,7 @@
 
   <filter>
     <filter-name>picoFilter</filter-name>
-    <filter-class>org.picocontainer.web.PicoServletContainerFilter</filter-class>
+    <filter-class>org.picocontainer.web.webwork2.PicoObjectFactory$ServletFilter</filter-class>
   </filter>
 
   <filter-mapping>
@@ -24,7 +24,7 @@
 
   <servlet>
     <servlet-name>action</servlet-name>
-    <servlet-class>org.picocontainer.web.webwork2.PicoWebWork2ServletDispatcher</servlet-class>
+    <servlet-class>com.opensymphony.webwork.dispatcher.ServletDispatcher</servlet-class>
   </servlet>
 
   <servlet-mapping>

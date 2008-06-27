@@ -18,41 +18,26 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Storing;
 
 @SuppressWarnings("serial")
-public class PicoServletContainerFilter implements Filter, Serializable {
+public abstract class PicoServletContainerFilter implements Filter, Serializable {
 
     public void init(FilterConfig filterConfig) throws ServletException {
         ServletContext servletContext = filterConfig.getServletContext();
         ApplicationContainerHolder ach = (ApplicationContainerHolder) servletContext
                 .getAttribute(ApplicationContainerHolder.class.getName());
-        currentAppContainer.set(ach.getContainer());
+        setAppContainer(ach.getContainer());
     }
+
 
     public void destroy() {
     }
 
-    private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
 
-    public static MutablePicoContainer getRequestContainerForThread() {
-        return currentRequestContainer.get();
-    }
 
     public static Object getRequestComponentForThread(Class<?> type) {
-        MutablePicoContainer requestContainer = getRequestContainerForThread();
+        MutablePicoContainer requestContainer = ServletFilter.getRequestContainerForThread();
         MutablePicoContainer container = new DefaultPicoContainer(requestContainer);
         container.addComponent(type);
         return container.getComponent(type);
-    }
-    
-    private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
-
-    public static MutablePicoContainer getSessionContainerForThread() {
-        return currentSessionContainer.get();
-    }
-
-    private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
-
-    public static MutablePicoContainer getApplicationContainerForThread() {
-        return currentAppContainer.get();
     }
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException,
@@ -78,15 +63,15 @@ public class PicoServletContainerFilter implements Filter, Serializable {
         rch.getLifecycleStateModel().resetStateModelForThread();
         rch.getContainer().start();
 
-        currentAppContainer.set(ach.getContainer());
-        currentSessionContainer.set(sch.getContainer());
-        currentRequestContainer.set(rch.getContainer());
+        setAppContainer(ach.getContainer());
+        setSessionContainer(sch.getContainer());
+        setRequestContainer(rch.getContainer());
 
         filterChain.doFilter(req, resp);
 
-        currentAppContainer.set(null);
-        currentSessionContainer.set(null);
-        currentRequestContainer.set(null);
+        setAppContainer(null);
+        setSessionContainer(null);
+        setRequestContainer(null);
 
         rch.getContainer().stop();
         rch.getContainer().dispose();
@@ -96,4 +81,36 @@ public class PicoServletContainerFilter implements Filter, Serializable {
 
     }
 
+    protected abstract void setAppContainer(MutablePicoContainer container);
+
+    protected abstract void setSessionContainer(MutablePicoContainer container);
+
+    protected abstract void setRequestContainer(MutablePicoContainer container);
+
+    public static class ServletFilter extends PicoServletContainerFilter {
+
+        private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
+        private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
+        private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+
+        protected void setAppContainer(MutablePicoContainer container) {
+            currentAppContainer.set(container);
+        }
+        protected void setRequestContainer(MutablePicoContainer container) {
+            currentRequestContainer.set(container);
+        }
+        protected void setSessionContainer(MutablePicoContainer container) {
+            currentSessionContainer.set(container);
+        }
+
+        public static MutablePicoContainer getRequestContainerForThread() {
+            return currentRequestContainer.get();
+        }
+        public static MutablePicoContainer getSessionContainerForThread() {
+            return currentSessionContainer.get();
+        }
+        public static MutablePicoContainer getApplicationContainerForThread() {
+            return currentAppContainer.get();
+        }
+    }
 }

@@ -86,7 +86,7 @@ public class AbstractServletTestCase {
                 "\n" +
                 "    <filter>\n" +
                 "        <filter-name>picoFilter</filter-name>\n" +
-                "        <filter-class>org.picocontainer.web.PicoServletContainerFilter</filter-class>\n" +
+                "        <filter-class>org.picocontainer.web.PicoServletContainerFilter$ServletFilter</filter-class>\n" +
                 "    </filter>" +
                 "    <filter-mapping>\n" +
                 "        <filter-name>picoFilter</filter-name>\n" +

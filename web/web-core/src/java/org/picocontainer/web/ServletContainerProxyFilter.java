@@ -101,7 +101,7 @@ public class ServletContainerProxyFilter implements Filter {
      * @throws PicoCompositionException if the delegate Filter cannot be found
      */
     protected void lookupDelegate(HttpServletRequest request) {
-        PicoContainer pico = PicoServletContainerFilter.getRequestContainerForThread();
+        PicoContainer pico = PicoServletContainerFilter.ServletFilter.getRequestContainerForThread();
         String delegateClassName = filterConfig.getInitParameter("delegate-class");
         String delegateKey = filterConfig.getInitParameter("delegate-key");
         if (delegateClassName != null) {
