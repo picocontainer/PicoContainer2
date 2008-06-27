@@ -2,8 +2,10 @@ RELEASE STEPS
 
 1. mvn release:prepare -> verifies dependendies and tags release in SCM
 2. mvn release:perform -> deploys artifacts from tag 
-NOTE: it does NOT deploy site
-3. Manually deploy site docs by copying from distribution/target/site to https://dav.codehaus.org/picocontainer
+NOTE: it only deploys site for the distribution modules
+3. The site can be manually deployed by invoking from distribution module: 
+mvn site-deploy
+
 NOTE: Ben Walding will be posting update of SOAP4R to avoid dav-access http://jira.codehaus.org/browse/HAUS-1704
 
 Note:  Releasing/deploying on Mac/Intel with SVN 1.4 is affected by http://jira.codehaus.org/browse/MNG-3361 (Brett's hack works though).
