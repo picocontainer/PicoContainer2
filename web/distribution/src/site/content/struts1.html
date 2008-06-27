@@ -6,19 +6,55 @@
 <body>
 <p>Struts 1 (or just 'Struts') has been superseded by Struts 2 in recent years. There is still a huge community for
 Struts 1 web applications though.</p>
-<p>To configure PicoContainer to handle the dependency injection of Struts actions, refer to the fragment of web.xml
-below and to that of the <a href="index.html">main page</a>. This looks like a standard Struts setup</p>
+<p>To configure PicoContainer to handle the dependency injection of Struts actions, refer to the web.xml
+below.</p>
 <div class="source"><pre>
 	
-  <servlet>
-    <servlet-name>action</servlet-name>
-    <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
-    <init-param>
-      <param-name>config</param-name>
-      <param-value>/WEB-INF/struts-config.xml</param-value>
-    </init-param>
-    <load-on-startup>2</load-on-startup>
-  </servlet>
+	<web-app>
+	  <display-name>Struts Webapp</display-name>
+
+	  <context-param>
+	    <param-name>webapp-composer-class</param-name>
+	    <param-value>org.picocontainer.web.sample.ExampleWebappComposer</param-value>
+	  </context-param>
+
+	  <filter>
+	    <filter-name>picoFilter</filter-name>
+	    <filter-class>org.picocontainer.web.struts.ActionFactory$ServletFilter</filter-class>
+	  </filter>
+
+	  <filter-mapping>
+	    <filter-name>picoFilter</filter-name>
+	    <url-pattern>*.do</url-pattern>
+	  </filter-mapping>
+
+	  <listener>
+	    <listener-class>org.picocontainer.web.PicoServletContainerListener</listener-class>
+	  </listener>
+
+	  <!-- Action Servlet Configuration -->
+	  <servlet>
+	    <servlet-name>action</servlet-name>
+	    <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+	    <init-param>
+	      <param-name>config</param-name>
+	      <param-value>/WEB-INF/struts-config.xml</param-value>
+	    </init-param>
+	    <load-on-startup>2</load-on-startup>
+	  </servlet>
+
+	  <!-- Action Servlet Mapping -->
+	  <servlet-mapping>
+	    <servlet-name>action</servlet-name>
+	    <url-pattern>*.do</url-pattern>
+	  </servlet-mapping>
+
+	  <!-- Welcome File -->
+	  <welcome-file-list>
+	    <welcome-file>index.html</welcome-file>
+	  </welcome-file-list>
+
+	</web-app>
 
 	</pre></div>
 <p>Things are different in the struts-config.xml file though - there is a PicoContainer enabled RequestProcessor:</p>

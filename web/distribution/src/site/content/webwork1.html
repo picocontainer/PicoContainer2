@@ -6,25 +6,59 @@
 <body>
 <p>WebWork 1 is a little old now for a web technology. It has been superseded by WebWork 2 and Struts 2. In its day
 though, it was the pioneer of decent action frameworks for Java.</p>
-<p>To configure PicoContainer to handle the dependency injection of WebWork1 actions, refer to the fragment of
-web.xml below and to that of the <a href="index.html">main page</a>. For WebWork1 there is a slightly different listener
+<p>To configure PicoContainer to handle the dependency injection of WebWork1 actions, refer to the
+web.xml below. For WebWork1 there is a slightly different listener
 to the one defined in the <a href="index.html">main page</a>. Also, instead of using WebWork1's servlet, use ours.
 Everything else from the standard WebWork1 setup is appropriate.</p>
 <div class="source"><pre>
-	<listener>
-	  <listener-class>org.picocontainer.web.webwork.WebWorkPicoServletContainerListener</listener-class>
-	</listener>
+	<web-app>
+	  <display-name>PicoContainer-Web WebWork 1 Demo</display-name>
 
-	<servlet>
-	  <servlet-name>WebWork</servlet-name>
-	  <servlet-class>webwork.dispatcher.ServletDispatcher</servlet-class>
-	</servlet>
+	  <context-param>
+	    <param-name>webapp-composer-class</param-name>
+	    <param-value>org.picocontainer.web.sample.ExampleWebappComposer</param-value>
+	  </context-param>
 
-	<servlet-mapping>
-	  <servlet-name>WebWork</servlet-name>
-	  <url-pattern>*.action</url-pattern>
-	</servlet-mapping>
+	  <filter>
+	    <filter-name>picoFilter</filter-name>
+	    <filter-class>org.picocontainer.web.webwork.PicoActionFactory$ServletFilter</filter-class>
+	  </filter>
 
+	  <filter-mapping>
+	    <filter-name>picoFilter</filter-name>
+	    <url-pattern>*.action</url-pattern>
+	  </filter-mapping>
+
+	  <listener>
+	    <listener-class>org.picocontainer.web.webwork.WebWorkPicoServletContainerListener</listener-class>
+	  </listener>
+
+	  <servlet>
+	    <servlet-name>WebWork</servlet-name>
+	    <servlet-class>webwork.dispatcher.ServletDispatcher</servlet-class>
+	    <load-on-startup>1</load-on-startup>
+	  </servlet>
+
+	  <servlet>
+	    <servlet-name>velocity</servlet-name>
+	    <servlet-class>org.picocontainer.web.webwork.WebWorkVelocityServlet</servlet-class>
+	  </servlet>
+
+	  <servlet-mapping>
+	    <servlet-name>WebWork</servlet-name>
+	    <url-pattern>*.action</url-pattern>
+	  </servlet-mapping>
+
+	  <servlet-mapping>
+	    <servlet-name>velocity</servlet-name>
+	    <url-pattern>*.vm</url-pattern>
+	  </servlet-mapping>
+
+	  <welcome-file-list>
+	    <welcome-file>index.html</welcome-file>
+	  </welcome-file-list>
+
+	</web-app>
 	</pre></div>
 <p>With this design you can use Constructor Injection and three tier container scoping for WebWork1 web
 applications. Our Maven example project is <a
