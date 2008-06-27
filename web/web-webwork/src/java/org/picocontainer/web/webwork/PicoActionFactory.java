@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved. 
+ * Copyright (C) PicoContainer Organization. All rights reserved.
  * ---------------------------------------------------------------------------
  * The software in this package is published under the terms of the BSD style
  * license a copy of which has been included with this distribution in the
@@ -26,6 +26,7 @@ import webwork.action.factory.ActionFactory;
  */
 public final class PicoActionFactory extends ActionFactory {
 
+    @SuppressWarnings("serial")
     public static class ServletFilter extends PicoServletContainerFilter {
         private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
         private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
@@ -34,9 +35,11 @@ public final class PicoActionFactory extends ActionFactory {
         protected void setAppContainer(MutablePicoContainer container) {
             currentAppContainer.set(container);
         }
+
         protected void setRequestContainer(MutablePicoContainer container) {
             currentRequestContainer.set(container);
         }
+
         protected void setSessionContainer(MutablePicoContainer container) {
             currentSessionContainer.set(container);
         }
@@ -44,9 +47,11 @@ public final class PicoActionFactory extends ActionFactory {
         protected static MutablePicoContainer getRequestContainerForThread() {
             return currentRequestContainer.get();
         }
+
         protected static MutablePicoContainer getSessionContainerForThread() {
             return currentSessionContainer.get();
         }
+
         protected static MutablePicoContainer getApplicationContainerForThread() {
             return currentAppContainer.get();
         }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) PicoContainer Organization. All rights reserved. 
+ * Copyright (C) PicoContainer Organization. All rights reserved.
  * ---------------------------------------------------------------------------
  * The software in this package is published under the terms of the BSD style
  * license a copy of which has been included with this distribution in the
@@ -31,6 +31,7 @@ import org.picocontainer.web.PicoServletContainerFilter;
  */
 public final class ActionFactory {
 
+    @SuppressWarnings("serial")
     public static class ServletFilter extends PicoServletContainerFilter {
 
         private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
@@ -40,18 +41,21 @@ public final class ActionFactory {
         protected void setAppContainer(MutablePicoContainer container) {
             currentAppContainer.set(container);
         }
+
         protected void setRequestContainer(MutablePicoContainer container) {
             currentRequestContainer.set(container);
         }
+
         protected void setSessionContainer(MutablePicoContainer container) {
             currentSessionContainer.set(container);
         }
+
         private static MutablePicoContainer getRequestContainerForThread() {
             return currentRequestContainer.get();
         }
     }
 
-    private final Map<String,Class<?>> classCache = new HashMap<String, Class<?>>();
+    private final Map<String, Class<?>> classCache = new HashMap<String, Class<?>>();
 
     /**
      * Gets the <code>Action</code> specified by the mapping type from a

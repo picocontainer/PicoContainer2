@@ -31,6 +31,7 @@ import com.opensymphony.xwork.ObjectFactory;
  */
 public class PicoObjectFactory extends ObjectFactory {
 
+    @SuppressWarnings("serial")
     public static class ServletFilter extends PicoServletContainerFilter {
         private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
         private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
