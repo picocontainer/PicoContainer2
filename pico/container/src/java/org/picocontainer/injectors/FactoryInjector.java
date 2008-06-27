@@ -26,7 +26,7 @@ import org.picocontainer.PicoVisitor;
 
 /**
  * <p>
- * A Injector which provides an custom instance in a factory style
+ * An Injector which provides an custom instance in a factory style
  * </p>
  *
  * @author Paul Hammant
@@ -141,7 +141,7 @@ public abstract class FactoryInjector<T> implements Injector<T> {
         throw new UnsupportedOperationException();
     }
 
-    public abstract T getComponentInstance(PicoContainer container, Type clazz);
+    public abstract T getComponentInstance(PicoContainer container, Type into);
 
     public void decorateComponentInstance(PicoContainer container, Type into, T instance) {
     }

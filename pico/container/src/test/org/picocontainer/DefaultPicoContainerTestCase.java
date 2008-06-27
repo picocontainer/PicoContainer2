@@ -843,6 +843,26 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     }
 
+    @Test public void testThatComponentCanHaveAProvidedDependencyWithInlinedFactoryInjector() {
+        MutablePicoContainer container = new DefaultPicoContainer(new MultiInjection());
+        container.addComponent(String.class, "foo");
+        container.addComponent(Turnip.class);
+        container.addAdapter(new FactoryInjector<Swede>() {
+            public Swede getComponentInstance(PicoContainer container, final Type into) {
+                return new Swede() {
+                    public String toString() {
+                        return "Swede for " + ((Class) into).getName();
+                    }
+                };
+            }
+        });
+        Turnip t = container.getComponent(Turnip.class);
+        assertNotNull(t);
+        assertEquals("Swede for " + Turnip.class.getName(), t.getSwede().toString());
+        assertEquals("foo", t.getFoo());
+
+    }
+
     @Test public void testThatComponentCanHaveAProvidedDependencyViaConstructor() {
         MutablePicoContainer container = new DefaultPicoContainer();
         container.addComponent(String.class, "foo");
