@@ -12,7 +12,7 @@ components are 'actions'.</p>
 	public class ExampleWebappComposer implements WebappComposer {
 
 	    public void composeApplication(MutablePicoContainer appContainer) {
-	        appContainer.addComponent(CheeseDao.class, MemoryCheeseDao.class);
+	        appContainer.addComponent(CheeseDao.class, InMemoryCheeseDao.class);
 	    }
 
 	    public void composeSession(MutablePicoContainer sessionContainer) {

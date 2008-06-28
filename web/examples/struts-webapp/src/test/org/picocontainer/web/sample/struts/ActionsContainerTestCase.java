@@ -27,7 +27,7 @@ public final class ActionsContainerTestCase {
 
         Reader script = new StringReader("<container>"
                 + "	 <implementation type='org.picocontainer.web.sample.dao.CheeseDao'"
-                + "					class='org.picocontainer.web.sample.dao.simple.MemoryCheeseDao'> " + "  </implementation>"
+                + "					class='org.picocontainer.web.sample.dao.simple.InMemoryCheeseDao'> " + "  </implementation>"
                 + "	 <implementation type='org.picocontainer.web.sample.service.CheeseService'"
                 + " 				class='org.picocontainer.web.sample.service.defaults.DefaultCheeseService'>"
                 + "  </implementation>" + " </container>");

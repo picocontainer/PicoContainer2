@@ -10,7 +10,7 @@ package org.picocontainer.web.sample.webwork1;
 
 import junit.framework.TestCase;
 
-import org.picocontainer.web.sample.dao.simple.MemoryCheeseDao;
+import org.picocontainer.web.sample.dao.simple.InMemoryCheeseDao;
 import org.picocontainer.web.sample.service.defaults.DefaultCheeseService;
 import org.picocontainer.web.sample.webwork1.CheeseAction;
 /**
@@ -25,7 +25,7 @@ public class CheeseActionTest extends TestCase {
     * test that cheese action works and store cheese in service
     */
     public void testCheeseAction() throws Exception {
-        DefaultCheeseService service = new DefaultCheeseService(new MemoryCheeseDao());
+        DefaultCheeseService service = new DefaultCheeseService(new InMemoryCheeseDao());
         
         CheeseAction action = new CheeseAction(service);
         action.getCheese().setName("gouda");

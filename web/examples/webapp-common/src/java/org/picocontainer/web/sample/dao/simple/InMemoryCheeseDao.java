@@ -19,11 +19,11 @@ import org.picocontainer.web.sample.model.Cheese;
 /**
  * @author Stephen Molitor
  */
-public class MemoryCheeseDao implements CheeseDao, Serializable {
+public class InMemoryCheeseDao implements CheeseDao, Serializable {
 
     private final Map cheeses;
 
-    public MemoryCheeseDao() {
+    public InMemoryCheeseDao() {
         cheeses = new HashMap();
         cheeses.put("Cheddar", new Cheese("Cheddar","England"));
         cheeses.put("Brie", new Cheese("Brie","France"));
