@@ -12,7 +12,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>web-example</module>
+    <module>webapp-common</module>
     <module>jsf-webapp</module>
     <module>struts-webapp</module>
     <module>struts2-webapp</module>
