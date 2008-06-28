@@ -19,14 +19,14 @@ import javax.servlet.http.HttpServletRequest;
  * {@link PicoRequestProcessor} or {@link PicoTilesRequestProcessor} instead.
  * 
  * @author Stephen Molitor
- * @see ActionFactory
+ * @see PicoActionFactory
  * @see PicoRequestProcessor
  * @see PicoTilesRequestProcessor
  */
 @SuppressWarnings("serial")
 public class PicoActionServlet extends ActionServlet {
 
-    private final ActionFactory actionFactory = new ActionFactory();
+    private final PicoActionFactory actionFactory = new PicoActionFactory();
 
     /**
      * Creates or retrieves the action instance. The action is retrieved from

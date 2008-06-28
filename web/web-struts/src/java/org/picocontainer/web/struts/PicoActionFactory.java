@@ -29,7 +29,7 @@ import org.picocontainer.web.PicoServletContainerFilter;
  * @author Stephen Molitor
  * @author Mauro Talevi
  */
-public final class ActionFactory {
+public final class PicoActionFactory {
 
     @SuppressWarnings("serial")
     public static class ServletFilter extends PicoServletContainerFilter {

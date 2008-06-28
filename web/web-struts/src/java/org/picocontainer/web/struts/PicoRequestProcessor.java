@@ -19,12 +19,12 @@ import org.apache.struts.action.RequestProcessor;
  * using the Tiles library, use {@link PicoTilesRequestProcessor} instead.
  * 
  * @author Stephen Molitor
- * @see ActionFactory
+ * @see PicoActionFactory
  * @see PicoTilesRequestProcessor
  */
 public class PicoRequestProcessor extends RequestProcessor {
 
-    private final ActionFactory actionFactory = new ActionFactory();
+    private final PicoActionFactory actionFactory = new PicoActionFactory();
 
     /**
      * Creates or retrieves the action instance. The action is retrieved from

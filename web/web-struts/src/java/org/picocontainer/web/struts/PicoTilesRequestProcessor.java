@@ -20,12 +20,12 @@ import org.apache.struts.tiles.TilesRequestProcessor;
  * {@link org.picocontainer.web.struts.PicoRequestProcessor} instead.
  * 
  * @author Stephen Molitor
- * @see ActionFactory
+ * @see PicoActionFactory
  * @see org.picocontainer.web.struts.PicoRequestProcessor
  */
 public class PicoTilesRequestProcessor extends TilesRequestProcessor {
 
-    private final ActionFactory actionFactory = new ActionFactory();
+    private final PicoActionFactory actionFactory = new PicoActionFactory();
 
     /**
      * Creates or retrieves the action instance. The action is retrieved from

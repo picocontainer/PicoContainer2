@@ -112,7 +112,7 @@ import org.picocontainer.web.PicoServletContainerFilter;
  * 
  * @author Michael Rimov
  */
-public class PicoDelegatingVariableResolver extends VariableResolver {
+public class PicoVariableResolver extends VariableResolver {
 
     public static class ServletFilter extends PicoServletContainerFilter {
         private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
@@ -150,7 +150,7 @@ public class PicoDelegatingVariableResolver extends VariableResolver {
      * 
      * @param decorated
      */
-    public PicoDelegatingVariableResolver(VariableResolver decorated) {
+    public PicoVariableResolver(VariableResolver decorated) {
         super();
         if (decorated == null) {
             throw new NullPointerException("decorated");

@@ -15,7 +15,7 @@
 	 -->
    <filter>
         <filter-name>picoFilter</filter-name>
-        <filter-class>org.picocontainer.web.jsf.PicoDelegatingVariableResolver$ServletFilter</filter-class>
+        <filter-class>org.picocontainer.web.jsf.PicoVariableResolver$ServletFilter</filter-class>
     </filter>
 
   	<filter-mapping>
