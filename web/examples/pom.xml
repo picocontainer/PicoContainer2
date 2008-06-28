@@ -64,7 +64,7 @@
       </dependency>
       <dependency>
         <groupId>org.picocontainer.web</groupId>
-        <artifactId>picocontainer-web-example</artifactId>
+        <artifactId>webapp-common</artifactId>
         <version>${pom.version}</version>
       </dependency>
     </dependencies>
