@@ -18,6 +18,7 @@ import org.picocontainer.logging.store.factories.ConsoleLoggerStoreFactory;
 import org.picocontainer.logging.store.factories.InitialLoggerStoreFactory;
 import org.picocontainer.logging.store.factories.JdkLoggerStoreFactory;
 import org.picocontainer.logging.store.factories.PropertyLog4JLoggerStoreFactory;
+import static junit.framework.Assert.assertNotNull;
 
 /**
  * @author Mauro Talevi
@@ -36,7 +37,8 @@ public class LoggerStoreFactoryTest extends AbstractTest {
         final HashMap<String, Object> config = new HashMap<String, Object>();
         config.put(ClassLoader.class.getName(), ClassLoader.getSystemClassLoader().getParent());
         final InitialLoggerStoreFactory factory = new InitialLoggerStoreFactory();
-        factory.createLoggerStore(config);
+        LoggerStore foo = factory.createLoggerStore(config);
+        assertNotNull(foo);
     }
 
     @Test
@@ -53,7 +55,8 @@ public class LoggerStoreFactoryTest extends AbstractTest {
         final HashMap<String, Object> config = new HashMap<String, Object>();
         config.put(InitialLoggerStoreFactory.INITIAL_FACTORY, "Blah");
         final InitialLoggerStoreFactory factory = new InitialLoggerStoreFactory();
-        factory.createLoggerStore(config);
+        LoggerStore foo = factory.createLoggerStore(config);
+        assertNotNull(foo);
     }
 
     @Test 
@@ -65,6 +68,7 @@ public class LoggerStoreFactoryTest extends AbstractTest {
         Thread.currentThread().setContextClassLoader(null);
         runFactoryTest(new InitialLoggerStoreFactory(), config, LOG4J_PROPERTIES_FILENAME, ConsoleLogger.LEVEL_DEBUG);
         Thread.currentThread().setContextClassLoader(classLoader);
+        // asserts ?
     }
 
     @Test
