@@ -3,6 +3,7 @@
     <name>Pico Web Applications</name>
     <page>index.html</page>
     <page>composition.html</page> 
+    <page>scoping.html</page> 
     <page>script-composition.html</page> 
     <page>javadoc.html</page>
     <page>downloads.html</page>
