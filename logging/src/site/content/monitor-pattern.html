@@ -39,7 +39,8 @@ public class LoggingPersistenceMonitor implements PersistenceMonitor {
      */
     protected LoggingPersistenceMonitor(String loggerName, LoggingMonitorConfiguration configuration){
         this.loggerName = loggerName;
-        this.loggerStore = Configurator.createLoggerStore(configuration.getType(), resourceAsStream(configuration.getResource()));
+        this.loggerStore = Configurator.createLoggerStore(configuration.getType(), 
+                    resourceAsStream(configuration.getResource()));
     }
 
     private InputStream resourceAsStream(String resource) {
@@ -51,7 +52,8 @@ public class LoggingPersistenceMonitor implements PersistenceMonitor {
     }
   
     public retrievalFailed(String key, Exception cause){
-        loggerStore.getLogger(loggerName).warn("Retrieval for key "+key+" failed:  "+cause.getMessage(), cause);
+        loggerStore.getLogger(loggerName).warn("Retrieval for key " + key 
+                    + " failed:  "+cause.getMessage(), cause);
     }
 }
 </pre></div>
