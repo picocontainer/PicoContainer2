@@ -348,9 +348,6 @@
     </profile>
     <profile>
       <id>examples</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <modules>
         <module>examples</module>
       </modules>
