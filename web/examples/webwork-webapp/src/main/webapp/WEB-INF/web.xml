@@ -30,7 +30,7 @@
 
   <servlet>
     <servlet-name>velocity</servlet-name>
-    <servlet-class>org.picocontainer.web.webwork.WebWorkVelocityServlet</servlet-class>
+    <servlet-class>org.picocontainer.web.webwork.velocity.WebWorkVelocityServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
