@@ -1,7 +1,8 @@
 <sitemap>
   <section>
-    <name>Pico Web Applications</name>
+    <name>PicoContainer Web</name>
     <page>index.html</page>
+    <page>news.html</page>
     <page>composition.html</page> 
     <page>scoping.html</page> 
     <page>script-composition.html</page> 
@@ -9,7 +10,7 @@
     <page>downloads.html</page>
   </section>
   <section>
-    <name>Web Frameworks</name>
+    <name>Web Frameworks Bindings</name>
     <page>struts2.html</page>
     <page>struts1.html</page>
     <page>webwork2.html</page>
