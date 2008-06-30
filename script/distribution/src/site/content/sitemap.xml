@@ -2,6 +2,7 @@
   <section>
     <name>About</name>
     <page>index.html</page>
+    <page>news.html</page>
     <page>javadoc.html</page>
     <page>downloads.html</page>
   </section>
