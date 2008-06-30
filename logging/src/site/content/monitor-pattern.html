@@ -63,5 +63,24 @@ the
 (eg "jdk"), the other is the name of the configuration resource, which can be different for each instance of the monitor
 (eg "logging-persistence.properties").
 </p>
+<h3>Mocking</h3>
+<p>Monitors can be mocked easily for unit test purposes. This could either be with industry standard tools like JMock an EasyMock, or by a more manual process:</p> 
+<div class="source"><pre>
+public class FakePersistenceMonitor implements PersistenceMonitor {
+
+  public final StringBuilder journal = new StringBuilder();
+
+  public void persistedObjectRetrieved(Object persistable) {
+	journal.append("persistedObjectRetrieved(").append(persistable).append(")\n");	
+  }
+  
+  public void retrievalFailed(String key, Exception cause) {
+	journal.append("retrievalFailed(").append(key).append(",")
+	    .append(cause.getMessage()).append(")\n");	
+  }
+}
+  
+}
+</pre></div>
 </body>
 </html>

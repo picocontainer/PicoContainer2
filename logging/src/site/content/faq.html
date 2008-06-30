@@ -13,7 +13,7 @@
 </h3>
 <div>
 <p>PicoContainer Logging provides a logging facade to different logging tools, but unlike some other similar
-facades, it fully and truely supports Inversion of Control and Dependency Injection. In particular, it allows the <b>concurrent</b>
+facades, it fully and truly supports Inversion of Control and Dependency Injection. In particular, it allows the <b>concurrent</b>
 use of different logging tools for different components in a completely configurable way.</p>
 </div>
 <h3 class="headerstyle">
@@ -25,7 +25,7 @@ use of different logging tools for different components in a completely configur
 </h3>
 <div>
 <p>Unlike Commons Logging it does use any discovery system to look up which tool is present in the classpath. The
-concurrent presence of log4j.jar and other logging tools does not prevent the user to configure, say, the use of the JDK
+concurrent presence of log4j.jar and other logging libraries and applicable properties does not prevent the user of it with JDK
 logging.</p>
 </div>
 <h3 class="headerstyle">
@@ -39,8 +39,8 @@ logging.</p>
 <div>
 <p>We encourage the use of the <a href="monitor-pattern.html">Monitor pattern</a> to abstract the dependency on any
 logging framework, so it is very easy to upgrade and switch from one to the other.</p>
-<p>Secondly, the PicoContainer Logger interface is actually compatible with the Commons Logging Log interface, and the
-logger implementations can easily be decorated to implement the Log interface.</p>
+<p>Secondly, the PicoContainer Logger interface is actually compatible with the Commons Logging Log interface, and implementations of our 
+Logger can easily be decorated to also implement the Log interface from Commons-Logging</p>
 </div>
 
 </body>
