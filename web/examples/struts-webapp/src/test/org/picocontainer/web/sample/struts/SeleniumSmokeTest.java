@@ -18,7 +18,7 @@ public class SeleniumSmokeTest {
         DefaultSelenium selenium = createSeleniumClient("http://localhost:8080/");
         selenium.start();
 
-        selenium.showContextualBanner();
+        //selenium.showContextualBanner();
         selenium.open("/struts-webapp");
         selenium.isTextPresent("Dolcelatte");
         selenium.type("name", "test-cheese");
