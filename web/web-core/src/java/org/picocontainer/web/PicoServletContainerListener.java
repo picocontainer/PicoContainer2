@@ -68,27 +68,12 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
     private DefaultPicoContainer requestContainer;
     private Storing sessionStoring;
     private Storing requestStoring;
-    private boolean useCompositionClass;
+    private boolean useCompositionClass = true;
 
     /**
      * Default constructor used in webapp containers
      */
     public PicoServletContainerListener() {
-    }
-
-    public static class ScopedContainers {
-        private DefaultPicoContainer applicationContainer;
-        private DefaultPicoContainer sessionContainer;
-        private DefaultPicoContainer requestContainer;
-        private Storing sessionStoring;
-        private Storing requestStoring;
-        public ScopedContainers(DefaultPicoContainer applicationContainer, DefaultPicoContainer sessionContainer, DefaultPicoContainer requestContainer, Storing sessionStoring, Storing requestStoring) {
-            this.applicationContainer = applicationContainer;
-            this.sessionContainer = sessionContainer;
-            this.requestContainer = requestContainer;
-            this.sessionStoring = sessionStoring;
-            this.requestStoring = requestStoring;
-        }
     }
 
     /**
@@ -117,12 +102,12 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
 
     public void contextInitialized(final ServletContextEvent event) {
 
-        ScopedContainers ce = makeScopedContainers();
-        applicationContainer = ce.applicationContainer;
-        sessionContainer = ce.sessionContainer;
-        requestContainer = ce.requestContainer;
-        sessionStoring = ce.sessionStoring;
-        requestStoring = ce.requestStoring;
+        ScopedContainers scopedContainers = makeScopedContainers();
+        applicationContainer = scopedContainers.applicationContainer;
+        sessionContainer = scopedContainers.sessionContainer;
+        requestContainer = scopedContainers.requestContainer;
+        sessionStoring = scopedContainers.sessionStoring;
+        requestStoring = scopedContainers.requestStoring;
 
         ServletContext context = event.getServletContext();
         applicationContainer.setName("application");
@@ -150,15 +135,40 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         applicationContainer.start();
     }
 
+    /**
+     * Overide this method if you need a more specialized container tree.
+     * Here is the default block of code for this -
+     *
+     *     DefaultPicoContainer appCtnr = new DefaultPicoContainer(new Caching(), makeParentContainer());
+     *     Storing sessStoring = new Storing();
+     *     DefaultPicoContainer sessCtnr = new DefaultPicoContainer(sessStoring, appCtnr);
+     *     Storing reqStoring = new Storing();
+     *     DefaultPicoContainer reqCtnr = new DefaultPicoContainer(reqStoring, sessCtnr);
+     *     return new ScopedContainers(appCtnr,sessCtnr,reqCtnr,sessStoring,reqStoring);
+     *
+     * @return an instance of ScopedContainers
+     */
     protected ScopedContainers makeScopedContainers() {
-        DefaultPicoContainer ac = new DefaultPicoContainer(new Caching(), makeParentContainer());
-        Storing ss = new Storing();
-        DefaultPicoContainer sc = new DefaultPicoContainer(ss, ac);
-        Storing rs = new Storing();
-        DefaultPicoContainer rc = new DefaultPicoContainer(rs, sc);
-        return new ScopedContainers(ac,sc,rc,ss,rs);
+        DefaultPicoContainer appCtnr = new DefaultPicoContainer(new Caching(), makeParentContainer());
+        Storing sessStoring = new Storing();
+        DefaultPicoContainer sessCtnr = new DefaultPicoContainer(sessStoring, appCtnr);
+        Storing reqStoring = new Storing();
+        DefaultPicoContainer reqCtnr = new DefaultPicoContainer(reqStoring, sessCtnr);
+        return new ScopedContainers(appCtnr,sessCtnr,reqCtnr,sessStoring,reqStoring);
     }
 
+    /**
+     * Get the class to do compostition with - from a "webapp-composer-class" config param
+     * from web.xml :
+     *
+     *   <context-param>
+     *       <param-name>webapp-composer-class</param-name>
+     *       <param-value>com.yourcompany.YourWebappComposer</param-value>
+     *   </context-param>
+     *
+     * @param context
+     * @return
+     */
     protected WebappComposer loadComposer(ServletContext context) {
         String composerClassName = context.getInitParameter(WEBAPP_COMPOSER_CLASS);
         try {
@@ -211,5 +221,23 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         sessionContainer.dispose();
         sessionStoring.invalidateCacheForThread();
     }
+
+    public static class ScopedContainers {
+
+        private DefaultPicoContainer applicationContainer;
+        private DefaultPicoContainer sessionContainer;
+        private DefaultPicoContainer requestContainer;
+        private Storing sessionStoring;
+        private Storing requestStoring;
+
+        public ScopedContainers(DefaultPicoContainer applicationContainer, DefaultPicoContainer sessionContainer, DefaultPicoContainer requestContainer, Storing sessionStoring, Storing requestStoring) {
+            this.applicationContainer = applicationContainer;
+            this.sessionContainer = sessionContainer;
+            this.requestContainer = requestContainer;
+            this.sessionStoring = sessionStoring;
+            this.requestStoring = requestStoring;
+        }
+    }
+
 
 }
