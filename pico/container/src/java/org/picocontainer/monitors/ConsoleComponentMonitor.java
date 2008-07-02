@@ -39,8 +39,7 @@ import org.picocontainer.injectors.AbstractInjector;
  * @todo  After serialization, the output printstream is null.  
  */
 @SuppressWarnings("serial")
-public final class ConsoleComponentMonitor implements ComponentMonitor, Serializable {
-
+public class ConsoleComponentMonitor implements ComponentMonitor, Serializable {
 
 	/**
 	 * The outgoing print stream.
