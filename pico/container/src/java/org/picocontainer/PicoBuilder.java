@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.List;
 
+import com.thoughtworks.xstream.io.xml.xppdom.Xpp3DomBuilder;
+
 /**
  * Helps assembles the myriad items available to a picocontainer.
  * <p>Simple Example:</p>
@@ -50,6 +52,7 @@ public class PicoBuilder {
     private Class<? extends MutablePicoContainer> mpcClass = DefaultPicoContainer.class;
     private ComponentMonitor componentMonitor;
     private List<Object> containerComps = new ArrayList<Object>();
+    private boolean addChildToParent;
 
     public PicoBuilder(PicoContainer parentContainer, InjectionFactory injectionType) {
         this.injectionType = injectionType;
@@ -141,7 +144,15 @@ public class PicoBuilder {
         temp.addComponent("mpc", mpcClass);
 
 
-        return (MutablePicoContainer) temp.getComponent("mpc");
+        MutablePicoContainer newContainer = (MutablePicoContainer) temp.getComponent("mpc");
+        if (addChildToParent) {
+            if (parentContainer instanceof MutablePicoContainer) {
+                ((MutablePicoContainer)parentContainer).addChildContainer(newContainer);
+            } else {
+                throw new PicoCompositionException("If using addChildContainer() the parent must be a MutablePicoContainer");
+            }
+        }
+        return newContainer;
     }
 
     public PicoBuilder withHiddenImplementations() {
@@ -234,6 +245,11 @@ public class PicoBuilder {
 
     public PicoBuilder withMethodInjection() {
         componentFactories.push(new MethodInjection());
+        return this;
+    }
+
+    public PicoBuilder addChildToParent() {
+        addChildToParent =  true;
         return this;
     }
 }

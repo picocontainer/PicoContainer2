@@ -39,6 +39,7 @@ import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 import com.thoughtworks.xstream.XStream;
+import static junit.framework.Assert.assertTrue;
 
 @SuppressWarnings("serial")
 public class PicoBuilderTestCase {
@@ -138,19 +139,44 @@ public class PicoBuilderTestCase {
 
     public static class CustomParentcontainer extends EmptyPicoContainer {}
 
-    @Test public void testWithCustomParentContainer() {
+    @Test public void testCustomParentContainer() {
         MutablePicoContainer actual = new PicoBuilder(new CustomParentcontainer()).build();
         MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
                 new NullLifecycleStrategy(), new CustomParentcontainer(), new NullComponentMonitor());
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
-    @Test public void testWithBogusParentContainerBehavesAsIfNotSet() {
+    @Test public void testBogusParentContainerBehavesAsIfNotSet() {
         MutablePicoContainer actual = new PicoBuilder((PicoContainer)null).build();
         MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
                 new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
+
+    @Test public void testParentAndChildContainersMutallyVisible() {
+        DefaultPicoContainer parent = (DefaultPicoContainer) new PicoBuilder().build();
+        MutablePicoContainer actual = new PicoBuilder(parent).addChildToParent().build();
+
+        DefaultPicoContainer parentExpected = (DefaultPicoContainer) new PicoBuilder().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
+                new NullLifecycleStrategy(), parentExpected, new NullComponentMonitor());       
+        parentExpected.addChildContainer(expected); 
+
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
+        boolean b = parent.removeChildContainer(actual);
+        assertTrue(b);
+    }
+
+    @Test
+    public void testParentAndChildContainersVetoedWhenParentNotMutable() {
+        try {
+            MutablePicoContainer actual = new PicoBuilder(new EmptyPicoContainer()).addChildToParent().build();
+            fail("should have barfed");
+        } catch (PicoCompositionException e) {
+            assertTrue(e.getMessage().contains("parent must be a MutablePicoContainer"));
+        }
+    }
+
 
 
     @Test public void testWithSetterDI() {
