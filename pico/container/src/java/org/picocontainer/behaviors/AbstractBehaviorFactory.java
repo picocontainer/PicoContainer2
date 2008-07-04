@@ -20,6 +20,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.Characteristics;
 import org.picocontainer.injectors.AdaptingInjection;
 
 @SuppressWarnings("serial")
@@ -39,8 +40,15 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
         if (delegate == null) {
             delegate = new AdaptingInjection();
         }
-        return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, componentKey,
+        ComponentAdapter<T> compAdapter = delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, componentKey,
                 componentImplementation, parameters);
+
+        boolean enableCircular = removePropertiesIfPresent(componentProperties, Characteristics.ENABLE_CIRCULAR);
+        if (enableCircular) {
+            return new HiddenImplementation(compAdapter);
+        } else {
+            return compAdapter;
+        }
     }
 
     public void verify(PicoContainer container) {

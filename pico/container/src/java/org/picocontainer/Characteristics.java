@@ -36,6 +36,7 @@ public final class Characteristics {
     private static final String _PROPERTY_APPLYING = "property-applying";
     private static final String _AUTOMATIC = "automatic";
     private static final String _USE_NAMES = "use-parameter-names";    
+    private static final String _ENABLE_CIRCULAR = "enable-circular";
 
     /**
      * Since properties use strings, we supply String constants for Boolean conditions.
@@ -129,7 +130,8 @@ public final class Characteristics {
      * @see #HIDE_IMPL for more information.
      */
     public static final Properties NO_HIDE_IMPL = immutable(_HIDE_IMPL, FALSE);
-    
+
+    public static final Properties ENABLE_CIRCULAR = immutable(_ENABLE_CIRCULAR, TRUE);
     
     public static final Properties NONE = immutable(_NONE, "");
 

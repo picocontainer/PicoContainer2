@@ -33,8 +33,6 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.List;
 
-import com.thoughtworks.xstream.io.xml.xppdom.Xpp3DomBuilder;
-
 /**
  * Helps assembles the myriad items available to a picocontainer.
  * <p>Simple Example:</p>

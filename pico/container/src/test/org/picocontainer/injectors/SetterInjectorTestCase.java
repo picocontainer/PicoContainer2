@@ -495,9 +495,9 @@ public class SetterInjectorTestCase
 
     @Test
     public void circularIsPossible() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHiding().wrap(new Caching().wrap(new SetterInjection())));
-        pico.addComponent(IFish.class, Fish.class);
-        pico.addComponent(IWater.class, Water.class); // as(ALLOW_CIRCULAR)
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Caching().wrap(new SetterInjection()));
+        pico.as(Characteristics.ENABLE_CIRCULAR).addComponent(IFish.class, Fish.class);
+        pico.addComponent(IWater.class, Water.class);
         IWater water = pico.getComponent(IWater.class);
         IFish fish = pico.getComponent(IFish.class);
         assertNotNull(water.getFish());
