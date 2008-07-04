@@ -27,6 +27,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
 import org.picocontainer.behaviors.Caching;
+import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -459,6 +460,48 @@ public class SetterInjectorTestCase
         sica.stop(touchable);
         sica.dispose(touchable);
         assertEquals("<start<stop<dispose", strategy.recording());
+    }
+
+    public static interface IFish {
+        IWater getWater();
+    }
+    public static class Fish implements IFish {
+        IWater water;
+
+        public void setWater(IWater water) {
+            this.water = water;
+        }
+
+        public IWater getWater() {
+            return water;
+        }
+    }
+
+    public static interface IWater {
+        IFish getFish();
+
+    }
+    public static class Water implements IWater {
+        IFish fish;
+
+        public void setFish(IFish fish) {
+            this.fish = fish;
+        }
+
+        public IFish getFish() {
+            return fish;
+        }
+    }
+
+    @Test
+    public void circularIsPossible() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHiding().wrap(new Caching().wrap(new SetterInjection())));
+        pico.addComponent(IFish.class, Fish.class);
+        pico.addComponent(IWater.class, Water.class); // as(ALLOW_CIRCULAR)
+        IWater water = pico.getComponent(IWater.class);
+        IFish fish = pico.getComponent(IFish.class);
+        assertNotNull(water.getFish());
+        assertNotNull(fish.getWater());
     }
 
 }
