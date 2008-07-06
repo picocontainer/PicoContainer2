@@ -97,7 +97,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @param parameters the parameter types
      * @return the array with the default parameters.
      */
-    protected Parameter[] createDefaultParameters(final Class[] parameters) {
+    protected Parameter[] createDefaultParameters(final Type[] parameters) {
         Parameter[] componentParameters = new Parameter[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
             componentParameters[i] = ComponentParameter.DEFAULT;
@@ -215,12 +215,25 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         throw new PicoCompositionException(e);
     }
 
-    protected Class<?> box(final Class<?> parameterType) {
-        if (parameterType.isPrimitive()) {
-            if (parameterType == Integer.TYPE) {
+    protected Type box(Type parameterType) {
+        if (parameterType instanceof Class && ((Class) parameterType).isPrimitive()) {
+            String parameterTypeName = ((Class) parameterType).getName();
+            if (parameterTypeName == "int") {
                 return Integer.class;
-            } else if (parameterType == Boolean.TYPE) {
+            } else if (parameterTypeName == "boolean") {
                 return Boolean.class;
+            } else if (parameterTypeName == "long") {
+                return Long.class;
+            } else if (parameterTypeName == "float") {
+                return Float.class;
+            } else if (parameterTypeName == "double") {
+                return Double.class;
+            } else if (parameterTypeName == "char") {
+                return Character.class;
+            } else if (parameterTypeName == "byte") {
+                return Byte.class;
+            } else if (parameterTypeName == "short") {
+                return Short.class;
             }
         }
         return parameterType;
@@ -383,7 +396,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 		
 		private final ComponentAdapter<?> instantiatingComponentAdapter;
         private final Set unsatisfiableDependencies;
-        private final Class<?> unsatisfiedDependencyType;
+        private final Type unsatisfiedDependencyType;
         
         /**
          * The original container requesting the instantiation of the component.
@@ -391,7 +404,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         private final PicoContainer leafContainer;
 
         public UnsatisfiableDependenciesException(final ComponentAdapter<?> instantiatingComponentAdapter,
-                                                  final Class<?> unsatisfiedDependencyType, final Set unsatisfiableDependencies,
+                                                  final Type unsatisfiedDependencyType, final Set unsatisfiableDependencies,
                                                   final PicoContainer leafContainer) {
             super(instantiatingComponentAdapter.getComponentImplementation().getName() + " has unsatisfied dependency: " + unsatisfiedDependencyType
                     +" among unsatisfiable dependencies: "+unsatisfiableDependencies + " where " + leafContainer
@@ -410,7 +423,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
             return unsatisfiableDependencies;
         }
 
-        public Class<?> getUnsatisfiedDependencyType() {
+        public Type getUnsatisfiedDependencyType() {
             return unsatisfiedDependencyType;
         }
 

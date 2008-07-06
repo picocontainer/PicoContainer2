@@ -31,7 +31,7 @@ import com.thoughtworks.paranamer.CachingParanamer;
 public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     protected transient List<AccessibleObject> injectionMembers;
-    protected transient Class[] injectionTypes;
+    protected transient Type[] injectionTypes;
     protected transient Annotation[] bindings;
 
 
@@ -89,7 +89,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes);
         final Set<Integer> nonMatchingParameterPositions = matchParameters(container, matchingParameterList, currentParameters);
 
-        final Set<Class> unsatisfiableDependencyTypes = new HashSet<Class>();
+        final Set<Type> unsatisfiableDependencyTypes = new HashSet<Type>();
         for (int i = 0; i < matchingParameterList.size(); i++) {
             if (matchingParameterList.get(i) == null) {
                 unsatisfiableDependencyTypes.add(injectionTypes[i]);
@@ -130,7 +130,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         return new ParameterNameBinding(paranamer, getComponentImplementation(),  member, 0);
     }
 
-    protected void unsatisfiedDependencies(PicoContainer container, Set<Class> unsatisfiableDependencyTypes) {
+    protected void unsatisfiedDependencies(PicoContainer container, Set<Type> unsatisfiableDependencyTypes) {
         throw new UnsatisfiableDependenciesException(this, null, unsatisfiableDependencyTypes, container);
     }
 
@@ -240,7 +240,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     protected void initializeInjectionMembersAndTypeLists() {
         injectionMembers = new ArrayList<AccessibleObject>();
         List<Annotation> bingingIds = new ArrayList<Annotation>();
-        final List<Class> typeList = new ArrayList<Class>();
+        final List<Type> typeList = new ArrayList<Type>();
         final Method[] methods = getMethods();
         for (final Method method : methods) {
             final Class[] parameterTypes = method.getParameterTypes();
@@ -254,7 +254,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
                 }
             }
         }
-        injectionTypes = typeList.toArray(new Class[0]);
+        injectionTypes = typeList.toArray(new Type[0]);
         bindings = bingingIds.toArray(new Annotation[0]);
     }
 

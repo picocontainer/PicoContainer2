@@ -16,6 +16,8 @@ import org.picocontainer.annotations.Bind;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Type;
+
 import com.thoughtworks.paranamer.CachingParanamer;
 
 /**
@@ -40,37 +42,8 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
         return paranamer;
     }
 
-
-    /**
-     * TODO: shall it box everything?  a bit too few for me (konstantin)
-     */
-    protected Class box(Class parameterType) {
-        if (parameterType.isPrimitive()) {
-            String parameterTypeName = parameterType.getName();
-            if (parameterTypeName == "int") {
-                return Integer.class;
-            } else if (parameterTypeName == "boolean") {
-                return Boolean.class;
-            } else if (parameterTypeName == "long") {
-                return Long.class;
-            } else if (parameterTypeName == "float") {
-                return Float.class;
-            } else if (parameterTypeName == "double") {
-                return Double.class;
-            } else if (parameterTypeName == "char") {
-                return Character.class;
-            } else if (parameterTypeName == "byte") {
-                return Byte.class;
-            } else if (parameterTypeName == "short") {
-                return Short.class;
-            }
-        }
-        return parameterType;
-    }
-
-
     @SuppressWarnings("unchecked")
-    protected Object[] getMemberArguments(PicoContainer container, final AccessibleObject member, final Class[] parameterTypes, final Annotation[] bindings) {
+    protected Object[] getMemberArguments(PicoContainer container, final AccessibleObject member, final Type[] parameterTypes, final Annotation[] bindings) {
         for (int i = 0; i < parameterTypes.length; i++) {
             parameterTypes[i] = box(parameterTypes[i]);
 

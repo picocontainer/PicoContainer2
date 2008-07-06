@@ -143,8 +143,7 @@ public class CollectionComponentParameterTestCase {
 	@Test
 	public void testCollectionsAreGeneratedOnTheFly() {
 		MutablePicoContainer mpc = new DefaultPicoContainer();
-		mpc
-				.addAdapter(new ConstructorInjector(Bowl.class, Bowl.class,
+		mpc.addAdapter(new ConstructorInjector(Bowl.class, Bowl.class,
 						null, new NullComponentMonitor(),
 						new NullLifecycleStrategy(), false));
 		mpc.addComponent(Cod.class);
@@ -166,12 +165,33 @@ public class CollectionComponentParameterTestCase {
 		}
 	}
 
+	static public class GenericCollectedBowl extends CollectedBowl {
+
+		public GenericCollectedBowl(Collection<Cod> cods, Collection<Fish> fishes) {
+            super(cods, fishes);
+        }
+	}
+
 	@Test
 	public void testCollections() {
 		MutablePicoContainer mpc = new DefaultPicoContainer(new Caching());
 		mpc.addComponent(CollectedBowl.class, CollectedBowl.class,
 				new ComponentParameter(Cod.class, false),
 				new ComponentParameter(Fish.class, false));
+		mpc.addComponent(Cod.class);
+		mpc.addComponent(Shark.class);
+		Cod cod = mpc.getComponent(Cod.class);
+		CollectedBowl bowl = mpc.getComponent(CollectedBowl.class);
+		assertEquals(1, bowl.cods.length);
+		assertEquals(2, bowl.fishes.length);
+		assertSame(cod, bowl.cods[0]);
+		assertNotSame(bowl.fishes[0], bowl.fishes[1]);
+	}
+
+	@Test
+	public void testGenericCollections() {
+		MutablePicoContainer mpc = new DefaultPicoContainer(new Caching());
+		mpc.addComponent(GenericCollectedBowl.class);
 		mpc.addComponent(Cod.class);
 		mpc.addComponent(Shark.class);
 		Cod cod = mpc.getComponent(Cod.class);

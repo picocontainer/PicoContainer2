@@ -18,6 +18,8 @@ import org.picocontainer.PicoVisitor;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
+import java.lang.reflect.ParameterizedType;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,10 +46,11 @@ import java.util.TreeSet;
  */
 @SuppressWarnings("serial")
 public class CollectionComponentParameter
-    implements Parameter, Serializable
-{
+        implements Parameter, Serializable {
 
-    /** Use <code>ARRAY</code> as {@link Parameter}for an Array that must have elements. */
+    /**
+     * Use <code>ARRAY</code> as {@link Parameter}for an Array that must have elements.
+     */
     public static final CollectionComponentParameter ARRAY = new CollectionComponentParameter();
     /**
      * Use <code>ARRAY_ALLOW_EMPTY</code> as {@link Parameter}for an Array that may have no
@@ -110,37 +113,34 @@ public class CollectionComponentParameter
      * {@link Collection}or {@link Map}. An empty collection is only a valid resolution, if
      * the <code>emptyCollection</code> flag was set.
      *
-     * @param container             {@inheritDoc}
-     * @param adapter               {@inheritDoc}
-     * @param expectedType          {@inheritDoc}
+     * @param container           {@inheritDoc}
+     * @param adapter             {@inheritDoc}
+     * @param expectedType        {@inheritDoc}
      * @param expectedNameBinding {@inheritDoc}
-     *
      * @param useNames
      * @param binding
      * @return the instance of the collection type or <code>null</code>
-     *
      * @throws PicoCompositionException {@inheritDoc}
      */
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     public Object resolveInstance(PicoContainer container,
                                   ComponentAdapter adapter,
-                                  Class expectedType,
-                                  NameBinding expectedNameBinding, boolean useNames, Annotation binding)
-    {
+                                  Type expectedType,
+                                  NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         // type check is done in isResolvable
         Object result = null;
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
             final Map<Object, ComponentAdapter<?>> adapterMap =
-                getMatchingComponentAdapters(container, adapter, componentKeyType, getValueType(expectedType));
-            if (Array.class.isAssignableFrom(collectionType)) {
-                result = getArrayInstance(container, expectedType, adapterMap);
+                    getMatchingComponentAdapters(container, adapter, componentKeyType, getValueType(expectedType));
+            if (collectionType.isArray()) {
+                result = getArrayInstance(container, collectionType, adapterMap);
             } else if (Map.class.isAssignableFrom(collectionType)) {
-                result = getMapInstance(container, expectedType, adapterMap);
+                result = getMapInstance(container, collectionType, adapterMap);
             } else if (Collection.class.isAssignableFrom(collectionType)) {
-                result = getCollectionInstance(container, (Class<? extends Collection>)expectedType, adapterMap);
+                result = getCollectionInstance(container, (Class<? extends Collection>) collectionType, adapterMap);
             } else {
-                throw new PicoCompositionException(expectedType.getName() + " is not a collective type");
+                throw new PicoCompositionException(expectedType + " is not a collective type");
             }
         }
         return result;
@@ -152,11 +152,10 @@ public class CollectionComponentParameter
      * {@link Array},{@link Collection}or {@link Map}. An empty collection is only a valid
      * resolution, if the <code>emptyCollection</code> flag was set.
      *
-     * @param container             {@inheritDoc}
-     * @param adapter               {@inheritDoc}
-     * @param expectedType          {@inheritDoc}
+     * @param container           {@inheritDoc}
+     * @param adapter             {@inheritDoc}
+     * @param expectedType        {@inheritDoc}
      * @param expectedNameBinding {@inheritDoc}
-     *
      * @param useNames
      * @param binding
      * @return <code>true</code> if matching components were found or an empty collective type
@@ -164,14 +163,48 @@ public class CollectionComponentParameter
      */
     public boolean isResolvable(PicoContainer container,
                                 ComponentAdapter adapter,
-                                Class expectedType,
-                                NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
-        final Class collectionType = getCollectionType(expectedType);
-        final Class valueType = getValueType(expectedType);
-        return collectionType != null && (emptyCollection || getMatchingComponentAdapters(container,
-                                                                                          adapter,
-                                                                                          componentKeyType,
-                                                                                          valueType).size() > 0);
+                                Type expectedType,
+                                NameBinding expectedNameBinding,
+                                boolean useNames,
+                                Annotation binding) {
+        return getCollectionType(expectedType) != null &&
+                (emptyCollection || getMatchingComponentAdapters(container, adapter,
+                        componentKeyType, getValueType(expectedType)).size() > 0);
+    }
+
+
+    /**
+     * Check for a successful dependency resolution of the parameter for the expected type. The
+     * dependency can only be satisfied if the expected type is one of the collection types
+     * {@link Array},{@link Collection}or {@link Map}. An empty collection is only a valid
+     * resolution, if the <code>emptyCollection</code> flag was set.
+     *
+     * This method has been replaced with one where the expectedType is a Type not a Class.
+     *
+     * @param container           {@inheritDoc}
+     * @param adapter             {@inheritDoc}
+     * @param expectedType        {@inheritDoc}
+     * @param expectedNameBinding {@inheritDoc}
+     * @param useNames
+     * @param binding
+     * @return <code>true</code> if matching components were found or an empty collective type
+     *         is allowed
+     */
+    @Deprecated
+    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+        return isResolvable(container, adapter, (Type) expectedType, expectedNameBinding, useNames, binding);
+    }
+
+    private Class getCollectionType(Type expectedType) {
+        if (expectedType instanceof Class) {
+            return getCollectionType((Class) expectedType);
+        } else if (expectedType instanceof ParameterizedType) {
+            ParameterizedType type = (ParameterizedType) expectedType;
+
+            return getCollectionType(type.getRawType());
+        }
+
+        throw new IllegalArgumentException("Unable to get collection type from " + expectedType);
     }
 
     /**
@@ -180,40 +213,38 @@ public class CollectionComponentParameter
      * {@link Collection}or {@link Map}. An empty collection is only a valid resolution, if
      * the <code>emptyCollection</code> flag was set.
      *
-     * @param container             {@inheritDoc}
-     * @param adapter               {@inheritDoc}
-     * @param expectedType          {@inheritDoc}
+     * @param container           {@inheritDoc}
+     * @param adapter             {@inheritDoc}
+     * @param expectedType        {@inheritDoc}
      * @param expectedNameBinding {@inheritDoc}
-     *
      * @param useNames
      * @param binding
      * @throws PicoCompositionException {@inheritDoc}
      */
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
-                       Class expectedType,
-                       NameBinding expectedNameBinding, boolean useNames, Annotation binding)
-    {
+                       Type expectedType,
+                       NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
             final Class valueType = getValueType(expectedType);
             final Collection componentAdapters =
-                getMatchingComponentAdapters(container, adapter, componentKeyType, valueType).values();
+                    getMatchingComponentAdapters(container, adapter, componentKeyType, valueType).values();
             if (componentAdapters.isEmpty()) {
                 if (!emptyCollection) {
-                    throw new PicoCompositionException(expectedType.getName()
-                                                         + " not resolvable, no components of type "
-                                                         + getValueType(expectedType).getName()
-                                                         + " available");
+                    throw new PicoCompositionException(expectedType
+                            + " not resolvable, no components of type "
+                            + valueType.getName()
+                            + " available");
                 }
             } else {
                 for (Object componentAdapter1 : componentAdapters) {
-                    final ComponentAdapter componentAdapter = (ComponentAdapter)componentAdapter1;
+                    final ComponentAdapter componentAdapter = (ComponentAdapter) componentAdapter1;
                     componentAdapter.verify(container);
                 }
             }
         } else {
-            throw new PicoCompositionException(expectedType.getName() + " is not a collective type");
+            throw new PicoCompositionException(expectedType + " is not a collective type");
         }
     }
 
@@ -230,7 +261,6 @@ public class CollectionComponentParameter
      * Evaluate whether the given component adapter will be part of the collective type.
      *
      * @param adapter a <code>ComponentAdapter</code> value
-     *
      * @return <code>true</code> if the adapter takes part
      */
     protected boolean evaluate(final ComponentAdapter adapter) {
@@ -244,15 +274,13 @@ public class CollectionComponentParameter
      * @param adapter   {@link ComponentAdapter} to exclude
      * @param keyType   the compatible type of the key
      * @param valueType the compatible type of the addComponent
-     *
      * @return a {@link Map} with the ComponentAdapter instances and their component keys as map key.
      */
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     protected Map<Object, ComponentAdapter<?>> getMatchingComponentAdapters(PicoContainer container,
                                                                             ComponentAdapter adapter,
                                                                             Class keyType,
-                                                                            Class valueType)
-    {
+                                                                            Class valueType) {
         final Map<Object, ComponentAdapter<?>> adapterMap = new LinkedHashMap<Object, ComponentAdapter<?>>();
         final PicoContainer parent = container.getParent();
         if (parent != null) {
@@ -276,30 +304,46 @@ public class CollectionComponentParameter
     }
 
     private Class getCollectionType(final Class collectionType) {
-        Class collectionClass = null;
-        if (collectionType.isArray()) {
-            collectionClass = Array.class;
-        } else if (Map.class.isAssignableFrom(collectionType)) {
-            collectionClass = Map.class;
-        } else if (Collection.class.isAssignableFrom(collectionType)) {
-            collectionClass = Collection.class;
+        if (collectionType.isArray() ||
+                Map.class.isAssignableFrom(collectionType) ||
+                Collection.class.isAssignableFrom(collectionType)) {
+            return collectionType;
         }
-        return collectionClass;
+
+        return null;
+    }
+
+    private Class getValueType(Type collectionType) {
+        if (collectionType instanceof Class) {
+            return getValueType((Class) collectionType);
+        } else if (collectionType instanceof ParameterizedType) {
+            return getValueType((ParameterizedType) collectionType);        }
+        throw new IllegalArgumentException("Unable to determine collection type from " + collectionType);
     }
 
     private Class getValueType(final Class collectionType) {
-        Class valueType = componentValueType;
+        Class valueType = componentValueType; 
         if (collectionType.isArray()) {
             valueType = collectionType.getComponentType();
         }
         return valueType;
     }
 
+    private Class getValueType(final ParameterizedType collectionType) {
+        Class valueType = componentValueType;
+        if (Collection.class.isAssignableFrom((Class<?>) collectionType.getRawType())) {
+            Type type = collectionType.getActualTypeArguments()[0];
+            if (type instanceof Class) {
+                valueType = (Class) type;
+            }
+        }
+        return valueType;
+    }
+
     private Object[] getArrayInstance(final PicoContainer container,
                                       final Class expectedType,
-                                      final Map<Object, ComponentAdapter<?>> adapterList)
-    {
-        final Object[] result = (Object[])Array.newInstance(expectedType.getComponentType(), adapterList.size());
+                                      final Map<Object, ComponentAdapter<?>> adapterList) {
+        final Object[] result = (Object[]) Array.newInstance(expectedType.getComponentType(), adapterList.size());
         int i = 0;
         for (ComponentAdapter componentAdapter : adapterList.values()) {
             result[i] = container.getComponent(componentAdapter.getComponentKey());
@@ -308,11 +352,10 @@ public class CollectionComponentParameter
         return result;
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     private Collection getCollectionInstance(final PicoContainer container,
                                              final Class<? extends Collection> expectedType,
-                                             final Map<Object, ComponentAdapter<?>> adapterList)
-    {
+                                             final Map<Object, ComponentAdapter<?>> adapterList) {
         Class<? extends Collection> collectionType = expectedType;
         if (collectionType.isInterface()) {
             // The order of tests are significant. The least generic types last.
@@ -347,11 +390,10 @@ public class CollectionComponentParameter
         }
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     private Map getMapInstance(final PicoContainer container,
                                final Class<? extends Map> expectedType,
-                               final Map<Object, ComponentAdapter<?>> adapterList)
-    {
+                               final Map<Object, ComponentAdapter<?>> adapterList) {
         Class<? extends Map> collectionType = expectedType;
         if (collectionType.isInterface()) {
             // The order of tests are significant. The least generic types last.

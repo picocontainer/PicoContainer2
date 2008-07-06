@@ -13,6 +13,7 @@ package org.picocontainer;
 import org.picocontainer.parameters.ComponentParameter;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 
 /**
  * This class provides control over the arguments that will be passed to a constructor. It can be used for finer control over
@@ -49,7 +50,7 @@ public interface Parameter {
      * Retrieve the object from the Parameter that satisfies the expected type.
      *
      * @param container             the container from which dependencies are resolved.
-     * @param adapter               the {@link ComponentAdapter} that is asking for the instance
+     * @param adapter               the {@link org.picocontainer.ComponentAdapter} that is asking for the instance
      * @param expectedType          the type that the returned instance needs to match.
      * @param expectedNameBinding Expected parameter name
      *
@@ -59,9 +60,9 @@ public interface Parameter {
      *
      * @throws PicoCompositionException if a referenced component could not be instantiated.
      */
-     <T> T resolveInstance(PicoContainer container,
+     Object resolveInstance(PicoContainer container,
                            ComponentAdapter adapter,
-                           Class<T> expectedType,
+                           Type expectedType,
                            NameBinding expectedNameBinding, boolean useNames, Annotation binding);
 
     /**
@@ -77,16 +78,24 @@ public interface Parameter {
      * @return <code>true</code> if the component parameter can be resolved.
      *
      */
+    @Deprecated
     boolean isResolvable(PicoContainer container,
                          ComponentAdapter adapter,
                          Class expectedType,
                          NameBinding expectedNameBinding, boolean useNames, Annotation binding);
 
+    boolean isResolvable(PicoContainer container,
+                                ComponentAdapter adapter,
+                                Type expectedType,
+                                NameBinding expectedNameBinding,
+                                boolean useNames, Annotation binding);
+
+
     /**
      * Verify that the Parameter can satisfy the expected type using the container
      *
      * @param container             the container from which dependencies are resolved.
-     * @param adapter               the {@link ComponentAdapter} that is asking for the verification
+     * @param adapter               the {@link org.picocontainer.ComponentAdapter} that is asking for the verification
      * @param expectedType          the required type
      * @param expectedNameBinding Expected parameter name
      *
@@ -96,7 +105,7 @@ public interface Parameter {
      */
     void verify(PicoContainer container,
                 ComponentAdapter adapter,
-                Class expectedType,
+                Type expectedType,
                 NameBinding expectedNameBinding, boolean useNames, Annotation binding);
 
     /**

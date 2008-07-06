@@ -20,6 +20,7 @@ import org.picocontainer.NameBinding;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.lang.annotation.Annotation;
 
 
@@ -45,7 +46,7 @@ public class ConstantParameter
 
     public Object resolveInstance(PicoContainer container,
                                   ComponentAdapter adapter,
-                                  Class expectedType,
+                                  Type expectedType,
                                   NameBinding expectedNameBinding,
                                   boolean useNames, Annotation binding) {
         return value;
@@ -59,25 +60,40 @@ public class ConstantParameter
         try {
             verify(container, adapter, expectedType, expectedNameBinding, useNames, binding);
             return true;
-        } catch(final PicoCompositionException e) {
+        } catch (final PicoCompositionException e) {
             return false;
         }
+    }
+
+    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Type expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+        if (expectedType instanceof Class) {
+            return isResolvable(container, adapter, (Class) expectedType, expectedNameBinding, useNames, binding);
+        }
+
+        return false;
     }
 
     /**
      * {@inheritDoc}
      *
-     * @see Parameter#verify(PicoContainer, ComponentAdapter, Class, NameBinding ,boolean, Annotation)
+     * @see Parameter#verify(org.picocontainer.PicoContainer,org.picocontainer.ComponentAdapter,java.lang.reflect.Type,org.picocontainer.NameBinding,boolean,java.lang.annotation.Annotation)
      */
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
-                       Class expectedType,
+                       Type expectedType,
                        NameBinding expectedNameBinding,
                        boolean useNames, Annotation binding) throws PicoException {
-        if (!checkPrimitive(expectedType) && !expectedType.isInstance(value)) {
-            throw new PicoCompositionException(expectedType.getClass().getName() + " is not assignable from " +
-                                                 (value != null ? value.getClass().getName() : "null"));
+        if (expectedType instanceof Class) {
+            Class expectedClass = (Class) expectedType;
+
+            if (checkPrimitive(expectedClass) || expectedClass.isInstance(value)) {
+                return;
+            }
         }
+
+        throw new PicoCompositionException(
+                expectedType + " is not assignable from " +
+                        (value != null ? value.getClass().getName() : "null"));
     }
 
     /**

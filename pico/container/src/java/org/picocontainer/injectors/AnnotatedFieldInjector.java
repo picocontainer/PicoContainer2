@@ -19,6 +19,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class AnnotatedFieldInjector extends IterativeInjector {
     protected void initializeInjectionMembersAndTypeLists() {
         injectionMembers = new ArrayList<AccessibleObject>();
         List<Annotation> bindingIds = new ArrayList<Annotation>();
-        final List<Class> typeList = new ArrayList<Class>();
+        final List<Type> typeList = new ArrayList<Type>();
         final Field[] fields = getFields();
         for (final Field field : fields) {
             if (isAnnotatedForInjection(field)) {
@@ -57,7 +58,7 @@ public class AnnotatedFieldInjector extends IterativeInjector {
                 bindingIds.add(getBinding(field));
             }
         }
-        injectionTypes = typeList.toArray(new Class[0]);
+        injectionTypes = typeList.toArray(new Type[0]);
         bindings = bindingIds.toArray(new Annotation[0]);
     }
 

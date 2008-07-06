@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -132,14 +133,23 @@ public class BasicComponentParameter implements Parameter, Serializable {
      */
     public boolean isResolvable(PicoContainer container,
                                 ComponentAdapter adapter,
-                                Class expectedType,
+                                Type expectedType,
                                 NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+        // TODO take this out for Pico3
+        if (!(expectedType instanceof Class)) {
+            return false;
+        }
         return resolveAdapter(container, adapter, (Class<?>)expectedType, expectedNameBinding, useNames, binding) != null;
     }
 
-    public <T> T resolveInstance(PicoContainer container,
+
+    public final boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+        return isResolvable(container, adapter, (Type)expectedType, expectedNameBinding, useNames, binding);
+    }
+
+    public Object resolveInstance(PicoContainer container,
                                  ComponentAdapter adapter,
-                                 Class<T> expectedType,
+                                 Type expectedType,
                                  NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         final ComponentAdapter componentAdapter =
             resolveAdapter(container, adapter, (Class<?>)expectedType, expectedNameBinding, useNames, binding);
@@ -147,21 +157,21 @@ public class BasicComponentParameter implements Parameter, Serializable {
             Object o = container.getComponent(componentAdapter.getComponentKey(), adapter.getComponentImplementation());
             if (o instanceof String && expectedType != String.class) {
                 Converter converter = stringConverters.get(expectedType);
-                return (T) converter.convert((String) o);
+                return converter.convert((String) o);
             }
-            return (T) o;
+            return o;
         }
         return null;
     }
 
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
-                       Class expectedType,
+                       Type expectedType,
                        NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         final ComponentAdapter componentAdapter =
             resolveAdapter(container, adapter, (Class<?>)expectedType, expectedNameBinding, useNames, binding);
         if (componentAdapter == null) {
-            final Set<Class> set = new HashSet<Class>();
+            final Set<Type> set = new HashSet<Type>();
             set.add(expectedType);
             throw new AbstractInjector.UnsatisfiableDependenciesException(adapter, null, set, container);
         }

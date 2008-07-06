@@ -17,6 +17,7 @@ import org.picocontainer.NameBinding;
 import org.picocontainer.injectors.AbstractInjector;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 
 
 /**
@@ -110,13 +111,16 @@ public class ComponentParameter
         this.collectionParameter = collectionParameter;
     }
 
-    public  <T> T resolveInstance(PicoContainer container,
+    public Object resolveInstance(PicoContainer container,
                                   ComponentAdapter adapter,
-                                  Class<T> expectedType,
+                                  Type expectedType,
                                   NameBinding expectedNameBinding,
                                   boolean useNames, Annotation binding) {
         // type check is done in isResolvable
-        T result = super.resolveInstance(container, adapter, expectedType, expectedNameBinding, useNames, binding);
+        Object result = null;
+        if (expectedType instanceof Class) {
+            result = super.resolveInstance(container, adapter, expectedType, expectedNameBinding, useNames, binding);
+        }
         if (result == null && collectionParameter != null) {
             result = collectionParameter.resolveInstance(container, adapter, expectedType, expectedNameBinding,
                                                          useNames, binding);
@@ -126,7 +130,7 @@ public class ComponentParameter
 
     public boolean isResolvable(PicoContainer container,
                                 ComponentAdapter adapter,
-                                Class expectedType,
+                                Type expectedType,
                                 NameBinding expectedNameBinding,
                                 boolean useNames, Annotation binding) {
         if (!super.isResolvable(container, adapter, expectedType, expectedNameBinding, useNames, binding)) {
@@ -141,7 +145,7 @@ public class ComponentParameter
 
     public void verify(PicoContainer container,
                        ComponentAdapter adapter,
-                       Class expectedType,
+                       Type expectedType,
                        NameBinding expectedNameBinding,
                        boolean useNames, Annotation binding) {
         try {

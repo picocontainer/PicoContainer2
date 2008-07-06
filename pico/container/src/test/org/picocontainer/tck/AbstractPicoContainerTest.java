@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.lang.reflect.Type;
 
 import org.junit.Test;
 import org.picocontainer.Behavior;
@@ -253,7 +254,7 @@ public abstract class AbstractPicoContainerTest {
             expectedList.add(ComponentB.class);
             assertEquals(expectedList, list);
 
-            Class unsatisfiedDependencyType = e.getUnsatisfiedDependencyType();
+            Type unsatisfiedDependencyType = e.getUnsatisfiedDependencyType();
             assertNotNull(unsatisfiedDependencyType);
             assertEquals(ComponentE.class, unsatisfiedDependencyType);
         }
@@ -272,7 +273,7 @@ public abstract class AbstractPicoContainerTest {
             expectedList.add(ComponentB.class);
             assertEquals(expectedList, list);
 
-            Class unsatisfiedDependencyType = e.getUnsatisfiedDependencyType();
+            Type unsatisfiedDependencyType = e.getUnsatisfiedDependencyType();
             assertNotNull(unsatisfiedDependencyType);
             assertEquals(ComponentB.class, unsatisfiedDependencyType);
         }
