@@ -462,46 +462,5 @@ public class SetterInjectorTestCase
         assertEquals("<start<stop<dispose", strategy.recording());
     }
 
-    public static interface IFish {
-        IWater getWater();
-    }
-    public static class Fish implements IFish {
-        IWater water;
-
-        public void setWater(IWater water) {
-            this.water = water;
-        }
-
-        public IWater getWater() {
-            return water;
-        }
-    }
-
-    public static interface IWater {
-        IFish getFish();
-
-    }
-    public static class Water implements IWater {
-        IFish fish;
-
-        public void setFish(IFish fish) {
-            this.fish = fish;
-        }
-
-        public IFish getFish() {
-            return fish;
-        }
-    }
-
-    @Test
-    public void circularIsPossible() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new Caching().wrap(new SetterInjection()));
-        pico.as(Characteristics.ENABLE_CIRCULAR).addComponent(IFish.class, Fish.class);
-        pico.addComponent(IWater.class, Water.class);
-        IWater water = pico.getComponent(IWater.class);
-        IFish fish = pico.getComponent(IFish.class);
-        assertNotNull(water.getFish());
-        assertNotNull(fish.getWater());
-    }
 
 }
