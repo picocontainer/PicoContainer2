@@ -45,8 +45,7 @@ import java.util.TreeSet;
  * @author J&ouml;rg Schaible
  */
 @SuppressWarnings("serial")
-public class CollectionComponentParameter
-        implements Parameter, Serializable {
+public class CollectionComponentParameter implements Parameter, Serializable {
 
     /**
      * Use <code>ARRAY</code> as {@link Parameter}for an Array that must have elements.
@@ -125,8 +124,8 @@ public class CollectionComponentParameter
     @SuppressWarnings({"unchecked"})
     public Object resolveInstance(PicoContainer container,
                                   ComponentAdapter adapter,
-                                  Type expectedType,
-                                  NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+                                  Type expectedType,  NameBinding expectedNameBinding,
+                                  boolean useNames, Annotation binding) {
         // type check is done in isResolvable
         Object result = null;
         final Class collectionType = getCollectionType(expectedType);
@@ -161,12 +160,9 @@ public class CollectionComponentParameter
      * @return <code>true</code> if matching components were found or an empty collective type
      *         is allowed
      */
-    public boolean isResolvable(PicoContainer container,
-                                ComponentAdapter adapter,
-                                Type expectedType,
-                                NameBinding expectedNameBinding,
-                                boolean useNames,
-                                Annotation binding) {
+    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter,
+                                Type expectedType, NameBinding expectedNameBinding,
+                                boolean useNames, Annotation binding) {
         return getCollectionType(expectedType) != null &&
                 (emptyCollection || getMatchingComponentAdapters(container, adapter,
                         componentKeyType, getValueType(expectedType)).size() > 0);
@@ -277,10 +273,9 @@ public class CollectionComponentParameter
      * @return a {@link Map} with the ComponentAdapter instances and their component keys as map key.
      */
     @SuppressWarnings({"unchecked"})
-    protected Map<Object, ComponentAdapter<?>> getMatchingComponentAdapters(PicoContainer container,
-                                                                            ComponentAdapter adapter,
-                                                                            Class keyType,
-                                                                            Class valueType) {
+    protected Map<Object, ComponentAdapter<?>> 
+                getMatchingComponentAdapters(PicoContainer container, ComponentAdapter adapter,
+                                             Class keyType, Class valueType) {
         final Map<Object, ComponentAdapter<?>> adapterMap = new LinkedHashMap<Object, ComponentAdapter<?>>();
         final PicoContainer parent = container.getParent();
         if (parent != null) {

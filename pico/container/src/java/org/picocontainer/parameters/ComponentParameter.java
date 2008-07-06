@@ -128,10 +128,8 @@ public class ComponentParameter
         return result;
     }
 
-    public boolean isResolvable(PicoContainer container,
-                                ComponentAdapter adapter,
-                                Type expectedType,
-                                NameBinding expectedNameBinding,
+    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter,
+                                Type expectedType, NameBinding expectedNameBinding,
                                 boolean useNames, Annotation binding) {
         if (!super.isResolvable(container, adapter, expectedType, expectedNameBinding, useNames, binding)) {
             if (collectionParameter != null) {

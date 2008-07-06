@@ -78,11 +78,9 @@ public interface Parameter {
      * @return <code>true</code> if the component parameter can be resolved.
      *
      */
-    @Deprecated
-    boolean isResolvable(PicoContainer container,
-                         ComponentAdapter adapter,
-                         Class expectedType,
-                         NameBinding expectedNameBinding, boolean useNames, Annotation binding);
+    boolean isResolvable(PicoContainer container, ComponentAdapter adapter,
+                         Class expectedType, NameBinding expectedNameBinding,
+                         boolean useNames, Annotation binding);
 
     boolean isResolvable(PicoContainer container,
                                 ComponentAdapter adapter,

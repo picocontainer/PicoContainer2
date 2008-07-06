@@ -52,15 +52,14 @@ public class ConstantParameter
         return value;
     }
 
-    public boolean isResolvable(PicoContainer container,
-                                ComponentAdapter adapter,
-                                Class expectedType,
-                                NameBinding expectedNameBinding,
+    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter,
+                                Class expectedType, NameBinding expectedNameBinding,
                                 boolean useNames, Annotation binding) {
         try {
             verify(container, adapter, expectedType, expectedNameBinding, useNames, binding);
             return true;
-        } catch (final PicoCompositionException e) {
+        //TODO - should we have an exception used in this way ?
+        } catch(final PicoCompositionException e) {
             return false;
         }
     }
