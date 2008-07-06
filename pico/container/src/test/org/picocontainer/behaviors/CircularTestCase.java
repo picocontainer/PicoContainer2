@@ -4,7 +4,8 @@ import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Characteristics;
-import org.picocontainer.injectors.SetterInjection;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.injectors.SetterInjection;import static junit.framework.Assert.assertEquals;
 
 public class CircularTestCase {
     
@@ -48,6 +49,21 @@ public class CircularTestCase {
         IFish fish = pico.getComponent(IFish.class);
         assertNotNull(water.getFish());
         assertNotNull(fish.getWater());
+    }
+
+    @Test
+    public void enableCircularCharacteristicIsRedundantForImplementationHiding() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHiding().wrap(new SetterInjection()));
+        pico.as(Characteristics.ENABLE_CIRCULAR).addComponent(IFish.class, Fish.class);
+        pico.addComponent(IWater.class, Water.class);
+        IWater water = pico.getComponent(IWater.class);
+        IFish fish = pico.getComponent(IFish.class);
+        assertNotNull(water.getFish());
+        assertNotNull(fish.getWater());
+
+        ComponentAdapter<?> ca = pico.getComponentAdapter(IFish.class);
+        assertEquals("Hidden:Hidden:SetterInjector-" + IFish.class,ca.toString());
+
     }
 
 
