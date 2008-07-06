@@ -27,6 +27,9 @@ import java.util.Properties;
 public class ImplementationHiding extends AbstractBehaviorFactory {
 
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters) throws PicoCompositionException {
+
+        removePropertiesIfPresent(componentProperties, Characteristics.ENABLE_CIRCULAR);
+
         ComponentAdapter componentAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                          componentProperties, componentKey, componentImplementation, parameters);
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_HIDE_IMPL)) {

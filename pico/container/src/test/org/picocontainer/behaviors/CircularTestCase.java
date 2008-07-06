@@ -62,7 +62,7 @@ public class CircularTestCase {
         assertNotNull(fish.getWater());
 
         ComponentAdapter<?> ca = pico.getComponentAdapter(IFish.class);
-        assertEquals("Hidden:Hidden:SetterInjector-" + IFish.class,ca.toString());
+        assertEquals("Hidden:SetterInjector-" + IFish.class,ca.toString());
 
     }
 
