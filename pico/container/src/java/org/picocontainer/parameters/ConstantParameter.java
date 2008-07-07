@@ -51,13 +51,7 @@ public class ConstantParameter implements Parameter, Serializable {
 
     public boolean isResolvable(PicoContainer container, ComponentAdapter<?> adapter, Type expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         if (expectedType instanceof Class) {
-            try {
-                verify(container, adapter, expectedType, expectedNameBinding, useNames, binding);
-                return true;
-            //TODO - should we have an exception used in this way ?
-            } catch(final PicoCompositionException e) {
-                return false;
-            }
+            return isAssignable((Class) expectedType);
         }
         return false;
     }
@@ -70,15 +64,22 @@ public class ConstantParameter implements Parameter, Serializable {
     public void verify(PicoContainer container, ComponentAdapter<?> adapter,
                        Type expectedType, NameBinding expectedNameBinding,
                        boolean useNames, Annotation binding) throws PicoException {
+        if (!isAssignable(expectedType)) {
+            throw new PicoCompositionException(
+                expectedType + " is not assignable from " +
+                        (value != null ? value.getClass().getName() : "null"));
+        }
+    }
+
+    protected boolean isAssignable(Type expectedType) {
+        boolean isAssignable;
         if (expectedType instanceof Class) {
             Class expectedClass = (Class) expectedType;
             if (checkPrimitive(expectedClass) || expectedClass.isInstance(value)) {
-                return;
+                return true;
             }
         }
-        throw new PicoCompositionException(
-                expectedType + " is not assignable from " +
-                        (value != null ? value.getClass().getName() : "null"));
+        return false;
     }
 
     /**
