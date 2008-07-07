@@ -2,8 +2,20 @@
 <html><head>
     <title>News</title></head>
 <body>
+	<p><strong>July ??, 2008</strong></p>
+	<p>PicoContainer 2.5 released (255K jar) </p>
+	<p>New (since 2.4):</p>
+	<ul>
+		<li>Circular dependencies, while always supported via the implementation hiding behavior are now supported explicitly for individual components</li>
+		<li>PicoBuilder improved in that it can add child containers to their parents if wanted. Refer PicoBuilder.addChildToParent()</li>
+		<li>Components can now declare generic collections as dependencies to be Injected. It works the same was as an Array of the type in question always did.</li>
+	</ul>
+	<p>Changes (versus 2.4):</p>
+	<ul>
+		<li>ConsoleComponentMonitor does need to be final, thus is not now.</li>
+	</ul>
 <p><strong>June 26, 2008</strong></p>
-<p>PicoContainer 2.4 released (253K jar) </p>
+<p>PicoContainer 2.5 released (253K jar) </p>
 <p>New (since 2.3):</p>
 <ul>
 	<li>DefaultClassLoadingPicoContainer added. Components can now be referenced in different classloaders and by class name. This was formerly DefaultNanoContainer</li> 
