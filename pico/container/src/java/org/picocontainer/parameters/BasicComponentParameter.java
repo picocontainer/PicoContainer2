@@ -143,10 +143,6 @@ public class BasicComponentParameter implements Parameter, Serializable {
     }
 
 
-    public final boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
-        return isResolvable(container, adapter, (Type)expectedType, expectedNameBinding, useNames, binding);
-    }
-
     public Object resolveInstance(PicoContainer container,
                                  ComponentAdapter adapter,
                                  Type expectedType,

@@ -168,29 +168,6 @@ public class CollectionComponentParameter implements Parameter, Serializable {
                         componentKeyType, getValueType(expectedType)).size() > 0);
     }
 
-
-    /**
-     * Check for a successful dependency resolution of the parameter for the expected type. The
-     * dependency can only be satisfied if the expected type is one of the collection types
-     * {@link Array},{@link Collection}or {@link Map}. An empty collection is only a valid
-     * resolution, if the <code>emptyCollection</code> flag was set.
-     *
-     * This method has been replaced with one where the expectedType is a Type not a Class.
-     *
-     * @param container           {@inheritDoc}
-     * @param adapter             {@inheritDoc}
-     * @param expectedType        {@inheritDoc}
-     * @param expectedNameBinding {@inheritDoc}
-     * @param useNames
-     * @param binding
-     * @return <code>true</code> if matching components were found or an empty collective type
-     *         is allowed
-     */
-    @Deprecated
-    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Class expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
-        return isResolvable(container, adapter, (Type) expectedType, expectedNameBinding, useNames, binding);
-    }
-
     private Class getCollectionType(Type expectedType) {
         if (expectedType instanceof Class) {
             return getCollectionType((Class) expectedType);

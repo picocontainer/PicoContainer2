@@ -60,10 +60,9 @@ public interface Parameter {
      *
      * @throws PicoCompositionException if a referenced component could not be instantiated.
      */
-     Object resolveInstance(PicoContainer container,
-                           ComponentAdapter adapter,
-                           Type expectedType,
-                           NameBinding expectedNameBinding, boolean useNames, Annotation binding);
+     Object resolveInstance(PicoContainer container, ComponentAdapter adapter,
+                           Type expectedType, NameBinding expectedNameBinding,
+                           boolean useNames, Annotation binding);
 
     /**
      * Check if the Parameter can satisfy the expected type using the container.
@@ -79,15 +78,8 @@ public interface Parameter {
      *
      */
     boolean isResolvable(PicoContainer container, ComponentAdapter adapter,
-                         Class expectedType, NameBinding expectedNameBinding,
-                         boolean useNames, Annotation binding);
-
-    boolean isResolvable(PicoContainer container,
-                                ComponentAdapter adapter,
-                                Type expectedType,
-                                NameBinding expectedNameBinding,
+                                Type expectedType, NameBinding expectedNameBinding,
                                 boolean useNames, Annotation binding);
-
 
     /**
      * Verify that the Parameter can satisfy the expected type using the container
@@ -101,10 +93,9 @@ public interface Parameter {
      * @param binding
      * @throws PicoCompositionException if parameter and its dependencies cannot be resolved
      */
-    void verify(PicoContainer container,
-                ComponentAdapter adapter,
-                Type expectedType,
-                NameBinding expectedNameBinding, boolean useNames, Annotation binding);
+    void verify(PicoContainer container, ComponentAdapter adapter,
+                Type expectedType, NameBinding expectedNameBinding,
+                boolean useNames, Annotation binding);
 
     /**
      * Accepts a visitor for this Parameter. The method is normally called by visiting a {@link ComponentAdapter}, that
