@@ -112,7 +112,7 @@ public class ComponentParameter
     }
 
     public Object resolveInstance(PicoContainer container,
-                                  ComponentAdapter adapter,
+                                  ComponentAdapter<?> adapter,
                                   Type expectedType,
                                   NameBinding expectedNameBinding,
                                   boolean useNames, Annotation binding) {
@@ -128,7 +128,7 @@ public class ComponentParameter
         return result;
     }
 
-    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter,
+    public boolean isResolvable(PicoContainer container, ComponentAdapter<?> adapter,
                                 Type expectedType, NameBinding expectedNameBinding,
                                 boolean useNames, Annotation binding) {
         if (!super.isResolvable(container, adapter, expectedType, expectedNameBinding, useNames, binding)) {
@@ -142,7 +142,7 @@ public class ComponentParameter
     }
 
     public void verify(PicoContainer container,
-                       ComponentAdapter adapter,
+                       ComponentAdapter<?> adapter,
                        Type expectedType,
                        NameBinding expectedNameBinding,
                        boolean useNames, Annotation binding) {

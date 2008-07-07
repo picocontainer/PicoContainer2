@@ -34,7 +34,7 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
 
     @Override
 	public Object resolveInstance(final PicoContainer container,
-                                  final ComponentAdapter adapter,
+                                  final ComponentAdapter<?> adapter,
                                   final Type expectedType,
                                   final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) throws PicoCompositionException
     {
@@ -49,7 +49,7 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
 
     @Override
 	public boolean isResolvable(final PicoContainer container,
-                                final ComponentAdapter adapter,
+                                final ComponentAdapter<?> adapter,
                                 final Type expectedType,
                                 final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) throws PicoCompositionException
     {
@@ -59,7 +59,7 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
 
     @Override
 	public void verify(final PicoContainer container,
-                       final ComponentAdapter adapter,
+                       final ComponentAdapter<?> adapter,
                        final Type expectedType,
                        final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) throws PicoCompositionException
     {

@@ -132,7 +132,7 @@ public class BasicComponentParameter implements Parameter, Serializable {
      * @see Parameter#isResolvable(PicoContainer, ComponentAdapter, Class, NameBinding ,boolean, Annotation)
      */
     public boolean isResolvable(PicoContainer container,
-                                ComponentAdapter adapter,
+                                ComponentAdapter<?> adapter,
                                 Type expectedType,
                                 NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         // TODO take this out for Pico3
@@ -144,7 +144,7 @@ public class BasicComponentParameter implements Parameter, Serializable {
 
 
     public Object resolveInstance(PicoContainer container,
-                                 ComponentAdapter adapter,
+                                 ComponentAdapter<?> adapter,
                                  Type expectedType,
                                  NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         final ComponentAdapter componentAdapter =
@@ -161,7 +161,7 @@ public class BasicComponentParameter implements Parameter, Serializable {
     }
 
     public void verify(PicoContainer container,
-                       ComponentAdapter adapter,
+                       ComponentAdapter<?> adapter,
                        Type expectedType,
                        NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         final ComponentAdapter componentAdapter =

@@ -50,7 +50,7 @@ public interface Parameter {
      * Retrieve the object from the Parameter that satisfies the expected type.
      *
      * @param container             the container from which dependencies are resolved.
-     * @param adapter               the {@link org.picocontainer.ComponentAdapter} that is asking for the instance
+     * @param adapter               the {@link ComponentAdapter} that is asking for the instance
      * @param expectedType          the type that the returned instance needs to match.
      * @param expectedNameBinding Expected parameter name
      *
@@ -60,7 +60,7 @@ public interface Parameter {
      *
      * @throws PicoCompositionException if a referenced component could not be instantiated.
      */
-     Object resolveInstance(PicoContainer container, ComponentAdapter adapter,
+     Object resolveInstance(PicoContainer container, ComponentAdapter<?> adapter,
                            Type expectedType, NameBinding expectedNameBinding,
                            boolean useNames, Annotation binding);
 
@@ -68,7 +68,7 @@ public interface Parameter {
      * Check if the Parameter can satisfy the expected type using the container.
      *
      * @param container             the container from which dependencies are resolved.
-     * @param adapter               the {@link ComponentAdapter} that is asking for the instance
+     * @param adapter               the {@link org.picocontainer.ComponentAdapter} that is asking for the instance
      * @param expectedType          the required type
      * @param expectedNameBinding Expected parameter name
      *
@@ -77,7 +77,7 @@ public interface Parameter {
      * @return <code>true</code> if the component parameter can be resolved.
      *
      */
-    boolean isResolvable(PicoContainer container, ComponentAdapter adapter,
+    boolean isResolvable(PicoContainer container, ComponentAdapter<?> adapter,
                                 Type expectedType, NameBinding expectedNameBinding,
                                 boolean useNames, Annotation binding);
 
@@ -85,7 +85,7 @@ public interface Parameter {
      * Verify that the Parameter can satisfy the expected type using the container
      *
      * @param container             the container from which dependencies are resolved.
-     * @param adapter               the {@link org.picocontainer.ComponentAdapter} that is asking for the verification
+     * @param adapter               the {@link ComponentAdapter} that is asking for the verification
      * @param expectedType          the required type
      * @param expectedNameBinding Expected parameter name
      *
@@ -93,7 +93,7 @@ public interface Parameter {
      * @param binding
      * @throws PicoCompositionException if parameter and its dependencies cannot be resolved
      */
-    void verify(PicoContainer container, ComponentAdapter adapter,
+    void verify(PicoContainer container, ComponentAdapter<?> adapter,
                 Type expectedType, NameBinding expectedNameBinding,
                 boolean useNames, Annotation binding);
 

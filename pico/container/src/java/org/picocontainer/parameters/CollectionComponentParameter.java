@@ -123,7 +123,7 @@ public class CollectionComponentParameter implements Parameter, Serializable {
      */
     @SuppressWarnings({"unchecked"})
     public Object resolveInstance(PicoContainer container,
-                                  ComponentAdapter adapter,
+                                  ComponentAdapter<?> adapter,
                                   Type expectedType,  NameBinding expectedNameBinding,
                                   boolean useNames, Annotation binding) {
         // type check is done in isResolvable
@@ -160,7 +160,7 @@ public class CollectionComponentParameter implements Parameter, Serializable {
      * @return <code>true</code> if matching components were found or an empty collective type
      *         is allowed
      */
-    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter,
+    public boolean isResolvable(PicoContainer container, ComponentAdapter<?> adapter,
                                 Type expectedType, NameBinding expectedNameBinding,
                                 boolean useNames, Annotation binding) {
         return getCollectionType(expectedType) != null &&
@@ -195,7 +195,7 @@ public class CollectionComponentParameter implements Parameter, Serializable {
      * @throws PicoCompositionException {@inheritDoc}
      */
     public void verify(PicoContainer container,
-                       ComponentAdapter adapter,
+                       ComponentAdapter<?> adapter,
                        Type expectedType,
                        NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         final Class collectionType = getCollectionType(expectedType);

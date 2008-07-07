@@ -35,8 +35,7 @@ import java.lang.annotation.Annotation;
  * @author Thomas Heller
  */
 @SuppressWarnings("serial")
-public class ConstantParameter
-        implements Parameter, Serializable {
+public class ConstantParameter implements Parameter, Serializable {
 
     private final Object value;
 
@@ -44,31 +43,22 @@ public class ConstantParameter
         this.value = value;
     }
 
-    public Object resolveInstance(PicoContainer container,
-                                  ComponentAdapter adapter,
-                                  Type expectedType,
-                                  NameBinding expectedNameBinding,
+    public Object resolveInstance(PicoContainer container, ComponentAdapter<?> adapter,
+                                  Type expectedType, NameBinding expectedNameBinding,
                                   boolean useNames, Annotation binding) {
         return value;
     }
 
-    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter,
-                                Class expectedType, NameBinding expectedNameBinding,
-                                boolean useNames, Annotation binding) {
-        try {
-            verify(container, adapter, expectedType, expectedNameBinding, useNames, binding);
-            return true;
-        //TODO - should we have an exception used in this way ?
-        } catch(final PicoCompositionException e) {
-            return false;
-        }
-    }
-
-    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter, Type expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+    public boolean isResolvable(PicoContainer container, ComponentAdapter<?> adapter, Type expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         if (expectedType instanceof Class) {
-            return isResolvable(container, adapter, (Class) expectedType, expectedNameBinding, useNames, binding);
+            try {
+                verify(container, adapter, expectedType, expectedNameBinding, useNames, binding);
+                return true;
+            //TODO - should we have an exception used in this way ?
+            } catch(final PicoCompositionException e) {
+                return false;
+            }
         }
-
         return false;
     }
 
@@ -77,19 +67,15 @@ public class ConstantParameter
      *
      * @see Parameter#verify(org.picocontainer.PicoContainer,org.picocontainer.ComponentAdapter,java.lang.reflect.Type,org.picocontainer.NameBinding,boolean,java.lang.annotation.Annotation)
      */
-    public void verify(PicoContainer container,
-                       ComponentAdapter adapter,
-                       Type expectedType,
-                       NameBinding expectedNameBinding,
+    public void verify(PicoContainer container, ComponentAdapter<?> adapter,
+                       Type expectedType, NameBinding expectedNameBinding,
                        boolean useNames, Annotation binding) throws PicoException {
         if (expectedType instanceof Class) {
             Class expectedClass = (Class) expectedType;
-
             if (checkPrimitive(expectedClass) || expectedClass.isInstance(value)) {
                 return;
             }
         }
-
         throw new PicoCompositionException(
                 expectedType + " is not assignable from " +
                         (value != null ? value.getClass().getName() : "null"));
