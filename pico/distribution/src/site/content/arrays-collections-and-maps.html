@@ -114,7 +114,7 @@ public static class Bowl {
 </pre>
     </div>
 
-    <p>Unfortunately there is no way of detecting the type of the
+    <p>Unfortunately for plain collections, there is no way of detecting the type of the
     components being part of the collection as it is done for
     native arrays. Therefore you must use a special constructor of
     <a href=
@@ -135,6 +135,35 @@ pico.addComponent(Bowl.class, Bowl.class, new Parameter[]{
     use a specific class implementing the Collection interface or
     just the interface itself and PicoContainer will provide a
     matching Collection instance.</p>
+
+    <h3>Generic Collections</h3>
+
+    <p>Unlike for plain collections, PicoContainer can automatically detect the 
+	type of generic collection as a component dependency. 
+	It handles much the same was as for native arrays. i.e. Just 
+	use PicoContainer.addComponent() as normal and it will work out what
+	 dependencies can be injected for a component like:</p>
+
+	    <div class="source"><pre>
+	public static class GenericBowl {
+	    private final List<Fish> fishes;
+	    private final Collection<Cod> cods;
+
+	    public GenericBowl(List<Fish> fishes, Collection<Cod> cods) {
+	        this.fishes = fishes;
+	        this.cods = cods;
+	    }
+
+	    public List<Fish> getFishes() {
+	        return fishes;
+	    }
+
+	    public Collection<Cod> getCods() {
+	        return cods;
+	    }
+	}
+	</pre>
+	    </div>
 
     <h3>Maps</h3>
 
@@ -162,7 +191,7 @@ public static class Bowl {
 </pre>
     </div>
 
-    <p>As for Collection types, PicoContainer cannot detect the
+    <p>As for plain collection types, PicoContainer cannot detect the
     type of the components, that should be part of the collection
     on its own. Again you must use a special constructor of
     <a href="http://www.picocontainer.org/javadoc/core/org/picocontainer/parameters/ComponentParameter.html">
