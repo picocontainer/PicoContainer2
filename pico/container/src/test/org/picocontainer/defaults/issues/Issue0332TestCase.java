@@ -16,7 +16,7 @@ public class Issue0332TestCase {
     /**
      * Sample class that demonstrates literal collection handling.
      */
-    static class Searcher {
+    public static class Searcher {
     	private final List<String> searchPath;
 
     	public Searcher(List<String> searchPath) {
@@ -60,4 +60,24 @@ public class Issue0332TestCase {
     	assertNotNull(pico.getComponent(Searcher.class));
     	assertNotNull(pico.getComponent(Searcher.class).getSearchPath());
     }
+
+    public static class StringArrayList extends ArrayList<String> {
+    }
+
+    //@Test
+    public void canInstantiateAutowiredCollectionThatAreDefinedExplicitlyAmotherWay() {
+    	MutablePicoContainer pico = new DefaultPicoContainer(new Caching());
+    	List<String> searchPath = new StringArrayList();
+    	searchPath.add("a");
+    	searchPath.add("b");
+
+    	pico.addComponent("searchPath",searchPath)
+    		.addComponent(Searcher.class);
+
+    	assertNotNull(pico.getComponent(Searcher.class));
+    	assertNotNull(pico.getComponent(Searcher.class).getSearchPath());
+    }
+
+
+
 }
