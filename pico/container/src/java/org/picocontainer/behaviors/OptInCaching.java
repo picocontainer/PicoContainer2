@@ -22,16 +22,27 @@ import org.picocontainer.LifecycleStrategy;
 import java.util.Properties;
 
 /**
+ * Behavior that turns off Caching behavior by default.  
+ * <p>Example:</p>
+ * <pre>
+ * 		import org.picocontainer.*;
+ * 		import static org.picocontainer.Characteristics.*;
+ * 
+ * 		MutablePicoContainer mpc = new PicoBuilder().withBehaviors(new OptInCaching()).build();
+ * 		mpc.addComponent(Map.class, HashMap.class) //Multiple Instances, no Caching.
+ * 		mpc.as(CACHE).addComponent(Set.class, HashSet.class) //Single Cached Instance.		
+ * </pre>
  * @author Aslak Helles&oslash;y
  * @author <a href="Rafal.Krzewski">rafal@caltha.pl</a>
  */
 @SuppressWarnings("serial")
 public class OptInCaching extends AbstractBehaviorFactory {
 
-    public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class componentImplementation, Parameter... parameters)
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, 
+    			Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CACHE)) {
-            return new Cached(super.createComponentAdapter(componentMonitor,
+            return new Cached<T>(super.createComponentAdapter(componentMonitor,
                                                                                         lifecycleStrategy,
                                                                                         componentProperties,
                                                                                         componentKey,
@@ -44,12 +55,12 @@ public class OptInCaching extends AbstractBehaviorFactory {
     }
 
 
-    public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
                                                 LifecycleStrategy lifecycleStrategy,
                                                 Properties componentProperties,
-                                                ComponentAdapter adapter) {
+                                                ComponentAdapter<T> adapter) {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CACHE)) {
-            return new Cached(super.addComponentAdapter(componentMonitor,
+            return new Cached<T>(super.addComponentAdapter(componentMonitor,
                                                                  lifecycleStrategy,
                                                                  componentProperties,
                                                                  adapter));

@@ -9,7 +9,6 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
 
@@ -19,6 +18,7 @@ import java.util.Properties;
  * of Characteristics.
  * 
  * @author Paul Hammant
+ * @see org.picocontainer.ComponentAdapter
  * @see org.picocontainer.Behavior
  */
 @SuppressWarnings("serial")
@@ -140,6 +140,12 @@ public final class Characteristics {
      * after the object is created based.
      */
     public static final Properties PROPERTY_APPLYING = immutable(_PROPERTY_APPLYING, TRUE);
+    
+    /**
+     * Turns off bean-setting property applications.
+     * @see org.picocontainer.behaviors.PropertyApplying
+     */
+    public static final Properties NO_PROPERTY_APPLYING = immutable(_PROPERTY_APPLYING, FALSE);
 
     public static final Properties AUTOMATIC = immutable(_AUTOMATIC, TRUE);
 
@@ -176,22 +182,34 @@ public final class Characteristics {
             sealed = true;
         }
         
-        
+        /**
+         * Read Only Object:  will throw UnsupportedOperationException.
+         */
         @Override
         public Object remove(Object o) {
             throw new UnsupportedOperationException("immutable properties are read only");
         }
 
+        /**
+         * Read Only Object:  will throw UnsupportedOperationException.
+         */
         @Override
         public synchronized Object setProperty(String string, String string1) {
             throw new UnsupportedOperationException("immutable properties are read only");
         }
 
+        /**
+         * Read Only Object:  will throw UnsupportedOperationException.
+         */
 		@Override
 		public synchronized void clear() {
             throw new UnsupportedOperationException("immutable properties are read only");
 		}
 
+		/**
+		 * Once object is constructed, this will throw UnsupportedOperationException because
+		 * this class is a read only wrapper.
+		 */
 		@Override
 		public synchronized Object put(Object key, Object value) {
 			if (!sealed) {
@@ -203,6 +221,9 @@ public final class Characteristics {
             throw new UnsupportedOperationException("immutable properties are read only");
 		}
 
+        /**
+         * Read Only Object:  will throw UnsupportedOperationException.
+         */
 		@Override
 		public synchronized void putAll(Map<? extends Object, ? extends Object> t) {
             throw new UnsupportedOperationException("immutable properties are read only");
