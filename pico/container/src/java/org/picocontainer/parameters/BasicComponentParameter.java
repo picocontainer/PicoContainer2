@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -135,11 +136,21 @@ public class BasicComponentParameter implements Parameter, Serializable {
                                 ComponentAdapter<?> adapter,
                                 Type expectedType,
                                 NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+    	
+    	Class<?> resolvedClassType = null;
         // TODO take this out for Pico3
         if (!(expectedType instanceof Class)) {
-            return false;
+        	if (expectedType instanceof ParameterizedType) {
+        		resolvedClassType = (Class<?>) ((ParameterizedType)expectedType).getRawType();
+        	} else {
+        		return false;
+        	}
+        } else {
+        	resolvedClassType = (Class<?>)expectedType;
         }
-        return resolveAdapter(container, adapter, (Class<?>)expectedType, expectedNameBinding, useNames, binding) != null;
+        assert resolvedClassType != null;
+        
+        return resolveAdapter(container, adapter, resolvedClassType, expectedNameBinding, useNames, binding) != null;
     }
 
 

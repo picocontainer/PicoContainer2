@@ -4,12 +4,13 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.parameters.ComponentParameter;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.Assert.assertNotNull;import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 
 public class Issue0332TestCase {
 
@@ -28,18 +29,23 @@ public class Issue0332TestCase {
     	}
     }
     
-    @Test
-    public void dummy() {
-        assertTrue(true);
-    }
 
-    //@Test
-    public void canInstantiateAutowiredCollectionThatAreDefinedExplicitly() {
+    /**
+     * @todo Revisit this for Pico 3.
+     */
+    @Ignore
+    @Test
+    public void canInstantiateAutowiredCollectionThatAreDefinedImplicitly() {
     	MutablePicoContainer pico = new DefaultPicoContainer(new Caching());
     	List<String> searchPath = new ArrayList<String>();
     	searchPath.add("a");
     	searchPath.add("b");
 
+    	List<Integer> conflictingList = new ArrayList<Integer>();
+    	conflictingList.add(1);
+    	conflictingList.add(2);
+    	pico.addComponent("conflict", conflictingList);
+    	
     	pico.addComponent("searchPath",searchPath)
     		.addComponent(Searcher.class);
 
@@ -47,25 +53,26 @@ public class Issue0332TestCase {
     	assertNotNull(pico.getComponent(Searcher.class).getSearchPath());
     }
 
-    //@Test 
+    @Test 
     public void canInstantiateExplicitCollectionWithComponentParameter() {
     	MutablePicoContainer pico = new DefaultPicoContainer(new Caching());
     	List<String> searchPath = new ArrayList<String>();
     	searchPath.add("a");
     	searchPath.add("b");
 
-    	pico.addComponent("searchPath",searchPath)
-    		.addComponent(Searcher.class, Searcher.class, new ComponentParameter("searchPath"));
+    	pico.addComponent("searchPath",searchPath);
+    	pico.addComponent(Searcher.class, Searcher.class, new ComponentParameter("searchPath"));
 
     	assertNotNull(pico.getComponent(Searcher.class));
     	assertNotNull(pico.getComponent(Searcher.class).getSearchPath());
     }
 
-    public static class StringArrayList extends ArrayList<String> {
+    @SuppressWarnings("serial")
+	public static class StringArrayList extends ArrayList<String> {
     }
 
-    //@Test
-    public void canInstantiateAutowiredCollectionThatAreDefinedExplicitlyAmotherWay() {
+    @Test
+    public void canInstantiateAutowiredCollectionThatAreDefinedExplicitlyAnotherWay() {
     	MutablePicoContainer pico = new DefaultPicoContainer(new Caching());
     	List<String> searchPath = new StringArrayList();
     	searchPath.add("a");

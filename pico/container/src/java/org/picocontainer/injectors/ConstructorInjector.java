@@ -117,7 +117,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
 
             // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {
-                // check whether this constructor is statisfiable
+                // check whether this constructor is satisfiable
                 Type boxed = box(parameterTypes[j]);
                 boolean un = useNames();
                 if (currentParameters[j].isResolvable(container, this, boxed,

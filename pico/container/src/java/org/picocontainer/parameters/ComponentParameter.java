@@ -17,6 +17,7 @@ import org.picocontainer.NameBinding;
 import org.picocontainer.injectors.AbstractInjector;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 
@@ -120,6 +121,8 @@ public class ComponentParameter
         Object result = null;
         if (expectedType instanceof Class) {
             result = super.resolveInstance(container, adapter, expectedType, expectedNameBinding, useNames, binding);
+        } else if (expectedType instanceof ParameterizedType) {
+        	result = super.resolveInstance(container, adapter, ((ParameterizedType) expectedType).getRawType(), expectedNameBinding, useNames, binding);
         }
         if (result == null && collectionParameter != null) {
             result = collectionParameter.resolveInstance(container, adapter, expectedType, expectedNameBinding,
