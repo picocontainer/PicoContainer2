@@ -78,11 +78,14 @@ public class Issue0332TestCase {
     	searchPath.add("a");
     	searchPath.add("b");
 
-    	pico.addComponent("searchPath",searchPath)
+    	pico.addComponent(searchPath)
     		.addComponent(Searcher.class);
 
     	assertNotNull(pico.getComponent(Searcher.class));
-    	assertNotNull(pico.getComponent(Searcher.class).getSearchPath());
+        List<String> list = pico.getComponent(Searcher.class).getSearchPath();
+        assertNotNull(list);
+        assertEquals("a", list.get(0));
+        assertEquals("b", list.get(1));
     }
 
 
