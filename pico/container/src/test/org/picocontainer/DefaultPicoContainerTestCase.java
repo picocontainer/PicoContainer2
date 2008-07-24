@@ -736,6 +736,17 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		assertions(donkey, rabbit, turtle);
 	}
 
+	@Test public void testChainingOfTemporaryCharacterizationsIsNotAllowed() {
+
+		MutablePicoContainer container = createPicoContainer(null);
+        try {
+            container.as(Characteristics.CACHE).as(SDI).addComponent(HashMap.class);
+            fail("shoulf barf");
+        } catch (PicoCompositionException e) {
+            assertTrue(e.getMessage().contains("as(FOO).as(BAR)"));
+        }
+    }
+
 	@SuppressWarnings("serial")
 	@Test public void testNoComponentIsMonitoredAndPotentiallyLateProvided() {
 		final String[] missingKey = new String[1];

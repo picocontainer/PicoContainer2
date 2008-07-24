@@ -975,6 +975,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
 
         @Override
+        public MutablePicoContainer as(Properties... properties) {
+            throw new PicoCompositionException("Syntax 'as(FOO).as(BAR)' not allowed, do 'as(FOO, BAR)' instead");
+        }
+
+        @Override
 		public MutablePicoContainer makeChildContainer() {
             return getDelegate().makeChildContainer();
         }
