@@ -1,7 +1,8 @@
 RELEASE STEPS
 
-1. mvn release:prepare -> verifies dependendies and tags release in SCM
-2. mvn release:perform -> deploys artifacts from tag 
+1. mvn -Preporting,distribution release:prepare -> verifies dependendies and tags release in SCM.  
+NOTE: the reporting,distribution profiles MUST be activated during the prepare stage for distribution archives to be included in the release
+2. mvn  -Preporting,distribution release:perform -> deploys artifacts from tag 
 NOTE: it only deploys site for the distribution modules
 3. The site can be manually deployed by invoking from distribution module: 
 mvn site-deploy
