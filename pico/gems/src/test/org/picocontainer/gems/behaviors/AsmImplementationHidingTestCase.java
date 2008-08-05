@@ -10,6 +10,7 @@
 package org.picocontainer.gems.behaviors;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -110,27 +111,26 @@ public final class AsmImplementationHidingTestCase extends AbstractComponentFact
     }
 
     @Test
-    public void testElephantWithAsmProxy() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
-        MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new AsmHiddenImplementation<Elephant>(new ConstructorInjector<Elephant>("l", ArrayList.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false)));
+    public void testElephantWithAsmProxy() throws IOException {
+        MutablePicoContainer pico = new DefaultPicoContainer(new AsmImplementationHiding());
         Elephant elephant = pico.addComponent(Elephant.class, ElephantImpl.class).getComponent(Elephant.class);
-
+        assertFalse(elephant instanceof ElephantImpl);
         elephantAssertions(elephant);
 
     }
 
-    private void elephantAssertions(final Elephant foo) throws IOException {
-        assertEquals("onetwo", foo.objects("one", "two"));
-        assertEquals("onetwo", foo.objectsArray(new String[]{"one"}, new String[]{"two"})[0]);
-        assertEquals(3, foo.iint(1, 2));
-        assertEquals(3, foo.llong(1, 2));
-        assertEquals(6, foo.bbyte((byte) 1, (byte) 2, (byte) 3));
-        assertEquals(10, foo.ffloat(1, 2, 3, 4), .1);
-        assertEquals(3, foo.ddouble(1, 2), .1);
-        assertEquals('c', foo.cchar('a', 'b'));
-        assertEquals(3, foo.sshort((short) 1, (short) 2));
-        assertEquals(true, foo.bboolean(true, true));
-        assertEquals(true, foo.bbooleanArray(new boolean[]{true}, new boolean[]{true})[0]);
+    private void elephantAssertions(final Elephant elephant) throws IOException {
+        assertEquals("onetwo", elephant.objects("one", "two"));
+        assertEquals("onetwo", elephant.objectsArray(new String[]{"one"}, new String[]{"two"})[0]);
+        assertEquals(3, elephant.iint(1, 2));
+        assertEquals(3, elephant.llong(1, 2));
+        assertEquals(6, elephant.bbyte((byte) 1, (byte) 2, (byte) 3));
+        assertEquals(10, elephant.ffloat(1, 2, 3, 4), .1);
+        assertEquals(3, elephant.ddouble(1, 2), .1);
+        assertEquals('c', elephant.cchar('a', 'b'));
+        assertEquals(3, elephant.sshort((short) 1, (short) 2));
+        assertEquals(true, elephant.bboolean(true, true));
+        assertEquals(true, elephant.bbooleanArray(new boolean[]{true}, new boolean[]{true})[0]);
     }
     
 

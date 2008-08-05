@@ -14,11 +14,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Future;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehavior;
@@ -124,15 +126,18 @@ public class AsmHiddenImplementation<T> extends AbstractBehavior<T> implements O
     }
 
     private void doMethod(final String proxyName, final ClassWriter cw, final Class<?> iface, final Method meth) {
-        String signature = "(" + encodedParameterNames(meth) + ")" + encodedClassName(meth.getReturnType());
+
+        String cn = Type.getInternalName(iface);
+        String sig = Type.getMethodDescriptor(meth);
+
         String[] exceptions = encodedExceptionNames(meth.getExceptionTypes());
         MethodVisitor mv;
-        mv = cw.visitMethod(ACC_PUBLIC, meth.getName(), signature, null, exceptions);
+        mv = cw.visitMethod(ACC_PUBLIC, meth.getName(), sig, null, exceptions);
         mv.visitCode();
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(GETFIELD, proxyName, "swappable", encodedClassName(HotSwappable.Swappable.class));
         mv.visitMethodInsn(INVOKEVIRTUAL, dotsToSlashes(HotSwappable.Swappable.class), "getInstance", "()Ljava/lang/Object;");
-        mv.visitTypeInsn(CHECKCAST, dotsToSlashes(iface));
+        mv.visitTypeInsn(CHECKCAST, cn);
         Class[] types = meth.getParameterTypes();
         int ix = 1;
         for (Class type : types) {
@@ -140,7 +145,7 @@ public class AsmHiddenImplementation<T> extends AbstractBehavior<T> implements O
             mv.visitVarInsn(load, ix);
             ix = indexOf(ix, load);
         }
-        mv.visitMethodInsn(INVOKEINTERFACE, dotsToSlashes(iface), meth.getName(), signature);
+        mv.visitMethodInsn(INVOKEINTERFACE, cn, meth.getName(), sig);
         mv.visitInsn(whichReturn(meth.getReturnType()));
         mv.visitMaxs(ix, ix);
         mv.visitEnd();
