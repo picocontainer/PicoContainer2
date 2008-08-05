@@ -260,14 +260,6 @@ public class AsmHiddenImplementation<T> extends AbstractBehavior<T> implements O
         }
     }
 
-    private String encodedParameterNames(final Method meth) {
-        String retVal = "";
-        for (Class<?> type : meth.getParameterTypes()) {
-            retVal += encodedClassName(type);
-        }
-        return retVal;
-    }
-
     private static class AsmClassLoader extends ClassLoader {
 
         public AsmClassLoader(final ClassLoader parent) {
