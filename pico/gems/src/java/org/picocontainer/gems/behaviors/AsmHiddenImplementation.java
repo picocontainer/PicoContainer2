@@ -80,7 +80,7 @@ public class AsmHiddenImplementation<T> extends AbstractBehavior<T> implements O
 
         Class<Object> superclass = Object.class;
 
-        cw.visit(V1_5, ACC_PUBLIC + ACC_SUPER, proxyName, null, dotsToSlashes(superclass), getNames(interfaces));
+        cw.visit(V1_5, ACC_PUBLIC + ACC_SUPER, proxyName, null, Type.getInternalName(superclass), getNames(interfaces));
 
         {
             fv = cw.visitField(ACC_PRIVATE + ACC_TRANSIENT, "swappable", encodedClassName(HotSwappable.Swappable.class), null, null);
@@ -106,14 +106,14 @@ public class AsmHiddenImplementation<T> extends AbstractBehavior<T> implements O
     private String[] getNames(final Class[] interfaces) {
         String[] retVal = new String[interfaces.length];
         for (int i = 0; i < interfaces.length; i++) {
-            retVal[i] = dotsToSlashes(interfaces[i]);
+            retVal[i] = Type.getInternalName(interfaces[i]);
         }
         return retVal;
     }
 
     private void doConstructor(final String proxyName, final ClassWriter cw) {
         MethodVisitor mv;
-        mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(L"+ dotsToSlashes(HotSwappable.Swappable.class)+";)V", null, null);
+        mv = cw.visitMethod(ACC_PUBLIC, "<init>", "(L"+ Type.getInternalName(HotSwappable.Swappable.class)+";)V", null, null);
         mv.visitCode();
         mv.visitVarInsn(ALOAD, 0);
         mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V");
@@ -136,7 +136,7 @@ public class AsmHiddenImplementation<T> extends AbstractBehavior<T> implements O
         mv.visitCode();
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(GETFIELD, proxyName, "swappable", encodedClassName(HotSwappable.Swappable.class));
-        mv.visitMethodInsn(INVOKEVIRTUAL, dotsToSlashes(HotSwappable.Swappable.class), "getInstance", "()Ljava/lang/Object;");
+        mv.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(HotSwappable.Swappable.class), "getInstance", "()Ljava/lang/Object;");
         mv.visitTypeInsn(CHECKCAST, cn);
         Class[] types = meth.getParameterTypes();
         int ix = 1;
@@ -173,7 +173,7 @@ public class AsmHiddenImplementation<T> extends AbstractBehavior<T> implements O
         String[] retVal = new String[exceptionTypes.length];
         for (int i = 0; i < exceptionTypes.length; i++) {
             Class clazz = exceptionTypes[i];
-            retVal[i] = dotsToSlashes(clazz);
+            retVal[i] = Type.getInternalName(clazz);
         }
         return retVal;
     }
@@ -234,9 +234,9 @@ public class AsmHiddenImplementation<T> extends AbstractBehavior<T> implements O
 
     private String encodedClassName(final Class<?> clazz) {
         if (clazz.getName().startsWith("[")) {
-            return dotsToSlashes(clazz);
+            return Type.getInternalName(clazz);
         } else if (!clazz.isPrimitive()) {
-            return "L" + dotsToSlashes(clazz) + ";";
+            return "L" + Type.getInternalName(clazz) + ";";
         } else if (clazz == int.class) {
             return "I";
         } else if (clazz == long.class) {
@@ -266,10 +266,6 @@ public class AsmHiddenImplementation<T> extends AbstractBehavior<T> implements O
             retVal += encodedClassName(type);
         }
         return retVal;
-    }
-
-    private String dotsToSlashes(final Class<?> type) {
-        return type.getName().replace('.', '/');
     }
 
     private static class AsmClassLoader extends ClassLoader {
