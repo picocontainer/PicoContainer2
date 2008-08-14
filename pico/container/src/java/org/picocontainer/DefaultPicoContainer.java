@@ -725,7 +725,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public MutablePicoContainer makeChildContainer() {
-        DefaultPicoContainer pc = new DefaultPicoContainer(componentFactory, lifecycleStrategy, this);
+        DefaultPicoContainer pc = new DefaultPicoContainer(componentFactory, lifecycleStrategy, this, componentMonitor);
         addChildContainer(pc);
         return pc;
     }

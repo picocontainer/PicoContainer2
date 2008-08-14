@@ -20,8 +20,10 @@ import static org.picocontainer.Characteristics.SDI;
 
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.lang.StringBuilder;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -455,6 +457,29 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		assertNotNull(t1);
 		assertTrue(t1 instanceof SimpleTouchable);
 	}
+
+    @Test public void testMakeChildContainerPassesMonitorFromParentToChild() {
+        final StringBuilder sb = new StringBuilder();
+        ComponentMonitor cm = new NullComponentMonitor() {
+            public <T> void instantiated(PicoContainer container, ComponentAdapter<T> componentAdapter,
+                              Constructor<T> constructor,
+                              Object instantiated,
+                              Object[] injected,
+                              long duration) {
+                sb.append(instantiated.getClass().getName()).append(",");
+            }
+
+        };
+        MutablePicoContainer parent = new DefaultPicoContainer(cm);
+        MutablePicoContainer child = parent.makeChildContainer();
+        child.addComponent("t1", SimpleTouchable.class);
+        Object t1 = child.getComponent("t1");
+        assertNotNull(t1);
+        assertTrue(t1 instanceof SimpleTouchable);
+        assertEquals("org.picocontainer.testmodel.SimpleTouchable,", sb.toString());
+    }
+
+
 
 	@Test public void testCanUseCustomLifecycleStrategyForClassRegistrations() {
 		DefaultPicoContainer dpc = new DefaultPicoContainer(
