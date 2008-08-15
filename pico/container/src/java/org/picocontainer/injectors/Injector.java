@@ -124,7 +124,7 @@ public class Injector {
 
 
     /**
-     * conventiet method to create method injector
+     * convenience method to create method injector
      * @param componentKey
      * @param componentImplementation
      * @param parameters
@@ -140,4 +140,42 @@ public class Injector {
         return new MethodInjector(componentKey, componentImplementation, parameters, monitor,
                           lifecycleStrategy, methodName, useNames);
     }
+
+    /**
+     * convenience method to create multi component adapter
+     * @param componentKey
+     * @param componentImplementation
+     * @param parameters
+     * @param componentMonitor
+     * @param lifecycleStrategy
+     * @param setterPrefix
+     * @param useNames
+     * @return
+     */
+
+    public static ComponentAdapter multi(Object componentKey,
+                         Class componentImplementation,
+                         Parameter[] parameters,
+                         ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, String setterPrefix, boolean useNames) {
+        return new MultiInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterPrefix, useNames);
+    }
+
+    /**
+     * convenience method to create named field injector
+     * @param key
+     * @param impl
+     * @param parameters
+     * @param componentMonitor
+     * @param lifecycleStrategy
+     * @param fieldNames
+     * @return
+     */
+     public static ComponentAdapter namedField(Object key,
+                                  Class<?> impl,
+                                  Parameter[] parameters,
+                                  ComponentMonitor componentMonitor,
+                                  LifecycleStrategy lifecycleStrategy,
+                                  String fieldNames)   {
+         return new   NamedFieldInjector( key, impl, parameters, componentMonitor, lifecycleStrategy,  fieldNames);
+     }
 }
