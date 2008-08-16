@@ -1,10 +1,10 @@
-package org.nanocontainer.webcontainer.groovy.adapters;
+package org.picocontainer.jetty.groovy.adapters;
 
 import groovy.util.NodeBuilder;
 
 import java.util.Map;
 
-import org.nanocontainer.webcontainer.PicoContext;
+import org.picocontainer.jetty.PicoContext;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.classname.ClassName;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;

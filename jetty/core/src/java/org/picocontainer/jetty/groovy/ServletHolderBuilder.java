@@ -1,4 +1,4 @@
-package org.nanocontainer.webcontainer.groovy;
+package org.picocontainer.jetty.groovy;
 
 import groovy.util.NodeBuilder;
 

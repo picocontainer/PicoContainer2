@@ -7,7 +7,7 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer.webcontainer;
+package org.picocontainer.jetty;
 
 import java.util.EventListener;
 import java.util.HashMap;

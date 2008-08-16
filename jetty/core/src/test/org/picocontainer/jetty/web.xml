@@ -7,7 +7,7 @@
 	<filter>
 		<filter-name>test-filter</filter-name>
 		<filter-class>
-			org.nanocontainer.webcontainer.DependencyInjectionTestFilter
+			org.picocontainer.jetty.DependencyInjectionTestFilter
 		</filter-class>
 		<init-param>
 			<param-name>foo</param-name>
@@ -21,14 +21,14 @@
 
    <listener>
         <listener-class>
-			org.nanocontainer.webcontainer.DependencyInjectionTestListener
+			org.picocontainer.jetty.DependencyInjectionTestListener
         </listener-class>
     </listener>    
 
     <servlet>
 		<servlet-name>test-servlet</servlet-name>
 		<servlet-class>
-			org.nanocontainer.webcontainer.DependencyInjectionTestServlet
+			org.picocontainer.jetty.DependencyInjectionTestServlet
 		</servlet-class>
 		<init-param>
 			<param-name>foo</param-name>

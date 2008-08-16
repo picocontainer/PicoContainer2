@@ -7,7 +7,7 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer.webcontainer;
+package org.picocontainer.jetty;
 
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.RequestLog;

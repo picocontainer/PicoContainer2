@@ -7,7 +7,7 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer.webcontainer;
+package org.picocontainer.jetty;
 
 /**
  */

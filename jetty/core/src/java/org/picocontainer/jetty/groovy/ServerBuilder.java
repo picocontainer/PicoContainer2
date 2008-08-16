@@ -7,15 +7,15 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer.webcontainer.groovy;
+package org.picocontainer.jetty.groovy;
 
 import groovy.util.NodeBuilder;
 
 import java.util.Map;
 
-import org.nanocontainer.webcontainer.PicoContext;
-import org.nanocontainer.webcontainer.PicoJettyServer;
-import org.nanocontainer.webcontainer.PicoWebAppContext;
+import org.picocontainer.jetty.PicoContext;
+import org.picocontainer.jetty.PicoJettyServer;
+import org.picocontainer.jetty.PicoWebAppContext;
 import org.picocontainer.MutablePicoContainer;
 
 public class ServerBuilder extends NodeBuilder {

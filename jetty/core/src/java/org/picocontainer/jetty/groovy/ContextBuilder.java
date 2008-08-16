@@ -7,7 +7,7 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer.webcontainer.groovy;
+package org.picocontainer.jetty.groovy;
 
 import org.picocontainer.MutablePicoContainer;
 
@@ -17,9 +17,9 @@ import javax.servlet.Servlet;
 import groovy.util.NodeBuilder;
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.servlet.ServletHolder;
-import org.nanocontainer.webcontainer.PicoContext;
-import org.nanocontainer.webcontainer.groovy.adapters.NodeBuilderAdapter;
-import org.nanocontainer.webcontainer.groovy.adapters.WaffleAdapter;
+import org.picocontainer.jetty.PicoContext;
+import org.picocontainer.jetty.groovy.adapters.NodeBuilderAdapter;
+import org.picocontainer.jetty.groovy.adapters.WaffleAdapter;
 
 public class ContextBuilder extends NodeBuilder {
     private final MutablePicoContainer parentContainer;

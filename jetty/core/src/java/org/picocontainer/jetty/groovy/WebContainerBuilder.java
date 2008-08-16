@@ -8,11 +8,11 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer.webcontainer.groovy;
+package org.picocontainer.jetty.groovy;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.script.groovy.nodes.AbstractBuilderNode;
-import org.nanocontainer.webcontainer.PicoJettyServer;
+import org.picocontainer.jetty.PicoJettyServer;
 
 import java.util.Map;
 

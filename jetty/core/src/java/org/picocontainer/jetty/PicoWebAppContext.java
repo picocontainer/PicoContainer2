@@ -7,14 +7,14 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer.webcontainer;
+package org.picocontainer.jetty;
 
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.jetty.webapp.WebXmlConfiguration;
 import org.mortbay.jetty.webapp.Configuration;
 import org.mortbay.jetty.servlet.ServletHandler;
 import org.picocontainer.PicoContainer;
-import org.nanocontainer.webcontainer.PicoServletHandler;
+import org.picocontainer.jetty.PicoServletHandler;
 
 public class PicoWebAppContext extends WebAppContext {
     private final PicoContainer parentContainer;

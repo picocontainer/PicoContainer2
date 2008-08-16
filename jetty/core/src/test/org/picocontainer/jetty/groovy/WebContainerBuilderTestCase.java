@@ -8,7 +8,7 @@
  *                                                                           *
  *****************************************************************************/
 
-package org.nanocontainer.webcontainer.groovy;
+package org.picocontainer.jetty.groovy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -24,7 +24,7 @@ import java.net.URL;
 import org.junit.After;
 import org.junit.Test;
 import org.mortbay.util.IO;
-import org.nanocontainer.webcontainer.TestHelper;
+import org.picocontainer.jetty.TestHelper;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;
@@ -55,11 +55,11 @@ public final class WebContainerBuilderTestCase {
                 // declare the web container
                 "    webContainer(port:8080) {\n" +
                 "        context(path:'/bar') {\n" +
-                "            filter(path:'/*', class:org.nanocontainer.webcontainer.DependencyInjectionTestFilter," +
+                "            filter(path:'/*', class:org.picocontainer.jetty.DependencyInjectionTestFilter," +
                 "                   dispatchers: new Integer(0)){\n" +
                 "               initParam(name:'foo', value:'bau')\n" +
                 "            }\n" +
-                "            servlet(path:'/foo2', class:org.nanocontainer.webcontainer.DependencyInjectionTestServlet)\n" +
+                "            servlet(path:'/foo2', class:org.picocontainer.jetty.DependencyInjectionTestServlet)\n" +
 
                 "        }\n" +
                 "    }\n" +
@@ -79,7 +79,7 @@ public final class WebContainerBuilderTestCase {
                 // declare the web container
                 "    webContainer(port:8080) {\n" +
                 "        context(path:'/bar') {\n" +
-                "            servlet(path:'/foo', class:org.nanocontainer.webcontainer.DependencyInjectionTestServlet){\n" +
+                "            servlet(path:'/foo', class:org.picocontainer.jetty.DependencyInjectionTestServlet){\n" +
                 "               initParam(name:'foo', value:'bar')\n" +
                 "            }\n" +
                 "        }\n" +
@@ -99,7 +99,7 @@ public final class WebContainerBuilderTestCase {
                 // declare the web container
                 "    webContainer(port:8080) {\n" +
                 "        context(path:'/bar') {\n" +
-                "            servlet(path:'/foo', instance:new org.nanocontainer.webcontainer.DependencyInjectionTestServlet('Fred')) {\n" +
+                "            servlet(path:'/foo', instance:new org.picocontainer.jetty.DependencyInjectionTestServlet('Fred')) {\n" +
                 //"                setFoo(foo:'bar')\n" +
                 "            }\n" +
                 "        }\n" +
@@ -122,7 +122,7 @@ public final class WebContainerBuilderTestCase {
                 "    webContainer() {\n" +
                 "        blockingChannelConnector(host:'localhost', port:8080)\n" +
                 "        context(path:'/bar') {\n" +
-                "            servlet(path:'/foo', class:org.nanocontainer.webcontainer.DependencyInjectionTestServlet)\n" +
+                "            servlet(path:'/foo', class:org.picocontainer.jetty.DependencyInjectionTestServlet)\n" +
                 "        }\n" +
                 "    }\n" +
                 // end declaration
@@ -166,7 +166,7 @@ public final class WebContainerBuilderTestCase {
                 // declare the web container
                 "    webContainer(port:8080) {\n" +
                 "        context(path:'/bar') {\n" +
-                "            listener(class:org.nanocontainer.webcontainer.DependencyInjectionTestListener)\n" +
+                "            listener(class:org.picocontainer.jetty.DependencyInjectionTestListener)\n" +
                 "        }\n" +
                 "    }\n" +
                 // end declaration

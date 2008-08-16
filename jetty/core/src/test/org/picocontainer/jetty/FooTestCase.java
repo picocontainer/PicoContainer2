@@ -1,4 +1,4 @@
-package org.nanocontainer.webcontainer;
+package org.picocontainer.jetty;
 
 import java.io.IOException;
 

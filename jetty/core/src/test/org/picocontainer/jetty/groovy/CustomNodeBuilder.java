@@ -1,10 +1,10 @@
-package org.nanocontainer.webcontainer.groovy;
+package org.picocontainer.jetty.groovy;
 
 import groovy.util.NodeBuilder;
 
 import java.util.Map;
 
-import org.nanocontainer.webcontainer.PicoContext;
+import org.picocontainer.jetty.PicoContext;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 

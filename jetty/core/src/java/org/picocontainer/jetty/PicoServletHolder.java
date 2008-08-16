@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.nanocontainer.webcontainer;
+package org.picocontainer.jetty;
 
 import org.mortbay.jetty.servlet.ServletHolder;
 import org.picocontainer.PicoContainer;
