@@ -199,8 +199,12 @@ public class AdaptingInjection extends AbstractInjectionFactory {
         return componentAdapter;
     }
 
-    private boolean injectionMethodAnnotated(Class<?> componentImplementation) {
-        return injectionAnnotated(componentImplementation.getDeclaredMethods());
+    private boolean injectionMethodAnnotated(final Class<?> componentImplementation) {
+        return (Boolean) AccessController.doPrivileged(new PrivilegedAction<Object>() {
+            public Object run() {
+                return injectionAnnotated(componentImplementation.getDeclaredMethods());
+            }
+        });
     }
 
     private boolean injectionFieldAnnotated(final Class<?> componentImplementation) {
