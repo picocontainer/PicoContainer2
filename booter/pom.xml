@@ -203,6 +203,9 @@
                                         <filter token="VER" value="${pom.version}" />
                                     </filterset>
                                 </copy>
+
+                                <chmod file="${project.build.directory}/booter/picocontainer.sh" perm="+x"/>
+
                                 <copy todir="${project.build.directory}/booter/lib">
                                     <fileset dir="${project.build.directory}">
                                         <include name="${pom.artifactId}-${pom.version}.jar" />
