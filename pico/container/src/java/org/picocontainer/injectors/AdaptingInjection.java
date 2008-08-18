@@ -11,7 +11,10 @@
 package org.picocontainer.injectors;
 
 import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Method;
 import java.util.Properties;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -200,8 +203,12 @@ public class AdaptingInjection extends AbstractInjectionFactory {
         return injectionAnnotated(componentImplementation.getDeclaredMethods());
     }
 
-    private boolean injectionFieldAnnotated(Class<?> componentImplementation) {
-        return injectionAnnotated(componentImplementation.getDeclaredFields());
+    private boolean injectionFieldAnnotated(final Class<?> componentImplementation) {
+        return (Boolean) AccessController.doPrivileged(new PrivilegedAction<Object>() {
+            public Object run() {
+                return injectionAnnotated(componentImplementation.getDeclaredFields());
+            }
+        });
     }
     
     private boolean injectionAnnotated(AccessibleObject[] objects) {
