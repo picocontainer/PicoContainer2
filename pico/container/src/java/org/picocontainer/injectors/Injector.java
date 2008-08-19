@@ -67,6 +67,7 @@ public class Injector {
 
     /**
      * convenience method to create annotated field injector
+     *
      * @param key
      * @param impl
      * @param parameters
@@ -76,17 +77,18 @@ public class Injector {
      * @param useNames
      * @return
      */
-    public static ComponentAdapter  annotatedField(Object key,
-                                  Class<?> impl,
-                                  Parameter[] parameters,
-                                  ComponentMonitor componentMonitor,
-                                  LifecycleStrategy lifecycleStrategy,
-                                  Class<? extends Annotation> injectionAnnotation, boolean useNames) {
-        return new  AnnotatedFieldInjector(key, impl, parameters, componentMonitor, lifecycleStrategy, injectionAnnotation,useNames);
+    public static ComponentAdapter annotatedField(Object key,
+                                                  Class<?> impl,
+                                                  Parameter[] parameters,
+                                                  ComponentMonitor componentMonitor,
+                                                  LifecycleStrategy lifecycleStrategy,
+                                                  Class<? extends Annotation> injectionAnnotation, boolean useNames) {
+        return new AnnotatedFieldInjector(key, impl, parameters, componentMonitor, lifecycleStrategy, injectionAnnotation, useNames);
     }
 
     /**
      * convenience method to create annotated method injector
+     *
      * @param key
      * @param impl
      * @param parameters
@@ -96,18 +98,19 @@ public class Injector {
      * @param useNames
      * @return
      */
-    public static ComponentAdapter   annotatedMethod(Object key,
-                                   Class<?> impl,
-                                   Parameter[] parameters,
-                                   ComponentMonitor monitor,
-                                   LifecycleStrategy lifecycleStrategy, Class<? extends Annotation> injectionAnnotation, boolean useNames) {
-        return new  AnnotatedMethodInjector( key, impl, parameters, monitor, lifecycleStrategy, injectionAnnotation, useNames) ;
+    public static ComponentAdapter annotatedMethod(Object key,
+                                                   Class<?> impl,
+                                                   Parameter[] parameters,
+                                                   ComponentMonitor monitor,
+                                                   LifecycleStrategy lifecycleStrategy, Class<? extends Annotation> injectionAnnotation, boolean useNames) {
+        return new AnnotatedMethodInjector(key, impl, parameters, monitor, lifecycleStrategy, injectionAnnotation, useNames);
 
     }
 
 
     /**
      * creates composite injector
+     *
      * @param componentKey
      * @param componentImplementation
      * @param parameters
@@ -118,13 +121,14 @@ public class Injector {
      * @return
      */
     public static ComponentAdapter composite(Object componentKey, Class<?> componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy,
-                             boolean useNames, org.picocontainer.Injector... injectors) {
+                                             boolean useNames, org.picocontainer.Injector... injectors) {
         return new CompositeInjector(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames, injectors);
     }
 
 
     /**
      * convenience method to create method injector
+     *
      * @param componentKey
      * @param componentImplementation
      * @param parameters
@@ -134,15 +138,17 @@ public class Injector {
      * @param useNames
      * @return
      * @throws AbstractInjector.NotConcreteRegistrationException
+     *
      */
     public static ComponentAdapter method(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
-                          LifecycleStrategy lifecycleStrategy, String methodName, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
+                                          LifecycleStrategy lifecycleStrategy, String methodName, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
         return new MethodInjector(componentKey, componentImplementation, parameters, monitor,
-                          lifecycleStrategy, methodName, useNames);
+                lifecycleStrategy, methodName, useNames);
     }
 
     /**
      * convenience method to create multi component adapter
+     *
      * @param componentKey
      * @param componentImplementation
      * @param parameters
@@ -154,14 +160,15 @@ public class Injector {
      */
 
     public static ComponentAdapter multi(Object componentKey,
-                         Class componentImplementation,
-                         Parameter[] parameters,
-                         ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, String setterPrefix, boolean useNames) {
+                                         Class componentImplementation,
+                                         Parameter[] parameters,
+                                         ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, String setterPrefix, boolean useNames) {
         return new MultiInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterPrefix, useNames);
     }
 
     /**
      * convenience method to create named field injector
+     *
      * @param key
      * @param impl
      * @param parameters
@@ -170,12 +177,55 @@ public class Injector {
      * @param fieldNames
      * @return
      */
-     public static ComponentAdapter namedField(Object key,
-                                  Class<?> impl,
-                                  Parameter[] parameters,
-                                  ComponentMonitor componentMonitor,
-                                  LifecycleStrategy lifecycleStrategy,
-                                  String fieldNames)   {
-         return new   NamedFieldInjector( key, impl, parameters, componentMonitor, lifecycleStrategy,  fieldNames);
-     }
+    public static ComponentAdapter namedField(Object key,
+                                              Class<?> impl,
+                                              Parameter[] parameters,
+                                              ComponentMonitor componentMonitor,
+                                              LifecycleStrategy lifecycleStrategy,
+                                              String fieldNames) {
+        return new NamedFieldInjector(key, impl, parameters, componentMonitor, lifecycleStrategy, fieldNames);
+    }
+
+    /**
+     * convenience method to create setter injector
+     *
+     * @param componentKey
+     * @param componentImplementation
+     * @param parameters
+     * @param monitor
+     * @param lifecycleStrategy
+     * @param setterMethodPrefix
+     * @param useNames
+     * @return
+     * @throws AbstractInjector.NotConcreteRegistrationException
+     *
+     */
+    public static ComponentAdapter setter(final Object componentKey,
+                                          final Class componentImplementation,
+                                          Parameter[] parameters,
+                                          ComponentMonitor monitor,
+                                          LifecycleStrategy lifecycleStrategy,
+                                          String setterMethodPrefix, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
+        return new SetterInjector(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, setterMethodPrefix, useNames);
+    }
+
+    /**
+     * conveniently create typed field injector
+     *
+     * @param key
+     * @param impl
+     * @param parameters
+     * @param componentMonitor
+     * @param lifecycleStrategy
+     * @param classNames
+     * @return
+     */
+    public static ComponentAdapter typedField(Object key,
+                                              Class<?> impl,
+                                              Parameter[] parameters,
+                                              ComponentMonitor componentMonitor,
+                                              LifecycleStrategy lifecycleStrategy,
+                                              String classNames) {
+        return new TypedFieldInjector(key, impl, parameters, componentMonitor, lifecycleStrategy, classNames);
+    }
 }
