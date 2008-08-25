@@ -12,6 +12,7 @@ package org.picocontainer.jetty;
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
 
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
@@ -95,6 +96,24 @@ public class PicoContext {
         context.setResourceBase(absolutePath);
         context.setWelcomeFiles(new String[]{welcomePage});
     }
+
+    public void setVirtualHosts(String... virtualhosts) {
+        context.setVirtualHosts(virtualhosts);
+    }
+
+    public void addVirtualHost(String virtualhost) {
+        String[] virtualHosts = context.getVirtualHosts();
+        if (virtualHosts == null) {
+            setVirtualHosts(virtualhost);
+        } else {
+            String[] newHosts = new String[virtualHosts.length +1];
+            System.arraycopy(virtualHosts,0,newHosts,0,virtualHosts.length);
+            newHosts[virtualHosts.length] = virtualhost;
+            setVirtualHosts(newHosts);
+        }
+    }
+
+
 
     public void setDefaultHandling(final String absolutePath, String scratchDir, String pageSuffix) {
         context.setResourceBase(absolutePath);

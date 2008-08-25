@@ -37,6 +37,8 @@ public class ContextBuilder extends NodeBuilder {
             return makeServlet(map);
         } else if (name.equals("listener")) {
             return makeListener(map);
+        } else if (name.equals("virtualHost")) {
+            return addVirtualHost(map);
         } else if (name.equals("staticContent")) {
             setStaticContent(map);
             return null;
@@ -69,6 +71,13 @@ public class ContextBuilder extends NodeBuilder {
     private Object makeListener(Map map) {
         return context.addListener((Class)map.remove("class"));
     }
+
+    private Object addVirtualHost(Map map) {
+        String virtualhost = (String) map.remove("name");
+        context.addVirtualHost(virtualhost);
+        return virtualhost;
+    }
+
 
     private Object makeServlet(Map map) {
 
