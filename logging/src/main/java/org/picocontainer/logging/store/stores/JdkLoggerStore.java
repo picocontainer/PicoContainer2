@@ -35,7 +35,7 @@ public class JdkLoggerStore extends AbstractLoggerStore {
         try {
             this.manager = LogManager.getLogManager();
             this.manager.readConfiguration(resource);
-            setRootLogger(new JdkLogger(this.manager.getLogger("global")));
+            setRootLogger(new JdkLogger(java.util.logging.Logger.getLogger("global")));
         } catch (Exception e) {
             final String message = "Failed to create logger store for resource " + resource;
             throw new LoggerStoreCreationException(message, e);
