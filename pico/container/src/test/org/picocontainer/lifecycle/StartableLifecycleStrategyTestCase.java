@@ -87,6 +87,7 @@ public class StartableLifecycleStrategyTestCase {
         void sstop();
         void ddispose();
     }
+
     public static class ThirdPartyStartableComponent implements ThirdPartyStartable {
         StringBuilder sb;
         public ThirdPartyStartableComponent(StringBuilder sb) {
@@ -102,6 +103,25 @@ public class StartableLifecycleStrategyTestCase {
         }
 
         public void ddispose() {
+            sb.append("!");
+        }
+    }
+
+    public static class BuiltInStartableComponent implements Startable, Disposable {
+        StringBuilder sb;
+        public BuiltInStartableComponent(StringBuilder sb) {
+            this.sb = sb;
+        }
+
+        public void start() {
+            sb.append("<");
+        }
+
+        public void stop() {
+            sb.append(">");
+        }
+
+        public void dispose() {
             sb.append("!");
         }
     }
@@ -138,6 +158,21 @@ public class StartableLifecycleStrategyTestCase {
         pico.dispose();
         assertEquals("<>!", sb.toString());
 
+    }
+
+    @Test public void testMixOfThirdPartyAndBuiltInStartableAndDisposable() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new OrStartableLifecycleStrategy(
+                    new MyStartableLifecycleStrategy(),
+                    new StartableLifecycleStrategy(new NullComponentMonitor())),
+                new EmptyPicoContainer());
+        StringBuilder sb = new StringBuilder();
+        pico.addComponent(sb);
+        pico.as(CACHE).addComponent(ThirdPartyStartableComponent.class);
+        pico.as(CACHE).addComponent(BuiltInStartableComponent.class);
+        pico.start();
+        pico.stop();
+        pico.dispose();
+        assertEquals("<<>>!!", sb.toString());
     }
 
     @Test public void testThirdPartyStartableCanNoteLifecycleRuntimeException() {
