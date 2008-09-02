@@ -5,10 +5,12 @@
 
 <style type="text/css" media="all">
 @import url("./style/pico.css");
+
 @import url("./style/syntaxhighlighter.css");
 </style>
 
 <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+	
 </script>
 <script type="text/javascript">
 	_uacct = "UA-2268879-1";
@@ -44,10 +46,10 @@ on</span><br />
 <#list sitemap.sections as section>
 <h1>${section.name}</h1>
 <ul>
-  <#list section.pages as otherPage> <#if otherPage = page>
-  <li class="none"><strong>${otherPage.title}</strong></li>
+  <#list section.entries as entry> <#if entry = page>
+  <li class="currentLink">${entry.title}</li>
   <#else>
-  <li class="none"><a href="${otherPage.href}">${otherPage.title}</a></li>
+  <li><a href="${entry.href}">${entry.title}</a></li>
   </#if> </#list>
 </ul>
 </#list>
