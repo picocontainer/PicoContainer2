@@ -10,14 +10,17 @@ package org.picocontainer.lifecycle;
 import org.picocontainer.LifecycleStrategy;
 
 /**
+ * Allow for use of alternate LifecycleStrategy strategies to be used
+ * at the same time. A component can be started/stopped/disposed according
+ * to *any* of the supplied LifecycleStrategy instances.
  *
  * @author Paul Hammant
  */
-public class OrStartableLifecycleStrategy implements LifecycleStrategy {
+public class CompositeLifecycleStrategy implements LifecycleStrategy {
 
     private final StartableLifecycleStrategy[] alternateStrategies;
 
-    public OrStartableLifecycleStrategy(StartableLifecycleStrategy... alternateStrategies) {
+    public CompositeLifecycleStrategy(StartableLifecycleStrategy... alternateStrategies) {
         this.alternateStrategies = alternateStrategies;
     }
 

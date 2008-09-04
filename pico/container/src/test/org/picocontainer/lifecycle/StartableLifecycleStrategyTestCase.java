@@ -82,49 +82,7 @@ public class StartableLifecycleStrategyTestCase {
         return mockery.mock(Serializable.class);
     }
 
-    interface ThirdPartyStartable {
-        void sstart() throws Exception;
-        void sstop();
-        void ddispose();
-    }
 
-    public static class ThirdPartyStartableComponent implements ThirdPartyStartable {
-        StringBuilder sb;
-        public ThirdPartyStartableComponent(StringBuilder sb) {
-            this.sb = sb;
-        }
-
-        public void sstart() {
-            sb.append("<");
-        }
-
-        public void sstop() {
-            sb.append(">");
-        }
-
-        public void ddispose() {
-            sb.append("!");
-        }
-    }
-
-    public static class BuiltInStartableComponent implements Startable, Disposable {
-        StringBuilder sb;
-        public BuiltInStartableComponent(StringBuilder sb) {
-            this.sb = sb;
-        }
-
-        public void start() {
-            sb.append("<");
-        }
-
-        public void stop() {
-            sb.append(">");
-        }
-
-        public void dispose() {
-            sb.append("!");
-        }
-    }
 
     public static class ThirdPartyStartableComponent2 implements ThirdPartyStartable {
         public void sstart() {
@@ -161,7 +119,7 @@ public class StartableLifecycleStrategyTestCase {
     }
 
     @Test public void testMixOfThirdPartyAndBuiltInStartableAndDisposable() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new OrStartableLifecycleStrategy(
+        DefaultPicoContainer pico = new DefaultPicoContainer(new CompositeLifecycleStrategy(
                     new MyStartableLifecycleStrategy(),
                     new StartableLifecycleStrategy(new NullComponentMonitor())),
                 new EmptyPicoContainer());
@@ -208,30 +166,4 @@ public class StartableLifecycleStrategyTestCase {
 
     }
 
-    private static class MyStartableLifecycleStrategy extends StartableLifecycleStrategy {
-        public MyStartableLifecycleStrategy() {
-            super(new NullComponentMonitor());
-        }
-
-        protected String getStopMethodName() {
-            return "sstop";
-        }
-
-        protected String getStartMethodName() {
-            return "sstart";
-        }
-
-        protected String getDisposeMethodName() {
-            return "ddispose";
-        }
-
-
-        protected Class getStartableInterface() {
-            return ThirdPartyStartable.class;
-        }
-
-        protected Class getDisposableInterface() {
-            return ThirdPartyStartable.class;
-        }
-    }
 }
