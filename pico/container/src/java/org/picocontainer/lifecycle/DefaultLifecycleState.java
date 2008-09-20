@@ -11,6 +11,12 @@ import org.picocontainer.PicoCompositionException;
 
 import java.io.Serializable;
 
+/**
+ * Bean-like implementation of LifecycleState.
+ * @author Paul Hammant
+ * @author Michael Rimov
+ *
+ */
 @SuppressWarnings("serial")
 public class DefaultLifecycleState implements LifecycleState, Serializable {
 
@@ -34,21 +40,25 @@ public class DefaultLifecycleState implements LifecycleState, Serializable {
 	 */
 	private static final String DISPOSED = "DISPOSED";
 
+	/**
+	 * Initial state.
+	 */
     private String state = CONSTRUCTED;
 
+    /** {@inheritDoc} **/
     public void removingComponent() {
-        if (state == STARTED) {
+        if (isStarted()) {
             throw new PicoCompositionException("Cannot remove components after the container has started");
         }
 
-        if (state == DISPOSED) {
+        if (isDisposed()) {
             throw new PicoCompositionException("Cannot remove components after the container has been disposed");
         }
     }
 
     /** {@inheritDoc} **/
     public void starting() {
-		if (state == CONSTRUCTED || state == STOPPED) {
+		if (isConstructed() || isStopped()) {
             state = STARTED;
 			return;
 		}
@@ -58,29 +68,51 @@ public class DefaultLifecycleState implements LifecycleState, Serializable {
 
     /** {@inheritDoc} **/
     public void stopping() {
-        if (!(state == STARTED)) {
+        if (!(isStarted())) {
             throw new IllegalStateException("Cannot stop.  Current container state was: " + state);
         }
     }
 
+    /** {@inheritDoc} **/
     public void stopped() {
         state = STOPPED;
     }
 
+    /** {@inheritDoc} **/
     public boolean isStarted() {
         return state == STARTED;
     }
 
     /** {@inheritDoc} **/
     public void disposing() {
-        if (!(state == STOPPED || state == CONSTRUCTED)) {
+        if (!(isStopped() || isConstructed())) {
             throw new IllegalStateException("Cannot dispose.  Current lifecycle state is: " + state);
         }
 
     }
 
+    /** {@inheritDoc} **/
     public void disposed() {
         state = DISPOSED;
     }
+
+    
+    /** {@inheritDoc} **/
+	public boolean isDisposed() {
+		return state == DISPOSED;
+    }
+
+    /** {@inheritDoc} **/
+	public boolean isStopped() {
+		return state == STOPPED;
+    }
+
+	/**
+	 * Returns true if no other state has been triggered so far.
+	 * @return
+	 */
+	public boolean isConstructed() {
+		return state == CONSTRUCTED;
+	}
 
 }

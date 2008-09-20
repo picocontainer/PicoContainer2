@@ -10,9 +10,13 @@ package org.picocontainer.lifecycle;
 /**
  * Current lifecycle state of the container.
  * @author Michael Rimov
+ * @author Paul Hammant
  */
 public interface LifecycleState {
 
+	/**
+	 * Lifecycle state for when a component is being removed.
+	 */
     void removingComponent();
 
 	/**
@@ -24,22 +28,44 @@ public interface LifecycleState {
     void starting();
 
     /**
-     * Stop is normally only allowed while the current
-     * container state is STARTED.
-     * @return true if stop is allowed.
+     * Lifecycle state for when the container is being stopped.  (Ie, right after Picocontainer.stop()
+     * has been called, but before any components are stopped.
      */
     void stopping();
 
+    /**
+     * Lifecycle state for when stop has been completed.
+     */
     void stopped();
 
+    /**
+     * Checks if current lifecycle is started.
+     * @return true if the current container state is STARTED.
+     */
     boolean isStarted();
 
     /**
-     * Dispose is normally only allowed if the object has not been already
-     * disposed, and it is not started.
-     * @return
+     * Turns the lifecycle state to indicate that the dispose() process is being
+     * executed on the container.
      */
     void disposing();
 
+    /**
+     * Turns the lifecycle state to completely disposed.  Internally called after PicoContainer.dispose()
+     * is finished.
+     */
     void disposed();
+    
+    /**
+     * Checks if the current lifecycle is disposed.
+     * @return true if the current state is DISPOSED.
+     */
+    boolean isDisposed();
+    
+    /**
+     * Checks if the current lifecyle is stopped.
+     * @return true if the current state is STOPPED;
+     * @return
+     */
+    boolean isStopped();
 }
