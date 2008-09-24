@@ -167,4 +167,22 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         return "MethodInjector-";
     }
 
+    public static class ByReflectionMethod extends MethodInjector {
+        private final Method injectionMethod;
+
+        public ByReflectionMethod(Object componentKey, Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Method injectionMethod, boolean useNames) throws NotConcreteRegistrationException {
+            super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, null, useNames);
+            this.injectionMethod = injectionMethod;
+        }
+        
+        @Override
+        protected Method getInjectorMethod() {
+            if (injectionMethod.getDeclaringClass().isAssignableFrom(super.getComponentImplementation())) {
+                return injectionMethod;
+            } else {
+                return null;
+            }
+        }
+    }
+
 }

@@ -22,7 +22,10 @@ import org.picocontainer.monitors.NullComponentMonitor;
 
 public class MethodInjectionTestCase {
 
-    public static class Foo {
+    public static interface IFoo {
+        void inject(Bar bar, String string);
+    }
+    public static class Foo implements IFoo {
         private Bar bar;
         private String string;
 
@@ -45,6 +48,29 @@ public class MethodInjectionTestCase {
         assertNotNull(foo.string);
         assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
+
+    @Test public void testMethodInjectionViaMethodDef() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection(Foo.class.getMethods()[0]));
+        pico.addComponent("hello");
+        pico.addComponent(Foo.class);
+        pico.addComponent(Bar.class);
+        Foo foo = pico.getComponent(Foo.class);
+        assertNotNull(foo.bar);
+        assertNotNull(foo.string);
+        assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+    }
+
+    @Test public void testMethodInjectionViaMethodDefViaInterface() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection(IFoo.class.getMethods()[0]));
+        pico.addComponent("hello");
+        pico.addComponent(Foo.class);
+        pico.addComponent(Bar.class);
+        Foo foo = pico.getComponent(Foo.class);
+        assertNotNull(foo.bar);
+        assertNotNull(foo.string);
+        assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+    }
+
 
     @Test public void testMethodInjectionViaCharacteristics() {
         DefaultPicoContainer pico = new DefaultPicoContainer();

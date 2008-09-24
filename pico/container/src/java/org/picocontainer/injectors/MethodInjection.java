@@ -18,6 +18,7 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 import java.util.Properties;
+import java.lang.reflect.Method;
 
 /**
  * A {@link org.picocontainer.InjectionFactory} for methods.
@@ -28,21 +29,49 @@ import java.util.Properties;
 @SuppressWarnings("serial")
 public class MethodInjection extends AbstractInjectionFactory {
 
-    private final String injectionMethodName;
-
+    private final AbstractInjectionFactory delegate;
 
     public MethodInjection(String injectionMethodName) {
-        this.injectionMethodName = injectionMethodName;
+        delegate = new MethodInjectionByName(injectionMethodName);
     }
 
     public MethodInjection() {
         this("inject");
     }
 
+    public MethodInjection(Method injectionMethod) {
+        delegate = new MethodInjectionByReflectionMethod(injectionMethod);
+    }
+
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey,
                                                    Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
-        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES);
-        return new MethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionMethodName, useNames);
+        return delegate.createComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters);
+    }
+
+    public class MethodInjectionByName extends AbstractInjectionFactory {
+        private final String injectionMethodName;
+
+        public MethodInjectionByName(String injectionMethodName) {
+            this.injectionMethodName = injectionMethodName;
+        }
+
+        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
+            boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES);
+            return new MethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionMethodName, useNames);
+        }
+    }
+
+    public class MethodInjectionByReflectionMethod extends AbstractInjectionFactory {
+        private final Method injectionMethod;
+
+        public MethodInjectionByReflectionMethod(Method injectionMethod) {
+            this.injectionMethod = injectionMethod;
+        }
+
+        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
+            boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES);
+            return new MethodInjector.ByReflectionMethod(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionMethod, useNames);
+        }
     }
 
 }
