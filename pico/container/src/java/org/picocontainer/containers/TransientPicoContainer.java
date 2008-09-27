@@ -9,10 +9,11 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
+import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.behaviors.Caching;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -25,5 +26,9 @@ public class TransientPicoContainer extends DefaultPicoContainer {
 
     public TransientPicoContainer(PicoContainer parent) {
         super(new Caching().wrap(new ConstructorInjection()), new NullLifecycleStrategy(), parent, new NullComponentMonitor());
+    }
+    
+    public TransientPicoContainer(ComponentFactory componentFactory, PicoContainer parent) {
+        super(componentFactory, new NullLifecycleStrategy(), parent, new NullComponentMonitor());
     }
 }
