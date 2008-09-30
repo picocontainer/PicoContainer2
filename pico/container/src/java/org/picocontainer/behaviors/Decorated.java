@@ -29,7 +29,7 @@ public class Decorated extends AbstractBehavior {
         return "FieldDecorated";
     }
 
-    public interface Decorator {
+    interface Decorator {
 
         void decorate(Object instance);
 
