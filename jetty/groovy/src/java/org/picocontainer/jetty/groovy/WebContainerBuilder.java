@@ -32,7 +32,7 @@ public class WebContainerBuilder extends AbstractBuilderNode {
         if (map.containsKey("host")) {
             host = (String) map.remove("host");
         } else {
-            host = "localhost";
+            host = null;
         }
 
         MutablePicoContainer parentContainer = (MutablePicoContainer) current;
