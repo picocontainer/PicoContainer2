@@ -36,16 +36,12 @@ public class BrandingPicoServletFilter extends PicoObjectFactory.ServletFilter {
             super(Brand.class, Brand.class);
         }
 
-        public Object getComponentInstance(PicoContainer picoContainer) throws PicoCompositionException {
+        public Object getComponentInstance(PicoContainer picoContainer, Type type) throws PicoCompositionException {
             return new Brand() {
                 public String getName() {
                     return request.get().getRemoteHost().toUpperCase();
                 }
             };
-        }
-
-        public Object getComponentInstance(PicoContainer picoContainer, Type type) throws PicoCompositionException {
-            return getComponentInstance(picoContainer);
         }
 
         public void verify(PicoContainer picoContainer) throws PicoCompositionException {
