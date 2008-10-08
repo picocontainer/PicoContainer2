@@ -28,10 +28,16 @@ import org.picocontainer.behaviors.Storing;
 public abstract class PicoServletContainerFilter implements Filter, Serializable {
 
     public void init(FilterConfig filterConfig) throws ServletException {
-        ServletContext servletContext = filterConfig.getServletContext();
-        ApplicationContainerHolder ach = (ApplicationContainerHolder) servletContext
+        ServletContext context = filterConfig.getServletContext();
+        ApplicationContainerHolder ach = (ApplicationContainerHolder) context
                 .getAttribute(ApplicationContainerHolder.class.getName());
         setAppContainer(ach.getContainer());
+        SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SessionContainerHolder.class.getName());
+        RequestContainerHolder rch = (RequestContainerHolder) context.getAttribute(RequestContainerHolder.class.getName());
+        initAdditionalScopedComponents(sch.getContainer(), rch.getContainer());
+    }
+
+    protected void initAdditionalScopedComponents(MutablePicoContainer sessionContainer, MutablePicoContainer reqContainer) {
     }
 
     public void destroy() {
@@ -71,6 +77,8 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         setSessionContainer(sch.getContainer());
         setRequestContainer(rch.getContainer());
 
+        containersSetupForRequest(ach.getContainer(),sch.getContainer(),rch.getContainer(), req, resp);
+
         filterChain.doFilter(req, resp);
 
         setAppContainer(null);
@@ -83,6 +91,10 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         sessionStoring.invalidateCacheForThread();
         requestStoring.invalidateCacheForThread();
 
+    }
+
+    protected void containersSetupForRequest(MutablePicoContainer appcontainer, MutablePicoContainer sessionContainer, 
+                                             MutablePicoContainer requestContainer, ServletRequest req, ServletResponse resp) {
     }
 
     protected abstract void setAppContainer(MutablePicoContainer container);
