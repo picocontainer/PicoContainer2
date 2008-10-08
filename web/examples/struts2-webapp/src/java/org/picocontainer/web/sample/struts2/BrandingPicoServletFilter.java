@@ -21,7 +21,6 @@ public class BrandingPicoServletFilter extends PicoObjectFactory.ServletFilter {
 
     protected void initAdditionalScopedComponents(MutablePicoContainer sessionContainer, MutablePicoContainer reqContainer) {
         reqContainer.as(Characteristics.NO_CACHE).addAdapter(new BrandFromDomainAdapter());
-        System.out.println("-->" + reqContainer.getComponentAdapter(Brand.class));
     }
 
     private static ThreadLocal<ServletRequest> request = new ThreadLocal<ServletRequest>();
