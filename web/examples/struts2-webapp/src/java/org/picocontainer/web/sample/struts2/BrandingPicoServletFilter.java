@@ -7,6 +7,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.adapters.AbstractAdapter;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -15,7 +16,7 @@ import javax.servlet.FilterChain;
 import java.lang.reflect.Type;
 import java.io.IOException;
 
-public class Struts2ExampleServletFilter extends PicoObjectFactory.ServletFilter {
+public class BrandingPicoServletFilter extends PicoObjectFactory.ServletFilter {
 
     protected void initAdditionalScopedComponents(MutablePicoContainer sessionContainer, MutablePicoContainer reqContainer) {
         reqContainer.addAdapter(new BrandFromDomainAdapter());
@@ -29,13 +30,10 @@ public class Struts2ExampleServletFilter extends PicoObjectFactory.ServletFilter
         super.doFilter(req, resp, filterChain);
     }
 
-    private static class BrandFromDomainAdapter implements ComponentAdapter {
-        public Object getComponentKey() {
-            return Brand.class;
-        }
+    private static class BrandFromDomainAdapter extends AbstractAdapter {
 
-        public Class getComponentImplementation() {
-            return Brand.class;
+        private BrandFromDomainAdapter() {
+            super(Brand.class, Brand.class);
         }
 
         public Object getComponentInstance(PicoContainer picoContainer) throws PicoCompositionException {
@@ -51,17 +49,6 @@ public class Struts2ExampleServletFilter extends PicoObjectFactory.ServletFilter
         }
 
         public void verify(PicoContainer picoContainer) throws PicoCompositionException {
-        }
-
-        public void accept(PicoVisitor picoVisitor) {
-        }
-
-        public ComponentAdapter getDelegate() {
-            return null;
-        }
-
-        public ComponentAdapter findAdapterOfType(Class aClass) {
-            return null;
         }
 
         public String getDescriptor() {
