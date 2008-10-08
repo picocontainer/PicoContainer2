@@ -10,7 +10,7 @@
 package org.picocontainer.injectors;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;import static org.junit.Assert.assertSame;
 import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
@@ -54,13 +54,40 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         TransientPicoContainer tpc = new TransientPicoContainer(new Reinjection(new MethodInjection(DOIT), parent), parent);
         tpc.addComponent(Foo.class);
 
-        foo = tpc.getComponent(Foo.class);
-        assertNotNull(foo.bar);
-        assertNotNull(foo.string);
+        Foo foo2 = tpc.getComponent(Foo.class);
+        assertSame(foo, foo2);
+        assertNotNull(foo2.bar);
+        assertNotNull(foo2.string);
 
-        foo = parent.getComponent(Foo.class);
+        Foo foo3 = parent.getComponent(Foo.class);
+        assertSame(foo, foo3);
+        assertNotNull(foo3.bar);
+        assertNotNull(foo3.string);
+
+    }
+
+    @Test public void testCachedComponentCanBeReinjectedByATransientChildContainer2() {
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
+        parent.addComponent(Foo.class);
+        parent.addComponent(Bar.class);
+        parent.addComponent("hi");
+
+        Foo foo = parent.getComponent(Foo.class);
         assertNotNull(foo.bar);
-        assertNotNull(foo.string);
+        assertTrue(foo.string == null);
+        
+        Reinjector reinjector = new Reinjector(parent);
+
+        Foo foo2 = reinjector.reinject(Foo.class, DOIT);
+
+        assertSame(foo, foo2);
+        assertNotNull(foo2.bar);
+        assertNotNull(foo2.string);
+
+        Foo foo3 = parent.getComponent(Foo.class);
+        assertSame(foo, foo3);
+        assertNotNull(foo3.bar);
+        assertNotNull(foo3.string);
 
     }
 
