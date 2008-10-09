@@ -9,6 +9,7 @@ package org.picocontainer.web;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Type;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -19,9 +20,14 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Characteristics;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.behaviors.Storing;
 
 @SuppressWarnings("serial")
@@ -34,6 +40,9 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         setAppContainer(ach.getContainer());
         SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SessionContainerHolder.class.getName());
         RequestContainerHolder rch = (RequestContainerHolder) context.getAttribute(RequestContainerHolder.class.getName());
+        rch.getContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpServletRequestInjector());
+        rch.getContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpServletResponseInjector());
+
         initAdditionalScopedComponents(sch.getContainer(), rch.getContainer());
     }
 
@@ -52,6 +61,9 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException,
             ServletException {
+
+        request.set(req);
+        response.set(resp);
 
         HttpServletRequest httpReq = (HttpServletRequest) req;
         HttpSession session = httpReq.getSession();
@@ -77,7 +89,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         setSessionContainer(sch.getContainer());
         setRequestContainer(rch.getContainer());
 
-        containersSetupForRequest(ach.getContainer(),sch.getContainer(),rch.getContainer(), req, resp);
+        containersSetupForRequest(ach.getContainer(), sch.getContainer(), rch.getContainer(), req, resp);
 
         filterChain.doFilter(req, resp);
 
@@ -90,12 +102,17 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         rch.getLifecycleStateModel().invalidateStateModelForThread();
         sessionStoring.invalidateCacheForThread();
         requestStoring.invalidateCacheForThread();
+        request.set(null);
+        response.set(null);
 
     }
 
-    protected void containersSetupForRequest(MutablePicoContainer appcontainer, MutablePicoContainer sessionContainer, 
+    protected void containersSetupForRequest(MutablePicoContainer appcontainer, MutablePicoContainer sessionContainer,
                                              MutablePicoContainer requestContainer, ServletRequest req, ServletResponse resp) {
     }
+
+    private static ThreadLocal<ServletRequest> request = new ThreadLocal<ServletRequest>();
+    private static ThreadLocal<ServletResponse> response = new ThreadLocal<ServletResponse>();
 
     protected abstract void setAppContainer(MutablePicoContainer container);
 
@@ -131,6 +148,42 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
 
         public static MutablePicoContainer getApplicationContainerForThread() {
             return currentAppContainer.get();
+        }
+    }
+
+    public static class HttpServletRequestInjector extends AbstractAdapter {
+
+        public HttpServletRequestInjector() {
+            super(HttpServletRequest.class, HttpServletRequest.class);
+        }
+
+        public Object getComponentInstance(PicoContainer picoContainer, Type type) throws PicoCompositionException {
+            return request.get();
+        }
+
+        public void verify(PicoContainer picoContainer) throws PicoCompositionException {
+        }
+
+        public String getDescriptor() {
+            return "HttpServletRequestInjector";
+        }
+    }
+
+    public static class HttpServletResponseInjector extends AbstractAdapter {
+
+        public HttpServletResponseInjector() {
+            super(HttpServletResponse.class, HttpServletResponse.class);
+        }
+
+        public Object getComponentInstance(PicoContainer picoContainer, Type type) throws PicoCompositionException {
+            return response.get();
+        }
+
+        public void verify(PicoContainer picoContainer) throws PicoCompositionException {
+        }
+
+        public String getDescriptor() {
+            return "HttpServletResponseInjector";
         }
     }
 }
