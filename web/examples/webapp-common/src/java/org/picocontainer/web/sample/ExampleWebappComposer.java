@@ -8,11 +8,13 @@
 package org.picocontainer.web.sample;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Characteristics;
 import org.picocontainer.web.WebappComposer;
 import org.picocontainer.web.sample.dao.CheeseDao;
 import org.picocontainer.web.sample.dao.simple.InMemoryCheeseDao;
 import org.picocontainer.web.sample.service.defaults.DefaultCheeseService;
 import org.picocontainer.web.sample.service.CheeseService;
+import org.picocontainer.web.sample.service.Brand;
 
 public class ExampleWebappComposer implements WebappComposer {
 
@@ -25,6 +27,8 @@ public class ExampleWebappComposer implements WebappComposer {
     }
 
     public void composeRequest(MutablePicoContainer requestContainer) {
+        requestContainer.as(Characteristics.NO_CACHE).addComponent(Brand.class, BrandFromRequest.class);
+
     }
 
 }

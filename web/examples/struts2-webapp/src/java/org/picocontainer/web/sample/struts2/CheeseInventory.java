@@ -9,6 +9,7 @@
 package org.picocontainer.web.sample.struts2;
 
 import org.picocontainer.web.sample.service.CheeseService;
+import org.picocontainer.web.sample.service.Brand;
 
 import com.opensymphony.xwork2.Action;
 
@@ -24,13 +25,19 @@ public class CheeseInventory implements Action {
 
     private final CheeseService cheeseService;
     private List cheeses;
+    private Brand brand;
 
-    public CheeseInventory(CheeseService cheeseService) {
+    public CheeseInventory(CheeseService cheeseService, Brand brand) {
         this.cheeseService = cheeseService;
+        this.brand = brand;
     }
 
     public List getCheeses() {
         return cheeses;
+    }
+
+    public String getBrand() {
+        return "Brand:" + brand.getName();
     }
 
     public String execute() throws Exception {

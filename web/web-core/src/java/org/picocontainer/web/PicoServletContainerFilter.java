@@ -40,6 +40,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         setAppContainer(ach.getContainer());
         SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SessionContainerHolder.class.getName());
         RequestContainerHolder rch = (RequestContainerHolder) context.getAttribute(RequestContainerHolder.class.getName());
+        rch.getContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpSessionInjector());
         rch.getContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpServletRequestInjector());
         rch.getContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpServletResponseInjector());
 
@@ -62,12 +63,12 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException,
             ServletException {
 
+        HttpSession sess = ((HttpServletRequest) req).getSession();
+        session.set(sess);
         request.set(req);
         response.set(resp);
 
-        HttpServletRequest httpReq = (HttpServletRequest) req;
-        HttpSession session = httpReq.getSession();
-        ServletContext context = session.getServletContext();
+        ServletContext context = sess.getServletContext();
 
         ApplicationContainerHolder ach = (ApplicationContainerHolder) context
                 .getAttribute(ApplicationContainerHolder.class.getName());
@@ -79,7 +80,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         Storing sessionStoring = sch.getStoring();
         Storing requestStoring = rch.getStoring();
 
-        SessionStoreHolder ssh = (SessionStoreHolder) session.getAttribute(SessionStoreHolder.class.getName());
+        SessionStoreHolder ssh = (SessionStoreHolder) sess.getAttribute(SessionStoreHolder.class.getName());
         sessionStoring.putCacheForThread(ssh.getStoreWrapper());
         requestStoring.resetCacheForThread();
         rch.getLifecycleStateModel().resetStateModelForThread();
@@ -102,6 +103,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         rch.getLifecycleStateModel().invalidateStateModelForThread();
         sessionStoring.invalidateCacheForThread();
         requestStoring.invalidateCacheForThread();
+        session.set(null);
         request.set(null);
         response.set(null);
 
@@ -111,6 +113,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
                                              MutablePicoContainer requestContainer, ServletRequest req, ServletResponse resp) {
     }
 
+    private static ThreadLocal<HttpSession> session = new ThreadLocal<HttpSession>();
     private static ThreadLocal<ServletRequest> request = new ThreadLocal<ServletRequest>();
     private static ThreadLocal<ServletResponse> response = new ThreadLocal<ServletResponse>();
 
@@ -148,6 +151,24 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
 
         public static MutablePicoContainer getApplicationContainerForThread() {
             return currentAppContainer.get();
+        }
+    }
+
+    public static class HttpSessionInjector extends AbstractAdapter {
+
+        public HttpSessionInjector() {
+            super(HttpSession.class, HttpSession.class);
+        }
+
+        public Object getComponentInstance(PicoContainer picoContainer, Type type) throws PicoCompositionException {
+            return session.get();
+        }
+
+        public void verify(PicoContainer picoContainer) throws PicoCompositionException {
+        }
+
+        public String getDescriptor() {
+            return "HttpSessionInjector";
         }
     }
 

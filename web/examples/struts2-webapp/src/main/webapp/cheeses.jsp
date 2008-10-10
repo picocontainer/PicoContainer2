@@ -22,10 +22,10 @@
                     </td>
                     <td>
                         <input value="<s:property value="cheese.country"/>" name="cheese.country">
-                     </td>
-                     <td>
+                    </td>
+                    <td>
                         <input type="submit" value="Store"/>
-                     </td>
+                    </td>
                  </tr>
              </form>
              <s:iterator value="cheeses">
@@ -41,6 +41,7 @@
                     </td>
                 </tr>
             </s:iterator>
+            <s:property value="brand"/>
         </tbody>
     </table>
 </body>

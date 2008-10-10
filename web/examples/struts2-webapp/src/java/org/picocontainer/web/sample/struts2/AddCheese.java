@@ -21,6 +21,10 @@ public class AddCheese extends ActionSupport {
         return cheese;
     }
 
+    public String getBrand() {
+        return "Brand:" + brand;
+    }
+
     public String execute() throws Exception {
         System.out.println("Adding cheese "+cheese + " for " + brand.getName());
         cheeseService.save(cheese);

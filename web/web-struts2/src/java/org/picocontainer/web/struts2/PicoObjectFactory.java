@@ -9,9 +9,12 @@
 package org.picocontainer.web.struts2;
 
 import java.util.Map;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.web.PicoServletContainerFilter;
 
 import com.opensymphony.xwork2.ObjectFactory;
@@ -103,7 +106,16 @@ public class PicoObjectFactory extends ObjectFactory {
             return comp;
 
         }
-        return requestContainer.getComponent(clazz);
+//        try {
+            return requestContainer.getComponent(clazz);
+//        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
+//            Collection<ComponentAdapter<?>> adapters = requestContainer.getComponentAdapters();
+//            for (Iterator<ComponentAdapter<?>> componentAdapterIterator = adapters.iterator(); componentAdapterIterator.hasNext();) {
+//                ComponentAdapter<?> adapter =  componentAdapterIterator.next();
+//                System.out.println("--> " + adapter.getComponentKey());
+//            }
+//            throw e;
+//        }
 
     }
 
