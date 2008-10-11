@@ -1,5 +1,13 @@
 package org.picocontainer.web.sample.service;
 
-public interface Brand {
-    String getName();
+public class Brand {
+    private String name;
+
+    public Brand(String name) {
+        this.name = name;
+    }
+
+    String getName() {
+        return name;
+    }
 }

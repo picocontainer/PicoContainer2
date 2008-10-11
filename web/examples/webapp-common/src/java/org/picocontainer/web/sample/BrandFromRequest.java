@@ -11,20 +11,19 @@ import org.picocontainer.web.sample.service.Brand;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class BrandFromRequest implements Brand {
-
-    private String name;
+public class BrandFromRequest extends Brand {
 
     public BrandFromRequest(HttpServletRequest req) {
-        this.name = req.getRemoteHost().toUpperCase();
+        super(fromRequest(req));
+    }
+    
+    private static String fromRequest(HttpServletRequest req) {
+        String name = req.getRemoteHost().toUpperCase();
         if (name == null) {
             name = "";
         } else if ("127.0.0.1".equals(name)) {
             name = "testing-brand";
         }
-    }
-
-    public String getName() {
         return name;
     }
 
