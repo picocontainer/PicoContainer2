@@ -66,7 +66,7 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
 
     }
 
-    @Test public void testCachedComponentCanBeReinjectedByATransientChildContainer2() {
+    @Test public void testCachedComponentCanBeReinjectedByATransientReinjector() {
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         parent.addComponent(Foo.class);
         parent.addComponent(Bar.class);

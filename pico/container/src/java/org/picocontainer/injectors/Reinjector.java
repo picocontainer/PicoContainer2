@@ -24,9 +24,9 @@ public class Reinjector {
         this.parent = parent;
     }
 
-    public <T> T reinject(Class<T> clazz, Method method) {
+    public <T> T reinject(Class<T> clazz, Method reinjectionMethod) {
         TransientPicoContainer tpc = new TransientPicoContainer(
-                new Reinjection(new MethodInjection(method), parent), parent);
+                new Reinjection(new MethodInjection(reinjectionMethod), parent), parent);
         tpc.addComponent(clazz);
         return tpc.getComponent(clazz);
     }
