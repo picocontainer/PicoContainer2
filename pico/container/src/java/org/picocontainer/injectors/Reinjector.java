@@ -15,15 +15,22 @@ import org.picocontainer.containers.TransientPicoContainer;
 import java.lang.reflect.Method;
 
 /**
- * 
+ * Reinjector allows methods on pre-instantiated classes to be invoked, with appropriately scoped parameters.
  */
 public class Reinjector {
+    
     private final PicoContainer parent;
 
-    public Reinjector(PicoContainer parent) {
-        this.parent = parent;
+    public Reinjector(PicoContainer parentContainer) {
+        this.parent = parentContainer;
     }
 
+    /**
+     * Reinjecting into a method.
+     * @param clazz the component-key from the parent set of components to inject into
+     * @param reinjectionMethod the reflection method to use for injection.
+     * @return the instance, if you did not have it already.
+     */
     public <T> T reinject(Class<T> clazz, Method reinjectionMethod) {
         TransientPicoContainer tpc = new TransientPicoContainer(
                 new Reinjection(new MethodInjection(reinjectionMethod), parent), parent);
