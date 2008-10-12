@@ -10,8 +10,24 @@ package org.picocontainer.web;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Storing;
 
-public class RequestContainerHolder extends StoringContainerHolder {
-    public RequestContainerHolder(MutablePicoContainer container, Storing storing, ThreadLocalLifecycleState lifecycleState) {
-        super(container, storing, lifecycleState);
+public class StoringContainerHolder extends ContainerHolder {
+
+    private final Storing storing;
+    private final ThreadLocalLifecycleState lifecycleState;
+
+    public StoringContainerHolder(MutablePicoContainer container, Storing storing, ThreadLocalLifecycleState lifecycleState) {
+        super(container);
+        this.storing = storing;
+        this.lifecycleState = lifecycleState;
     }
+
+    Storing getStoring() {
+        return storing;
+    }
+
+    ThreadLocalLifecycleState getLifecycleStateModel() {
+        return lifecycleState;
+    }
+
 }
+

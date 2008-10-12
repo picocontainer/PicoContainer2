@@ -8,10 +8,16 @@
 package org.picocontainer.web;
 
 import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.behaviors.Storing;
 
-public class RequestContainerHolder extends StoringContainerHolder {
-    public RequestContainerHolder(MutablePicoContainer container, Storing storing, ThreadLocalLifecycleState lifecycleState) {
-        super(container, storing, lifecycleState);
+public class ContainerHolder {
+
+    private final MutablePicoContainer container;
+
+    public ContainerHolder(MutablePicoContainer container) {
+        this.container = container;
+    }
+
+    MutablePicoContainer getContainer() {
+        return container;
     }
 }
