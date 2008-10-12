@@ -33,13 +33,23 @@ import org.picocontainer.behaviors.Storing;
 @SuppressWarnings("serial")
 public abstract class PicoServletContainerFilter implements Filter, Serializable {
 
+    private static final String APP_CONTAINER = ApplicationContainerHolder.class.getName();
+    private static final String SESS_CONTAINER = SessionContainerHolder.class.getName();
+    private static final String REQ_CONTAINER = RequestContainerHolder.class.getName();
+    private boolean exposeServletInfrastructure;
+
     public void init(FilterConfig filterConfig) throws ServletException {
         ServletContext context = filterConfig.getServletContext();
-        ApplicationContainerHolder ach = (ApplicationContainerHolder) context
-                .getAttribute(ApplicationContainerHolder.class.getName());
+        ApplicationContainerHolder ach = (ApplicationContainerHolder) context.getAttribute(APP_CONTAINER);
         setAppContainer(ach.getContainer());
-        SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SessionContainerHolder.class.getName());
-        RequestContainerHolder rch = (RequestContainerHolder) context.getAttribute(RequestContainerHolder.class.getName());
+        SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SESS_CONTAINER);
+        RequestContainerHolder rch = (RequestContainerHolder) context.getAttribute(REQ_CONTAINER);
+
+        String exposeServletInfrastructureString = filterConfig.getInitParameter("exposeServletInfrastructure");
+        if (exposeServletInfrastructureString == null || Boolean.parseBoolean(exposeServletInfrastructureString)) {
+            exposeServletInfrastructure = true;
+        }
+
         rch.getContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpSessionInjector());
         rch.getContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpServletRequestInjector());
         rch.getContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpServletResponseInjector());
@@ -60,22 +70,20 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         return container.getComponent(type);
     }
 
-    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException,
-            ServletException {
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
 
         HttpSession sess = ((HttpServletRequest) req).getSession();
-        session.set(sess);
-        request.set(req);
-        response.set(resp);
+        if (exposeServletInfrastructure) {
+            session.set(sess);
+            request.set(req);
+            response.set(resp);
+        }
 
         ServletContext context = sess.getServletContext();
 
-        ApplicationContainerHolder ach = (ApplicationContainerHolder) context
-                .getAttribute(ApplicationContainerHolder.class.getName());
-        SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SessionContainerHolder.class
-                .getName());
-        RequestContainerHolder rch = (RequestContainerHolder) context.getAttribute(RequestContainerHolder.class
-                .getName());
+        ApplicationContainerHolder ach = (ApplicationContainerHolder) context.getAttribute(APP_CONTAINER);
+        SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SESS_CONTAINER);
+        RequestContainerHolder rch = (RequestContainerHolder) context.getAttribute(REQ_CONTAINER);
 
         Storing sessionStoring = sch.getStoring();
         Storing requestStoring = rch.getStoring();
@@ -103,9 +111,12 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         rch.getLifecycleStateModel().invalidateStateModelForThread();
         sessionStoring.invalidateCacheForThread();
         requestStoring.invalidateCacheForThread();
-        session.set(null);
-        request.set(null);
-        response.set(null);
+
+        if (exposeServletInfrastructure) {
+            session.set(null);
+            request.set(null);
+            response.set(null);
+        }
 
     }
 

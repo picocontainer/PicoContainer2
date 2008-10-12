@@ -7,7 +7,7 @@ public class Brand {
         this.name = name;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 }
