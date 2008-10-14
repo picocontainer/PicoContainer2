@@ -33,9 +33,8 @@ public class CheeseAction extends Action {
         this.cheeseService = cheeseService;
     }
 
-    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-            HttpServletResponse response)
-    {
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+                                 HttpServletRequest request, HttpServletResponse response) {
         CheeseForm cheeseForm = (CheeseForm) form;
 
         if (!isEmpty(cheeseForm.getName())) {

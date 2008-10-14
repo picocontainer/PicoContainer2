@@ -8,6 +8,7 @@
 Struts 1 web applications though.</p>
 <p>To configure PicoContainer to handle the dependency injection of Struts actions, refer to the web.xml
 below.</p>
+<h3>web.xml</h3>
 <div class="source"><pre>
 	
 	<web-app>
@@ -57,6 +58,7 @@ below.</p>
 	</web-app>
 
 	</pre></div>
+<h3>struts-config.xml</h3>
 <p>Things are different in the struts-config.xml file though - there is a PicoContainer enabled RequestProcessor:</p>
 <div class="source"><pre>
 	  <form-beans>
@@ -73,10 +75,13 @@ below.</p>
 	  <controller processorClass="org.picocontainer.web.struts.PicoRequestProcessor" />
 		
 	</pre></div>
-
+<h3Java Actions</h3>
 <p>With this design you can use Constructor Injection and three tier container scoping for Struts web applications.
-Our Maven example project is <a href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/struts-webapp/">here</a>.
 Make sure you make and configure your own <a href="composition.html">WebappComposer</a> implementation.</p>
 <p>See <a href="downloads.html">downloads</a> on how to download the struts module either using Maven or by downloading full distribution.</p>
+
+<h3>Example App</h3>
+Our Maven example project is <a href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/struts-webapp/">here</a>
+
 </body>
 </html>
