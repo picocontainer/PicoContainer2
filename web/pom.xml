@@ -4,7 +4,7 @@
   <groupId>org.picocontainer.web</groupId>
   <artifactId>picocontainer-web</artifactId>
   <name>PicoContainer Web</name>
-  <version>2.1</version>
+  <version>2.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <url>http://www.picocontainer.org/web</url>
   <modules>
@@ -24,9 +24,9 @@
     <url>http://jira.codehaus.org/browse/NANOWAR</url>
   </issueManagement>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/tags/picocontainer-web-2.1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/tags/picocontainer-web-2.1</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/tags/picocontainer-web-2.1</url>
+    <connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/web</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/scm/picocontainer/java/2.x/trunk/web</developerConnection>
+    <url>https://svn.codehaus.org/picocontainer/java/2.x/trunk/web</url>
   </scm>
   <distributionManagement>
     <repository>
