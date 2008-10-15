@@ -10,14 +10,14 @@
     <page>downloads.html</page>
   </section>
   <section>
-    <name>Web Frameworks Bindings</name>
+    <name>Binding to Web Frameworks</name>
     <page>struts2.html</page>
     <page>struts1.html</page>
     <page>webwork2.html</page>
     <page>webwork1.html</page>
   </section>
   <section>
-    <name>Axis</name>
+    <name>Binding to Apache Axis</name>
     <page>axis.html</page>
   </section>
 </sitemap>
