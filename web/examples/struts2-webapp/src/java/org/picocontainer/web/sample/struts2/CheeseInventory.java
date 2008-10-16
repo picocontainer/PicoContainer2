@@ -9,7 +9,7 @@
 package org.picocontainer.web.sample.struts2;
 
 import org.picocontainer.web.sample.service.CheeseService;
-import org.picocontainer.web.sample.service.Brand;
+import org.picocontainer.web.sample.model.Brand;
 
 import com.opensymphony.xwork2.Action;
 

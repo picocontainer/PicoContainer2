@@ -3,8 +3,8 @@ package org.picocontainer.web.sample.struts2;
 import com.opensymphony.xwork2.ActionSupport;
 
 import org.picocontainer.web.sample.model.Cheese;
+import org.picocontainer.web.sample.model.Brand;
 import org.picocontainer.web.sample.service.CheeseService;
-import org.picocontainer.web.sample.service.Brand;
 
 public class AddCheese extends ActionSupport {
 
