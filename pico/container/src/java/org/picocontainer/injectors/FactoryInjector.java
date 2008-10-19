@@ -143,9 +143,9 @@ public abstract class FactoryInjector<T> implements Injector<T> {
 
     public abstract T getComponentInstance(PicoContainer container, Type into);
 
-    public void decorateComponentInstance(PicoContainer container, Type into, T instance) {
+    public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
+        return null;
     }
-
 
     public void verify(PicoContainer container) {
     }

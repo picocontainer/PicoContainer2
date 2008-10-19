@@ -16,6 +16,15 @@ import java.lang.reflect.Type;
  */
 public interface Injector<T> extends ComponentAdapter<T> {
 
-    void decorateComponentInstance(PicoContainer container, Type into, T instance);
+    /**
+     * A preexiting component instance can be injected into after instantiation
+     *
+     *
+     * @param container the container that can provide injectable dependencies
+     * @param into
+     * @param instance the instance to
+     * @return
+     */
+    Object decorateComponentInstance(PicoContainer container, Type into, T instance);
 
 }

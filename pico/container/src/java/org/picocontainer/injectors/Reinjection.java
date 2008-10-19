@@ -15,22 +15,28 @@ public class Reinjection extends CompositeInjection {
 
     public Reinjection(InjectionFactory reinjectionFactory, final PicoContainer parent) {
         super(new AbstractInjectionFactory() {
-            public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
-                                                                  LifecycleStrategy lifecycleStrategy,
-                                                                  Properties componentProperties,
-                                                                  final Object componentKey, Class<T> componentImplementation,
-                                                                  Parameter... parameters) throws PicoCompositionException {
-                return new AbstractInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, false) {
-                    public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
-                        return parent.getComponent(componentKey);
-                    }
-
-                    public void decorateComponentInstance(PicoContainer container, Type into, Object instance) {
-                        System.out.println("");
-                    }
-                };
+            public <T> ComponentAdapter<T> createComponentAdapter(
+                    ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
+                    Properties componentProperties, final Object componentKey, Class<T> componentImplementation,
+                    Parameter... parameters) throws PicoCompositionException {
+                return new ReinjectionInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, parent);
             }
         }, reinjectionFactory);
     }
 
+    private static class ReinjectionInjector<T> extends AbstractInjector {
+        private final Object componentKey;
+        private final PicoContainer parent;
+
+        public ReinjectionInjector(Object componentKey, Class<T> componentImplementation, Parameter[] parameters, ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
+            super(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, false);
+            this.componentKey = componentKey;
+            this.parent = parent;
+        }
+
+        public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+            return parent.getComponent(componentKey);
+        }
+
+    }
 }

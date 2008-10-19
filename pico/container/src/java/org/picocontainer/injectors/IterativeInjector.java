@@ -203,7 +203,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         return componentInstance;
     }
 
-    public void decorateComponentInstance(final PicoContainer container, Type into, final T instance) {
+    public Object decorateComponentInstance(final PicoContainer container, Type into, final T instance) {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
@@ -213,8 +213,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             };
         }
         instantiationGuard.setGuardedContainer(container);
-        instantiationGuard.observe(getComponentImplementation());
-
+        return instantiationGuard.observe(getComponentImplementation());
     }
 
     protected abstract void injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject) throws IllegalAccessException, InvocationTargetException;

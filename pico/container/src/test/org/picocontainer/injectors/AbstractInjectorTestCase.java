@@ -155,9 +155,6 @@ public class AbstractInjectorTestCase {
             return null;
         }
 
-        public void decorateComponentInstance(PicoContainer container, Type into, Object instance) {
-        }
-
         public String getDescriptor() {
             return null;
         }

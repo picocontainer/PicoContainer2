@@ -11,17 +11,28 @@ package org.picocontainer.injectors;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
+import org.jmock.integration.junit4.JMock;
+import org.jmock.Mockery;
+import org.jmock.Expectations;
 
 import java.lang.reflect.Method;
 
+@RunWith(JMock.class)
 public class ReinjectionTestCase extends AbstractComponentFactoryTest {
+
+    private Mockery mockery = mockeryWithCountingNamingScheme();
 
     public static class Foo {
         private Bar bar;
@@ -31,8 +42,9 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
             this.bar = bar;
         }
 
-        public void doIt(String s) {
+        public int doIt(String s) {
             this.string = s;
+            return Integer.parseInt(s) / 2;
         }
     }
 
@@ -45,7 +57,7 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         parent.addComponent(Foo.class);
         parent.addComponent(Bar.class);
-        parent.addComponent("hi");
+        parent.addComponent("12");
 
         Foo foo = parent.getComponent(Foo.class);
         assertNotNull(foo.bar);
@@ -67,27 +79,27 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
     }
 
     @Test public void testCachedComponentCanBeReinjectedByATransientReinjector() {
-        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
+        final DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         parent.addComponent(Foo.class);
         parent.addComponent(Bar.class);
-        parent.addComponent("hi");
+        parent.addComponent("12");
 
         Foo foo = parent.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertTrue(foo.string == null);
-        
-        Reinjector reinjector = new Reinjector(parent);
 
-        Foo foo2 = reinjector.reinject(Foo.class, DOIT);
+        // nothing expected to be called. Yet a least.
+        final ComponentMonitor cm = mockery.mock(ComponentMonitor.class);
+        Reinjector reinjector = new Reinjector(parent, cm);
 
-        assertSame(foo, foo2);
-        assertNotNull(foo2.bar);
-        assertNotNull(foo2.string);
+        int result = (Integer) reinjector.reinject(Foo.class, DOIT);
+        assertEquals(6, result);
 
         Foo foo3 = parent.getComponent(Foo.class);
         assertSame(foo, foo3);
         assertNotNull(foo3.bar);
         assertNotNull(foo3.string);
+        assertEquals("12", foo3.string);
 
     }
 

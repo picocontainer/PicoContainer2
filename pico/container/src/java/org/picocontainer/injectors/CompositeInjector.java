@@ -49,7 +49,16 @@ public class CompositeInjector<T> extends AbstractInjector<T> {
     }
 
 
-    public void decorateComponentInstance(PicoContainer container, Type into, T instance) {
+    /**
+     * @return the object returned is the result of the last of the injectors delegated to
+     */
+    @Override
+    public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
+        Object result = null;
+        for (int i = 0; i < injectors.length; i++) {
+            result = injectors[i].decorateComponentInstance(container, into, instance);
+        }
+        return result;
     }
 
     public void verify(PicoContainer container) throws PicoCompositionException {

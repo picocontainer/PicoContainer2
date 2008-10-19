@@ -108,20 +108,19 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         return super.getMemberArguments(container, method, method.getParameterTypes(), getBindings(method.getParameterAnnotations()));
     }
 
-    public void decorateComponentInstance(final PicoContainer container, Type into, final T instance) {
+    @Override
+    public Object decorateComponentInstance(final PicoContainer container, Type into, final T instance) {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
                     Method method = getInjectorMethod();
-                    Object inst = null;
-                    Object[] parameters = null;
-                    parameters = getMemberArguments(guardedContainer, method);
+                    Object[] parameters = getMemberArguments(guardedContainer, method);
                     return invokeMethod(method, parameters, instance, container);
                 }
             };
         }
         instantiationGuard.setGuardedContainer(container);
-        instantiationGuard.observe(getComponentImplementation());
+        return instantiationGuard.observe(getComponentImplementation());
 
     }
 
@@ -137,8 +136,8 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
             } else if (e.getTargetException() instanceof Error) {
                 throw (Error) e.getTargetException();
             }
+            return null;
         }
-        return null;
     }
 
 

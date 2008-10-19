@@ -21,7 +21,6 @@ import static org.picocontainer.Characteristics.SDI;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.lang.StringBuilder;
-import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Type;
@@ -35,16 +34,11 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.junit.Test;
-import org.picocontainer.annotations.Inject;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.behaviors.Decorating;
-import org.picocontainer.behaviors.FieldDecorating;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.injectors.FactoryInjector;
-import org.picocontainer.injectors.MultiInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.WriterComponentMonitor;
@@ -829,9 +823,6 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
                         ArrayList list = new ArrayList();
                         list.add("doppleganger");
                         return list;
-                    }
-
-                    public void decorateComponentInstance(PicoContainer container, Type into, Object instance) {
                     }
                 };
             } else {

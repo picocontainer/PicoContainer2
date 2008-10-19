@@ -114,6 +114,10 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 
     public abstract T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException;
 
+    public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
+        return null;
+    }
+
     @Override
 	public void accept(final PicoVisitor visitor) {
         super.accept(visitor);
@@ -153,7 +157,8 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    protected T newInstance(final Constructor<T> constructor, final Object[] parameters) throws InstantiationException, IllegalAccessException, InvocationTargetException {
+    protected T newInstance(final Constructor<T> constructor, final Object[] parameters)
+            throws InstantiationException, IllegalAccessException, InvocationTargetException {
         return constructor.newInstance(parameters);
     }
     /**

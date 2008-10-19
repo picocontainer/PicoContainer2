@@ -223,9 +223,6 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         return inst;
     }
 
-    public void decorateComponentInstance(PicoContainer container, Type into, T instance) {
-    }
-
     protected Object[] getMemberArguments(PicoContainer container, final Constructor ctor) {
         return super.getMemberArguments(container, ctor, ctor.getGenericParameterTypes(), getBindings(ctor.getParameterAnnotations()));
     }

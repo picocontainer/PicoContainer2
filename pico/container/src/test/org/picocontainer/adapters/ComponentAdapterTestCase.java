@@ -109,9 +109,6 @@ public class ComponentAdapterTestCase {
             return null;
         }
 
-        public void decorateComponentInstance(PicoContainer container, Type into, T instance) {
-        }
-
         public String getDescriptor() {
             return null;
         }
