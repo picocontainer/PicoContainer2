@@ -110,39 +110,38 @@ public class PicoBuilder {
 
     public MutablePicoContainer build() {
 
-        DefaultPicoContainer temp = new TransientPicoContainer();
-        temp.addComponent(PicoContainer.class, parentContainer);
+        DefaultPicoContainer tempContainer = new TransientPicoContainer();
+        tempContainer.addComponent(PicoContainer.class, parentContainer);
 
-        for (Object containerComp : containerComps) {
-            temp.addComponent(containerComp);
-        }
+        addContainerComponents(tempContainer);
 
         ComponentFactory lastCaf = injectionType;
         while (!componentFactories.empty()) {
-            Object componentFactory = componentFactories.pop();
-            DefaultPicoContainer temp2 = new TransientPicoContainer(temp);
-            temp2.addComponent("componentFactory", componentFactory);
-            if (lastCaf != null) {
-                temp2.addComponent(ComponentFactory.class, lastCaf);
-            }
-            ComponentFactory penultimateCaf = lastCaf;
-            lastCaf = (ComponentFactory) temp2.getComponent("componentFactory");
-            if (lastCaf instanceof BehaviorFactory) {
-                ((BehaviorFactory) lastCaf).wrap(penultimateCaf);
-            }
+            lastCaf = buildComponentFactory(tempContainer, lastCaf);
         }
 
-        temp.addComponent(ComponentFactory.class, lastCaf);
+        tempContainer.addComponent(ComponentFactory.class, lastCaf);
+
+        buildComponentMonitor(tempContainer);
+
+        tempContainer.addComponent(LifecycleStrategy.class, lifecycleStrategyClass);
+        tempContainer.addComponent("mpc", mpcClass);
+
+        MutablePicoContainer newContainer = (MutablePicoContainer) tempContainer.getComponent("mpc");
+
+        addChildToParent(newContainer);
+        return newContainer;
+    }
+
+    private void buildComponentMonitor(DefaultPicoContainer tempContainer) {
         if (componentMonitorClass == null) {
-            temp.addComponent(ComponentMonitor.class, componentMonitor);
+            tempContainer.addComponent(ComponentMonitor.class, componentMonitor);
         } else {
-            temp.addComponent(ComponentMonitor.class, componentMonitorClass);
+            tempContainer.addComponent(ComponentMonitor.class, componentMonitorClass);
         }
-        temp.addComponent(LifecycleStrategy.class, lifecycleStrategyClass);
-        temp.addComponent("mpc", mpcClass);
+    }
 
-
-        MutablePicoContainer newContainer = (MutablePicoContainer) temp.getComponent("mpc");
+    private void addChildToParent(MutablePicoContainer newContainer) {
         if (addChildToParent) {
             if (parentContainer instanceof MutablePicoContainer) {
                 ((MutablePicoContainer)parentContainer).addChildContainer(newContainer);
@@ -150,7 +149,26 @@ public class PicoBuilder {
                 throw new PicoCompositionException("If using addChildContainer() the parent must be a MutablePicoContainer");
             }
         }
-        return newContainer;
+    }
+
+    private void addContainerComponents(DefaultPicoContainer temp) {
+        for (Object containerComp : containerComps) {
+            temp.addComponent(containerComp);
+        }
+    }
+
+    private ComponentFactory buildComponentFactory(DefaultPicoContainer container, final ComponentFactory lastCaf) {
+        Object componentFactory = componentFactories.pop();
+        DefaultPicoContainer tmpContainer = new TransientPicoContainer(container);
+        tmpContainer.addComponent("componentFactory", componentFactory);
+        if (lastCaf != null) {
+            tmpContainer.addComponent(ComponentFactory.class, lastCaf);
+        }
+        ComponentFactory newlastCaf = (ComponentFactory) tmpContainer.getComponent("componentFactory");
+        if (newlastCaf instanceof BehaviorFactory) {
+            ((BehaviorFactory) newlastCaf).wrap(lastCaf);
+        }
+        return newlastCaf;
     }
 
     public PicoBuilder withHiddenImplementations() {

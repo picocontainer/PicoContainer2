@@ -193,8 +193,6 @@ public class FactoryInjectorTestCase {
         }
     }
 
-
-
     public static interface Tree {
         String leafColor();
     }

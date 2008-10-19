@@ -32,6 +32,7 @@ import org.picocontainer.PicoVisitor;
  * @author Paul Hammant
  */
 public abstract class FactoryInjector<T> implements Injector<T> {
+
     private Class key;
 
     public FactoryInjector() throws PicoCompositionException {
@@ -167,6 +168,9 @@ public abstract class FactoryInjector<T> implements Injector<T> {
         return false;
     }
 
-    public static class CantWorkItOut {}
+    public static class CantWorkItOut {
+        private CantWorkItOut() {
+        }
+    }
 
 }

@@ -203,6 +203,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         return componentInstance;
     }
 
+    @Override
     public Object decorateComponentInstance(final PicoContainer container, Type into, final T instance) {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
