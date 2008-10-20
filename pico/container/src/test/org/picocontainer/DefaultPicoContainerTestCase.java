@@ -39,6 +39,7 @@ import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.injectors.Provider;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.WriterComponentMonitor;
@@ -831,6 +832,6 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         }
     }
 
-    
+
 
 }

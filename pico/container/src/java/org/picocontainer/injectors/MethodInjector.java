@@ -12,6 +12,7 @@ package org.picocontainer.injectors;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.lang.annotation.Annotation;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;

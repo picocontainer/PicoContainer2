@@ -12,6 +12,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.annotations.Bind;
 
 import java.lang.annotation.Annotation;
@@ -54,7 +55,11 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
         for (int i = 0; i < currentParameters.length; i++) {
             result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i],
                 new ParameterNameBinding(paranamer, getComponentImplementation(), member, i), useNames(), bindings[i]);
+            if (result[i] == null) {
+                throw new PicoCompositionException("Parameter " + i + " of '" + member + "' cannot be null");
+            }
         }
+
         return result;
     }
 

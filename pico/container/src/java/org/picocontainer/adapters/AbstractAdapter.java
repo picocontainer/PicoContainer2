@@ -15,6 +15,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.injectors.Provider;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -88,10 +89,20 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
     protected void checkTypeCompatibility() {
         if (componentKey instanceof Class) {
             Class<?> componentType = (Class) componentKey;
-            if (!componentType.isAssignableFrom(componentImplementation)) {
-                throw new ClassCastException(componentImplementation.getName() + " is not a " + componentType.getName());
+            if (Provider.class.isAssignableFrom(componentImplementation)) {
+                if (!componentType.isAssignableFrom(Provider.getProvideMethod(componentImplementation).getReturnType())) {
+                    throw newCCE(componentType);
+                }
+            } else {
+                if (!componentType.isAssignableFrom(componentImplementation)) {
+                    throw newCCE(componentType);
+                }
             }
         }
+    }
+
+    private ClassCastException newCCE(Class<?> componentType) {
+        return new ClassCastException(componentImplementation.getName() + " is not a " + componentType.getName());
     }
 
     public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
