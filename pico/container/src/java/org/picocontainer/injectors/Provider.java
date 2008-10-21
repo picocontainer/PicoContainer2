@@ -74,12 +74,22 @@ public abstract class Provider implements org.picocontainer.Injector {
         for (Method method : clazz.getMethods()) {
             if (method.getName().equals("provide")) {
                 if (provideMethod != null) {
-                    throw new PicoCompositionException("There must be one and only one method named 'provide' in AbstractProvider implementation");
+                    throw newProviderMethodException("only one");
                 }
                 provideMethod = method;
             }
         }
+        if (provideMethod == null) {
+            throw newProviderMethodException("a");
+        }
+        if (provideMethod.getReturnType() == void.class) {
+            throw newProviderMethodException("a non void returning");
+        }
         return provideMethod;
+    }
+
+    private static PicoCompositionException newProviderMethodException(String str) {
+        return new PicoCompositionException("There must be "+ str +" method named 'provide' in the AbstractProvider implementation");
     }
 
     public void verify(PicoContainer container) throws PicoCompositionException {

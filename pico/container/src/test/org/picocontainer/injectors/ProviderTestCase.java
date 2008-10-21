@@ -11,7 +11,7 @@ package org.picocontainer.injectors;
 import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;import static org.junit.Assert.fail;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
@@ -97,6 +97,55 @@ public class ProviderTestCase {
         private Chocolate choc;
         public NeedsChocolate(Chocolate choc) {
             this.choc = choc;
+        }
+    }
+
+    @Test
+    public void providerBarfsIfNoProvideMethod() {
+        DefaultPicoContainer dpc = new DefaultPicoContainer();
+        try {
+            dpc.addAdapter(new ProviderWithoutProvideMethod());
+            fail("should have barfed");
+        } catch (PicoCompositionException e) {
+            assertEquals("There must be a method named 'provide' in the AbstractProvider implementation", e.getMessage());
+        }
+    }
+
+    @Test
+    public void providerBarfsIfBadProvideMethod() {
+        DefaultPicoContainer dpc = new DefaultPicoContainer();
+        try {
+            dpc.addAdapter(new ProviderWithBadProvideMethod());
+            fail("should have barfed");
+        } catch (PicoCompositionException e) {
+            assertEquals("There must be a non void returning method named 'provide' in the AbstractProvider implementation", e.getMessage());
+        }
+    }
+
+    @Test
+    public void providerBarfsIfTooManyProvideMethod() {
+        DefaultPicoContainer dpc = new DefaultPicoContainer();
+        try {
+            dpc.addAdapter(new ProviderWithTooManyProvideMethods());
+            fail("should have barfed");
+        } catch (PicoCompositionException e) {
+            assertEquals("There must be only one method named 'provide' in the AbstractProvider implementation", e.getMessage());
+        }
+    }
+
+    public static class ProviderWithoutProvideMethod extends Provider {
+    }
+    public static class ProviderWithBadProvideMethod extends Provider {
+        public void provide() {
+
+        }
+    }
+    public static class ProviderWithTooManyProvideMethods extends Provider {
+        public String provide(String str) {
+            return null;
+        }
+        public Integer provide() {
+            return null;
         }
     }
 
