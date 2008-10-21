@@ -12,11 +12,13 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Characteristics;
 
 import java.lang.reflect.Type;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 
 /**
@@ -30,6 +32,20 @@ public abstract class Provider implements org.picocontainer.Injector {
 
     private Method provideMethod = getProvideMethod(this.getClass());
     private Class key = provideMethod.getReturnType();
+
+    private Properties properties;
+
+    protected Provider() {
+        if (useNames()) {
+            properties = Characteristics.USE_NAMES;
+        } else {
+            properties = Characteristics.NONE;
+        }
+    }
+
+    protected boolean useNames() {
+        return false;
+    }
 
     public Object decorateComponentInstance(PicoContainer container, Type into, Object instance) {
         return null;
@@ -49,21 +65,21 @@ public abstract class Provider implements org.picocontainer.Injector {
     }
 
     public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
-        return new Reinjector(container).reinject(key, provideMethod, this.getClass(), this);
+        return new Reinjector(container).reinject(key, provideMethod, properties, this.getClass(), this);
     }
 
     public static Method getProvideMethod(Class clazz) {
-        Method[] methods = clazz.getMethods();
-        List<Method> provideMethods = new ArrayList<Method>();
-        for (Method method : methods) {
+        Method provideMethod = null;
+        // TODO doPrivileged
+        for (Method method : clazz.getMethods()) {
             if (method.getName().equals("provide")) {
-                provideMethods.add(method);
+                if (provideMethod != null) {
+                    throw new PicoCompositionException("There must be one and only one method named 'provide' in AbstractProvider implementation");
+                }
+                provideMethod = method;
             }
         }
-        if (provideMethods.size() != 1) {
-            throw new PicoCompositionException("There must be one and only one method named 'provide' in AbstractProvider implementation");
-        }
-        return provideMethods.get(0);
+        return provideMethod;
     }
 
     public void verify(PicoContainer container) throws PicoCompositionException {

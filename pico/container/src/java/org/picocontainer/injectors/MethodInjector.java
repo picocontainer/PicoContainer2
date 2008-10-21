@@ -183,6 +183,10 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
                 return null;
             }
         }
+        public String getDescriptor() {
+            return "ReflectionMethodInjector[" + injectionMethod + "]-";
+        }
+
     }
 
 }

@@ -60,9 +60,13 @@ public class Reinjector {
      * @return the result of the reinjection-method invocation.
      */
     public Object reinject(Class<?> key, Method reinjectionMethod, Class implementation, Object instance) {
+        return reinject(key, reinjectionMethod, NO_PROPERTIES, implementation, instance);
+    }
+
+    public Object reinject(Class<?> key, Method reinjectionMethod, Properties properties, Class implementation, Object instance) {
         Reinjection reinjection = new Reinjection(new MethodInjection(reinjectionMethod), parent);
         org.picocontainer.Injector mi = (org.picocontainer.Injector) reinjection.createComponentAdapter(
-                monitor, NO_LIFECYCLE, NO_PROPERTIES, key, implementation, Parameter.DEFAULT);
+                monitor, NO_LIFECYCLE, properties, key, implementation, null);
         return mi.decorateComponentInstance(parent, null, instance);
     }
 }

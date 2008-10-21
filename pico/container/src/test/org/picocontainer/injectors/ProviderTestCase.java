@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.Characteristics;
 
 public class ProviderTestCase {
     
@@ -23,11 +24,30 @@ public class ProviderTestCase {
         dpc.addAdapter(new Chocolatier(true));
         dpc.addComponent(NeedsChocolate.class);
         dpc.addComponent(CocaoBeans.class);
+        dpc.addComponent(String.class, "Cadbury's"); // the only string in the set of components
         NeedsChocolate needsChocolate = dpc.getComponent(NeedsChocolate.class);
         assertNotNull(needsChocolate);
         assertNotNull(needsChocolate.choc);
         assertEquals(true, needsChocolate.choc.milky);
         assertNotNull(needsChocolate.choc.cocaoBeans);
+        assertEquals("Cadbury's", needsChocolate.choc.name);
+    }
+
+    @Test
+    public void provideMethodCanDisambiguateUsingParameterNames() {
+        DefaultPicoContainer dpc = new DefaultPicoContainer();
+        dpc.addAdapter(new Chocolatier(true));
+        dpc.addComponent(NeedsChocolate.class);
+        dpc.addComponent(CocaoBeans.class);
+        dpc.addComponent("color", "Red"); // not used by virtue of key
+        dpc.addComponent("name", "Cadbury's");
+        dpc.addComponent("band", "Abba"); // not used by virtue of key
+        NeedsChocolate needsChocolate = dpc.getComponent(NeedsChocolate.class);
+        assertNotNull(needsChocolate);
+        assertNotNull(needsChocolate.choc);
+        assertEquals(true, needsChocolate.choc.milky);
+        assertNotNull(needsChocolate.choc.cocaoBeans);
+        assertEquals("Cadbury's", needsChocolate.choc.name);
     }
 
     @Test
@@ -50,9 +70,12 @@ public class ProviderTestCase {
     public static class Chocolate {
         private boolean milky;
         private final CocaoBeans cocaoBeans;
-        public Chocolate(boolean milky, CocaoBeans cocaoBeans) {
+        private final String name;
+
+        public Chocolate(boolean milky, CocaoBeans cocaoBeans, String name) {
             this.milky = milky;
             this.cocaoBeans = cocaoBeans;
+            this.name = name;
         }
     }
 
@@ -61,8 +84,12 @@ public class ProviderTestCase {
         public Chocolatier(boolean milky) {
             this.milky = milky;
         }
-        public Chocolate provide(CocaoBeans cocaoBeans) {
-            return new Chocolate(milky, cocaoBeans);
+        public Chocolate provide(CocaoBeans cocaoBeans, String name) {
+            return new Chocolate(milky, cocaoBeans, name);
+        }
+        @Override
+        protected boolean useNames() {
+            return true;
         }
     }
 

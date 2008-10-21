@@ -20,6 +20,8 @@ import org.picocontainer.PicoBuilder;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
+import java.lang.reflect.Method;
+
 public class MethodInjectionTestCase {
 
     public static interface IFoo {
@@ -53,25 +55,27 @@ public class MethodInjectionTestCase {
     }
 
     @Test public void testMethodInjectionViaMethodDef() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection(Foo.class.getMethods()[0]));
+        Method mthd = Foo.class.getMethods()[0];
+        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection(mthd));
         pico.addComponent("hello");
         pico.addComponent(Foo.class);
         pico.addComponent(Bar.class);
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.string);
-        assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("ReflectionMethodInjector["+mthd+"]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testMethodInjectionViaMethodDefViaInterface() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection(IFoo.class.getMethods()[0]));
+        Method mthd = IFoo.class.getMethods()[0];
+        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection(mthd));
         pico.addComponent("hello");
         pico.addComponent(Foo.class);
         pico.addComponent(Bar.class);
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.string);
-        assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("ReflectionMethodInjector["+mthd+"]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
 
