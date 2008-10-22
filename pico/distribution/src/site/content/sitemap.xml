@@ -27,6 +27,7 @@
         <page>properties.html</page>
         <page>component-configuration.html</page>
         <page>monitors.html</page>
+        <page>providers.html</page>
     </section>
     <section>
         <name>Architecture</name>

@@ -15,6 +15,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.injectors.ProviderAdapter;
 import org.picocontainer.injectors.Provider;
 import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -90,7 +91,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
         if (componentKey instanceof Class) {
             Class<?> componentType = (Class) componentKey;
             if (Provider.class.isAssignableFrom(componentImplementation)) {
-                if (!componentType.isAssignableFrom(Provider.getProvideMethod(componentImplementation).getReturnType())) {
+                if (!componentType.isAssignableFrom(ProviderAdapter.getProvideMethod(componentImplementation).getReturnType())) {
                     throw newCCE(componentType);
                 }
             } else {

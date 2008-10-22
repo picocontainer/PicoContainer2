@@ -11,10 +11,10 @@ package org.picocontainer.injectors;
 import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;import static org.junit.Assert.fail;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Characteristics;
 
 public class ProviderTestCase {
     
@@ -79,7 +79,7 @@ public class ProviderTestCase {
         }
     }
 
-    public static class Chocolatier extends Provider {
+    public static class Chocolatier extends ProviderAdapter {
         private final boolean milky;
         public Chocolatier(boolean milky) {
             this.milky = milky;
@@ -133,14 +133,14 @@ public class ProviderTestCase {
         }
     }
 
-    public static class ProviderWithoutProvideMethod extends Provider {
+    public static class ProviderWithoutProvideMethod extends ProviderAdapter {
     }
-    public static class ProviderWithBadProvideMethod extends Provider {
+    public static class ProviderWithBadProvideMethod extends ProviderAdapter {
         public void provide() {
 
         }
     }
-    public static class ProviderWithTooManyProvideMethods extends Provider {
+    public static class ProviderWithTooManyProvideMethods extends ProviderAdapter {
         public String provide(String str) {
             return null;
         }
@@ -149,5 +149,29 @@ public class ProviderTestCase {
         }
     }
 
+    @Test
+    public void provideMethodCanParticipateInInjection2() {
+        DefaultPicoContainer dpc = new DefaultPicoContainer();
+        dpc.addAdapter(new ProviderAdapter(new Chocolatier2(true)));
+        dpc.addComponent(NeedsChocolate.class);
+        dpc.addComponent(CocaoBeans.class);
+        dpc.addComponent(String.class, "Cadbury's"); // the only string in the set of components
+        NeedsChocolate needsChocolate = dpc.getComponent(NeedsChocolate.class);
+        assertNotNull(needsChocolate);
+        assertNotNull(needsChocolate.choc);
+        assertEquals(true, needsChocolate.choc.milky);
+        assertNotNull(needsChocolate.choc.cocaoBeans);
+        assertEquals("Cadbury's", needsChocolate.choc.name);
+    }
+
+    public static class Chocolatier2 implements Provider {
+        private final boolean milky;
+        public Chocolatier2(boolean milky) {
+            this.milky = milky;
+        }
+        public Chocolate provide(CocaoBeans cocaoBeans, String name) {
+            return new Chocolate(milky, cocaoBeans, name);
+        }
+    }
 
 }
