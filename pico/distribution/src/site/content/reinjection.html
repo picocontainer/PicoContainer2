@@ -16,7 +16,7 @@
   public boolean addItemTo(Make make, Model model, int quantity) {
 	Cart cart = store.getCart(user);
 	if (cart.contains(make, model)) {
-		cart.increaseQuantity(make, model, quantity);
+		cart.for(make, model).increaseQuantity(quantity);
 	} else {
 		cart.addItem(make, model, quantity);
 	}

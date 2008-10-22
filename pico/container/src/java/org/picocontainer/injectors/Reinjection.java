@@ -25,17 +25,15 @@ public class Reinjection extends CompositeInjection {
     }
 
     private static class ReinjectionInjector<T> extends AbstractInjector {
-        private final Object componentKey;
         private final PicoContainer parent;
 
         public ReinjectionInjector(Object componentKey, Class<T> componentImplementation, Parameter[] parameters, ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent) {
             super(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, false);
-            this.componentKey = componentKey;
             this.parent = parent;
         }
 
         public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
-            return parent.getComponent(componentKey);
+            return parent.getComponent(getComponentKey());
         }
 
     }
