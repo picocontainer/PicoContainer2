@@ -32,9 +32,9 @@ public class AnnotatedMethodInjector extends SetterInjector {
         this.injectionAnnotation = injectionAnnotation;
     }
 
-    protected void injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
+    protected Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
         throws IllegalAccessException, InvocationTargetException {
-        ((Method)member).invoke(componentInstance, toInject);
+        return ((Method)member).invoke(componentInstance, toInject);
     }
 
     protected final boolean isInjectorMethod(Method method) {

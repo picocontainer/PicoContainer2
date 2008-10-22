@@ -87,11 +87,12 @@ public class NamedFieldInjector extends IterativeInjector {
     }
 
 
-    protected void injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
+    protected Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
         throws IllegalAccessException, InvocationTargetException {
         Field field = (Field) member;
         field.setAccessible(true);
         field.set(componentInstance, toInject);
+        return null;
     }
 
     public String getDescriptor() {
@@ -104,6 +105,10 @@ public class NamedFieldInjector extends IterativeInjector {
                 return ((Field) member).getName();
             }
         };
+    }
+
+    protected Object memberInvocationReturn(Object lastReturn, AccessibleObject member, Object instance) {
+        return instance;
     }
 
     List<String> getInjectionFieldNames() {

@@ -12,6 +12,7 @@ package org.picocontainer.injectors;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.lang.reflect.Member;
 import java.lang.annotation.Annotation;
 
 import org.picocontainer.ComponentMonitor;
@@ -127,11 +128,12 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
 
     private Object invokeMethod(Method method, Object[] parameters, T instance, PicoContainer container) {
         try {
+            currentMonitor().invoking(container, MethodInjector.this, (Member) method, instance);
             return method.invoke(instance, parameters);
         } catch (IllegalAccessException e) {
             return caughtIllegalAccessException(currentMonitor(), method, instance, e);
         } catch (InvocationTargetException e) {
-            currentMonitor().instantiationFailed(container, MethodInjector.this, null, e);
+            currentMonitor().invocationFailed(method, instance, e);
             if (e.getTargetException() instanceof RuntimeException) {
                 throw (RuntimeException) e.getTargetException();
             } else if (e.getTargetException() instanceof Error) {

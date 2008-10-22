@@ -153,6 +153,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     private Object decorateComponentInstance(Parameter[] matchingParameters, ComponentMonitor componentMonitor, Object componentInstance, PicoContainer container, PicoContainer guardedContainer) {
         AccessibleObject member = null;
         Object injected[] = new Object[injectionMembers.size()];
+        Object lastReturn = null;
         try {
             for (int i = 0; i < injectionMembers.size(); i++) {
                 member = injectionMembers.get(i);
@@ -163,16 +164,18 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
                 Object toInject = matchingParameters[i].resolveInstance(guardedContainer, this, injectionTypes[i],
                                                                         makeParameterNameImpl(injectionMembers.get(i)),
                                                                         useNames(), bindings[i]);
-                injectIntoMember(member, componentInstance, toInject);
+                lastReturn = injectIntoMember(member, componentInstance, toInject);
                 injected[i] = toInject;
             }
-            return componentInstance;
+            return memberInvocationReturn(lastReturn, member, componentInstance);
         } catch (InvocationTargetException e) {
             return caughtInvocationTargetException(componentMonitor, (Member) member, componentInstance, e);
         } catch (IllegalAccessException e) {
             return caughtIllegalAccessException(componentMonitor, (Member) member, componentInstance, e);
         }
     }
+
+    protected abstract Object memberInvocationReturn(Object lastReturn, AccessibleObject member, Object instance);
 
     private Object makeInstance(PicoContainer container, Constructor constructor, ComponentMonitor componentMonitor) {
         long startTime = System.currentTimeMillis();
@@ -217,7 +220,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         return instantiationGuard.observe(getComponentImplementation());
     }
 
-    protected abstract void injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject) throws IllegalAccessException, InvocationTargetException;
+    protected abstract Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject) throws IllegalAccessException, InvocationTargetException;
 
     @Override
     public void verify(final PicoContainer container) throws PicoCompositionException {

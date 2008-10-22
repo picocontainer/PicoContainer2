@@ -63,9 +63,13 @@ public class SetterInjector<T> extends IterativeInjector<T> {
         this.setterMethodPrefix = setterMethodPrefix;
     }
 
-    protected void injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
+    protected Object memberInvocationReturn(Object lastReturn, AccessibleObject member, Object instance) {
+        return member != null && ((Method)member).getReturnType()!=void.class ? lastReturn : instance;
+    }
+
+    protected Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
         throws IllegalAccessException, InvocationTargetException {
-        ((Method)member).invoke(componentInstance, toInject);
+        return ((Method)member).invoke(componentInstance, toInject);
     }
 
     protected boolean isInjectorMethod(Method method) {

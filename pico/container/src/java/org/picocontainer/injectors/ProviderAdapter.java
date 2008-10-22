@@ -16,8 +16,6 @@ import org.picocontainer.Characteristics;
 
 import java.lang.reflect.Type;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 
@@ -83,7 +81,7 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider {
     }
 
     public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
-        return new Reinjector(container).reinject(key, provideMethod, properties, provider.getClass(), provider);
+        return new Reinjector(container).reinject(key, properties, provider.getClass(), provider, new MethodInjection(provideMethod));
     }
 
     public static Method getProvideMethod(Class clazz) {
