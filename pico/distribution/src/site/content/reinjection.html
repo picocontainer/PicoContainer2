@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head>
+<title>Reinjection</title></head>
+
+<body>
+<p>Reinjection is where an existing instance, that may have been already created by PicoContainer, can have a method called to inject more dependancies.</p>
+
+<p>Consider the following example of class that could benefit from reinjection:</p>
+<div class="source"><pre>public class ShoppingCart {
+  private Store store;
+  private User user;
+  public ShoppingCart(Store store, User user) {
+    this.store = store;
+    this.user = user;
+  }
+  public boolean addItemTo(Make make, Model model, int quantity) {
+	Cart cart = store.getCart(user);
+	if (cart.contains(make, model)) {
+		cart.increaseQuantity(make, model, quantity);
+	} else {
+		cart.addItem(make, model, quantity);
+	}
+	return true;
+  }
+}
+</pre></div>
+<p>The class would be instantiated and have 'store' and 'user' satisfied via constructor injection.  Later, perhaps corresponding to a web request, addItemTo could be invoked with relevant parameters. Indeed the addItemTo method could be called many times after instantiation.</p>
+<p>And here is a fragment of Java showing reinjection in use:</p>
+<div class="source"><pre>addItemMethod = ShoppingCart.class.getMethods()[0]; // a poor way to select a method!
+reinjector = new Reinjector(picoContainer);
+boolean result = (Boolean) reinjector.reinject(ShoppingCart.class, addItemMethod);
+</pre></div>
+<p>In the above example, the picoContainer instance (or one of its parents) can inject a Make, a Model and a quantity (int / Integer).</p>
+<p>For reinjection to work, you need to know the exact method to be injected into. This is nothing that can leverage the @Inject annotation</p>
+</body>
+</html>
