@@ -50,11 +50,7 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
         Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
         for (int i = 0; i < currentParameters.length; i++) {
-            result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i],
-                new ParameterNameBinding(paranamer, getComponentImplementation(), member, i), useNames(), bindings[i]);
-            if (result[i] == null) {
-                throw new PicoCompositionException("Parameter " + i + " of '" + member + "' cannot be null");
-            }
+            getParameter(container, member, parameterTypes, bindings, result, currentParameters, i);
         }
 
         return result;
@@ -64,6 +60,14 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
         for (int i = 0; i < parameterTypes.length; i++) {
             parameterTypes[i] = box(parameterTypes[i]);
 
+        }
+    }
+
+    private void getParameter(PicoContainer container, AccessibleObject member, Type[] parameterTypes, Annotation[] bindings, Object[] result, Parameter[] currentParameters, int i) {
+        result[i] = currentParameters[i].resolveInstance(container, this, parameterTypes[i],
+            new ParameterNameBinding(paranamer, getComponentImplementation(), member, i), useNames(), bindings[i]);
+        if (result[i] == null) {
+            throw new PicoCompositionException("Parameter " + i + " of '" + member + "' cannot be null");
         }
     }
 
