@@ -45,10 +45,7 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
 
     @SuppressWarnings("unchecked")
     protected Object[] getMemberArguments(PicoContainer container, final AccessibleObject member, final Type[] parameterTypes, final Annotation[] bindings) {
-        for (int i = 0; i < parameterTypes.length; i++) {
-            parameterTypes[i] = box(parameterTypes[i]);
-
-        }
+        boxParameters(parameterTypes);
         Object[] result = new Object[parameterTypes.length];
         Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
@@ -61,6 +58,13 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
         }
 
         return result;
+    }
+
+    private void boxParameters(Type[] parameterTypes) {
+        for (int i = 0; i < parameterTypes.length; i++) {
+            parameterTypes[i] = box(parameterTypes[i]);
+
+        }
     }
 
     protected Annotation[] getBindings(Annotation[][] annotationss) {
