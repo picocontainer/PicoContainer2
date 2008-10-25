@@ -34,9 +34,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     protected transient Type[] injectionTypes;
     protected transient Annotation[] bindings;
 
-
     private transient CachingParanamer paranamer = new CachingParanamer();
-
 
     /**
      * Constructs a IterativeInjector
@@ -142,7 +140,6 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
                     final Parameter[] matchingParameters = getMatchingParameterListForSetters(guardedContainer);
                     Object componentInstance = makeInstance(container, constructor, currentMonitor());
                     return decorateComponentInstance(matchingParameters, currentMonitor(), componentInstance, container, guardedContainer);
-
                 }
             };
         }
@@ -158,14 +155,13 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             for (int i = 0; i < injectionMembers.size(); i++) {
                 member = injectionMembers.get(i);
                 componentMonitor.invoking(container, this, (Member) member, componentInstance);
-                if (matchingParameters[i] == null) {
-                    continue;
+                if (matchingParameters[i] != null) {
+                    Object toInject = matchingParameters[i].resolveInstance(guardedContainer, this, injectionTypes[i],
+                                                                            makeParameterNameImpl(injectionMembers.get(i)),
+                                                                            useNames(), bindings[i]);
+                    lastReturn = injectIntoMember(member, componentInstance, toInject);
+                    injected[i] = toInject;
                 }
-                Object toInject = matchingParameters[i].resolveInstance(guardedContainer, this, injectionTypes[i],
-                                                                        makeParameterNameImpl(injectionMembers.get(i)),
-                                                                        useNames(), bindings[i]);
-                lastReturn = injectIntoMember(member, componentInstance, toInject);
-                injected[i] = toInject;
             }
             return memberInvocationReturn(lastReturn, member, componentInstance);
         } catch (InvocationTargetException e) {
@@ -273,9 +269,9 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             return null;
 
         }
+        //TODO - what's this ?
         if (parameterAnnotations != null) {
             //return ((Bind) method.getAnnotation(Bind.class)).id();
-            System.out.println("");
         }
         return null;
 

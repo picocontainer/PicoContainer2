@@ -29,12 +29,22 @@ public class Reinjector {
     private static NullLifecycleStrategy NO_LIFECYCLE = new NullLifecycleStrategy();
     private static Properties NO_PROPERTIES = new Properties();
 
+    /**
+     * Make a reinjector with a parent container from which to pull components to be reinjected to.
+     * With this constructor, a NullComponentMonitor is used.
+     * @param parentContainer the parent container
+     */
     public Reinjector(PicoContainer parentContainer) {
         this(parentContainer, parentContainer instanceof ComponentMonitorStrategy
                 ? ((ComponentMonitorStrategy) parentContainer).currentMonitor()
                 : new NullComponentMonitor());
     }
 
+    /**
+     * Make a reinjector with a parent container from which to pull components to be reinjected to
+     * @param parentContainer the parent container
+     * @param monitor the monitor to use for 'instantiating' events
+     */
     public Reinjector(PicoContainer parentContainer, ComponentMonitor monitor) {
         this.parent = parentContainer;
         this.monitor = monitor;
@@ -49,6 +59,13 @@ public class Reinjector {
     public Object reinject(Class<?> key, Method reinjectionMethod) {
         return reinject(key, key, parent.getComponent(key), new MethodInjection(reinjectionMethod));
     }
+
+    /**
+     * Reinjecting into a method.
+     * @param key the component-key from the parent set of components to inject into
+     * @param reinjectionFactory the InjectionFactory to use for reinjection.
+     * @return the result of the reinjection-method invocation.
+     */
     public Object reinject(Class<?> key, InjectionFactory reinjectionFactory) {
         return reinject(key, key, parent.getComponent(key), reinjectionFactory);
     }
@@ -58,14 +75,24 @@ public class Reinjector {
      * @param key the component-key from the parent set of components to inject into
      * @param implementation the implementation of the component that is going to result.
      * @param instance the object that has the provider method to be invoked
-     * @param reinjectionFactory
+     * @param reinjectionFactory the InjectionFactory to use for reinjection.
      * @return the result of the reinjection-method invocation.
      */
     public Object reinject(Class<?> key, Class implementation, Object instance, InjectionFactory reinjectionFactory) {
-        return reinject(key, NO_PROPERTIES, implementation, instance, reinjectionFactory);
+        return reinject(key, implementation, instance, NO_PROPERTIES, reinjectionFactory);
     }
 
-    public Object reinject(Class<?> key, Properties properties, Class implementation, Object instance, InjectionFactory reinjectionFactory) {
+    /**
+     *
+     * @param key the component-key from the parent set of components to inject into
+     * @param implementation the implementation of the component that is going to result.
+     * @param instance the object that has the provider method to be invoked
+     * @param properties
+     * @param reinjectionFactory the InjectionFactory to use for reinjection.
+     * @return the result of the reinjection-method invocation.
+     */
+    public Object reinject(Class<?> key, Class implementation, Object instance, Properties properties,
+                           InjectionFactory reinjectionFactory) {
         Reinjection reinjection = new Reinjection(reinjectionFactory, parent);
         org.picocontainer.Injector mi = (org.picocontainer.Injector) reinjection.createComponentAdapter(
                 monitor, NO_LIFECYCLE, properties, key, implementation, null);

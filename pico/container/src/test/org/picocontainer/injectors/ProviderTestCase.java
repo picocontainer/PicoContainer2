@@ -72,6 +72,10 @@ public class ProviderTestCase {
         private final CocaoBeans cocaoBeans;
         private final String name;
 
+        public Chocolate(String name) {
+            this(true, new CocaoBeans(), name);
+        }
+
         public Chocolate(boolean milky, CocaoBeans cocaoBeans, String name) {
             this.milky = milky;
             this.cocaoBeans = cocaoBeans;
@@ -150,7 +154,7 @@ public class ProviderTestCase {
     }
 
     @Test
-    public void provideMethodCanParticipateInInjection2() {
+    public void provideMethodCanParticipateInInjectionWhenNotExtendingProviderAdapter() {
         DefaultPicoContainer dpc = new DefaultPicoContainer();
         dpc.addAdapter(new ProviderAdapter(new Chocolatier2(true)));
         dpc.addComponent(NeedsChocolate.class);
@@ -173,5 +177,62 @@ public class ProviderTestCase {
             return new Chocolate(milky, cocaoBeans, name);
         }
     }
+
+    @Test
+    public void providedTypeCanBeDyanamicallyDeterminedFromInstanceRatherThanType() {
+        DefaultPicoContainer dpc = new DefaultPicoContainer();
+
+        // a simlation of what a web framework would essentially do in a thread-local way
+        dpc.addComponent(new StubHttpRequest("chocolate", "Lindt"));
+
+        // this is the style being recomended for automatic request-params -> beans
+        dpc.addAdapter(new ExampleRequestReader(Chocolate.class, "chocolate"));
+
+        dpc.addComponent(NeedsChocolate.class);
+        NeedsChocolate needsChocolate = dpc.getComponent(NeedsChocolate.class);
+        assertNotNull(needsChocolate);
+        assertNotNull(needsChocolate.choc);
+        assertEquals(true, needsChocolate.choc.milky);
+        assertNotNull(needsChocolate.choc.cocaoBeans);
+        assertEquals("Lindt", needsChocolate.choc.name);
+    }
+
+
+    public static class StubHttpRequest {
+        private final String key;
+        private final String value;
+
+        public StubHttpRequest(String key, String value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public String getParameter(String name) {
+            return name.equals(key) ? value : null;
+        }
+    }
+
+    public static class ExampleRequestReader extends ProviderAdapter {
+        private final Class clazz;
+        private final String paramName;
+
+        public ExampleRequestReader(Class clazz, String paramName) {
+            this.clazz = clazz;
+            this.paramName = paramName;
+        }
+
+        public Class getComponentImplementation() {
+            return clazz;
+        }
+
+        public Object provide(StubHttpRequest req) {
+            try {
+                return clazz.getConstructors()[0].newInstance(req.getParameter(paramName));
+            } catch (Exception e) {
+                throw new RuntimeException(e);  
+            }
+        }
+    }
+
 
 }

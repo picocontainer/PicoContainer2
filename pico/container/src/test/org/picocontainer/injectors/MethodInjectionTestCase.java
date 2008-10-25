@@ -39,7 +39,6 @@ public class MethodInjectionTestCase {
 
     public static class Bar {
         public Bar() {
-            System.out.println("");
         }
     }
 
