@@ -239,8 +239,7 @@ public class BasicComponentParameter implements Parameter, Serializable {
         return (ComponentAdapter<T>)componentAdapter;
     }
 
-    private <T> ComponentAdapter<T> getTargetAdapter(PicoContainer container,
-                                                     Class<T> expectedType,
+    private <T> ComponentAdapter<T> getTargetAdapter(PicoContainer container, Class<T> expectedType,
                                                      NameBinding expectedNameBinding,
                                                      ComponentAdapter excludeAdapter, boolean useNames, Annotation binding) {
         if (componentKey != null) {
@@ -249,49 +248,67 @@ public class BasicComponentParameter implements Parameter, Serializable {
         } else if (excludeAdapter == null) {
             return container.getComponentAdapter(expectedType, (NameBinding) null);
         } else {
+            return findTargetAdapter(container, expectedType, expectedNameBinding, excludeAdapter, useNames, binding);
+        }
+    }
 
-            Object excludeKey = excludeAdapter.getComponentKey();
-            ComponentAdapter byKey = container.getComponentAdapter((Object)expectedType);
-            if (byKey != null && !excludeKey.equals(byKey.getComponentKey())) {
-                return typeComponentAdapter(byKey);
-            }
-            if (useNames) {
-                ComponentAdapter found = container.getComponentAdapter(expectedNameBinding.getName());
-                if ((found != null)
-                    && areCompatible(expectedType, found)
-                    && found != excludeAdapter) {
-                    return (ComponentAdapter<T>) found;                    
-                }
-            }
-            List<ComponentAdapter<T>> found = binding == null ? container.getComponentAdapters(expectedType) :
-                                              container.getComponentAdapters(expectedType, binding.annotationType());
-            ComponentAdapter exclude = null;
-            for (ComponentAdapter work : found) {
-                if (work.getComponentKey().equals(excludeKey)) {
-                    exclude = work;
-                }
-            }
-            found.remove(exclude);
-            if (found.size() == 0) {
-                if (container.getParent() != null) {
-                    if (binding != null) {
-                        return container.getParent().getComponentAdapter(expectedType, binding.getClass());
-                    } else {
-                        return container.getParent().getComponentAdapter(expectedType, expectedNameBinding);
-                    }
-                } else {
-                    return null;
-                }
-            } else if (found.size() == 1) {
-                return found.get(0);
-            } else {
-                Class[] foundClasses = new Class[found.size()];
-                for (int i = 0; i < foundClasses.length; i++) {
-                    foundClasses[i] = found.get(i).getComponentImplementation();
-                }
-                throw new AbstractInjector.AmbiguousComponentResolutionException(expectedType, foundClasses);
+    private <T> ComponentAdapter<T> findTargetAdapter(PicoContainer container, Class<T> expectedType,
+                                                      NameBinding expectedNameBinding, ComponentAdapter excludeAdapter,
+                                                      boolean useNames, Annotation binding) {
+        Object excludeKey = excludeAdapter.getComponentKey();
+        ComponentAdapter byKey = container.getComponentAdapter((Object)expectedType);
+        if (byKey != null && !excludeKey.equals(byKey.getComponentKey())) {
+            return typeComponentAdapter(byKey);
+        }
+        if (useNames) {
+            ComponentAdapter found = container.getComponentAdapter(expectedNameBinding.getName());
+            if ((found != null) && areCompatible(expectedType, found) && found != excludeAdapter) {
+                return (ComponentAdapter<T>) found;
             }
         }
+        List<ComponentAdapter<T>> found = binding == null ? container.getComponentAdapters(expectedType) :
+                                          container.getComponentAdapters(expectedType, binding.annotationType());
+        removeExcludedAdapterIfApplicable(excludeKey, found);
+        if (found.size() == 0) {
+            return noMatchingAdaptersFound(container, expectedType, expectedNameBinding, binding);
+        } else if (found.size() == 1) {
+            return found.get(0);
+        } else {
+            throw tooManyMatchingAdaptersFound(expectedType, found);
+        }
+    }
+
+    private <T> ComponentAdapter<T> noMatchingAdaptersFound(PicoContainer container, Class<T> expectedType,
+                                                            NameBinding expectedNameBinding, Annotation binding) {
+        if (container.getParent() != null) {
+            if (binding != null) {
+                return container.getParent().getComponentAdapter(expectedType, binding.getClass());
+            } else {
+                return container.getParent().getComponentAdapter(expectedType, expectedNameBinding);
+            }
+        } else {
+            return null;
+        }
+    }
+
+    private <T> AbstractInjector.AmbiguousComponentResolutionException tooManyMatchingAdaptersFound(Class<T> expectedType, List<ComponentAdapter<T>> found) {
+        Class[] foundClasses = new Class[found.size()];
+        for (int i = 0; i < foundClasses.length; i++) {
+            foundClasses[i] = found.get(i).getComponentImplementation();
+        }
+        AbstractInjector.AmbiguousComponentResolutionException exception = new AbstractInjector.AmbiguousComponentResolutionException(expectedType, foundClasses);
+        return exception;
+    }
+
+    private <T> void removeExcludedAdapterIfApplicable(Object excludeKey, List<ComponentAdapter<T>> found) {
+        ComponentAdapter exclude = null;
+        for (ComponentAdapter work : found) {
+            if (work.getComponentKey().equals(excludeKey)) {
+                exclude = work;
+                break;
+            }
+        }
+        found.remove(exclude);
     }
 
     private <T> boolean areCompatible(Class<T> expectedType, ComponentAdapter found) {
