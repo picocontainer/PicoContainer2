@@ -59,7 +59,7 @@ public class MethodInjectionTestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection(mthd));
         pico.addComponent("hello");
         pico.addComponent(Foo.class);
-        pico.addComponent(Bar.class);
+        pico.addComponent(new Bar());
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.string);
@@ -71,7 +71,7 @@ public class MethodInjectionTestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection(mthd));
         pico.addComponent("hello");
         pico.addComponent(Foo.class);
-        pico.addComponent(Bar.class);
+        pico.addComponent(new Bar());
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.string);

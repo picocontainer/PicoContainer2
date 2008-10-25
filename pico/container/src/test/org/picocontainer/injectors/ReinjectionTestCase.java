@@ -12,6 +12,7 @@ package org.picocontainer.injectors;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picocontainer.ComponentFactory;
@@ -161,4 +162,33 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         return new Reinjection(new MethodInjection(DOIT), new EmptyPicoContainer());
     }
 
+    @Test
+    public void testRegisterComponent() throws PicoCompositionException {
+        try {
+            super.testRegisterComponent();
+            fail();
+        } catch (PicoCompositionException e) {
+            assertTrue(e.getMessage().contains("] not on impl "));
+        }
+    }
+
+    @Test
+    public void testUnregisterComponent() throws PicoCompositionException {
+        try {
+            super.testUnregisterComponent();
+            fail();
+        } catch (PicoCompositionException e) {
+            assertTrue(e.getMessage().contains("] not on impl "));
+        }
+    }
+
+    @Test
+    public void testEquals() throws PicoCompositionException {
+        try {
+            super.testEquals();
+            fail();
+        } catch (PicoCompositionException e) {
+            assertTrue(e.getMessage().contains("] not on impl "));
+        }
+    }
 }

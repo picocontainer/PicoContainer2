@@ -70,7 +70,11 @@ public class MethodInjection extends AbstractInjectionFactory {
 
         public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
             boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES);
-            return new MethodInjector.ByReflectionMethod(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionMethod, useNames);
+            if (injectionMethod.getDeclaringClass().isAssignableFrom(componentImplementation)) {
+                return new MethodInjector.ByReflectionMethod(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionMethod, useNames);
+            } else {
+                throw new PicoCompositionException("method [" + injectionMethod + "] not on impl " + componentImplementation.getName());
+            }
         }
     }
 
