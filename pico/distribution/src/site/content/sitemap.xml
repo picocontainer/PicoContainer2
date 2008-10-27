@@ -12,17 +12,23 @@
     </section>
     <section>
         <name>Core Concepts</name>
-        <page>injection.html</page>
         <page>lifecycle.html</page>
-        <page>disambiguation.html</page>
         <page>scopes.html</page>
     </section>
     <section>
-        <name>Modifying Behaviors</name>
+        <page>injection.html</page>
+        <name>Injecting Dependencies and Configuration</name>
+        <page>disambiguation.html</page>
+        <page>reinjection.html</page>
+        <page>providers.html</page>
+    </section>
+    <section>
+        <name>Modifying Component Behaviors</name>
         <page>behaviors.html</page>
         <page>caching.html</page>
         <page>hiding.html</page>
         <page>thread-safety.html</page>
+        <page>interception.html</page>
     </section>
     <section>
         <name>Specialist Concepts</name>
@@ -30,12 +36,9 @@
         <page>arrays-collections-and-maps.html</page>
         <page>parameter-names.html</page>
         <page>builder.html</page>
-        <page>interception.html</page>
         <page>properties.html</page>
         <page>component-configuration.html</page>
         <page>monitors.html</page>
-        <page>reinjection.html</page>
-        <page>providers.html</page>
     </section>
     <section>
         <name>Architecture</name>

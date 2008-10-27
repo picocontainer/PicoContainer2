@@ -40,7 +40,14 @@ constructor arguments is something that is useful too.
 <h2>Example</h2>
 
 <div class="source">
-            <pre>public class Shop {<br />    private final StockManager stockManager;<br />    private final String shopZipCode;<br />    public Shop(StockManager stockManager, String shopZipCode) {<br />        this.stockManager = stockManager;<br />        this.shopZipCode = shopZipCode;<br />    }<br /> }</pre>
+            <pre>public class Shop {
+	private final StockManager stockManager;
+	private final String shopZipCode;
+	public Shop(StockManager stockManager, String shopZipCode) {
+		this.stockManager = stockManager;
+		this.shopZipCode = shopZipCode;
+		}
+	}</pre>
 </div>
 <p>Note, for this there is no need to declare needs in any other way. No interfaces, no doclet tags, no external
    XML. Just your simple component(s) and PicoContainer. No need for post assembly/config initialization either. If
@@ -65,6 +72,6 @@ constructor arguments is something that is useful too.
 
 <p>PicoContainer was the first lightweight container to support and popularize this for of dependency injection.
    Spring Framework has been retrofitted with constructor injection capability, but its primary focus is still
-   setter injection. Even the once heavyweight technologies like Avalon and OSGi moved towards&nbsp;constructor
+   setter injection. Even the once heavyweight technologies like Avalon and OSGi moved towards constructor
    injection.</p>
 </body></html>
