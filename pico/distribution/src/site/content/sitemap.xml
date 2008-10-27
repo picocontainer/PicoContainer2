@@ -8,14 +8,21 @@
         <page>news.html</page>
         <page>faq.html</page>
         <page>goals.html</page>
+        <page>support.html</page>
     </section>
     <section>
         <name>Core Concepts</name>
         <page>injection.html</page>
-        <page>behaviors.html</page>
         <page>lifecycle.html</page>
         <page>disambiguation.html</page>
         <page>scopes.html</page>
+    </section>
+    <section>
+        <name>Modifying Behaviors</name>
+        <page>behaviors.html</page>
+        <page>caching.html</page>
+        <page>hiding.html</page>
+        <page>thread-safety.html</page>
     </section>
     <section>
         <name>Specialist Concepts</name>
