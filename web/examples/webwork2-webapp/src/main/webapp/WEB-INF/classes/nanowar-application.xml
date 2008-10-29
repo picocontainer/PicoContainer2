@@ -1,5 +1,0 @@
-<container>
-	<component-implementation key='org.picocontainer.web.sample.dao.CheeseDao'
-			class='org.picocontainer.web.sample.dao.simple.InMemoryCheeseDao'>
-	</component-implementation>
-</container>
