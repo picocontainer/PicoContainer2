@@ -1,0 +1,39 @@
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+    <display-name>PicoCall Webapp</display-name>
+
+    <context-param>
+        <param-name>webapp-composer-class</param-name>
+        <param-value>org.picocontainer.web.sample.picocall.PicoCallWebappComposer</param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>picoFilter</filter-name>
+        <filter-class>org.picocontainer.web.call.PicoCallServlet$ServletFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>picoFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <listener>
+        <listener-class>org.picocontainer.web.PicoServletContainerListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>PicoCall</servlet-name>
+        <servlet-class>org.picocontainer.web.call.PicoCallServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PicoCall</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>
+
+

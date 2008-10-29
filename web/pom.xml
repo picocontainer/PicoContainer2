@@ -15,6 +15,7 @@
     <module>web-struts2</module>
     <module>web-webwork</module>
     <module>web-webwork2</module>
+    <module>picocall</module>
   </modules>
   <description>
     <![CDATA[Please refer to the <a href="http://www.picocontainer.org/web">main website</a> for documentation.]]>
@@ -45,12 +46,12 @@
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer</artifactId>
-        <version>2.4</version>
+        <version>2.7-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer-gems</artifactId>
-        <version>2.4</version>
+        <version>2.7-SNAPSHOT</version>
         <optional>true</optional>
       </dependency>
       <dependency>
@@ -75,7 +76,7 @@
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer-tck</artifactId>
-        <version>2.4</version>
+        <version>2.7-SNAPSHOT</version>
         <scope>test</scope>
       </dependency>
       <dependency>

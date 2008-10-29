@@ -27,6 +27,14 @@ public class ThreadLocalLifecycleState implements LifecycleState {
         return tl.get().isStarted();
     }
 
+    public boolean isStopped() {
+        return tl.get().isStopped();
+    }
+
+    public boolean isDisposed() {
+        return tl.get().isDisposed();
+    }
+
     public void disposing() {
         tl.get().disposing();
     }
