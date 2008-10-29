@@ -77,42 +77,57 @@ public class PicoCallServlet extends HttpServlet {
 
     private boolean initialized;
 
-    protected void service(HttpServletRequest req,
-                           HttpServletResponse resp)
+    protected void service(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         if (!initialized) {
             initialize();
             initialized = true;
         }
-
-        String path = req.getPathInfo().substring(1);
         resp.setContentType("text/plain");
-        Object node = paths.get(path);
         ServletOutputStream out = resp.getOutputStream();
+
+        String pathInfo = req.getPathInfo();
+
+        processRequest(out, pathInfo);
+
+
+    }
+
+    protected void processRequest(ServletOutputStream out, String pathInfo) throws IOException {
+        String path = pathInfo.substring(1);
+        if (path.endsWith("/")) {
+            path = path.substring(0, path.length()-1);
+        }
+        Object node = paths.get(path);
 
         if (node == null) {
             int ix = path.lastIndexOf('/');
             if (ix > 0) {
-                executeMethod(path, ix, out);
+                String methodName = path.substring(ix + 1);
+                path = path.substring(0, ix);
+                Object node2 = paths.get(path);
+                if (node2 instanceof WebMethods) {
+                    WebMethods methods = (WebMethods) node2;
+                    Method method = methods.get(methodName);
+                    if (method != null) {
+                        Object o = reinject(out, methodName, method, methods.getComp());
+                        node = xStream.toXML(o) + "\n";
+                    } else {
+                        node = null;
+                    }
+                }
             } else {
-                out.print("*nothing*\n");
+                node = null;
             }
-        } else {
-            out.print("" + node);
         }
 
+        out.print(node == null ? "*nothing*\n" : "" + node);
     }
 
-    private void executeMethod(String path, int ix, ServletOutputStream out) throws IOException {
-        String methodName = path.substring(ix + 1);
-        path = path.substring(0, ix);
-        WebMethods methods = (WebMethods) paths.get(path);
-        Method method = methods.get(methodName);
+    private Object reinject(ServletOutputStream out, String methodName, Method method, Class component) throws IOException {
         PicoContainer reqContainer = ServletFilter.getRequestContainerForThread();
-        Reinjector reinjector = new Reinjector(reqContainer);
-        Object o = reinjector.reinject(methods.getComp(), method);
-        out.print(xStream.toXML(o) + "\n");
+        return new Reinjector(reqContainer).reinject(component, method);
     }
 
     private void initialize() {
