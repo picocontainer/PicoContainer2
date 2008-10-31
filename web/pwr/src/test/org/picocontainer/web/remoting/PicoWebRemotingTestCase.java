@@ -15,23 +15,22 @@ import static org.junit.Assert.assertEquals;
 import com.thoughtworks.xstream.XStream;
 
 /**
- * @author Mauro Talevi
- * @author Konstantin Pribluda
+ * @author Paul Hammant
  */
-public final class PicoCallTestCase {
+public final class PicoWebRemotingTestCase {
 
     XStream xstream = new XStream();
     {
-        xstream.alias("dirs", PicoCallServlet.Directories.class);
-        xstream.alias("methods", PicoCallServlet.WebMethods.class);
+        xstream.alias("dirs", PicoWebRemotingServlet.Directories.class);
+        xstream.alias("methods", PicoWebRemotingServlet.WebMethods.class);
 
     }
 
     @Test
     public void testPaths() throws Exception {
         Map map = new HashMap();
-        PicoCallServlet.directorize(map, "foo/bar/baz1");
-        PicoCallServlet.directorize(map, "foo/bar/baz2");
+        PicoWebRemotingServlet.directorize(map, "foo/bar/baz1");
+        PicoWebRemotingServlet.directorize(map, "foo/bar/baz2");
         assertEquals(
                 "<map>\n" +
                         "  <entry>\n" +
@@ -69,7 +68,7 @@ public final class PicoCallTestCase {
     @Test
     public void testClasses() throws Exception {
         Map map = new HashMap();
-        PicoCallServlet.directorize(map, "foo/bar/baz1", Foo.class);
+        PicoWebRemotingServlet.directorize(map, "foo/bar/baz1", Foo.class);
         assertEquals(
                 "<map>\n" +
                         "  <entry>\n" +
@@ -85,7 +84,7 @@ public final class PicoCallTestCase {
                         "        <int>1</int>\n" +
                         "        <string>hello</string>\n" +
                         "        <method>\n" +
-                        "          <class>org.picocontainer.web.remoting.PicoCallTestCase$Foo</class>\n" +
+                        "          <class>org.picocontainer.web.remoting.PicoWebRemotingTestCase$Foo</class>\n" +
                         "          <name>hello</name>\n" +
                         "          <parameter-types>\n" +
                         "            <class>long</class>\n" +
@@ -94,7 +93,7 @@ public final class PicoCallTestCase {
                         "      </map>\n" +
                         "      <methods>\n" +
                         "        <default>\n" +
-                        "          <comp>org.picocontainer.web.remoting.PicoCallTestCase$Foo</comp>\n" +
+                        "          <comp>org.picocontainer.web.remoting.PicoWebRemotingTestCase$Foo</comp>\n" +
                         "        </default>\n" +
                         "      </methods>\n" +
                         "    </methods>\n" +

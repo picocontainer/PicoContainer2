@@ -40,7 +40,7 @@ import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
  * @author Paul Hammant
  */
 @SuppressWarnings("serial")
-public class PicoCallServlet extends HttpServlet {
+public class PicoWebRemotingServlet extends HttpServlet {
 
     private Map<String, Object> paths = new HashMap<String, Object>();
     private XStream xStream = new XStream(new JettisonMappedXmlDriver());
