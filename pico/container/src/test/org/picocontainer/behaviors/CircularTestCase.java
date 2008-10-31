@@ -54,7 +54,7 @@ public class CircularTestCase {
     @Test
     public void enableCircularCharacteristicIsRedundantForImplementationHiding() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new ImplementationHiding().wrap(new SetterInjection()));
-        pico.as(Characteristics.ENABLE_CIRCULAR).addComponent(IFish.class, Fish.class);
+        pico.addComponent(IFish.class, Fish.class);
         pico.addComponent(IWater.class, Water.class);
         IWater water = pico.getComponent(IWater.class);
         IFish fish = pico.getComponent(IFish.class);
