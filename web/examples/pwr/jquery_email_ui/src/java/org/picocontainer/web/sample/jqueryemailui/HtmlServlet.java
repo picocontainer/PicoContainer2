@@ -1,5 +1,5 @@
 
-package demo.jquery.server;
+package org.picocontainer.web.sample.jqueryemailui;
 
 import java.io.IOException;
 
@@ -10,9 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
-
-import demo.jquery.MessageDB;
-import demo.jquery.MessageData;
 
 public class HtmlServlet extends HttpServlet
 {

@@ -1,5 +1,5 @@
 
-package demo.jquery;
+package org.picocontainer.web.sample.jqueryemailui;
 import java.util.ArrayList;
 
 public class MessageSet {

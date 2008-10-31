@@ -7,7 +7,7 @@
 
   <servlet>
     <servlet-name>HtmlServlet</servlet-name>
-    <servlet-class>demo.jquery.server.HtmlServlet</servlet-class>
+    <servlet-class>org.picocontainer.web.sample.jqueryemailui</servlet-class>
     <init-param>
       <param-name>nocache</param-name>
       <param-value>true</param-value>

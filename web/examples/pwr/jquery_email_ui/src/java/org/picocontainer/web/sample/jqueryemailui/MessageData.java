@@ -1,5 +1,6 @@
 
-package demo.jquery;
+package org.picocontainer.web.sample.jqueryemailui;
+
 import java.util.Calendar;
 import java.util.Date;
 
