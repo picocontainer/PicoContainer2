@@ -10,6 +10,6 @@ public class PicoCallWebappComposer extends ExampleWebappComposer {
         mutablePicoContainer.addComponent(AddCheese.class);
         mutablePicoContainer.addComponent(CheeseInventory.class);
         mutablePicoContainer.addComponent(RemoveCheese.class);
-        mutablePicoContainer.addComponent(Brand.class, Brand.FromRequest.class);
+        super.composeRequest(mutablePicoContainer);
     }
 }

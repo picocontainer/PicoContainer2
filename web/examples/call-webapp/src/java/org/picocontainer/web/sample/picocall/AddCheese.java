@@ -16,7 +16,7 @@ public class AddCheese {
         cheeseService.save(cheese);
     }
 
-    public Cheese getCheese() {
+    public Cheese getCheese(String type, String type2) {
         return cheese;
     }
 

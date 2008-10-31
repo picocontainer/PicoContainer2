@@ -47,6 +47,7 @@
         <module>webwork-webapp</module>
         <module>webwork2-webapp</module>
         <module>call-webapp</module>
+        <module>forked1-webapp</module>
     </modules>
 
     <dependencyManagement>

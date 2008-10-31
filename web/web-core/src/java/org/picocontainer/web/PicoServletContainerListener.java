@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSessionListener;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.BehaviorFactory;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Storing;
@@ -153,8 +154,12 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         Storing sessStoring = new Storing();
         DefaultPicoContainer sessCtnr = new DefaultPicoContainer(sessStoring, appCtnr);
         Storing reqStoring = new Storing();
-        DefaultPicoContainer reqCtnr = new DefaultPicoContainer(reqStoring, sessCtnr);
-        return new ScopedContainers(appCtnr,sessCtnr,reqCtnr,sessStoring,reqStoring);
+        DefaultPicoContainer reqCtnr = new DefaultPicoContainer(addRequestBehaviors(reqStoring), sessCtnr);
+        return new ScopedContainers(appCtnr, sessCtnr, reqCtnr, sessStoring, reqStoring);
+    }
+
+    protected BehaviorFactory addRequestBehaviors(BehaviorFactory reqStoring) {
+        return reqStoring;
     }
 
     /**
