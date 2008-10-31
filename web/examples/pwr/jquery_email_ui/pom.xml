@@ -12,7 +12,13 @@
   <dependencies>
     <dependency>
       <groupId>org.picocontainer.web</groupId>
-      <artifactId>picocontainer-web-remoting</artifactId>
+      <artifactId>picocontainer-webremoting</artifactId>
       <version>2.2-SNAPSHOT</version>
     </dependency>
+	<dependency>
+	    <groupId>org.json</groupId>
+	    <artifactId>json</artifactId>
+	    <version>20070829</version>
+	</dependency>
+  </dependencies>
 </project>
