@@ -15,7 +15,7 @@
     <module>web-struts2</module>
     <module>web-webwork</module>
     <module>web-webwork2</module>
-    <module>picocall</module>
+    <module>web-remoting</module>
   </modules>
   <description>
     <![CDATA[Please refer to the <a href="http://www.picocontainer.org/web">main website</a> for documentation.]]>
