@@ -6,7 +6,7 @@
  * LICENSE.txt file.
  ******************************************************************************/
 
-package org.picocontainer.web.call;
+package org.picocontainer.web.remoting;
 
 import java.util.Map;
 import java.util.Collection;

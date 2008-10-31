@@ -5,7 +5,7 @@
  * license a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  ******************************************************************************/
-package org.picocontainer.web.call;
+package org.picocontainer.web.remoting;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -85,7 +85,7 @@ public final class PicoCallTestCase {
                         "        <int>1</int>\n" +
                         "        <string>hello</string>\n" +
                         "        <method>\n" +
-                        "          <class>org.picocontainer.web.call.PicoCallTestCase$Foo</class>\n" +
+                        "          <class>org.picocontainer.web.remoting.PicoCallTestCase$Foo</class>\n" +
                         "          <name>hello</name>\n" +
                         "          <parameter-types>\n" +
                         "            <class>long</class>\n" +
@@ -94,7 +94,7 @@ public final class PicoCallTestCase {
                         "      </map>\n" +
                         "      <methods>\n" +
                         "        <default>\n" +
-                        "          <comp>org.picocontainer.web.call.PicoCallTestCase$Foo</comp>\n" +
+                        "          <comp>org.picocontainer.web.remoting.PicoCallTestCase$Foo</comp>\n" +
                         "        </default>\n" +
                         "      </methods>\n" +
                         "    </methods>\n" +
