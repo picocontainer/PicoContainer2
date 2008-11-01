@@ -1,9 +1,9 @@
-<%@page import="demo.jquery.server.HtmlServlet"%>
-<%@page import="demo.jquery.MessageData"%>
+<%@page import="org.picocontainer.web.sample.jqueryemailui.HtmlServlet"%>
+<%@page import="org.picocontainer.web.sample.jqueryemailui.MessageData"%>
 <%@page import="java.util.TimeZone"%>
-<%@page import="demo.jquery.MessageSet"%>
-<%@page import="demo.jquery.MessageDB"%>
-<%@page import="demo.jquery.TimeDisplayUtil"%>
+<%@page import="org.picocontainer.web.sample.jqueryemailui.MessageSet"%>
+<%@page import="org.picocontainer.web.sample.jqueryemailui.MessageDB"%>
+<%@page import="org.picocontainer.web.sample.jqueryemailui.TimeDisplayUtil"%>
 
 <%
    // Note - not good programming practice to hard-code userIDs on dynamic pages
@@ -22,10 +22,10 @@
 <head>
 <link href="style.css" type="text/css" rel="stylesheet" />
 </head>
-<script type="text/javascript" src="/jquery/js/jquery-1.2.1.pack.js"></script>
-<script type="text/javascript" src="/jquery/js/jquery.dimensions.js"></script>
-<script type="text/javascript" src="/jquery/js/jquery.corner.min.js"></script>
-<script type="text/javascript" src="/jquery/js/jquery.blockUI.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.2.1.pack.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery.dimensions.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery.corner.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery.blockUI.min.js"></script>
 <script> 
 
 var isIE = 0;
@@ -152,7 +152,7 @@ function selectAll()
   <div id=content>
   <!-- start page specific -->
 
-  <img src="/jquery/images/messages.gif" style="position:absolute;left:10px;top:4px;">
+  <img src="<%=request.getContextPath() %>/images/messages.gif" style="position:absolute;left:10px;top:4px;">
   <h1>Mail</h1>
   <hr class=content_divider>
   
