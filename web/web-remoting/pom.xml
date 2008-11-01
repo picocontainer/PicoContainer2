@@ -6,7 +6,7 @@
     <artifactId>picocontainer-web</artifactId>
     <version>2.2-SNAPSHOT</version>
   </parent>
-  <artifactId>picocontainer-webremoting</artifactId>
+  <artifactId>picocontainer-web-remoting</artifactId>
   <name>PicoContainer Web Remoting</name>
   <dependencies>
     <dependency>
