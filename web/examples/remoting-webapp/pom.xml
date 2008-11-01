@@ -6,19 +6,18 @@
     <artifactId>picocontainer-web-examples</artifactId>
     <version>2.2-SNAPSHOT</version>
   </parent>
-  <artifactId>pwr-jqueryemail-webapp</artifactId>
-  <name>PicoWebRemoting JQuery Email Example</name>
+  <artifactId>remoting-webapp</artifactId>
+  <name>PicoWebRemoting Webapp</name>
   <packaging>war</packaging>
   <dependencies>
     <dependency>
       <groupId>org.picocontainer.web</groupId>
-      <artifactId>picocontainer-webremoting</artifactId>
-      <version>2.2-SNAPSHOT</version>
+      <artifactId>picocontainer-web-remoting</artifactId>
+      <version>${pom.version}</version>
     </dependency>
-	<dependency>
-	    <groupId>org.json</groupId>
-	    <artifactId>json</artifactId>
-	    <version>20070829</version>
-	</dependency>
+    <dependency>
+      <groupId>org.picocontainer.web</groupId>
+      <artifactId>webapp-common</artifactId>
+    </dependency>
   </dependencies>
 </project>

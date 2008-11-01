@@ -46,7 +46,7 @@
         <module>struts2-webapp</module>
         <module>webwork-webapp</module>
         <module>webwork2-webapp</module>
-        <module>call-webapp</module>
+        <module>remoting-webapps/jquery_email_ui</module>
     </modules>
 
     <dependencyManagement>
