@@ -138,8 +138,19 @@ public class PicoWebRemotingServlet extends HttpServlet {
         if (prefix == null) {
         }
 
-        PicoContainer reqContainer = ServletFilter.getRequestContainerForThread();
-        Collection<ComponentAdapter<?>> adapters = reqContainer.getComponentAdapters();
+        String toPublish = getServletContext().getInitParameter("toPublish");
+        if (toPublish == null || toPublish.contains("request")) {
+            publishAdapters(ServletFilter.getRequestContainerForThread().getComponentAdapters());
+        }
+
+        if (toPublish != null || toPublish.contains("session")) {
+            publishAdapters(ServletFilter.getSessionContainerForThread().getComponentAdapters());
+        }
+
+
+    }
+
+    private void publishAdapters(Collection<ComponentAdapter<?>> adapters) {
         for (ComponentAdapter<?> ca : adapters) {
             Object key = ca.getComponentKey();
             Class comp = (Class) key;
@@ -148,9 +159,6 @@ public class PicoWebRemotingServlet extends HttpServlet {
             directorize(paths, path, comp);
             directorize(paths, path);
         }
-
-
-
     }
 
     protected static void directorize(Map paths, String path, Class comp) {

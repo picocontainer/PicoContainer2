@@ -17,7 +17,7 @@ import com.thoughtworks.xstream.XStream;
 /**
  * @author Paul Hammant
  */
-public final class PicoWebRemotingTestCase {
+public final class PicoWebRemotingServletTestCase {
 
     XStream xstream = new XStream();
     {
@@ -84,7 +84,7 @@ public final class PicoWebRemotingTestCase {
                         "        <int>1</int>\n" +
                         "        <string>hello</string>\n" +
                         "        <method>\n" +
-                        "          <class>org.picocontainer.web.remoting.PicoWebRemotingTestCase$Foo</class>\n" +
+                        "          <class>org.picocontainer.web.remoting.PicoWebRemotingServletTestCase$Foo</class>\n" +
                         "          <name>hello</name>\n" +
                         "          <parameter-types>\n" +
                         "            <class>long</class>\n" +
@@ -93,7 +93,7 @@ public final class PicoWebRemotingTestCase {
                         "      </map>\n" +
                         "      <methods>\n" +
                         "        <default>\n" +
-                        "          <comp>org.picocontainer.web.remoting.PicoWebRemotingTestCase$Foo</comp>\n" +
+                        "          <comp>org.picocontainer.web.remoting.PicoWebRemotingServletTestCase$Foo</comp>\n" +
                         "        </default>\n" +
                         "      </methods>\n" +
                         "    </methods>\n" +
