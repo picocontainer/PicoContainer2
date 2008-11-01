@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picocontainer.web.sample.picocall;
+package org.picocontainer.web.sample.remoting;
 
 import org.picocontainer.web.sample.service.CheeseService;
 import org.picocontainer.web.sample.model.Brand;

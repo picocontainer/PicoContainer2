@@ -77,6 +77,8 @@ public class PicoWebRemotingServlet extends HttpServlet {
 
     private boolean initialized;
 
+
+
     protected void service(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
@@ -131,6 +133,11 @@ public class PicoWebRemotingServlet extends HttpServlet {
     }
 
     private void initialize() {
+
+        String prefix = getServletContext().getInitParameter("prefix");
+        if (prefix == null) {
+        }
+
         PicoContainer reqContainer = ServletFilter.getRequestContainerForThread();
         Collection<ComponentAdapter<?>> adapters = reqContainer.getComponentAdapters();
         for (ComponentAdapter<?> ca : adapters) {
@@ -141,6 +148,9 @@ public class PicoWebRemotingServlet extends HttpServlet {
             directorize(paths, path, comp);
             directorize(paths, path);
         }
+
+
+
     }
 
     protected static void directorize(Map paths, String path, Class comp) {

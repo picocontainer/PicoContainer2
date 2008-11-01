@@ -1,4 +1,4 @@
-package org.picocontainer.web.sample.picocall;
+package org.picocontainer.web.sample.remoting;
 
 import org.picocontainer.web.sample.model.Cheese;
 import org.picocontainer.web.sample.service.CheeseService;

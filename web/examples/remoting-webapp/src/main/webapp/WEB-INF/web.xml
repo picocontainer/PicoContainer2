@@ -6,12 +6,12 @@
 
     <context-param>
         <param-name>webapp-composer-class</param-name>
-        <param-value>org.picocontainer.web.sample.picocall.PicoCallWebappComposer</param-value>
+        <param-value>org.picocontainer.web.sample.remoting.PicoCallWebappComposer</param-value>
     </context-param>
 
     <filter>
         <filter-name>picoFilter</filter-name>
-        <filter-class>org.picocontainer.web.call.PicoCallServlet$ServletFilter</filter-class>
+        <filter-class>org.picocontainer.web.remoting.PicoWebRemotingServlet$ServletFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -24,13 +24,13 @@
     </listener>
 
     <servlet>
-        <servlet-name>PicoCall</servlet-name>
-        <servlet-class>org.picocontainer.web.call.PicoCallServlet</servlet-class>
+        <servlet-name>PWR</servlet-name>
+        <servlet-class>org.picocontainer.web.remoting.PicoWebRemotingServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>PicoCall</servlet-name>
+        <servlet-name>PWR</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
