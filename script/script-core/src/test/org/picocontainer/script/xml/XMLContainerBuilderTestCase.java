@@ -13,6 +13,7 @@ package org.picocontainer.script.xml;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -30,15 +31,18 @@ import java.util.Map;
 
 import javax.swing.JButton;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.behaviors.Caching;
+import org.picocontainer.behaviors.Locked;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
@@ -781,8 +785,9 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         // This test suggests that testComponentCanUsePredefinedNestedCAF() is not testing what it hopes to test
     }
 
-
-    public void BROKEN_testComponentCanUsePredefinedNestedCAF() {
+    @Ignore
+    @Test
+    public void testComponentCanUsePredefinedNestedCAF() {
         Reader script = new StringReader("" +
                 "<container>" +
                 "  <component-adapter-factory class='org.picocontainer.behaviors.ImplementationHiding' key='factory'>" +
@@ -810,6 +815,34 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         // decorators are fairly dirty - they replace a very select implementation in this TestCase.
         assertNotNull(pico.getComponent(Touchable.class));
     }
+    
+    @Test
+    public void testInheritanceOfBehaviorsFromParentContainer() {
+    	Reader comparison = new StringReader("" +
+        		"<container inheritBehaviors=\"false\">\n" +
+                "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
+                "</container>"
+        	);    	
+
+    	PicoContainer comparisonPico = buildContainer(comparison);
+    	//Verify not locking by default
+    	//assertTrue(comparisonPico.getComponent(DefaultWebServerConfig.class) != comparisonPico.getComponent(DefaultWebServerConfig.class));
+    	assertNull(comparisonPico.getComponentAdapter(DefaultWebServerConfig.class).findAdapterOfType(Locked.class));
+    	
+    	//Verify parent caching propagates to child.
+    	Reader script = new StringReader("" +
+    		"<container inheritBehaviors=\"true\">\n" +
+            "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
+            "</container>"
+    	);
+    	
+    	MutablePicoContainer parent = new PicoBuilder().withLocking().build();
+    	
+    	PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
+    	
+    	assertNotNull(pico.getComponentAdapter(DefaultWebServerConfig.class).findAdapterOfType(Locked.class));
+    }
+    
     
     @Test public void testListSupport() {
 
@@ -929,6 +962,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
             assertTrue(e.getMessage().indexOf("but the emptyCollection () was empty or null")>0);
         }
      }
+    
 
     private PicoContainer buildContainer(Reader script) {
         return buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");

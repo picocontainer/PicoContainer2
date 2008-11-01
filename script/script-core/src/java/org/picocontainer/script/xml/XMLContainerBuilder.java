@@ -49,6 +49,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import static org.picocontainer.script.xml.AttributeUtils.*;
+import static org.picocontainer.script.xml.XMLConstants.*;
 
 /**
  * This class builds up a hierarchy of PicoContainers from an XML configuration file.
@@ -62,34 +64,11 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
 
     private final static String DEFAULT_COMPONENT_INSTANCE_FACTORY = BeanComponentInstanceFactory.class.getName();
 
-    private final static String CONTAINER = "container";
-    private final static String CLASSPATH = "classpath";
-    private final static String CLASSLOADER = "classloader";
-    private static final String CLASS_NAME_KEY = "class-name-key";
-    private final static String COMPONENT = "component";
-    private final static String COMPONENT_IMPLEMENTATION = "component-implementation";
-    private final static String COMPONENT_INSTANCE = "component-instance";
-    private final static String COMPONENT_ADAPTER = "component-adapter";
-    private final static String COMPONENT_ADAPTER_FACTORY = "component-adapter-factory";
-    private final static String COMPONENT_INSTANCE_FACTORY = "component-instance-factory";
-    private final static String COMPONENT_MONITOR = "component-monitor";
-    private final static String CLASS = "class";
-    private final static String FACTORY = "factory";
-    private final static String FILE = "file";
-    private final static String KEY = "key";
-    private final static String EMPTY_COLLECTION = "empty-collection";
-    private final static String COMPONENT_VALUE_TYPE = "component-value-type";
-    private final static String COMPONENT_KEY_TYPE = "component-key-type";
-    private final static String PARAMETER = "parameter";
-    private final static String URL = "url";
 
-    private final static String CLASSNAME = "classname";
-    private final static String CONTEXT = "context";
-    private final static String VALUE = "value";
-
-    private static final String EMPTY = "";
 
     private Element rootElement;
+    
+    
     /**
      * The XMLComponentInstanceFactory globally defined for the container.
      * It may be overridden at node level.
@@ -143,10 +122,9 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         try {
             // create ComponentInstanceFactory for the container
-            boolean caching = boolValue(rootElement.getAttribute("caching"), true);
             componentInstanceFactory = createComponentInstanceFactory(rootElement.getAttribute(COMPONENT_INSTANCE_FACTORY));
-            MutablePicoContainer childContainer = createMutablePicoContainer(rootElement.getAttribute(COMPONENT_ADAPTER_FACTORY),
-                    rootElement.getAttribute(COMPONENT_MONITOR), parentContainer, caching);
+            MutablePicoContainer childContainer = createMutablePicoContainer(
+                     parentContainer, new ContainerOptions(rootElement));
             populateContainer(childContainer);
             return childContainer;
         } catch (PicoClassNotFoundException e) {
@@ -154,9 +132,22 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
     }
 
-    private MutablePicoContainer createMutablePicoContainer(String componentFactoryName, String monitorName, PicoContainer parentContainer, boolean caching) throws PicoCompositionException {
-
-        ScriptedBuilder builder = new ScriptedBuilder(parentContainer);
+    private MutablePicoContainer createMutablePicoContainer(PicoContainer parentContainer, ContainerOptions containerOptions) throws PicoCompositionException {
+    	boolean caching = containerOptions.isCaching();
+    	boolean inherit = containerOptions.isInheritParentBehaviors();
+    	String monitorName = containerOptions.getMonitorName();
+    	String componentFactoryName = containerOptions.getComponentFactoryName();
+    	
+    	if (inherit) {
+    		if (!(parentContainer instanceof MutablePicoContainer)) {
+    			throw new PicoCompositionException("For behavior inheritance to be used, the parent picocontainer must be of type MutablePicoContainer");
+    		}
+    		
+    		MutablePicoContainer parentPico = (MutablePicoContainer)parentContainer;
+    		return parentPico.makeChildContainer();
+    	}
+    	
+    	ScriptedBuilder builder = new ScriptedBuilder(parentContainer);
         if (caching) builder.withCaching();
         return builder
             .withClassLoader(getClassLoader())
@@ -540,17 +531,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
     }
 
 
-    private boolean notSet(Object string) {
-        return string == null || string.equals(EMPTY);
-    }
 
-    private boolean boolValue(String string, boolean dft) {
-        if (notSet(string)) {
-            return dft;
-        }
-        boolean aBoolean = Boolean.valueOf(string).booleanValue();
-        return aBoolean;
-    }
 
 
 }
