@@ -820,7 +820,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     public void testInheritanceOfBehaviorsFromParentContainer() {
     	Reader comparison = new StringReader("" +
         		"<container inheritBehaviors=\"false\">\n" +
-                "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
+                "  <component class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
                 "</container>"
         	);    	
 
@@ -832,7 +832,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
     	//Verify parent caching propagates to child.
     	Reader script = new StringReader("" +
     		"<container inheritBehaviors=\"true\">\n" +
-            "  <component-implementation class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
+            "  <component class='org.picocontainer.script.testmodel.DefaultWebServerConfig'/>" +
             "</container>"
     	);
     	
@@ -963,6 +963,22 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         }
      }
     
+    @Test
+    public void testParameterZero() {
+    	Reader script = new StringReader("" + 
+                "<container>\n" +
+	    			"<component key='java.util.List' class='java.util.ArrayList'> \n" +	
+	    			"    <parameter-zero/>\n" +
+	    			"</component> \n" +
+	    			"<component key='java.util.Set' class='java.util.HashSet'> \n" +
+	    			"    <parameter-zero/>\n" +
+	    			"</component>\n" +
+                "</container>\n"
+    	);
+    	PicoContainer pico = buildContainer(script);
+    	assertNotNull(pico.getComponent(java.util.List.class));
+    	assertNotNull(pico.getComponent(java.util.Set.class));
+    }
 
     private PicoContainer buildContainer(Reader script) {
         return buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");

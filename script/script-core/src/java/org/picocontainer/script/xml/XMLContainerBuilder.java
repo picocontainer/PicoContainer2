@@ -336,6 +336,16 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                 if (PARAMETER.equals(childElement.getNodeName())) {
                     parametersList.add(createParameter(container, childElement));
                 }
+                
+                if (PARAMETER_ZERO.equals(childElement.getNodeName())) {
+                	//Check:  We can't check everything here since we aren't schema validating
+                	//But it will at least catch some goofs.
+                	if (!parametersList.isEmpty()) {
+                		throw new PicoCompositionException("Cannot mix other parameters with '" + PARAMETER_ZERO +"' nodes." );
+                	}
+                	
+                	return Parameter.ZERO;
+                }
             }
         }
 

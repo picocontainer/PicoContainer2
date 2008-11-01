@@ -1,3 +1,12 @@
+/*****************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ * Original code by                                                          *
+ *****************************************************************************/
 package org.picocontainer.script.xml;
 
 public interface XMLConstants {
@@ -18,6 +27,7 @@ public interface XMLConstants {
     String COMPONENT_VALUE_TYPE = "component-value-type";
     String COMPONENT_KEY_TYPE = "component-key-type";
     String PARAMETER = "parameter";
+    String PARAMETER_ZERO = "parameter-zero";
     String URL = "url";
 
     String CLASSNAME = "classname";
