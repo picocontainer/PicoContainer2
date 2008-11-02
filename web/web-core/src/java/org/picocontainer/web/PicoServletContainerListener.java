@@ -120,8 +120,8 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         ThreadLocalLifecycleState sessionStateModel = new ThreadLocalLifecycleState();
         sessionContainer.setLifecycleState(sessionStateModel);
 
-        context.setAttribute(SessionContainerHolder.class.getName(), new SessionContainerHolder(sessionContainer,
-                sessionStoring, sessionStateModel));
+        SessionContainerHolder sch = new SessionContainerHolder(sessionContainer, sessionStoring, sessionStateModel) ;
+        context.setAttribute(SessionContainerHolder.class.getName(), sch);
 
         requestContainer.setName("request");
         ThreadLocalLifecycleState requestStateModel = new ThreadLocalLifecycleState();

@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.injectors.Reinjector;
 import org.picocontainer.web.PicoServletContainerFilter;
 
@@ -28,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.ServletConfig;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
@@ -44,6 +46,8 @@ public class PicoWebRemotingServlet extends HttpServlet {
 
     private Map<String, Object> paths = new HashMap<String, Object>();
     private XStream xStream = new XStream(new JettisonMappedXmlDriver());
+    private String prefix;
+    private String toPublish;
 
     public static class ServletFilter extends PicoServletContainerFilter {
         private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
@@ -77,8 +81,6 @@ public class PicoWebRemotingServlet extends HttpServlet {
 
     private boolean initialized;
 
-
-
     protected void service(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
@@ -99,9 +101,14 @@ public class PicoWebRemotingServlet extends HttpServlet {
     protected void processRequest(ServletOutputStream out, String pathInfo) throws IOException {
         String path = pathInfo.substring(1);
         if (path.endsWith("/")) {
-            path = path.substring(0, path.length()-1);
+            path = path.substring(0, path.length() - 1);
         }
+        path = prefix + path;
+
+
         Object node = paths.get(path);
+
+        System.out.println("--> hit " + path + " " + node);
 
         if (node == null) {
             int ix = path.lastIndexOf('/');
@@ -132,32 +139,44 @@ public class PicoWebRemotingServlet extends HttpServlet {
         return new Reinjector(reqContainer).reinject(component, method);
     }
 
+    public void init(ServletConfig servletConfig) throws ServletException {
+        prefix = servletConfig.getInitParameter("prefix");
+        if (prefix == null) {
+            prefix = "";
+        } else if (!prefix.endsWith("/")) {
+            throw new PicoCompositionException("Prefix must end with '/' char");
+        }
+
+        toPublish = servletConfig.getInitParameter("toPublish");
+        super.init(servletConfig);
+    }
+
     private void initialize() {
 
-        String prefix = getServletContext().getInitParameter("prefix");
-        if (prefix == null) {
-        }
-
-        String toPublish = getServletContext().getInitParameter("toPublish");
         if (toPublish == null || toPublish.contains("request")) {
-            publishAdapters(ServletFilter.getRequestContainerForThread().getComponentAdapters());
+
+            Collection<ComponentAdapter<?>> adapters = ServletFilter.getRequestContainerForThread().getComponentAdapters();
+            publishAdapters(adapters);
         }
 
-        if (toPublish != null || toPublish.contains("session")) {
-            publishAdapters(ServletFilter.getSessionContainerForThread().getComponentAdapters());
+        if (toPublish != null && toPublish.contains("session")) {
+            Collection<ComponentAdapter<?>> adapters = ServletFilter.getSessionContainerForThread().getComponentAdapters();
+            publishAdapters(adapters);
         }
-
-
     }
 
     private void publishAdapters(Collection<ComponentAdapter<?>> adapters) {
         for (ComponentAdapter<?> ca : adapters) {
+
             Object key = ca.getComponentKey();
             Class comp = (Class) key;
             String path = comp.getName().replace('.', '/');
-            paths.put(path, key);
-            directorize(paths, path, comp);
-            directorize(paths, path);
+            if (prefix != "" || path.startsWith(prefix)) {
+                //path = path.substring(prefix.length());
+                paths.put(path, key);
+                directorize(paths, path, comp);
+                directorize(paths, path);
+            }
         }
     }
 
