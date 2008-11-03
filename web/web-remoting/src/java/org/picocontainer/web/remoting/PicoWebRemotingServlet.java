@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Properties;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
@@ -21,7 +22,9 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.Characteristics;
 import org.picocontainer.injectors.Reinjector;
+import org.picocontainer.injectors.MethodInjection;
 import org.picocontainer.web.PicoServletContainerFilter;
 
 import javax.servlet.http.HttpServlet;
@@ -92,16 +95,18 @@ public class PicoWebRemotingServlet extends HttpServlet {
         String pathInfo = req.getPathInfo();
 
         try {
-            Object result = processRequest(pathInfo);
+            String result = processRequest(pathInfo);
             resp.setContentType("text/plain");
             ServletOutputStream out = resp.getOutputStream();
+            out.print(result);
         } catch (Exception e) {
             resp.sendError(400, e.getMessage());
+            e.printStackTrace();
         }
 
     }
 
-    protected Object processRequest(String pathInfo) throws IOException {
+    protected String processRequest(String pathInfo) throws IOException {
         String path = pathInfo.substring(1);
         if (path.endsWith("/")) {
             path = path.substring(0, path.length() - 1);
@@ -136,7 +141,10 @@ public class PicoWebRemotingServlet extends HttpServlet {
 
     private Object reinject(String methodName, Method method, Class component) throws IOException {
         PicoContainer reqContainer = ServletFilter.getRequestContainerForThread();
-        return new Reinjector(reqContainer).reinject(component, method);
+        MethodInjection methodInjection = new MethodInjection(method);
+        Reinjector reinjector = new Reinjector(reqContainer);
+        Properties props = (Properties) Characteristics.USE_NAMES.clone();
+        return reinjector.reinject(component, component, reqContainer.getComponent(component), props, methodInjection);
     }
 
     public void init(ServletConfig servletConfig) throws ServletException {

@@ -22,7 +22,7 @@ public class JQueryWebappComposer implements WebappComposer {
         requestContainer.addAdapter(new StringFromRequest("subject"));
         requestContainer.addAdapter(new StringFromRequest("message"));
         requestContainer.addAdapter(new StringFromRequest("delId"));
-        requestContainer.addAdapter(new StringFromRequest("messageId"));
+        requestContainer.addAdapter(new StringFromRequest("msgId"));
         requestContainer.addAdapter(new StringFromRequest("view"));
         requestContainer.addAdapter(new StringFromRequest("userId"));
     }
