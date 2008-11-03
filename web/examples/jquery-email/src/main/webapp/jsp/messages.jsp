@@ -112,13 +112,13 @@ $(document).ready(function(){
       {  
 	      $(this).removeClass("mail_unread");  
       } 
-	  $.post("<%=HtmlServlet.READ_MESSAGE%>.do", {messageId: this.id, view: "<%=view %>"}, function(data){
+	  $.post("<%=request.getContextPath() %>/pwr/Mailbox/read", {msgId: this.id, view: "<%=view %>"}, function(data){
 	     if (data != "ERROR")
 	     {	     
 	         // using JSON objects
-             document.readMessageForm.subject.value=data.subject;
-             document.readMessageForm.message.value=data.message;
-             document.readMessageForm.from.value=data.from;	         
+             document.readMessageForm.subject.value=data.MessageData.subject;
+             document.readMessageForm.message.value=data.MessageData.message;
+             document.readMessageForm.from.value=data.MessageData.from;
 	     }
 	  }, "json");
       $.blockUI(readMess, {width:'540px', height:'300px'});
@@ -140,7 +140,7 @@ function selectAll()
  {      
    	  $(".selectable:checked").each(function() {
    	     $("#"+$(this).val()).remove();
-   	     $.post("<%=HtmlServlet.DELETE_MESSAGES%>.do", {delId: $(this).val()});
+   	     $.post("<%=request.getContextPath() %>/pwr/Mailbox/delete", {delId: $(this).val()});
    	  });
  }
 
@@ -228,7 +228,7 @@ function selectAll()
 
 <div id=composeMessage style="display:none;cursor:default;">
       <p><h2>Compose Mail</h2>
-      <form name="composeMailForm" id="composeMailForm" method="POST" action="<%=HtmlServlet.SEND_MESSAGE%>.do">
+      <form name="composeMailForm" id="composeMailForm" method="POST" action="<%=request.getContextPath() %>/pwr/Mailbox/send">
       <table width=100% class="content_table" >
       <tr><td class=right>To</td>
           <td class=left_offset><input class="textfield" type=text name=to id=to> <span class=error_message id=subject_error></span></td>
