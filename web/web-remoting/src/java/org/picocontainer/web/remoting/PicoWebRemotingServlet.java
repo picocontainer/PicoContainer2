@@ -128,7 +128,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
                     Method method = methods.get(methodName);
                     if (method != null) {
                         Object o = reinject(methodName, method, methods.getComp());
-                        node = xStream.toXML(o) + "\n";
+                        node = o;
                         if (toStripFromJson != "") {
                             node = ((String) node).replace(toStripFromJson, "{\"");
 
@@ -142,7 +142,13 @@ public class PicoWebRemotingServlet extends HttpServlet {
             }
         }
 
-        return node != null ? node.toString() : null;
+        if (node instanceof Directories) {
+            return xStream.toXML(((Directories)node).toArray()).replace("{\"object-array\"", "{\"directories\"");
+        } else if (node instanceof WebMethods) {
+            return xStream.toXML(((WebMethods)node).keySet().toArray()).replace("{\"object-array\"", "{\"methods\"");
+        } else {
+            return node != null ? xStream.toXML(node) + "\n" : null;
+        }
     }
 
     private Object reinject(String methodName, Method method, Class component) throws IOException {
@@ -220,33 +226,15 @@ public class PicoWebRemotingServlet extends HttpServlet {
     }
 
     public static class Directories extends HashSet<String> {
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            for (String st : (Iterable<String>) this) {
-                sb.append(st).append("\n");
-            }
-            return sb.toString();
-        }
     }
 
     public static class WebMethods extends HashMap<String, Method> {
         private final Class comp;
-
         public WebMethods(Class comp) {
             this.comp = comp;
         }
-
         public Class getComp() {
             return comp;
-        }
-
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            Iterator<String> stringIterator = (Iterator<String>) this.keySet().iterator();
-            while (stringIterator.hasNext()) {
-                sb.append(stringIterator.next()).append("\n");
-            }
-            return sb.toString();
         }
     }
 }
