@@ -48,9 +48,9 @@ public class PicoWebRemotingServlet extends HttpServlet {
 
     private Map<String, Object> paths = new HashMap<String, Object>();
     private XStream xStream = new XStream(new JettisonMappedXmlDriver());
-    private String prefix;
-    private String prefixWithSlashes;
-    private String toPublish;
+    private String toStripFromJson;
+    private String toStripFromUrls;
+    private String scopesToPublish;
 
     public static class ServletFilter extends PicoServletContainerFilter {
         private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
@@ -96,12 +96,15 @@ public class PicoWebRemotingServlet extends HttpServlet {
 
         try {
             String result = processRequest(pathInfo);
-            resp.setContentType("text/plain");
-            ServletOutputStream out = resp.getOutputStream();
-            out.print(result);
+            if (result != null) {
+                resp.setContentType("text/plain");
+                ServletOutputStream out = resp.getOutputStream();
+                out.print(result);
+            } else {
+                resp.sendError(400, "Nothing mapped to URL, remove last term for dir list");
+            }
         } catch (Exception e) {
             resp.sendError(400, e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -110,7 +113,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
         if (path.endsWith("/")) {
             path = path.substring(0, path.length() - 1);
         }
-        path = prefixWithSlashes + path;
+        path = toStripFromUrls + path;
 
         Object node = paths.get(path);
 
@@ -126,8 +129,8 @@ public class PicoWebRemotingServlet extends HttpServlet {
                     if (method != null) {
                         Object o = reinject(methodName, method, methods.getComp());
                         node = xStream.toXML(o) + "\n";
-                        if (prefix != "" ) {
-                            node = ((String) node).replace(prefix, "{\"");
+                        if (toStripFromJson != "") {
+                            node = ((String) node).replace(toStripFromJson, "{\"");
 
                         }
                     } else {
@@ -139,7 +142,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
             }
         }
 
-        return node == null ? "*nothing*\n" : "" + node;
+        return node != null ? node.toString() : null;
     }
 
     private Object reinject(String methodName, Method method, Class component) throws IOException {
@@ -151,31 +154,28 @@ public class PicoWebRemotingServlet extends HttpServlet {
     }
 
     public void init(ServletConfig servletConfig) throws ServletException {
-        prefix = servletConfig.getInitParameter("package_prefix_to_strip");
-        if (prefix == null) {
-            prefix = "";
-            prefixWithSlashes = "";
+        String packagePrefixToStrip = servletConfig.getInitParameter("package_prefix_to_strip");
+        if (packagePrefixToStrip == null) {
+            toStripFromUrls = "";
+            toStripFromJson = "";
         } else {
-            prefixWithSlashes = prefix.replace('.','/') + "/";
-            prefix = "{\"" + prefix + ".";
+            toStripFromUrls = packagePrefixToStrip.replace('.', '/') + "/";
+            toStripFromJson = "{\"" + packagePrefixToStrip + ".";
         }
 
-        System.out.println("--> prefix" + prefix);
-        System.out.println("--> prefixWithSlashes" + prefixWithSlashes);
-
-        toPublish = servletConfig.getInitParameter("toPublish");
+        scopesToPublish = servletConfig.getInitParameter("scopes_to_publish");
         super.init(servletConfig);
     }
 
     private void initialize() {
 
-        if (toPublish == null || toPublish.contains("request")) {
+        if (scopesToPublish == null || scopesToPublish.contains("request")) {
 
             Collection<ComponentAdapter<?>> adapters = ServletFilter.getRequestContainerForThread().getComponentAdapters();
             publishAdapters(adapters);
         }
 
-        if (toPublish != null && toPublish.contains("session")) {
+        if (scopesToPublish != null && scopesToPublish.contains("session")) {
             Collection<ComponentAdapter<?>> adapters = ServletFilter.getSessionContainerForThread().getComponentAdapters();
             publishAdapters(adapters);
         }
@@ -187,7 +187,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
             Object key = ca.getComponentKey();
             Class comp = (Class) key;
             String path = comp.getName().replace('.', '/');
-            if (prefixWithSlashes != "" || path.startsWith(prefixWithSlashes)) {
+            if (toStripFromUrls != "" || path.startsWith(toStripFromUrls)) {
                 paths.put(path, key);
                 directorize(paths, path, comp);
                 directorize(paths, path);

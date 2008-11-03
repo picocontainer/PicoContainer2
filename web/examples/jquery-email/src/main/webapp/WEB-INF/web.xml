@@ -30,7 +30,7 @@
         <servlet-class>org.picocontainer.web.remoting.PicoWebRemotingServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
         <init-param>
-            <param-name>toPublish</param-name>
+            <param-name>scopes_to_publish</param-name>
             <param-value>session</param-value>
         </init-param>
         <init-param>
