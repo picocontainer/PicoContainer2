@@ -34,8 +34,8 @@
             <param-value>session</param-value>
         </init-param>
         <init-param>
-            <param-name>prefix</param-name>
-            <param-value>org/picocontainer/web/sample/jqueryemailui/</param-value>
+            <param-name>package_prefix_to_strip</param-name>
+            <param-value>org.picocontainer.web.sample.jqueryemailui</param-value>
         </init-param>
     </servlet>
 

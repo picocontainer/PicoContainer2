@@ -21,7 +21,6 @@ import java.lang.reflect.Method;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Characteristics;
 import org.picocontainer.injectors.Reinjector;
 import org.picocontainer.injectors.MethodInjection;
@@ -50,6 +49,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
     private Map<String, Object> paths = new HashMap<String, Object>();
     private XStream xStream = new XStream(new JettisonMappedXmlDriver());
     private String prefix;
+    private String prefixWithSlashes;
     private String toPublish;
 
     public static class ServletFilter extends PicoServletContainerFilter {
@@ -103,7 +103,6 @@ public class PicoWebRemotingServlet extends HttpServlet {
             resp.sendError(400, e.getMessage());
             e.printStackTrace();
         }
-
     }
 
     protected String processRequest(String pathInfo) throws IOException {
@@ -111,7 +110,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
         if (path.endsWith("/")) {
             path = path.substring(0, path.length() - 1);
         }
-        path = prefix + path;
+        path = prefixWithSlashes + path;
 
         Object node = paths.get(path);
 
@@ -127,6 +126,10 @@ public class PicoWebRemotingServlet extends HttpServlet {
                     if (method != null) {
                         Object o = reinject(methodName, method, methods.getComp());
                         node = xStream.toXML(o) + "\n";
+                        if (prefix != "" ) {
+                            node = ((String) node).replace(prefix, "{\"");
+
+                        }
                     } else {
                         node = null;
                     }
@@ -148,12 +151,17 @@ public class PicoWebRemotingServlet extends HttpServlet {
     }
 
     public void init(ServletConfig servletConfig) throws ServletException {
-        prefix = servletConfig.getInitParameter("prefix");
+        prefix = servletConfig.getInitParameter("package_prefix_to_strip");
         if (prefix == null) {
             prefix = "";
-        } else if (!prefix.endsWith("/")) {
-            throw new PicoCompositionException("Prefix must end with '/' char");
+            prefixWithSlashes = "";
+        } else {
+            prefixWithSlashes = prefix.replace('.','/') + "/";
+            prefix = "{\"" + prefix + ".";
         }
+
+        System.out.println("--> prefix" + prefix);
+        System.out.println("--> prefixWithSlashes" + prefixWithSlashes);
 
         toPublish = servletConfig.getInitParameter("toPublish");
         super.init(servletConfig);
@@ -179,8 +187,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
             Object key = ca.getComponentKey();
             Class comp = (Class) key;
             String path = comp.getName().replace('.', '/');
-            if (prefix != "" || path.startsWith(prefix)) {
-                //path = path.substring(prefix.length());
+            if (prefixWithSlashes != "" || path.startsWith(prefixWithSlashes)) {
                 paths.put(path, key);
                 directorize(paths, path, comp);
                 directorize(paths, path);
