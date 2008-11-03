@@ -88,27 +88,27 @@ public class PicoWebRemotingServlet extends HttpServlet {
             initialize();
             initialized = true;
         }
-        resp.setContentType("text/plain");
-        ServletOutputStream out = resp.getOutputStream();
 
         String pathInfo = req.getPathInfo();
 
-        processRequest(out, pathInfo);
-
+        try {
+            Object result = processRequest(pathInfo);
+            resp.setContentType("text/plain");
+            ServletOutputStream out = resp.getOutputStream();
+        } catch (Exception e) {
+            resp.sendError(400, e.getMessage());
+        }
 
     }
 
-    protected void processRequest(ServletOutputStream out, String pathInfo) throws IOException {
+    protected Object processRequest(String pathInfo) throws IOException {
         String path = pathInfo.substring(1);
         if (path.endsWith("/")) {
             path = path.substring(0, path.length() - 1);
         }
         path = prefix + path;
 
-
         Object node = paths.get(path);
-
-        System.out.println("--> hit " + path + " " + node);
 
         if (node == null) {
             int ix = path.lastIndexOf('/');
@@ -120,7 +120,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
                     WebMethods methods = (WebMethods) node2;
                     Method method = methods.get(methodName);
                     if (method != null) {
-                        Object o = reinject(out, methodName, method, methods.getComp());
+                        Object o = reinject(methodName, method, methods.getComp());
                         node = xStream.toXML(o) + "\n";
                     } else {
                         node = null;
@@ -131,10 +131,10 @@ public class PicoWebRemotingServlet extends HttpServlet {
             }
         }
 
-        out.print(node == null ? "*nothing*\n" : "" + node);
+        return node == null ? "*nothing*\n" : "" + node;
     }
 
-    private Object reinject(ServletOutputStream out, String methodName, Method method, Class component) throws IOException {
+    private Object reinject(String methodName, Method method, Class component) throws IOException {
         PicoContainer reqContainer = ServletFilter.getRequestContainerForThread();
         return new Reinjector(reqContainer).reinject(component, method);
     }

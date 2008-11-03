@@ -2,7 +2,13 @@ package org.picocontainer.web.sample.jqueryemailui;
 
 import java.util.ArrayList;
 
+/**
+ * For now, this is a fork of the HTMLServlet.
+ * In time, that servlet will not be used, and this will take it's place with PWR handling it.
+ */
 public class Mailbox {
+
+    private String userName = "Gil Bates";
 
     public Object read(String msgId, String view) {
         int messageId = Integer.parseInt(msgId);
@@ -22,8 +28,6 @@ public class Mailbox {
 
     }
 
-    private String userName = "Gil Bates";
-
     public Boolean send(String to, String subject, String message) {
         MessageData msg = new MessageData();
         msg.to = to;
@@ -38,6 +42,10 @@ public class Mailbox {
     public MessageSet messages(int userID) {
 		return MessageDB.lookupForUser(userID);
 	}
+
+    public Object pete() {
+        return "hello";
+    }
 
 
 }
