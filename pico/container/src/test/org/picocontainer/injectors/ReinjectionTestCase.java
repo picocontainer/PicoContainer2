@@ -21,6 +21,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.Characteristics;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
@@ -103,6 +104,31 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         assertNotNull(needsShoe3.string);
     }
 
+    @Test
+    public void confirmThatReinjectionCanLeverageParameterNamesForDisambiguation() {
+        MethodInjection methodInjection = new MethodInjection(DOIT);
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
+        parent.addComponent(NeedsShoe.class);
+        parent.addComponent(Shoe.class);
+        parent.addComponent("a", "1333");
+        parent.addComponent("s", "12");
+        parent.addComponent("tjklhjkjhkjh", "44");
+
+        NeedsShoe needsShoe = parent.getComponent(NeedsShoe.class);
+        assertNotNull(needsShoe.bar);
+        assertTrue(needsShoe.string == null);
+
+        Reinjection reinjection = new Reinjection(methodInjection, parent);
+        TransientPicoContainer tpc = new TransientPicoContainer(reinjection, parent);
+        tpc.as(Characteristics.USE_NAMES).addComponent(NeedsShoe.class);
+
+        NeedsShoe needsShoe2 = tpc.getComponent(NeedsShoe.class);
+        assertSame(needsShoe, needsShoe2);
+        assertNotNull(needsShoe2.bar);
+        assertNotNull(needsShoe2.string);
+        assertEquals("12", needsShoe2.string);
+
+    }
 
     @Test public void testCachedComponentCanBeReinjectedByATransientReflectionMethodReinjector() {
         cachedComponentCanBeReinjectedByATransientReinjector(new MethodInjection(DOIT));
