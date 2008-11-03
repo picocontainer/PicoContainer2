@@ -60,6 +60,19 @@ public final class PicoWebRemotingServletTestCase {
                         "      </set>\n" +
                         "    </dirs>\n" +
                         "  </entry>\n" +
+                        "  <entry>\n" +
+                        "    <string></string>\n" +
+                        "    <dirs serialization=\"custom\">\n" +
+                        "      <unserializable-parents/>\n" +
+                        "      <set>\n" +
+                        "        <default/>\n" +
+                        "        <int>16</int>\n" +
+                        "        <float>0.75</float>\n" +
+                        "        <int>1</int>\n" +
+                        "        <string>foo</string>\n" +
+                        "      </set>\n" +
+                        "    </dirs>\n" +
+                        "  </entry>\n" +
                         "</map>", xstream.toXML(map));
 
 

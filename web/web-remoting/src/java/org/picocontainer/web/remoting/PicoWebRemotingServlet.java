@@ -222,6 +222,13 @@ public class PicoWebRemotingServlet extends HttpServlet {
             }
             set.add(file);
             directorize(paths, dir);
+        } else {
+            Set set = (Set) paths.get("/");
+            if (set == null) {
+                set = new Directories();
+                paths.put("", set);
+            }
+            set.add(path);
         }
     }
 
