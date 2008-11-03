@@ -105,6 +105,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
             }
         } catch (Exception e) {
             resp.sendError(400, e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -127,12 +128,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
                     WebMethods methods = (WebMethods) node2;
                     Method method = methods.get(methodName);
                     if (method != null) {
-                        Object o = reinject(methodName, method, methods.getComp());
-                        node = o;
-                        if (toStripFromJson != "") {
-                            node = ((String) node).replace(toStripFromJson, "{\"");
-
-                        }
+                        node = reinject(methodName, method, methods.getComp());
                     } else {
                         node = null;
                     }
@@ -147,7 +143,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
         } else if (node instanceof WebMethods) {
             return xStream.toXML(((WebMethods)node).keySet().toArray()).replace("{\"object-array\"", "{\"methods\"");
         } else {
-            return node != null ? xStream.toXML(node) + "\n" : null;
+            return node != null ? xStream.toXML(node).replace(toStripFromJson, "{\"") + "\n" : null;
         }
     }
 
