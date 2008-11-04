@@ -1,14 +1,9 @@
-<%@page import="org.picocontainer.web.sample.jqueryemailui.MessageData" %>
-<%@page import="java.util.TimeZone" %>
 
 <%
     // Note - not good programming practice to hard-code userIDs on dynamic pages
     int userID = 1;
     String userName = "Gil Bates";
 
-    String view = request.getParameter("view");
-    if (view == null)
-        view = "Inbox";
 %>
 
 <html>
@@ -29,23 +24,29 @@ if (navigator.appName.toUpperCase().match(/MICROSOFT INTERNET EXPLORER/) != null
 }
 
 $(document).ready(function() {
+
+    view = "Inbox";
+    if (window.location.href.indexOf("?view=Sent") != -1) {
+        view = "Send";
+    }
+
     $("#content").corner("12px");
 
     $("#mailboxes").corner("8px");
     $("#topnavigation").corner("8px");
     $("#selectall").click(selectAll);
 
-<% if (view.equals("Inbox")) { %>
-    $("#inbox").addClass("mailbox_selected");
-<% } else { %>
-    $("#sentBox").addClass("mailbox_selected");
-<% } %>
+    if (view == "Inbox") {
+        $("#inbox").addClass("mailbox_selected");
+    } else {
+        $("#sentBox").addClass("mailbox_selected");
+    }
 
     var compose = $('#composeMessage');
     var deleteMess = $('#deleteMessage');
     var readMess = $('#readMessage');
 
-    $.get("pwr/<%=view%>/messages", {userId: 1}, function(data) {
+    $.get("pwr/" + view + "/messages", {userId: 1}, function(data) {
         for (var i = 0; i < data.object_array.length; i++) {
 
             var newRow;
@@ -127,7 +128,7 @@ $(document).ready(function() {
         {
             $(this).removeClass("mail_unread");
         }
-        $.post("pwr/<%=view%>/read", {msgId: this.id, view: "<%=view %>"}, function(data) {
+        $.post("pwr/" + view + "/read", {msgId: this.id, view: view }, function(data) {
             if (data != "ERROR")
             {
                 // using JSON objects
@@ -155,7 +156,7 @@ function deleteMessages()
 {
     $(".selectable:checked").each(function() {
         $("#" + $(this).val()).remove();
-        $.post("pwr/<%=view%>/delete", {delId: $(this).val()});
+        $.post("pwr/" + view + "/delete", {delId: $(this).val()});
     });
 }
 
@@ -199,8 +200,8 @@ function sendMessage()
 
 
             <div id=topnavigation style="width:690px;">
-                <input type=button class=iButton id=compose value="Compose"><% if (view.equals("Inbox")) { %> <input
-                    type=button class=iButton id=delete value="Delete"> <% } %>
+                <input type=button class=iButton id=compose value="Compose">
+                <input type=button class=iButton id=delete value="Delete">
             </div>
 
             <form name="mailForm" id="mailForm">
@@ -301,7 +302,7 @@ function sendMessage()
             </tr>
         </table>
         <p>
-            <% if (view.equals("Inbox")) { %><input class=iButton type=button id=replyMessage value="Reply"> <% } %>
+            <input class=iButton type=button id=replyMessage value="Reply">
             <input class=iButton type=button id=cancelRead value="Cancel">
     </form>
 </div>
