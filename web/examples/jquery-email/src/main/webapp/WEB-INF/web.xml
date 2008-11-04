@@ -39,21 +39,6 @@
         </init-param>
     </servlet>
 
-    <servlet>
-        <servlet-name>HtmlServlet</servlet-name>
-        <servlet-class>org.picocontainer.web.sample.jqueryemailui.HtmlServlet</servlet-class>
-        <init-param>
-            <param-name>nocache</param-name>
-            <param-value>true</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>HtmlServlet</servlet-name>
-        <url-pattern>*.do</url-pattern>
-    </servlet-mapping>
-
     <servlet-mapping>
         <servlet-name>PWR</servlet-name>
         <url-pattern>/pwr/*</url-pattern>

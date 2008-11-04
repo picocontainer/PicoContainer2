@@ -1,4 +1,3 @@
-<%@page import="org.picocontainer.web.sample.jqueryemailui.HtmlServlet"%>
 <%@page import="org.picocontainer.web.sample.jqueryemailui.MessageData"%>
 <%@page import="java.util.TimeZone"%>
 <%@page import="org.picocontainer.web.sample.jqueryemailui.MessageSet"%>
@@ -62,7 +61,7 @@ $(document).ready(function(){
    });
    
    $("#submitMessage").click(function() {
-      document.composeMailForm.submit();
+      sendMessage();
       $.unblockUI();
    });
 
@@ -143,6 +142,23 @@ function selectAll()
    	     $.post("<%=request.getContextPath() %>/pwr/Mailbox/delete", {delId: $(this).val()});
    	  });
  }
+
+function sendMessage()
+ {
+
+      var subject = document.composeMailForm.subject;
+      var message = document.composeMailForm.message;
+      var to = document.composeMailForm.to;
+
+      $.post("<%=request.getContextPath() %>/pwr/Mailbox/send",
+        {subject: subject, message: message, to: to}, function(data) {
+	     if (data.boolean == true)
+	     {
+             document.composeMailForm.reset();
+         }
+	  }, "json");
+ }
+
 
  </script>
 <body>
@@ -228,7 +244,7 @@ function selectAll()
 
 <div id=composeMessage style="display:none;cursor:default;">
       <p><h2>Compose Mail</h2>
-      <form name="composeMailForm" id="composeMailForm" method="POST" action="<%=request.getContextPath() %>/pwr/Mailbox/send">
+      <form name="composeMailForm" id="composeMailForm">
       <table width=100% class="content_table" >
       <tr><td class=right>To</td>
           <td class=left_offset><input class="textfield" type=text name=to id=to> <span class=error_message id=subject_error></span></td>
