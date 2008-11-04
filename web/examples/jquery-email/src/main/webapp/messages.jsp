@@ -16,10 +16,10 @@
 <head>
     <link href="style.css" type="text/css" rel="stylesheet"/>
 </head>
-<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.2.1.pack.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery.dimensions.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery.corner.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery.blockUI.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.2.1.pack.js"></script>
+<script type="text/javascript" src="js/jquery.dimensions.js"></script>
+<script type="text/javascript" src="js/jquery.corner.min.js"></script>
+<script type="text/javascript" src="js/jquery.blockUI.min.js"></script>
 <script>
 
 var isIE = 0;
@@ -45,7 +45,7 @@ $(document).ready(function() {
     var deleteMess = $('#deleteMessage');
     var readMess = $('#readMessage');
 
-    $.get("<%=request.getContextPath() %>/pwr/<%=view%>/messages", {userId: 1}, function(data) {
+    $.get("pwr/<%=view%>/messages", {userId: 1}, function(data) {
         for (var i = 0; i < data.object_array.length; i++) {
 
             var newRow;
@@ -127,7 +127,7 @@ $(document).ready(function() {
         {
             $(this).removeClass("mail_unread");
         }
-        $.post("<%=request.getContextPath() %>/pwr/<%=view%>/read", {msgId: this.id, view: "<%=view %>"}, function(data) {
+        $.post("pwr/<%=view%>/read", {msgId: this.id, view: "<%=view %>"}, function(data) {
             if (data != "ERROR")
             {
                 // using JSON objects
@@ -155,7 +155,7 @@ function deleteMessages()
 {
     $(".selectable:checked").each(function() {
         $("#" + $(this).val()).remove();
-        $.post("<%=request.getContextPath() %>/pwr/<%=view%>/delete", {delId: $(this).val()});
+        $.post("pwr/<%=view%>/delete", {delId: $(this).val()});
     });
 }
 
@@ -166,7 +166,7 @@ function sendMessage()
     var message = document.composeMailForm.message;
     var to = document.composeMailForm.to;
 
-    $.post("<%=request.getContextPath() %>/pwr/Outbox/send",
+    $.post("pwr/Outbox/send",
     {subject: subject, message: message, to: to}, function(data) {
         if (data.boolean == true)
         {
@@ -184,7 +184,7 @@ function sendMessage()
     <div id=content>
         <!-- start page specific -->
 
-        <img src="<%=request.getContextPath() %>/images/messages.gif" style="position:absolute;left:10px;top:4px;">
+        <img src="images/messages.gif" style="position:absolute;left:10px;top:4px;">
 
         <h1>Mail</h1>
         <hr class=content_divider>
