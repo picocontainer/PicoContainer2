@@ -1,19 +1,14 @@
 <%@page import="org.picocontainer.web.sample.jqueryemailui.MessageData" %>
 <%@page import="java.util.TimeZone" %>
-<%@page import="org.picocontainer.web.sample.jqueryemailui.MessageSet" %>
-<%@page import="org.picocontainer.web.sample.jqueryemailui.MessageDB" %>
-<%@page import="org.picocontainer.web.sample.jqueryemailui.TimeDisplayUtil" %>
 
 <%
     // Note - not good programming practice to hard-code userIDs on dynamic pages
     int userID = 1;
     String userName = "Gil Bates";
 
-    MessageSet messages = MessageDB.lookupForUser(userID);
-
     String view = request.getParameter("view");
     if (view == null)
-        view = "inbox";
+        view = "Inbox";
 %>
 
 <html>
@@ -40,7 +35,7 @@ $(document).ready(function() {
     $("#topnavigation").corner("8px");
     $("#selectall").click(selectAll);
 
-<% if (view.equals("inbox")) { %>
+<% if (view.equals("Inbox")) { %>
     $("#inbox").addClass("mailbox_selected");
 <% } else { %>
     $("#sentBox").addClass("mailbox_selected");
@@ -49,6 +44,27 @@ $(document).ready(function() {
     var compose = $('#composeMessage');
     var deleteMess = $('#deleteMessage');
     var readMess = $('#readMessage');
+
+    $.get("<%=request.getContextPath() %>/pwr/<%=view%>/messages", {userId: 1}, function(data) {
+        for (var i = 0; i < data.object_array.length; i++) {
+
+            var newRow;
+
+            if (i == 0) {
+                newRow = $('#mailtable tr:last');
+            } else {
+                newRow = $('#mailtable tr:last').clone();
+            }
+
+            $('td[class*=mail-to]', newRow).html(data.object_array[i].to);
+            $('td[class*=mail-from]', newRow).html(data.object_array[i].from);
+            $('td[class*=mail-subj]', newRow).html(data.object_array[i].subject);
+            $('td[class*=mail-date]', newRow).html(data.object_array[i].sentTime);
+
+            $('#mailtable').append(newRow);
+
+        }
+    }, "json");
 
     // For composing a message
     $("#compose").click(function() {
@@ -111,7 +127,7 @@ $(document).ready(function() {
         {
             $(this).removeClass("mail_unread");
         }
-        $.post("<%=request.getContextPath() %>/pwr/Mailbox/read", {msgId: this.id, view: "<%=view %>"}, function(data) {
+        $.post("<%=request.getContextPath() %>/pwr/<%=view%>/read", {msgId: this.id, view: "<%=view %>"}, function(data) {
             if (data != "ERROR")
             {
                 // using JSON objects
@@ -139,7 +155,7 @@ function deleteMessages()
 {
     $(".selectable:checked").each(function() {
         $("#" + $(this).val()).remove();
-        $.post("<%=request.getContextPath() %>/pwr/Mailbox/delete", {delId: $(this).val()});
+        $.post("<%=request.getContextPath() %>/pwr/<%=view%>/delete", {delId: $(this).val()});
     });
 }
 
@@ -150,7 +166,7 @@ function sendMessage()
     var message = document.composeMailForm.message;
     var to = document.composeMailForm.to;
 
-    $.post("<%=request.getContextPath() %>/pwr/Mailbox/send",
+    $.post("<%=request.getContextPath() %>/pwr/Outbox/send",
     {subject: subject, message: message, to: to}, function(data) {
         if (data.boolean == true)
         {
@@ -176,14 +192,14 @@ function sendMessage()
         <div style="position:relative;">
 
             <div id=mailboxes>
-                <p><span id=inbox><a href="messages.jsp?view=inbox">Inbox</a></span>
+                <p><span id=inbox><a href="messages.jsp?view=Inbox">Inbox</a></span>
 
-                <p><span id=sentBox><a href="messages.jsp?view=sent">Sent</a></span>
+                <p><span id=sentBox><a href="messages.jsp?view=Sent">Sent</a></span>
             </div>
 
 
             <div id=topnavigation style="width:690px;">
-                <input type=button class=iButton id=compose value="Compose"><% if (view.equals("inbox")) { %> <input
+                <input type=button class=iButton id=compose value="Compose"><% if (view.equals("Inbox")) { %> <input
                     type=button class=iButton id=delete value="Delete"> <% } %>
             </div>
 
@@ -203,35 +219,18 @@ function sendMessage()
 
                     <tbody>
 
-                        <%
-                            for (int i = 0; i < messages.size(); i++) {
-                                MessageData message = messages.get(i);
-                                boolean isIncomingMessage = (message.to.equals(userName));
-                                if ((view.equals("inbox") && isIncomingMessage) || (view.equals("sent") && !isIncomingMessage)) {
-                                    String unread = "";
-                                    if (!message.read && isIncomingMessage)
-                                        unread = "mail_unread";
-                                    String disabled = "disabled";
-                                    if (view.equals("inbox"))
-                                        disabled = "";
-                        %>
-                        <tr class="<%=unread %> messageRow" id="<%=message.id %>">
-                            <td class="mail"><input <%=disabled %> type=checkbox name="delId" value="<%=message.id%>"
-                                                                   class=selectable></td>
-                            <td class="mail mail-to"><%=message.to%>
+                        <tr class="mail_unread messageRow" id="1">
+                            <td class="mail"><input disabled type=checkbox name="delId" value="1"
+                                                    class=selectable></td>
+                            <td class="mail mail-to">TO
                             </td>
-                            <td class="mail mail-from"><%=message.from%>
+                            <td class="mail mail-from">FROM
                             </td>
-                            <td class="mail mail-subj"><%=message.subject%>
+                            <td class="mail mail-subj">SUBJECT
                             </td>
-                            <td class="mail mail-date"><%=TimeDisplayUtil.formatTime(message.sentTime, "M/d/y HH:mm", TimeZone.getDefault().toString())%>
+                            <td class="mail mail-date">DATE-TIME
                             </td>
                         </tr>
-                        <%
-                                }  // end if statement
-                            }      // end for loop
-
-                        %>
 
                     </tbody>
                 </table>
@@ -302,7 +301,7 @@ function sendMessage()
             </tr>
         </table>
         <p>
-            <% if (view.equals("inbox")) { %><input class=iButton type=button id=replyMessage value="Reply"> <% } %>
+            <% if (view.equals("Inbox")) { %><input class=iButton type=button id=replyMessage value="Reply"> <% } %>
             <input class=iButton type=button id=cancelRead value="Cancel">
     </form>
 </div>
