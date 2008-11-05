@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  */
-public class Sent extends Mailbox2 {
+public class Sent extends Mailbox {
 
     public Sent() {
         super(makeStartingMessages());

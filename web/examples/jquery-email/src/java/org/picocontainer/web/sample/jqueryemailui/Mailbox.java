@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
-public class Mailbox2 {
+public class Mailbox {
 
     private final List<MessageData> messages;
 
-    public Mailbox2(List<MessageData> messages) {
+    public Mailbox(List<MessageData> messages) {
         this.messages = messages;
     }
 
