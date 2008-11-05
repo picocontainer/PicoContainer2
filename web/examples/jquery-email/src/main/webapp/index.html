@@ -44,12 +44,13 @@ $(document).ready(function() {
     $.get("pwr/" + view + "/messages", {userId: 1}, function(data) {
         for (var i = 0; i < data.object_array.length; i++) {
 
+            var id = data.object_array[i].id;
             var to = data.object_array[i].to;
             var from = data.object_array[i].from;
             var subject = data.object_array[i].subject;
             var mailDate = data.object_array[i].sentTime;
 
-            insertRow(to, from, subject, mailDate);
+            insertRow(id, to, from, subject, mailDate);
 
         }
     }, "json");
@@ -129,7 +130,7 @@ $(document).ready(function() {
 
 });
 
-function insertRow(to, from, subject, mailDate) {
+function insertRow(id, to, from, subject, mailDate) {
 
     var newRow;
 
@@ -140,6 +141,7 @@ function insertRow(to, from, subject, mailDate) {
         newRow = $('#mailtable tr:last').clone();
     }
 
+    newRow.attr("id", id);
     $('td[class*=mail-to]', newRow).html(to);
     $('td[class*=mail-from]', newRow).html(from);
     $('td[class*=mail-subj]', newRow).html(subject);
@@ -179,7 +181,7 @@ function sendMessage() {
         if (data.MessageData != undefined)
         {
             document.composeMailForm.reset();
-            insertRow(to, data.MessageData.from, subject, data.MessageData.mailDate);
+            insertRow(data.MessageData.id, to, data.MessageData.from, subject, data.MessageData.mailDate);
         }
     }, "json");
 }
