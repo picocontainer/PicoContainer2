@@ -2,7 +2,7 @@ package org.picocontainer.web.sample.jqueryemailui;
 
 import java.util.ArrayList;
 
-public class Inbox extends MailBox {
+public class Inbox extends Mailbox2 {
 
     public Inbox() {
         super(makeStartingMessages());

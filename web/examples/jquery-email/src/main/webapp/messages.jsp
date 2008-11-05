@@ -1,11 +1,3 @@
-
-<%
-    // Note - not good programming practice to hard-code userIDs on dynamic pages
-    int userID = 1;
-    String userName = "Gil Bates";
-
-%>
-
 <html>
 <title>jQuery Message Demo</title>
 <head>
@@ -27,7 +19,7 @@ $(document).ready(function() {
 
     view = "Inbox";
     if (window.location.href.indexOf("?view=Sent") != -1) {
-        view = "Send";
+        view = "Sent";
     }
 
     $("#content").corner("12px");
@@ -46,23 +38,17 @@ $(document).ready(function() {
     var deleteMess = $('#deleteMessage');
     var readMess = $('#readMessage');
 
+    firstRow = true;
+
     $.get("pwr/" + view + "/messages", {userId: 1}, function(data) {
         for (var i = 0; i < data.object_array.length; i++) {
 
-            var newRow;
+            var to = data.object_array[i].to;
+            var from = data.object_array[i].from;
+            var subject = data.object_array[i].subject;
+            var mailDate = data.object_array[i].sentTime;
 
-            if (i == 0) {
-                newRow = $('#mailtable tr:last');
-            } else {
-                newRow = $('#mailtable tr:last').clone();
-            }
-
-            $('td[class*=mail-to]', newRow).html(data.object_array[i].to);
-            $('td[class*=mail-from]', newRow).html(data.object_array[i].from);
-            $('td[class*=mail-subj]', newRow).html(data.object_array[i].subject);
-            $('td[class*=mail-date]', newRow).html(data.object_array[i].sentTime);
-
-            $('#mailtable').append(newRow);
+            insertRow(to, from, subject, mailDate);
 
         }
     }, "json");
@@ -142,6 +128,26 @@ $(document).ready(function() {
 
 });
 
+function insertRow(to, from, subject, mailDate) {
+
+    var newRow;
+
+    if (firstRow == true) {
+        newRow = $('#mailtable tr:last');
+        firstRow = false;
+    } else {
+        newRow = $('#mailtable tr:last').clone();
+    }
+
+    $('td[class*=mail-to]', newRow).html(to);
+    $('td[class*=mail-from]', newRow).html(from);
+    $('td[class*=mail-subj]', newRow).html(subject);
+    $('td[class*=mail-date]', newRow).html(mailDate);
+
+    $('#mailtable').append(newRow);
+
+}
+
 function selectAll()
 {
     var checked = $("#selectall").attr("checked");
@@ -160,18 +166,19 @@ function deleteMessages()
     });
 }
 
-function sendMessage()
-{
+function sendMessage() {
 
-    var subject = document.composeMailForm.subject;
-    var message = document.composeMailForm.message;
-    var to = document.composeMailForm.to;
+    var subject = document.composeMailForm.subject.value;
+    var message = document.composeMailForm.message.value;
+    var to = document.composeMailForm.to.value;
 
-    $.post("pwr/Outbox/send",
-    {subject: subject, message: message, to: to}, function(data) {
-        if (data.boolean == true)
+    $.post("pwr/Sent/send", {subject: subject, message: message, to: to},
+    function(data) {
+
+        if (data.MessageData != undefined)
         {
             document.composeMailForm.reset();
+            insertRow(to, data.MessageData.from, subject, data.MessageData.mailDate);
         }
     }, "json");
 }

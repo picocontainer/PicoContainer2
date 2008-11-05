@@ -2,13 +2,28 @@ package org.picocontainer.web.sample.jqueryemailui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
-public class MailBox {
+public class Mailbox2 {
 
     private final List<MessageData> messages;
 
-    public MailBox(List<MessageData> messages) {
+    public Mailbox2(List<MessageData> messages) {
         this.messages = messages;
+    }
+
+    protected MessageData addMessage(MessageData newMsg) {
+        int highestId = 0;
+        for (int i = 0; i < messages.size(); i++) {
+            if (messages.get(i).id > highestId) {
+                highestId = messages.get(i).id;
+            }
+        }
+        newMsg.setId(++highestId);
+        newMsg.setSentTime(new Date(System.currentTimeMillis()));
+
+        messages.add(newMsg);
+        return newMsg;
     }
 
     public Object read(int msgId, String view) {

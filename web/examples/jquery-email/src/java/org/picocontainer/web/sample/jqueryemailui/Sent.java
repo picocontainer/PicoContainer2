@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  */
-public class Sent extends MailBox {
+public class Sent extends Mailbox2 {
 
     public Sent() {
         super(makeStartingMessages());
@@ -17,20 +17,15 @@ public class Sent extends MailBox {
         return messages;
     }
 
-
     private String userName = "Gil Bates";
 
-    public Boolean send(String to, String subject, String message) {
+    public MessageData send(String to, String subject, String message) {
         MessageData msg = new MessageData();
         msg.to = to;
         msg.subject = subject;
         msg.message = message;
         msg.from = userName;
-        // Send the message here - nothing happens in demo
-        // MessageAction.send(msg);
-        return true;
+        return super.addMessage(msg);
     }
-
-
 
 }
