@@ -26,7 +26,7 @@ public class Mailbox {
         return newMsg;
     }
 
-    public Object read(int msgId, String view) {
+    public Object read(int msgId) {
 
         for (int i = 0; i < messages.size(); i++) {
             if (messages.get(i).id == msgId) {
