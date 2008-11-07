@@ -49,8 +49,9 @@ $(document).ready(function() {
             var from = data.object_array[i].from;
             var subject = data.object_array[i].subject;
             var mailDate = data.object_array[i].sentTime;
+            var isRead = data.object_array[i].read;
 
-            insertRow(id, to, from, subject, mailDate);
+            insertRow(id, to, from, subject, mailDate, isRead);
 
         }
     }, "json");
@@ -130,7 +131,7 @@ $(document).ready(function() {
 
 });
 
-function insertRow(id, to, from, subject, mailDate) {
+function insertRow(id, to, from, subject, mailDate, isRead) {
 
     var newRow;
 
@@ -142,10 +143,15 @@ function insertRow(id, to, from, subject, mailDate) {
     }
 
     newRow.attr("id", id);
+    $('input', newRow).attr("value", id);
     $('td[class*=mail-to]', newRow).html(to);
     $('td[class*=mail-from]', newRow).html(from);
     $('td[class*=mail-subj]', newRow).html(subject);
     $('td[class*=mail-date]', newRow).html(mailDate);
+
+    if (isRead) {
+        newRow.removeClass("mail_unread");
+    }
 
     $('#mailtable').append(newRow);
 
@@ -181,7 +187,7 @@ function sendMessage() {
         if (data.MessageData != undefined)
         {
             document.composeMailForm.reset();
-            insertRow(data.MessageData.id, to, data.MessageData.from, subject, data.MessageData.mailDate);
+            insertRow(data.MessageData.id, to, data.MessageData.from, subject, data.MessageData.mailDate, data.MessageData.read);
         }
     }, "json");
 }
