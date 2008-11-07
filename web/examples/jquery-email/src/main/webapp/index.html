@@ -37,7 +37,6 @@ $(document).ready(function() {
 
     var compose = $('#composeMessage');
     var deleteMess = $('#deleteMessage');
-    var readMess = $('#readMessage');
 
     firstRow = true;
 
@@ -112,24 +111,27 @@ $(document).ready(function() {
     });
 
     // Opens up the message to read it when you double click on a message
-    $(".messageRow").dblclick(function() {
-        if ($(this).hasClass("mail_unread"))
-        {
-            $(this).removeClass("mail_unread");
-        }
-        $.post("pwr/" + view + "/read", {msgId: this.id }, function(data) {
-            if (data != "ERROR")
-            {
-                // using JSON objects
-                document.readMessageForm.subject.value = data.MessageData.subject;
-                document.readMessageForm.message.value = data.MessageData.message;
-                document.readMessageForm.from.value = data.MessageData.from;
-            }
-        }, "json");
-        $.blockUI(readMess, {width:'540px', height:'300px'});
-    });
+    $(".messageRow").dblclick(doubleClick);
 
 });
+
+function doubleClick() {
+    if ($(this).hasClass("mail_unread"))
+    {
+        $(this).removeClass("mail_unread");
+    }
+    $.post("pwr/" + view + "/read", {msgId: this.id }, function(data) {
+        if (data != "ERROR")
+        {
+            // using JSON objects
+            document.readMessageForm.subject.value = data.MessageData.subject;
+            document.readMessageForm.message.value = data.MessageData.message;
+            document.readMessageForm.from.value = data.MessageData.from;
+        }
+    }, "json");
+    var readMess = $('#readMessage');
+    $.blockUI(readMess, {width:'540px', height:'300px'});
+}
 
 function insertRow(id, to, from, subject, mailDate, isRead) {
 
@@ -182,14 +184,14 @@ function sendMessage() {
     var to = document.composeMailForm.to.value;
 
     $.post("pwr/Sent/send", {subject: subject, message: message, to: to},
-    function(data) {
+            function(data) {
 
-        if (data.MessageData != undefined)
-        {
-            document.composeMailForm.reset();
-            insertRow(data.MessageData.id, to, data.MessageData.from, subject, data.MessageData.mailDate, data.MessageData.read);
-        }
-    }, "json");
+                if (data.MessageData != undefined)
+                {
+                    document.composeMailForm.reset();
+                    insertRow(data.MessageData.id, to, data.MessageData.from, subject, data.MessageData.mailDate, data.MessageData.read);
+                }
+            }, "json");
 }
 
 
@@ -261,14 +263,20 @@ function sendMessage() {
             </script>
             <div>
                 <p>~ About This Web-App ~</p>
+
                 <p>This app uses Pico Web Remoting. It is a fork of web-app made for an AlphaWorks article: <br>
-                    <a href="http://www.ibm.com/developerworks/web/library/wa-jquery1/">"Working with jQuery, Part 1: Bringing desktop applications to the browser"</a>.<br>
+                    <a href="http://www.ibm.com/developerworks/web/library/wa-jquery1/">"Working with jQuery, Part 1:
+                        Bringing desktop applications to the browser"</a>.<br>
                     You can mimick what JQuery invokes with these URLs:</p>
                 <ul>
-                    <li><a href="pwr/Inbox/read?msgId=1">pwr/Inbox/read?msgId=1 - read a message (and have it marked as read on the backend)</a></li>
-                    <li><a href="pwr/Inbox/messages?userId=1">pwr/Inbox/messages?userId=1 - see the contents of the inbox</a></li>
-                    <li><a href="pwr/Sent/messages?userId=1">pwr/Sent/messages?userId=1 - see the contents of the sent box</a></li>
-                    <li><a href="pwr/Sent/send?to=fred&subject=hello&message=goodbye">pwr/Sent/send?to=fred&subject=hello&message=goodbye - see send an email (this is normally a POST operation</a></li>
+                    <li><a href="pwr/Inbox/read?msgId=1">pwr/Inbox/read?msgId=1 - read a message (and have it marked as
+                        read on the backend)</a></li>
+                    <li><a href="pwr/Inbox/messages?userId=1">pwr/Inbox/messages?userId=1 - see the contents of the
+                        inbox</a></li>
+                    <li><a href="pwr/Sent/messages?userId=1">pwr/Sent/messages?userId=1 - see the contents of the sent
+                        box</a></li>
+                    <li><a href="pwr/Sent/send?to=fred&subject=hello&message=goodbye">pwr/Sent/send?to=fred&subject=hello&message=goodbye
+                        - see send an email (this is normally a POST operation</a></li>
                 </ul>
             </div>
         </div>
