@@ -42,7 +42,11 @@ public class JQueryWebappComposer implements WebappComposer {
         }
 
         public Object provide(HttpServletRequest req) {
-            return req.getParameter(paramName);
+            String parameter = req.getParameter(paramName);
+            if (parameter == null) {
+                throw new RuntimeException(paramName + " not provided");
+            }
+            return parameter;
         }
     }
 
@@ -57,7 +61,8 @@ public class JQueryWebappComposer implements WebappComposer {
         }
 
         public Object provide(HttpServletRequest req) {
-            return Integer.parseInt((String)super.provide(req));
+            String num = (String) super.provide(req);
+            return Integer.parseInt(num);
         }
     }
 
