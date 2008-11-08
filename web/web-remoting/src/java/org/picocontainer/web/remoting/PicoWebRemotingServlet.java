@@ -143,9 +143,11 @@ public class PicoWebRemotingServlet extends HttpServlet {
         }
 
         if (node instanceof Directories) {
-            return xStream.toXML(((Directories)node).toArray()).replace("{\"object-array\"", "{\"directories\"");
+            Directories directories = (Directories) node;
+            return xStream.toXML(directories.toArray()) + "\n";
         } else if (node instanceof WebMethods) {
-            return xStream.toXML(((WebMethods)node).keySet().toArray()).replace("{\"object-array\"", "{\"methods\"");
+            WebMethods methods = (WebMethods) node;
+            return xStream.toXML(methods.keySet().toArray()) + "\n";
         } else {
             return node != null ? xStream.toXML(node) + "\n" : null;
         }
