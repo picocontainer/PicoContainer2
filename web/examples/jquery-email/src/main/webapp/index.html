@@ -104,18 +104,16 @@ $(document).ready(function() {
         $.unblockUI();
     });
 
-    // Highlights the rows when you single click on them
-    $(".messageRow").click(function() {
-        $(".messageRow").removeClass("message_selected");
-        $(this).addClass("message_selected");
-    });
-
-    // Opens up the message to read it when you double click on a message
-    $(".messageRow").dblclick(doubleClick);
+    rowToClone = $('#mailtable tr:last').remove();
 
 });
 
-function doubleClick() {
+function highlightRow() {
+    $(".messageRow").removeClass("message_selected");
+    $(this).addClass("message_selected");
+}
+
+function readMessage() {
 
     //alert(this.id);
     if ($(this).hasClass("mail_unread"))
@@ -137,14 +135,7 @@ function doubleClick() {
 
 function insertRow(id, to, from, subject, mailDate, isRead) {
 
-    var newRow;
-
-    if (firstRow == true) {
-        newRow = $('#mailtable tr:last');
-        firstRow = false;
-    } else {
-        newRow = $('#mailtable tr:last').clone();
-    }
+    var newRow = rowToClone.clone();
 
     newRow.attr("id", id);
     $('input', newRow).attr("value", id);
@@ -157,7 +148,9 @@ function insertRow(id, to, from, subject, mailDate, isRead) {
         newRow.removeClass("mail_unread");
     }
 
-    newRow.dblclick(doubleClick);
+    newRow.dblclick(readMessage);
+    newRow.click(highlightRow)
+
     $('#mailtable').append(newRow);
 
 }
