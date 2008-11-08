@@ -20,12 +20,7 @@ public class Sent extends Mailbox {
     private String userName = "Gil Bates";
 
     public MessageData send(String to, String subject, String message) {
-        MessageData msg = new MessageData();
-        msg.to = to;
-        msg.subject = subject;
-        msg.message = message;
-        msg.from = userName;
-        return super.addMessage(msg);
+        return super.addMessage(new MessageData(0, userName, to, subject, message, false));
     }
 
 }

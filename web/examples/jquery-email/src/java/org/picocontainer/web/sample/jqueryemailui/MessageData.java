@@ -18,9 +18,7 @@ public class MessageData {
     public String message;
     public Date sentTime;
     public boolean read;
-        
-    public MessageData() {}
-    
+
     public MessageData(int id, String from, String to, String subject, String message, boolean isRead)
     {
     	this.id = id;
@@ -44,43 +42,23 @@ public class MessageData {
 		return from;
 	}
 
-	public void setFrom(String from) {
-		this.from = from;
-	}
-
-	public String getTo() {
+    public String getTo() {
 		return to;
 	}
 
-	public void setTo(String to) {
-		this.to = to;
-	}
-
-	public boolean isRead() {
+    public boolean isRead() {
 		return read;
 	}
 
-	public void setRead(boolean read) {
-		this.read = read;
-	}
-
-	public String getSubject() {
+    public String getSubject() {
 		return subject;
 	}
 
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
-
-	public String getMessage() {
+    public String getMessage() {
 		return message;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public Date getSentTime() {
+    public Date getSentTime() {
 		return sentTime;
 	}
 
