@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Properties;
 import java.io.IOException;
+import java.io.Writer;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
@@ -37,6 +38,8 @@ import javax.servlet.ServletConfig;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
+import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamWriter;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 /**
  * All for the calling of methods in a tree of components manages by PicoContainer.
@@ -49,9 +52,7 @@ import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 public class PicoWebRemotingServlet extends HttpServlet {
 
     private Map<String, Object> paths = new HashMap<String, Object>();
-    //private XStream xStream = new XStream(new JettisonMappedXmlDriver());
-    private XStream xStream = new XStream(new JsonHierarchicalStreamDriver());
-    private String toStripFromJson;
+    private XStream xStream = new XStream(new JsonHierarchicalStreamDriver(false));
     private String toStripFromUrls;
     private String scopesToPublish;
 
@@ -146,7 +147,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
         } else if (node instanceof WebMethods) {
             return xStream.toXML(((WebMethods)node).keySet().toArray()).replace("{\"object-array\"", "{\"methods\"");
         } else {
-            return node != null ? xStream.toXML(node).replace(toStripFromJson, "{\"").replace("{\"object-array\"", "{\"object_array\"") + "\n" : null;
+            return node != null ? xStream.toXML(node) + "\n" : null;
         }
     }
 
@@ -162,10 +163,8 @@ public class PicoWebRemotingServlet extends HttpServlet {
         String packagePrefixToStrip = servletConfig.getInitParameter("package_prefix_to_strip");
         if (packagePrefixToStrip == null) {
             toStripFromUrls = "";
-            toStripFromJson = "";
         } else {
             toStripFromUrls = packagePrefixToStrip.replace('.', '/') + "/";
-            toStripFromJson = "{\"" + packagePrefixToStrip + ".";
         }
 
         scopesToPublish = servletConfig.getInitParameter("scopes_to_publish");

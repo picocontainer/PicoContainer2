@@ -41,14 +41,14 @@ $(document).ready(function() {
     firstRow = true;
 
     $.get("pwr/" + view + "/messages", {userId: 1}, function(data) {
-        for (var i = 0; i < data.object_array.length; i++) {
+        for (var i = 0; i < data.length; i++) {
 
-            var id = data.object_array[i].id;
-            var to = data.object_array[i].to;
-            var from = data.object_array[i].from;
-            var subject = data.object_array[i].subject;
-            var mailDate = data.object_array[i].sentTime;
-            var isRead = data.object_array[i].read;
+            var id = data[i].id;
+            var to = data[i].to;
+            var from = data[i].from;
+            var subject = data[i].subject;
+            var mailDate = data[i].sentTime;
+            var isRead = data[i].read;
 
             insertRow(id, to, from, subject, mailDate, isRead);
 
@@ -116,6 +116,8 @@ $(document).ready(function() {
 });
 
 function doubleClick() {
+
+    //alert(this.id);
     if ($(this).hasClass("mail_unread"))
     {
         $(this).removeClass("mail_unread");
@@ -124,9 +126,9 @@ function doubleClick() {
         if (data != "ERROR")
         {
             // using JSON objects
-            document.readMessageForm.subject.value = data.MessageData.subject;
-            document.readMessageForm.message.value = data.MessageData.message;
-            document.readMessageForm.from.value = data.MessageData.from;
+            document.readMessageForm.subject.value = data.subject;
+            document.readMessageForm.message.value = data.message;
+            document.readMessageForm.from.value = data.from;
         }
     }, "json");
     var readMess = $('#readMessage');
@@ -155,6 +157,7 @@ function insertRow(id, to, from, subject, mailDate, isRead) {
         newRow.removeClass("mail_unread");
     }
 
+    newRow.dblclick(doubleClick);
     $('#mailtable').append(newRow);
 
 }
@@ -189,7 +192,7 @@ function sendMessage() {
                 if (data.MessageData != undefined)
                 {
                     document.composeMailForm.reset();
-                    insertRow(data.MessageData.id, to, data.MessageData.from, subject, data.MessageData.mailDate, data.MessageData.read);
+                    insertRow(data.id, to, data.from, subject, data.mailDate, data.read);
                 }
             }, "json");
 }
