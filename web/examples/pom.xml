@@ -46,7 +46,6 @@
         <module>struts2-webapp</module>
         <module>webwork-webapp</module>
         <module>webwork2-webapp</module>
-        <module>remoting-webapp</module>
         <module>jquery-email</module>
     </modules>
 

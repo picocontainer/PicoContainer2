@@ -1,11 +1,10 @@
 package org.picocontainer.web.sample.jqueryemailui;
 
 import org.picocontainer.web.WebappComposer;
+import org.picocontainer.web.StringFromRequest;
+import org.picocontainer.web.IntFromRequest;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Characteristics;
-import org.picocontainer.injectors.ProviderAdapter;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class JQueryWebappComposer implements WebappComposer {
 
@@ -24,46 +23,6 @@ public class JQueryWebappComposer implements WebappComposer {
         requestContainer.addAdapter(new StringFromRequest("msgId"));
         requestContainer.addAdapter(new StringFromRequest("view"));
         requestContainer.addAdapter(new IntFromRequest("userId"));
-    }
-
-    public static class StringFromRequest extends ProviderAdapter {
-        private final String paramName;
-
-        public StringFromRequest(String paramName) {
-            this.paramName = paramName;
-        }
-
-        public Class getComponentImplementation() {
-            return String.class;
-        }
-
-        public Object getComponentKey() {
-            return paramName;
-        }
-
-        public Object provide(HttpServletRequest req) {
-            String parameter = req.getParameter(paramName);
-            if (parameter == null) {
-                throw new RuntimeException(paramName + " not provided");
-            }
-            return parameter;
-        }
-    }
-
-    public static class IntFromRequest extends StringFromRequest {
-
-        public IntFromRequest(String paramName) {
-            super(paramName);
-        }
-
-        public Class getComponentImplementation() {
-            return Integer.class;
-        }
-
-        public Object provide(HttpServletRequest req) {
-            String num = (String) super.provide(req);
-            return Integer.parseInt(num);
-        }
     }
 
 }
