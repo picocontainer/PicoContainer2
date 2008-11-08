@@ -10,13 +10,11 @@ package org.picocontainer.web.remoting;
 
 import java.util.Map;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Properties;
 import java.io.IOException;
-import java.io.Writer;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
@@ -36,10 +34,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletConfig;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
-import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 /**
  * All for the calling of methods in a tree of components manages by PicoContainer.
@@ -52,7 +47,8 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 public class PicoWebRemotingServlet extends HttpServlet {
 
     private Map<String, Object> paths = new HashMap<String, Object>();
-    private XStream xStream = new XStream(new JsonHierarchicalStreamDriver(false));
+    private XStream xStreamNoRoot = new XStream(new JsonHierarchicalStreamDriver(false));
+    private XStream xStreamWithRoot = new XStream(new JsonHierarchicalStreamDriver(true));
     private String toStripFromUrls;
     private String scopesToPublish;
 
@@ -109,7 +105,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
             }
         } catch (RuntimeException e) {
             // TODO monitor
-            resp.sendError(400,  e.getMessage());
+            resp.sendError(400, e.getMessage());
         }
     }
 
@@ -144,13 +140,25 @@ public class PicoWebRemotingServlet extends HttpServlet {
 
         if (node instanceof Directories) {
             Directories directories = (Directories) node;
-            return xStream.toXML(directories.toArray()) + "\n";
+            return xStreamNoRoot.toXML(directories.toArray()) + "\n";
         } else if (node instanceof WebMethods) {
             WebMethods methods = (WebMethods) node;
-            return xStream.toXML(methods.keySet().toArray()) + "\n";
+            return xStreamNoRoot.toXML(methods.keySet().toArray()) + "\n";
+        } else if (node != null && isComposite(node)) {
+            return xStreamNoRoot.toXML(node) + "\n";
+        } else if (node != null) {
+            return node != null ? xStreamWithRoot.toXML(node) + "\n" : null;
         } else {
-            return node != null ? xStream.toXML(node) + "\n" : null;
+            return null;
         }
+    }
+
+    private boolean isComposite(Object node) {
+        return !(node.getClass().isPrimitive() || node instanceof Boolean
+                        || node instanceof Long || node instanceof Double
+                        || node instanceof Short || node instanceof Byte
+                        || node instanceof Integer || node instanceof String
+                        || node instanceof Float || node instanceof Character);
     }
 
     private Object reinject(String methodName, Method method, Class component) throws IOException {
@@ -211,7 +219,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
         Method[] methods = comp.getDeclaredMethods();
         for (Method method : methods) {
             if (Modifier.isPublic(method.getModifiers()) && !Modifier.isStatic(method.getModifiers()))
-            webMethods.put(method.getName(), method);
+                webMethods.put(method.getName(), method);
         }
         Class superClass = comp.getSuperclass();
         if (superClass != Object.class) {
@@ -246,9 +254,11 @@ public class PicoWebRemotingServlet extends HttpServlet {
 
     public static class WebMethods extends HashMap<String, Method> {
         private final Class comp;
+
         public WebMethods(Class comp) {
             this.comp = comp;
         }
+
         public Class getComp() {
             return comp;
         }

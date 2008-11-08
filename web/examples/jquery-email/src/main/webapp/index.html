@@ -176,7 +176,7 @@ function deleteMessages()
 {
     $(".selectable:checked").each(function() {
         $("#" + $(this).val()).remove();
-        $.post("pwr/" + view + "/delete", {delId: $(this).val()});
+        $.post("pwr/" + view + "/delete", {msgId: $(this).val()});
     });
 }
 
