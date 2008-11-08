@@ -105,7 +105,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
                 ServletOutputStream out = resp.getOutputStream();
                 out.print(result);
             } else {
-                resp.sendError(400, "Nothing mapped to URL, remove last term for dir list");
+                resp.sendError(400, "Nothing is mapped to this URL, remove the last term for directory list.");
             }
         } catch (RuntimeException e) {
             resp.sendError(400,  e.getMessage());
