@@ -7,12 +7,17 @@
  ******************************************************************************/
 package org.picocontainer.web.remoting;
 
-import java.util.Map;
-import java.util.HashMap;
-
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Test;
+
 import com.thoughtworks.xstream.XStream;
 
 /**
@@ -40,15 +45,21 @@ public final class PicoWebRemotingServletTestCase {
         assertEquals("bar", dirs.toArray()[0]);
 
         dirs = (PicoWebRemotingServlet.Directories) map.get("foo/bar");
-        assertEquals(2, dirs.size());
-        assertEquals("baz1", dirs.toArray()[0]);
-        assertEquals("baz2", dirs.toArray()[1]);
+        List<String> list = listOf(dirs);
+        assertEquals(2, list.size());
+        assertEquals("baz1", list.get(0));
+        assertEquals("baz2", list.get(1));
 
         dirs = (PicoWebRemotingServlet.Directories) map.get("");
         assertEquals(1, dirs.size());
         assertEquals("foo", dirs.toArray()[0]);
-
     }
+
+	private List<String> listOf(PicoWebRemotingServlet.Directories dirs) {
+		List<String> list = new ArrayList<String>(dirs);
+		Collections.sort(list);
+		return list;
+	}
 
     @Test
     public void testClasses() throws Exception {
