@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import com.thoughtworks.xstream.XStream;
 
 /**
@@ -31,50 +32,21 @@ public final class PicoWebRemotingServletTestCase {
         Map map = new HashMap();
         PicoWebRemotingServlet.directorize(map, "foo/bar/baz1");
         PicoWebRemotingServlet.directorize(map, "foo/bar/baz2");
-        assertEquals(
-                "<map>\n" +
-                        "  <entry>\n" +
-                        "    <string>foo</string>\n" +
-                        "    <dirs serialization=\"custom\">\n" +
-                        "      <unserializable-parents/>\n" +
-                        "      <set>\n" +
-                        "        <default/>\n" +
-                        "        <int>16</int>\n" +
-                        "        <float>0.75</float>\n" +
-                        "        <int>1</int>\n" +
-                        "        <string>bar</string>\n" +
-                        "      </set>\n" +
-                        "    </dirs>\n" +
-                        "  </entry>\n" +
-                        "  <entry>\n" +
-                        "    <string>foo/bar</string>\n" +
-                        "    <dirs serialization=\"custom\">\n" +
-                        "      <unserializable-parents/>\n" +
-                        "      <set>\n" +
-                        "        <default/>\n" +
-                        "        <int>16</int>\n" +
-                        "        <float>0.75</float>\n" +
-                        "        <int>2</int>\n" +
-                        "        <string>baz2</string>\n" +
-                        "        <string>baz1</string>\n" +
-                        "      </set>\n" +
-                        "    </dirs>\n" +
-                        "  </entry>\n" +
-                        "  <entry>\n" +
-                        "    <string></string>\n" +
-                        "    <dirs serialization=\"custom\">\n" +
-                        "      <unserializable-parents/>\n" +
-                        "      <set>\n" +
-                        "        <default/>\n" +
-                        "        <int>16</int>\n" +
-                        "        <float>0.75</float>\n" +
-                        "        <int>1</int>\n" +
-                        "        <string>foo</string>\n" +
-                        "      </set>\n" +
-                        "    </dirs>\n" +
-                        "  </entry>\n" +
-                        "</map>", xstream.toXML(map));
+        assertEquals(3, map.size());
+        assertTrue(map.get("foo") instanceof PicoWebRemotingServlet.Directories);
 
+        PicoWebRemotingServlet.Directories dirs = (PicoWebRemotingServlet.Directories) map.get("foo");
+        assertEquals(1, dirs.size());
+        assertEquals("bar", dirs.toArray()[0]);
+
+        dirs = (PicoWebRemotingServlet.Directories) map.get("foo/bar");
+        assertEquals(2, dirs.size());
+        assertEquals("baz1", dirs.toArray()[0]);
+        assertEquals("baz2", dirs.toArray()[1]);
+
+        dirs = (PicoWebRemotingServlet.Directories) map.get("");
+        assertEquals(1, dirs.size());
+        assertEquals("foo", dirs.toArray()[0]);
 
     }
 
