@@ -45,17 +45,17 @@ public final class PicoWebRemotingServletTestCase {
         assertEquals("bar", dirs.toArray()[0]);
 
         dirs = (PicoWebRemotingServlet.Directories) map.get("foo/bar");
-        List<String> list = listOf(dirs);
-        assertEquals(2, list.size());
-        assertEquals("baz1", list.get(0));
-        assertEquals("baz2", list.get(1));
+        List<String> sorted = sortedListOf(dirs);
+        assertEquals(2, sorted.size());
+        assertEquals("baz1", sorted.get(0));
+        assertEquals("baz2", sorted.get(1));
 
         dirs = (PicoWebRemotingServlet.Directories) map.get("");
         assertEquals(1, dirs.size());
         assertEquals("foo", dirs.toArray()[0]);
     }
 
-	private List<String> listOf(PicoWebRemotingServlet.Directories dirs) {
+	private List<String> sortedListOf(PicoWebRemotingServlet.Directories dirs) {
 		List<String> list = new ArrayList<String>(dirs);
 		Collections.sort(list);
 		return list;
