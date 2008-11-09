@@ -13,7 +13,6 @@
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-webwork2</artifactId>
-      <version>${pom.version}</version>
     </dependency>
     <dependency>
       <groupId>org.picocontainer.web</groupId>
