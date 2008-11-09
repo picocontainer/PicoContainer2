@@ -182,7 +182,7 @@ function sendMessage() {
     $.post("pwr/Sent/send", {subject: subject, message: message, to: to},
             function(data) {
 
-                if (data.MessageData != undefined)
+                if (data != undefined)
                 {
                     document.composeMailForm.reset();
                     insertRow(data.id, to, data.from, subject, data.mailDate, data.read);
