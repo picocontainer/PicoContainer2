@@ -34,23 +34,23 @@ public final class PicoWebRemotingServletTestCase {
 
     @Test
     public void testPaths() throws Exception {
-        Map map = new HashMap();
-        PicoWebRemotingServlet.directorize(map, "foo/bar/baz1");
-        PicoWebRemotingServlet.directorize(map, "foo/bar/baz2");
-        assertEquals(3, map.size());
-        assertTrue(map.get("foo") instanceof PicoWebRemotingServlet.Directories);
+        Map<String, Object> paths = new HashMap<String, Object>();
+        PicoWebRemotingServlet.directorize(paths, "foo/bar/baz1");
+        PicoWebRemotingServlet.directorize(paths, "foo/bar/baz2");
+        assertEquals(3, paths.size());
+        assertTrue(paths.get("foo") instanceof PicoWebRemotingServlet.Directories);
 
-        PicoWebRemotingServlet.Directories dirs = (PicoWebRemotingServlet.Directories) map.get("foo");
+        PicoWebRemotingServlet.Directories dirs = (PicoWebRemotingServlet.Directories) paths.get("foo");
         assertEquals(1, dirs.size());
         assertEquals("bar", dirs.toArray()[0]);
 
-        dirs = (PicoWebRemotingServlet.Directories) map.get("foo/bar");
+        dirs = (PicoWebRemotingServlet.Directories) paths.get("foo/bar");
         List<String> sorted = sortedListOf(dirs);
         assertEquals(2, sorted.size());
         assertEquals("baz1", sorted.get(0));
         assertEquals("baz2", sorted.get(1));
 
-        dirs = (PicoWebRemotingServlet.Directories) map.get("");
+        dirs = (PicoWebRemotingServlet.Directories) paths.get("");
         assertEquals(1, dirs.size());
         assertEquals("foo", dirs.toArray()[0]);
     }
@@ -63,8 +63,8 @@ public final class PicoWebRemotingServletTestCase {
 
     @Test
     public void testClasses() throws Exception {
-        Map map = new HashMap();
-        PicoWebRemotingServlet.directorize(map, "foo/bar/baz1", Foo.class);
+        Map<String, Object> paths = new HashMap<String, Object>();
+        PicoWebRemotingServlet.directorize(paths, "foo/bar/baz1", Foo.class);
         assertEquals(
                 "<map>\n" +
                         "  <entry>\n" +
@@ -89,12 +89,12 @@ public final class PicoWebRemotingServletTestCase {
                         "      </map>\n" +
                         "      <methods>\n" +
                         "        <default>\n" +
-                        "          <comp>org.picocontainer.web.remoting.PicoWebRemotingServletTestCase$Foo</comp>\n" +
+                        "          <component>org.picocontainer.web.remoting.PicoWebRemotingServletTestCase$Foo</component>\n" +
                         "        </default>\n" +
                         "      </methods>\n" +
                         "    </methods>\n" +
                         "  </entry>\n" +
-                        "</map>", xstream.toXML(map));
+                        "</map>", xstream.toXML(paths));
 
     }
 

@@ -128,7 +128,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
                     WebMethods methods = (WebMethods) node2;
                     Method method = methods.get(methodName);
                     if (method != null) {
-                        node = reinject(methodName, method, methods.getComp());
+                        node = reinject(methodName, method, methods.getComponent());
                     } else {
                         node = null;
                     }
@@ -161,7 +161,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
                         || node instanceof Float || node instanceof Character);
     }
 
-    private Object reinject(String methodName, Method method, Class component) throws IOException {
+    private Object reinject(String methodName, Method method, Class<?> component) throws IOException {
         PicoContainer reqContainer = ServletFilter.getRequestContainerForThread();
         MethodInjection methodInjection = new MethodInjection(method);
         Reinjector reinjector = new Reinjector(reqContainer);
@@ -197,55 +197,55 @@ public class PicoWebRemotingServlet extends HttpServlet {
 
     private void publishAdapters(Collection<ComponentAdapter<?>> adapters) {
         for (ComponentAdapter<?> ca : adapters) {
-
             Object key = ca.getComponentKey();
-            Class comp = (Class) key;
-            String path = comp.getName().replace('.', '/');
+            Class<?> component = (Class<?>) key;
+            String path = component.getName().replace('.', '/');
             if (toStripFromUrls != "" || path.startsWith(toStripFromUrls)) {
                 paths.put(path, key);
-                directorize(paths, path, comp);
+                directorize(paths, path, component);
                 directorize(paths, path);
             }
         }
     }
 
-    protected static void directorize(Map paths, String path, Class comp) {
+    protected static void directorize(Map<String, Object> paths, String path, Class<?> comp) {
         WebMethods webMethods = new WebMethods(comp);
         paths.put(path, webMethods);
         determineElibibleMethods(comp, webMethods);
     }
 
-    private static void determineElibibleMethods(Class comp, WebMethods webMethods) {
-        Method[] methods = comp.getDeclaredMethods();
+    private static void determineElibibleMethods(Class<?> component, WebMethods webMethods) {
+        Method[] methods = component.getDeclaredMethods();
         for (Method method : methods) {
             if (Modifier.isPublic(method.getModifiers()) && !Modifier.isStatic(method.getModifiers()))
                 webMethods.put(method.getName(), method);
         }
-        Class superClass = comp.getSuperclass();
+        Class<?> superClass = component.getSuperclass();
         if (superClass != Object.class) {
             determineElibibleMethods(superClass, webMethods);
         }
     }
 
-    protected static void directorize(Map paths, String path) {
+    @SuppressWarnings("unchecked")
+	protected static void directorize(Map<String, Object> paths, String path) {
         int lastSlashIx = path.lastIndexOf("/");
         if (lastSlashIx != -1) {
             String dir = path.substring(0, lastSlashIx);
             String file = path.substring(lastSlashIx + 1);
-            Set set = (Set) paths.get(dir);
-            if (set == null) {
-                set = new Directories();
-                paths.put(dir, set);
+            Set<String> dirs = (Set<String>) paths.get(dir);
+            if (dirs == null) {
+                dirs = new Directories();
+                paths.put(dir, dirs);
             }
-            set.add(file);
+            dirs.add(file);
             directorize(paths, dir);
         } else {
-            Set set = (Set) paths.get("/");
-            if (set == null) {
-                set = new Directories();
-                paths.put("", set);
+        	Set<String> dirs = (Set<String>) paths.get("/");
+            if (dirs == null) {
+                dirs = new Directories();
+                paths.put("", dirs);
             }
-            set.add(path);
+            dirs.add(path);
         }
     }
 
@@ -253,14 +253,14 @@ public class PicoWebRemotingServlet extends HttpServlet {
     }
 
     public static class WebMethods extends HashMap<String, Method> {
-        private final Class comp;
+        private final Class<?> component;
 
-        public WebMethods(Class comp) {
-            this.comp = comp;
+        public WebMethods(Class<?> component) {
+            this.component = component;
         }
 
-        public Class getComp() {
-            return comp;
+        public Class<?> getComponent() {
+            return component;
         }
     }
 }
