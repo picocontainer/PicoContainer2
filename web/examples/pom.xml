@@ -169,6 +169,18 @@
                     </execution>
                 </executions>
             </plugin>
+		            <plugin>
+		                <groupId>org.apache.maven.plugins</groupId>
+		                <artifactId>maven-war-plugin</artifactId>
+		                <configuration>
+		                    <webResources>
+		                        <resource>
+		                            <directory>src/java</directory>
+		                            <targetPath>WEB-INF/classes</targetPath>
+		                        </resource>
+		                    </webResources>
+		                </configuration>
+		            </plugin>
     </plugins>
 </build>
 </project>

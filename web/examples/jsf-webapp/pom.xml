@@ -50,11 +50,11 @@
   </dependencies>
   <build>
     <finalName>${pom.artifactId}</finalName>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <sourceDirectory>src/java</sourceDirectory>
+    <testSourceDirectory>src/test</testSourceDirectory>
     <resources>
       <resource>
-        <directory>src/main/java</directory>
+        <directory>src/java</directory>
         <includes>
           <include>**/*.properties</include>
           <include>**/*.groovy</include>
@@ -69,7 +69,7 @@
     </resources>
     <testResources>
       <testResource>
-        <directory>src/test/java</directory>
+        <directory>src/test</directory>
         <excludes>
           <exclude>**/*.java</exclude>
         </excludes>
