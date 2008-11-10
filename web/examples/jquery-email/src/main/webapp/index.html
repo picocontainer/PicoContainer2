@@ -6,6 +6,7 @@
 <script type="text/javascript" src="js/jquery-1.2.6.pack.js"></script>
 <script type="text/javascript" src="js/jquery.dimensions.js"></script>
 <script type="text/javascript" src="js/jquery.corner.min.js"></script>
+<script type="text/javascript" src="js/jquery.dates.js"></script>
 <script type="text/javascript" src="js/jquery.blockUI.min.js"></script>
 <script>
 
@@ -142,6 +143,9 @@ function insertRow(id, to, from, subject, mailDate, isRead) {
     $('td[class*=mail-to]', newRow).html(to);
     $('td[class*=mail-from]', newRow).html(from);
     $('td[class*=mail-subj]', newRow).html(subject);
+//    var dt = new Date(mailDate);
+  //  var dt2 = o2s.format(dt, 'mediumtime');
+    //$('td[class*=mail-date]', newRow).html(dt2);
     $('td[class*=mail-date]', newRow).html(mailDate);
 
     if (isRead) {
@@ -149,7 +153,7 @@ function insertRow(id, to, from, subject, mailDate, isRead) {
     }
 
     newRow.dblclick(readMessage);
-    newRow.click(highlightRow)
+    newRow.click(highlightRow);
 
     $('#mailtable').append(newRow);
 
