@@ -1,23 +1,16 @@
 package org.picocontainer.web.sample.jqueryemailui;
 
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- */
 public class Sent extends Mailbox {
 
-    public Sent() {
-        super(makeStartingMessages());
-    }
+    private final String userName;
 
-    private static ArrayList<MessageData> makeStartingMessages() {
-        // Use this as our "Database" for this demonstration application
-        ArrayList<MessageData> messages = new ArrayList<MessageData>();
-        messages.add(new MessageData(1, "Gil Bates", "Jeeves Sobs", "Nice OS", "You've made a great OS there Jeeves", false));
-        return messages;
+    public Sent(MessageStore store, User user) {
+        super(store.sentFor(user.getName()));
+        userName = user.getName();
     }
-
-    private String userName = "Gil Bates";
 
     public MessageData send(String to, String subject, String message) {
         return super.addMessage(new MessageData(0, userName, to, subject, message, false));

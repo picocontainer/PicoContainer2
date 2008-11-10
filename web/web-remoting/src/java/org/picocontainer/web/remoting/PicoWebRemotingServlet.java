@@ -24,11 +24,14 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.Characteristics;
 import org.picocontainer.injectors.Reinjector;
 import org.picocontainer.injectors.MethodInjection;
+import org.picocontainer.injectors.Provider;
+import org.picocontainer.injectors.ProviderAdapter;
 import org.picocontainer.web.PicoServletContainerFilter;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletConfig;
@@ -155,10 +158,10 @@ public class PicoWebRemotingServlet extends HttpServlet {
 
     private boolean isComposite(Object node) {
         return !(node.getClass().isPrimitive() || node instanceof Boolean
-                        || node instanceof Long || node instanceof Double
-                        || node instanceof Short || node instanceof Byte
-                        || node instanceof Integer || node instanceof String
-                        || node instanceof Float || node instanceof Character);
+                || node instanceof Long || node instanceof Double
+                || node instanceof Short || node instanceof Byte
+                || node instanceof Integer || node instanceof String
+                || node instanceof Float || node instanceof Character);
     }
 
     private Object reinject(String methodName, Method method, Class<?> component) throws IOException {
@@ -197,14 +200,23 @@ public class PicoWebRemotingServlet extends HttpServlet {
 
     private void publishAdapters(Collection<ComponentAdapter<?>> adapters) {
         for (ComponentAdapter<?> ca : adapters) {
+            boolean notAProvider = ca.findAdapterOfType(ProviderAdapter.class) == null;
             Object key = ca.getComponentKey();
-            Class<?> component = (Class<?>) key;
-            String path = component.getName().replace('.', '/');
-            if (toStripFromUrls != "" || path.startsWith(toStripFromUrls)) {
-                paths.put(path, key);
-                directorize(paths, path, component);
-                directorize(paths, path);
+            if (notAProvider && key != HttpSession.class
+                    && key != HttpServletRequest.class
+                    && key != HttpServletResponse.class) {
+                publishAdapter(key);
             }
+        }
+    }
+
+    private void publishAdapter(Object key) {
+        Class<?> component = (Class<?>) key;
+        String path = component.getName().replace('.', '/');
+        if (toStripFromUrls != "" || path.startsWith(toStripFromUrls)) {
+            paths.put(path, key);
+            directorize(paths, path, component);
+            directorize(paths, path);
         }
     }
 
@@ -227,7 +239,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
     }
 
     @SuppressWarnings("unchecked")
-	protected static void directorize(Map<String, Object> paths, String path) {
+    protected static void directorize(Map<String, Object> paths, String path) {
         int lastSlashIx = path.lastIndexOf("/");
         if (lastSlashIx != -1) {
             String dir = path.substring(0, lastSlashIx);
@@ -240,7 +252,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
             dirs.add(file);
             directorize(paths, dir);
         } else {
-        	Set<String> dirs = (Set<String>) paths.get("/");
+            Set<String> dirs = (Set<String>) paths.get("/");
             if (dirs == null) {
                 dirs = new Directories();
                 paths.put("", dirs);

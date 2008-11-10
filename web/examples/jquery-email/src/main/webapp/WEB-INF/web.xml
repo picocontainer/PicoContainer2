@@ -31,7 +31,7 @@
         <load-on-startup>1</load-on-startup>
         <init-param>
             <param-name>scopes_to_publish</param-name>
-            <param-value>session</param-value>
+            <param-value>session,request</param-value>
         </init-param>
         <init-param>
             <param-name>package_prefix_to_strip</param-name>

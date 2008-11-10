@@ -48,7 +48,7 @@ public class Mailbox {
 
     }
 
-    public Object[] messages(int userID) {
+    public Object[] messages() {
         return messages.toArray();
     }
 
