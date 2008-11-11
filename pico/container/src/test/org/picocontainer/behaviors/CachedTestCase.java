@@ -38,7 +38,7 @@ public class CachedTestCase {
 	
     @Test public void testComponentIsNotStartedWhenCachedAndCanBeStarted() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(true, false, false));
+                mockComponentAdapterSupportingLifecycleStrategy(true, false, false, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         adapter.start(pico);
@@ -46,7 +46,7 @@ public class CachedTestCase {
 
     @Test public void testComponentCanBeStartedAgainAfterBeingStopped() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(true, true, false));
+                mockComponentAdapterSupportingLifecycleStrategy(true, true, false, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
         Object instanceAfterFirstStart = adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
@@ -58,46 +58,46 @@ public class CachedTestCase {
 
     @Test public void testComponentCannotBeStartedIfDisposed() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(false, false, true));
+                mockComponentAdapterSupportingLifecycleStrategy(false, false, true, true));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.dispose(pico);
         try {
             adapter.start(pico);
             fail("IllegalStateException expected");
         } catch (Exception e) {
-            assertEquals("Already disposed", e.getMessage());
+            assertEquals("'interface org.picocontainer.testmodel.Touchable' already disposed", e.getMessage());
         }
     }
 
     @Test public void testComponentCannotBeStartedIfAlreadyStarted() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(true, false, false));
+                mockComponentAdapterSupportingLifecycleStrategy(true, false, false, true));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
         try {
             adapter.start(pico);
             fail("IllegalStateException expected");
         } catch (Exception e) {
-            assertEquals("Already started", e.getMessage());
+            assertEquals("'interface org.picocontainer.testmodel.Touchable' already started", e.getMessage());
         }
     }
 
     @Test public void testComponentCannotBeStoppeddIfDisposed() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(false, false, true));
+                mockComponentAdapterSupportingLifecycleStrategy(false, false, true, true));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.dispose(pico);
         try {
             adapter.stop(pico);
             fail("IllegalStateException expected");
         } catch (Exception e) {
-            assertEquals("Already disposed", e.getMessage());
+            assertEquals("'interface org.picocontainer.testmodel.Touchable' already disposed", e.getMessage());
         }
     }
 
     @Test public void testComponentCannotBeStoppedIfNotStarted() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(true, true, false));
+                mockComponentAdapterSupportingLifecycleStrategy(true, true, false, true));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
         adapter.stop(pico);
@@ -105,13 +105,13 @@ public class CachedTestCase {
         adapter.stop(pico);
             fail("IllegalStateException expected");
         } catch (Exception e) {
-            assertEquals("Not started", e.getMessage());
+            assertEquals("'interface org.picocontainer.testmodel.Touchable' not started", e.getMessage());
         }
     }
 
     @Test public void testComponentCannotBeDisposedIfAlreadyDisposed() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(true, true, true));
+                mockComponentAdapterSupportingLifecycleStrategy(true, true, true, true));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
         adapter.stop(pico);
@@ -120,13 +120,13 @@ public class CachedTestCase {
             adapter.dispose(pico);
             fail("IllegalStateException expected");
         } catch (Exception e) {
-            assertEquals("Already disposed", e.getMessage());
+            assertEquals("'interface org.picocontainer.testmodel.Touchable' already disposed", e.getMessage());
         }
     }
 
     @Test public void testComponentIsStoppedAndDisposedIfStartedWhenFlushed() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(true, true, true));
+                mockComponentAdapterSupportingLifecycleStrategy(true, true, true, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
         adapter.flush();
@@ -134,7 +134,7 @@ public class CachedTestCase {
 
     @Test public void testComponentIsNotStoppedAndDisposedWhenFlushedIfNotStarted() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(false, false, false));
+                mockComponentAdapterSupportingLifecycleStrategy(false, false, false, false));
         adapter.flush();
     }
 
@@ -171,10 +171,14 @@ public class CachedTestCase {
     }
 
     private ComponentAdapter mockComponentAdapterSupportingLifecycleStrategy(
-            final boolean start, final boolean stop, final boolean dispose) {
+            final boolean start, final boolean stop, final boolean dispose, final boolean getKey) {
         final boolean hasLifecycle = start || stop || dispose;
         final ComponentAdapterSupportingLifecycleStrategy ca = mockery.mock(ComponentAdapterSupportingLifecycleStrategy.class);
         mockery.checking(new Expectations(){{
+            if (getKey) {
+                atLeast(1).of(ca).getComponentKey();
+                will(returnValue(Touchable.class));
+            }
             if (start) {
                 atLeast(1).of(ca).start(with(any(Touchable.class)));
             }

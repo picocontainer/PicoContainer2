@@ -38,7 +38,6 @@ public class TypedBindingAnnotationTestCase  {
             mpc.getComponent(Apple.class);
             Assert.fail("should have barfed");
         } catch (AbstractInjector.AmbiguousComponentResolutionException e) {
-            System.out.println("");
             // expected
         }
         assertNotNull(mpc.getComponent(Apple.class, Bramley.class));

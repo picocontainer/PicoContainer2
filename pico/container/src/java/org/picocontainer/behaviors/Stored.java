@@ -44,7 +44,7 @@ public class Stored<T> extends AbstractBehavior<T> {
 	 */
 	public void dispose(PicoContainer container) {
 	    if ( delegateHasLifecylce ){
-	        if (disposed) throw new IllegalStateException("Already disposed");
+	        if (disposed) throw new IllegalStateException("'" + getComponentKey() + "' already disposed");
 	        dispose(getComponentInstance(container, NOTHING.class));
 	        disposed = true;
 	    }
@@ -93,8 +93,8 @@ public class Stored<T> extends AbstractBehavior<T> {
 	 */
 	public void start(PicoContainer container) {
 	    if ( delegateHasLifecylce ){
-	        if (disposed) throw new IllegalStateException("Already disposed");
-	        if (started) throw new IllegalStateException("Already started");
+	        if (disposed) throw new IllegalStateException("'" + getComponentKey() + "' already disposed");
+	        if (started) throw new IllegalStateException("'" + getComponentKey() + "' already started");
 	        start(getComponentInstance(container, NOTHING.class));
 	        started = true;
 	    }
@@ -106,8 +106,8 @@ public class Stored<T> extends AbstractBehavior<T> {
 	 */
 	public void stop(PicoContainer container) {
 	    if ( delegateHasLifecylce ){
-	        if (disposed) throw new IllegalStateException("Already disposed");
-	        if (!started) throw new IllegalStateException("Not started");
+	        if (disposed) throw new IllegalStateException("'" + getComponentKey() + "' already disposed");
+	        if (!started) throw new IllegalStateException("'" + getComponentKey() + "' not started");
 	        stop(getComponentInstance(container, NOTHING.class));
 	        started = false;
 	    }
