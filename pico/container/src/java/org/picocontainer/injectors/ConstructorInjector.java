@@ -22,6 +22,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.lang.annotation.Annotation;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -112,6 +113,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         for (final Constructor<T> sortedMatchingConstructor : sortedMatchingConstructors) {
             boolean failedDependency = false;
             Type[] parameterTypes = sortedMatchingConstructor.getGenericParameterTypes();
+            fixParameterType(sortedMatchingConstructor, parameterTypes);
             Annotation[] bindings = getBindings(sortedMatchingConstructor.getParameterAnnotations());
             Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
@@ -161,6 +163,15 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             throw new PicoCompositionException("Either the specified parameters do not match any of the following constructors: " + nonMatching.toString() + "; OR the constructors were not accessible for '" + getComponentImplementation().getName() + "'");
         }
         return greediestConstructor;
+    }
+
+    private void fixParameterType(Constructor<T> sortedMatchingConstructor, Type[] parameterTypes) {
+        for (int i = 0; i < parameterTypes.length; i++) {
+            Type parameterType = parameterTypes[i];
+            if (parameterType instanceof TypeVariable) {
+                parameterTypes[i] = sortedMatchingConstructor.getParameterTypes()[i];
+            }
+        }
     }
 
     public T getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
@@ -224,7 +235,9 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
     }
 
     protected Object[] getMemberArguments(PicoContainer container, final Constructor ctor) {
-        return super.getMemberArguments(container, ctor, ctor.getGenericParameterTypes(), getBindings(ctor.getParameterAnnotations()));
+        Type[] parameterTypes = ctor.getGenericParameterTypes();
+        fixParameterType(ctor, parameterTypes);
+        return super.getMemberArguments(container, ctor, parameterTypes, getBindings(ctor.getParameterAnnotations()));
     }
 
     private List<Constructor<T>> getSortedMatchingConstructors() {
