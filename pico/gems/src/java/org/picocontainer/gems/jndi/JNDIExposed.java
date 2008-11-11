@@ -35,7 +35,7 @@ public class JNDIExposed<T> extends Stored<T> {
 	 * @throws NamingException
 	 */
 	public JNDIExposed(final ComponentAdapter<T> delegate) throws NamingException {
-		super(delegate, new JNDIObjectReference<T>(delegate.getComponentKey()
+		super(delegate, new JNDIObjectReference<Stored.InstHolder<T>>(delegate.getComponentKey()
 				.toString(), new InitialContext()));
 	}
 
@@ -46,7 +46,7 @@ public class JNDIExposed<T> extends Stored<T> {
 	 * @param instanceReference
 	 */
 	public JNDIExposed(final ComponentAdapter<T> delegate,
-			final JNDIObjectReference<T> instanceReference) {
+			final JNDIObjectReference<Stored.InstHolder<T>> instanceReference) {
 		super(delegate, instanceReference);
 	}
 
@@ -57,7 +57,7 @@ public class JNDIExposed<T> extends Stored<T> {
 	 * @throws NamingException
 	 */
 	public JNDIExposed(final ComponentAdapter<T> delegate, final String name) throws NamingException {
-		super(delegate, new JNDIObjectReference<T>(name, new InitialContext()));
+		super(delegate, new JNDIObjectReference<Stored.InstHolder<T>>(name, new InitialContext()));
 	}
 	
 	@Override

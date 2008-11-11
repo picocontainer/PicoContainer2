@@ -18,7 +18,6 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.references.SimpleReference;
 import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ObjectReference;
 
 import java.util.Properties;
 
@@ -44,9 +43,10 @@ public class Caching extends AbstractBehaviorFactory {
 					componentImplementation, parameters);
 		}
 		removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
-		return new Cached<T>(super.createComponentAdapter(componentMonitor,
+        return new Cached<T>(super.createComponentAdapter(componentMonitor,
 				lifecycleStrategy, componentProperties, componentKey,
-				componentImplementation, parameters), newObjectReference());
+				componentImplementation, parameters),
+                new SimpleReference<Stored.InstHolder<T>>());
 
 	}
 
@@ -60,12 +60,9 @@ public class Caching extends AbstractBehaviorFactory {
 					lifecycleStrategy, componentProperties, adapter);
 		}
 		removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
-		return new Cached<T>(super.addComponentAdapter(componentMonitor,
+        return new Cached<T>(super.addComponentAdapter(componentMonitor,
 				lifecycleStrategy, componentProperties, adapter),
-				newObjectReference());
+                new SimpleReference<Stored.InstHolder<T>>());
 	}
 
-	protected <T> ObjectReference<T> newObjectReference() {
-		return new SimpleReference<T>();
-	}
 }

@@ -36,10 +36,10 @@ public class Cached<T> extends Stored<T> {
 
 
     public Cached(ComponentAdapter delegate) {
-		this(delegate, new SimpleReference());
+		this(delegate, new SimpleReference<InstHolder<T>>());
 	}
 
-	public Cached(ComponentAdapter delegate, ObjectReference instanceReference) {
+	public Cached(ComponentAdapter delegate, ObjectReference<InstHolder<T>> instanceReference) {
 		super(delegate, instanceReference);
 	}
 

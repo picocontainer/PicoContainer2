@@ -7,10 +7,11 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 
 import java.lang.reflect.Type;
+import java.io.Serializable;
 
 /**
  * behaviour for all behaviours wishing to store
- * their component in "awkward places" ( object references ) 
+ * their component in "awkward places" ( object references )
  * @author Konstantin Pribluda
  *
  * @param <T>
@@ -19,22 +20,29 @@ import java.lang.reflect.Type;
 public class Stored<T> extends AbstractBehavior<T> {
 
 	protected final boolean delegateHasLifecylce;
-	protected boolean disposed;
-	protected final ObjectReference<T> instanceReference;
+	protected final ObjectReference<InstHolder<T>> instanceReference;
 
-	protected boolean started;
+    public static class InstHolder<T> implements Serializable {
+        private T instance;
+        protected boolean started;
+        protected boolean disposed;
+    }
 
-	public Stored(ComponentAdapter<T> delegate, ObjectReference<T> reference) {
+    public Stored(ComponentAdapter<T> delegate, ObjectReference<InstHolder<T>> reference) {
 		super(delegate);
 		instanceReference = reference;
-        this.disposed = false;
-        this.started = false;
         this.delegateHasLifecylce = delegate instanceof LifecycleStrategy
         && ((LifecycleStrategy) delegate).hasLifecycle(delegate.getComponentImplementation());
 
 	}
 
-	public boolean componentHasLifecycle() {
+    private void guardInstRef() {
+        if (instanceReference.get() == null) {
+            instanceReference.set(new InstHolder());
+        }
+    }
+
+    public boolean componentHasLifecycle() {
 	    return delegateHasLifecylce;
 	}
 
@@ -43,10 +51,12 @@ public class Stored<T> extends AbstractBehavior<T> {
 	 * {@inheritDoc}
 	 */
 	public void dispose(PicoContainer container) {
-	    if ( delegateHasLifecylce ){
-	        if (disposed) throw new IllegalStateException("'" + getComponentKey() + "' already disposed");
+        guardInstRef();
+        if ( delegateHasLifecylce ){
+            guardInstRef();
+	        if (instanceReference.get().disposed) throw new IllegalStateException("'" + getComponentKey() + "' already disposed");
 	        dispose(getComponentInstance(container, NOTHING.class));
-	        disposed = true;
+	        instanceReference.get().disposed = true;
 	    }
 	}
 
@@ -57,28 +67,33 @@ public class Stored<T> extends AbstractBehavior<T> {
 	 * @return the stored object or null.
 	 */
 	public T getStoredObject() {
-		return instanceReference.get();
+        guardInstRef();
+        return instanceReference.get().instance;
 	}
-	
+
 	/**
 	 * Flushes the cache.
 	 * If the component instance is started is will stop and dispose it before
 	 * flushing the cache.
 	 */
 	public void flush() {
-	    Object instance = instanceReference.get();
-	    if ( instance != null && delegateHasLifecylce && started ) {
-	        stop(instance);
-	        dispose(instance);
-	    }
-	    instanceReference.set(null);
-	}
+        InstHolder<T> instHolder = instanceReference.get();
+        if (instHolder != null) {
+            Object instance = instHolder.instance;
+	        if ( instance != null && delegateHasLifecylce && instanceReference.get().started ) {
+	            stop(instance);
+	            dispose(instance);
+	        }
+	        instanceReference.set(null);
+        }
+    }
 
 	public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
-	    T instance = instanceReference.get();
+        guardInstRef();
+        T instance = instanceReference.get().instance;
 	    if (instance == null) {
 	        instance = super.getComponentInstance(container, into);
-	        instanceReference.set(instance);
+            instanceReference.get().instance = instance;
 	    }
 	    return instance;
 	}
@@ -92,11 +107,12 @@ public class Stored<T> extends AbstractBehavior<T> {
 	 * {@inheritDoc}
 	 */
 	public void start(PicoContainer container) {
-	    if ( delegateHasLifecylce ){
-	        if (disposed) throw new IllegalStateException("'" + getComponentKey() + "' already disposed");
-	        if (started) throw new IllegalStateException("'" + getComponentKey() + "' already started");
+        guardInstRef();
+        if ( delegateHasLifecylce ){
+	        if (instanceReference.get().disposed) throw new IllegalStateException("'" + getComponentKey() + "' already disposed");
+	        if (instanceReference.get().started) throw new IllegalStateException("'" + getComponentKey() + "' already started");
 	        start(getComponentInstance(container, NOTHING.class));
-	        started = true;
+	        instanceReference.get().started = true;
 	    }
 	}
 
@@ -105,11 +121,12 @@ public class Stored<T> extends AbstractBehavior<T> {
 	 * {@inheritDoc}
 	 */
 	public void stop(PicoContainer container) {
-	    if ( delegateHasLifecylce ){
-	        if (disposed) throw new IllegalStateException("'" + getComponentKey() + "' already disposed");
-	        if (!started) throw new IllegalStateException("'" + getComponentKey() + "' not started");
+        guardInstRef();
+        if ( delegateHasLifecylce ){
+	        if (instanceReference.get().disposed) throw new IllegalStateException("'" + getComponentKey() + "' already disposed");
+	        if (!instanceReference.get().started) throw new IllegalStateException("'" + getComponentKey() + "' not started");
 	        stop(getComponentInstance(container, NOTHING.class));
-	        started = false;
+	        instanceReference.get().started = false;
 	    }
 	}
 

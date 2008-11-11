@@ -16,6 +16,15 @@
         <page>scopes.html</page>
     </section>
     <section>
+        <name>Types of Injection</name>
+        <page>constructor-injection.html</page>
+        <page>setter-injection.html</page>
+        <page>annotated-field-injection.html</page>
+        <page>annotated-method-injection.html</page>
+        <page>typed-field-injection.html</page>
+        <page>named-field-injection.html</page>
+    </section>
+    <section>
         <page>injection.html</page>
         <name>Injecting Dependencies and Configuration</name>
         <page>disambiguation.html</page>
