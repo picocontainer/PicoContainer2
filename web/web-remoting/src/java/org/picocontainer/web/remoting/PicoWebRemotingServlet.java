@@ -97,20 +97,29 @@ public class PicoWebRemotingServlet extends HttpServlet {
 
         String pathInfo = req.getPathInfo();
 
+        resp.setContentType("text/plain");
         try {
             String result = processRequest(pathInfo);
             if (result != null) {
-                resp.setContentType("text/plain");
-                ServletOutputStream out = resp.getOutputStream();
-                out.print(result);
+                resp.getOutputStream().print(result);
             } else {
                 resp.sendError(400, "Nothing is mapped to this URL, remove the last term for directory list.");
             }
         } catch (RuntimeException e) {
             // TODO monitor
-            resp.sendError(400, e.getMessage());
+            resp.getOutputStream().print(xStreamNoRoot.toXML(new ErrorReply(e.getMessage())) +"\n");
         }
     }
+
+    private static class ErrorReply {
+        private boolean ERROR = true;
+        private String message;
+
+        private ErrorReply(String message) {
+            this.message = message;
+        }
+    }
+
 
     protected String processRequest(String pathInfo) throws IOException {
         String path = pathInfo.substring(1);
@@ -169,7 +178,11 @@ public class PicoWebRemotingServlet extends HttpServlet {
         MethodInjection methodInjection = new MethodInjection(method);
         Reinjector reinjector = new Reinjector(reqContainer);
         Properties props = (Properties) Characteristics.USE_NAMES.clone();
-        return reinjector.reinject(component, component, reqContainer.getComponent(component), props, methodInjection);
+        Object rv = reinjector.reinject(component, component, reqContainer.getComponent(component), props, methodInjection);
+        if (method.getReturnType() == void.class) {
+            return "OK";
+        }
+        return rv;
     }
 
     public void init(ServletConfig servletConfig) throws ServletException {
