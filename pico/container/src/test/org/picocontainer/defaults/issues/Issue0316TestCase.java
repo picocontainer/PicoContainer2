@@ -29,7 +29,6 @@ public class Issue0316TestCase {
         pico.as(Characteristics.USE_NAMES).addComponent(targetClass);
         
         Target target = (Target)pico.getComponent(targetClass);
-        System.out.println("target is " + target.getClass().getName());
         assertEquals("apple", target.eat1());
         assertEquals("pear", target.eat2());
         assertEquals(42, target.getNumber());

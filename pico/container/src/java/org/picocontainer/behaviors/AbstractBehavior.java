@@ -155,7 +155,14 @@ public abstract class AbstractBehavior<T> implements Behavior<T>, ComponentMonit
         return false;
     }
 
-    // ~~~~~~~~ LifecycleStrategy ~~~~~~~~
+    public boolean isStarted() {
+        if (delegate instanceof Behavior){
+            return ((Behavior<?>)delegate).isStarted();
+        }
+        return false;
+    }
+
+// ~~~~~~~~ LifecycleStrategy ~~~~~~~~
 
     /**
      * Invokes delegate start method if the delegate is a LifecycleStrategy

@@ -24,10 +24,10 @@ import org.picocontainer.references.ThreadLocalReference;
 public final class ThreadCached<T> extends Stored<T>{
 
     public ThreadCached(ComponentAdapter<T> delegate) {
-        super(delegate, new ThreadLocalReference<InstHolder<T>>());
+        super(delegate, new ThreadLocalReference<Instance<T>>());
     }
 
     public String getDescriptor() {
-        return "ThreadCached";
+        return "ThreadCached" + getLifecycleDescriptor();
     }
 }

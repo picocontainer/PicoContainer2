@@ -38,7 +38,7 @@ public class CachedTestCase {
 	
     @Test public void testComponentIsNotStartedWhenCachedAndCanBeStarted() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(true, false, false, false));
+                mockComponentAdapterSupportingLifecycleStrategy(true, false, false, false, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         adapter.start(pico);
@@ -46,7 +46,7 @@ public class CachedTestCase {
 
     @Test public void testComponentCanBeStartedAgainAfterBeingStopped() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(true, true, false, false));
+                mockComponentAdapterSupportingLifecycleStrategy(true, true, false, false, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
         Object instanceAfterFirstStart = adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
@@ -58,8 +58,9 @@ public class CachedTestCase {
 
     @Test public void testComponentCannotBeStartedIfDisposed() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(false, false, true, true));
+                mockComponentAdapterSupportingLifecycleStrategy(false, false, true, true, true));
         PicoContainer pico = new DefaultPicoContainer();
+        adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         adapter.dispose(pico);
         try {
             adapter.start(pico);
@@ -69,9 +70,21 @@ public class CachedTestCase {
         }
     }
 
+    @Test public void testComponentCannotBeDisposedIfNotInstantiated() {
+        Cached adapter = new Cached(
+                mockComponentAdapterSupportingLifecycleStrategy(false, false, false, true, false));
+        PicoContainer pico = new DefaultPicoContainer();
+        try {
+            adapter.dispose(pico);
+         //   fail("IllegalStateException expected");
+        } catch (Exception e) {
+            assertEquals("'interface org.picocontainer.testmodel.Touchable' not instantiated", e.getMessage());
+        }
+    }
+
     @Test public void testComponentCannotBeStartedIfAlreadyStarted() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(true, false, false, true));
+                mockComponentAdapterSupportingLifecycleStrategy(true, false, false, true, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
         try {
@@ -82,10 +95,11 @@ public class CachedTestCase {
         }
     }
 
-    @Test public void testComponentCannotBeStoppeddIfDisposed() {
+    @Test public void testComponentCannotBeStoppedIfDisposed() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(false, false, true, true));
+                mockComponentAdapterSupportingLifecycleStrategy(false, false, true, true, false));
         PicoContainer pico = new DefaultPicoContainer();
+        adapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);        
         adapter.dispose(pico);
         try {
             adapter.stop(pico);
@@ -95,9 +109,21 @@ public class CachedTestCase {
         }
     }
 
+    @Test public void testComponentCannotBeStoppedIfNotInstantiated() {
+        Cached adapter = new Cached(
+                mockComponentAdapterSupportingLifecycleStrategy(false, false, false, true, false));
+        PicoContainer pico = new DefaultPicoContainer();
+        try {
+            adapter.stop(pico);
+            fail("IllegalStateException expected");
+        } catch (Exception e) {
+            assertEquals("'interface org.picocontainer.testmodel.Touchable' not instantiated", e.getMessage());
+        }
+    }
+
     @Test public void testComponentCannotBeStoppedIfNotStarted() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(true, true, false, true));
+                mockComponentAdapterSupportingLifecycleStrategy(true, true, false, true, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
         adapter.stop(pico);
@@ -111,7 +137,7 @@ public class CachedTestCase {
 
     @Test public void testComponentCannotBeDisposedIfAlreadyDisposed() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(true, true, true, true));
+                mockComponentAdapterSupportingLifecycleStrategy(true, true, true, true, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
         adapter.stop(pico);
@@ -126,7 +152,7 @@ public class CachedTestCase {
 
     @Test public void testComponentIsStoppedAndDisposedIfStartedWhenFlushed() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(true, true, true, false));
+                mockComponentAdapterSupportingLifecycleStrategy(true, true, true, false, false));
         PicoContainer pico = new DefaultPicoContainer();
         adapter.start(pico);
         adapter.flush();
@@ -134,7 +160,7 @@ public class CachedTestCase {
 
     @Test public void testComponentIsNotStoppedAndDisposedWhenFlushedIfNotStarted() {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(false, false, false, false));
+                mockComponentAdapterSupportingLifecycleStrategy(false, false, false, false, false));
         adapter.flush();
     }
 
@@ -171,7 +197,7 @@ public class CachedTestCase {
     }
 
     private ComponentAdapter mockComponentAdapterSupportingLifecycleStrategy(
-            final boolean start, final boolean stop, final boolean dispose, final boolean getKey) {
+            final boolean start, final boolean stop, final boolean dispose, final boolean getKey, final boolean instantiate) {
         final boolean hasLifecycle = start || stop || dispose;
         final ComponentAdapterSupportingLifecycleStrategy ca = mockery.mock(ComponentAdapterSupportingLifecycleStrategy.class);
         mockery.checking(new Expectations(){{
@@ -188,14 +214,14 @@ public class CachedTestCase {
             if (dispose) {
                 one(ca).dispose(with(any(Touchable.class)));
             }
-            if (hasLifecycle) {
+            if (hasLifecycle || instantiate) {
             	one(ca).getComponentInstance(with(any(PicoContainer.class)), with(same(ComponentAdapter.NOTHING.class)));
             	will(returnValue(new SimpleTouchable()));
             }
             one(ca).getComponentImplementation();
             will(returnValue(SimpleTouchable.class));
             one(ca).hasLifecycle(with(same(SimpleTouchable.class)));
-            will(returnValue(hasLifecycle));
+            will(returnValue(true));
         }});
         return ca;
     }

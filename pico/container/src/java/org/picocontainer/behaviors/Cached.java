@@ -36,14 +36,14 @@ public class Cached<T> extends Stored<T> {
 
 
     public Cached(ComponentAdapter delegate) {
-		this(delegate, new SimpleReference<InstHolder<T>>());
+		this(delegate, new SimpleReference<Instance<T>>());
 	}
 
-	public Cached(ComponentAdapter delegate, ObjectReference<InstHolder<T>> instanceReference) {
+	public Cached(ComponentAdapter delegate, ObjectReference<Instance<T>> instanceReference) {
 		super(delegate, instanceReference);
 	}
 
     public String getDescriptor() {
-        return "Cached";
+        return "Cached" + getLifecycleDescriptor();
     }
 }

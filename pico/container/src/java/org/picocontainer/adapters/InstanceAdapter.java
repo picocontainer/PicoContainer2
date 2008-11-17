@@ -14,6 +14,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.ComponentLifecycle;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -27,29 +28,29 @@ import java.lang.reflect.Type;
  * <p>
  * This component adapter supports both a {@link Behavior Behavior} and a
  * {@link org.picocontainer.LifecycleStrategy LifecycleStrategy} to control the lifecycle of the component.
- * The lifecycle manager methods simply delegate to the lifecycle strategy methods 
+ * The lifecycle manager methods simply delegate to the lifecycle strategy methods
  * on the component instance.
  * </p>
- * 
+ *
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  * @author Mauro Talevi
  */
 @SuppressWarnings("serial")
-public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Behavior<T>, LifecycleStrategy {
-    
+public final class InstanceAdapter<T> extends AbstractAdapter<T> implements ComponentLifecycle<T>, LifecycleStrategy {
 
-	/**
-	 * The actual instance of the component.
-	 */
-	private final T componentInstance;
-	
-	/**
-	 * Lifecycle Strategy for the component adpater.
-	 */
+    /**
+     * The actual instance of the component.
+     */
+    private final T componentInstance;
+
+    /**
+     * Lifecycle Strategy for the component adpater.
+     */
     private final LifecycleStrategy lifecycleStrategy;
+    private boolean started;
 
-    
+
     public InstanceAdapter(Object componentKey, T componentInstance, LifecycleStrategy lifecycleStrategy, ComponentMonitor componentMonitor) throws PicoCompositionException {
         super(componentKey, getInstanceClass(componentInstance), componentMonitor);
         this.componentInstance = componentInstance;
@@ -57,18 +58,18 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Beha
     }
 
     public InstanceAdapter(Object componentKey, T componentInstance) {
-    	this(componentKey,componentInstance,new NullLifecycleStrategy(),new NullComponentMonitor());   	
+        this(componentKey, componentInstance, new NullLifecycleStrategy(), new NullComponentMonitor());
     }
 
     public InstanceAdapter(Object componentKey, T componentInstance, LifecycleStrategy lifecycleStrategy) {
-    	this(componentKey,componentInstance,lifecycleStrategy,new NullComponentMonitor());  
+        this(componentKey, componentInstance, lifecycleStrategy, new NullComponentMonitor());
     }
 
-    public InstanceAdapter(Object componentKey, T componentInstance,  ComponentMonitor componentMonitor) {
-    	this(componentKey,componentInstance,new NullLifecycleStrategy(),componentMonitor);  
+    public InstanceAdapter(Object componentKey, T componentInstance, ComponentMonitor componentMonitor) {
+        this(componentKey, componentInstance, new NullLifecycleStrategy(), componentMonitor);
     }
-     
-     private static Class getInstanceClass(Object componentInstance) {
+
+    private static Class getInstanceClass(Object componentInstance) {
         if (componentInstance == null) {
             throw new NullPointerException("componentInstance cannot be null");
         }
@@ -78,7 +79,7 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Beha
     public T getComponentInstance(PicoContainer container, Type into) {
         return componentInstance;
     }
-    
+
     public void verify(PicoContainer container) {
     }
 
@@ -102,22 +103,29 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Beha
         return hasLifecycle(componentInstance.getClass());
     }
 
+    public boolean isStarted() {
+        return started;
+    }
+
     // ~~~~~~~~ LifecycleStrategy ~~~~~~~~
-    
+
     public void start(Object component) {
         lifecycleStrategy.start(componentInstance);
+        started = true;
     }
 
     public void stop(Object component) {
         lifecycleStrategy.stop(componentInstance);
+        started = false;
     }
 
     public void dispose(Object component) {
         lifecycleStrategy.dispose(componentInstance);
     }
 
-    public boolean hasLifecycle(Class type) {
+    public boolean hasLifecycle(Class<?> type) {
         return lifecycleStrategy.hasLifecycle(type);
     }
+
 
 }

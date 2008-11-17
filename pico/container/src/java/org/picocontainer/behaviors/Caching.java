@@ -46,7 +46,7 @@ public class Caching extends AbstractBehaviorFactory {
         return new Cached<T>(super.createComponentAdapter(componentMonitor,
 				lifecycleStrategy, componentProperties, componentKey,
 				componentImplementation, parameters),
-                new SimpleReference<Stored.InstHolder<T>>());
+                new SimpleReference<Stored.Instance<T>>());
 
 	}
 
@@ -62,7 +62,7 @@ public class Caching extends AbstractBehaviorFactory {
 		removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
         return new Cached<T>(super.addComponentAdapter(componentMonitor,
 				lifecycleStrategy, componentProperties, adapter),
-                new SimpleReference<Stored.InstHolder<T>>());
+                new SimpleReference<Stored.Instance<T>>());
 	}
 
 }

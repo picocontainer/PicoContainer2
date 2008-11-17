@@ -46,7 +46,7 @@ public class AutomatingTestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-        assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached+Lifecycle:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testAutomaticBehaviorViaAdapter() {
@@ -58,7 +58,7 @@ public class AutomatingTestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-        assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached+Lifecycle:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testNonAutomaticBehaviorAsContrastToTheAbove() {
@@ -92,7 +92,7 @@ public class AutomatingTestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-        assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached+Lifecycle:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testAutomaticBehaviorByBuilderViaAdapter() {
@@ -104,7 +104,7 @@ public class AutomatingTestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-        assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached+Lifecycle:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testAutomaticBehaviorByBuilderADifferentWay() {
@@ -116,7 +116,7 @@ public class AutomatingTestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-        assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached+Lifecycle:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
         @Test public void testAutomaticBehaviorByBuilderADifferentWayViaAdapter() {
@@ -128,7 +128,7 @@ public class AutomatingTestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-            assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+            assertEquals("Cached+Lifecycle:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testAutomaticBehaviorWorksForAdaptiveBehaviorToo() {
@@ -140,7 +140,7 @@ public class AutomatingTestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-        assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached+Lifecycle:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testAutomaticBehaviorWorksForAdaptiveBehaviorTooViaAdapter() {
@@ -152,7 +152,7 @@ public class AutomatingTestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-        assertEquals("Cached:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("Cached+Lifecycle:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
 }

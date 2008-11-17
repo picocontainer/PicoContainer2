@@ -106,17 +106,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * Lifecycle strategy instance.
      */
     protected final LifecycleStrategy lifecycleStrategy;
-    
-    private final Properties componentProperties = new Properties();
+
+    /**
+     * Properties set at the container level, that will affect subsequent components added.
+     */
+    private final Properties containerProperties = new Properties();
     
     /**
      * Component monitor instance.  Receives event callbacks.
      */
     protected ComponentMonitor componentMonitor;
-
-    /** List collecting the CAs which have been successfully started */
-    private final List<WeakReference<ComponentAdapter<?>>> startedComponentAdapters = new ArrayList<WeakReference<ComponentAdapter<?>>>();
-
 
     /**
      * Map used for looking up component adapters by their key.
@@ -360,7 +359,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * passed to the constructor of this container.
      */
     public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter) {
-        return addAdapter(componentAdapter,  this.componentProperties);
+        return addAdapter(componentAdapter,  this.containerProperties);
     }
 
     /** {@inheritDoc} **/
@@ -396,7 +395,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * The returned ComponentAdapter will be an {@link org.picocontainer.adapters.InstanceAdapter}.
      */
     public MutablePicoContainer addComponent(final Object implOrInstance) {
-        return addComponent(implOrInstance, this.componentProperties);
+        return addComponent(implOrInstance, this.containerProperties);
     }
 
     private MutablePicoContainer addComponent(final Object implOrInstance, final Properties props) {
@@ -426,7 +425,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     public MutablePicoContainer addComponent(final Object componentKey,
                                              final Object componentImplementationOrInstance,
                                              final Parameter... parameters) {
-        return this.addComponent(componentKey, componentImplementationOrInstance, this.componentProperties, parameters);
+        return this.addComponent(componentKey, componentImplementationOrInstance, this.containerProperties, parameters);
     }
 
     private MutablePicoContainer addComponent(final Object componentKey,
@@ -737,10 +736,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @param child
      */
     private void checkCircularChildDependencies(PicoContainer child) {
-    	final String MESSAGE = "Cannot have circular dependency between parent " 
-			+ this + " and child: " + child;
+    	final String MESSAGE = "Cannot have circular dependency between parent %s and child: %s";
     	if (child == this) {
-    		throw new IllegalArgumentException(MESSAGE);
+    		throw new IllegalArgumentException(String.format(MESSAGE,this,child));
     	}
     	
     	//Todo: Circular Import Dependency on AbstractDelegatingPicoContainer
@@ -749,14 +747,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     		while(delegateChild != null) {
     			PicoContainer delegateInstance = delegateChild.getDelegate();
     			if (this == delegateInstance) {
-					throw new IllegalArgumentException(MESSAGE);
+					throw new IllegalArgumentException(String.format(MESSAGE,this,child));
     			}
     			if (delegateInstance instanceof AbstractDelegatingPicoContainer) {
     				delegateChild = (AbstractDelegatingPicoContainer) delegateInstance;
     			} else {
     				delegateChild = null;
     			}
-    			
     		}
     	}
     	
@@ -796,7 +793,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             Enumeration<String> e = (Enumeration<String>) c.propertyNames();
             while (e.hasMoreElements()) {
                 String s = e.nextElement();
-                componentProperties.setProperty(s,c.getProperty(s));
+                containerProperties.setProperty(s,c.getProperty(s));
             }
         }
         return this;
@@ -808,7 +805,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     public void accept(final PicoVisitor visitor) {
     	
-    	//Pico 3 todo, change accept signatures to allow abort at any point in the traversal.
+    	//TODO Pico 3 : change accept signatures to allow abort at any point in the traversal.
         boolean shouldContinue = visitor.visitContainer(this);
         if (!shouldContinue) {
         	return;
@@ -867,9 +864,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private void startAdapters() {
         Collection<ComponentAdapter<?>> adapters = getComponentAdapters();
         for (ComponentAdapter<?> adapter : adapters) {
-            if (adapter instanceof Behavior) {
-                Behavior<?> behaviorAdapter = (Behavior<?>)adapter;
-                if (behaviorAdapter.componentHasLifecycle()) {
+            if (adapter instanceof ComponentLifecycle) {
+                ComponentLifecycle<?> componentLifecycle = (ComponentLifecycle<?>)adapter;
+                if (componentLifecycle.componentHasLifecycle()) {
                     // create an instance, it will be added to the ordered CA list
                     adapter.getComponentInstance(DefaultPicoContainer.this, ComponentAdapter.NOTHING.class);
                     addOrderedComponentAdapter(adapter);
@@ -877,15 +874,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             }
         }
         adapters = getOrderedComponentAdapters();
-        // clear list of started CAs
-        startedComponentAdapters.clear();
         // clone the adapters
         List<ComponentAdapter<?>> adaptersClone = new ArrayList<ComponentAdapter<?>>(adapters);
         for (final ComponentAdapter<?> adapter : adaptersClone) {
-            if (adapter instanceof Behavior) {
-                Behavior<?> manager = (Behavior<?>)adapter;
-                manager.start(DefaultPicoContainer.this);
-                startedComponentAdapters.add(new WeakReference<ComponentAdapter<?>>(adapter));
+            if (adapter instanceof ComponentLifecycle) {
+                ComponentLifecycle<?> componentLifecycle = (ComponentLifecycle<?>)adapter;
+                componentLifecycle.start(DefaultPicoContainer.this);
             }
         }
     }
@@ -896,15 +890,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * stop(PicoContainer) method on the ones which are LifecycleManagers
      */
     private void stopAdapters() {
-        for (int i = startedComponentAdapters.size() - 1; 0 <= i; i--) {
-            ComponentAdapter<?> adapter = startedComponentAdapters.get(i).get();
-            if (adapter == null) {
-            	//Weak reference -- may be null
-            	continue;
-            }
-            if (adapter instanceof Behavior) {
-                Behavior<?> manager = (Behavior<?>)adapter;
-                manager.stop(DefaultPicoContainer.this);
+        for (int i = getOrderedComponentAdapters().size() - 1; 0 <= i; i--) {
+            ComponentAdapter<?> adapter = getOrderedComponentAdapters().get(i);
+            if (adapter instanceof ComponentLifecycle) {
+                ComponentLifecycle<?> componentLifecycle = (ComponentLifecycle<?>)adapter;
+                if (componentLifecycle.componentHasLifecycle() && componentLifecycle.isStarted()) {
+                    componentLifecycle.stop(DefaultPicoContainer.this);
+                }
             }
         }
     }
@@ -917,9 +909,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private void disposeAdapters() {
         for (int i = getOrderedComponentAdapters().size() - 1; 0 <= i; i--) {
             ComponentAdapter<?> adapter = getOrderedComponentAdapters().get(i);
-            if (adapter instanceof Behavior) {
-                Behavior<?>manager = (Behavior<?>)adapter;
-                manager.dispose(DefaultPicoContainer.this);
+            if (adapter instanceof ComponentLifecycle) {
+                ComponentLifecycle<?> componentLifecycle = (ComponentLifecycle<?>)adapter;
+                componentLifecycle.dispose(DefaultPicoContainer.this);
             }
         }
     }
@@ -964,7 +956,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
         public AsPropertiesPicoContainer(final Properties... props) {
             super(DefaultPicoContainer.this);
-            properties = (Properties) componentProperties.clone();
+            properties = (Properties) containerProperties.clone();
             for (Properties c : props) {
                 Enumeration<?> e = c.propertyNames();
                 while (e.hasMoreElements()) {

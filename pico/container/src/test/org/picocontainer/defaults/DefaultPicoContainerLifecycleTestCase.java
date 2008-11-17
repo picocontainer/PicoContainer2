@@ -306,8 +306,7 @@ public class DefaultPicoContainerLifecycleTestCase {
     }
 
     @Test public void testCanSpecifyLifeCycleStrategyForInstanceRegistrationWhenSpecifyingComponentFactory()
-        throws Exception
-    {
+        throws Exception {
         LifecycleStrategy strategy = new LifecycleStrategy() {
             public void start(Object component) {
                 ((StringBuffer)component).append("start>");
