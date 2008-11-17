@@ -12,6 +12,11 @@ import org.picocontainer.injectors.ProviderAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Use this to make a request level component that pulls an string from a named parameter (GET or POST)
+ * of the request.  If a parameter of the supplied name is not available for the current
+ * request path, then an exception will be thrown.
+ */
 public class StringFromRequest extends ProviderAdapter {
     private final String paramName;
 
@@ -19,10 +24,12 @@ public class StringFromRequest extends ProviderAdapter {
         this.paramName = paramName;
     }
 
+    @Override
     public Class getComponentImplementation() {
         return String.class;
     }
 
+    @Override
     public Object getComponentKey() {
         return paramName;
     }
@@ -30,7 +37,7 @@ public class StringFromRequest extends ProviderAdapter {
     public Object provide(HttpServletRequest req) {
         String parameter = req.getParameter(paramName);
         if (parameter == null) {
-            throw new RuntimeException(paramName + " not provided");
+            throw new RuntimeException(paramName + " not in request parameters");
         }
         return parameter;
     }

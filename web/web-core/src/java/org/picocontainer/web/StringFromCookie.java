@@ -13,6 +13,11 @@ import org.picocontainer.injectors.ProviderAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Cookie;
 
+/**
+ * Use this to make a request level component that pulls information from cookie held on
+ * the browser.  If a cookie of the suplied name is not available for the current
+ * request path, then a NotFound exception will be thrown.
+ */
 public class StringFromCookie extends ProviderAdapter {
 
     private final String name;
@@ -21,22 +26,30 @@ public class StringFromCookie extends ProviderAdapter {
         this.name = name;
     }
 
+    @Override
     public Class getComponentImplementation() {
         return String.class;
     }
 
+    @Override
     public Object getComponentKey() {
         return name;
     }
 
     public Object provide(HttpServletRequest req) {
-        return "Gil Bates";
-//        Cookie[] cookies = req.getCookies();
-//        for (Cookie cookie : cookies) {
-//            if (cookie.getName().equals(name)) {
-//                return cookie.getValue();
-//            }
-//        }
-//        throw new RuntimeException(name + " not provided");
+        Cookie[] cookies = req.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals(name)) {
+                return cookie.getValue();
+            }
+        }
+        throw new NotFound(name);
     }
+
+    public static class NotFound extends RuntimeException {
+        private NotFound(String name) {
+            super("'" + name + "' not found in cookies");
+        }
+    }
+
 }
