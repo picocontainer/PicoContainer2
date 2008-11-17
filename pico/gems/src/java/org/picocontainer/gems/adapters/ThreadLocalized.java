@@ -60,7 +60,7 @@ public final class ThreadLocalized<T> extends AbstractBehavior<T> {
     public ThreadLocalized(final ComponentAdapter<T> delegate, final ProxyFactory proxyFactory)
             throws PicoCompositionException
     {
-        super(new Cached<T>(delegate, new ThreadLocalReference<Stored.InstHolder<T>>()));
+        super(new Cached<T>(delegate, new ThreadLocalReference<Stored.Instance<T>>()));
         this.proxyFactory = proxyFactory;
         interfaces = getInterfaces();
     }
@@ -72,7 +72,7 @@ public final class ThreadLocalized<T> extends AbstractBehavior<T> {
      * @throws PicoCompositionException Thrown if the component does not implement any interface.
      */
     public ThreadLocalized(final ComponentAdapter<T> delegate) throws PicoCompositionException {
-        this(new Cached<T>(delegate, new ThreadLocalReference<Stored.InstHolder<T>>()), new StandardProxyFactory());
+        this(new Cached<T>(delegate, new ThreadLocalReference<Stored.Instance<T>>()), new StandardProxyFactory());
     }
 
     @Override
