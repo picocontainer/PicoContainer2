@@ -21,16 +21,30 @@ public class User {
             super("userName");
         }
 
+        @Override
         public Object getComponentKey() {
             return User.class;    
         }
 
+        @Override
         public Class getComponentImplementation() {
             return User.class;    
         }
 
+        @Override
         public Object provide(HttpServletRequest req) {
-            return new User((String) super.provide(req));
+            try {
+                return new User((String) super.provide(req));
+            } catch (NotFound e) {
+                e.printStackTrace();
+                throw new NotLoggedIn();
+            }
+        }
+    }
+
+    public static class NotLoggedIn extends RuntimeException {
+         NotLoggedIn() {
+            super("not logged in");
         }
     }
 }

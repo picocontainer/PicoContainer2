@@ -3,53 +3,50 @@ package org.picocontainer.web.sample.jqueryemailui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.util.Map;
+import java.util.Set;
+import java.util.Collections;
+import java.util.Iterator;
 
-public class Mailbox {
+public abstract class Mailbox {
 
-    private final List<MessageData> messages;
+    private final Map<Integer, MessageData> messages;
 
-    public Mailbox(List<MessageData> messages) {
+    public Mailbox(Map<Integer, MessageData> messages) {
         this.messages = messages;
     }
 
     protected MessageData addMessage(MessageData newMsg) {
         int highestId = 0;
-        for (int i = 0; i < messages.size(); i++) {
-            if (messages.get(i).id > highestId) {
-                highestId = messages.get(i).id;
+        Iterator<Map.Entry<Integer, MessageData>> entryIterator = messages.entrySet().iterator();
+        while (entryIterator.hasNext()) {
+            if (entryIterator.next().getValue().id > highestId) {
+                highestId = entryIterator.next().getValue().id;
             }
         }
         newMsg.setId(++highestId);
         newMsg.setSentTime(new Date(System.currentTimeMillis()));
-
-        messages.add(newMsg);
-        return newMsg;
+        return messages.put(newMsg.getId(), newMsg);
     }
 
     public Object read(int msgId) {
-
-        for (int i = 0; i < messages.size(); i++) {
-            if (messages.get(i).id == msgId) {
-                messages.get(i).read = true;
-                return messages.get(i);
-            }
-        }
-        return null;
+        MessageData messageData = messages.get(msgId);
+        messageData.read = true;
+        return messageData;
     }
 
     public Boolean delete(int msgId) {
-        for (int i = 0; i < messages.size(); i++) {
-            if (messages.get(i).id == msgId) {
-                messages.get(i).read = true;
-                return messages.remove(messages.get(i));
-            }
-        }
-        return false;
-
+        return messages.remove(messages.get(msgId)) != null;
     }
 
-    public Object[] messages() {
-        return messages.toArray();
+    public MessageData[] messages() {
+        List<MessageData> list = new ArrayList<MessageData>();
+        Iterator<Map.Entry<Integer, MessageData>> entryIterator = messages.entrySet().iterator();
+        while (entryIterator.hasNext()) {
+            list.add(entryIterator.next().getValue());
+        }
+        MessageData[] messages = new MessageData[list.size()];
+        return list.toArray(messages);
     }
 
 }

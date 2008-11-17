@@ -194,6 +194,19 @@ th.headerSortDown {
    font-family: Verdana;
    font-size: 12px;
 }
+#about
+{
+   color: #223661;
+   background: #A0C9EB;
+   width:800px;
+   height:305px;
+   padding-top:6px;
+   padding-left:8px;
+   padding-right:8px;
+   text-align:left;
+   font-family: Verdana;
+   font-size: 12px;
+}
 a:link {color: #223661;text-decoration:none;}
 a:visited {color: #223661;text-decoration:none;}
 a:hover {color: #223661;text-decoration:underline;}

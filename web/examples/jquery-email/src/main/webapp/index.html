@@ -1,5 +1,5 @@
 <html>
-<title>jQuery Message Demo</title>
+<title>Pico Web Remoting and jQuery Message Sample App</title>
 <head>
     <link href="style.css" type="text/css" rel="stylesheet"/>
 </head>
@@ -27,6 +27,7 @@ $(document).ready(function() {
 
     $("#mailboxes").corner("8px");
     $("#topnavigation").corner("8px");
+    $("#about").corner("8px");
     $("#selectall").click(selectAll);
 
     if (view == "Inbox") {
@@ -36,23 +37,16 @@ $(document).ready(function() {
         $("#replyMessage").hide();
     }
 
+    var loginPlease = $('#loginPlease');
     var compose = $('#composeMessage');
     var deleteMess = $('#deleteMessage');
 
-    firstRow = true;
-
-    $.get("pwr/" + view + "/messages", {userId: 1}, function(data) {
-        for (var i = 0; i < data.length; i++) {
-
-            var id = data[i].id;
-            var to = data[i].to;
-            var from = data[i].from;
-            var subject = data[i].subject;
-            var mailDate = data[i].sentTime;
-            var isRead = data[i].read;
-
-            insertRow(id, to, from, subject, mailDate, isRead);
-
+    $.get("pwr/Auth/whoIsLoggedIn", {}, function(data) {
+        if (data.string == "") {
+            $.blockUI(loginPlease, {width:'540px', height:'180px'});
+        } else {
+            $("#mail_for").html("Mail for " + data.string);
+            loadRows();
         }
     }, "json");
 
@@ -80,6 +74,15 @@ $(document).ready(function() {
         deleteMessages();
         $.unblockUI();
     });
+
+    $("#submitLogin").click(function() {
+        submitLogin();
+    });
+
+    $("#logOut").click(function() {
+        doLogout();
+    });
+
 
     $("#cancelDelete").click(function() {
         $.unblockUI();
@@ -114,21 +117,61 @@ function highlightRow() {
     $(this).addClass("message_selected");
 }
 
-function readMessage() {
+function submitLogin() {
+    $.post("pwr/Auth/logIn", {
+        userName: document.loginForm.userName.value,
+        password: document.loginForm.password.value
+    }, function(data) {
+        if (data.string == "OK") {
+            loadRows();
+            document.loginForm.reset();
+            $.unblockUI();
+        } else if (data.ERROR = true) {
+            $('td[class*=error_message]', document.loginForm).html(data.message);
+        }
+    }, "json");
+}
 
-    //alert(this.id);
+function doLogOut() {
+    $.post("pwr/auth/logOut", {}, function(data) {
+        if (data.string == "OK") {
+            loadRows();
+            window.location.reload();
+        }
+    }, "json");
+}
+
+function loadRows() {
+    $.get("pwr/" + view + "/messages", {}, function(data) {
+        if (data.ERROR != true) {
+            for (var i = 0; i < data.length; i++) {
+                var id = data[i].id;
+                var to = data[i].to;
+                var from = data[i].from;
+                var subject = data[i].subject;
+                var mailDate = data[i].sentTime;
+                var isRead = data[i].read;
+                insertRow(id, to, from, subject, mailDate, isRead);
+            }
+        }
+    }, "json");
+}
+
+function readMessage() {
     if ($(this).hasClass("mail_unread"))
     {
         $(this).removeClass("mail_unread");
     }
     $.post("pwr/" + view + "/read", {msgId: this.id }, function(data) {
-        if (data != "ERROR")
-        {
+        if (data.ERROR == undefined) {
             // using JSON objects
             document.readMessageForm.subject.value = data.subject;
             document.readMessageForm.message.value = data.message;
             document.readMessageForm.from.value = data.from;
+        } else if (data.message.equals("not logged in")) {
+            document.href = "Login.html";
         }
+
     }, "json");
     var readMess = $('#readMessage');
     $.blockUI(readMess, {width:'540px', height:'300px'});
@@ -143,8 +186,8 @@ function insertRow(id, to, from, subject, mailDate, isRead) {
     $('td[class*=mail-to]', newRow).html(to);
     $('td[class*=mail-from]', newRow).html(from);
     $('td[class*=mail-subj]', newRow).html(subject);
-//    var dt = new Date(mailDate);
-  //  var dt2 = o2s.format(dt, 'mediumtime');
+    //    var dt = new Date(mailDate);
+    //  var dt2 = o2s.format(dt, 'mediumtime');
     //$('td[class*=mail-date]', newRow).html(dt2);
     $('td[class*=mail-date]', newRow).html(mailDate);
 
@@ -205,7 +248,7 @@ function sendMessage() {
 
         <img src="images/messages.gif" style="position:absolute;left:10px;top:4px;">
 
-        <h1>Mail</h1>
+        <h1 id="mail_for">Mail for ?????</h1>
         <hr class=content_divider>
 
         <div style="position:relative;">
@@ -214,6 +257,9 @@ function sendMessage() {
                 <p><span id=inbox><a href="index.html?view=Inbox">Inbox</a></span>
 
                 <p><span id=sentBox><a href="index.html?view=Sent">Sent</a></span>
+
+                <p><span id="logOut"><a onclick="logOut();">Log Out</a></span>
+
             </div>
 
 
@@ -256,22 +302,32 @@ function sendMessage() {
                     document.writeln("<p><br><br><br><br><br><br><br><br><br>");
                 }
             </script>
-            <div>
-                <p>~ About This Web-App ~</p>
 
-                <p>This app uses Pico Web Remoting. It is a fork of web-app made for an AlphaWorks article: <br>
+            <div id=about style="width:690px;">
+
+                <p><b>About This Web Application</b></p>
+
+                <p>This app is a fork of one made for an IBM AlphaWorks article:
                     <a href="http://www.ibm.com/developerworks/web/library/wa-jquery1/">"Working with jQuery, Part 1:
-                        Bringing desktop applications to the browser"</a>.<br>
-                    You can mimick what JQuery invokes with these URLs:</p>
+                        Bringing desktop applications to the browser"</a>.<br><br>
+                    This version has been enhanced to include Login features, and has had serverside
+                    technologies changed to use Pico Web Remoting rather than JSON libraries and a
+                    custom servlet. You can mimick the remoting methods that JQuery invokes with these URLs:</p>
                 <ul>
                     <li><a href="pwr/Inbox/read?msgId=1">pwr/Inbox/read?msgId=1 - read a message (and have it marked as
                         read on the backend)</a></li>
-                    <li><a href="pwr/Inbox/messages?userId=1">pwr/Inbox/messages?userId=1 - see the contents of the
+                    <li><a href="pwr/Inbox/messages">pwr/Inbox/messages - see the contents of the
                         inbox</a></li>
-                    <li><a href="pwr/Sent/messages?userId=1">pwr/Sent/messages?userId=1 - see the contents of the sent
+                    <li><a href="pwr/Sent/messages">pwr/Sent/messages - see the contents of the sent
                         box</a></li>
                     <li><a href="pwr/Sent/send?to=fred&subject=hello&message=goodbye">pwr/Sent/send?to=fred&subject=hello&message=goodbye
-                        - see send an email (this is normally a POST operation</a></li>
+                        - see send an email (this is normally a POST operation)</a></li>
+                    <li><a href="pwr/Auth/logIn?userName=Gil%20Bates&password=1234">pwr/Auth/logIn?userName=Gil%20Bates&password=1234
+                        - to log in (this is normally a POST operation)</a></li>
+                    <li><a href="pwr/Auth/logOut">pwr/Auth/logOut
+                        - to log in (this is normally a POST operation)</a></li>
+                    <li><a href="pwr/Auth/whoIsLoggedIn">pwr/Auth/whoIsLoggedIn
+                        - check with server to see who is logged in</a></li>
                 </ul>
             </div>
         </div>
@@ -347,6 +403,30 @@ function sendMessage() {
 
     <p><input class=iButton type=button id=submitDelete value="Yes"> <input class=iButton type=button id=cancelDelete
                                                                             value="No">
+</div>
+
+<div id=loginPlease style="display:none;cursor:default;">
+
+    <h2>Login please</h2>
+
+    <form name="loginForm" id="loginForm">
+        <table width=100% class="content_table">
+            <tr>
+                <td class=right>User ID</td>
+                <td class=left_offset><input class="textfield" type=text name=to id=userName></td>
+            </tr>
+            <tr>
+                <td class=right>Password</td>
+                <td class=left_offset><input class="textfield" type=password name=password id=password></td>
+            </tr>
+            <tr>
+                <td colspan="2" id="login_err" class=error_message></td>
+            </tr>
+        </table>
+        <input class=iButton type=button id=submitLogin value="Login">
+
+        <p>Login as 'Gil Bates' or 'Beeve Salmer'. Both have a password of '1234'.</p>
+    </form>
 </div>
 
 
