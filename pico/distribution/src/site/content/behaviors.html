@@ -1,26 +1,36 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Modifying Behaviors</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>Modifying Behaviors</title>
 
-<style type="text/css">
-<!--
-.style1 {font-family: "Courier New", Courier, monospace}
--->
-</style>
+    <style type="text/css">
+        <!--
+        .style1 {
+            font-family: "Courier New", Courier, monospace
+        }
+
+        -->
+    </style>
 </head>
 <body>
 <p>PicoContainer can add behaviors to components automatically
-during instantiation.</p>
+    during instantiation.</p>
+
 <p>Behaviors are deleivered by passing a BehaviorFactory
-reference into the PicoContainer instance on construction. For the most
-part BehaviorFactories are completely stateless, and the Behavior
-instances they make are not.</p>
+    reference into the PicoContainer instance on construction. For the most
+    part BehaviorFactories are completely stateless, and the Behavior
+    instances they make are not.</p>
+
 <p>See below for details on <a href="#cns">Caching
-and Singletons</a>, <a href="#hasi">Implementation
-Hiding and Hot Swapping</a>, as well as <a href="#o">Other</a>
-behaviors</p>
+    and Singletons</a>, <a href="#hasi">Implementation
+    Hiding and Hot Swapping</a>, as well as <a href="#o">Other</a>
+    behaviors</p>
+
 <h3>General use</h3>
+
 <p>DefaultPicoContainer can take a behavior factory instance in
-its constructor:</p>
+    its constructor:</p>
+
 <div class="source">
 <pre>pico = new DefaultPicoContainer(new BehaviorClass());
 
@@ -31,6 +41,7 @@ pico.addComponent(Foo.class);
 Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by an additonal behavior.</pre>
 </div>
 <p>Or it can take behaviours that wrap each other:</p>
+
 <div class="source">
 <pre>pico = new DefaultPicoContainer(new BehaviorClass().wrap(new AnotherBehaviorClass()));
 &nbsp;
@@ -43,6 +54,7 @@ Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by two a
 </pre>
 </div>
 <p>Behaviors can be signalled by properties per component:</p>
+
 <div class="source">
 <pre>pico = new DefaultPicoContainer();
 
@@ -55,6 +67,7 @@ Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by an ad
 </pre>
 </div>
 <p>You can build a container with the applicable property:</p>
+
 <div class="source">
 <pre>pico = new PicoBuilder().withXXXBehavior().build();
 
@@ -66,6 +79,7 @@ Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by an ad
 </pre>
 </div>
 <p>Behaviors can be chained together by PicoBuilder:</p>
+
 <div class="source">
 <pre>import static org.picocontainer.behaviors.Behaviors.xxxxxxx;
 import static org.picocontainer.behaviors.Behaviors.yyyyyyy;
@@ -80,13 +94,17 @@ Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by two a
 </pre>
 </div>
 <h2>Thread Safety</h2>
+
 <p>When components are created by two threads concurrently, with
-the intention of the instance being cached, it is possible in a small
-percentage of cases for the first instance into the cache to be
-replaced with a second instance. To prevent this, you may want to try
-one of two behaviors to make the operation thread safe.</p>
+    the intention of the instance being cached, it is possible in a small
+    percentage of cases for the first instance into the cache to be
+    replaced with a second instance. To prevent this, you may want to try
+    one of two behaviors to make the operation thread safe.</p>
+
 <h3>Synchronizing</h3>
+
 <p>Synchronizing wraps object creation in Java's classic <span class="style1">synchronize</span> feature:</p>
+
 <div class="source">
 <pre>pico = new DefaultPicoContainer(new Synchronizing().wrap(new Caching()));
 pico.addComponent(Apple.class);
@@ -123,9 +141,12 @@ Apple a2 = pico.getComponent(Apple.class);
 </pre>
 </div>
 <h3>Locking</h3>
+
 <p>Locking wraps object creation in JDK 1.5's ReentrantLock
-facility.
-It is suggested that this is a more efficient alternative to the <span class="style1">Synchronizing</span> behaviour above:</p>
+    facility.
+    It is suggested that this is a more efficient alternative to the <span class="style1">Synchronizing</span> behaviour
+    above:</p>
+
 <div class="source">
 <pre>pico = new DefaultPicoContainer(new Locking().wrap(new Caching()));
 pico.addComponent(Apple.class);
@@ -162,10 +183,13 @@ Apple a2 = pico.getComponent(Apple.class);
 </pre>
 </div>
 <h2><a name="o" id="o"></a>Others</h2>
+
 <h3>Property Applying</h3>
+
 <p>This is where there are a number of setters for a component
-that will be could be set after instantiation. A way of handing in some
-configuration if you like.</p>
+    that will be could be set after instantiation. A way of handing in some
+    configuration if you like.</p>
+
 <div class="source">
 <pre>class Foo {
  String message;
@@ -224,17 +248,19 @@ System.out.println(pico.getComponent(Foo.class)); // prints hello
 </pre>
 </div>
 <h3>Automatic</h3>
+
 <p>This is where a component is going to be instantiated
-regardless of whether:</p>
+    regardless of whether:</p>
 <ul>
-<li> it is looked up</li>
-<li> any component that needs it is looked up</li>
-<li>it is Startable</li>
+    <li> it is looked up</li>
+    <li> any component that needs it is looked up</li>
+    <li>it is Startable</li>
 </ul>
 <p>It is most likely that you're doing this because the component
-in question is self contained and doing something once only.
-Alternatively, you're cutting a legacy codebase over from
-nest-of-singletons to dependency injection in stages.</p>
+    in question is self contained and doing something once only.
+    Alternatively, you're cutting a legacy codebase over from
+    nest-of-singletons to dependency injection in stages.</p>
+
 <div class="source">
 <pre>class Foo {
 
@@ -274,10 +300,14 @@ pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
 </pre>
 </div>
 <h3>Handling Nested Chains of Behavior</h3>
+
 <p>&nbsp;</p>
+
 <h3>&nbsp;</h3>
+
 <h3>Where Next?</h3>
 <span class="callout">
 The <a href="lifecycle.html">Component Lifecycle</a>
 page details the lifecycle concepts applicable to some components</span>
-</body></html>
+</body>
+</html>

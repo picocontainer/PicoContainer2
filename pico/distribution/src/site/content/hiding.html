@@ -1,21 +1,29 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Hiding Implementations</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>Hiding Implementations</title>
 
-<style type="text/css">
-<!--
-.style1 {font-family: "Courier New", Courier, monospace}
--->
-</style>
+    <style type="text/css">
+        <!--
+        .style1 {
+            font-family: "Courier New", Courier, monospace
+        }
+
+        -->
+    </style>
 </head>
 <body>
 <h2><a name="hasi" id="hasi"></a>Hiding
-and Swapping of Implementations</h2>
+    and Swapping of Implementations</h2>
+
 <h3>Implementation Hiding
-<span class="subheading">(Located in PicoContainer Gems)</span></h3>
+    <span class="subheading">(Located in PicoContainer Gems)</span></h3>
+
 <p>This is where the implementation of the component is hidden
-from other components using it. The instance cannot be cast back to the
-implementation. It only works if the type has an interface that it
-implements. </p>
+    from other components using it. The instance cannot be cast back to the
+    implementation. It only works if the type has an interface that it
+    implements. </p>
+
 <div class="source">
 <pre>pico = new DefaultPicoContainer(new ImplementationHiding());
 pico.addComponent(Apple.class, AppleImpl.class);
@@ -48,14 +56,18 @@ Apple a1 = pico.getComponent(Apple.class);
 </div>
 <p>This behavior leverages Reflection's dynamic proxy capability.
 </p>
+
 <p>There's another implementation hiding behavior in Pico Gems
-called <span class="style1">AsmImplemenationHiding</span>
-that leverages ASM to make 'more concrete' hidden implementations than
-is possible via reflection. It generates real classes using <a href="http://asm.objectweb.org/">ASM</a></p>
+    called <span class="style1">AsmImplemenationHiding</span>
+    that leverages ASM to make 'more concrete' hidden implementations than
+    is possible via reflection. It generates real classes using <a href="http://asm.objectweb.org/">ASM</a></p>
+
 <h3>Hot Swapping <span class="subheading">(Located in PicoContainer Gems)</span></h3>
+
 <p>This builds on the <span class="style1">ASMImplementationHiding</span>
-behavior above, but also allows the hot swapping of component
-implementations during use. It has implicit caching behavior too.</p>
+    behavior above, but also allows the hot swapping of component
+    implementations during use. It has implicit caching behavior too.</p>
+
 <div class="source">
 <pre>DefaultPicoContainer pico = new DefaultPicoContainer(new HotSwapping());
 pico.addComponent(Map.class, HashMap.class);

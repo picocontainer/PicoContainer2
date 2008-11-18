@@ -1,15 +1,18 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html>
 <head>
-<title>Fluent Style</title>
+    <title>Fluent Style</title>
 </head>
 <body>
 <p>PicoContainer allows for a very fluent style of use. Refer to Martin's <a
-  href="http://www.martinfowler.com/bliki/FluentInterface.html">'Fluent
-Interface'</a> article.</p>
+        href="http://www.martinfowler.com/bliki/FluentInterface.html">'Fluent
+    Interface'</a> article.</p>
+
 <p>A simple example :</p>
-    <div class="source">
+
+<div class="source">
       <pre>
 pico = new DefaultPicoContainer();
 pico.addComponent(Apple.class).addComponent(Orange.class).addComponent(Pear.class)
@@ -17,6 +20,7 @@ pico.addComponent(Apple.class).addComponent(Orange.class).addComponent(Pear.clas
     .addComponent(Grape.class, Grenache.class);</pre>
 </div>
 <p>One with per component properties:</p>
+
 <div class="source"><pre>
 pico = new DefaultPicoContainer();
 pico.addComponent(Apple.class)
@@ -26,6 +30,7 @@ pico.addComponent(Apple.class)
     .addComponent(Grape.class, Grenache.class);</pre>
 </div>
 <p>One with properties that are persistently set, half way through.</p>
+
 <div class="source">
   <pre>pico = new DefaultPicoContainer();
 pico.addComponent(&quot;Coxs&quot;, CoxsApple.class)

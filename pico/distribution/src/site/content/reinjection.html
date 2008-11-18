@@ -1,12 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html><head>
-<title>Reinjection</title></head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>Reinjection</title></head>
 
 <body>
-<p>Reinjection is where an existing instance, that may have been already created by PicoContainer, can have a method called to inject more dependancies.</p>
+<p>Reinjection is where an existing instance, that may have been already created by PicoContainer, can have a method
+    called to inject more dependancies.</p>
 
 <h2>Direct Reinjection via 'Reinjector'</h2>
+
 <p>Consider the following example of class that could benefit from reinjection:</p>
+
 <div class="source"><pre>public class ShoppingCart {
   private Store store;
   private User user;
@@ -24,29 +29,49 @@
 	return true;
   }
 }
-</pre></div>
-<p>The class would be instantiated and have 'store' and 'user' satisfied via constructor injection.  Later, perhaps corresponding to a web request, addItemTo could be invoked with relevant parameters. Indeed the addItemTo method could be called many times after instantiation.</p>
+</pre>
+</div>
+<p>The class would be instantiated and have 'store' and 'user' satisfied via constructor injection. Later, perhaps
+    corresponding to a web request, addItemTo could be invoked with relevant parameters. Indeed the addItemTo method
+    could be called many times after instantiation.</p>
+
 <p>And here is a fragment of Java showing reinjection in use:</p>
+
 <div class="source"><pre>addItemMethod = ShoppingCart.class.getMethods()[0]; // a poor way to select a method!
 reinjector = new Reinjector(picoContainer);
 boolean result = (Boolean) reinjector.reinject(ShoppingCart.class, addItemMethod);
-</pre></div>
-<p>In the above example, the PicoContainer instance (or one of its parents) can inject a Make, a Model and a quantity (int / Integer).</p>
-<p>For reinjection to work, you really need to know the exact method to be injected into. You indicate which method by a reflection method reference (as in the example above), or by method name ("addItemTo" should be unique in the class).  You could also rely on an @Inject annotation, but that only makes sense where there is one method in the class to be used in this way.  If you are implicating a reinjection method by name (rather than reflection method reference), and there are more than one matching, then the last one invoked will have it's return value returned to the caller.</p>
+</pre>
+</div>
+<p>In the above example, the PicoContainer instance (or one of its parents) can inject a Make, a Model and a quantity
+    (int / Integer).</p>
+
+<p>For reinjection to work, you really need to know the exact method to be injected into. You indicate which method by a
+    reflection method reference (as in the example above), or by method name ("addItemTo" should be unique in the
+    class). You could also rely on an @Inject annotation, but that only makes sense where there is one method in the
+    class to be used in this way. If you are implicating a reinjection method by name (rather than reflection method
+    reference), and there are more than one matching, then the last one invoked will have it's return value returned to
+    the caller.</p>
+
 <h2>Reinjection as a type of regular Injection</h2>
+
 <p>This is where reinjection is managed by a PicoContainer instance, rather than directly.</p>
-<pre>public class ShoppingCart {
-  List<Item> list = new ArrayList<Item>();
-  public void addItemTo(Make make, Model model, int quantity) {
-	list.add(new Item(make, model, quantity));
-  }
-}
-...
-addItemMethod = ShoppingCart.class.getMethods()[0]
-pico = new TransientPicoContainer(new Reinjection(new MethodInjection(addItemMethod), parent), parent);
-cart = pico.getComponent(ShoppingCart.class);
-</pre></div>
-<p>The method addItemTo() is called during the getComponent() invocation.  This works because the return type is void.  A non-void type would cause getComponent() to fail with a class cast exception.  If you have that component design need, you need to use the Reinjector directly. </p>
+
+<div class="source"><pre>public class ShoppingCart {
+  List<Item> list = new ArrayList
+    <Item>();
+        public void addItemTo(Make make, Model model, int quantity) {
+        list.add(new Item(make, model, quantity));
+        }
+        }
+        ...
+        addItemMethod = ShoppingCart.class.getMethods()[0]
+        pico = new TransientPicoContainer(new Reinjection(new MethodInjection(addItemMethod), parent), parent);
+        cart = pico.getComponent(ShoppingCart.class);
+</pre>
+</div>
+<p>The method addItemTo() is called during the getComponent() invocation. This works because the return type is void. A
+    non-void type would cause getComponent() to fail with a class cast exception. If you have that component design
+    need, you need to use the Reinjector directly. </p>
 
 </body>
 </html>

@@ -1,18 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>AOP Style Interception</title>
 
     <style type="text/css">
-<!--
-.style1 {font-family: "Courier New", Courier, monospace}
--->
+        <!--
+        .style1 {
+            font-family: "Courier New", Courier, monospace
+        }
+
+        -->
     </style>
 </head>
 <body>
-<p>PicoContainer has a rudimentary Aspect Orientated Programing (AOP) capability with its 'Interception' behavior. With respect to the methods of a component, both
-   before and after invocation, control can be handed to an interceptor. You can intercept a method call:</p>
+<p>PicoContainer has a rudimentary Aspect Orientated Programing (AOP) capability with its 'Interception' behavior. With
+    respect to the methods of a component, both
+    before and after invocation, control can be handed to an interceptor. You can intercept a method call:</p>
 <ul>
     <li> before it is invoked (and optionally veto its invocation, with an alternate return value).</li>
     <li> after it is invoked (and optionally override the return value).</li>
@@ -31,9 +36,9 @@
     <li>the constructor's invocation for the component is not interceptable</li>
     <li>the component's fields are not interceptable</li>
     <li>only one component invoking the methods on another component will be intercepted.
-      <ul>
-        <li>components and related classes calling their own methods will not be intercepted</li>
-      </ul>
+        <ul>
+            <li>components and related classes calling their own methods will not be intercepted</li>
+        </ul>
     </li>
 </ul>
 <div class="source">
@@ -76,9 +81,10 @@ pico.addComponent(Apple.class, BraeburnApple.class);
 pico.addComponent(Apple.class, BraeburnApple.class);
 // etc</pre>
 </div>
-<p><b>Fine grained participation in interception</b><br/>Assuming you're passing in the Interceptor to the classes you're using for interception of a component, you can
-   participate in the fate of the method call. For a 'pre' invocation, you can veto the calling of the 'real'
-   method. </p>
+<p><b>Fine grained participation in interception</b><br/>Assuming you're passing in the Interceptor to the classes
+    you're using for interception of a component, you can
+    participate in the fate of the method call. For a 'pre' invocation, you can veto the calling of the 'real'
+    method. </p>
 
 <div class="source">
     <pre>    public boolean takeBite(int grams) {

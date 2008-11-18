@@ -14,6 +14,7 @@
         <name>Core Concepts</name>
         <page>lifecycle.html</page>
         <page>scopes.html</page>
+        <page>injection.html</page>
     </section>
     <section>
         <name>Types of Injection</name>
@@ -23,9 +24,12 @@
         <page>annotated-method-injection.html</page>
         <page>typed-field-injection.html</page>
         <page>named-field-injection.html</page>
+        <page>method-injection.html</page>
+        <page>multi-injection.html</page>
+        <page>composite-injection.html</page>
+        <page>factory-injection.html</page>
     </section>
     <section>
-        <page>injection.html</page>
         <name>Injecting Dependencies and Configuration</name>
         <page>disambiguation.html</page>
         <page>reinjection.html</page>
@@ -40,7 +44,7 @@
         <page>interception.html</page>
     </section>
     <section>
-        <name>Specialist Concepts</name>
+        <name>Advanced Concepts</name>
         <page>fluent-style.html</page>
         <page>arrays-collections-and-maps.html</page>
         <page>parameter-names.html</page>
@@ -50,19 +54,17 @@
         <page>monitors.html</page>
     </section>
     <section>
-        <name>Architecture</name>
+        <name>PicoContainer's Architecture</name>
         <page>patterns.html</page>
         <page>inversion-of-control.html</page>
         <page>adapters.html</page>
         <page>mock-objects.html</page>
         <page>terminology.html</page>
-        <page>constructor-injection.html</page>
-        <page>setter-injection.html</page>
         <page>comparisons.html</page>
         <page>transparency.html</page>
     </section>
     <section>
-        <name>Containers Choices</name>
+        <name>Container Choices</name>
         <page>DefaultPicoContainer.html</page>
 	    <page>CommandLinePicoContainer.html</page>
 		<page>PropertiesPicoContainer.html</page>

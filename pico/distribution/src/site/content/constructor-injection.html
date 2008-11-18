@@ -1,6 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Constructor Injection</title></head>
 
 
@@ -8,33 +10,39 @@
 <h2>Overview</h2>
 
 <p>Constructor Injection is a <a href="injection.html" title="Dependency Injection">Dependency Injection</a> variant
-   where an object gets all its dependencies via the constructor.
+    where an object gets all its dependencies via the constructor.
 </p>
 
 <p>The most important benefits of Constructor Injection are:</p>
 <ul>
     <li>It makes a strong dependency contract</li>
-    <li>It makes testing easy, since dependencies can be passed in as <a href="mock-objects.html" title="Mock Objects">Mock Objects</a></li>
+    <li>It makes testing easy, since dependencies can be passed in as <a href="mock-objects.html" title="Mock Objects">Mock
+        Objects</a></li>
     <li>It's very succinct in terms of lines of code</li>
     <li>Classes that rely on Constructor Injection are generally <a href="patterns.html" title="Good Citizen">Good
-                                                                                                              Citizen</a>s
+        Citizen</a>s
     </li>
     <li>A dependency may be made immutable by making the dependency reference <em>final</em></li>
 </ul>
-<p><img class="emoticon" src="http://docs.codehaus.org/images/icons/emoticons/information.gif" alt="" align="middle" border="0" height="16" width="16" /> Martin Fowler explains <a href="http://www.martinfowler.com/articles/injection.html#ConstructorInjectionWithPicocontainer">Constructor
-                                                                                                     Injection</a>
-                                                          in more detail.<br />
-    <br />
-    <img class="emoticon" src="http://docs.codehaus.org/images/icons/emoticons/information.gif" alt="" align="middle" border="0" height="16" width="16" /> PicoContainer also supports <a href="setter-injection.html" title="Setter Injection">Setter Injection</a>.</p>
+<p><img class="emoticon" src="http://docs.codehaus.org/images/icons/emoticons/information.gif" alt="" align="middle"
+        border="0" height="16" width="16"/> Martin Fowler explains <a
+        href="http://www.martinfowler.com/articles/injection.html#ConstructorInjectionWithPicocontainer">Constructor
+    Injection</a>
+    in more detail.<br/>
+    <br/>
+    <img class="emoticon" src="http://docs.codehaus.org/images/icons/emoticons/information.gif" alt="" align="middle"
+         border="0" height="16" width="16"/> PicoContainer also supports <a href="setter-injection.html"
+                                                                            title="Setter Injection">Setter
+    Injection</a>.</p>
 
 <h2>Origin</h2>
 
 <p><a href="http://www.twelve71.com/rachel/">Rachel Davies</a>, while reviewing Joe's forthcoming book,
-left a Fermat-like margin note when looking at a coe sample that used
-Setter Injection: "Why not use constructors ?". Brilliant and simple.
-&nbsp;Using constructors per se, is an ordinary OO feature, but having
-a container that works out what to inject where amongst a list of
-constructor arguments is something that is useful too.
+    left a Fermat-like margin note when looking at a coe sample that used
+    Setter Injection: "Why not use constructors ?". Brilliant and simple.
+    &nbsp;Using constructors per se, is an ordinary OO feature, but having
+    a container that works out what to inject where amongst a list of
+    constructor arguments is something that is useful too.
 </p>
 
 <h2>Example</h2>
@@ -50,17 +58,18 @@ constructor arguments is something that is useful too.
 	}</pre>
 </div>
 <p>Note, for this there is no need to declare needs in any other way. No interfaces, no doclet tags, no external
-   XML. Just your simple component(s) and PicoContainer. No need for post assembly/config initialization either. If
-   it is constructed (not withstanding some asserts on nulls) it has its needs satisfied. Components need not be
-   interface/implementation separated. This is the coder's choice.</p>
+    XML. Just your simple component(s) and PicoContainer. No need for post assembly/config initialization either. If
+    it is constructed (not withstanding some asserts on nulls) it has its needs satisfied. Components need not be
+    interface/implementation separated. This is the coder's choice.</p>
 
-<h3><a name="ConstructorInjection-UsingConstructorInjectorComponentsWithoutaContainer." id="ConstructorInjection-UsingConstructorInjectorComponentsWithoutaContainer."></a>Using Constructor
-                                                                                          Injector Components
-                                                                                          Without a Container.
+<h3><a name="ConstructorInjection-UsingConstructorInjectorComponentsWithoutaContainer."
+       id="ConstructorInjection-UsingConstructorInjectorComponentsWithoutaContainer."></a>Using Constructor
+    Injector Components
+    Without a Container.
 </h3>
 
 <p>The component can be used directly, without any container. The missing dependency scenario is not an issue
-   since it is impossible to instantiate an object without all dependencies being satisfied.</p>
+    since it is impossible to instantiate an object without all dependencies being satisfied.</p>
 
 <div class="source">
     <div>
@@ -71,7 +80,8 @@ constructor arguments is something that is useful too.
 </h2>
 
 <p>PicoContainer was the first lightweight container to support and popularize this for of dependency injection.
-   Spring Framework has been retrofitted with constructor injection capability, but its primary focus is still
-   setter injection. Even the once heavyweight technologies like Avalon and OSGi moved towards constructor
-   injection.</p>
-</body></html>
+    Spring Framework has been retrofitted with constructor injection capability, but its primary focus is still
+    setter injection. Even the once heavyweight technologies like Avalon and OSGi moved towards constructor
+    injection.</p>
+</body>
+</html>
