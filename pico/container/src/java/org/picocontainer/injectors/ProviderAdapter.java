@@ -8,14 +8,14 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Characteristics;
 
-import java.lang.reflect.Type;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Properties;
 
 
