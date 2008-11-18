@@ -66,10 +66,10 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
     public static class Shoe {
     }
 
-    private static Method DOIT = NeedsShoe.class.getMethods()[0];
+    private static Method DOIT_METHOD = NeedsShoe.class.getMethods()[0];
 
     @Test public void testCachedComponentCanBeReflectionMethodReinjectedByATransientChildContainer() {
-        cachedComponentCanBeReinjectedByATransientChildContainer(new MethodInjection(DOIT));
+        cachedComponentCanBeReinjectedByATransientChildContainer(new MethodInjection(DOIT_METHOD));
     }
 
     @Test public void testCachedComponentCanBeMethodNameReinjectedByATransientChildContainer() {
@@ -106,7 +106,7 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
 
     @Test
     public void confirmThatReinjectionCanLeverageParameterNamesForDisambiguation() {
-        MethodInjection methodInjection = new MethodInjection(DOIT);
+        MethodInjection methodInjection = new MethodInjection(DOIT_METHOD);
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         parent.addComponent(NeedsShoe.class);
         parent.addComponent(Shoe.class);
@@ -131,7 +131,7 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
     }
 
     @Test public void testCachedComponentCanBeReinjectedByATransientReflectionMethodReinjector() {
-        cachedComponentCanBeReinjectedByATransientReinjector(new MethodInjection(DOIT));
+        cachedComponentCanBeReinjectedByATransientReinjector(new MethodInjection(DOIT_METHOD));
     }
     @Test public void testCachedComponentCanBeReinjectedByATransientMethodNameReinjector() {
         cachedComponentCanBeReinjectedByATransientReinjector(new MethodInjection("doIt"));
@@ -178,14 +178,14 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         final ComponentMonitor cm = new NullComponentMonitor();
         Reinjector reinjector = new Reinjector(parent, cm);
 
-        int result = (Integer) reinjector.reinject(NeedsShoe.class, DOIT);
-        assertEquals(6, (int) (Integer) reinjector.reinject(NeedsShoe.class, DOIT));
-        assertEquals(6, (int) (Integer) reinjector.reinject(NeedsShoe.class, new MethodInjection(DOIT)));
+        int result = (Integer) reinjector.reinject(NeedsShoe.class, DOIT_METHOD);
+        assertEquals(6, (int) (Integer) reinjector.reinject(NeedsShoe.class, DOIT_METHOD));
+        assertEquals(6, (int) (Integer) reinjector.reinject(NeedsShoe.class, new MethodInjection(DOIT_METHOD)));
 
     }
 
     protected ComponentFactory createComponentFactory() {
-        return new Reinjection(new MethodInjection(DOIT), new EmptyPicoContainer());
+        return new Reinjection(new MethodInjection(DOIT_METHOD), new EmptyPicoContainer());
     }
 
     @Test
