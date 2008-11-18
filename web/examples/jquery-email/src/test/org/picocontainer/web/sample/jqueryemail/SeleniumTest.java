@@ -18,7 +18,7 @@ public class SeleniumTest {
 
         selenium.open("/remoting-jqueryemail-webapp/index.html");
 
-        assertEquals("jQuery Message Demo", selenium.getTitle());
+        assertEquals("Pico Web Remoting and jQuery Message Sample App", selenium.getTitle());
 
         selenium.stop();
     }
