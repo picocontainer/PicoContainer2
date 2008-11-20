@@ -27,7 +27,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.Injector;
 import org.picocontainer.monitors.ComponentMonitorHelper;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.slf4j.Logger;
@@ -258,10 +258,11 @@ public class Slf4jComponentMonitor implements ComponentMonitor, Serializable {
 
 	}
 
-	/** {@inheritDoc} * */
-	public AbstractInjector newInjectionFactory(
-			final AbstractInjector abstractInjector) {
-		return delegate.newInjectionFactory(abstractInjector);
+	/** {@inheritDoc} *
+     * @param injector*/
+	public Injector newInjector(
+			final Injector injector) {
+		return delegate.newInjector(injector);
 	}
 
 	/**

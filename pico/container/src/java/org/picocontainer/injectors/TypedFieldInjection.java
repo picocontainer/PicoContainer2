@@ -41,8 +41,8 @@ public class TypedFieldInjection extends AbstractInjectionFactory {
         if (fieldTypes == null) {
             fieldTypes = "";
         }
-        return new TypedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor,
-                lifecycleStrategy, fieldTypes);
+        return componentMonitor.newInjector(new TypedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor,
+                lifecycleStrategy, fieldTypes));
     }
 
     public static Properties injectionFieldTypes(String... fieldTypes) {

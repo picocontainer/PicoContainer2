@@ -43,8 +43,8 @@ public class NamedFieldInjection extends AbstractInjectionFactory {
         if (fieldNames == null) {
             fieldNames = "";
         }
-        return new NamedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor,
-                lifecycleStrategy, fieldNames);
+        return componentMonitor.newInjector(new NamedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor,
+                lifecycleStrategy, fieldNames));
     }
 
     public static Properties injectionFieldNames(String... fieldNames) {

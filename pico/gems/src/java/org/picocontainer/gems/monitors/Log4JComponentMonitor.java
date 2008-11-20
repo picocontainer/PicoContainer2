@@ -31,7 +31,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.Injector;
 import org.picocontainer.monitors.ComponentMonitorHelper;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -227,9 +227,10 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
 
     }
 
-    /** {@inheritDoc} **/
-    public AbstractInjector newInjectionFactory(final AbstractInjector abstractInjector) {
-        return delegate.newInjectionFactory(abstractInjector);
+    /** {@inheritDoc}
+     * @param injector**/
+    public Injector newInjector(final Injector injector) {
+        return delegate.newInjector(injector);
     }
 
     protected Logger getLogger(final Member member) {

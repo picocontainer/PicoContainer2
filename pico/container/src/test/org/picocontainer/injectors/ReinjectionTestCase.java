@@ -31,6 +31,9 @@ import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.Mockery;
 import org.jmock.Expectations;
+import org.jmock.api.Action;
+import org.jmock.api.Invocation;
+import org.hamcrest.Description;
 
 import java.lang.reflect.Method;
 import java.lang.annotation.Retention;
@@ -140,6 +143,22 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         cachedComponentCanBeReinjectedByATransientReinjector(new AnnotatedMethodInjection(Hurrah.class, false));
     }
 
+    public static class ReturnParameterAction implements Action {
+        private final int parameter;
+
+        public ReturnParameterAction(int parameter) {
+            this.parameter = parameter;
+        }
+
+        public void describeTo(Description description) {
+            // describe it
+        }
+
+        public Object invoke(Invocation invocation) {
+            return invocation.getParameter(parameter);
+        }
+    }
+
     private void cachedComponentCanBeReinjectedByATransientReinjector(AbstractInjectionFactory methodInjection) {
         final DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         parent.setName("parent");
@@ -154,6 +173,8 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         final ComponentMonitor cm = mockery.mock(ComponentMonitor.class);
         Reinjector reinjector = new Reinjector(parent, cm);
         mockery.checking(new Expectations() {{
+            atLeast(1).of(cm).newInjector(with(any(org.picocontainer.Injector.class)));
+            will(new ReturnParameterAction(0));
             one(cm).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)),
                     with(any(Method.class)), with(any(Object.class)));
         }});
