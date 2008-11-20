@@ -812,8 +812,8 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
     @SuppressWarnings("serial")
     private static class MyNullComponentMonitor extends NullComponentMonitor {
-        public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
-            if (abstractInjector.getComponentKey() == List.class) {
+        public Injector newInjector(Injector injector) {
+            if (injector.getComponentKey() == List.class) {
                 return new AbstractInjector(List.class, ArrayList.class, Parameter.DEFAULT, MyNullComponentMonitor.this, null, false) {
                     public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
                         return getComponentInstance(container, null);
@@ -826,7 +826,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
                     }
                 };
             } else {
-                return abstractInjector;
+                return injector;
             }
         }
     }

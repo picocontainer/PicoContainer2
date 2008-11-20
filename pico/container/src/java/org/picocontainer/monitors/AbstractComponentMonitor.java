@@ -20,7 +20,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.Injector;
 
 /**
  * <p>
@@ -112,8 +112,8 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
         return delegate.noComponentFound(container, componentKey);
     }
 
-    public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
-        return abstractInjector;
+    public Injector newInjector(Injector injector) {
+        return injector;
     }
 
     /**

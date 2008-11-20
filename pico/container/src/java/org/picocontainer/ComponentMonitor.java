@@ -10,8 +10,6 @@
 
 package org.picocontainer;
 
-import org.picocontainer.injectors.AbstractInjector;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
@@ -129,10 +127,10 @@ public interface ComponentMonitor {
     Object noComponentFound(MutablePicoContainer container, Object componentKey);
 
     /**
-     * A mechanism to monitor or override the AbstractInjectors being made for components.
+     * A mechanism to monitor or override the Injectors being made for components.
      *
-     * @param abstractInjector the abstract injector the container intends to use for the component currently being added.
-     * @return an abstract Injector. For most implementations, the same one as was passed in.
+     * @param injector
+     * @return an Injector. For most implementations, the same one as was passed in.
      */
-    AbstractInjector newInjectionFactory(AbstractInjector abstractInjector);
+    Injector newInjector(Injector injector);
 }

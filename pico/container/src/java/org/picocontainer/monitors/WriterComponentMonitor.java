@@ -26,7 +26,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.Injector;
 
 /**
  * A {@link ComponentMonitor} which writes to a {@link Writer}. 
@@ -107,7 +107,7 @@ public class WriterComponentMonitor implements ComponentMonitor {
         return delegate.noComponentFound(container, componentKey);
     }
 
-    public AbstractInjector newInjectionFactory(AbstractInjector abstractInjector) {
-        return delegate.newInjectionFactory(abstractInjector);
+    public Injector newInjector(Injector injector) {
+        return delegate.newInjector(injector);
     }
 }

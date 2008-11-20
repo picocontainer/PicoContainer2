@@ -44,7 +44,7 @@ public class Issue0265TestCase {
         final ComponentMonitor monitor2 = mockery.mock(ComponentMonitor.class, "Monitor2");
         DefaultPicoContainer pico = new DefaultPicoContainer(monitor1);
         mockery.checking(new Expectations(){{
-            one(monitor1).newInjectionFactory(with(any(AbstractInjector.class)));
+            one(monitor1).newInjector(with(any(AbstractInjector.class)));
             will(new returnParameterAction(0));
             one(monitor1).instantiating(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(any(Constructor.class)));
             will(returnValue(DefaultPicoContainerTestCase.MyStartable.class.getConstructor()));
