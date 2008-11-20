@@ -130,20 +130,34 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
         assertEquals("<init>foo()", sb.toString()); // instantiated
     }
 
-    @Test public void shouldNotInstantiateForEveryMethodCall() {
+    //@Test public void shouldNotInstantiateForEveryMethodCall() {
+    // ...
+    //}
+
+    @Test public void shouldInstantiateForEveryMethodCall() {
+        cachingTestBody("<init>foo()<init>foo()", new ImplementationHiding());
+    }
+
+    @Test public void shouldNotInstantiateForEveryMethodCallIfCaching() {
+        cachingTestBody("<init>foo()foo()", new ImplementationHiding().wrap(new Caching()));
+    }
+
+    @Test public void shouldInstantiateForEveryMethodCallIfCachingWrapsImplementationHidingWhichIsFutile() {
+        cachingTestBody("<init>foo()<init>foo()", new Caching().wrap(new ImplementationHiding()));
+    }
+
+    private void cachingTestBody(String expectation, ComponentFactory compFactory) {
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         parent.addComponent(StringBuilder.class);
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new ImplementationHiding(), parent);
+            new DefaultPicoContainer(compFactory, parent);
         pico.addComponent(NeedsStringBuilder.class, NeedsStringBuilderImpl.class);
         NeedsStringBuilder nsb = pico.getComponent(NeedsStringBuilder.class);
         assertNotNull(nsb);
         nsb.foo();
         nsb.foo();
         StringBuilder sb = pico.getComponent(StringBuilder.class);
-        assertEquals("<init>foo()foo()", sb.toString());
+        assertEquals(expectation, sb.toString());
     }
-
-
 
 }

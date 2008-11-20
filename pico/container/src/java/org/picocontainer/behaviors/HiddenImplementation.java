@@ -56,8 +56,8 @@ public class HiddenImplementation<T> extends AbstractBehavior<T> {
             return delegate.getComponentInstance(container, into);
         }
 
-        Class<?>[] interfaces = verifyInterfacesOnly(classes);
-        return createProxy(interfaces, container, delegate.getComponentImplementation().getClassLoader());
+        verifyInterfacesOnly(classes);
+        return createProxy(classes, container, delegate.getComponentImplementation().getClassLoader());
     }
 
     public String getDescriptor() {
@@ -66,17 +66,10 @@ public class HiddenImplementation<T> extends AbstractBehavior<T> {
 
     
     @SuppressWarnings("unchecked")
-	private T createProxy(Class[] interfaces, final PicoContainer container, final ClassLoader classLoader) {
-        return (T) Proxy.newProxyInstance(classLoader,
-                interfaces, new InvocationHandler() {
-            private Object instance;
-            public synchronized Object invoke(final Object proxy, final Method method,
-                                 final Object[] args)
-                    throws Throwable {
-                if (instance == null) {
-                    instance = getDelegate().getComponentInstance(container, NOTHING.class);
-                }
-                return invokeMethod(instance, method, args, container);
+	protected T createProxy(Class[] interfaces, final PicoContainer container, final ClassLoader classLoader) {
+        return (T) Proxy.newProxyInstance(classLoader, interfaces, new InvocationHandler() {
+            public synchronized Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+                return invokeMethod(getDelegate().getComponentInstance(container, NOTHING.class), method, args, container);
             }
         });
     }
@@ -97,14 +90,13 @@ public class HiddenImplementation<T> extends AbstractBehavior<T> {
         }
     }
 
-    private Class<?>[] verifyInterfacesOnly(Class<?>[] classes) {
+    private void verifyInterfacesOnly(Class<?>[] classes) {
         for (Class<?> clazz : classes) {
             if (!clazz.isInterface()) {
                 throw new PicoCompositionException(
                     "Class keys must be interfaces. " + clazz + " is not an interface.");
             }
         }
-        return classes;
     }
 
 }
