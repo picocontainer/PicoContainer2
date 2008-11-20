@@ -13,19 +13,17 @@
     </style>
 </head>
 <body>
-<h2><a name="cns" id="cns"></a>Cashing
-    and Singletons</h2>
+	
+<p>This is generally where a component has a single instance in the
+    container that is returned to the called of getComponent(..) rather 
+    than a new instance being created each time the container is asked.  
+    Note that this is very different to the Singleton as 
+    defined by the Gang-of-Four book 'Design Patterns' where a class has 
+    a static getInstance() method and a private static instance variable.</p>
 
-<h3>Caching</h3>
+<h3>Basic Caching</h3>
 
-<p>This is where a component has a single instance in the
-    container rather that a new one created each time the container is
-    asked for that type. <a href="http://code.google.com/p/google-guice/">Guice</a>
-    calls this a Singleton. After guice came out we debated this, and
-    decided that we should not call this a Singleton. Another PicoContainer
-    instance could be manging another single instance of the same
-    component, so it does not fit the definition of Singleton given in
-    Design Patterns book.</p>
+<p></p>
 
 <p>Choose your style for caching behavior:</p>
 
@@ -178,5 +176,11 @@ httpRequest.getSession().setAttribute(&quot;sessionComponentStore&quot;, sc.getC
 </div>
 <p>See <a href="scopes.html">scopes</a> for
     another example for a web framework</p>
+<h3>Historical Naming thoughts</h3>
+<p>The Spring Framework has traditionally had a 'Singleton Scope' for an object which is analagous.  More recently, <a href="http://code.google.com/p/google-guice/">Guice</a>
+explicitly called these Singletons. After Guice came out, and given the similarities to PicoContainer, we debated this, and
+decided that we should not call explicitly this a Singleton. As stated before, another PicoContainer
+instance could be managing another single instance of the same component, so it does not fit the definition of Singleton given in
+Design Patterns book.  It is our recommendation that teams do not call components cached in a container singletons at all. Instead we suggest you refer to them by the scope you intend. Most likely this will be 'Application Scope', 'Session scope' and 'Request Scope' for web applications, and implicitly cached at that scope for its duration.</p>
 </body>
 </html>
