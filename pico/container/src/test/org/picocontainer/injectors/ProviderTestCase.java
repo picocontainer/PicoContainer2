@@ -15,6 +15,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.annotations.Nullable;
 
 public class ProviderTestCase {
     
@@ -63,6 +64,16 @@ public class ProviderTestCase {
         }
     }
 
+    @Test
+    public void providerDoesNotBarfIfProvideMethodsParamsCanNotBeSatisfiedButNullbleAnnotationUsed() {
+        DefaultPicoContainer dpc = new DefaultPicoContainer();
+        dpc.addAdapter(new NullableChocolatier());
+        dpc.addComponent(NeedsChocolate.class);
+        NeedsChocolate nc = dpc.getComponent(NeedsChocolate.class);
+        assertNotNull(nc);
+        assertNotNull(nc.choc);
+        assertTrue(nc.choc.cocaoBeans == null);
+    }
 
     public static class CocaoBeans {
     }
@@ -94,6 +105,16 @@ public class ProviderTestCase {
         @Override
         protected boolean useNames() {
             return true;
+        }
+    }
+
+    public static class NullableChocolatier extends Chocolatier {
+        public NullableChocolatier() {
+            super(true);
+        }
+
+        public Chocolate provide(@Nullable CocaoBeans cocaoBeans, @Nullable String name) {
+            return super.provide(cocaoBeans, name);
         }
     }
 

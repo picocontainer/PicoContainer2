@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.lang.reflect.Member;
+import java.lang.reflect.AccessibleObject;
 import java.lang.annotation.Annotation;
 
 import org.picocontainer.ComponentMonitor;
@@ -20,6 +21,7 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.annotations.Nullable;
 
 /**
  * Injection will happen through a single method for the component.
@@ -188,6 +190,15 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
             return "ReflectionMethodInjector[" + injectionMethod + "]-";
         }
 
+        protected boolean isNullParamAllowed(AccessibleObject member, int i) {
+            Annotation[] annotations = injectionMethod.getParameterAnnotations()[i];
+            for (Annotation annotation : annotations) {
+                if (annotation instanceof Nullable) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
 }

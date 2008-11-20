@@ -66,10 +66,14 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
     private Object getParameter(PicoContainer container, AccessibleObject member, int i, Type parameterType, Annotation binding, Parameter currentParameter) {
         Object result = currentParameter.resolveInstance(container, this, parameterType,
             new ParameterNameBinding(paranamer, getComponentImplementation(), member, i), useNames(), binding);
-        if (result == null) {
+        if (result == null && !isNullParamAllowed(member, i)) {
             throw new PicoCompositionException("Parameter " + i + " of '" + member + "' cannot be null");
         }
         return result;
+    }
+
+    protected boolean isNullParamAllowed(AccessibleObject member, int i) {
+        return false;
     }
 
     protected Annotation[] getBindings(Annotation[][] annotationss) {
