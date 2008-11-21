@@ -11,16 +11,21 @@ package org.picocontainer.injectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.annotations.Nullable;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.lang.reflect.Method;
+
+import static com.sun.tools.internal.ws.wsdl.parser.Util.fail;
 
 public class MethodInjectionTestCase {
 
@@ -110,5 +115,37 @@ public class MethodInjectionTestCase {
         assertNotNull(foo.string);
         assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
+
+    public static class Foo2 implements IFoo {
+        private Bar bar;
+        private String string;
+
+        public void inject(Bar bar, @Nullable String string) {
+            this.bar = bar;
+            this.string = string;
+        }
+    }
+
+    @Test public void testMethodInjectionWithAllowedNullableParam() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection());
+        pico.addComponent(Foo2.class);
+        pico.addComponent(Bar.class);
+        Foo2 foo = pico.getComponent(Foo2.class);
+        assertNotNull(foo.bar);
+        assertTrue(foo.string == null);
+        assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo2", pico.getComponentAdapter(Foo2.class).toString());
+    }
+
+    @Test public void testMethodInjectionWithDisallowedNullableParam() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection());
+        pico.addComponent(Foo.class);
+        pico.addComponent(Bar.class);
+        try {
+            Foo foo = pico.getComponent(Foo.class);
+            fail("should have barfed");
+        } catch (PicoCompositionException e) {
+        }
+    }
+
 
 }

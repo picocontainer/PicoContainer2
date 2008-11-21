@@ -174,6 +174,17 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         return "MethodInjector-";
     }
 
+    protected boolean isNullParamAllowed(AccessibleObject member, int i) {
+        Annotation[] annotations = ((Method) member).getParameterAnnotations()[i];
+        for (Annotation annotation : annotations) {
+            if (annotation instanceof Nullable) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public static class ByReflectionMethod extends MethodInjector {
         private final Method injectionMethod;
 
@@ -190,15 +201,6 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
             return "ReflectionMethodInjector[" + injectionMethod + "]-";
         }
 
-        protected boolean isNullParamAllowed(AccessibleObject member, int i) {
-            Annotation[] annotations = injectionMethod.getParameterAnnotations()[i];
-            for (Annotation annotation : annotations) {
-                if (annotation instanceof Nullable) {
-                    return true;
-                }
-            }
-            return false;
-        }
     }
 
 }
