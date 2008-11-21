@@ -45,9 +45,9 @@ public class Storing extends AbstractBehaviorFactory {
                                                                              parameters);
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
-        return new Stored<T>(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+        return componentMonitor.newBehavior(new Stored<T>(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                                                                 componentProperties, componentKey, componentImplementation, parameters),
-                          new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, componentKey));
+                          new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, componentKey)));
 
     }
 
@@ -60,8 +60,8 @@ public class Storing extends AbstractBehaviorFactory {
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
 
-        return new Stored<T>(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter),
-                          new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, adapter.getComponentKey()));
+        return componentMonitor.newBehavior(new Stored<T>(super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter),
+                          new ThreadLocalMapObjectReference(mapThreadLocalObjectReference, adapter.getComponentKey())));
     }
 
     public StoreWrapper getCacheForThread() {

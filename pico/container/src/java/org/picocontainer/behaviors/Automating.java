@@ -30,12 +30,12 @@ public class Automating extends AbstractBehaviorFactory implements Serializable 
                                                    Class componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
         removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC);
-        return new Automated(super.createComponentAdapter(componentMonitor,
+        return componentMonitor.newBehavior(new Automated(super.createComponentAdapter(componentMonitor,
                                             lifecycleStrategy,
                                             componentProperties,
                                             componentKey,
                                             componentImplementation,
-                                            parameters));
+                                            parameters)));
     }
 
     public ComponentAdapter addComponentAdapter(ComponentMonitor componentMonitor,
@@ -43,9 +43,9 @@ public class Automating extends AbstractBehaviorFactory implements Serializable 
                                                 Properties componentProperties,
                                                 ComponentAdapter adapter) {
         removePropertiesIfPresent(componentProperties, Characteristics.AUTOMATIC);
-        return new Automated(super.addComponentAdapter(componentMonitor,
+        return componentMonitor.newBehavior(new Automated(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,
-                                         adapter));
+                                         adapter)));
     }
 }

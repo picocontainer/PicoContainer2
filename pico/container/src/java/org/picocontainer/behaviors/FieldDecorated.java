@@ -22,8 +22,7 @@ public class FieldDecorated extends AbstractBehavior {
             throws PicoCompositionException {
         Object instance = super.getComponentInstance(container, into);
         Field[] fields = instance.getClass().getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
+        for (Field field : fields) {
             if (field.getType() == fieldClass) {
                 Object value = decorator.decorate(instance);
                 field.setAccessible(true);

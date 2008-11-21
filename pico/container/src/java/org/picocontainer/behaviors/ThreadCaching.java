@@ -40,12 +40,12 @@ public class ThreadCaching extends AbstractBehaviorFactory {
                                                 parameters);
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
-        return new ThreadCached<T>(super.createComponentAdapter(componentMonitor,
+        return componentMonitor.newBehavior(new ThreadCached<T>(super.createComponentAdapter(componentMonitor,
                                                                 lifecycleStrategy,
                                                                 componentProperties,
                                                                 componentKey,
                                                                 componentImplementation,
-                                                                parameters));
+                                                                parameters)));
 
     }
 
@@ -58,9 +58,9 @@ public class ThreadCaching extends AbstractBehaviorFactory {
             return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
         }
         removePropertiesIfPresent(componentProperties, Characteristics.CACHE);
-        return new ThreadCached<T>(super.addComponentAdapter(componentMonitor,
+        return componentMonitor.newBehavior(new ThreadCached<T>(super.addComponentAdapter(componentMonitor,
                                                              lifecycleStrategy,
                                                              componentProperties,
-                                                             adapter));
+                                                             adapter)));
     }
 }

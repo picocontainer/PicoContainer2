@@ -33,8 +33,8 @@ public abstract class Decorating extends AbstractBehaviorFactory implements Deco
     public ComponentAdapter createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties, final Object componentKey,
                                                    final Class componentImplementation, final Parameter... parameters) throws PicoCompositionException {
-        return new Decorated(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
-                componentProperties,componentKey, componentImplementation, parameters), this);
+        return componentMonitor.newBehavior(new Decorated(super.createComponentAdapter(componentMonitor, lifecycleStrategy,
+                componentProperties,componentKey, componentImplementation, parameters), this));
     }
 
 

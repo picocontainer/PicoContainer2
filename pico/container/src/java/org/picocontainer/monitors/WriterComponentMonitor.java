@@ -27,6 +27,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Injector;
+import org.picocontainer.Behavior;
 
 /**
  * A {@link ComponentMonitor} which writes to a {@link Writer}. 
@@ -110,4 +111,11 @@ public class WriterComponentMonitor implements ComponentMonitor {
     public Injector newInjector(Injector injector) {
         return delegate.newInjector(injector);
     }
+
+    /** {@inheritDoc} **/
+    public Behavior newBehavior(Behavior behavior) {
+        return delegate.newBehavior(behavior);
+    }
+
+
 }

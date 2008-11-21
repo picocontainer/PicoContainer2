@@ -30,13 +30,14 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.DefaultPicoContainerTestCase;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Startable;
+import org.picocontainer.Behavior;
 import org.picocontainer.injectors.AbstractInjector;
 
 @RunWith(JMock.class)
 public class Issue0265TestCase {
 
 	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+
     @Test public void testCanReallyChangeMonitor() throws SecurityException, NoSuchMethodException {
         final Method start = Startable.class.getMethod("start");
         final Method stop = Startable.class.getMethod("stop");
@@ -44,8 +45,10 @@ public class Issue0265TestCase {
         final ComponentMonitor monitor2 = mockery.mock(ComponentMonitor.class, "Monitor2");
         DefaultPicoContainer pico = new DefaultPicoContainer(monitor1);
         mockery.checking(new Expectations(){{
+            one(monitor1).newBehavior(with(any(Behavior.class)));
+            will(returnParameterAction(0));
             one(monitor1).newInjector(with(any(AbstractInjector.class)));
-            will(new returnParameterAction(0));
+            will(returnParameterAction(0));
             one(monitor1).instantiating(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(any(Constructor.class)));
             will(returnValue(DefaultPicoContainerTestCase.MyStartable.class.getConstructor()));
             one(monitor1).instantiated(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(any(Constructor.class)), 
@@ -66,7 +69,7 @@ public class Issue0265TestCase {
         assertNotNull(startable);
         pico.changeMonitor(monitor2);
         mockery.checking(new Expectations(){{
-            one(monitor2).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)), 
+            one(monitor2).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)),
             		with(any(Object.class)));
             one(monitor2).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)), 
             		with(any(Object.class)), with(any(Long.class)));
@@ -79,10 +82,14 @@ public class Issue0265TestCase {
         pico.stop();
     }
 
-    public static class returnParameterAction implements Action {
+    public static Action returnParameterAction(int param) {
+        return new ReturnParameterAction(param);
+    }
+
+    public static class ReturnParameterAction implements Action {
         private final int parameter;
 
-        public returnParameterAction(int parameter) {
+        public ReturnParameterAction(int parameter) {
             this.parameter = parameter;
         }
 

@@ -47,7 +47,7 @@ public class AsmImplementationHiding extends AbstractBehaviorFactory {
                                                                          componentKey,
                                                                          componentImplementation,
                                                                          parameters);
-        return new AsmHiddenImplementation<T>(componentAdapter);
+        return componentMonitor.newBehavior(new AsmHiddenImplementation<T>(componentAdapter));
     }
 
     @Override
@@ -62,9 +62,9 @@ public class AsmImplementationHiding extends AbstractBehaviorFactory {
                                              adapter);
         }
         AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
-        return new AsmHiddenImplementation<T>(super.addComponentAdapter(componentMonitor,
+        return componentMonitor.newBehavior(new AsmHiddenImplementation<T>(super.addComponentAdapter(componentMonitor,
                                                                           lifecycleStrategy,
                                                                           componentProperties,
-                                                                          adapter));
+                                                                          adapter)));
     }
 }

@@ -47,7 +47,7 @@ public abstract class AbstractBehavior<T> implements Behavior<T>, ComponentMonit
 
 
     public AbstractBehavior(ComponentAdapter<T> delegate) {
-         this.delegate = delegate;
+        this.delegate = delegate;
     }
     
     public Object getComponentKey() {

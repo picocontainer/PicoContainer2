@@ -42,12 +42,12 @@ public class OptInCaching extends AbstractBehaviorFactory {
     			Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CACHE)) {
-            return new Cached<T>(super.createComponentAdapter(componentMonitor,
+            return componentMonitor.newBehavior(new Cached<T>(super.createComponentAdapter(componentMonitor,
                                                                                         lifecycleStrategy,
                                                                                         componentProperties,
                                                                                         componentKey,
                                                                                         componentImplementation,
-                                                                                        parameters));
+                                                                                        parameters)));
         }
         AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);
         return super.createComponentAdapter(componentMonitor, lifecycleStrategy,
@@ -60,10 +60,10 @@ public class OptInCaching extends AbstractBehaviorFactory {
                                                 Properties componentProperties,
                                                 ComponentAdapter<T> adapter) {
         if (AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.CACHE)) {
-            return new Cached<T>(super.addComponentAdapter(componentMonitor,
+            return componentMonitor.newBehavior(new Cached<T>(super.addComponentAdapter(componentMonitor,
                                                                  lifecycleStrategy,
                                                                  componentProperties,
-                                                                 adapter));
+                                                                 adapter)));
         }
         AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);
         return super.addComponentAdapter(componentMonitor,

@@ -36,13 +36,13 @@ public final class PropertyApplying extends AbstractBehaviorFactory {
         ComponentAdapter<?> decoratedAdapter = super.createComponentAdapter(componentMonitor, lifecycleStrategy,
                 componentProperties, componentKey, componentImplementation, parameters);
         removePropertiesIfPresent(componentProperties, Characteristics.PROPERTY_APPLYING);
-        return new PropertyApplicator(decoratedAdapter);
+        return componentMonitor.newBehavior(new PropertyApplicator(decoratedAdapter));
     }
 
     public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
             LifecycleStrategy lifecycleStrategy, Properties componentProperties, ComponentAdapter<T> adapter) {
         removePropertiesIfPresent(componentProperties, Characteristics.PROPERTY_APPLYING);
-        return new PropertyApplicator(super.addComponentAdapter(componentMonitor, lifecycleStrategy,
-                componentProperties, adapter));
+        return componentMonitor.newBehavior(new PropertyApplicator(super.addComponentAdapter(componentMonitor, lifecycleStrategy,
+                componentProperties, adapter)));
     }
 }

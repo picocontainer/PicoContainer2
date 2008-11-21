@@ -46,13 +46,13 @@ public class Locking extends AbstractBehaviorFactory {
         }
         
         removePropertiesIfPresent(componentProperties, Characteristics.LOCK);
-        return new Locked<T>(super.createComponentAdapter(
+        return componentMonitor.newBehavior(new Locked<T>(super.createComponentAdapter(
             componentMonitor,
             lifecycleStrategy,
             componentProperties,
             componentKey,
             componentImplementation,
-            parameters));
+            parameters)));
     }
 
     /** {@inheritDoc} **/
@@ -68,9 +68,9 @@ public class Locking extends AbstractBehaviorFactory {
         }    	
     	
         removePropertiesIfPresent(componentProperties, Characteristics.LOCK);
-        return new Locked<T>(super.addComponentAdapter(componentMonitor,
+        return componentMonitor.newBehavior(new Locked<T>(super.addComponentAdapter(componentMonitor,
                                                           lifecycleStrategy,
                                                           componentProperties,
-                                                          adapter));
+                                                          adapter)));
     }
 }

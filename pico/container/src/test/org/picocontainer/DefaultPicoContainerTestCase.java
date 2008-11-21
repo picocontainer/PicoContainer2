@@ -829,6 +829,10 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
                 return injector;
             }
         }
+
+        public Behavior newBehavior(Behavior behavior) {
+            return behavior;
+        }
     }
 
 

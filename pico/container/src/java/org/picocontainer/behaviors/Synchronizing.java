@@ -41,13 +41,13 @@ public class Synchronizing extends AbstractBehaviorFactory {
        }
     	
     	removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE);
-        return new Synchronized<T>(super.createComponentAdapter(
+        return componentMonitor.newBehavior(new Synchronized<T>(super.createComponentAdapter(
             componentMonitor,
             lifecycleStrategy,
             componentProperties,
             componentKey,
             componentImplementation,
-            parameters));
+            parameters)));
     }
 
     /** {@inheritDoc} **/
@@ -63,9 +63,9 @@ public class Synchronizing extends AbstractBehaviorFactory {
         }
     	
     	removePropertiesIfPresent(componentProperties, Characteristics.SYNCHRONIZE);
-        return new Synchronized<T>(super.addComponentAdapter(componentMonitor,
+        return componentMonitor.newBehavior(new Synchronized<T>(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,
-                                         adapter));
+                                         adapter)));
     }
 }

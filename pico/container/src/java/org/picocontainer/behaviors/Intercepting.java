@@ -27,8 +27,8 @@ public class Intercepting extends AbstractBehaviorFactory {
                                                           Object componentKey,
                                                           Class<T> componentImplementation,
                                                           Parameter... parameters) throws PicoCompositionException {
-        return new Intercepted(super.createComponentAdapter(componentMonitor,
+        return componentMonitor.newBehavior(new Intercepted(super.createComponentAdapter(componentMonitor,
                                                             lifecycleStrategy, componentProperties, componentKey,
-                                                            componentImplementation, parameters));
+                                                            componentImplementation, parameters)));
     }
 }

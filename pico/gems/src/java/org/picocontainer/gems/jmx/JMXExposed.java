@@ -89,7 +89,9 @@ public class JMXExposed<T> extends AbstractBehavior<T> {
             throws PicoCompositionException
     {
         final ComponentAdapter<T> componentAdapter = new Cached<T>(getDelegate());
+
         final T componentInstance = componentAdapter.getComponentInstance(container, into);
+
         for (DynamicMBeanProvider provider : providers) {
             final JMXRegistrationInfo info = provider.provide(container, componentAdapter);
             if (info != null) {

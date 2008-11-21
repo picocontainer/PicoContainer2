@@ -10,6 +10,8 @@
 
 package org.picocontainer;
 
+import org.picocontainer.behaviors.Cached;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
@@ -133,4 +135,12 @@ public interface ComponentMonitor {
      * @return an Injector. For most implementations, the same one as was passed in.
      */
     Injector newInjector(Injector injector);
+
+    /**
+     * A mechanism to monitor or override the Behaviors being made for components.
+     *
+     * @param behavior
+     * @return an Behavior. For most implementations, the same one as was passed in.
+     */
+    Behavior newBehavior(Behavior behavior);
 }

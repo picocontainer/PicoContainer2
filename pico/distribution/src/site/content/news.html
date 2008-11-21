@@ -7,16 +7,21 @@
 
 <!-->
 <p><strong>November xx, 2008</strong></p>
-<p>PicoContainer 2.7 released (269K jar) </p>
+<p>PicoContainer 2.7 released (278K jar) </p>
 <p>New (since 2.6):</p>
 <ul>
     <li>Provider added as a type of Injector.  Subclasses of this supply one method called provide that takes
         dependencies and returns an instance of the type it is trying to provide</li>
+    <li>ComponentMonitor: new method newBehavior</li>
+    <li>ReflectionMethodInjection: new annotation @Nullable allows for individual parameters to be null</li>
 </ul>
 <p>Changes (versus 2.6):</p>
 <ul>
     <li>Reinjection changed to allow access to the result in the reinjection method invocation</li>
-    <li>Method decorateComponentInstance on Injector changed to have a return code</li>
+    <li>Method decorateComponentInstance on Injector changed to have a return value</li>
+    <li>Scoped components stored in ThreadLocal can now can honor lifecycle concepts reliably</li>
+    <li>ComponentMonitor: newInjectorFactory method renamed to newInjector</li>
+    <li>Fix of issue where ImplementationHiding and Caching together on a component in threadlocal</li>
 </ul>
 
 -->

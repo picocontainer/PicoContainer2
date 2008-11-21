@@ -21,6 +21,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoLifecycleException;
 import org.picocontainer.Injector;
+import org.picocontainer.Behavior;
 
 /**
  * A {@link ComponentMonitor} which does nothing. 
@@ -82,5 +83,11 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
     public Injector newInjector(Injector injector) {
         return injector;
     }
+
+    /** {@inheritDoc} **/
+    public Behavior newBehavior(Behavior behavior) {
+        return behavior;
+    }
+    
 
 }

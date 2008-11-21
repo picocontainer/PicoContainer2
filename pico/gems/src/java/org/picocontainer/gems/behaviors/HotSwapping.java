@@ -43,7 +43,7 @@ public class HotSwapping extends AbstractBehaviorFactory {
 		} 
 
 		AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.HOT_SWAP);        
-        return new HotSwappable<T>(delegateAdapter);
+        return componentMonitor.newBehavior(new HotSwappable<T>(delegateAdapter));
     }
 
     @Override
@@ -60,9 +60,9 @@ public class HotSwapping extends AbstractBehaviorFactory {
 
     	
 		AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.HOT_SWAP);        
-    	return new HotSwappable<T>(super.addComponentAdapter(componentMonitor,
+    	return componentMonitor.newBehavior(new HotSwappable<T>(super.addComponentAdapter(componentMonitor,
                                                                  lifecycleStrategy,
                                                                  componentProperties,
-                                                                 adapter));
+                                                                 adapter)));
     }
 }

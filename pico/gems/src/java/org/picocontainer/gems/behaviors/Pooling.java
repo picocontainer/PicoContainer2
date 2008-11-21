@@ -46,7 +46,7 @@ public class Pooling extends AbstractBehaviorFactory {
         Pooled behavior = new Pooled(delegate, poolContext);
         //TODO
         //Characteristics.HIDE.setProcessedIn(componentCharacteristics);
-        return behavior;
+        return componentMonitor.newBehavior(behavior);
     }
 
     @Override
@@ -63,9 +63,9 @@ public class Pooling extends AbstractBehaviorFactory {
 		} 
     	
         AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, GemsCharacteristics.POOL);
-    	return new Pooled(super.addComponentAdapter(componentMonitor,
+    	return componentMonitor.newBehavior(new Pooled(super.addComponentAdapter(componentMonitor,
                                          lifecycleStrategy,
                                          componentProperties,
-                                         adapter), poolContext);
+                                         adapter), poolContext));
     }
 }

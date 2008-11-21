@@ -36,7 +36,7 @@ public class ImplementationHiding extends AbstractBehaviorFactory {
             return componentAdapter;
         }
         removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
-        return new HiddenImplementation(componentAdapter);
+        return componentMonitor.newBehavior(new HiddenImplementation(componentAdapter));
 
     }
 
@@ -48,10 +48,10 @@ public class ImplementationHiding extends AbstractBehaviorFactory {
             return adapter;
         }
         removePropertiesIfPresent(componentProperties, Characteristics.HIDE_IMPL);
-        return new HiddenImplementation(super.addComponentAdapter(componentMonitor,
+        return componentMonitor.newBehavior(new HiddenImplementation(super.addComponentAdapter(componentMonitor,
                                                                           lifecycleStrategy,
                                                                           componentProperties,
-                                                                          adapter));
+                                                                          adapter)));
 
     }
 }

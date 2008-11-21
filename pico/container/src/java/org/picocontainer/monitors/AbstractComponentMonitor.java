@@ -21,6 +21,7 @@ import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Injector;
+import org.picocontainer.Behavior;
 
 /**
  * <p>
@@ -114,6 +115,10 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
 
     public Injector newInjector(Injector injector) {
         return injector;
+    }
+
+    public Behavior newBehavior(Behavior behavior) {
+        return behavior;
     }
 
     /**

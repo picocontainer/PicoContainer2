@@ -27,6 +27,7 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Injector;
+import org.picocontainer.Behavior;
 import org.picocontainer.monitors.ComponentMonitorHelper;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -220,10 +221,14 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
         return delegate.noComponentFound(container, componentKey);
     }
 
-    /** {@inheritDoc}
-     * @param injector**/
+    /** {@inheritDoc} **/
     public Injector newInjector(final Injector injector) {
         return delegate.newInjector(injector);
+    }
+
+    /** {@inheritDoc} **/
+    public Behavior newBehavior(Behavior behavior) {
+        return delegate.newBehavior(behavior);
     }
 
     /**
