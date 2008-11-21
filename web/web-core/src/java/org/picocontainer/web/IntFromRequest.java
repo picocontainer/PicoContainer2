@@ -7,6 +7,8 @@
  ******************************************************************************/
 package org.picocontainer.web;
 
+import org.picocontainer.MutablePicoContainer;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -34,4 +36,17 @@ public class IntFromRequest extends StringFromRequest {
             throw new RuntimeException("'" + num + "' cannot be converted to an integer");
         }
     }
+
+    /**
+     * Add a number of IntFromRequest adapters to a container.
+     * @param toContainer the container to add to
+     * @param names the list of names to make adapters from
+     */
+    public static void addIntegerRequestParameters(MutablePicoContainer toContainer, String... names) {
+        for (String name : names) {
+            toContainer.addAdapter(new IntFromRequest(name));
+        }
+    }
+
+
 }

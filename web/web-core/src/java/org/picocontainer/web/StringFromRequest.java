@@ -9,6 +9,7 @@
 package org.picocontainer.web;
 
 import org.picocontainer.injectors.ProviderAdapter;
+import org.picocontainer.MutablePicoContainer;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -40,5 +41,16 @@ public class StringFromRequest extends ProviderAdapter {
             throw new RuntimeException(paramName + " not in request parameters");
         }
         return parameter;
+    }
+
+    /**
+     * Add a number of StringFromRequest adapters to a container.
+     * @param toContainer the container to add to
+     * @param names the list of names to make adapters from
+     */
+    public static void addStringRequestParameters(MutablePicoContainer toContainer, String... names) {
+        for (String name : names) {
+            toContainer.addAdapter(new StringFromRequest(name));
+        }
     }
 }
