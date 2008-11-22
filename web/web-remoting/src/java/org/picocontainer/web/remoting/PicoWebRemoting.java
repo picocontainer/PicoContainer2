@@ -50,7 +50,7 @@ public class PicoWebRemoting {
         return paths;
     }
 
-    protected String processRequest(String pathInfo, PicoContainer reqContainer) throws IOException {
+    protected String processRequest(String pathInfo, PicoContainer reqContainer, String httpMethod) throws IOException {
         String path = pathInfo.substring(1);
         if (path.endsWith("/")) {
             path = path.substring(0, path.length() - 1);
@@ -69,6 +69,11 @@ public class PicoWebRemoting {
                     WebMethods methods = (WebMethods) node2;
                     Method method = methods.get(methodName);
                     if (method != null) {
+                        String methodz = method.getAnnotation(POST.class) != null ? "POST," : "";
+                        methodz = methodz + (method.getAnnotation(GET.class) != null ? "GET," : "");
+                        if (!methodz.equals("") && !methodz.contains(httpMethod)) {
+                            throw new RuntimeException("method not allowed for " + httpMethod);
+                        }
                         node = reinject(methodName, method, methods.getComponent(), reqContainer);
                     } else {
                         node = null;

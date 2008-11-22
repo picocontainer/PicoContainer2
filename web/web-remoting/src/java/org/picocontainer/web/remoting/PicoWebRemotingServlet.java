@@ -81,7 +81,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
         resp.setContentType("text/plain");
         ServletOutputStream outputStream = resp.getOutputStream();
         try {
-            String result = pwr.processRequest(pathInfo, ServletFilter.getRequestContainerForThread());
+            String result = pwr.processRequest(pathInfo, ServletFilter.getRequestContainerForThread(), req.getMethod());
             if (result != null) {
                 outputStream.print(result);
             } else {
