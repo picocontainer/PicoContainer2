@@ -27,35 +27,34 @@ public final class PicoWebRemotingServletTestCase {
 
     XStream xstream = new XStream();
     {
-        xstream.alias("dirs", PicoWebRemotingServlet.Directories.class);
-        xstream.alias("methods", PicoWebRemotingServlet.WebMethods.class);
-
+        xstream.alias("dirs", PicoWebRemoting.Directories.class);
+        xstream.alias("methods", PicoWebRemoting.WebMethods.class);
     }
 
     @Test
     public void testPaths() throws Exception {
         Map<String, Object> paths = new HashMap<String, Object>();
-        PicoWebRemotingServlet.directorize(paths, "foo/bar/baz1");
-        PicoWebRemotingServlet.directorize(paths, "foo/bar/baz2");
+        PicoWebRemoting.directorize(paths, "foo/bar/baz1");
+        PicoWebRemoting.directorize(paths, "foo/bar/baz2");
         assertEquals(3, paths.size());
-        assertTrue(paths.get("foo") instanceof PicoWebRemotingServlet.Directories);
+        assertTrue(paths.get("foo") instanceof PicoWebRemoting.Directories);
 
-        PicoWebRemotingServlet.Directories dirs = (PicoWebRemotingServlet.Directories) paths.get("foo");
+        PicoWebRemoting.Directories dirs = (PicoWebRemoting.Directories) paths.get("foo");
         assertEquals(1, dirs.size());
         assertEquals("bar", dirs.toArray()[0]);
 
-        dirs = (PicoWebRemotingServlet.Directories) paths.get("foo/bar");
+        dirs = (PicoWebRemoting.Directories) paths.get("foo/bar");
         List<String> sorted = sortedListOf(dirs);
         assertEquals(2, sorted.size());
         assertEquals("baz1", sorted.get(0));
         assertEquals("baz2", sorted.get(1));
 
-        dirs = (PicoWebRemotingServlet.Directories) paths.get("");
+        dirs = (PicoWebRemoting.Directories) paths.get("");
         assertEquals(1, dirs.size());
         assertEquals("foo", dirs.toArray()[0]);
     }
 
-	private List<String> sortedListOf(PicoWebRemotingServlet.Directories dirs) {
+	private List<String> sortedListOf(PicoWebRemoting.Directories dirs) {
 		List<String> list = new ArrayList<String>(dirs);
 		Collections.sort(list);
 		return list;
@@ -64,7 +63,7 @@ public final class PicoWebRemotingServletTestCase {
     @Test
     public void testClasses() throws Exception {
         Map<String, Object> paths = new HashMap<String, Object>();
-        PicoWebRemotingServlet.directorize(paths, "foo/bar/baz1", Foo.class);
+        PicoWebRemoting.directorize(paths, "foo/bar/baz1", Foo.class);
         assertEquals(
                 "<map>\n" +
                         "  <entry>\n" +
