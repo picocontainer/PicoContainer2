@@ -46,6 +46,10 @@ public class PicoWebRemoting {
         this.scopesToPublish = scopesToPublish;
     }
 
+    public Map<String, Object> getPaths() {
+        return paths;
+    }
+
     protected String processRequest(String pathInfo, PicoContainer reqContainer) throws IOException {
         String path = pathInfo.substring(1);
         if (path.endsWith("/")) {
@@ -122,12 +126,12 @@ public class PicoWebRemoting {
         String path = component.getName().replace('.', '/');
         if (toStripFromUrls != "" || path.startsWith(toStripFromUrls)) {
             paths.put(path, key);
-            directorize(paths, path, component);
-            directorize(paths, path);
+            directorize(path, component);
+            directorize(path);
         }
     }
 
-    protected static void directorize(Map<String, Object> paths, String path, Class<?> comp) {
+    protected void directorize(String path, Class<?> comp) {
         WebMethods webMethods = new WebMethods(comp);
         paths.put(path, webMethods);
         determineElibibleMethods(comp, webMethods);
@@ -167,7 +171,7 @@ public class PicoWebRemoting {
 
 
     @SuppressWarnings("unchecked")
-    protected static void directorize(Map<String, Object> paths, String path) {
+    protected void directorize(String path) {
         int lastSlashIx = path.lastIndexOf("/");
         if (lastSlashIx != -1) {
             String dir = path.substring(0, lastSlashIx);
@@ -178,7 +182,7 @@ public class PicoWebRemoting {
                 paths.put(dir, dirs);
             }
             dirs.add(file);
-            directorize(paths, dir);
+            directorize(dir);
         } else {
             Set<String> dirs = (Set<String>) paths.get("/");
             if (dirs == null) {
