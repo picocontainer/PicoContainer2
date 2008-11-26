@@ -32,14 +32,14 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class AnnotatedFieldInjector extends IterativeInjector {
 
- 	
-	private final Class<? extends Annotation> injectionAnnotation;
+
+    private final Class<? extends Annotation> injectionAnnotation;
 
     public AnnotatedFieldInjector(Object key,
                                   Class<?> impl,
                                   Parameter[] parameters,
                                   ComponentMonitor componentMonitor,
-                                  LifecycleStrategy lifecycleStrategy, 
+                                  LifecycleStrategy lifecycleStrategy,
                                   Class<? extends Annotation> injectionAnnotation, boolean useNames) {
 
         super(key, impl, parameters, componentMonitor, lifecycleStrategy, useNames);
@@ -50,13 +50,17 @@ public class AnnotatedFieldInjector extends IterativeInjector {
         injectionMembers = new ArrayList<AccessibleObject>();
         List<Annotation> bindingIds = new ArrayList<Annotation>();
         final List<Type> typeList = new ArrayList<Type>();
-        final Field[] fields = getFields();
-        for (final Field field : fields) {
-            if (isAnnotatedForInjection(field)) {
-                injectionMembers.add(field);
-                typeList.add(box(field.getType()));
-                bindingIds.add(getBinding(field));
+        Class drillInto = getComponentImplementation();
+        while (drillInto != null) {
+            final Field[] fields = getFields(drillInto);
+            for (final Field field : fields) {
+                if (isAnnotatedForInjection(field)) {
+                    injectionMembers.add(field);
+                    typeList.add(box(field.getType()));
+                    bindingIds.add(getBinding(field));
+                }
             }
+            drillInto = drillInto.getSuperclass();
         }
         injectionTypes = typeList.toArray(new Type[0]);
         bindings = bindingIds.toArray(new Annotation[0]);
@@ -76,17 +80,17 @@ public class AnnotatedFieldInjector extends IterativeInjector {
         return field.getAnnotation(injectionAnnotation) != null;
     }
 
-    private Field[] getFields() {
+    private Field[] getFields(final Class clazz) {
         return (Field[]) AccessController.doPrivileged(new PrivilegedAction() {
             public Object run() {
-                return getComponentImplementation().getDeclaredFields();
+                return clazz.getDeclaredFields();
             }
         });
     }
 
 
     protected Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
-        throws IllegalAccessException, InvocationTargetException {
+            throws IllegalAccessException, InvocationTargetException {
         Field field = (Field) member;
         field.setAccessible(true);
         field.set(componentInstance, toInject);

@@ -20,6 +20,7 @@ import java.lang.annotation.Target;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoBuilder;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -44,31 +45,34 @@ public class AnnotatedFieldInjectorTestCase {
     public static class PogoStick {
     }
 
-    @Test public void testFieldInjection() {
+    @Test
+    public void testFieldInjection() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedFieldInjector(Helicopter.class, Helicopter.class, null,
-                                                    new NullComponentMonitor(), new NullLifecycleStrategy(), Inject.class, false));
+                new NullComponentMonitor(), new NullLifecycleStrategy(), Inject.class, false));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
         assertNotNull(chopper);
         assertNotNull(chopper.pogo);
     }
 
-    @Test public void testFieldInjectionWithoutAnnotationDoesNotWork() {
+    @Test
+    public void testFieldInjectionWithoutAnnotationDoesNotWork() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedFieldInjector(Helicopter2.class, Helicopter2.class, null,
-                                                    new NullComponentMonitor(), new NullLifecycleStrategy(), Inject.class, false));
+                new NullComponentMonitor(), new NullLifecycleStrategy(), Inject.class, false));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter2 chopper = pico.getComponent(Helicopter2.class);
         assertNotNull(chopper);
         assertNull(chopper.pogo);
     }
 
-    @Test public void testFieldDeosNotHappenWithoutRightInjectorDoesNotWork() {
+    @Test
+    public void testFieldDeosNotHappenWithoutRightInjectorDoesNotWork() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new SetterInjector(Helicopter.class, Helicopter.class, null,
-                                                    new NullComponentMonitor(), new NullLifecycleStrategy(),
-                                                    "set", false));
+                new NullComponentMonitor(), new NullLifecycleStrategy(),
+                "set", false));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
         assertNotNull(chopper);
@@ -76,7 +80,7 @@ public class AnnotatedFieldInjectorTestCase {
     }
 
     @Retention(RetentionPolicy.RUNTIME)
-    @Target(value={ ElementType.METHOD, ElementType.FIELD})
+    @Target(value = {ElementType.METHOD, ElementType.FIELD})
     public @interface AlternativeInject {
     }
 
@@ -88,14 +92,37 @@ public class AnnotatedFieldInjectorTestCase {
         }
     }
 
-    @Test public void testFieldInjectionWithAlternativeInjectionAnnotation() {
+    @Test
+    public void testFieldInjectionWithAlternativeInjectionAnnotation() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new AnnotatedFieldInjector(Helicopter3.class, Helicopter3.class, null,
-                                                    new NullComponentMonitor(), new NullLifecycleStrategy(), AlternativeInject.class, false));
+                new NullComponentMonitor(), new NullLifecycleStrategy(), AlternativeInject.class, false));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter3 chopper = pico.getComponent(Helicopter3.class);
         assertNotNull(chopper);
         assertNotNull(chopper.pogo);
+    }
+
+    public static abstract class A {
+        @Inject
+        protected C c;
+    }
+
+    public static class B extends A {
+    }
+
+    public static class C {
+    }
+
+    @Test
+    public void testThatSuperClassCanHaveAnnotatedFields() {
+        MutablePicoContainer container = new PicoBuilder().withAnnotatedFieldInjection().build();
+        container.addComponent(C.class);
+        container.addComponent(B.class);
+
+        B b = container.getComponent(B.class);
+        assertNotNull(b);
+        assertNotNull(b.c);
     }
 
 }
