@@ -306,6 +306,9 @@ public class CollectionComponentParameter implements Parameter, Serializable {
         if (Collection.class.isAssignableFrom((Class<?>) collectionType.getRawType())) {
             Type type = collectionType.getActualTypeArguments()[0];
             if (type instanceof Class) {
+                if (((Class)type).isAssignableFrom(valueType)) {
+                    return valueType;
+                }
                 valueType = (Class) type;
             }
         }
