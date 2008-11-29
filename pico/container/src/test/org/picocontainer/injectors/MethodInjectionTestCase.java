@@ -12,6 +12,9 @@ package org.picocontainer.injectors;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.lang.reflect.Method;
 
 import org.junit.Test;
 import org.picocontainer.Characteristics;
@@ -22,10 +25,6 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.annotations.Nullable;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
-
-import java.lang.reflect.Method;
-
-import static com.sun.tools.internal.ws.wsdl.parser.Util.fail;
 
 public class MethodInjectionTestCase {
 
