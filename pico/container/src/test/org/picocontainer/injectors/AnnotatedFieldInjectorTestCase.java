@@ -125,4 +125,30 @@ public class AnnotatedFieldInjectorTestCase {
         assertNotNull(b.c);
     }
 
+    public static abstract class A2 {
+        @Inject
+        protected D2 d2;
+    }
+
+    public static abstract class B2 extends A2 {
+    }
+
+    public static class C2 extends B2 {
+    }
+
+    public static class D2 {
+    }
+
+
+    @Test
+    public void testThatEvenMoreSuperClassCanHaveAnnotatedFields() {
+        MutablePicoContainer container = new PicoBuilder().withAnnotatedFieldInjection().build();
+        container.addComponent(D2.class);
+        container.addComponent(C2.class);
+
+        C2 c2 = container.getComponent(C2.class);
+        assertNotNull(c2);
+        assertNotNull(c2.d2);
+    }
+
 }
