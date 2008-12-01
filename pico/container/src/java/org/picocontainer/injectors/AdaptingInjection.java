@@ -188,8 +188,7 @@ public class AdaptingInjection extends AbstractInjectionFactory {
                                  Properties componentProperties,
                                  Object componentKey, ComponentAdapter<T> componentAdapter, Parameter... parameters) {
         if (injectionFieldAnnotated(componentImplementation)) {
-             componentAdapter =
-                new AnnotatedFieldInjection().createComponentAdapter(componentMonitor,
+             componentAdapter = new AnnotatedFieldInjection().createComponentAdapter(componentMonitor,
                                                                              lifecycleStrategy,
                                                                              componentProperties,
                                                                              componentKey,
@@ -210,7 +209,18 @@ public class AdaptingInjection extends AbstractInjectionFactory {
     private boolean injectionFieldAnnotated(final Class<?> componentImplementation) {
         return (Boolean) AccessController.doPrivileged(new PrivilegedAction<Object>() {
             public Object run() {
-                return injectionAnnotated(componentImplementation.getDeclaredFields());
+                if (componentImplementation.isInterface()) {
+                    return false;
+                }
+                Class impl = componentImplementation;
+                while (impl != Object.class) {
+                    boolean injAnnotated = injectionAnnotated(impl.getDeclaredFields());
+                    if (injAnnotated) {
+                        return true;
+                    }
+                    impl = impl.getSuperclass();
+                }
+                return false;
             }
         });
     }

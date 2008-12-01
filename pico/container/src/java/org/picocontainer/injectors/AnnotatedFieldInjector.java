@@ -51,7 +51,7 @@ public class AnnotatedFieldInjector extends IterativeInjector {
         List<Annotation> bindingIds = new ArrayList<Annotation>();
         final List<Type> typeList = new ArrayList<Type>();
         Class drillInto = getComponentImplementation();
-        while (drillInto != null) {
+        while (drillInto != Object.class) {
             final Field[] fields = getFields(drillInto);
             for (final Field field : fields) {
                 if (isAnnotatedForInjection(field)) {

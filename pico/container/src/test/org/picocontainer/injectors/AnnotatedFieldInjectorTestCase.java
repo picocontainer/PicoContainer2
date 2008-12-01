@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
+import org.picocontainer.Startable;
 import org.picocontainer.annotations.Inject;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -116,7 +117,7 @@ public class AnnotatedFieldInjectorTestCase {
 
     @Test
     public void testThatSuperClassCanHaveAnnotatedFields() {
-        MutablePicoContainer container = new PicoBuilder().withAnnotatedFieldInjection().build();
+        MutablePicoContainer container = new PicoBuilder().withAutomatic().build();
         container.addComponent(C.class);
         container.addComponent(B.class);
 
@@ -139,10 +140,20 @@ public class AnnotatedFieldInjectorTestCase {
     public static class D2 {
     }
 
-
     @Test
     public void testThatEvenMoreSuperClassCanHaveAnnotatedFields() {
         MutablePicoContainer container = new PicoBuilder().withAnnotatedFieldInjection().build();
+        container.addComponent(D2.class);
+        container.addComponent(C2.class);
+
+        C2 c2 = container.getComponent(C2.class);
+        assertNotNull(c2);
+        assertNotNull(c2.d2);
+    }
+
+    @Test
+    public void testThatEvenMoreSuperClassCanHaveAnnotatedFieldsViaAdaptingInjection() {
+        MutablePicoContainer container = new PicoBuilder().build();
         container.addComponent(D2.class);
         container.addComponent(C2.class);
 

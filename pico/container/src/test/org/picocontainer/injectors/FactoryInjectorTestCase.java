@@ -25,12 +25,21 @@ public class FactoryInjectorTestCase {
     public static interface Swede {
     }
 
-    public static class Turnip2 extends Turnip {
+    public static class Turnip2 {
+        Swede swede;
+        private final String foo;
         public Turnip2(String foo, Swede swede) {
-            super(foo);
+            this.foo = foo;
             assertNotNull(swede);
-            super.swede = swede;
+            this.swede = swede;
         }
+        public Swede getSwede() {
+            return swede;
+        }
+
+        public String getFoo() {
+            return foo;
+        }                     
     }
 
     public static class Turnip {
