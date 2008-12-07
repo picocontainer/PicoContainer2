@@ -35,6 +35,9 @@ public class ContextBuilder extends NodeBuilder {
             return makeFilter(map);
         } else if (name.equals("servlet")) {
             return makeServlet(map);
+        } else if (name.equals("initParam")) {
+            makeInitParam(map);
+            return null;
         } else if (name.equals("listener")) {
             return makeListener(map);
         } else if (name.equals("virtualHost")) {
@@ -91,6 +94,12 @@ public class ContextBuilder extends NodeBuilder {
             return servlet;
         }
 
+    }
+
+    private void makeInitParam(Map map) {
+        String name = (String) map.remove("name");
+        String value = (String) map.remove("value");
+        context.addInitParam(name, value);
     }
 
     private Object makeFilter(Map map) {

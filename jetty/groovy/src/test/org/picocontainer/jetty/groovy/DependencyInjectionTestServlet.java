@@ -11,12 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 public class DependencyInjectionTestServlet extends HttpServlet {
     private final String name;
     private String foo;
-    
+    private ServletConfig servletConfig;
+
     public DependencyInjectionTestServlet(String name) {
         this.name = name;
     }
         
     public void init(ServletConfig servletConfig) throws ServletException {
+        this.servletConfig = servletConfig;
         String initParameter = servletConfig.getInitParameter("foo");
         if (initParameter!= null) {
             foo = initParameter;
@@ -29,8 +31,9 @@ public class DependencyInjectionTestServlet extends HttpServlet {
         if (request.getAttribute("foo2") != null) {
             message = message + request.getAttribute("foo2");
         }
-        
-        String text = "hello " + message + ( foo != null ? " "+  foo : "" );
+
+        String initParameter = servletConfig.getServletContext().getInitParameter("a");
+        String text = "hello " + message + ( foo != null ? " "+  foo : "" ) + "<" + initParameter + ">";
         response.getWriter().write(text);
     }
 

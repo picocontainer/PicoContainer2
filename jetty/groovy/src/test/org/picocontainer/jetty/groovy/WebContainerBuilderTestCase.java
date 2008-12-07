@@ -55,6 +55,7 @@ public final class WebContainerBuilderTestCase {
                 // declare the web container
                 "    webContainer(port:8080) {\n" +
                 "        context(path:'/bar') {\n" +
+                "            initParam(name:'a', value:'b')\n" +
                 "            filter(path:'/*', class:org.picocontainer.jetty.groovy.DependencyInjectionTestFilter," +
                 "                   dispatchers: new Integer(0)){\n" +
                 "               initParam(name:'foo', value:'bau')\n" +
@@ -66,7 +67,7 @@ public final class WebContainerBuilderTestCase {
                 // end declaration
                 "}\n");
 
-        assertPageIsHostedWithContents(script, "hello Fred Filtered!(int= 5 bau)", "http://localhost:8080/bar/foo2");
+        assertPageIsHostedWithContents(script, "hello Fred Filtered!(int= 5 bau)<b>", "http://localhost:8080/bar/foo2");
     }
 
     @Test public void testCanComposeWebContainerContextAndServlet() throws InterruptedException, IOException {
@@ -87,7 +88,7 @@ public final class WebContainerBuilderTestCase {
                 // end declaration
                 "}\n");
 
-        assertPageIsHostedWithContents(script, "hello Fred bar", "http://localhost:8080/bar/foo");
+        assertPageIsHostedWithContents(script, "hello Fred bar<null>", "http://localhost:8080/bar/foo");
     }
 
     @Test public void testCanComposeWebContainerContextAndServletInstance() throws InterruptedException, IOException {
@@ -107,7 +108,7 @@ public final class WebContainerBuilderTestCase {
                 // end declaration
                 "}\n");
 
-        assertPageIsHostedWithContents(script, "hello Fred", "http://localhost:8080/bar/foo");
+        assertPageIsHostedWithContents(script, "hello Fred<null>", "http://localhost:8080/bar/foo");
     }
 
     
@@ -128,7 +129,7 @@ public final class WebContainerBuilderTestCase {
                 // end declaration
                 "}\n");
 
-        assertPageIsHostedWithContents(script, "hello Fred", "http://localhost:8080/bar/foo");
+        assertPageIsHostedWithContents(script, "hello Fred<null>", "http://localhost:8080/bar/foo");
     }
 
     @Test public void testCanComposeWebContainerAndWarFile() throws InterruptedException, IOException {
