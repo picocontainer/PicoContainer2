@@ -51,52 +51,60 @@ public class PicoWebRemoting {
     }
 
     protected String processRequest(String pathInfo, PicoContainer reqContainer, String httpMethod) throws IOException {
-        String path = pathInfo.substring(1);
-        if (path.endsWith("/")) {
-            path = path.substring(0, path.length() - 1);
-        }
-        path = toStripFromUrls + path;
-
-        Object node = paths.get(path);
-
-        if (node == null) {
-            int ix = path.lastIndexOf('/');
-            if (ix > 0) {
-                String methodName = path.substring(ix + 1);
-                path = path.substring(0, ix);
-                Object node2 = paths.get(path);
-                if (node2 instanceof WebMethods) {
-                    WebMethods methods = (WebMethods) node2;
-                    Method method = methods.get(methodName);
-                    if (method != null) {
-                        String methodz = method.getAnnotation(POST.class) != null ? "POST," : "";
-                        methodz = methodz + (method.getAnnotation(GET.class) != null ? "GET," : "");
-                        if (!methodz.equals("") && !methodz.contains(httpMethod)) {
-                            throw new RuntimeException("method not allowed for " + httpMethod);
-                        }
-                        node = reinject(methodName, method, methods.getComponent(), reqContainer);
-                    } else {
-                        node = null;
-                    }
-                }
-            } else {
-                node = null;
+        try {
+            String path = pathInfo.substring(1);
+            if (path.endsWith("/")) {
+                path = path.substring(0, path.length() - 1);
             }
+            path = toStripFromUrls + path;
+
+            Object node = paths.get(path);
+
+            if (node == null) {
+                int ix = path.lastIndexOf('/');
+                if (ix > 0) {
+                    String methodName = path.substring(ix + 1);
+                    path = path.substring(0, ix);
+                    Object node2 = paths.get(path);
+                    if (node2 instanceof WebMethods) {
+                        WebMethods methods = (WebMethods) node2;
+                        Method method = methods.get(methodName);
+                        if (method != null) {
+                            String methodz = (method.getAnnotation(POST.class) != null ? "POST," : "")
+                                    + (method.getAnnotation(GET.class) != null ? "GET," : "")
+                                    + (method.getAnnotation(PUT.class) != null ? "PUT," : "")
+                                    + (method.getAnnotation(DELETE.class) != null ? "DELETE," : "");
+                            if (!methodz.equals("") && !methodz.contains(httpMethod)) {
+                                throw new RuntimeException("method not allowed for " + httpMethod);
+                            }
+                            node = reinject(methodName, method, methods.getComponent(), reqContainer);
+                        } else {
+                            node = null;
+                        }
+                    }
+                } else {
+                    node = null;
+                }
+            }
+
+            if (node instanceof Directories) {
+                Directories directories = (Directories) node;
+                return xStreamNoRoot.toXML(directories.toArray()) + "\n";
+            } else if (node instanceof WebMethods) {
+                WebMethods methods = (WebMethods) node;
+                return xStreamNoRoot.toXML(methods.keySet().toArray()) + "\n";
+            } else if (node != null && isComposite(node)) {
+                return xStreamNoRoot.toXML(node) + "\n";
+            } else if (node != null) {
+                return node != null ? xStreamWithRoot.toXML(node) + "\n" : null;
+            } else {
+                return null;
+            }
+        } catch (RuntimeException e) {
+            // TODO monitor
+            return errorResult(e);
         }
 
-        if (node instanceof Directories) {
-            Directories directories = (Directories) node;
-            return xStreamNoRoot.toXML(directories.toArray()) + "\n";
-        } else if (node instanceof WebMethods) {
-            WebMethods methods = (WebMethods) node;
-            return xStreamNoRoot.toXML(methods.keySet().toArray()) + "\n";
-        } else if (node != null && isComposite(node)) {
-            return xStreamNoRoot.toXML(node) + "\n";
-        } else if (node != null) {
-            return node != null ? xStreamWithRoot.toXML(node) + "\n" : null;
-        } else {
-            return null;
-        }
     }
 
     public void publishAdapters(Collection<ComponentAdapter<?>> adapters, String scope) {
@@ -113,7 +121,7 @@ public class PicoWebRemoting {
         }
     }
 
-    private static void determineElibibleMethods(Class<?> component, WebMethods webMethods) {
+    private void determineEligibleMethods(Class<?> component, WebMethods webMethods) {
         Method[] methods = component.getDeclaredMethods();
         for (Method method : methods) {
             if (Modifier.isPublic(method.getModifiers()) && !Modifier.isStatic(method.getModifiers()))
@@ -121,7 +129,7 @@ public class PicoWebRemoting {
         }
         Class<?> superClass = component.getSuperclass();
         if (superClass != Object.class) {
-            determineElibibleMethods(superClass, webMethods);
+            determineEligibleMethods(superClass, webMethods);
         }
     }
 
@@ -139,7 +147,7 @@ public class PicoWebRemoting {
     protected void directorize(String path, Class<?> comp) {
         WebMethods webMethods = new WebMethods(comp);
         paths.put(path, webMethods);
-        determineElibibleMethods(comp, webMethods);
+        determineEligibleMethods(comp, webMethods);
     }
 
     public String errorResult(RuntimeException e) {

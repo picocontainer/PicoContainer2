@@ -80,16 +80,11 @@ public class PicoWebRemotingServlet extends HttpServlet {
 
         resp.setContentType("text/plain");
         ServletOutputStream outputStream = resp.getOutputStream();
-        try {
-            String result = pwr.processRequest(pathInfo, ServletFilter.getRequestContainerForThread(), req.getMethod());
-            if (result != null) {
-                outputStream.print(result);
-            } else {
-                resp.sendError(400, "Nothing is mapped to this URL, remove the last term for directory list.");
-            }
-        } catch (RuntimeException e) {
-            // TODO monitor
-            outputStream.print(pwr.errorResult(e));
+        String result = pwr.processRequest(pathInfo, ServletFilter.getRequestContainerForThread(), req.getMethod());
+        if (result != null) {
+            outputStream.print(result);
+        } else {
+            resp.sendError(400, "Nothing is mapped to this URL, remove the last term for directory list.");
         }
     }
 
