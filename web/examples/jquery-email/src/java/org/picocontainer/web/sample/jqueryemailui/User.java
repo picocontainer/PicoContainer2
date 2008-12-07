@@ -32,7 +32,7 @@ public class User {
         }
 
         @Override
-        public Object provide(HttpServletRequest req) {
+        public User provide(HttpServletRequest req) {
             try {
                 return new User((String) super.provide(req));
             } catch (NotFound e) {

@@ -29,7 +29,7 @@ public abstract class Mailbox {
         return messages.put(newMsg.getId(), newMsg);
     }
 
-    public Object read(int msgId) {
+    public MessageData read(int msgId) {
         MessageData messageData = messages.get(msgId);
         messageData.read = true;
         return messageData;
