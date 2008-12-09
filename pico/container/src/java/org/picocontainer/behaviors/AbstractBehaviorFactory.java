@@ -73,7 +73,7 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
         return adapter;
     }
 
-    public static boolean arePropertiesPresent(Properties current, Properties present) {
+    public static boolean arePropertiesPresent(Properties current, Properties present, boolean compareValueToo) {
         Enumeration<?> keys = present.keys();
         while (keys.hasMoreElements()) {
             String key = (String) keys.nextElement();
@@ -82,7 +82,7 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
             if (currentValue == null) {
                 return false;
             }
-            if (!presentValue.equals(currentValue)) {
+            if (!presentValue.equals(currentValue) && compareValueToo) {
                 return false;
             }
         }
@@ -90,7 +90,7 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
     }
 
     public static boolean removePropertiesIfPresent(Properties current, Properties present) {
-        if (!arePropertiesPresent(current, present)) {
+        if (!arePropertiesPresent(current, present, true)) {
             return false;
         }
         Enumeration<?> keys = present.keys();
@@ -99,6 +99,19 @@ public class AbstractBehaviorFactory implements ComponentFactory, Serializable, 
             current.remove(key);
         }
         return true;
+    }
+
+    public static String getAndRemovePropertiesIfPresentByKey(Properties current, Properties present) {
+        if (!arePropertiesPresent(current, present, false)) {
+            return null;
+        }
+        Enumeration<?> keys = present.keys();
+        String value = null;
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            value = (String) current.remove(key);
+        }
+        return value;
     }
 
     protected void mergeProperties(Properties into, Properties from) {

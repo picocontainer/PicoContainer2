@@ -110,7 +110,7 @@ public class SimpleNamedBindingAnnotationTestCase {
             Class<T> componentImplementation, Parameter ... parameters)
             throws PicoCompositionException {
             boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(
-                componentProperties, Characteristics.USE_NAMES);
+                componentProperties, Characteristics.USE_NAMES, true);
             return new FieldInjector(
                 componentKey, componentImplementation, parameters, componentMonitor,
                 lifecycleStrategy, useNames);

@@ -45,6 +45,7 @@ public class AdaptingBehavior implements BehaviorFactory, Serializable {
         processAutomatic(componentProperties, list);
         processImplementationHiding(componentProperties, list);
         processCaching(componentProperties, componentImplementation, list);
+        processGuarding(componentProperties, componentImplementation, list);
 
         //Instantiate Chain of ComponentFactories
         for (ComponentFactory componentFactory : list) {
@@ -71,6 +72,7 @@ public class AdaptingBehavior implements BehaviorFactory, Serializable {
         processSynchronizing(componentProperties, list);
         processImplementationHiding(componentProperties, list);
         processCaching(componentProperties, adapter.getComponentImplementation(), list);
+        processGuarding(componentProperties, adapter.getComponentImplementation(), list);
 
         //Instantiate Chain of ComponentFactories
         BehaviorFactory lastFactory = null;
@@ -121,6 +123,12 @@ public class AdaptingBehavior implements BehaviorFactory, Serializable {
             list.add(new Caching());
         }
         AbstractBehaviorFactory.removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE);
+    }
+
+    protected void processGuarding(Properties componentProperties, Class componentImplementation, List<BehaviorFactory> list) {
+        if (AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.GUARD, false)) {
+            list.add(new Guarding());
+        }
     }
 
     protected void processImplementationHiding(Properties componentProperties,

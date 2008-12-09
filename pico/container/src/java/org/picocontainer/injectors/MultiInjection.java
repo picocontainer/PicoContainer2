@@ -37,7 +37,7 @@ public class MultiInjection extends AbstractInjectionFactory {
                                                           Object componentKey,
                                                           Class<T> componentImplementation,
                                                           Parameter... parameters) throws PicoCompositionException {
-        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES);
+        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
         return new MultiInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterPrefix, useNames);
     }
 }

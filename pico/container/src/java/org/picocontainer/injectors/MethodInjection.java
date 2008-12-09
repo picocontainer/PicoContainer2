@@ -56,7 +56,7 @@ public class MethodInjection extends AbstractInjectionFactory {
         }
 
         public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
-            boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES);
+            boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
             return new MethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionMethodName, useNames);
         }
     }
@@ -69,7 +69,7 @@ public class MethodInjection extends AbstractInjectionFactory {
         }
 
         public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
-            boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES);
+            boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
             if (injectionMethod.getDeclaringClass().isAssignableFrom(componentImplementation)) {
                 return componentMonitor.newInjector(new MethodInjector.ByReflectionMethod(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionMethod, useNames));
             } else {

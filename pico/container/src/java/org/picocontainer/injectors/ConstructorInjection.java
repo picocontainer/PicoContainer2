@@ -55,7 +55,7 @@ public class ConstructorInjection extends AbstractInjectionFactory  {
 
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties properties, Object componentKey,
                                                    Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
-        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(properties, Characteristics.USE_NAMES);
+        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(properties, Characteristics.USE_NAMES, true);
         return componentMonitor.newInjector(new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, useNames, rememberChosenConstructor));
     }
 }

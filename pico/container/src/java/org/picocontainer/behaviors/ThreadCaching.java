@@ -52,8 +52,7 @@ public class ThreadCaching extends AbstractBehaviorFactory {
     public <T> ComponentAdapter<T> addComponentAdapter(ComponentMonitor componentMonitor,
                                                        LifecycleStrategy lifecycleStrategy,
                                                        Properties componentProperties,
-                                                       ComponentAdapter<T> adapter)
-    {
+                                                       ComponentAdapter<T> adapter) {
         if (removePropertiesIfPresent(componentProperties, Characteristics.NO_CACHE)) {
             return super.addComponentAdapter(componentMonitor, lifecycleStrategy, componentProperties, adapter);
         }

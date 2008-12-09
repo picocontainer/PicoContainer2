@@ -46,7 +46,7 @@ public class AnnotatedFieldInjection extends AbstractInjectionFactory {
                                                    Object componentKey,
                                                    Class<T> componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
-        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES);
+        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
         return componentMonitor.newInjector(new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy,
                                           injectionAnnotation, useNames));
     }

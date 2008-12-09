@@ -49,7 +49,7 @@ public class CompositeInjection extends AbstractInjectionFactory {
                     lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters);
         }
 
-        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES);
+        boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
         return componentMonitor.newInjector(new CompositeInjector(componentKey, componentImplementation, parameters,
                 componentMonitor, lifecycleStrategy,
                 useNames, injectors));

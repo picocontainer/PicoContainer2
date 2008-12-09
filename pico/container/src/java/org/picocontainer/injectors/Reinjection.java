@@ -29,7 +29,7 @@ public class Reinjection extends CompositeInjection {
                     ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy,
                     Properties componentProperties, final Object componentKey, Class<T> componentImplementation,
                     Parameter... parameters) throws PicoCompositionException {
-                boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES);
+                boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
                 return new ReinjectionInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, parent, useNames);
             }
         }, reinjectionFactory);
