@@ -1,6 +1,7 @@
 package org.picocontainer.web.sample.jqueryemailui;
 
 import org.picocontainer.web.StringFromCookie;
+import org.picocontainer.injectors.ProviderAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,9 +17,10 @@ public class User {
         return userName;
     }
 
-    public static class FromCookie extends StringFromCookie {
+    public static class FromCookie extends ProviderAdapter {
+        private StringFromCookie stringFromCookie = new StringFromCookie("userName");
         public FromCookie() {
-            super("userName");
+            super();
         }
 
         @Override
@@ -31,11 +33,10 @@ public class User {
             return User.class;    
         }
 
-        @Override
         public User provide(HttpServletRequest req) {
             try {
-                return new User((String) super.provide(req));
-            } catch (NotFound e) {
+                return new User(stringFromCookie.provide(req));
+            } catch (StringFromCookie.NotFound e) {
                 e.printStackTrace();
                 throw new NotLoggedIn();
             }

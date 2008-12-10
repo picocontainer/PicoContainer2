@@ -36,7 +36,7 @@ public class StringFromCookie extends ProviderAdapter {
         return name;
     }
 
-    public Object provide(HttpServletRequest req) {
+    public String provide(HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals(name)) {

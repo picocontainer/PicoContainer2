@@ -120,9 +120,10 @@ function highlightRow() {
 function submitLogin() {
     $.post("pwr/Auth/logIn", {
         userName: document.loginForm.userName.value,
-        password: document.loginForm.password.value
+        password: document.loginForm.password.value,
     }, function(data) {
-        if (data.string == "OK") {
+        if (data.ERROR == undefined) {
+            securitySeed = data.string;
             loadRows();
             document.loginForm.reset();
             $.unblockUI();
@@ -142,7 +143,7 @@ function doLogOut() {
 }
 
 function loadRows() {
-    $.get("pwr/" + view + "/messages", {}, function(data) {
+    $.get("pwr/" + view + "/messages", {sec: securitySeed}, function(data) {
         if (data.ERROR != true) {
             for (var i = 0; i < data.length; i++) {
                 var id = data[i].id;
@@ -162,7 +163,7 @@ function readMessage() {
     {
         $(this).removeClass("mail_unread");
     }
-    $.post("pwr/" + view + "/read", {msgId: this.id }, function(data) {
+    $.post("pwr/" + view + "/read", {msgId: this.id, sec: securitySeed}, function(data) {
         if (data.ERROR == undefined) {
             // using JSON objects
             document.readMessageForm.subject.value = data.subject;
@@ -216,7 +217,7 @@ function deleteMessages()
 {
     $(".selectable:checked").each(function() {
         $("#" + $(this).val()).remove();
-        $.post("pwr/" + view + "/delete", {msgId: $(this).val()});
+        $.post("pwr/" + view + "/delete", {msgId: $(this).val(), sec: securitySeed});
     });
 }
 
@@ -226,7 +227,7 @@ function sendMessage() {
     var message = document.composeMailForm.message.value;
     var to = document.composeMailForm.to.value;
 
-    $.post("pwr/Sent/send", {subject: subject, message: message, to: to},
+    $.post("pwr/Sent/send", {subject: subject, message: message, to: to, sec: securitySeed},
             function(data) {
 
                 if (data != undefined)

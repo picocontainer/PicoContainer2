@@ -3,6 +3,7 @@ package org.picocontainer.web.sample.jqueryemailui;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -25,13 +26,16 @@ public class Auth {
         return "";
     }
 
-    public void logIn(String userName, String password, HttpServletResponse resp) {
+    public String logIn(String userName, String password, HttpSession session, HttpServletResponse resp) {
+        String securitySeed = "" + Math.random();
         String actualPassword = users.get(userName);
         if (actualPassword == null || !actualPassword.equals(password)) {
             writeCookie("", resp);
             throw new RuntimeException("Invalid Login. User name or password incorrect.");
         }
         writeCookie(userName, resp);
+        session.setAttribute("securitySeed", securitySeed);
+        return securitySeed;
     }
 
     public void logOut(HttpServletResponse resp) {

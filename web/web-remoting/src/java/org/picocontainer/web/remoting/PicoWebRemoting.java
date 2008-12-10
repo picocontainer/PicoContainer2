@@ -67,20 +67,7 @@ public class PicoWebRemoting {
                     path = path.substring(0, ix);
                     Object node2 = paths.get(path);
                     if (node2 instanceof WebMethods) {
-                        WebMethods methods = (WebMethods) node2;
-                        Method method = methods.get(methodName);
-                        if (method != null) {
-                            String methodz = (method.getAnnotation(POST.class) != null ? "POST," : "")
-                                    + (method.getAnnotation(GET.class) != null ? "GET," : "")
-                                    + (method.getAnnotation(PUT.class) != null ? "PUT," : "")
-                                    + (method.getAnnotation(DELETE.class) != null ? "DELETE," : "");
-                            if (!methodz.equals("") && !methodz.contains(httpMethod)) {
-                                throw new RuntimeException("method not allowed for " + httpMethod);
-                            }
-                            node = reinject(methodName, method, methods.getComponent(), reqContainer);
-                        } else {
-                            node = null;
-                        }
+                        node = processWebMethodRequest(reqContainer, httpMethod, methodName, node2);
                     }
                 } else {
                     node = null;
@@ -105,6 +92,25 @@ public class PicoWebRemoting {
             return errorResult(e);
         }
 
+    }
+
+    private Object processWebMethodRequest(PicoContainer reqContainer, String httpMethod, String methodName, Object node2) throws IOException {
+        Object node;
+        WebMethods methods = (WebMethods) node2;
+        Method method = methods.get(methodName);
+        if (method != null) {
+            String methodz = (method.getAnnotation(POST.class) != null ? "POST," : "")
+                    + (method.getAnnotation(GET.class) != null ? "GET," : "")
+                    + (method.getAnnotation(PUT.class) != null ? "PUT," : "")
+                    + (method.getAnnotation(DELETE.class) != null ? "DELETE," : "");
+            if (!methodz.equals("") && !methodz.contains(httpMethod)) {
+                throw new RuntimeException("method not allowed for " + httpMethod);
+            }
+            node = reinject(methodName, method, methods.getComponent(), reqContainer);
+        } else {
+            node = null;
+        }
+        return node;
     }
 
     public void publishAdapters(Collection<ComponentAdapter<?>> adapters, String scope) {
@@ -132,7 +138,6 @@ public class PicoWebRemoting {
             determineEligibleMethods(superClass, webMethods);
         }
     }
-
 
     private void publishAdapter(Object key) {
         Class<?> component = (Class<?>) key;

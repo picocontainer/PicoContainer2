@@ -23,6 +23,7 @@ import org.picocontainer.BehaviorFactory;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Storing;
+import org.picocontainer.behaviors.Guarding;
 
 /**
  * Servlet listener class that hooks into the underlying servlet container and
@@ -154,7 +155,7 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         Storing sessStoring = new Storing();
         DefaultPicoContainer sessCtnr = new DefaultPicoContainer(sessStoring, appCtnr);
         Storing reqStoring = new Storing();
-        DefaultPicoContainer reqCtnr = new DefaultPicoContainer(addRequestBehaviors(reqStoring), sessCtnr);
+        DefaultPicoContainer reqCtnr = new DefaultPicoContainer(new Guarding().wrap(addRequestBehaviors(reqStoring)), sessCtnr);
         return new ScopedContainers(appCtnr, sessCtnr, reqCtnr, sessStoring, reqStoring);
     }
 
