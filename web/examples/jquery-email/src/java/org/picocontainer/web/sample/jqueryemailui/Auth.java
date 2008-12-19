@@ -26,16 +26,13 @@ public class Auth {
         return "";
     }
 
-    public String logIn(String userName, String password, HttpSession session, HttpServletResponse resp) {
-        String securitySeed = "" + Math.random();
+    public void logIn(String userName, String password, HttpSession session, HttpServletResponse resp) {
         String actualPassword = users.get(userName);
         if (actualPassword == null || !actualPassword.equals(password)) {
             writeCookie("", resp);
             throw new RuntimeException("Invalid Login. User name or password incorrect.");
         }
         writeCookie(userName, resp);
-        session.setAttribute("securitySeed", securitySeed);
-        return securitySeed;
     }
 
     public void logOut(HttpServletResponse resp) {
