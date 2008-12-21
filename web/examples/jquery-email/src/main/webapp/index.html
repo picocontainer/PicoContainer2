@@ -79,11 +79,6 @@ $(document).ready(function() {
         submitLogin();
     });
 
-    $("#logOut").click(function() {
-        doLogout();
-    });
-
-
     $("#cancelDelete").click(function() {
         $.unblockUI();
     });
@@ -120,7 +115,7 @@ function highlightRow() {
 function submitLogin() {
     $.post("pwr/Auth/logIn", {
         userName: document.loginForm.userName.value,
-        password: document.loginForm.password.value,
+        password: document.loginForm.password.value
     }, function(data) {
         if (data.string == "OK") {
             loadRows();
@@ -132,8 +127,8 @@ function submitLogin() {
     }, "json");
 }
 
-function doLogOut() {
-    $.post("pwr/auth/logOut", {}, function(data) {
+function logOut() {
+    $.post("pwr/Auth/logOut", {}, function(data) {
         if (data.string == "OK") {
             loadRows();
             window.location.reload();
@@ -258,7 +253,7 @@ function sendMessage() {
 
                 <p><span id=sentBox><a href="index.html?view=Sent">Sent</a></span>
 
-                <p><span id="logOut"><a onclick="logOut();">Log Out</a></span>
+                <p><span id="logOut"><a href="javascript:logOut();">Log Out</a></span>
 
             </div>
 
