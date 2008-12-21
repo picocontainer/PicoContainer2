@@ -7,7 +7,7 @@
 <script type="text/javascript" src="js/jquery.dimensions.min.js"></script>
 <script type="text/javascript" src="js/jquery.corner.min.js"></script>
 <script type="text/javascript" src="js/jquery.dates.js"></script>
-<script type="text/javascript" src="js/jquery.blockUI.min.js"></script>
+<script type="text/javascript" src="js/jquery.blockUI.js"></script>
 <script>
 
 var isIE = 0;
@@ -43,7 +43,7 @@ $(document).ready(function() {
 
     $.get("pwr/Auth/whoIsLoggedIn", {}, function(data) {
         if (data.string == "") {
-            $.blockUI(loginPlease, {width:'540px', height:'180px'});
+            $.blockUI({message: loginPlease, css: {width:'540px', height:'180px'}});
         } else {
             loadRows(data.string);
         }
@@ -51,7 +51,7 @@ $(document).ready(function() {
 
     // For composing a message
     $("#compose").click(function() {
-        $.blockUI(compose, {width:'540px', height:'300px'});
+        $.blockUI({message: compose, css: {width:'540px', height:'300px'}});
     });
 
     $("#cancelCompose").click(function() {
@@ -66,7 +66,7 @@ $(document).ready(function() {
 
     // For deleting a message
     $("#delete").click(function() {
-        $.blockUI(deleteMess, {width:'380px', height:'120px'});
+        $.blockUI({message: deleteMess, css: {width:'380px', height:'120px'}});
     });
 
     $("#submitDelete").click(function() {
@@ -94,7 +94,7 @@ $(document).ready(function() {
         subject.value = subj;
         message.value = mess;
         to.value = from;
-        $.blockUI(compose, {width:'540px', height:'300px'});
+        $.blockUI({message: compose, css: {width:'540px', height:'300px'}});
     });
 
     $("#cancelRead").click(function() {
@@ -169,7 +169,7 @@ function readMessage() {
 
     }, "json");
     var readMess = $('#readMessage');
-    $.blockUI(readMess, {width:'540px', height:'300px'});
+    $.blockUI({message: readMess, css: {width:'540px', height:'300px'}});
 }
 
 function insertRow(id, to, from, subject, mailDate, isRead) {
