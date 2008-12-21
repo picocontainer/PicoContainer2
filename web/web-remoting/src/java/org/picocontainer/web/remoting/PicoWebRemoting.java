@@ -9,8 +9,17 @@ package org.picocontainer.web.remoting;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
+import com.thoughtworks.xstream.io.json.JsonWriter;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.io.WriterWrapper;
+import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 
 import java.io.IOException;
+import java.io.Writer;
+import java.io.Reader;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Map;
@@ -33,12 +42,44 @@ import javax.servlet.http.HttpServletResponse;
 
 public class PicoWebRemoting {
 
-    private XStream xStreamNoRoot = new XStream(new JsonHierarchicalStreamDriver(false));
-    private XStream xStreamWithRoot = new XStream(new JsonHierarchicalStreamDriver(true));
+
+    private XStream xStreamNoRoot = new XStream(makeDriver(JsonWriter.DROP_ROOT_MODE));
+//    private XStream xStreamWithRoot = new XStream(makeDriver(JsonWriter.STRICT_MODE));
+    
     private Map<String, Object> paths = new HashMap<String, Object>();
 
     private final String toStripFromUrls;
     private final String scopesToPublish;
+
+    public static HierarchicalStreamDriver makeDriver(final int dropRootMode) {
+        HierarchicalStreamDriver driver = new HierarchicalStreamDriver() {
+            public HierarchicalStreamReader createReader(Reader reader) {
+                return null;
+            }
+
+            public HierarchicalStreamReader createReader(InputStream inputStream) {
+                return null;
+            }
+
+            public HierarchicalStreamWriter createWriter(Writer out) {
+                HierarchicalStreamWriter jsonWriter = new JsonWriter(out, dropRootMode);
+                return new WriterWrapper(jsonWriter) {
+                    public void startNode(String name) {
+                        startNode(name, null);
+                    }
+
+                    public void startNode(String name, Class clazz) {
+                        ((JsonWriter) wrapped).startNode(name.replace('-', '_'), clazz);
+                    }
+                };
+            }
+
+            public HierarchicalStreamWriter createWriter(OutputStream outputStream) {
+                return null;
+            }
+        };
+        return driver;
+    }
 
     public PicoWebRemoting(String toStripFromUrls, String scopesToPublish) {
 
@@ -58,21 +99,7 @@ public class PicoWebRemoting {
             }
             path = toStripFromUrls + path;
 
-            Object node = paths.get(path);
-
-            if (node == null) {
-                int ix = path.lastIndexOf('/');
-                if (ix > 0) {
-                    String methodName = path.substring(ix + 1);
-                    path = path.substring(0, ix);
-                    Object node2 = paths.get(path);
-                    if (node2 instanceof WebMethods) {
-                        node = processWebMethodRequest(reqContainer, httpMethod, methodName, node2);
-                    }
-                } else {
-                    node = null;
-                }
-            }
+            Object node = getNode(reqContainer, httpMethod, path);
 
             if (node instanceof Directories) {
                 Directories directories = (Directories) node;
@@ -83,7 +110,7 @@ public class PicoWebRemoting {
             } else if (node != null && isComposite(node)) {
                 return xStreamNoRoot.toXML(node) + "\n";
             } else if (node != null) {
-                return node != null ? xStreamWithRoot.toXML(node) + "\n" : null;
+                return node != null ? xStreamNoRoot.toXML(node) + "\n" : null;
             } else {
                 return null;
             }
@@ -94,23 +121,53 @@ public class PicoWebRemoting {
 
     }
 
+    private Object getNode(PicoContainer reqContainer, String httpMethod, String path) throws IOException {
+        Object node = paths.get(path);
+
+        if (node == null) {
+            int ix = path.lastIndexOf('/');
+            if (ix > 0) {
+                String methodName = path.substring(ix + 1);
+                path = path.substring(0, ix);
+                Object node2 = paths.get(path);
+                if (node2 instanceof WebMethods) {
+                    node = processWebMethodRequest(reqContainer, httpMethod, methodName, node2);
+                }
+            } else {
+                node = null;
+            }
+        }
+        return node;
+    }
+
     private Object processWebMethodRequest(PicoContainer reqContainer, String httpMethod, String methodName, Object node2) throws IOException {
-        Object node;
         WebMethods methods = (WebMethods) node2;
         Method method = methods.get(methodName);
         if (method != null) {
-            String methodz = (method.getAnnotation(POST.class) != null ? "POST," : "")
-                    + (method.getAnnotation(GET.class) != null ? "GET," : "")
-                    + (method.getAnnotation(PUT.class) != null ? "PUT," : "")
-                    + (method.getAnnotation(DELETE.class) != null ? "DELETE," : "");
+            String methodz = post(method) + get(method) + put(method) + delete(method);
             if (!methodz.equals("") && !methodz.contains(httpMethod)) {
                 throw new RuntimeException("method not allowed for " + httpMethod);
             }
-            node = reinject(methodName, method, methods.getComponent(), reqContainer);
+            return reinject(methodName, method, methods.getComponent(), reqContainer);
         } else {
-            node = null;
+            return null;
         }
-        return node;
+    }
+
+    private String delete(Method method) {
+        return method.getAnnotation(DELETE.class) != null ? "DELETE," : "";
+    }
+
+    private String put(Method method) {
+        return method.getAnnotation(PUT.class) != null ? "PUT," : "";
+    }
+
+    private String get(Method method) {
+        return method.getAnnotation(GET.class) != null ? "GET," : "";
+    }
+
+    private String post(Method method) {
+        return method.getAnnotation(POST.class) != null ? "POST," : "";
     }
 
     public void publishAdapters(Collection<ComponentAdapter<?>> adapters, String scope) {

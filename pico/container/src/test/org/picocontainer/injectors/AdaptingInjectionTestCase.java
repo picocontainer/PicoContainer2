@@ -119,12 +119,12 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Constructor-Injection>\n" +
-                     "  <rememberChosenConstructor>true</rememberChosenConstructor>\n" +
-                     "  <lifecycleStrategy class=RLS/>\n" +
-                     "  <useNames>false</useNames>\n" +
                      "  <componentKey class=java-class>java.util.Map</componentKey>\n" +
                      "  <componentImplementation>java.util.HashMap</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
+                     "  <lifecycleStrategy class=RLS/>\n" +
+                     "  <useNames>false</useNames>\n" +
+                     "  <rememberChosenConstructor>true</rememberChosenConstructor>\n" +
                      "</Constructor-Injection>", foo);
 
 
@@ -145,12 +145,12 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Field-Injection>\n" +
-                     "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
-                     "  <lifecycleStrategy class=RLS/>\n" +
-                     "  <useNames>false</useNames>\n" +
                      "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</componentKey>\n" +
                      "  <componentImplementation>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
+                "  <lifecycleStrategy class=RLS/>\n" +
+                "  <useNames>false</useNames>\n" +
+                "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
                      "</Field-Injection>", foo);
 
 
@@ -171,13 +171,13 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         String foo = xs.toXML(ca).replace("\"", "");
 
         assertEquals("<Method-Injection>\n" +
-                     "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
-                     "  <setterMethodPrefix></setterMethodPrefix>\n" +
-                     "  <lifecycleStrategy class=RLS/>\n" +
-                     "  <useNames>false</useNames>\n" +                     
                      "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentKey>\n" +
                      "  <componentImplementation>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
+                     "  <lifecycleStrategy class=RLS/>\n" +
+                     "  <useNames>false</useNames>\n" +
+                     "  <setterMethodPrefix></setterMethodPrefix>\n" +
+                     "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
                      "</Method-Injection>", foo);
 
 

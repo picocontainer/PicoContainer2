@@ -62,12 +62,12 @@ public class AnnotatedFieldInjectionTestCase {
         String foo = xs.toXML(ca);
 
         assertEquals("<org.picocontainer.injectors.AnnotatedFieldInjector>\n" +
-                     "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
-                     "  <lifecycleStrategy class=\"org.picocontainer.lifecycle.ReflectionLifecycleStrategy\"/>\n" +
-                     "  <useNames>false</useNames>\n" +
                      "  <componentKey class=\"java-class\">java.util.Map</componentKey>\n" +
                      "  <componentImplementation>java.util.HashMap</componentImplementation>\n" +
                      "  <componentMonitor class=\"org.picocontainer.monitors.ConsoleComponentMonitor\"/>\n" +
+                     "  <lifecycleStrategy class=\"org.picocontainer.lifecycle.ReflectionLifecycleStrategy\"/>\n" +
+                     "  <useNames>false</useNames>\n" +
+                     "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
                      "</org.picocontainer.injectors.AnnotatedFieldInjector>", foo);
 
 

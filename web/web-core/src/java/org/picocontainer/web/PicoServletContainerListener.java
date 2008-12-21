@@ -151,9 +151,9 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
      * @return an instance of ScopedContainers
      */
     protected ScopedContainers makeScopedContainers() {
-        DefaultPicoContainer appCtnr = new DefaultPicoContainer(new Caching(), makeParentContainer());
+        DefaultPicoContainer appCtnr = new DefaultPicoContainer(new Guarding().wrap(new Caching()), makeParentContainer());
         Storing sessStoring = new Storing();
-        DefaultPicoContainer sessCtnr = new DefaultPicoContainer(sessStoring, appCtnr);
+        DefaultPicoContainer sessCtnr = new DefaultPicoContainer(new Guarding().wrap(sessStoring), appCtnr);
         Storing reqStoring = new Storing();
         DefaultPicoContainer reqCtnr = new DefaultPicoContainer(new Guarding().wrap(addRequestBehaviors(reqStoring)), sessCtnr);
         return new ScopedContainers(appCtnr, sessCtnr, reqCtnr, sessStoring, reqStoring);

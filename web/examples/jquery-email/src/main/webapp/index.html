@@ -41,11 +41,11 @@ $(document).ready(function() {
     var compose = $('#composeMessage');
     var deleteMess = $('#deleteMessage');
 
-    $.get("pwr/Auth/whoIsLoggedIn", {}, function(data) {
-        if (data.string == "") {
+    $.get("pwr/Auth/whoIsLoggedIn", {}, function(loggedInUser) {
+        if (loggedInUser == "") {
             $.blockUI({message: loginPlease, css: {width:'540px', height:'180px'}});
         } else {
-            loadRows(data.string);
+            loadRows(loggedInUser);
         }
     }, "json");
 
@@ -116,7 +116,7 @@ function submitLogin() {
         userName: document.loginForm.userName.value,
         password: document.loginForm.password.value
     }, function(data) {
-        if (data.string == "OK") {
+        if (data == "OK") {
             loadRows(document.loginForm.userName.value);
             document.loginForm.reset();
             $.unblockUI();
@@ -128,7 +128,7 @@ function submitLogin() {
 
 function logOut() {
     $.post("pwr/Auth/logOut", {}, function(data) {
-        if (data.string == "OK") {
+        if (data == "OK") {
             loadRows("????");
             window.location.reload();
         }
