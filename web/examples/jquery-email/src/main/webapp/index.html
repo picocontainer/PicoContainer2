@@ -37,13 +37,9 @@ $(document).ready(function() {
         $("#replyMessage").hide();
     }
 
-    var loginPlease = $('#loginPlease');
-    var compose = $('#composeMessage');
-    var deleteMess = $('#deleteMessage');
-
     $.get("pwr/Auth/whoIsLoggedIn", {}, function(loggedInUser) {
         if (loggedInUser == "") {
-            $.blockUI({message: loginPlease, css: {width:'540px', height:'180px'}});
+            $.blockUI({message: $('#loginPlease'), css: {width:'540px', height:'180px'}});
         } else {
             loadRows(loggedInUser);
         }
@@ -51,7 +47,7 @@ $(document).ready(function() {
 
     // For composing a message
     $("#compose").click(function() {
-        $.blockUI({message: compose, css: {width:'540px', height:'300px'}});
+        $.blockUI({message: $('#composeMessage'), css: {width:'540px', height:'300px'}});
     });
 
     $("#cancelCompose").click(function() {
@@ -66,7 +62,7 @@ $(document).ready(function() {
 
     // For deleting a message
     $("#delete").click(function() {
-        $.blockUI({message: deleteMess, css: {width:'380px', height:'120px'}});
+        $.blockUI({message: $('#deleteMessage'), css: {width:'380px', height:'120px'}});
     });
 
     $("#submitDelete").click(function() {
