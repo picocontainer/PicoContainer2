@@ -45,8 +45,7 @@ $(document).ready(function() {
         if (data.string == "") {
             $.blockUI(loginPlease, {width:'540px', height:'180px'});
         } else {
-            $("#mail_for").html("Mail for " + data.string);
-            loadRows();
+            loadRows(data.string);
         }
     }, "json");
 
@@ -118,7 +117,7 @@ function submitLogin() {
         password: document.loginForm.password.value
     }, function(data) {
         if (data.string == "OK") {
-            loadRows();
+            loadRows(document.loginForm.userName.value);
             document.loginForm.reset();
             $.unblockUI();
         } else if (data.ERROR = true) {
@@ -130,13 +129,14 @@ function submitLogin() {
 function logOut() {
     $.post("pwr/Auth/logOut", {}, function(data) {
         if (data.string == "OK") {
-            loadRows();
+            loadRows("????");
             window.location.reload();
         }
     }, "json");
 }
 
-function loadRows() {
+function loadRows(who) {
+	$("#mail_for").html("Mail for " + who);
     $.get("pwr/" + view + "/messages", {}, function(data) {
         if (data.ERROR != true) {
             for (var i = 0; i < data.length; i++) {
