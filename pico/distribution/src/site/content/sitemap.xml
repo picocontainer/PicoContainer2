@@ -13,11 +13,11 @@
     <section>
         <name>Core Concepts</name>
         <page>lifecycle.html</page>
-        <page>scopes.html</page>
         <page>injection.html</page>
+        <page>scopes.html</page>
     </section>
     <section>
-        <name>Types of Injection</name>
+        <name>Dependency Injection</name>
         <page>constructor-injection.html</page>
         <page>setter-injection.html</page>
         <page>annotated-field-injection.html</page>
@@ -28,12 +28,12 @@
         <page>multi-injection.html</page>
         <page>composite-injection.html</page>
         <page>factory-injection.html</page>
-    </section>
-    <section>
-        <name>Injecting Dependencies and Configuration</name>
-        <page>disambiguation.html</page>
         <page>reinjection.html</page>
         <page>providers.html</page>
+    </section>
+    <section>
+        <name>Configuration</name>
+        <page>disambiguation.html</page>
     </section>
     <section>
         <name>Modifying Component Behaviors</name>
