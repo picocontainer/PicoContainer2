@@ -8,7 +8,7 @@
 package org.picocontainer.web.remoting;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
+import com.thoughtworks.xstream.converters.extended.ISO8601DateConverter;
 import com.thoughtworks.xstream.io.json.JsonWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.WriterWrapper;
@@ -43,9 +43,11 @@ import javax.servlet.http.HttpServletResponse;
 public class PicoWebRemoting {
 
 
-    private XStream xStreamNoRoot = new XStream(makeDriver(JsonWriter.DROP_ROOT_MODE));
-//    private XStream xStreamWithRoot = new XStream(makeDriver(JsonWriter.STRICT_MODE));
-    
+    private XStream xstream = new XStream(makeDriver(JsonWriter.DROP_ROOT_MODE));
+    {
+        xstream.registerConverter(new ISO8601DateConverter());
+    }
+
     private Map<String, Object> paths = new HashMap<String, Object>();
 
     private final String toStripFromUrls;
@@ -103,14 +105,14 @@ public class PicoWebRemoting {
 
             if (node instanceof Directories) {
                 Directories directories = (Directories) node;
-                return xStreamNoRoot.toXML(directories.toArray()) + "\n";
+                return xstream.toXML(directories.toArray()) + "\n";
             } else if (node instanceof WebMethods) {
                 WebMethods methods = (WebMethods) node;
-                return xStreamNoRoot.toXML(methods.keySet().toArray()) + "\n";
+                return xstream.toXML(methods.keySet().toArray()) + "\n";
             } else if (node != null && isComposite(node)) {
-                return xStreamNoRoot.toXML(node) + "\n";
+                return xstream.toXML(node) + "\n";
             } else if (node != null) {
-                return node != null ? xStreamNoRoot.toXML(node) + "\n" : null;
+                return node != null ? xstream.toXML(node) + "\n" : null;
             } else {
                 return null;
             }
@@ -213,7 +215,7 @@ public class PicoWebRemoting {
     }
 
     public String errorResult(RuntimeException e) {
-        return xStreamNoRoot.toXML(new ErrorReply(e.getMessage())) + "\n";
+        return xstream.toXML(new ErrorReply(e.getMessage())) + "\n";
     }
 
     private static class ErrorReply {
