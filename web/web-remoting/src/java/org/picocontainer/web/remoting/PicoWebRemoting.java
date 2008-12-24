@@ -189,7 +189,10 @@ public class PicoWebRemoting {
     private void determineEligibleMethods(Class<?> component, WebMethods webMethods) {
         Method[] methods = component.getDeclaredMethods();
         for (Method method : methods) {
-            if (Modifier.isPublic(method.getModifiers()) && !Modifier.isStatic(method.getModifiers()))
+            if (Modifier.isPublic(method.getModifiers())
+                    && !Modifier.isStatic(method.getModifiers())
+                    && method.getAnnotation(NONE.class) == null
+                    )
                 webMethods.put(method.getName(), method);
         }
         Class<?> superClass = component.getSuperclass();
