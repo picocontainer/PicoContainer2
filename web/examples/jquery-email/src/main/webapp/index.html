@@ -8,6 +8,8 @@
 <script type="text/javascript" src="js/jquery.corner.min.js"></script>
 <script type="text/javascript" src="js/jquery.dates.js"></script>
 <script type="text/javascript" src="js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="js/johnresig_date_pretty.js"></script>
+
 <script>
 
 var isIE = 0;
@@ -136,13 +138,11 @@ function loadRows(who) {
     $.get("pwr/" + view + "/messages", {}, function(data) {
         if (data.ERROR != true) {
             for (var i = 0; i < data.length; i++) {
-                var id = data[i].id;
-                var to = data[i].to;
-                var from = data[i].from;
-                var subject = data[i].subject;
-                var mailDate = data[i].sentTime;
-                var isRead = data[i].read;
-                insertRow(id, to, from, subject, mailDate, isRead);
+                var sentTime = data[i].sentTime;
+                var mailDate = sentTime.substr(0, sentTime.lastIndexOf("-")-4);
+                //var mailDate = prettyDate("2008-12-21T08:57:28");
+                alert(mailDate);
+                insertRow(data[i].id, data[i].to, data[i].from, data[i].subject, prettyDate(mailDate), data[i].read);
             }
         }
     }, "json");
@@ -177,9 +177,6 @@ function insertRow(id, to, from, subject, mailDate, isRead) {
     $('td[class*=mail-to]', newRow).html(to);
     $('td[class*=mail-from]', newRow).html(from);
     $('td[class*=mail-subj]', newRow).html(subject);
-    //    var dt = new Date(mailDate);
-    //  var dt2 = o2s.format(dt, 'mediumtime');
-    //$('td[class*=mail-date]', newRow).html(dt2);
     $('td[class*=mail-date]', newRow).html(mailDate);
 
     if (isRead) {

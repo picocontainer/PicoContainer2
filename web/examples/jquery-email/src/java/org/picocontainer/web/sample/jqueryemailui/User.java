@@ -37,7 +37,6 @@ public class User {
             try {
                 return new User(stringFromCookie.provide(req));
             } catch (StringFromCookie.NotFound e) {
-                e.printStackTrace();
                 throw new NotLoggedIn();
             }
         }

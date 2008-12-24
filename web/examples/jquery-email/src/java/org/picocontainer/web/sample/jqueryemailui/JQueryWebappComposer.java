@@ -21,6 +21,7 @@ public class JQueryWebappComposer implements WebappComposer {
         addStringRequestParameters(container,
                 "to", "subject", "message", "view",
                 "userName", "password", "userId", "sec");
+
         addIntegerRequestParameters(container, "msgId");
         container.addAdapter(new User.FromCookie());
         container.as(USE_NAMES).addComponent(Auth.class);
