@@ -5,14 +5,17 @@
  * license a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  ******************************************************************************/
-package org.picocontainer.web.remoting;
+package org.picocontainer.web;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.annotation.ElementType;
 
+/**
+ * If it is possible to bind a request to an invocation, only bind to PUT requests
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value={ElementType.METHOD})
-public @interface NONE {
+public @interface PUT {
 }
