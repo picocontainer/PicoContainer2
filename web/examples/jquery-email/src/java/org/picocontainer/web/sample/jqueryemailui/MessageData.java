@@ -60,7 +60,4 @@ public class MessageData {
 		return sentTime;
 	}
 
-	public void setSentTime(Date sentTime) {
-		this.sentTime = sentTime;
-	}
 }

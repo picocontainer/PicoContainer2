@@ -27,8 +27,8 @@ public abstract class Mailbox {
             }
         }
         newMsg.setId(++highestId);
-        newMsg.setSentTime(new Date(System.currentTimeMillis()));
-        return messages.put(newMsg.getId(), newMsg);
+        messages.put(newMsg.getId(), newMsg);
+        return newMsg;
     }
 
     /**
