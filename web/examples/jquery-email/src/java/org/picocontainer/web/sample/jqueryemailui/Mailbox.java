@@ -37,18 +37,26 @@ public abstract class Mailbox {
      * @return the message
      */
     public MessageData read(int msgId) {
-        MessageData messageData = messages.get(msgId);
+        MessageData messageData = getMessage(msgId);
         messageData.read = true;
         return messageData;
+    }
+
+    private MessageData getMessage(int msgId) {
+        MessageData md = messages.get(msgId);
+        if (md == null) {
+            throw new RuntimeException("no such message ID");
+        }
+        return md;
     }
 
     /**
      * Delete a message
      * @param msgId the message to delete
-     * @return true if sucessful
      */
-    public Boolean delete(int msgId) {
-        return messages.remove(messages.get(msgId)) != null;
+    public void delete(int msgId) {
+        getMessage(msgId);
+        messages.remove(msgId);
     }
 
     /**

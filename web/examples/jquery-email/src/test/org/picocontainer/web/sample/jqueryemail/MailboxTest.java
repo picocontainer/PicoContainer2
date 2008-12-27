@@ -32,27 +32,49 @@ public class MailboxTest {
 
     @Test
     public void testReadingOfMessages() {
-
         Mailbox mailbox = new Mailbox(data) {};
-
         MessageData[] messages = mailbox.messages();
         assertEquals(1, messages.length);
-
         assertEquals(md, messages[0]);
         verifyMessage(messages[0], false);
-
     }
 
     @Test
     public void testReadOfSingleMessageFlipsReadFlag() {
-
         Mailbox mailbox = new Mailbox(data) {};
-
         MessageData message = mailbox.read(2);
         assertEquals(md, message);
         verifyMessage(message, true);
-
     }
+
+    @Test
+    public void testReadOfMissingMessageCausesException() {
+        Mailbox mailbox = new Mailbox(data) {};
+        try {
+            MessageData message = mailbox.read(22222);
+        } catch (Exception e) {
+            assertEquals("no such message ID", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testDeleteOfSingleMessage() {
+        Mailbox mailbox = new Mailbox(data) {};
+        assertEquals(1, data.size());
+        mailbox.delete(2);
+        assertEquals(0, data.size());
+    }
+
+    @Test
+    public void testDeleteOfMissingMessageCausesException() {
+        Mailbox mailbox = new Mailbox(data) {};
+        try {
+            mailbox.delete(22222);
+        } catch (Exception e) {
+            assertEquals("no such message ID", e.getMessage());
+        }
+    }
+
 
     private void verifyMessage(MessageData md, boolean read) {
         assertEquals("to", md.getTo());
