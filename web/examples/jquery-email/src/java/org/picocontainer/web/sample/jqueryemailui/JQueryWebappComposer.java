@@ -18,17 +18,18 @@ public class JQueryWebappComposer implements WebappComposer {
     }
 
     public void composeRequest(MutablePicoContainer container) {
+
         addStringRequestParameters(container,
                 "to", "subject", "message", "view",
                 "userName", "password", "userId", "sec");
 
         addIntegerRequestParameters(container, "msgId");
+
         container.addAdapter(new User.FromCookie());
         container.as(USE_NAMES).addComponent(Auth.class);
-        container.change(GUARD);
+
         container.as(USE_NAMES).addComponent(Inbox.class);
         container.as(USE_NAMES).addComponent(Sent.class);
     }
-
 
 }

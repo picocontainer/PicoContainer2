@@ -16,13 +16,16 @@ public class Sent extends Mailbox {
 
     /**
      * Send a message
-     * @param to whom to
-     * @param subject what subjct
+     *
+     * @param to      the recipient
+     * @param subject the message subject
      * @param message the message body
      * @return the resulting message
      */
     public MessageData send(String to, String subject, String message) {
-        return super.addMessage(new MessageData(0, user.getName(), to, subject, message, false, System.currentTimeMillis()));
+        return super.addMessage(
+                new MessageData(0, user.getName(), to, subject,
+                        message, false, System.currentTimeMillis()));
     }
 
 }
