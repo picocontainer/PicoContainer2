@@ -139,9 +139,7 @@ function loadRows(who) {
         if (data.ERROR != true) {
             for (var i = 0; i < data.length; i++) {
                 var sentTime = data[i].sentTime;
-                var mailDate = sentTime.substr(0, sentTime.lastIndexOf("-")-4);
-                //var mailDate = prettyDate("2008-12-21T08:57:28");
-                alert(mailDate);
+                var mailDate = sentTime.substr(0, 19); // drop millis etc
                 insertRow(data[i].id, data[i].to, data[i].from, data[i].subject, prettyDate(mailDate), data[i].read);
             }
         }

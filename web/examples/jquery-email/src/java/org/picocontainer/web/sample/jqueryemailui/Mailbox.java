@@ -29,16 +29,30 @@ public abstract class Mailbox {
         return messages.put(newMsg.getId(), newMsg);
     }
 
+    /**
+     * Read a message (flip its read flag if not already)
+     * @param msgId the message to read
+     * @return the message
+     */
     public MessageData read(int msgId) {
         MessageData messageData = messages.get(msgId);
         messageData.read = true;
         return messageData;
     }
 
+    /**
+     * Delete a message
+     * @param msgId the message to delete
+     * @return true if sucessful
+     */
     public Boolean delete(int msgId) {
         return messages.remove(messages.get(msgId)) != null;
     }
 
+    /**
+     * List the messages for the user
+     * @return the messages
+     */
     public MessageData[] messages() {
         List<MessageData> list = new ArrayList<MessageData>();
         Iterator<Map.Entry<Integer, MessageData>> entryIterator = messages.entrySet().iterator();
