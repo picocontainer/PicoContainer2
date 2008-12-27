@@ -2,11 +2,9 @@ package org.picocontainer.web.sample.jqueryemailui;
 
 import java.util.Map;
 import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
 import java.text.ParseException;
 
-public class InMemoryMessageStore implements IMessageStore {
+public class InMemoryMessageStore implements MessageStore {
 
     private Map<String, Map<Integer, MessageData>> messagesIn = new HashMap<String, Map<Integer, MessageData>>();
     private Map<String, Map<Integer, MessageData>> messagesOut = new HashMap<String, Map<Integer, MessageData>>();

@@ -9,7 +9,7 @@ import java.util.Map;
  * Time: 9:58:16 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface IMessageStore {
+public interface MessageStore {
     Map<Integer, MessageData> inboxFor(String name);
 
     Map<Integer, MessageData> sentFor(String name);
