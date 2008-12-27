@@ -10,7 +10,7 @@ import static org.picocontainer.Characteristics.GUARD;
 public class JQueryWebappComposer implements WebappComposer {
 
     public void composeApplication(MutablePicoContainer container) {
-        container.addComponent(MessageStore.class);
+        container.addComponent(IMessageStore.class, InMemoryMessageStore.class);
     }
 
     public void composeSession(MutablePicoContainer container) {

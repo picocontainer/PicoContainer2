@@ -12,8 +12,8 @@ public class Auth {
     Map<String, String> users = new HashMap<String, String>();
 
     {
-        users.put(MessageStore.GIL_BATES, "1234");
-        users.put(MessageStore.BEEVE_SALMER, "1234");
+        users.put(InMemoryMessageStore.GIL_BATES, "1234");
+        users.put(InMemoryMessageStore.BEEVE_SALMER, "1234");
     }
 
     public String whoIsLoggedIn(HttpServletRequest req) {

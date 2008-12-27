@@ -4,7 +4,7 @@ public class Sent extends Mailbox {
 
     private final String userName;
 
-    public Sent(MessageStore store, User user) {
+    public Sent(InMemoryMessageStore store, User user) {
         super(store.sentFor(user.getName()));
         userName = user.getName();
     }

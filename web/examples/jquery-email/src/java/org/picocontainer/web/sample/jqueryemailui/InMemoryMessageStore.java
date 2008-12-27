@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.text.ParseException;
 
-public class MessageStore implements IMessageStore {
+public class InMemoryMessageStore implements IMessageStore {
 
     private Map<String, Map<Integer, MessageData>> messagesIn = new HashMap<String, Map<Integer, MessageData>>();
     private Map<String, Map<Integer, MessageData>> messagesOut = new HashMap<String, Map<Integer, MessageData>>();
@@ -16,7 +16,7 @@ public class MessageStore implements IMessageStore {
 
     long time;
 
-    public MessageStore() throws ParseException {
+    public InMemoryMessageStore() throws ParseException {
 
         time = System.currentTimeMillis();
 
