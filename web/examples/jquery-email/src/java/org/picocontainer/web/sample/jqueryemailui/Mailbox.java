@@ -8,10 +8,12 @@ import java.util.Set;
 import java.util.Collections;
 import java.util.Iterator;
 
+/**
+ * Abstract Mailbox
+ */
 public abstract class Mailbox {
 
     private final Map<Integer, MessageData> messages;
-
     public Mailbox(Map<Integer, MessageData> messages) {
         this.messages = messages;
     }
