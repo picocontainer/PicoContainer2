@@ -17,7 +17,8 @@
     <page>webwork1.html</page>
   </section>
   <section>
-    <name>Binding to Apache Axis</name>
+    <name>Binding to other technologies</name>
+    <page>remoting.html</page>
     <page>axis.html</page>
   </section>
 </sitemap>
