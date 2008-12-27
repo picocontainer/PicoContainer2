@@ -2,7 +2,6 @@ package org.picocontainer.web.sample.jqueryemailui;
 
 import java.util.Map;
 import java.util.HashMap;
-import java.text.ParseException;
 
 public class InMemoryMessageStore implements MessageStore {
 
@@ -14,7 +13,7 @@ public class InMemoryMessageStore implements MessageStore {
 
     long time;
 
-    public InMemoryMessageStore() throws ParseException {
+    public InMemoryMessageStore() {
 
         time = System.currentTimeMillis();
 
@@ -55,11 +54,11 @@ public class InMemoryMessageStore implements MessageStore {
         return time;
     }
 
-    public Map<Integer, MessageData> inboxFor(String name) {
-        return messagesIn.get(name);  
+    public Map<Integer, MessageData> inboxFor(User user) {
+        return messagesIn.get(user.getName());  
     }
 
-    public Map<Integer, MessageData> sentFor(String name) {
-        return messagesOut.get(name);
+    public Map<Integer, MessageData> sentFor(User user) {
+        return messagesOut.get(user.getName());
     }
 }

@@ -1,12 +1,7 @@
 
 package org.picocontainer.web.sample.jqueryemailui;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 
 /**
  * Make this follow standard JavaBean conventions to work properly with JSON
@@ -23,7 +18,7 @@ public class MessageData {
     public Date sentTime;
     public boolean read;
 
-    public MessageData(int id, String from, String to, String subject, String message, boolean isRead, long time) throws ParseException {
+    public MessageData(int id, String from, String to, String subject, String message, boolean isRead, long time) {
     	this.id = id;
     	this.from = from;
     	this.to = to;
