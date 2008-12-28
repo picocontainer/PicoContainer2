@@ -5,31 +5,30 @@ import static org.picocontainer.web.StringFromRequest.addStringRequestParameters
 import static org.picocontainer.web.IntFromRequest.addIntegerRequestParameters;
 import org.picocontainer.MutablePicoContainer;
 import static org.picocontainer.Characteristics.USE_NAMES;
-import static org.picocontainer.Characteristics.GUARD;
 
 public class JQueryWebappComposer implements WebappComposer {
 
-    public void composeApplication(MutablePicoContainer container) {
-        container.addComponent(MessageStore.class, InMemoryMessageStore.class);
+    public void composeApplication(MutablePicoContainer appContainer) {
+        appContainer.addComponent(MessageStore.class, InMemoryMessageStore.class);
     }
 
-    public void composeSession(MutablePicoContainer container) {
+    public void composeSession(MutablePicoContainer sessionContainer) {
         // stateless
     }
 
-    public void composeRequest(MutablePicoContainer container) {
+    public void composeRequest(MutablePicoContainer requestContainer) {
 
-        addStringRequestParameters(container,
+        addStringRequestParameters(requestContainer,
                 "to", "subject", "message", "view",
                 "userName", "password", "userId", "sec");
 
-        addIntegerRequestParameters(container, "msgId");
+        addIntegerRequestParameters(requestContainer, "msgId");
 
-        container.addAdapter(new User.FromCookie());
-        container.as(USE_NAMES).addComponent(Auth.class);
+        requestContainer.addAdapter(new User.FromCookie());
+        requestContainer.as(USE_NAMES).addComponent(Auth.class);
 
-        container.as(USE_NAMES).addComponent(Inbox.class);
-        container.as(USE_NAMES).addComponent(Sent.class);
+        requestContainer.as(USE_NAMES).addComponent(Inbox.class);
+        requestContainer.as(USE_NAMES).addComponent(Sent.class);
     }
 
 }
