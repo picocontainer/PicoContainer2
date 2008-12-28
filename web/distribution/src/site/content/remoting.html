@@ -4,9 +4,51 @@
 <title>Pico Web Remoting</title>
 </head>
 <body>
-<p>Pico Web Remoting (PWR) is where web requests can be bounded directly to methods in a class. All public methods are eligible, and method parameters are pulled from query-string or form post-fields for invocation. This technology is not a page technology as such, its for AJAX invoation of methods on the server side.</p>
-<p>We have tried to make this as <strong>transparent as possible</strong>. This objects that can be published via PWR, are POJOs. It is up to you whether you interface/impl separate them, but be reminded that by default all public methods will be published.</p>
-<p>Here is an example of web.xml for a PicoWebRemoting app:</p>
+<p>Pico Web Remoting (PWR) is where web requests can be bounded directly to methods in a class. All public methods are eligible, and method parameters are pulled from query-string or form post-fields for invocation. This technology is not a page technology as such, its for AJAX invoation of methods on the server side. As such you are going to want to use this technology from JavaScript. Most likely you are going to want to use a client technology like <a href="http://jquery.com/">jQuery</a> that makes calling server-side functions that return <a href="http://www.json.org/">JSON</a> replies easy.</p>
+<p>We have tried to make PWR <strong>as transparent as possible</strong>. Thus objects that can be published via PWR, are POJOs. It is up to you whether you interface/impl separate them, but be reminded that by default all public methods will be published. As with all of the PicoContainer Web technologies, you will decide which scope a component belongs in - application, session or request and compose them accordingly. </p>
+<h2>Example app : Simple email package.</h2>
+<p>We  forked an example of jQuery and Java together made for an IBM AlphaWorks article: &quot;Working with jQuery, Part 1: Bringing desktop applications to the browser&quot;. The original had a custom servlet to decode requests, invole methods and craft JSON replies. We've essentially deleted that servlet and leveraged PWR instead.</p>
+<p>Composition of the app is done in an implementation of WebappComposer, like so:</p>
+<div class="source"><pre>
+package org.picocontainer.web.sample.jqueryemailui;
+
+import org.picocontainer.web.WebappComposer;
+import static org.picocontainer.web.StringFromRequest.addStringRequestParameters;
+import static org.picocontainer.web.IntFromRequest.addIntegerRequestParameters;
+import org.picocontainer.MutablePicoContainer;
+import static org.picocontainer.Characteristics.USE_NAMES;
+
+public class JQueryWebappComposer implements WebappComposer {
+
+    public void composeApplication(MutablePicoContainer appContainer) {
+        appContainer.addComponent(MessageStore.class, InMemoryMessageStore.class);
+    }
+
+    public void composeSession(MutablePicoContainer sessionContainer) {
+        // stateless
+    }
+
+    public void composeRequest(MutablePicoContainer requestContainer) {
+
+        addStringRequestParameters(requestContainer,
+                "to", "subject", "message", "view",
+                "userName", "password", "userId", "sec");
+
+        addIntegerRequestParameters(requestContainer, "msgId");
+
+        requestContainer.addAdapter(new User.FromCookie());
+        requestContainer.as(USE_NAMES).addComponent(Auth.class);
+
+        requestContainer.as(USE_NAMES).addComponent(Inbox.class);
+        requestContainer.as(USE_NAMES).addComponent(Sent.class);
+    }
+
+}
+</pre>
+</div>
+
+<p>In the above there is a single component, InMemoryMessageStore, at application scope  for all users/sessions and requests to share. All other components are added to the request scope meaning they are only instantiated at the time of request, and only if they are needed. The major components are Auth, Inbox and Sent. They will have their public methods made available. Inbox and Sent methods are effectively not available until login has been performed via the Auth class. Once you have logged in, a cookie is set, thus User.FromCookie (a Provider) allows access to that. The parameters for the methods in Auth, Inbox and Send are made available via the addStringRequestParameters(..) and addIntegerRequestParameters(..) methods. These set up multiple Injectors for to allow the binding by name of things from query-string parameters or form post-fields.</p>
+<p>Here is an example of web.xml for this example a PicoWebRemoting app:</p>
 <div class="source"><pre>
 	<web-app>
 	  <display-name>Pico Web Remoting Demo</display-name>
@@ -62,15 +104,31 @@
 <h3>Limiting Methods to Publish</h3>
 <p>Only public method on components managed by PicoContainer are eligible. By default, all web methods (GET, POST, PUT, DELETE) are possible for a matching method. However there are annotations (in org.picocontainer.web) of the same name, that restrict down possibilities. If you want a component's method to be only available for POST, put a @POST annotation above it.</p>
 <h3>Shortening URLs to objects.</h3>
-<p>PWR by default will encode the whole class name including package. All dots in the package name are changed to slashes to make apparent directories, and the case of the Class name itself is preserved. With a web.xml element called 'package_prefix_to_strip' it is possible to eliminate a prefix for all of the objects published. Thus, you could essentially turn http://mycompany.com/r/com.mycompany/store/Cart/buy into http://mycompany.com/r/store/Cart/buy if you wanted.</p>
+<p>PWR by default will encode the whole class name including package. All dots in the package name are changed to slashes to make apparent directories, and the case of the Class name itself is preserved. With a web.xml element called 'package_prefix_to_strip' it is possible to eliminate a prefix for all of the objects published. Thus, you could essentially turn http://mycompany.com/r/com.mycompany/store/Cart/buy into http://mycompany.com/r/store/Cart/buy if you wanted. </p>
 <h3>Binding objects to URLs - how it works</h3>
 <p>In the demo app there a 'send' method on a class called 'Sent'. The class name and method name are encoded in the URL. The method parameters are pulled from the form post fields, and the reply is a JSON representation of the methods return type. Here are some screenshots from a Firefox plugin called 'HttpFox' and how the web request maps to the source method:</p>
 <p><img src="images/PWR-POST.png" alt="post" name="post" width="871" height="804" id="post" /></p>
 <p>A GET invocation is quite similar. Instead of form post-fields the parameters are mapped to query string parameters.</p>
+<h3>Exceptions</h3>
+<p>If PWR encounters an exception during the processing of a method invocation, it takes the message text and makes it available to the client in the following style:</p>
+<div class="source">
+  <pre>
+{
+  "ERROR": true,
+  "message": "no such message ID"
+}
+</pre>
+</div>
+<h3>CSRF protection</h3>
+<p>Many AJAX capable technologies are volnerable to CSRF attacks. PWR is no different. If you are running your app publically, and there are functions that could be valuable for a hacker to invoke simulating genuine user action, you will want to gaurd them.  With PWR, you would set something in the page, that would be send back to the server with each AJAX request.  The Guard class would be instantiated before the potentially vulnerable method would be invoked. The guard class would be instantiated and depend on the guard parameter, ensuring that it could be verified and that an exception could be thrown:</p>
+<div class="source">
+<pre>requestContainer.addComponent("guard", MyGuard.class);
+requestContainer.as(GUARD, USE_NAMES).addComponent(VulnerableThing.class);
+</pre>
+</div>
 <h2>Further reading.</h2>
-<p>The Maven example project is <a
-  href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/jquery-email/">here</a>. Make sure you make
-  and configure your own <a href="composition.html">WebappComposer</a> implementation.</p>
+<p>The Maven based example project can be checked out with Subversion from <a
+  href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/jquery-email/">here</a>. </p>
 <p>See <a href="downloads.html">downloads</a> on how to download the Pico Web Remoting jar either using Maven or by
 downloading the full distribution.</p>
 </body>

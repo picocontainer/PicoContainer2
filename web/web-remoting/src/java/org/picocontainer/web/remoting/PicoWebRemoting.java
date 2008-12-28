@@ -47,7 +47,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public class PicoWebRemoting {
 
-
     private XStream xstream = new XStream(makeDriver(JsonWriter.DROP_ROOT_MODE));
     {
         xstream.registerConverter(new ISO8601DateConverter());
