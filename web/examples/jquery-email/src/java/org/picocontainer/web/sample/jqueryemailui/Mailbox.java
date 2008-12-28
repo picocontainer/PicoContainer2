@@ -22,8 +22,9 @@ public abstract class Mailbox {
         int highestId = 0;
         Iterator<Map.Entry<Integer, MessageData>> entryIterator = messages.entrySet().iterator();
         while (entryIterator.hasNext()) {
-            if (entryIterator.next().getValue().id > highestId) {
-                highestId = entryIterator.next().getValue().id;
+            MessageData messageData = entryIterator.next().getValue();
+            if (messageData.id > highestId) {
+                highestId = messageData.id;
             }
         }
         newMsg.setId(++highestId);
