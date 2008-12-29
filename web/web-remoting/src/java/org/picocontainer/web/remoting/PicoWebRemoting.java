@@ -282,10 +282,12 @@ public class PicoWebRemoting {
         }
     }
 
-    public static class Directories extends HashSet<String> {
+    @SuppressWarnings("serial")
+	public static class Directories extends HashSet<String> {
     }
 
-    public static class WebMethods extends HashMap<String, Method> {
+    @SuppressWarnings("serial")
+	public static class WebMethods extends HashMap<String, Method> {
         private final Class<?> component;
 
         public WebMethods(Class<?> component) {

@@ -8,19 +8,17 @@
 
 package org.picocontainer.web.remoting;
 
-import java.util.Collection;
 import java.io.IOException;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.web.PicoServletContainerFilter;
-
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletConfig;
+
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.web.PicoServletContainerFilter;
 
 /**
  * All for the calling of methods in a tree of components manages by PicoContainer.
@@ -31,6 +29,12 @@ import javax.servlet.ServletConfig;
  */
 @SuppressWarnings("serial")
 public class PicoWebRemotingServlet extends HttpServlet {
+
+	private static final String APPLICATION_SCOPE = "application";
+	private static final String SESSION_SCOPE = "session";
+	private static final String REQUEST_SCOPE = "request";
+    private static final String SCOPES_TO_PUBLISH = "scopes_to_publish";
+	private static final String PACKAGE_PREFIX_TO_STRIP = "package_prefix_to_strip";
 
     private PicoWebRemoting pwr;
     private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
@@ -141,7 +145,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
 
 
     public void init(ServletConfig servletConfig) throws ServletException {
-        String packagePrefixToStrip = servletConfig.getInitParameter("package_prefix_to_strip");
+        String packagePrefixToStrip = servletConfig.getInitParameter(PACKAGE_PREFIX_TO_STRIP);
         String toStripFromUrls;
         if (packagePrefixToStrip == null) {
             toStripFromUrls = "";
@@ -149,15 +153,15 @@ public class PicoWebRemotingServlet extends HttpServlet {
             toStripFromUrls = packagePrefixToStrip.replace('.', '/') + "/";
         }
 
-        String scopesToPublish = servletConfig.getInitParameter("scopes_to_publish");
+        String scopesToPublish = servletConfig.getInitParameter(SCOPES_TO_PUBLISH);
         super.init(servletConfig);
         pwr = new PicoWebRemoting(toStripFromUrls, scopesToPublish);
     }
 
     private void initialize() {
-        pwr.publishAdapters(currentRequestContainer.get().getComponentAdapters(), "request");
-        pwr.publishAdapters(currentSessionContainer.get().getComponentAdapters(), "session");
-        pwr.publishAdapters(currentAppContainer.get().getComponentAdapters(), "application");
+        pwr.publishAdapters(currentRequestContainer.get().getComponentAdapters(), REQUEST_SCOPE);
+        pwr.publishAdapters(currentSessionContainer.get().getComponentAdapters(), SESSION_SCOPE);
+        pwr.publishAdapters(currentAppContainer.get().getComponentAdapters(), APPLICATION_SCOPE);
     }
 
 }
