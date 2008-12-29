@@ -32,11 +32,11 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
 @SuppressWarnings("serial")
 public class PicoObjectFactory extends ObjectFactory {
 
-    public static class ServletFilter extends PicoServletContainerFilter {
-        private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
-        private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
-        private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+    private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
+    private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
+    private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
 
+    public static class ServletFilter extends PicoServletContainerFilter {
         protected void setAppContainer(MutablePicoContainer container) {
             currentAppContainer.set(container);
         }
@@ -46,17 +46,6 @@ public class PicoObjectFactory extends ObjectFactory {
         protected void setSessionContainer(MutablePicoContainer container) {
             currentSessionContainer.set(container);
         }
-
-        protected static MutablePicoContainer getRequestContainerForThread() {
-            return currentRequestContainer.get();
-        }
-        protected static MutablePicoContainer getSessionContainerForThread() {
-            return currentSessionContainer.get();
-        }
-        protected static MutablePicoContainer getApplicationContainerForThread() {
-            return currentAppContainer.get();
-        }
-
     }
 
     @SuppressWarnings("unchecked")
@@ -70,7 +59,7 @@ public class PicoObjectFactory extends ObjectFactory {
 
         synchronized (this) {
 
-            MutablePicoContainer reqContainer = ServletFilter.getRequestContainerForThread();
+            MutablePicoContainer reqContainer = currentRequestContainer.get();
             if (reqContainer == null) {
                 return;
             }
@@ -95,9 +84,9 @@ public class PicoObjectFactory extends ObjectFactory {
     @SuppressWarnings("unchecked")
     public Object buildBean(Class clazz, Map extraContext) throws Exception {
 
-        MutablePicoContainer requestContainer = ServletFilter.getRequestContainerForThread();
+        MutablePicoContainer requestContainer = currentRequestContainer.get();
         if (requestContainer == null) {
-            MutablePicoContainer appContainer = ServletFilter.getApplicationContainerForThread();
+            MutablePicoContainer appContainer = currentAppContainer.get();
             Object comp = appContainer.getComponent(clazz);
             if (comp == null) {
                 appContainer.addComponent(clazz);

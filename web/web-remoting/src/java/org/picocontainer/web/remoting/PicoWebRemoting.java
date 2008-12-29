@@ -48,6 +48,7 @@ import javax.servlet.http.HttpServletResponse;
 public class PicoWebRemoting {
 
     private XStream xstream = new XStream(makeDriver(JsonWriter.DROP_ROOT_MODE));
+
     {
         xstream.registerConverter(new ISO8601DateConverter());
     }
@@ -181,13 +182,17 @@ public class PicoWebRemoting {
             for (ComponentAdapter<?> ca : adapters) {
                 boolean notAProvider = ca.findAdapterOfType(ProviderAdapter.class) == null;
                 Object key = ca.getComponentKey();
-                if (notAProvider && key != HttpSession.class
-                        && key != HttpServletRequest.class
-                        && key != HttpServletResponse.class) {
+                if (notAProvider && !disallowed(key)) {
                     publishAdapter(key);
                 }
             }
         }
+    }
+
+    protected boolean disallowed(Object key) {
+        return key == HttpSession.class
+                || key == HttpServletRequest.class
+                || key == HttpServletResponse.class;
     }
 
     private void determineEligibleMethods(Class<?> component, WebMethods webMethods) {

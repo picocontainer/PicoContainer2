@@ -26,36 +26,21 @@ import webwork.action.factory.ActionFactory;
  */
 public final class PicoActionFactory extends ActionFactory {
 
+    private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
+    private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
+    private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+
     @SuppressWarnings("serial")
     public static class ServletFilter extends PicoServletContainerFilter {
-        private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
-        private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
-        private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
-
         protected void setAppContainer(MutablePicoContainer container) {
             currentAppContainer.set(container);
         }
-
         protected void setRequestContainer(MutablePicoContainer container) {
             currentRequestContainer.set(container);
         }
-
         protected void setSessionContainer(MutablePicoContainer container) {
             currentSessionContainer.set(container);
         }
-
-        protected static MutablePicoContainer getRequestContainerForThread() {
-            return currentRequestContainer.get();
-        }
-
-        protected static MutablePicoContainer getSessionContainerForThread() {
-            return currentSessionContainer.get();
-        }
-
-        protected static MutablePicoContainer getApplicationContainerForThread() {
-            return currentAppContainer.get();
-        }
-
     }
 
     private final Map<String, Class<?>> classCache = new HashMap<String, Class<?>>();
@@ -76,7 +61,7 @@ public final class PicoActionFactory extends ActionFactory {
     }
 
     protected Action instantiateAction(Class<?> actionClass) {
-        MutablePicoContainer actionsContainer = ServletFilter.getRequestContainerForThread();
+        MutablePicoContainer actionsContainer = currentRequestContainer.get();
         Action action = (Action) actionsContainer.getComponent(actionClass);
 
         if (action == null) {

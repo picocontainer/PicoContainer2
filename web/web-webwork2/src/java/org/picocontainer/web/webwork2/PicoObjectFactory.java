@@ -31,12 +31,12 @@ import com.opensymphony.xwork.ObjectFactory;
  */
 public class PicoObjectFactory extends ObjectFactory {
 
+    private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
+    private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
+    private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+
     @SuppressWarnings("serial")
     public static class ServletFilter extends PicoServletContainerFilter {
-        private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
-        private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
-        private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
-
         protected void setAppContainer(MutablePicoContainer container) {
             currentAppContainer.set(container);
         }
@@ -45,16 +45,6 @@ public class PicoObjectFactory extends ObjectFactory {
         }
         protected void setSessionContainer(MutablePicoContainer container) {
             currentSessionContainer.set(container);
-        }
-
-        protected static MutablePicoContainer getRequestContainerForThread() {
-            return currentRequestContainer.get();
-        }
-        protected static MutablePicoContainer getSessionContainerForThread() {
-            return currentSessionContainer.get();
-        }
-        protected static MutablePicoContainer getApplicationContainerForThread() {
-            return currentAppContainer.get();
         }
     }
 
@@ -88,7 +78,7 @@ public class PicoObjectFactory extends ObjectFactory {
      * @see com.opensymphony.xwork.ObjectFactory#buildBean(java.lang.Class)
      */
     public Object buildBean(Class<?> actionClass) throws Exception {
-        PicoContainer actionsContainer = ServletFilter.getRequestContainerForThread();
+        PicoContainer actionsContainer = currentRequestContainer.get();
         Object action = actionsContainer.getComponent(actionClass);
 
         if (action == null) {

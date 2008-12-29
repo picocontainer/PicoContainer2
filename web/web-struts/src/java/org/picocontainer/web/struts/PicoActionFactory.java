@@ -31,27 +31,20 @@ import org.picocontainer.web.PicoServletContainerFilter;
  */
 public final class PicoActionFactory {
 
+    private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
+    private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
+    private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+
     @SuppressWarnings("serial")
     public static class ServletFilter extends PicoServletContainerFilter {
-
-        private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
-        private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
-        private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
-
         protected void setAppContainer(MutablePicoContainer container) {
             currentAppContainer.set(container);
         }
-
         protected void setRequestContainer(MutablePicoContainer container) {
             currentRequestContainer.set(container);
         }
-
         protected void setSessionContainer(MutablePicoContainer container) {
             currentSessionContainer.set(container);
-        }
-
-        private static MutablePicoContainer getRequestContainerForThread() {
-            return currentRequestContainer.get();
         }
     }
 
@@ -84,7 +77,7 @@ public final class PicoActionFactory {
     public Action getAction(HttpServletRequest request, ActionMapping mapping, ActionServlet servlet)
             throws PicoCompositionException {
 
-        MutablePicoContainer actionsContainer = ServletFilter.getRequestContainerForThread();
+        MutablePicoContainer actionsContainer = currentRequestContainer.get();
         Object actionKey = mapping.getPath();
         Class<?> actionType = getActionClass(mapping.getType());
 
