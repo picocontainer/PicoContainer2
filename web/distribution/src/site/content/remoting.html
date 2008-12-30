@@ -180,8 +180,9 @@ public class JQueryWebappComposer implements WebappComposer {
   possible to eliminate a prefix for all of the objects published. Thus,
   you could essentially turn
   http://mycompany.com/r/com.mycompany/store/Cart/buy into
-  http://mycompany.com/r/store/Cart/buy if you wanted.  The /r/ prefix is just a mapping to the servlet - it could as easily b /pwr/ or /rpc/ or /ajax/ </p>
-<h3>CSRF protection</h3>
+  http://mycompany.com/r/store/Cart/buy if you wanted.  The /r/ prefix is the mapping to the servlet that is configured in the 
+  web.xml - it could just as easily be /pwr/ or /rpc/ or /ajax/ </p>
+<h3>Cross-site request forgery (CSRF) protection</h3>
 <p>Many AJAX capable technologies are vulnerable to CSRF attacks.
 PWR is no different. If you are running your webapp publically, and there
 are functions that could be valuable for a hacker to invoke simulating
