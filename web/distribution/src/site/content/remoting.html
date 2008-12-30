@@ -13,7 +13,7 @@ to use this technology from JavaScript, with a library like <a
     href="http://jquery.com/">jQuery</a> that makes calling server-side
 functions that return <a href="http://www.json.org/">JSON</a> replies
 easy.</p>
-<span class="callout">Every Object gets a URL!</span>
+<span class="callout">Every Object gets a URL !</span>
 <p>We have tried to make PWR <strong>as transparent as
 possible</strong>. Thus objects that can be published via PWR, are POJOs. It is
 up to you whether you interface/impl separate them, but be reminded that
@@ -23,13 +23,38 @@ belongs in - application, session or request - and compose them
 accordingly.</p>
 <h2>Example webapp : Simple email package.</h2>
 <p>We forked an example of jQuery and Java together made for an IBM
-AlphaWorks article: &quot;Working with jQuery, Part 1: Bringing desktop
-applications to the browser&quot;. The original had a custom servlet to
+AlphaWorks article: <a href="http://www.ibm.com/developerworks/web/library/wa-jquery1/">Working with jQuery, Part 1: Bringing desktop applications to the browser</a>. The original had a custom servlet to
 decode requests, invoke methods and craft JSON replies. We've
 essentially deleted that servlet and leveraged PWR instead.</p>
-<p>Composition of the webapp is done in an implementation of
-WebappComposer, like so:</p>
+<h3>Binding objects to URLs - how it works</h3>
+<p>In the demo webapp there a 'send' method on a class called 'Sent'.
+The class name and method name are encoded in the URL. The method
+parameters are pulled from the form post fields, and the reply is a JSON
+representation of the methods return type. Here are some screenshots
+from a Firefox plugin called <a href="https://addons.mozilla.org/en-US/firefox/addon/6647">HttpFox</a> and how the web request maps to
+the source method.  The case in question is for the 'send' function of the Simple email app: </p>
+<p><img src="images/PWR-POST.png" alt="post" name="post" width="871"
+    height="1296" id="post" /></p>
+<p>MessageData is just a POJO:</p>
+<p><img src="images/PWR-POST-MessageData.png" alt="post" name="post" width="803"
+    height="667" id="post" /></p>
+<p>A GET invocation is quite similar. Instead of form post-fields
+the method parameters are mapped to query string parameters.</p>
+<h3>Exceptions</h3>
+<p>If PWR encounters an exception during the processing of a method
+invocation, it takes the message text and makes it available to the
+client in the following style:</p>
 <div class="source"><pre>
+{
+  "ERROR": true,
+  "message": "no such message ID"
+}
+</pre></div>
+<h2>Doing the scoped Dependency Injection setup.</h2>
+<p>Composition of the webapp is done in an implementation of
+  WebappComposer, like so:</p>
+<div class="source">
+  <pre>
 package org.picocontainer.web.sample.jqueryemailui;
 
 import org.picocontainer.web.WebappComposer;
@@ -51,10 +76,10 @@ public class JQueryWebappComposer implements WebappComposer {
     public void composeRequest(MutablePicoContainer requestContainer) {
 
         addStringRequestParameters(requestContainer,
-                "to", "subject", "message", "view",
-                "userName", "password", "userId", "sec");
+                &quot;to&quot;, &quot;subject&quot;, &quot;message&quot;, &quot;view&quot;,
+                &quot;userName&quot;, &quot;password&quot;, &quot;userId&quot;, &quot;sec&quot;);
 
-        addIntegerRequestParameters(requestContainer, "msgId");
+        addIntegerRequestParameters(requestContainer, &quot;msgId&quot;);
 
         requestContainer.addAdapter(new User.FromCookie());
         requestContainer.as(USE_NAMES).addComponent(Auth.class);
@@ -64,24 +89,27 @@ public class JQueryWebappComposer implements WebappComposer {
     }
 
 }
-</pre></div>
-
+</pre>
+</div>
 <p>In the above there is a single application-scoped component, InMemoryMessageStore,
-for all users/sessions and requests to share. All
-other components are added at request scope, meaning they are only
-instantiated at the time of request and only if they are needed. The
-major components are Auth, Inbox and Sent. They have their public
-methods made available. Inbox and Sent methods are effectively not
-available until login has been performed via the Auth class. Once you
-have logged in, a cookie is set, thus User.FromCookie (a Provider)
-allows access to that. The parameters for the methods in Auth, Inbox and
-Send are made available via the addStringRequestParameters(..) and
-addIntegerRequestParameters(..) methods. These set up multiple Injectors
-for to allow the binding by name of things from query-string parameters
-or form post-fields.</p>
-<p>Here is an example of web.xml for this example a PicoWebRemoting
-webapp:</p>
-<div class="source"><pre>
+  for all users/sessions and requests to share. All
+  other components are added at request scope, meaning they are only
+  instantiated at the time of request and only if they are needed. The
+  major components are Auth, Inbox and Sent. They have their public
+  methods made available. Inbox and Sent methods are effectively not
+  available until login has been performed via the Auth class. Once you
+  have logged in, a cookie is set, thus User.FromCookie (a Provider)
+  allows access to that. The parameters for the methods in Auth, Inbox and
+  Send are made available via the addStringRequestParameters(..) and
+  addIntegerRequestParameters(..) methods. These set up multiple Injectors
+  for to allow the binding by name of things from query-string parameters
+  or form post-fields.</p>
+<p><span class="callout">Convention over Configuration !</span></p>
+<p>PicoContainer Web Remoting(by default) does not have XML files like Spring, JBoss or XWork (Struts2). It also tries to be as transparent as possible - there are are no base classes to extend, no interfaces to implement, and no mandatory annotations, no bean definitions, no URL mappings, no property assignments - you just call methods on components from a web page in JavaScript. This makes it easy to test components in plain unit tests too.</p>
+<p>Here is an fairly standard web.xml for a PicoWebRemoting
+  webapp:</p>
+<div class="source">
+  <pre>
 	<web-app>
 	  <display-name>Pico Web Remoting Demo</display-name>
 
@@ -130,52 +158,29 @@ webapp:</p>
 	</web-app>
 
 
-</pre></div>
+</pre>
+</div>
 <h3>Limiting Scopes to Publish</h3>
 <p>In the web.xml file, you can specify a 'scopes_to_publish'
-element that takes a comma separated list of scopes. One or more of
-'application' , 'session' and 'request' (without the quotes). This
-listed will be analysed for publication as PWR invocable.</p>
+  element that takes a comma separated list of scopes. One or more of
+  'application' , 'session' and 'request' (without the quotes). This
+  listed will be analysed for publication as PWR invocable.</p>
 <h3>Limiting Methods to Publish</h3>
 <p>Only public method on components managed by PicoContainer are
-eligible. By default, all web methods (GET, POST, PUT, DELETE) are
-possible for a matching method. However there are annotations (in
-org.picocontainer.web) of the same name, that restrict down
-possibilities. If you want a component's method to be only available for
-POST, put a @POST annotation above it.</p>
+  eligible. By default, all web methods (GET, POST, PUT, DELETE) are
+  possible for a matching method. However there are annotations (in
+  org.picocontainer.web) with  names @GET, @POST, @PUT, @DELETE, that restrict down
+  possibilities. If you want a component's method to be only available for
+  POST, put a @POST annotation above it. If you have a public method that you do not want to publish in a component that is otherwise published, use @NONE.</p>
 <h3>Shortening URLs to objects.</h3>
 <p>PWR by default will encode the whole class name including
-package. All dots in the package name are changed to slashes to make
-apparent directories, and the case of the Class name itself is
-preserved. With a web.xml element called 'package_prefix_to_strip' it is
-possible to eliminate a prefix for all of the objects published. Thus,
-you could essentially turn
-http://mycompany.com/r/com.mycompany/store/Cart/buy into
-http://mycompany.com/r/store/Cart/buy if you wanted.  The /r/ prefix is just a mapping to the servlet - it could as easily b /pwr/ or /rpc/ or /ajax/ </p>  
-<h3>Binding objects to URLs - how it works</h3>
-<p>In the demo webapp there a 'send' method on a class called 'Sent'.
-The class name and method name are encoded in the URL. The method
-parameters are pulled from the form post fields, and the reply is a JSON
-representation of the methods return type. Here are some screenshots
-from a Firefox plugin called <a href="https://addons.mozilla.org/en-US/firefox/addon/6647">HttpFox</a> and how the web request maps to
-the source method.  The case in question is for the 'send' function of the Simple email app: </p>
-<p><img src="images/PWR-POST.png" alt="post" name="post" width="871"
-    height="1296" id="post" /></p>
-<p>MessageData is just a POJO:</p>
-<p><img src="images/PWR-POST-MessageData.png" alt="post" name="post" width="803"
-    height="667" id="post" /></p>
-<p>A GET invocation is quite similar. Instead of form post-fields
-the method parameters are mapped to query string parameters.</p>
-<h3>Exceptions</h3>
-<p>If PWR encounters an exception during the processing of a method
-invocation, it takes the message text and makes it available to the
-client in the following style:</p>
-<div class="source"><pre>
-{
-  "ERROR": true,
-  "message": "no such message ID"
-}
-</pre></div>
+  package. All dots in the package name are changed to slashes to make
+  apparent directories, and the case of the Class name itself is
+  preserved. With a web.xml element called 'package_prefix_to_strip' it is
+  possible to eliminate a prefix for all of the objects published. Thus,
+  you could essentially turn
+  http://mycompany.com/r/com.mycompany/store/Cart/buy into
+  http://mycompany.com/r/store/Cart/buy if you wanted.  The /r/ prefix is just a mapping to the servlet - it could as easily b /pwr/ or /rpc/ or /ajax/ </p>
 <h3>CSRF protection</h3>
 <p>Many AJAX capable technologies are vulnerable to CSRF attacks.
 PWR is no different. If you are running your webapp publically, and there
