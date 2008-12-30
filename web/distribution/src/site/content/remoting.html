@@ -151,18 +151,21 @@ preserved. With a web.xml element called 'package_prefix_to_strip' it is
 possible to eliminate a prefix for all of the objects published. Thus,
 you could essentially turn
 http://mycompany.com/r/com.mycompany/store/Cart/buy into
-http://mycompany.com/r/store/Cart/buy if you wanted.</p>
+http://mycompany.com/r/store/Cart/buy if you wanted.  The /r/ prefix is just a mapping to the servlet - it could as easily b /pwr/ or /rpc/ or /ajax/ </p>  
 <h3>Binding objects to URLs - how it works</h3>
 <p>In the demo webapp there a 'send' method on a class called 'Sent'.
 The class name and method name are encoded in the URL. The method
 parameters are pulled from the form post fields, and the reply is a JSON
 representation of the methods return type. Here are some screenshots
-from a Firefox plugin called 'HttpFox' and how the web request maps to
-the source method:</p>
+from a Firefox plugin called <a href="https://addons.mozilla.org/en-US/firefox/addon/6647">HttpFox</a> and how the web request maps to
+the source method.  The case in question is for the 'send' function of the Simple email app: </p>
 <p><img src="images/PWR-POST.png" alt="post" name="post" width="871"
-    height="804" id="post" /></p>
+    height="1296" id="post" /></p>
+<p>MessageData is just a POJO:</p>
+<p><img src="images/PWR-POST-MessageData.png" alt="post" name="post" width="803"
+    height="667" id="post" /></p>
 <p>A GET invocation is quite similar. Instead of form post-fields
-the parameters are mapped to query string parameters.</p>
+the method parameters are mapped to query string parameters.</p>
 <h3>Exceptions</h3>
 <p>If PWR encounters an exception during the processing of a method
 invocation, it takes the message text and makes it available to the
