@@ -18,7 +18,8 @@ public class MessageData {
     public Date sentTime;
     public boolean read;
 
-    public MessageData(int id, String from, String to, String subject, String message, boolean isRead, long time) {
+    public MessageData(int id, String from, String to,
+            String subject, String message, boolean isRead, long time) {
     	this.id = id;
     	this.from = from;
     	this.to = to;
