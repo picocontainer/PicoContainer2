@@ -34,6 +34,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
 	private static final String SESSION_SCOPE = "session";
 	private static final String REQUEST_SCOPE = "request";
     private static final String SCOPES_TO_PUBLISH = "scopes_to_publish";
+    private static final String XML_INSTEAD_OF_JSON = "xml_instead_of_json";
 	private static final String PACKAGE_PREFIX_TO_STRIP = "package_prefix_to_strip";
 
     private PicoWebRemoting pwr;
@@ -41,85 +42,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
     private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
 
-    public static class ServletFilter extends PicoServletContainerFilter {
 
-        protected void setAppContainer(MutablePicoContainer container) {
-            currentAppContainer.set(container);
-        }
-
-        protected void setRequestContainer(MutablePicoContainer container) {
-            currentRequestContainer.set(container);
-        }
-
-        protected void setSessionContainer(MutablePicoContainer container) {
-            currentSessionContainer.set(container);
-        }
-
-    }
-
-    public static class Struts1ServletFilter
-            extends org.picocontainer.web.struts.PicoActionFactory.ServletFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
-            super.setAppContainer(container);
-            currentAppContainer.set(container);
-        }
-        protected void setRequestContainer(MutablePicoContainer container) {
-            super.setRequestContainer(container);
-            currentRequestContainer.set(container);
-        }
-        protected void setSessionContainer(MutablePicoContainer container) {
-            super.setSessionContainer(container);
-            currentSessionContainer.set(container);
-        }
-    }
-
-    public static class Struts2ServletFilter
-            extends org.picocontainer.web.struts2.PicoObjectFactory.ServletFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
-            super.setAppContainer(container);
-            currentAppContainer.set(container);
-        }
-        protected void setRequestContainer(MutablePicoContainer container) {
-            super.setRequestContainer(container);
-            currentRequestContainer.set(container);
-        }
-        protected void setSessionContainer(MutablePicoContainer container) {
-            super.setSessionContainer(container);
-            currentSessionContainer.set(container);
-        }
-    }
-
-    public static class WebWork1ServletFilter
-            extends org.picocontainer.web.webwork.PicoActionFactory.ServletFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
-            super.setAppContainer(container);
-            currentAppContainer.set(container);
-        }
-        protected void setRequestContainer(MutablePicoContainer container) {
-            super.setRequestContainer(container);
-            currentRequestContainer.set(container);
-        }
-        protected void setSessionContainer(MutablePicoContainer container) {
-            super.setSessionContainer(container);
-            currentSessionContainer.set(container);
-        }
-    }
-
-    public static class WebWork2ServletFilter 
-            extends org.picocontainer.web.webwork2.PicoObjectFactory.ServletFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
-            super.setAppContainer(container);
-            currentAppContainer.set(container);
-        }
-        protected void setRequestContainer(MutablePicoContainer container) {
-            super.setRequestContainer(container);
-            currentRequestContainer.set(container);
-        }
-        protected void setSessionContainer(MutablePicoContainer container) {
-            super.setSessionContainer(container);
-            currentSessionContainer.set(container);
-        }
-    }
 
     private boolean initialized;
 
@@ -143,7 +66,6 @@ public class PicoWebRemotingServlet extends HttpServlet {
         }
     }
 
-
     public void init(ServletConfig servletConfig) throws ServletException {
         String packagePrefixToStrip = servletConfig.getInitParameter(PACKAGE_PREFIX_TO_STRIP);
         String toStripFromUrls;
@@ -154,8 +76,16 @@ public class PicoWebRemotingServlet extends HttpServlet {
         }
 
         String scopesToPublish = servletConfig.getInitParameter(SCOPES_TO_PUBLISH);
+        if (scopesToPublish == null) {
+            scopesToPublish = "";
+        }
+        String xmlNotJsonString = servletConfig.getInitParameter(XML_INSTEAD_OF_JSON);
+        boolean xmlInsteadOfJson = false;
+        if (xmlNotJsonString != null && !"".equals(xmlNotJsonString)) {
+            xmlInsteadOfJson = Boolean.parseBoolean(xmlNotJsonString);
+        }
         super.init(servletConfig);
-        pwr = new PicoWebRemoting(toStripFromUrls, scopesToPublish);
+        pwr = new PicoWebRemoting(toStripFromUrls, scopesToPublish, xmlInsteadOfJson);
     }
 
     private void initialize() {

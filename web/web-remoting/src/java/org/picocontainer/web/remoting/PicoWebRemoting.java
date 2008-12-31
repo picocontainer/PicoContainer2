@@ -47,51 +47,27 @@ import javax.servlet.http.HttpServletResponse;
 
 public class PicoWebRemoting {
 
-    private XStream xstream = new XStream(makeDriver(JsonWriter.DROP_ROOT_MODE));
-
-    {
-        xstream.registerConverter(new ISO8601DateConverter());
-    }
+    private XStream xstream;
 
     private Map<String, Object> paths = new HashMap<String, Object>();
 
     private final String toStripFromUrls;
     private final String scopesToPublish;
 
-    public static HierarchicalStreamDriver makeDriver(final int dropRootMode) {
-        HierarchicalStreamDriver driver = new HierarchicalStreamDriver() {
-            public HierarchicalStreamReader createReader(Reader reader) {
-                return null;
-            }
 
-            public HierarchicalStreamReader createReader(InputStream inputStream) {
-                return null;
-            }
-
-            public HierarchicalStreamWriter createWriter(Writer out) {
-                HierarchicalStreamWriter jsonWriter = new JsonWriter(out, dropRootMode);
-                return new WriterWrapper(jsonWriter) {
-                    public void startNode(String name) {
-                        startNode(name, null);
-                    }
-
-                    public void startNode(String name, Class clazz) {
-                        ((JsonWriter) wrapped).startNode(name.replace('-', '_'), clazz);
-                    }
-                };
-            }
-
-            public HierarchicalStreamWriter createWriter(OutputStream outputStream) {
-                return null;
-            }
-        };
-        return driver;
-    }
-
-    public PicoWebRemoting(String toStripFromUrls, String scopesToPublish) {
+    public PicoWebRemoting(String toStripFromUrls, String scopesToPublish, boolean xmlInsteadOfJson) {
 
         this.toStripFromUrls = toStripFromUrls;
         this.scopesToPublish = scopesToPublish;
+
+        if (xmlInsteadOfJson) {
+            xstream = new XStream();
+        } else {
+            xstream = new XStream(makeJsonDriver(JsonWriter.DROP_ROOT_MODE));
+        }
+
+        xstream.registerConverter(new ISO8601DateConverter());
+
     }
 
     public Map<String, Object> getPaths() {
@@ -119,13 +95,18 @@ public class PicoWebRemoting {
             } else if (node != null) {
                 return node != null ? xstream.toXML(node) + "\n" : null;
             } else {
-                return null;
+                throw makeNothingMatchingException();
             }
         } catch (RuntimeException e) {
+            e.printStackTrace();
             // TODO monitor
             return errorResult(e);
         }
 
+    }
+
+    private RuntimeException makeNothingMatchingException() {
+        return new RuntimeException("Nothing matches the path requested");
     }
 
     private Object getNode(PicoContainer reqContainer, String httpMethod, String path) throws IOException {
@@ -147,18 +128,17 @@ public class PicoWebRemoting {
         return node;
     }
 
-    private Object processWebMethodRequest(PicoContainer reqContainer, String httpMethod, String methodName, Object node2) throws IOException {
+    private Object processWebMethodRequest(PicoContainer reqContainer, String verb, String methodName, Object node2) throws IOException {
         WebMethods methods = (WebMethods) node2;
-        Method method = methods.get(methodName);
-        if (method != null) {
-            String methodz = post(method) + get(method) + put(method) + delete(method);
-            if (!methodz.equals("") && !methodz.contains(httpMethod)) {
-                throw new RuntimeException("method not allowed for " + httpMethod);
-            }
-            return reinject(methodName, method, methods.getComponent(), reqContainer);
-        } else {
-            return null;
+        if (!methods.containsKey(methodName)) {
+            throw makeNothingMatchingException();
         }
+        Method method = methods.get(methodName);
+        String verbs = post(method) + get(method) + put(method) + delete(method);
+        if (!verbs.equals("") && !verbs.contains(verb)) {
+            throw new RuntimeException("method not allowed for " + verb);
+        }
+        return reinject(methodName, method, methods.getComponent(), reqContainer);
     }
 
     private String delete(Method method) {
@@ -201,8 +181,9 @@ public class PicoWebRemoting {
             if (Modifier.isPublic(method.getModifiers())
                     && !Modifier.isStatic(method.getModifiers())
                     && method.getAnnotation(NONE.class) == null
-                    )
+                    ) {
                 webMethods.put(method.getName(), method);
+            }
         }
         Class<?> superClass = component.getSuperclass();
         if (superClass != Object.class) {
@@ -251,7 +232,8 @@ public class PicoWebRemoting {
         MethodInjection methodInjection = new MethodInjection(method);
         Reinjector reinjector = new Reinjector(reqContainer);
         Properties props = (Properties) Characteristics.USE_NAMES.clone();
-        Object rv = reinjector.reinject(component, component, reqContainer.getComponent(component), props, methodInjection);
+        Object inst = reqContainer.getComponent(component);
+        Object rv = reinjector.reinject(component, component, inst, props, methodInjection);
         if (method.getReturnType() == void.class) {
             return "OK";
         }
@@ -298,5 +280,36 @@ public class PicoWebRemoting {
             return component;
         }
     }
+
+    public HierarchicalStreamDriver makeJsonDriver(final int dropRootMode) {
+        HierarchicalStreamDriver driver = new HierarchicalStreamDriver() {
+            public HierarchicalStreamReader createReader(Reader reader) {
+                return null;
+            }
+
+            public HierarchicalStreamReader createReader(InputStream inputStream) {
+                return null;
+            }
+
+            public HierarchicalStreamWriter createWriter(Writer out) {
+                HierarchicalStreamWriter jsonWriter = new JsonWriter(out, dropRootMode);
+                return new WriterWrapper(jsonWriter) {
+                    public void startNode(String name) {
+                        startNode(name, null);
+                    }
+
+                    public void startNode(String name, Class clazz) {
+                        ((JsonWriter) wrapped).startNode(name.replace('-', '_'), clazz);
+                    }
+                };
+            }
+
+            public HierarchicalStreamWriter createWriter(OutputStream outputStream) {
+                return null;
+            }
+        };
+        return driver;
+    }
+
 
 }
