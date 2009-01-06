@@ -32,6 +32,7 @@ import java.util.Collection;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.web.GET;
 import org.picocontainer.web.POST;
 import org.picocontainer.web.DELETE;
@@ -40,6 +41,7 @@ import org.picocontainer.web.PUT;
 import org.picocontainer.injectors.MethodInjection;
 import org.picocontainer.injectors.Reinjector;
 import org.picocontainer.injectors.ProviderAdapter;
+import org.picocontainer.injectors.SingleMemberInjector;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
@@ -97,6 +99,13 @@ public class PicoWebRemoting {
             } else {
                 throw makeNothingMatchingException();
             }
+
+        } catch (SingleMemberInjector.ParameterCannotBeNullException e) {
+            // TODO monitor
+            return xstream.toXML(new ErrorReply("Parameter '" + e.getParameterName()+ "' missing")) + "\n";
+        } catch (PicoCompositionException e) {
+            // TODO monitor
+            return errorResult(e);
         } catch (RuntimeException e) {
             // TODO monitor
             return errorResult(e);

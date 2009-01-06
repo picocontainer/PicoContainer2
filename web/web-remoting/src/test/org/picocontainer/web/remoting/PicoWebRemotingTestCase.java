@@ -66,7 +66,7 @@ public final class PicoWebRemotingTestCase {
         assertEquals("foo", dirs.toArray()[0]);
     }
 
-    private List<String> sortedListOf(PicoWebRemoting.Directories dirs) {
+    private static List<String> sortedListOf(PicoWebRemoting.Directories dirs) {
         List<String> list = new ArrayList<String>(dirs);
         Collections.sort(list);
         return list;
@@ -97,7 +97,7 @@ public final class PicoWebRemotingTestCase {
         assertEquals(
                 "{\n" +
                 "  \"ERROR\": true,\n" +
-                "  \"message\": \"Parameter 0 of 'public int org.picocontainer.web.remoting.PicoWebRemotingTestCase$Foo.hello(long)' cannot be null\"\n" +
+                "  \"message\": \"Parameter 'longArg' missing\"\n" +
                 "}\n", result);
     }
 
