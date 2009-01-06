@@ -98,7 +98,6 @@ public class PicoWebRemoting {
                 throw makeNothingMatchingException();
             }
         } catch (RuntimeException e) {
-            e.printStackTrace();
             // TODO monitor
             return errorResult(e);
         }
