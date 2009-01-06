@@ -93,7 +93,7 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
     public static class ParameterCannotBeNullException extends PicoCompositionException {
         private final String name;
         private ParameterCannotBeNullException(int ix, AccessibleObject member, String name) {
-            super("Parameter " + ix + " of '" + member + "' named ' " + name + " ' cannot be null");
+            super("Parameter " + ix + " of '" + member + "' named '" + name + "' cannot be null");
             this.name = name;
         }
         public String getParameterName() {

@@ -144,6 +144,8 @@ public class MethodInjectionTestCase {
             fail("should have barfed");
         } catch (SingleMemberInjector.ParameterCannotBeNullException e) {
             assertEquals("string", e.getParameterName());
+            assertTrue(e.getMessage().indexOf("Parameter 1") != -1);
+            assertTrue(e.getMessage().indexOf(Foo.class.getMethods()[0].toString()) != -1);
         }
     }
 
