@@ -17,8 +17,6 @@ import org.picocontainer.annotations.Inject;
 @SuppressWarnings("serial")
 public class MultiInjector extends CompositeInjector {
 
-    private AnnotatedMethodInjector annotatedMethodInjector;
-
     public MultiInjector(Object componentKey,
                          Class componentImplementation,
                          Parameter[] parameters,

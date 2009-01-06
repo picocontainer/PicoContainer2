@@ -64,10 +64,10 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
     }
 
     private Object getParameter(PicoContainer container, AccessibleObject member, int i, Type parameterType, Annotation binding, Parameter currentParameter) {
-        Object result = currentParameter.resolveInstance(container, this, parameterType,
-            new ParameterNameBinding(paranamer, getComponentImplementation(), member, i), useNames(), binding);
+        ParameterNameBinding expectedNameBinding = new ParameterNameBinding(paranamer, getComponentImplementation(), member, i);
+        Object result = currentParameter.resolveInstance(container, this, parameterType, expectedNameBinding, useNames(), binding);
         if (result == null && !isNullParamAllowed(member, i)) {
-            throw new PicoCompositionException("Parameter " + i + " of '" + member + "' cannot be null");
+            throw new ParameterCannotBeNullException(i, member, expectedNameBinding.getName());
         }
         return result;
     }
@@ -80,8 +80,7 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
         Annotation[] retVal = new Annotation[annotationss.length];
         for (int i = 0; i < annotationss.length; i++) {
             Annotation[] annotations = annotationss[i];
-            for (int j = 0; j < annotations.length; j++) {
-                Annotation annotation = annotations[j];
+            for (Annotation annotation : annotations) {
                 if (annotation.annotationType().getAnnotation(Bind.class) != null) {
                     retVal[i] = annotation;
                     break;
@@ -91,5 +90,15 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
         return retVal;
     }
 
+    public static class ParameterCannotBeNullException extends PicoCompositionException {
+        private final String name;
+        private ParameterCannotBeNullException(int ix, AccessibleObject member, String name) {
+            super("Parameter " + ix + " of '" + member + "' named ' " + name + " ' cannot be null");
+            this.name = name;
+        }
+        public String getParameterName() {
+            return name;
+        }
+    }
 
 }

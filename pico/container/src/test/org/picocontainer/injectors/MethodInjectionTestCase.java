@@ -142,7 +142,8 @@ public class MethodInjectionTestCase {
         try {
             Foo foo = pico.getComponent(Foo.class);
             fail("should have barfed");
-        } catch (PicoCompositionException e) {
+        } catch (SingleMemberInjector.ParameterCannotBeNullException e) {
+            assertEquals("string", e.getParameterName());
         }
     }
 
