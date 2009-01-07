@@ -168,19 +168,26 @@ public class PicoWebRemoting {
     public void publishAdapters(Collection<ComponentAdapter<?>> adapters, String scope) {
         if (scopesToPublish == null || scopesToPublish.contains(scope)) {
             for (ComponentAdapter<?> ca : adapters) {
-                boolean notAProvider = ca.findAdapterOfType(ProviderAdapter.class) == null;
                 Object key = ca.getComponentKey();
-                if (notAProvider && !disallowed(key)) {
-                    publishAdapter(key);
+                if (notAProvider(ca) && notServletMechanics(key) && keyIsAType(key)) {
+                    publishAdapter((Class<?>) key);
                 }
             }
         }
     }
 
-    protected boolean disallowed(Object key) {
-        return key == HttpSession.class
-                || key == HttpServletRequest.class
-                || key == HttpServletResponse.class;
+    private boolean notAProvider(ComponentAdapter<?> ca) {
+        return ca.findAdapterOfType(ProviderAdapter.class) == null;
+    }
+
+    private boolean keyIsAType(Object key) {
+        return key instanceof Class;
+    }
+
+    protected boolean notServletMechanics(Object key) {
+        return key != HttpSession.class
+                && key != HttpServletRequest.class
+                && key != HttpServletResponse.class;
     }
 
     private void determineEligibleMethods(Class<?> component, WebMethods webMethods) {
@@ -199,12 +206,11 @@ public class PicoWebRemoting {
         }
     }
 
-    private void publishAdapter(Object key) {
-        Class<?> component = (Class<?>) key;
-        String path = component.getName().replace('.', '/');
+    private void publishAdapter(Class<?> key) {
+        String path = key.getName().replace('.', '/');
         if (toStripFromUrls != "" || path.startsWith(toStripFromUrls)) {
             paths.put(path, key);
-            directorize(path, component);
+            directorize(path, key);
             directorize(path);
         }
     }
