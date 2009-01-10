@@ -55,10 +55,10 @@ public class PicoWebRemoting {
 
     private Map<String, Object> paths = new HashMap<String, Object>();
 
-    public PicoWebRemoting(String toStripFromUrls, String scopesToPublish, XStream xStream) {
+    public PicoWebRemoting(XStream xStream, String toStripFromUrls, String scopesToPublish) {
+        this.xStream = xStream;
         this.toStripFromUrls = toStripFromUrls;
         this.scopesToPublish = scopesToPublish;
-        this.xStream = xStream;
         this.xStream.registerConverter(new ISO8601DateConverter());
     }
 

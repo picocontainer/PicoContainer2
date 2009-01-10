@@ -175,7 +175,7 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
             mimeType = mimeTypeFromConfig;
         }
         super.init(servletConfig);
-        pwr = new PicoWebRemoting(toStripFromUrls, scopesToPublish, xStream);
+        pwr = new PicoWebRemoting(xStream, toStripFromUrls, scopesToPublish);
     }
 
     private void publishAdapters() {
