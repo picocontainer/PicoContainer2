@@ -36,7 +36,6 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
     private static final String SESSION_SCOPE = "session";
     private static final String REQUEST_SCOPE = "request";
     private static final String SCOPES_TO_PUBLISH = "scopes_to_publish";
-    private static final String XML_INSTEAD_OF_JSON = "xml_instead_of_json";
     private static final String PACKAGE_PREFIX_TO_STRIP = "package_prefix_to_strip";
     private static final String MIME_TYPE = "mime_type";
 
@@ -44,7 +43,7 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
     private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
-    private String mimeType;
+    private String mimeType = "text/plain";
 
     public static class ServletFilter extends PicoServletContainerFilter {
 
@@ -59,7 +58,6 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
         protected void setSessionContainer(MutablePicoContainer container) {
             currentSessionContainer.set(container);
         }
-
     }
 
     public static class Struts1ServletFilter
@@ -150,7 +148,6 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
 
         String pathInfo = req.getPathInfo();
 
-        mimeType = "text/plain";
         resp.setContentType(mimeType);
         ServletOutputStream outputStream = resp.getOutputStream();
         String result = pwr.processRequest(pathInfo, currentRequestContainer.get(), req.getMethod());
@@ -177,11 +174,6 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
         String mimeTypeFromConfig = servletConfig.getInitParameter(MIME_TYPE);
         if (mimeTypeFromConfig != null) {
             mimeType = mimeTypeFromConfig;
-        }
-        String xmlNotJsonString = servletConfig.getInitParameter(XML_INSTEAD_OF_JSON);
-        boolean xmlInsteadOfJson = false;
-        if (xmlNotJsonString != null && !"".equals(xmlNotJsonString)) {
-            xmlInsteadOfJson = Boolean.parseBoolean(xmlNotJsonString);
         }
         super.init(servletConfig);
         pwr = new PicoWebRemoting(toStripFromUrls, scopesToPublish, xStream);
