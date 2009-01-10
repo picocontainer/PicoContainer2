@@ -19,7 +19,6 @@ import javax.servlet.ServletConfig;
 import java.io.IOException;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.json.JsonWriter;
 
 /**
  * All for the calling of methods in a tree of components manages by PicoContainer.
@@ -142,7 +141,7 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
             throws ServletException, IOException {
 
         if (!initialized) {
-            initialize();
+            publishAdapters();
             initialized = true;
         }
 
@@ -154,7 +153,7 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
         if (result != null) {
             outputStream.print(result);
         } else {
-            resp.sendError(400, "Nothing is mapped to this URL, remove the last term for directory list.");
+            resp.sendError(400, "Nothing is mapped to this URL, try removing the last term for directory list.");
         }
     }
 
@@ -179,7 +178,7 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
         pwr = new PicoWebRemoting(toStripFromUrls, scopesToPublish, xStream);
     }
 
-    private void initialize() {
+    private void publishAdapters() {
         pwr.publishAdapters(currentRequestContainer.get().getComponentAdapters(), REQUEST_SCOPE);
         pwr.publishAdapters(currentSessionContainer.get().getComponentAdapters(), SESSION_SCOPE);
         pwr.publishAdapters(currentAppContainer.get().getComponentAdapters(), APPLICATION_SCOPE);
