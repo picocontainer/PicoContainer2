@@ -10,7 +10,7 @@
 
   <filter>
     <filter-name>picoFilter</filter-name>
-    <filter-class>org.picocontainer.web.remoting.PicoWebRemotingServlet$Struts2ServletFilter</filter-class>
+    <filter-class>org.picocontainer.web.remoting.AbstractPicoWebRemotingServlet$Struts2ServletFilter</filter-class>
   </filter>
 
   <filter>
@@ -34,7 +34,7 @@
 
   <servlet>
     <servlet-name>PWR</servlet-name>
-    <servlet-class>org.picocontainer.web.remoting.PicoWebRemotingServlet</servlet-class>
+    <servlet-class>org.picocontainer.web.remoting.JsonPicoWebRemotingServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
     <init-param>
       <param-name>scopes_to_publish</param-name>

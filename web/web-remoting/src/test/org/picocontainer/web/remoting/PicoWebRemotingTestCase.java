@@ -20,24 +20,22 @@ import org.junit.Test;
 import org.junit.Before;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.web.NONE;
+import static org.picocontainer.web.remoting.JsonPicoWebRemotingServlet.makeJsonDriver;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.json.JsonWriter;
 
 /**
  * @author Paul Hammant
  */
 public final class PicoWebRemotingTestCase {
 
-    XStream xstream = new XStream();
-
-    {
-        xstream.alias("dirs", PicoWebRemoting.Directories.class);
-        xstream.alias("methods", PicoWebRemoting.WebMethods.class);
-    }
+    private XStream xStream = new XStream(makeJsonDriver(JsonWriter.DROP_ROOT_MODE));
 
     @Test
     public void testPaths() throws Exception {
-        PicoWebRemoting pwr = new PicoWebRemoting("alpha/", "y", false);
+
+        PicoWebRemoting pwr = new PicoWebRemoting("alpha/", "y", xStream);
 
         pwr.directorize("foo/bar/baz1");
         pwr.directorize("foo/bar/baz2");
@@ -68,7 +66,7 @@ public final class PicoWebRemotingTestCase {
 
     @Test
     public void testMissingMethodWillCauseAMethodList() throws Exception {
-        PicoWebRemoting pwr = new PicoWebRemoting("alpha/", "y", false);
+        PicoWebRemoting pwr = new PicoWebRemoting("alpha/", "y", xStream);
         pwr.directorize("alpha/beta", Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
@@ -83,7 +81,7 @@ public final class PicoWebRemotingTestCase {
 
     @Test
     public void testMissingParamWillCauseASuitableMessage() throws Exception {
-        PicoWebRemoting pwr = new PicoWebRemoting("alpha/", "y", false);
+        PicoWebRemoting pwr = new PicoWebRemoting("alpha/", "y", xStream);
         pwr.directorize("alpha/Foo", Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
@@ -99,7 +97,7 @@ public final class PicoWebRemotingTestCase {
 
     @Test
     public void testRightParamWillCauseInvocation() throws Exception {
-        PicoWebRemoting pwr = new PicoWebRemoting("alpha/", "y", false);
+        PicoWebRemoting pwr = new PicoWebRemoting("alpha/", "y", xStream);
         pwr.directorize("alpha/Foo", Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
@@ -115,7 +113,7 @@ public final class PicoWebRemotingTestCase {
 
     @Test
     public void testRightParamWillCauseInvocationWithNoPrefix() throws Exception {
-        PicoWebRemoting pwr = new PicoWebRemoting("", "y", false);
+        PicoWebRemoting pwr = new PicoWebRemoting("", "y", xStream);
         pwr.directorize("Foo", Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
@@ -131,7 +129,7 @@ public final class PicoWebRemotingTestCase {
 
     @Test
     public void testHiddenMethodNotPublished() throws Exception {
-        PicoWebRemoting pwr = new PicoWebRemoting("alpha/", "y", false);
+        PicoWebRemoting pwr = new PicoWebRemoting("alpha/", "y", xStream);
         pwr.directorize("alpha/Foo", Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
@@ -147,7 +145,7 @@ public final class PicoWebRemotingTestCase {
 
     @Test
     public void testNonExistantMethodNotPublished() throws Exception {
-        PicoWebRemoting pwr = new PicoWebRemoting("alpha/", "y", false);
+        PicoWebRemoting pwr = new PicoWebRemoting("alpha/", "y", xStream);
         pwr.directorize("alpha/Foo", Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();

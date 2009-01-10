@@ -5,30 +5,32 @@
  * license a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  ******************************************************************************/
-
 package org.picocontainer.web.remoting;
-
-import java.io.IOException;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.web.PicoServletContainerFilter;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.ServletConfig;
+import java.io.IOException;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.json.JsonWriter;
+
 /**
  * All for the calling of methods in a tree of components manages by PicoContainer.
- * JSON is the nature of the reply, the request is plainly mapped from Query Strings
- * and Form params to the method signature.
+ * The form of the reply is determined by the XStream implementation passed into the constructor,
+ * the request is plainly mapped from Query Strings and form fields to the method signature.
  *
  * @author Paul Hammant
  */
-@SuppressWarnings("serial")
-public class PicoWebRemotingServlet extends HttpServlet {
+public class AbstractPicoWebRemotingServlet extends HttpServlet {
+
+    private final XStream xStream;
 
     private static final String APPLICATION_SCOPE = "application";
     private static final String SESSION_SCOPE = "session";
@@ -132,8 +134,11 @@ public class PicoWebRemotingServlet extends HttpServlet {
         }
     }
 
-
     private boolean initialized;
+
+    public AbstractPicoWebRemotingServlet(XStream xStream) {
+        this.xStream = xStream;
+    }
 
     protected void service(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -179,7 +184,7 @@ public class PicoWebRemotingServlet extends HttpServlet {
             xmlInsteadOfJson = Boolean.parseBoolean(xmlNotJsonString);
         }
         super.init(servletConfig);
-        pwr = new PicoWebRemoting(toStripFromUrls, scopesToPublish, xmlInsteadOfJson);
+        pwr = new PicoWebRemoting(toStripFromUrls, scopesToPublish, xStream);
     }
 
     private void initialize() {
@@ -187,5 +192,4 @@ public class PicoWebRemotingServlet extends HttpServlet {
         pwr.publishAdapters(currentSessionContainer.get().getComponentAdapters(), SESSION_SCOPE);
         pwr.publishAdapters(currentAppContainer.get().getComponentAdapters(), APPLICATION_SCOPE);
     }
-
 }

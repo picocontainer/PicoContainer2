@@ -49,27 +49,17 @@ import javax.servlet.http.HttpServletResponse;
 
 public class PicoWebRemoting {
 
-    private XStream xstream;
-
-    private Map<String, Object> paths = new HashMap<String, Object>();
-
+    private final XStream xStream;
     private final String toStripFromUrls;
     private final String scopesToPublish;
 
+    private Map<String, Object> paths = new HashMap<String, Object>();
 
-    public PicoWebRemoting(String toStripFromUrls, String scopesToPublish, boolean xmlInsteadOfJson) {
-
+    public PicoWebRemoting(String toStripFromUrls, String scopesToPublish, XStream xStream) {
         this.toStripFromUrls = toStripFromUrls;
         this.scopesToPublish = scopesToPublish;
-
-        if (xmlInsteadOfJson) {
-            xstream = new XStream();
-        } else {
-            xstream = new XStream(makeJsonDriver(JsonWriter.DROP_ROOT_MODE));
-        }
-
-        xstream.registerConverter(new ISO8601DateConverter());
-
+        this.xStream = xStream;
+        this.xStream.registerConverter(new ISO8601DateConverter());
     }
 
     public Map<String, Object> getPaths() {
@@ -88,21 +78,21 @@ public class PicoWebRemoting {
 
             if (node instanceof Directories) {
                 Directories directories = (Directories) node;
-                return xstream.toXML(directories.toArray()) + "\n";
+                return xStream.toXML(directories.toArray()) + "\n";
             } else if (node instanceof WebMethods) {
                 WebMethods methods = (WebMethods) node;
-                return xstream.toXML(methods.keySet().toArray()) + "\n";
+                return xStream.toXML(methods.keySet().toArray()) + "\n";
             } else if (node != null && isComposite(node)) {
-                return xstream.toXML(node) + "\n";
+                return xStream.toXML(node) + "\n";
             } else if (node != null) {
-                return node != null ? xstream.toXML(node) + "\n" : null;
+                return node != null ? xStream.toXML(node) + "\n" : null;
             } else {
                 throw makeNothingMatchingException();
             }
 
         } catch (SingleMemberInjector.ParameterCannotBeNullException e) {
             // TODO monitor
-            return xstream.toXML(new ErrorReply("Parameter '" + e.getParameterName()+ "' missing")) + "\n";
+            return xStream.toXML(new ErrorReply("Parameter '" + e.getParameterName()+ "' missing")) + "\n";
         } catch (PicoCompositionException e) {
             // TODO monitor
             return errorResult(e);
@@ -222,7 +212,7 @@ public class PicoWebRemoting {
     }
 
     public String errorResult(RuntimeException e) {
-        return xstream.toXML(new ErrorReply(e.getMessage())) + "\n";
+        return xStream.toXML(new ErrorReply(e.getMessage())) + "\n";
     }
 
     private static class ErrorReply {
@@ -295,35 +285,6 @@ public class PicoWebRemoting {
         }
     }
 
-    public HierarchicalStreamDriver makeJsonDriver(final int dropRootMode) {
-        HierarchicalStreamDriver driver = new HierarchicalStreamDriver() {
-            public HierarchicalStreamReader createReader(Reader reader) {
-                return null;
-            }
-
-            public HierarchicalStreamReader createReader(InputStream inputStream) {
-                return null;
-            }
-
-            public HierarchicalStreamWriter createWriter(Writer out) {
-                HierarchicalStreamWriter jsonWriter = new JsonWriter(out, dropRootMode);
-                return new WriterWrapper(jsonWriter) {
-                    public void startNode(String name) {
-                        startNode(name, null);
-                    }
-
-                    public void startNode(String name, Class clazz) {
-                        ((JsonWriter) wrapped).startNode(name.replace('-', '_'), clazz);
-                    }
-                };
-            }
-
-            public HierarchicalStreamWriter createWriter(OutputStream outputStream) {
-                return null;
-            }
-        };
-        return driver;
-    }
 
 
 }
