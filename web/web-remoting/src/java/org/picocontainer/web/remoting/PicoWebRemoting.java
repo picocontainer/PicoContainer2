@@ -155,7 +155,7 @@ public class PicoWebRemoting {
         return method.getAnnotation(POST.class) != null ? "POST," : "";
     }
 
-    public void publishAdapters(Collection<ComponentAdapter<?>> adapters, String scope) {
+    protected void publishAdapters(Collection<ComponentAdapter<?>> adapters, String scope) {
         if (scopesToPublish == null || scopesToPublish.contains(scope)) {
             for (ComponentAdapter<?> ca : adapters) {
                 Object key = ca.getComponentKey();
@@ -211,7 +211,7 @@ public class PicoWebRemoting {
         determineEligibleMethods(comp, webMethods);
     }
 
-    public String errorResult(RuntimeException e) {
+    private String errorResult(RuntimeException e) {
         return xStream.toXML(new ErrorReply(e.getMessage())) + "\n";
     }
 
@@ -244,7 +244,6 @@ public class PicoWebRemoting {
         return rv;
     }
 
-
     @SuppressWarnings("unchecked")
     protected void directorize(String path) {
         int lastSlashIx = path.lastIndexOf("/");
@@ -269,7 +268,7 @@ public class PicoWebRemoting {
     }
 
     @SuppressWarnings("serial")
-	public static class Directories extends HashSet<String> {
+	private static class Directories extends HashSet<String> {
     }
 
     @SuppressWarnings("serial")
