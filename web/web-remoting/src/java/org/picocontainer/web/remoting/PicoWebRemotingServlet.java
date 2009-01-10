@@ -36,11 +36,13 @@ public class PicoWebRemotingServlet extends HttpServlet {
     private static final String SCOPES_TO_PUBLISH = "scopes_to_publish";
     private static final String XML_INSTEAD_OF_JSON = "xml_instead_of_json";
     private static final String PACKAGE_PREFIX_TO_STRIP = "package_prefix_to_strip";
+    private static final String MIME_TYPE = "mime_type";
 
     private PicoWebRemoting pwr;
     private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+    private String mimeType;
 
     public static class ServletFilter extends PicoServletContainerFilter {
 
@@ -143,7 +145,8 @@ public class PicoWebRemotingServlet extends HttpServlet {
 
         String pathInfo = req.getPathInfo();
 
-        resp.setContentType("text/plain");
+        mimeType = "text/plain";
+        resp.setContentType(mimeType);
         ServletOutputStream outputStream = resp.getOutputStream();
         String result = pwr.processRequest(pathInfo, currentRequestContainer.get(), req.getMethod());
         if (result != null) {
@@ -165,6 +168,10 @@ public class PicoWebRemotingServlet extends HttpServlet {
         String scopesToPublish = servletConfig.getInitParameter(SCOPES_TO_PUBLISH);
         if (scopesToPublish == null) {
             scopesToPublish = "";
+        }
+        String mimeTypeFromConfig = servletConfig.getInitParameter(MIME_TYPE);
+        if (mimeTypeFromConfig != null) {
+            mimeType = mimeTypeFromConfig;
         }
         String xmlNotJsonString = servletConfig.getInitParameter(XML_INSTEAD_OF_JSON);
         boolean xmlInsteadOfJson = false;
