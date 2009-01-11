@@ -39,6 +39,7 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
     private static final String REQUEST_SCOPE = "request";
     private static final String SCOPES_TO_PUBLISH = "scopes_to_publish";
     private static final String PACKAGE_PREFIX_TO_STRIP = "package_prefix_to_strip";
+    private static final String SUFFIX_TO_STRIP = "suffix_to_strip";
     private static final String MIME_TYPE = "mime_type";
 
     private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
@@ -161,12 +162,14 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
 
     public void init(ServletConfig servletConfig) throws ServletException {
         String packagePrefixToStrip = servletConfig.getInitParameter(PACKAGE_PREFIX_TO_STRIP);
-        String toStripFromUrls;
+        String prefixToStripFromUrls;
         if (packagePrefixToStrip == null) {
-            toStripFromUrls = "";
+            prefixToStripFromUrls = "";
         } else {
-            toStripFromUrls = packagePrefixToStrip.replace('.', '/') + "/";
+            prefixToStripFromUrls = packagePrefixToStrip.replace('.', '/') + "/";
         }
+
+        String suffixToStrip = servletConfig.getInitParameter(SUFFIX_TO_STRIP);
 
         String scopesToPublish = servletConfig.getInitParameter(SCOPES_TO_PUBLISH);
         if (scopesToPublish == null) {
@@ -177,7 +180,7 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
             mimeType = mimeTypeFromConfig;
         }
         super.init(servletConfig);
-        pwr = new PicoWebRemoting(xStream, monitor, toStripFromUrls, scopesToPublish);
+        pwr = new PicoWebRemoting(xStream, monitor, prefixToStripFromUrls, suffixToStrip, scopesToPublish);
     }
 
     private void publishAdapters() {

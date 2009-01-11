@@ -43,14 +43,16 @@ public class PicoWebRemoting {
     private final XStream xStream;
     private final PicoWebRemotingMonitor monitor;
     private final String toStripFromUrls;
+    private final String suffixToStrip;
     private final String scopesToPublish;
 
     private Map<String, Object> paths = new HashMap<String, Object>();
 
-    public PicoWebRemoting(XStream xStream, PicoWebRemotingMonitor monitor, String toStripFromUrls, String scopesToPublish) {
+    public PicoWebRemoting(XStream xStream, PicoWebRemotingMonitor monitor, String prefixToStripFromUrls, String suffixToStrip, String scopesToPublish) {
         this.xStream = xStream;
         this.monitor = monitor;
-        this.toStripFromUrls = toStripFromUrls;
+        this.toStripFromUrls = prefixToStripFromUrls;
+        this.suffixToStrip = suffixToStrip;
         this.scopesToPublish = scopesToPublish;
         this.xStream.registerConverter(new ISO8601DateConverter());
     }
@@ -66,6 +68,10 @@ public class PicoWebRemoting {
                 path = path.substring(0, path.length() - 1);
             }
             path = toStripFromUrls + path;
+
+            if (suffixToStrip != null && path.endsWith(suffixToStrip)) {
+                path = path.substring(0, path.indexOf(suffixToStrip));
+            }
 
             Object node = getNode(reqContainer, httpMethod, path);
 
