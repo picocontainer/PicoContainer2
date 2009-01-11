@@ -43,6 +43,7 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
     private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
     private String mimeType = "text/plain";
+    private PicoWebRemotingMonitor monitor;
 
     public static class ServletFilter extends PicoServletContainerFilter {
 
@@ -175,12 +176,17 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
             mimeType = mimeTypeFromConfig;
         }
         super.init(servletConfig);
-        pwr = new PicoWebRemoting(xStream, toStripFromUrls, scopesToPublish);
+        pwr = new PicoWebRemoting(xStream, monitor, toStripFromUrls, scopesToPublish);
     }
 
     private void publishAdapters() {
         pwr.publishAdapters(currentRequestContainer.get().getComponentAdapters(), REQUEST_SCOPE);
         pwr.publishAdapters(currentSessionContainer.get().getComponentAdapters(), SESSION_SCOPE);
         pwr.publishAdapters(currentAppContainer.get().getComponentAdapters(), APPLICATION_SCOPE);
+
+        monitor = currentAppContainer.get().getComponent(PicoWebRemotingMonitor.class);
+        if (monitor == null) {
+            monitor = new NullPicoWebRemotingMonitor();
+        }
     }
 }

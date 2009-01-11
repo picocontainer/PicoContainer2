@@ -9,17 +9,8 @@ package org.picocontainer.web.remoting;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.extended.ISO8601DateConverter;
-import com.thoughtworks.xstream.io.json.JsonWriter;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.WriterWrapper;
-import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 
 import java.io.IOException;
-import java.io.Writer;
-import java.io.Reader;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Map;
@@ -50,13 +41,15 @@ import javax.servlet.http.HttpServletResponse;
 public class PicoWebRemoting {
 
     private final XStream xStream;
+    private final PicoWebRemotingMonitor monitor;
     private final String toStripFromUrls;
     private final String scopesToPublish;
 
     private Map<String, Object> paths = new HashMap<String, Object>();
 
-    public PicoWebRemoting(XStream xStream, String toStripFromUrls, String scopesToPublish) {
+    public PicoWebRemoting(XStream xStream, PicoWebRemotingMonitor monitor, String toStripFromUrls, String scopesToPublish) {
         this.xStream = xStream;
+        this.monitor = monitor;
         this.toStripFromUrls = toStripFromUrls;
         this.scopesToPublish = scopesToPublish;
         this.xStream.registerConverter(new ISO8601DateConverter());
@@ -91,14 +84,12 @@ public class PicoWebRemoting {
             }
 
         } catch (SingleMemberInjector.ParameterCannotBeNullException e) {
-            // TODO monitor
-            return xStream.toXML(new ErrorReply("Parameter '" + e.getParameterName()+ "' missing")) + "\n";
+            String parameterName = e.getParameterName();
+            return errorResult(monitor.nullParameterForMethodInvocation(parameterName));
         } catch (PicoCompositionException e) {
-            // TODO monitor
-            return errorResult(e);
+            return errorResult(monitor.picoCompositionExceptionForMethodInvocation(e));
         } catch (RuntimeException e) {
-            // TODO monitor
-            return errorResult(e);
+            return errorResult(monitor.runtimeExceptionForMethodInvocation(e));
         }
 
     }
@@ -211,17 +202,8 @@ public class PicoWebRemoting {
         determineEligibleMethods(comp, webMethods);
     }
 
-    private String errorResult(RuntimeException e) {
-        return xStream.toXML(new ErrorReply(e.getMessage())) + "\n";
-    }
-
-    private static class ErrorReply {
-        private boolean ERROR = true;
-        private String message;
-
-        private ErrorReply(String message) {
-            this.message = message;
-        }
+    private String errorResult(Object errorResult) {
+        return xStream.toXML(errorResult) + "\n";
     }
 
     private boolean isComposite(Object node) {
@@ -268,7 +250,7 @@ public class PicoWebRemoting {
     }
 
     @SuppressWarnings("serial")
-	private static class Directories extends HashSet<String> {
+	protected static class Directories extends HashSet<String> {
     }
 
     @SuppressWarnings("serial")
