@@ -2,6 +2,11 @@
 <html>
 <head>
 <title>Pico Web Remoting</title>
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, monospace}
+-->
+</style>
 </head>
 <body>
 <p>Pico Web Remoting (PWR) allows web requests to be bounded
@@ -21,6 +26,7 @@ by default all public methods will be published. As with all of the
 PicoContainer Web technologies, you will decide which scope a component
 belongs in - application, session or request - and compose them
 accordingly.</p>
+<p>Publishing class and method names direct to the web, is alluring, but it is also dangerous. Do not think of this as publishing a domain model to the web, it is really a way for you to markup contacts in plain Java. It also suggests that you are going to want to have a different package, class and method naming design for the objects your publishing with PWR. Read about the example, then read Naming Considerations below</p>
 <h2>Example webapp : Simple email package.</h2>
 <p>We forked an example of jQuery and Java together made for an IBM
 AlphaWorks article: <a href="http://www.ibm.com/developerworks/web/library/wa-jquery1/">Working with jQuery, Part 1: Bringing desktop applications to the browser</a>. The original had a custom servlet to
@@ -65,25 +71,39 @@ import static org.picocontainer.Characteristics.USE_NAMES;
 
 public class JQueryWebappComposer implements WebappComposer {
 
+
+    // These will be cached and shared for all sessions unless otherwise specified
+
     public void composeApplication(MutablePicoContainer appContainer) {
         appContainer.addComponent(MessageStore.class, InMemoryMessageStore.class);
     }
+
+
+    // These components can depend on each other or those from the application scope
+    // They will also be cached per session unless otherwise specified
 
     public void composeSession(MutablePicoContainer sessionContainer) {
         // stateless
     }
 
+
+    // These components can depend on each other or those from the session scope
+    // They will also be cached per session unless otherwise specified
+
     public void composeRequest(MutablePicoContainer requestContainer) {
 
+        // these are pulled from query-strings (GET) or form-fields (POST)
         addStringRequestParameters(requestContainer,
                 &quot;to&quot;, &quot;subject&quot;, &quot;message&quot;, &quot;view&quot;,
                 &quot;userName&quot;, &quot;password&quot;, &quot;userId&quot;, &quot;sec&quot;);
 
         addIntegerRequestParameters(requestContainer, &quot;msgId&quot;);
 
+        // User is specified in a Cookie (after signin obviously)
         requestContainer.addAdapter(new User.FromCookie());
-        requestContainer.as(USE_NAMES).addComponent(Auth.class);
 
+        // Regular components. The public methods for which are published remotely
+        requestContainer.as(USE_NAMES).addComponent(Auth.class);
         requestContainer.as(USE_NAMES).addComponent(Inbox.class);
         requestContainer.as(USE_NAMES).addComponent(Sent.class);
     }
@@ -134,7 +154,7 @@ public class JQueryWebappComposer implements WebappComposer {
 
       <servlet>
         <servlet-name>pwrServlet</servlet-name>
-        <servlet-class>org.picocontainer.web.remoting.PicoWebRemotingServlet</servlet-class>
+        <servlet-class>org.picocontainer.web.remoting.JsonPicoWebRemotingServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
         <init-param>
             <param-name>scopes_to_publish</param-name>
@@ -165,23 +185,25 @@ public class JQueryWebappComposer implements WebappComposer {
   element that takes a comma separated list of scopes. One or more of
   'application' , 'session' and 'request' (without the quotes). This
   listed will be analysed for publication as PWR invocable.</p>
-<h3>Limiting Methods to Publish</h3>
+<h3>Limiting HTTP Methods for Methods</h3>
 <p>Only public method on components managed by PicoContainer are
   eligible. By default, all web methods (GET, POST, PUT, DELETE) are
   possible for a matching method. However there are annotations (in
-  org.picocontainer.web) with  names @GET, @POST, @PUT, @DELETE, that restrict down
+  package org.picocontainer.web) with  names @GET, @POST, @PUT, @DELETE, that restrict down
   possibilities. If you want a component's method to be only available for
   POST, put a @POST annotation above it. If you have a public method that you do not want to publish in a component that is otherwise published, use @NONE.</p>
 <h3>Shortening URLs to objects.</h3>
 <p>PWR by default will encode the whole class name including
   package. All dots in the package name are changed to slashes to make
   apparent directories, and the case of the Class name itself is
-  preserved. With a web.xml element called 'package_prefix_to_strip' it is
+  preserved. With a web.xml element called <span class="style1">package_prefix_to_strip</span> it is
   possible to eliminate a prefix for all of the objects published. Thus,
   you could essentially turn
-  http://mycompany.com/r/com.mycompany/store/Cart/buy into
-  http://mycompany.com/r/store/Cart/buy if you wanted.  The /r/ prefix is the mapping to the servlet that is configured in the 
+  <span class="style1">http://mycompany.com/r/com/mycompany/store/Cart/buy</span> into
+  <span class="style1">http://mycompany.com/r/store/Cart/buy</span> if you wanted.  The /r/ prefix is the mapping to the servlet that is configured in the 
   web.xml - it could just as easily be /pwr/ or /rpc/ or /ajax/ </p>
+<h3>Mapping to a Suffix</h3>
+<p>You can have a suffix such as .ajax or .json at the end the method name. For example <span class="style1">http://mycompany.com/r/com/mycompany/store/Cart/buy.json</span> might be what you want. There is an  init-param for the servlet in web.xml element called <span class="style1">suffix_to_strip</span> that would specify '.json' in this case.</p>
 <h3>Cross-site request forgery (CSRF) protection</h3>
 <p>Many AJAX capable technologies are vulnerable to CSRF attacks.
 PWR is no different. If you are running your webapp publically, and there
@@ -192,14 +214,20 @@ each AJAX request. The Guard class would be instantiated before the
 potentially vulnerable method would be invoked. The guard class would be
 instantiated and depend on the guard parameter, ensuring that it could
 be verified and that an exception could be thrown:</p>
-<div class="source"><pre>requestContainer.addComponent("guard", MyGuard.class);
+<div class="source">
+<pre>requestContainer.addComponent("guard", MyGuard.class);
 requestContainer.as(GUARD, USE_NAMES).addComponent(VulnerableThing.class);
 </pre></div>
+<h2>Naming considerations.</h2>
+<p>Consider the this URL: <span class="style1">http://mycompany.com/r/com/mycompany/store/ShoppingCart/addToCart</span></p>
+<p>It is what would result from a Java class called ShoppingCart with a method called addToCart (in package com.mycompany.store). Java is often long winded like this. You are going to want to change the rules when working with PWR. ShoppingCart can be shortened to Cart as it is clear being in a directory (package) 'store' what it is. Method 'addToCart' is also too verbose if we consider the URL and the implicit association with 'Cart'. Thus 'buy' might be clearer intent. </p>
+<p>In short, when naming packages, classes and methods for PWR, you should think about contracts between the client and the server app, and not simply publishing preexisting names.</p>
+<p>It is also the case that you can only have one method of a particular name that is public, otherwise PWR will not know which ne to invoke for incoming requests.</p>
 <h2>Further reading.</h2>
 <p>The Maven based example project can be checked out with
-Subversion from <a
-    href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/jquery-email/">here</a>.
-</p>
+  Subversion from <a
+    href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/jquery-email/">here</a>.</p>
+<h2>Downloading.</h2>
 <p>See <a href="downloads.html">downloads</a> on how to download the
 Pico Web Remoting jar either using Maven or by downloading the full
 distribution.</p>
