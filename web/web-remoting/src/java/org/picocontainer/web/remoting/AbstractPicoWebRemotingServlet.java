@@ -30,6 +30,9 @@ import com.thoughtworks.xstream.XStream;
 public class AbstractPicoWebRemotingServlet extends HttpServlet {
 
     private final XStream xStream;
+    private PicoWebRemoting pwr;
+    private String mimeType = "text/plain";
+    private PicoWebRemotingMonitor monitor;
 
     private static final String APPLICATION_SCOPE = "application";
     private static final String SESSION_SCOPE = "session";
@@ -38,12 +41,9 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
     private static final String PACKAGE_PREFIX_TO_STRIP = "package_prefix_to_strip";
     private static final String MIME_TYPE = "mime_type";
 
-    private PicoWebRemoting pwr;
     private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
-    private String mimeType = "text/plain";
-    private PicoWebRemotingMonitor monitor;
 
     public static class ServletFilter extends PicoServletContainerFilter {
 
@@ -147,10 +147,11 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
         }
 
         String pathInfo = req.getPathInfo();
-
         resp.setContentType(mimeType);
-        ServletOutputStream outputStream = resp.getOutputStream();
+
         String result = pwr.processRequest(pathInfo, currentRequestContainer.get(), req.getMethod());
+
+        ServletOutputStream outputStream = resp.getOutputStream();
         if (result != null) {
             outputStream.print(result);
         } else {
