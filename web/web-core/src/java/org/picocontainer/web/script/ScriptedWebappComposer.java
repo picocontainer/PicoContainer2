@@ -23,6 +23,8 @@ import org.picocontainer.script.ContainerBuilder;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.web.WebappComposer;
 
+import javax.servlet.ServletContext;
+
 /**
  * Script-based webapp composer. Allows to build containers for each webapp
  * scope from picocontainer scripts, using configurable builder and script
@@ -54,7 +56,7 @@ public class ScriptedWebappComposer implements WebappComposer {
         this.requestScript = requestScript;
     }
 
-    public void composeApplication(MutablePicoContainer applicationContainer) {
+    public void composeApplication(MutablePicoContainer applicationContainer, ServletContext context) {
         populateContainer(applicationScript, applicationContainer);
     }
 

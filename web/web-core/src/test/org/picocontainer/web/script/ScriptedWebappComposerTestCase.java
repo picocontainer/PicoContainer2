@@ -16,6 +16,8 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.script.groovy.GroovyContainerBuilder;
 import org.picocontainer.script.xml.XStreamContainerBuilder;
 
+import javax.servlet.ServletContext;
+
 /**
  * @author Mauro Talevi
  */
@@ -46,7 +48,7 @@ public class ScriptedWebappComposerTestCase {
 
     private void assertComposedHierarchy(ScriptedWebappComposer composer) {
         MutablePicoContainer applicationContainer = new DefaultPicoContainer();
-        composer.composeApplication(applicationContainer);
+        composer.composeApplication(applicationContainer, null);
         assertNotNull(applicationContainer.getComponent("applicationScopedInstance"));
         assertNotNull(applicationContainer.getComponent("testFoo"));
 

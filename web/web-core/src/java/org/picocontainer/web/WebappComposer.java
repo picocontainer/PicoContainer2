@@ -9,6 +9,8 @@ package org.picocontainer.web;
 
 import org.picocontainer.MutablePicoContainer;
 
+import javax.servlet.ServletContext;
+
 /**
  * Allows to compose containers for different webapp scopes. The composer is
  * used by the
@@ -23,7 +25,7 @@ import org.picocontainer.MutablePicoContainer;
  */
 public interface WebappComposer {
 
-    void composeApplication(MutablePicoContainer applicationContainer);
+    void composeApplication(MutablePicoContainer applicationContainer, ServletContext servletContext);
 
     void composeSession(MutablePicoContainer sessionContainer);
 

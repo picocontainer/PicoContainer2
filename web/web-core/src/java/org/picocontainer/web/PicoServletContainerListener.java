@@ -132,7 +132,7 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
                 requestStoring, requestStateModel));
 
         if (useCompositionClass) {
-            compose(loadComposer(context));
+            compose(loadComposer(context), context);
         }
         applicationContainer.start();
     }
@@ -186,8 +186,8 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         }
     }
 
-    protected void compose(WebappComposer composer) {
-        composer.composeApplication(applicationContainer);
+    protected void compose(WebappComposer composer, ServletContext context) {
+        composer.composeApplication(applicationContainer, context);
         composer.composeSession(sessionContainer);
         composer.composeRequest(requestContainer);
     }

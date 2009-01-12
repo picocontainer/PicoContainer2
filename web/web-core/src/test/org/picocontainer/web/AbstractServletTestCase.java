@@ -20,6 +20,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -101,7 +102,7 @@ public class AbstractServletTestCase {
 
     static final class MockWebappComposer implements WebappComposer {
 
-        public void composeApplication(MutablePicoContainer applicationContainer) {
+        public void composeApplication(MutablePicoContainer applicationContainer, ServletContext context) {
         }
 
         public void composeRequest(MutablePicoContainer requestContainer) {
