@@ -6,9 +6,11 @@ import static org.picocontainer.web.IntFromRequest.addIntegerRequestParameters;
 import org.picocontainer.MutablePicoContainer;
 import static org.picocontainer.Characteristics.USE_NAMES;
 
+import javax.servlet.ServletContext;
+
 public class JQueryWebappComposer implements WebappComposer {
 
-    public void composeApplication(MutablePicoContainer appContainer) {
+    public void composeApplication(MutablePicoContainer appContainer, ServletContext context) {
         appContainer.addComponent(MessageStore.class, InMemoryMessageStore.class);
     }
 

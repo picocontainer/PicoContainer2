@@ -20,6 +20,10 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.BehaviorFactory;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Storing;
@@ -158,6 +162,15 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         DefaultPicoContainer reqCtnr = new DefaultPicoContainer(new Guarding().wrap(addRequestBehaviors(reqStoring)), sessCtnr);
         return new ScopedContainers(appCtnr, sessCtnr, reqCtnr, sessStoring, reqStoring);
     }
+
+    protected LifecycleStrategy makeLifecycleStrategy() {
+        return new StartableLifecycleStrategy(makeComponentMonitor());
+    }
+
+    protected ComponentMonitor makeComponentMonitor() {
+        return new NullComponentMonitor();
+    }
+
 
     protected BehaviorFactory addRequestBehaviors(BehaviorFactory reqStoring) {
         return reqStoring;

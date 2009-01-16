@@ -6,9 +6,11 @@ import org.picocontainer.web.sample.dao.CheeseDao;
 import org.picocontainer.web.sample.dao.simple.InMemoryCheeseDao;
 import org.picocontainer.web.sample.service.defaults.DefaultCheeseService;
 
+import javax.servlet.ServletContext;
+
 public class StrutsWebappComposer implements WebappComposer {
 
-    public void composeApplication(MutablePicoContainer applicationContainer) {
+    public void composeApplication(MutablePicoContainer applicationContainer, ServletContext context) {
         applicationContainer.addComponent(CheeseDao.class, InMemoryCheeseDao.class);
     }
 

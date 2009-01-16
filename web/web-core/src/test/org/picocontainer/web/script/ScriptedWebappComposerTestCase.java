@@ -66,4 +66,6 @@ public class ScriptedWebappComposerTestCase {
         assertNotNull(requestContainer.getComponent("testFooHierarchy"));
     }
 
+    
+
 }

@@ -11,6 +11,7 @@ import org.picocontainer.web.PicoServletContainerListener;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -21,7 +22,7 @@ public class Struts2PicoServletContainerListener extends PicoServletContainerLis
 
     protected ScopedContainers makeScopedContainers() {
 
-        NullComponentMonitor cm = makeComponentMonitor();
+        ComponentMonitor cm = makeComponentMonitor();
 
         NullLifecycleStrategy ls = new NullLifecycleStrategy();
 
@@ -38,24 +39,27 @@ public class Struts2PicoServletContainerListener extends PicoServletContainerLis
      * Struts2 handles whole value objects in some configurations.
      * This enables lazy instantiation of them    
      */
-    protected NullComponentMonitor makeComponentMonitor() {
-        return new NullComponentMonitor() {
-            public Object noComponentFound(MutablePicoContainer mutablePicoContainer, Object o) {
-                return noComponent(mutablePicoContainer, o);
-            }
+    @Override
+    protected ComponentMonitor makeComponentMonitor() {
+        return new StrutsActionInstantiatingComponentMonitor();
+    }
 
-            private Object noComponent(MutablePicoContainer mutablePicoContainer, Object o) {
-                if (o instanceof Class) {
-                    try {
-                        return ((Class) o).newInstance();
-                    } catch (InstantiationException e) {
-                        throw new PicoCompositionException("can't instantiate " + o);
-                    } catch (IllegalAccessException e) {
-                        throw new PicoCompositionException("illegal access " + o);
-                    }
+    public static class StrutsActionInstantiatingComponentMonitor extends NullComponentMonitor {
+        public Object noComponentFound(MutablePicoContainer mutablePicoContainer, Object o) {
+            return noComponent(mutablePicoContainer, o);
+        }
+
+        private Object noComponent(MutablePicoContainer mutablePicoContainer, Object o) {
+            if (o instanceof Class) {
+                try {
+                    return ((Class) o).newInstance();
+                } catch (InstantiationException e) {
+                    throw new PicoCompositionException("can't instantiate " + o);
+                } catch (IllegalAccessException e) {
+                    throw new PicoCompositionException("illegal access " + o);
                 }
-                return super.noComponentFound(mutablePicoContainer, o);
             }
-        };
+            return super.noComponentFound(mutablePicoContainer, o);
+        }
     }
 }

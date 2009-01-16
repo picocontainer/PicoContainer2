@@ -18,10 +18,11 @@ import org.picocontainer.web.sample.service.CheeseService;
 import org.picocontainer.web.sample.model.Brand;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletContext;
 
 public class ExampleWebappComposer implements WebappComposer {
 
-    public void composeApplication(MutablePicoContainer applicationContainer) {
+    public void composeApplication(MutablePicoContainer applicationContainer, ServletContext context) {
         applicationContainer.addComponent(CheeseDao.class, InMemoryCheeseDao.class);
     }
 
