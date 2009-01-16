@@ -41,16 +41,15 @@ import javax.servlet.http.HttpServletResponse;
 public class PicoWebRemoting {
 
     private final XStream xStream;
-    private final PicoWebRemotingMonitor monitor;
+    private PicoWebRemotingMonitor monitor;
     private final String toStripFromUrls;
     private final String suffixToStrip;
     private final String scopesToPublish;
 
     private Map<String, Object> paths = new HashMap<String, Object>();
 
-    public PicoWebRemoting(XStream xStream, PicoWebRemotingMonitor monitor, String prefixToStripFromUrls, String suffixToStrip, String scopesToPublish) {
+    public PicoWebRemoting(XStream xStream, String prefixToStripFromUrls, String suffixToStrip, String scopesToPublish) {
         this.xStream = xStream;
-        this.monitor = monitor;
         this.toStripFromUrls = prefixToStripFromUrls;
         this.suffixToStrip = suffixToStrip;
         this.scopesToPublish = scopesToPublish;
@@ -59,6 +58,10 @@ public class PicoWebRemoting {
 
     public Map<String, Object> getPaths() {
         return paths;
+    }
+
+    public void setMonitor(PicoWebRemotingMonitor monitor) {
+        this.monitor = monitor;
     }
 
     protected String processRequest(String pathInfo, PicoContainer reqContainer, String httpMethod) throws IOException {

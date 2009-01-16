@@ -180,7 +180,7 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
             mimeType = mimeTypeFromConfig;
         }
         super.init(servletConfig);
-        pwr = new PicoWebRemoting(xStream, monitor, prefixToStripFromUrls, suffixToStrip, scopesToPublish);
+        pwr = new PicoWebRemoting(xStream, prefixToStripFromUrls, suffixToStrip, scopesToPublish);
     }
 
     private void publishAdapters() {
@@ -192,5 +192,6 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
         if (monitor == null) {
             monitor = new NullPicoWebRemotingMonitor();
         }
+        pwr.setMonitor(monitor);
     }
 }
