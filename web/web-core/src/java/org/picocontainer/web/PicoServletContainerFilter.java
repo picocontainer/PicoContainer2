@@ -64,7 +64,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
     }
 
     public static Object getRequestComponentForThread(Class<?> type) {
-        MutablePicoContainer requestContainer = ServletFilter.getRequestContainerForThread();
+        MutablePicoContainer requestContainer = ServletFilter.currentRequestContainer.get();
         MutablePicoContainer container = new DefaultPicoContainer(requestContainer);
         container.addComponent(type);
         return container.getComponent(type);
@@ -150,18 +150,6 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
 
         protected void setSessionContainer(MutablePicoContainer container) {
             currentSessionContainer.set(container);
-        }
-
-        public static MutablePicoContainer getRequestContainerForThread() {
-            return currentRequestContainer.get();
-        }
-
-        public static MutablePicoContainer getSessionContainerForThread() {
-            return currentSessionContainer.get();
-        }
-
-        public static MutablePicoContainer getApplicationContainerForThread() {
-            return currentAppContainer.get();
         }
     }
 
