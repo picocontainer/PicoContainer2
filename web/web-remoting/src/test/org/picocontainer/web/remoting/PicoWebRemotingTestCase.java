@@ -80,6 +80,7 @@ public final class PicoWebRemotingTestCase {
     @Test
     public void testMissingParamWillCauseASuitableMessage() throws Exception {
         PicoWebRemoting pwr = new PicoWebRemoting(xStream, "alpha/", null, "y");
+        pwr.setMonitor(new NullPicoWebRemotingMonitor());
         pwr.directorize("alpha/Foo", Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
@@ -142,6 +143,8 @@ public final class PicoWebRemotingTestCase {
     @Test
     public void testHiddenMethodNotPublished() throws Exception {
         PicoWebRemoting pwr = new PicoWebRemoting(xStream, "alpha/", null, "y");
+        pwr.setMonitor(new NullPicoWebRemotingMonitor());
+
         pwr.directorize("alpha/Foo", Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
@@ -158,6 +161,8 @@ public final class PicoWebRemotingTestCase {
     @Test
     public void testNonExistantMethodNotPublished() throws Exception {
         PicoWebRemoting pwr = new PicoWebRemoting(xStream, "alpha/", null, "y");
+        pwr.setMonitor(new NullPicoWebRemotingMonitor());
+
         pwr.directorize("alpha/Foo", Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();

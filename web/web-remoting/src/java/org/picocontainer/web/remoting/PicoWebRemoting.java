@@ -38,6 +38,9 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @author Paul Hammant
+ */
 public class PicoWebRemoting {
 
     private final XStream xStream;
