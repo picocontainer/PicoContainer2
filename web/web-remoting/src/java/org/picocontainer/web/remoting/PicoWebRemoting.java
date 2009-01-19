@@ -96,8 +96,7 @@ public class PicoWebRemoting {
             }
 
         } catch (SingleMemberInjector.ParameterCannotBeNullException e) {
-            String parameterName = e.getParameterName();
-            return errorResult(monitor.nullParameterForMethodInvocation(parameterName));
+            return errorResult(monitor.nullParameterForMethodInvocation(e.getParameterName()));
         } catch (PicoCompositionException e) {
             return errorResult(monitor.picoCompositionExceptionForMethodInvocation(e));
         } catch (RuntimeException e) {
