@@ -43,11 +43,11 @@ public class StringFromCookie extends ProviderAdapter {
                 return cookie.getValue();
             }
         }
-        throw new NotFound(name);
+        throw new CookieNotFound(name);
     }
 
-    public static class NotFound extends RuntimeException {
-        private NotFound(String name) {
+    public static class CookieNotFound extends PicoContainerWebException {
+        private CookieNotFound(String name) {
             super("'" + name + "' not found in cookies");
         }
     }

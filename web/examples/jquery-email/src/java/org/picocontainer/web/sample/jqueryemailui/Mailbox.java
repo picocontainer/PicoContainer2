@@ -2,10 +2,7 @@ package org.picocontainer.web.sample.jqueryemailui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
 import java.util.Map;
-import java.util.Set;
-import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -46,7 +43,7 @@ public abstract class Mailbox {
     private MessageData getMessage(int msgId) {
         MessageData md = messages.get(msgId);
         if (md == null) {
-            throw new RuntimeException("no such message ID");
+            throw new MailAppException("no such message ID");
         }
         return md;
     }

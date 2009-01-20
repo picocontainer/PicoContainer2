@@ -30,7 +30,7 @@ public class Auth {
         String actualPassword = users.get(userName);
         if (actualPassword == null || !actualPassword.equals(password)) {
             writeCookie("", resp);
-            throw new RuntimeException("Invalid Login. User name or password incorrect.");
+            throw new MailAppException("Invalid Login. User name or password incorrect.");
         }
         writeCookie(userName, resp);
     }

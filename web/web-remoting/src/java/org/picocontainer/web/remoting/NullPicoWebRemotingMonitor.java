@@ -8,6 +8,7 @@
 package org.picocontainer.web.remoting;
 
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.web.PicoContainerWebException;
 
 public class NullPicoWebRemotingMonitor implements PicoWebRemotingMonitor {
 
@@ -16,10 +17,24 @@ public class NullPicoWebRemotingMonitor implements PicoWebRemotingMonitor {
     }
 
     public Object runtimeExceptionForMethodInvocation(RuntimeException e) {
-        return new ErrorReply(e.getMessage());
+        if (getAppBaseRuntimeException().isAssignableFrom(e.getClass()) ||
+            PicoContainerWebException.class.isAssignableFrom(e.getClass()) ) {
+            return new ErrorReply(e.getMessage());
+        } else {
+            return otherRuntimeException(e);
+        }
+    }
+
+    protected Object otherRuntimeException(RuntimeException e) {
+        throw e;
     }
 
     public Object nullParameterForMethodInvocation(String parameterName) {
         return new ErrorReply("Parameter '" + parameterName + "' missing");
     }
+
+    protected Class<? extends RuntimeException>getAppBaseRuntimeException() {
+        return RuntimeException.class;
+    }
+
 }

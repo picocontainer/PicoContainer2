@@ -10,10 +10,10 @@ import static org.picocontainer.Characteristics.USE_NAMES;
 
 import javax.servlet.ServletContext;
 
-public class JQueryWebappComposer implements WebappComposer {
+public class JQueryDemoWebappComposer implements WebappComposer {
 
     public void composeApplication(MutablePicoContainer appContainer, ServletContext context) {
-        appContainer.addComponent(PicoWebRemotingMonitor.class, NullPicoWebRemotingMonitor.class);
+        appContainer.addComponent(PicoWebRemotingMonitor.class, JQueryDemoWebRemotingMonitor.class);
         appContainer.addComponent(MessageStore.class, InMemoryMessageStore.class);
     }
 

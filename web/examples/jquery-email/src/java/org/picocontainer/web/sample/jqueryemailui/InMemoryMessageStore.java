@@ -55,7 +55,7 @@ public class InMemoryMessageStore implements MessageStore {
     }
 
     public Map<Integer, MessageData> inboxFor(User user) {
-        return messagesIn.get(user.getName());  
+        return messagesIn.get(user.getName());
     }
 
     public Map<Integer, MessageData> sentFor(User user) {

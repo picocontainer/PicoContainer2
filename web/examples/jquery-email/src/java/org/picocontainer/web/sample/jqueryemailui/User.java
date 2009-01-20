@@ -36,13 +36,13 @@ public class User {
         public User provide(HttpServletRequest req) {
             try {
                 return new User(stringFromCookie.provide(req));
-            } catch (StringFromCookie.NotFound e) {
+            } catch (StringFromCookie.CookieNotFound e) {
                 throw new NotLoggedIn();
             }
         }
     }
 
-    public static class NotLoggedIn extends RuntimeException {
+    public static class NotLoggedIn extends MailAppException {
          NotLoggedIn() {
             super("not logged in");
         }
