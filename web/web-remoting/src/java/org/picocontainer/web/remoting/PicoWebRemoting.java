@@ -29,6 +29,7 @@ import org.picocontainer.web.POST;
 import org.picocontainer.web.DELETE;
 import org.picocontainer.web.NONE;
 import org.picocontainer.web.PUT;
+import org.picocontainer.web.PicoContainerWebException;
 import org.picocontainer.injectors.MethodInjection;
 import org.picocontainer.injectors.Reinjector;
 import org.picocontainer.injectors.ProviderAdapter;
@@ -48,14 +49,16 @@ public class PicoWebRemoting {
     private final String toStripFromUrls;
     private final String suffixToStrip;
     private final String scopesToPublish;
+    private final boolean lowerCasePath;
 
     private Map<String, Object> paths = new HashMap<String, Object>();
 
-    public PicoWebRemoting(XStream xStream, String prefixToStripFromUrls, String suffixToStrip, String scopesToPublish) {
+    public PicoWebRemoting(XStream xStream, String prefixToStripFromUrls, String suffixToStrip, String scopesToPublish, boolean lowerCasePath) {
         this.xStream = xStream;
         this.toStripFromUrls = prefixToStripFromUrls;
         this.suffixToStrip = suffixToStrip;
         this.scopesToPublish = scopesToPublish;
+        this.lowerCasePath = lowerCasePath;
         this.xStream.registerConverter(new ISO8601DateConverter());
     }
 
@@ -106,7 +109,7 @@ public class PicoWebRemoting {
     }
 
     private RuntimeException makeNothingMatchingException() {
-        return new RuntimeException("Nothing matches the path requested");
+        return new PicoContainerWebException("Nothing matches the path requested");
     }
 
     private Object getNode(PicoContainer reqContainer, String httpMethod, String path) throws IOException {
@@ -136,7 +139,7 @@ public class PicoWebRemoting {
         Method method = methods.get(methodName);
         String verbs = post(method) + get(method) + put(method) + delete(method);
         if (!verbs.equals("") && !verbs.contains(verb)) {
-            throw new RuntimeException("method not allowed for " + verb);
+            throw new PicoContainerWebException("method not allowed for " + verb);
         }
         return reinject(methodName, method, methods.getComponent(), reqContainer);
     }
@@ -199,11 +202,20 @@ public class PicoWebRemoting {
     }
 
     private void publishAdapter(Class<?> key) {
-        String path = key.getName().replace('.', '/');
+        String path = getClassName(key).replace('.', '/');
         if (toStripFromUrls != "" || path.startsWith(toStripFromUrls)) {
             paths.put(path, key);
             directorize(path, key);
             directorize(path);
+        }
+    }
+
+    private String getClassName(Class<?> key) {
+        String name = key.getName();
+        if (lowerCasePath) {
+            return name.toLowerCase();
+        } else {
+            return name;
         }
     }
 
@@ -276,7 +288,4 @@ public class PicoWebRemoting {
             return component;
         }
     }
-
-
-
 }

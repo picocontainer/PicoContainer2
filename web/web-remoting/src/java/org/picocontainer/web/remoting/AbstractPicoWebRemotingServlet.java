@@ -41,6 +41,7 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
     private static final String PACKAGE_PREFIX_TO_STRIP = "package_prefix_to_strip";
     private static final String SUFFIX_TO_STRIP = "suffix_to_strip";
     private static final String MIME_TYPE = "mime_type";
+    private static final String LOWER_CASE_PATH = "lower_case_path";
 
     private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
@@ -179,8 +180,17 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
         if (mimeTypeFromConfig != null) {
             mimeType = mimeTypeFromConfig;
         }
+
+        String lowerCasePathStr = servletConfig.getInitParameter(LOWER_CASE_PATH);
+        boolean lowerCasePath;
+        if (lowerCasePathStr == null) {
+            lowerCasePath = false;
+        } else {
+            lowerCasePath = lowerCasePathStr.toLowerCase().equals(Boolean.TRUE.toString());
+        }
+
         super.init(servletConfig);
-        pwr = new PicoWebRemoting(xStream, prefixToStripFromUrls, suffixToStrip, scopesToPublish);
+        pwr = new PicoWebRemoting(xStream, prefixToStripFromUrls, suffixToStrip, scopesToPublish, lowerCasePath);
     }
 
     private void publishAdapters() {
