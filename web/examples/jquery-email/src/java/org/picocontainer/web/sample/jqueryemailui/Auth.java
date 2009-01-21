@@ -18,6 +18,9 @@ public class Auth {
 
     public String whoIsLoggedIn(HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
+        if (cookies == null) {
+            return "";
+        }
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("userName")) {
                 return cookie.getValue();
