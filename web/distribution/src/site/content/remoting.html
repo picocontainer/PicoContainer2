@@ -135,7 +135,7 @@ public class JQueryWebappComposer implements WebappComposer {
 
 	  <context-param>
 	    <param-name>webapp-composer-class</param-name>
-	    <param-value>org.picocontainer.web.sample.jqueryemailui.JQueryWebappComposer</param-value>
+	    <param-value>org.picocontainer.web.sample.jqueryemailui.JQueryDemoWebappComposer</param-value>
 	  </context-param>
 
 	  <filter>
@@ -185,7 +185,7 @@ public class JQueryWebappComposer implements WebappComposer {
   element that takes a comma separated list of scopes. One or more of
   'application' , 'session' and 'request' (without the quotes). This
   listed will be analysed for publication as PWR invocable.</p>
-<h3>Limiting HTTP Methods for Methods</h3>
+<h3>Limiting HTTP Methods for a Class' Methods</h3>
 <p>Only public method on components managed by PicoContainer are
   eligible. By default, all web methods (GET, POST, PUT, DELETE) are
   possible for a matching method. However there are annotations (in
@@ -203,7 +203,9 @@ public class JQueryWebappComposer implements WebappComposer {
   <span class="style1">http://mycompany.com/r/store/Cart/buy</span> if you wanted.  The /r/ prefix is the mapping to the servlet that is configured in the 
   web.xml - it could just as easily be /pwr/ or /rpc/ or /ajax/ </p>
 <h3>Mapping to a Suffix</h3>
-<p>You can have a suffix such as .ajax or .json at the end the method name. For example <span class="style1">http://mycompany.com/r/com/mycompany/store/Cart/buy.json</span> might be what you want. There is an  init-param for the servlet in web.xml element called <span class="style1">suffix_to_strip</span> that would specify '.json' in this case.</p>
+<p>You can have a suffix such as .ajax or .json at the end the method name. For example <span class="style1">http://mycompany.com/r/com/mycompany/store/Cart/buy.json</span> might be what you want. There is an servlet init-param for the servlet in web.xml element called <span class="style1">suffix_to_strip</span> that would specify '.json' in this case.</p>
+<h3>Lower case Class names in path</h3>
+<p>In our example above Auth (the class) appears as 'Auth' in any URLs.  If you specify an init parameter of 'lower_case_path' as true, then you can have it as 'auth' in URLs</p>
 <h3>Cross-site request forgery (CSRF) protection</h3>
 <p>Many AJAX capable technologies are vulnerable to CSRF attacks.
 PWR is no different. If you are running your webapp publically, and there
