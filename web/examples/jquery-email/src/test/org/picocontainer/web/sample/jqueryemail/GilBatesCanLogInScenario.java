@@ -5,6 +5,8 @@ import org.jbehave.scenario.PropertyBasedConfiguration;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
+import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
+import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.junit.Before;
 import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.DefaultSelenium;
@@ -34,6 +36,9 @@ public class GilBatesCanLogInScenario extends JUnitScenario {
                 return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(), new PatternScenarioParser(this),
                         classLoader);
             }
+			public ScenarioReporter forReportingScenarios() {
+				return new PrintStreamScenarioReporter();
+			}
         });
     }
 }
