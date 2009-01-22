@@ -40,7 +40,7 @@ import com.meterware.servletunit.ServletUnitClient;
  * @author Gr&eacute;gory Joseph
  * @author Mauro Talevi
  */
-public class AbstractServletTestCase {
+abstract public class AbstractServletTestCase {
     private ServletRunner sr;
 
     @Test public void testTheTest() throws Exception {

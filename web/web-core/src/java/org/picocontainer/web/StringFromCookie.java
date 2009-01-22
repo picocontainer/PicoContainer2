@@ -15,7 +15,7 @@ import javax.servlet.http.Cookie;
 
 /**
  * Use this to make a request level component that pulls information from cookie held on
- * the browser.  If a cookie of the suplied name is not available for the current
+ * the browser.  If a cookie of the supplied name is not available for the current
  * request path, then a NotFound exception will be thrown.
  */
 public class StringFromCookie extends ProviderAdapter {
