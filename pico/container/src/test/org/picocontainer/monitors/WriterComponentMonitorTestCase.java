@@ -54,12 +54,14 @@ public class WriterComponentMonitorTestCase  {
         componentMonitor = new WriterComponentMonitor(out);
     }
 
-    @Test public void testShouldTraceInstantiating() {
+    @SuppressWarnings("unchecked")
+   @Test public void testShouldTraceInstantiating() {
         componentMonitor.instantiating(null, null, constructor);
         assertEquals(format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)) +NL,  out.toString());
     }
 
-    @Test public void testShouldTraceInstantiatedWithInjected() {
+    @SuppressWarnings("unchecked")
+   @Test public void testShouldTraceInstantiatedWithInjected() {
         Object[] injected = new Object[0];
         Object instantiated = new Object();
         componentMonitor.instantiated(null, null, constructor, instantiated, injected, 543);
@@ -69,6 +71,7 @@ public class WriterComponentMonitorTestCase  {
                                                    instantiated.getClass().getName(), parmsToString(injected)) +NL,  out.toString());
     }
 
+    @SuppressWarnings("unchecked")
     @Test public void testShouldTraceInstantiationFailed() {
         componentMonitor.instantiationFailed(null, null, constructor, new RuntimeException("doh"));
         Assert.assertEquals(format(ComponentMonitorHelper.INSTANTIATION_FAILED,
@@ -94,6 +97,7 @@ public class WriterComponentMonitorTestCase  {
                                                    methodToString(method), this, "doh") +NL,  out.toString());
     }
 
+    @SuppressWarnings("unchecked")
     @Test public void testShouldTraceLifecycleInvocationFailed() {
         try {
             componentMonitor.lifecycleInvocationFailed(new TransientPicoContainer(),
