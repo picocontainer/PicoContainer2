@@ -18,24 +18,9 @@ public class User {
     }
 
     public static class FromCookie extends ProviderAdapter {
-        private StringFromCookie stringFromCookie = new StringFromCookie("userName");
-        public FromCookie() {
-            super();
-        }
-
-        @Override
-        public Object getComponentKey() {
-            return User.class;    
-        }
-
-        @Override
-        public Class getComponentImplementation() {
-            return User.class;    
-        }
-
         public User provide(HttpServletRequest req) {
             try {
-                return new User(stringFromCookie.provide(req));
+                return new User(new StringFromCookie("userName").provide(req));
             } catch (StringFromCookie.CookieNotFound e) {
                 throw new NotLoggedIn();
             }
