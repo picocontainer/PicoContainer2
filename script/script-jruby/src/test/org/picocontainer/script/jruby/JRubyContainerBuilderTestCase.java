@@ -506,8 +506,8 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
     
 
-    @Test
     @Ignore
+    @Test
     public void testBuildContainerWithParentAttributesPropagatesComponentFactory() {
         DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(new SetterInjection());
         Reader script = new StringReader("container(:parent => $parent)\n");
@@ -515,8 +515,8 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, parent, ASSEMBLY_SCOPE);
         // Should be able to get instance that was registered in the parent container
         ComponentAdapter<?> componentAdapter = pico.addComponent(String.class).getComponentAdapter(String.class, (NameBinding) null);
-        assertTrue("ComponentAdapter should be originally defined by parent",
-                   componentAdapter instanceof SetterInjector);
+        assertNotNull("ComponentAdapter should be originally defined by parent",
+                   componentAdapter.findAdapterOfType(SetterInjector.class));
     }
 
     @Test public void testExceptionThrownWhenParentAttributeDefinedWithinChild() {
