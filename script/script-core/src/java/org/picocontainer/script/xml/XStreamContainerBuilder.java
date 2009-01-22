@@ -7,6 +7,8 @@
  ******************************************************************************/
 package org.picocontainer.script.xml;
 
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_INSTANCE_FACTORY;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
@@ -21,6 +23,8 @@ import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoClassNotFoundException;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.behaviors.Caching;
@@ -28,6 +32,7 @@ import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.script.LifecycleMode;
+import org.picocontainer.script.ScriptedBuilder;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
 import org.w3c.dom.Document;
@@ -317,24 +322,40 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
 
     protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
         try {
-            ComponentFactory componentFactory;
-            String componentFactoryName = rootElement.getAttribute("componentadapterfactory");
-            if ("".equals(componentFactoryName) || componentFactoryName == null) {
-                componentFactory = new Caching().wrap(new ConstructorInjection());
-            } else {
-                Class<?> componentFactoryClass = getClassLoader().loadClass(componentFactoryName);
-                componentFactory = (ComponentFactory) componentFactoryClass.newInstance();
-            }
-            MutablePicoContainer picoContainer = new DefaultPicoContainer(componentFactory);
-            DefaultClassLoadingPicoContainer scripted = new DefaultClassLoadingPicoContainer(getClassLoader(), picoContainer);
-            populateContainer(scripted);
-            return scripted;
-        } catch (ClassNotFoundException e) {
-            throw new ScriptedPicoContainerMarkupException(e);
-        } catch (InstantiationException e) {
-            throw new ScriptedPicoContainerMarkupException(e);
-        } catch (IllegalAccessException e) {
-            throw new ScriptedPicoContainerMarkupException(e);
+            // create ComponentInstanceFactory for the container
+            MutablePicoContainer childContainer = createMutablePicoContainer(
+                     parentContainer, new ContainerOptions(rootElement));
+            populateContainer(childContainer);
+            return childContainer;
+        } catch (PicoClassNotFoundException e) {
+            throw new ScriptedPicoContainerMarkupException("Class not found:" + e.getMessage(), e);
         }
     }
+
+    private MutablePicoContainer createMutablePicoContainer(PicoContainer parentContainer, ContainerOptions containerOptions) throws PicoCompositionException {
+    	boolean caching = containerOptions.isCaching();
+    	boolean inherit = containerOptions.isInheritParentBehaviors();
+    	String monitorName = containerOptions.getMonitorName();
+    	String componentFactoryName = containerOptions.getComponentFactoryName();
+    	
+    	if (inherit) {
+    		if (!(parentContainer instanceof MutablePicoContainer)) {
+    			throw new PicoCompositionException("For behavior inheritance to be used, the parent picocontainer must be of type MutablePicoContainer");
+    		}
+    		
+    		MutablePicoContainer parentPico = (MutablePicoContainer)parentContainer;
+    		return parentPico.makeChildContainer();
+    	}
+    	
+    	ScriptedBuilder builder = new ScriptedBuilder(parentContainer);
+        if (caching) builder.withCaching();
+        return builder
+            .withClassLoader(getClassLoader())
+            .withLifecycle()
+            .withComponentFactory(componentFactoryName)
+            .withMonitor(monitorName)
+            .buildPico();
+
+    }
+
 }
