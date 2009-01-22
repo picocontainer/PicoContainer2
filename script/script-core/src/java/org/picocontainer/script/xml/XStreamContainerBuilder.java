@@ -8,6 +8,7 @@
 package org.picocontainer.script.xml;
 
 import static org.picocontainer.script.xml.XMLConstants.COMPONENT_INSTANCE_FACTORY;
+import static org.picocontainer.script.xml.XMLConstants.PARAMETER_ZERO;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -215,7 +216,36 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
 
         Class<?> clazz = getClassLoader().loadClass(klass);
 
-        List<Parameter> parameters = new ArrayList<Parameter>();
+
+        // ok , we processed our children. insert implementation
+        Parameter[] parameterArray =  getParameters(rootElement);
+        if ("default".equals(constructor)){
+        	parameterArray = Parameter.ZERO;
+        }
+        
+        NodeList children = rootElement.getChildNodes();
+        if (children.getLength() > 0 || "default".equals(constructor)) {
+            if (key == null || "".equals(key)) {
+                // without key. clazz is our key
+                container.addComponent(clazz, clazz, parameterArray);
+            } else {
+                // with key
+                container.addComponent(key, clazz, parameterArray);
+            }
+        } else {
+            if (key == null || "".equals(key)) {
+                // without key. clazz is our key
+                container.addComponent(clazz, clazz);
+            } else {
+                // with key
+                container.addComponent(key, clazz);
+            }
+
+        }
+    }
+
+	private Parameter[] getParameters(Element rootElement) throws ClassNotFoundException {
+	    List<Parameter> parameters = new ArrayList<Parameter>();
 
         NodeList children = rootElement.getChildNodes();
         Node child;
@@ -251,33 +281,18 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
                     } else {
                         parameters.add(new ComponentParameter(dependencyKey));
                     }
+                } else if (PARAMETER_ZERO.equals(child.getNodeName())) {
+                    	//Check:  We can't check everything here since we aren't schema validating
+                    	//But it will at least catch some goofs.
+                    	if (!parameters.isEmpty()) {
+                    		throw new PicoCompositionException("Cannot mix other parameters with '" + PARAMETER_ZERO +"' nodes." );
+                    	}
+                    	
+                    	return Parameter.ZERO;
                 }
             }
         }
-
-        // ok , we processed our children. insert implementation
-        Parameter[] parameterArray = (Parameter[]) parameters.toArray(new Parameter[parameters.size()]);
-        if (parameters.size() > 0 || "default".equals(constructor)) {
-            if (parameterArray.length == 0) {
-                parameterArray = Parameter.ZERO;
-            }
-            if (key == null || "".equals(key)) {
-                // without key. clazz is our key
-                container.addComponent(clazz, clazz, parameterArray);
-            } else {
-                // with key
-                container.addComponent(key, clazz, parameterArray);
-            }
-        } else {
-            if (key == null || "".equals(key)) {
-                // without key. clazz is our key
-                container.addComponent(clazz, clazz);
-            } else {
-                // with key
-                container.addComponent(key, clazz);
-            }
-
-        }
+        return (Parameter[]) parameters.toArray(new Parameter[parameters.size()]);
     }
 
     /**

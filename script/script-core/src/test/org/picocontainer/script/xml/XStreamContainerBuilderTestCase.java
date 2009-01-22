@@ -193,5 +193,23 @@ public class XStreamContainerBuilderTestCase extends AbstractScriptedContainerBu
     	assertNotNull(pico.getComponentAdapter(DefaultWebServerConfig.class).findAdapterOfType(Locked.class));
     }
     
+    @Test
+    public void testParameterZero() {
+    	Reader script = new StringReader("" + 
+                "<container>\n" +
+	    			"<implementation key='java.util.List' class='java.util.ArrayList'> \n" +	
+	    			"    <parameter-zero/>\n" +
+	    			"</implementation> \n" +
+	    			"<implementation key='java.util.Set' class='java.util.HashSet'> \n" +
+	    			"    <parameter-zero/>\n" +
+	    			"</implementation>\n" +
+                "</container>\n"
+    	);
+    	PicoContainer pico = buildContainer(new XStreamContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");    	
+    	assertNotNull(pico.getComponent(java.util.List.class));
+    	assertNotNull(pico.getComponent(java.util.Set.class));
+    }
+    
+    
 }
 
