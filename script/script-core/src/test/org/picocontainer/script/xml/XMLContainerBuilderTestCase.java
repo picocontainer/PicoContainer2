@@ -824,7 +824,8 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "</container>"
         	);    	
 
-    	PicoContainer comparisonPico = buildContainer(comparison);
+    	MutablePicoContainer parent = new PicoBuilder().withLocking().build();
+    	PicoContainer comparisonPico = buildContainer(new XMLContainerBuilder(comparison, getClass().getClassLoader()), parent, "SOME_SCOPE");
     	//Verify not locking by default
     	//assertTrue(comparisonPico.getComponent(DefaultWebServerConfig.class) != comparisonPico.getComponent(DefaultWebServerConfig.class));
     	assertNull(comparisonPico.getComponentAdapter(DefaultWebServerConfig.class).findAdapterOfType(Locked.class));
@@ -836,8 +837,7 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
             "</container>"
     	);
     	
-    	MutablePicoContainer parent = new PicoBuilder().withLocking().build();
-    	
+    	parent = new PicoBuilder().withLocking().build();
     	PicoContainer pico = buildContainer(new XMLContainerBuilder(script, getClass().getClassLoader()), parent, "SOME_SCOPE");
     	
     	assertNotNull(pico.getComponentAdapter(DefaultWebServerConfig.class).findAdapterOfType(Locked.class));
