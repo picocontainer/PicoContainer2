@@ -16,18 +16,18 @@ import org.picocontainer.behaviors.AbstractBehavior;
 import java.lang.reflect.Type;
 
 @SuppressWarnings("serial")
-public class Decorated extends AbstractBehavior {
+public class Decorated<T> extends AbstractBehavior<T> {
     private final Decorator decorator;
 
 
-    public Decorated(ComponentAdapter delegate, Decorator decorator) {
+    public Decorated(ComponentAdapter<T> delegate, Decorator decorator) {
         super(delegate);
         this.decorator = decorator;
     }
 
-    public Object getComponentInstance(final PicoContainer container, Type into)
+    public T getComponentInstance(final PicoContainer container, Type into)
             throws PicoCompositionException {
-        Object instance = super.getComponentInstance(container, into);
+        T instance = super.getComponentInstance(container, into);
         decorator.decorate(instance);
         return instance;
     }

@@ -36,16 +36,17 @@ import org.picocontainer.injectors.ConstructorInjection;
 public final class UserQuestionTestCase {
 
     // From Scott Farquahsr
-    public static final class CheeseAdapter extends AbstractAdapter {
-        private final Map bla;
+    public static final class CheeseAdapter<T extends Cheese> extends AbstractAdapter<T> {
+        private final Map<String,?> bla;
 
-        public CheeseAdapter(Object componentKey, Class componentImplementation, Map cheeseMap) throws PicoCompositionException {
+        public CheeseAdapter(Object componentKey, Class<T> componentImplementation, Map<String,?> cheeseMap) throws PicoCompositionException {
             super(componentKey, componentImplementation);
             this.bla = cheeseMap;
         }
 
-        public Object getComponentInstance(PicoContainer pico, Type into) throws PicoCompositionException {
-            return bla.get("cheese");
+        @SuppressWarnings("unchecked")
+        public T getComponentInstance(PicoContainer pico, Type into) throws PicoCompositionException {
+            return (T) bla.get("cheese");
         }
 
         public void verify(PicoContainer pico) {
@@ -89,7 +90,7 @@ public final class UserQuestionTestCase {
 
         MutablePicoContainer pico = new DefaultPicoContainer(new ConstructorInjection());
         pico.addComponent(Omelette.class);
-        pico.addAdapter(new CheeseAdapter("scott", Gouda.class, cheeseMap));
+        pico.addAdapter(new CheeseAdapter<Gouda>("scott", Gouda.class, cheeseMap));
 
         Cheese gouda = new Gouda();
         cheeseMap.put("cheese", gouda);
@@ -118,6 +119,7 @@ public final class UserQuestionTestCase {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static class Something implements InterfaceX {
         private final Disabled disabled;
         private final Enabled enabled;
