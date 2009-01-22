@@ -50,7 +50,7 @@ module Scripted
     end
 
     def build
-      params = Parameter[].new(@params.length)
+      params = Parameter[@params.length].new
       @params.each_with_index {|p, i| params[i] = p.build }
       params
     end

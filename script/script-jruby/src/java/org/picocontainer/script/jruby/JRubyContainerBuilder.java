@@ -98,11 +98,16 @@ public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
 			if (re.getCause() instanceof ScriptedPicoContainerMarkupException) {
 				throw (ScriptedPicoContainerMarkupException) re.getCause();
 			}
-			String message = (String) JavaEmbedUtils.rubyToJava(ruby, re.getException().message, String.class);
-			if (message.startsWith(MARKUP_EXCEPTION_PREFIX)) {
-				throw new ScriptedPicoContainerMarkupException(message.substring(MARKUP_EXCEPTION_PREFIX.length()));
+			Object errorMessage = JavaEmbedUtils.rubyToJava(ruby, re.getException().message, String.class);
+			if (errorMessage instanceof String) {
+				String message = (String) JavaEmbedUtils.rubyToJava(ruby, re.getException().message, String.class);
+				if (message.startsWith(MARKUP_EXCEPTION_PREFIX)) {
+					throw new ScriptedPicoContainerMarkupException(message.substring(MARKUP_EXCEPTION_PREFIX.length()));
+				} else {
+					throw new PicoCompositionException(message, re);
+				}
 			} else {
-				throw new PicoCompositionException(message, re);
+				throw new PicoCompositionException(errorMessage.toString(), re);
 			}
 		} finally {
 			JavaEmbedUtils.terminate(ruby);

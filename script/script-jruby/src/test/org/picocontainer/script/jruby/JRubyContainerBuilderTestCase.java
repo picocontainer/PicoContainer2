@@ -17,12 +17,15 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Properties;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.jruby.exceptions.RaiseException;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picocontainer.ComponentAdapter;
@@ -108,28 +111,30 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
         assertEquals("foo", pico.getComponent("string"));
     }
 
-    // TODO whoa - wrong addAdapter() being called.
-    public void do_NOT_testBuildingWithPicoSyntax() {
+    @Ignore
+    @Test
+    public void testBuildingWithPicoSyntax() {
         Reader script = new StringReader(
-                                         "$parent.addAdapter('foo', Java::JavaClass.for_name('java.lang.String'))\n"
-                                         +
-                                         "DefaultPicoContainer = org.picocontainer.DefaultPicoContainer\n" +
+                                        "$parent.addComponent('foo', Java::JavaClass.for_name('java.lang.String'))\n"
+                                        +
+                                         "DefaultPicoContainer = org.picocontainer.DefaultPicoContainer\n" + "" + 
                                          "pico = DefaultPicoContainer.new($parent)\n" +
-                                         "pico.addAdapter(Java::JavaClass.for_name('org.picocontainer.script.testmodel.A'))\n"
+                                         "pico.addComponent(Java::JavaClass.for_name(\"org.picocontainer.script.testmodel.A\"))\n"
                                          +
-                                         "pico");
+                                         "pico"
+                                         );
 
         PicoContainer parent = new DefaultPicoContainer();
         PicoContainer pico = buildContainer(script, parent, "SOME_SCOPE");
 
         assertNotSame(parent, pico.getParent());
-        System.err.println("-->1 " + pico.getComponents().get(0).getClass());
         assertNotNull(pico.getComponent(A.class));
 
         assertNotNull(pico.getComponent("foo"));
     }
 
-    @Test public void testContainerBuiltWithMultipleComponentInstances() {
+    @Test 
+    public void testContainerBuiltWithMultipleComponentInstances() {
         Reader script = new StringReader(
                                          "container {\n" +
                                          "    component(:key => 'a', :instance => 'apple')\n" +
@@ -381,6 +386,25 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         assertEquals("Should match the expression", "<A<C<BB>C>A>!B!C!A", X.componentRecorder);
     }
+    
+    @Test
+    @Ignore
+    public void testParameterZero() {
+    	Reader script = new StringReader("" + 
+    			"import org.picocontainer.Parameter\n" +
+    			"\n" + 
+    			"container{\n" +
+    			"	component(:class => java.util.ArrayList, :parameters => Parameter::ZERO)\n" +
+    			"	component(:class => java.util.HashSet, :parameters => Parameter::ZERO)\n" +
+    			"}\n" 
+    	);
+    	
+    	PicoContainer pico = buildContainer(script, null, ASSEMBLY_SCOPE);
+    	assertNotNull(pico.getComponent(ArrayList.class));
+    	assertNotNull(pico.getComponent(HashSet.class));
+    }
+    
+    
 
     @Test public void testBuildContainerWithParentAttribute() {
         DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer();
@@ -482,7 +506,9 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
     }
     
 
-    public void FAILING_testBuildContainerWithParentAttributesPropagatesComponentFactory() {
+    @Test
+    @Ignore
+    public void testBuildContainerWithParentAttributesPropagatesComponentFactory() {
         DefaultClassLoadingPicoContainer parent = new DefaultClassLoadingPicoContainer(new SetterInjection());
         Reader script = new StringReader("container(:parent => $parent)\n");
 
