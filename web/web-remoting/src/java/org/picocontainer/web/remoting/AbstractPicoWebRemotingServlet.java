@@ -42,6 +42,7 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
     private static final String SUFFIX_TO_STRIP = "suffix_to_strip";
     private static final String MIME_TYPE = "mime_type";
     private static final String LOWER_CASE_PATH = "lower_case_path";
+    private static final String USE_METHOD_NAME_PREFIXES_FOR_VERBS = "use_method_name_prefixes_for_verbs";
 
     private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
@@ -189,8 +190,16 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
             lowerCasePath = lowerCasePathStr.toLowerCase().equals(Boolean.TRUE.toString());
         }
 
+        String useMethodNamePrefixesForVerbsStr = servletConfig.getInitParameter(USE_METHOD_NAME_PREFIXES_FOR_VERBS);
+        boolean useMethodNamePrefixesForVerbs;
+        if (useMethodNamePrefixesForVerbsStr == null) {
+            useMethodNamePrefixesForVerbs = true;
+        } else {
+            useMethodNamePrefixesForVerbs = lowerCasePathStr.toLowerCase().equals(Boolean.TRUE.toString());
+        }
+
         super.init(servletConfig);
-        pwr = new PicoWebRemoting(xStream, prefixToStripFromUrls, suffixToStrip, scopesToPublish, lowerCasePath);
+        pwr = new PicoWebRemoting(xStream, prefixToStripFromUrls, suffixToStrip, scopesToPublish, lowerCasePath, useMethodNamePrefixesForVerbs);
     }
 
     private void publishAdapters() {

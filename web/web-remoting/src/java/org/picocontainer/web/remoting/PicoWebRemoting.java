@@ -50,15 +50,18 @@ public class PicoWebRemoting {
     private final String suffixToStrip;
     private final String scopesToPublish;
     private final boolean lowerCasePath;
+    private final boolean useMethodNamePrefixesForVerbs;
 
     private Map<String, Object> paths = new HashMap<String, Object>();
 
-    public PicoWebRemoting(XStream xStream, String prefixToStripFromUrls, String suffixToStrip, String scopesToPublish, boolean lowerCasePath) {
+    public PicoWebRemoting(XStream xStream, String prefixToStripFromUrls, String suffixToStrip, String scopesToPublish,
+                           boolean lowerCasePath, boolean useMethodNamePrefixesForVerbs) {
         this.xStream = xStream;
         this.toStripFromUrls = prefixToStripFromUrls;
         this.suffixToStrip = suffixToStrip;
         this.scopesToPublish = scopesToPublish;
         this.lowerCasePath = lowerCasePath;
+        this.useMethodNamePrefixesForVerbs = useMethodNamePrefixesForVerbs;
         this.xStream.registerConverter(new ISO8601DateConverter());
     }
 
@@ -103,7 +106,8 @@ public class PicoWebRemoting {
         } catch (PicoCompositionException e) {
             return errorResult(monitor.picoCompositionExceptionForMethodInvocation(e));
         } catch (RuntimeException e) {
-            return errorResult(monitor.runtimeExceptionForMethodInvocation(e));
+            Object o = monitor.runtimeExceptionForMethodInvocation(e);
+            return errorResult(o);
         }
 
     }
@@ -136,7 +140,14 @@ public class PicoWebRemoting {
         if (!methods.containsKey(methodName)) {
             throw makeNothingMatchingException();
         }
-        Method method = methods.get(methodName);
+        HashMap<String, Method> methodz = methods.get(methodName);
+        Method method = null;
+        if (useMethodNamePrefixesForVerbs) {
+            method = methodz.get(methodName);
+        }
+        if (method == null) {
+            method = methodz.get("ALL");
+        }
         String verbs = post(method) + get(method) + put(method) + delete(method);
         if (!verbs.equals("") && !verbs.contains(verb)) {
             throw new PicoContainerWebException("method not allowed for " + verb);
@@ -192,12 +203,55 @@ public class PicoWebRemoting {
                     && !Modifier.isStatic(method.getModifiers())
                     && method.getAnnotation(NONE.class) == null
                     ) {
-                webMethods.put(method.getName(), method);
+                String webMethodName = getMethodName(method);
+                String webVerb = getVerbName(method);
+                HashMap<String, Method> methodz = webMethods.get(webMethodName);
+                if (methodz == null) {
+                    methodz = new HashMap<String, Method>();
+                    webMethods.put(webMethodName, methodz);
+                }
+                methodz.put(webVerb, method);
             }
         }
         Class<?> superClass = component.getSuperclass();
         if (superClass != Object.class) {
             determineEligibleMethods(superClass, webMethods);
+        }
+    }
+
+    private String getMethodName(Method method) {
+        String name = method.getName();
+        if (!useMethodNamePrefixesForVerbs) {
+            return name;
+        }
+        if (name.startsWith("get") && Character.isUpperCase(name.charAt(3))) {
+            return name.substring(3,4).toLowerCase() + name.substring(4);
+        } else if (name.startsWith("put") && Character.isUpperCase(name.charAt(3))) {
+            return name.substring(3,4).toLowerCase() + name.substring(4);
+        } else if (name.startsWith("delete") && Character.isUpperCase(name.charAt(3))) {
+            return name.substring(6,7).toLowerCase() + name.substring(7);
+        } else if (name.startsWith("post") && Character.isUpperCase(name.charAt(3))) {
+            return name.substring(4,5).toLowerCase() + name.substring(5);
+        } else {
+            return name;
+        }
+    }
+
+    private String getVerbName(Method method) {
+        if (useMethodNamePrefixesForVerbs) {
+            return "ALL";
+        }
+        String name = method.getName();
+        if (name.startsWith("get") && Character.isUpperCase(name.charAt(3))) {
+            return "GET";
+        } else if (name.startsWith("put") && Character.isUpperCase(name.charAt(3))) {
+            return "PUT";
+        } else if (name.startsWith("delete") && Character.isUpperCase(name.charAt(3))) {
+            return "DELETE";
+        } else if (name.startsWith("post") && Character.isUpperCase(name.charAt(3))) {
+            return "POST";
+        } else {
+            return "ALL";
         }
     }
 
@@ -277,7 +331,7 @@ public class PicoWebRemoting {
     }
 
     @SuppressWarnings("serial")
-	public static class WebMethods extends HashMap<String, Method> {
+	public static class WebMethods extends HashMap<String, HashMap<String, Method>> {
         private final Class<?> component;
 
         public WebMethods(Class<?> component) {

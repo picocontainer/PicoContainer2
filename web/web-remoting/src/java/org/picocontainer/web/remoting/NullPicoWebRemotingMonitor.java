@@ -17,7 +17,8 @@ public class NullPicoWebRemotingMonitor implements PicoWebRemotingMonitor {
     }
 
     public Object runtimeExceptionForMethodInvocation(RuntimeException e) {
-        if (getAppBaseRuntimeException().isAssignableFrom(e.getClass()) ||
+        Class<? extends RuntimeException> appBaseRuntimeException = getAppBaseRuntimeException();
+        if (appBaseRuntimeException != null && appBaseRuntimeException.isAssignableFrom(e.getClass()) ||
             PicoContainerWebException.class.isAssignableFrom(e.getClass()) ) {
             return new ErrorReply(e.getMessage());
         } else {
@@ -34,7 +35,7 @@ public class NullPicoWebRemotingMonitor implements PicoWebRemotingMonitor {
     }
 
     protected Class<? extends RuntimeException>getAppBaseRuntimeException() {
-        return RuntimeException.class;
+        return null;
     }
 
 }
