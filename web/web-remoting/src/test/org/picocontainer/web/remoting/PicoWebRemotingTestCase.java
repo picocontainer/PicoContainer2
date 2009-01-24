@@ -147,6 +147,7 @@ public final class PicoWebRemotingTestCase {
     @Test
     public void testRightParamWillCauseInvocationWithNoPrefix() throws Exception {
         PicoWebRemoting pwr = new PicoWebRemoting(xStream, "", null, "y", false, true);
+        pwr.setMonitor(new NullPicoWebRemotingMonitor());
         pwr.directorize("Foo", Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
@@ -158,6 +159,17 @@ public final class PicoWebRemotingTestCase {
 
         result = pwr.processRequest("/Foo/goodbye", pico, "GET");
         assertEquals("33\n", result);
+        
+        result = pwr.processRequest("/Foo/color", pico, "GET");
+        assertEquals("{\n" +
+                "  \"red\": 255,\n" +
+                "  \"green\": 0,\n" +
+                "  \"blue\": 0,\n" +
+                "  \"alpha\": 255\n" +
+                "}\n", result);
+
+        result = pwr.processRequest("/Foo/color", pico, "DELETE");
+        assertEquals("true\n", result);
     }
 
     @Test
@@ -207,6 +219,10 @@ public final class PicoWebRemotingTestCase {
 
         public Color getColor() {
             return Color.red;
+        }
+
+        public boolean deleteColor() {
+            return true;
         }
 
         @NONE

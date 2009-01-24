@@ -143,7 +143,7 @@ public class PicoWebRemoting {
         HashMap<String, Method> methodz = methods.get(methodName);
         Method method = null;
         if (useMethodNamePrefixesForVerbs) {
-            method = methodz.get(methodName);
+            method = methodz.get(verb);
         }
         if (method == null) {
             method = methodz.get("ALL");
@@ -228,9 +228,9 @@ public class PicoWebRemoting {
             return name.substring(3,4).toLowerCase() + name.substring(4);
         } else if (name.startsWith("put") && Character.isUpperCase(name.charAt(3))) {
             return name.substring(3,4).toLowerCase() + name.substring(4);
-        } else if (name.startsWith("delete") && Character.isUpperCase(name.charAt(3))) {
+        } else if (name.startsWith("delete") && Character.isUpperCase(name.charAt(6))) {
             return name.substring(6,7).toLowerCase() + name.substring(7);
-        } else if (name.startsWith("post") && Character.isUpperCase(name.charAt(3))) {
+        } else if (name.startsWith("post") && Character.isUpperCase(name.charAt(4))) {
             return name.substring(4,5).toLowerCase() + name.substring(5);
         } else {
             return name;
@@ -238,7 +238,7 @@ public class PicoWebRemoting {
     }
 
     private String getVerbName(Method method) {
-        if (useMethodNamePrefixesForVerbs) {
+        if (!useMethodNamePrefixesForVerbs) {
             return "ALL";
         }
         String name = method.getName();
@@ -246,9 +246,9 @@ public class PicoWebRemoting {
             return "GET";
         } else if (name.startsWith("put") && Character.isUpperCase(name.charAt(3))) {
             return "PUT";
-        } else if (name.startsWith("delete") && Character.isUpperCase(name.charAt(3))) {
+        } else if (name.startsWith("delete") && Character.isUpperCase(name.charAt(6))) {
             return "DELETE";
-        } else if (name.startsWith("post") && Character.isUpperCase(name.charAt(3))) {
+        } else if (name.startsWith("post") && Character.isUpperCase(name.charAt(4))) {
             return "POST";
         } else {
             return "ALL";
