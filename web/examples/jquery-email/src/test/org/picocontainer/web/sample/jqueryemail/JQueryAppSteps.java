@@ -11,27 +11,30 @@ import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.condition.JUnitConditionRunner;
 import com.thoughtworks.selenium.condition.Presence;
 import com.thoughtworks.selenium.condition.Not;
+import com.thoughtworks.selenium.condition.ConditionRunner;
 
 
 public class JQueryAppSteps extends Steps {
 
     private final Selenium selenium;
-    private final JUnitConditionRunner runner;
+    private final ConditionRunner runner;
 
-    public JQueryAppSteps(Selenium selenium, JUnitConditionRunner runner) {
+    public JQueryAppSteps(Selenium selenium, ConditionRunner runner) {
         this.selenium = selenium;
         this.runner = runner;
     }
 
     @Given("nobody is logged in")
     public void nobodyLoggedIn() {
-        selenium.open("/");
+        System.out.println("-->1 ");
+        selenium.open("/remoting-jqueryemail-webapp/");
         runner.waitFor(new Presence("Mail"));
         selenium.click("id=logOut");
     }
 
     @When("user $user with password $password logs in")
     public void logIn(String user, String pw) {
+        System.out.println("-->2 ");
         selenium.click("id=logIn");
         runner.waitFor(new Presence("id=userName"));
         selenium.type("userName", user);
@@ -41,11 +44,13 @@ public class JQueryAppSteps extends Steps {
 
     @Then("the Inbox should be visible")
     public void inBoxIsVisible() {
-        runner.waitFor(new Presence("Instant Millionaire"));        
+        System.out.println("-->3 ");
+        runner.waitFor(new Presence("Instant Millionaire"));
     }
 
     @Then("the Inbox should not be visible")
     public void inBoxIsNotVisible() {
+        System.out.println("-->4 ");
         runner.waitFor(new Not(new Presence("Instant Millionaire")));
     }
 
