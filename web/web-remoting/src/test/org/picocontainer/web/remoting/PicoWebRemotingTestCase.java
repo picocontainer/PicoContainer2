@@ -170,6 +170,12 @@ public final class PicoWebRemotingTestCase {
 
         result = pwr.processRequest("/Foo/color", pico, "DELETE");
         assertEquals("true\n", result);
+
+        result = pwr.processRequest("/Foo/color", pico, "POST");
+        assertEquals("\"posted color\"\n", result);
+
+        result = pwr.processRequest("/Foo/color", pico, "PUT");
+        assertEquals("\"put color\"\n", result);
     }
 
     @Test
@@ -225,11 +231,19 @@ public final class PicoWebRemotingTestCase {
             return true;
         }
 
+        public String putColor() {
+            return "put color";
+        }
+
+        public String postColor() {
+            return "posted color";
+        }
+
         @NONE
         public boolean shhh() {
             return true;
         }
-
     }
+
 
 }

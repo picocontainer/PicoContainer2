@@ -53,6 +53,11 @@ public class PicoWebRemoting {
     private final boolean useMethodNamePrefixesForVerbs;
 
     private Map<String, Object> paths = new HashMap<String, Object>();
+    private static final String GET = "GET";
+    private static final String PUT = "PUT";
+    private static final String DELETE = "DELETE";
+    private static final String POST = "POST";
+    private static final String FALLBACK = "FALLBACK";
 
     public PicoWebRemoting(XStream xStream, String prefixToStripFromUrls, String suffixToStrip, String scopesToPublish,
                            boolean lowerCasePath, boolean useMethodNamePrefixesForVerbs) {
@@ -146,29 +151,28 @@ public class PicoWebRemoting {
             method = methodz.get(verb);
         }
         if (method == null) {
-            method = methodz.get("ALL");
+            method = methodz.get(FALLBACK);
         }
-        String verbs = post(method) + get(method) + put(method) + delete(method);
-        if (!verbs.equals("") && !verbs.contains(verb)) {
+        if (method == null) {
             throw new PicoContainerWebException("method not allowed for " + verb);
         }
         return reinject(methodName, method, methods.getComponent(), reqContainer);
     }
 
-    private String delete(Method method) {
-        return method.getAnnotation(DELETE.class) != null ? "DELETE," : "";
+    private boolean delete(Method method) {
+        return method.getAnnotation(DELETE.class) != null;
     }
 
-    private String put(Method method) {
-        return method.getAnnotation(PUT.class) != null ? "PUT," : "";
+    private boolean put(Method method) {
+        return method.getAnnotation(PUT.class) != null;
     }
 
-    private String get(Method method) {
-        return method.getAnnotation(GET.class) != null ? "GET," : "";
+    private boolean get(Method method) {
+        return method.getAnnotation(GET.class) != null;
     }
 
-    private String post(Method method) {
-        return method.getAnnotation(POST.class) != null ? "POST," : "";
+    private boolean post(Method method) {
+        return method.getAnnotation(POST.class) != null;
     }
 
     protected void publishAdapters(Collection<ComponentAdapter<?>> adapters, String scope) {
@@ -210,6 +214,18 @@ public class PicoWebRemoting {
                     methodz = new HashMap<String, Method>();
                     webMethods.put(webMethodName, methodz);
                 }
+                if (post(method)) {
+                    methodz.put(POST, method);
+                }
+                if (get(method)) {
+                    methodz.put(GET, method);
+                }
+                if (delete(method)) {
+                    methodz.put(DELETE, method);
+                }
+                if (put(method)) {
+                    methodz.put(PUT, method);
+                }
                 methodz.put(webVerb, method);
             }
         }
@@ -224,13 +240,13 @@ public class PicoWebRemoting {
         if (!useMethodNamePrefixesForVerbs) {
             return name;
         }
-        if (name.startsWith("get") && Character.isUpperCase(name.charAt(3))) {
+        if (prefixFolledByUpperChar(name, "get")) {
             return name.substring(3,4).toLowerCase() + name.substring(4);
-        } else if (name.startsWith("put") && Character.isUpperCase(name.charAt(3))) {
+        } else if (prefixFolledByUpperChar(name, "put")) {
             return name.substring(3,4).toLowerCase() + name.substring(4);
-        } else if (name.startsWith("delete") && Character.isUpperCase(name.charAt(6))) {
+        } else if (prefixFolledByUpperChar(name, "delete")) {
             return name.substring(6,7).toLowerCase() + name.substring(7);
-        } else if (name.startsWith("post") && Character.isUpperCase(name.charAt(4))) {
+        } else if (prefixFolledByUpperChar(name, "post")) {
             return name.substring(4,5).toLowerCase() + name.substring(5);
         } else {
             return name;
@@ -239,20 +255,25 @@ public class PicoWebRemoting {
 
     private String getVerbName(Method method) {
         if (!useMethodNamePrefixesForVerbs) {
-            return "ALL";
+            return FALLBACK;
         }
         String name = method.getName();
-        if (name.startsWith("get") && Character.isUpperCase(name.charAt(3))) {
-            return "GET";
-        } else if (name.startsWith("put") && Character.isUpperCase(name.charAt(3))) {
-            return "PUT";
-        } else if (name.startsWith("delete") && Character.isUpperCase(name.charAt(6))) {
-            return "DELETE";
-        } else if (name.startsWith("post") && Character.isUpperCase(name.charAt(4))) {
-            return "POST";
+        if (prefixFolledByUpperChar(name, "get")) {
+            return GET;
+        } else if (prefixFolledByUpperChar(name, "put")) {
+            return PUT;
+        } else if (prefixFolledByUpperChar(name, "delete")) {
+            return DELETE;
+        } else if (prefixFolledByUpperChar(name, "post")) {
+            return POST;
         } else {
-            return "ALL";
+            return FALLBACK;
         }
+    }
+
+    private boolean prefixFolledByUpperChar(String name, String prefix) {
+        return name.startsWith(prefix) && name.length() > prefix.length()
+                && Character.isUpperCase(name.charAt(prefix.length()));
     }
 
     private void publishAdapter(Class<?> key) {
