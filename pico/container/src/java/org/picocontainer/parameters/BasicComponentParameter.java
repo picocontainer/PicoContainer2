@@ -104,7 +104,7 @@ public class BasicComponentParameter implements Parameter, Serializable {
         stringConverters.put(Float.class, new ValueOfConverter(Float.class));
         stringConverters.put(Character.class, new ValueOfConverter(Character.class));
         stringConverters.put(Byte.class, new ValueOfConverter(Byte.class));
-        stringConverters.put(Byte.class, new ValueOfConverter(Short.class));
+        stringConverters.put(Short.class, new ValueOfConverter(Short.class));
         stringConverters.put(File.class, new NewInstanceConverter(File.class));
 
     }
