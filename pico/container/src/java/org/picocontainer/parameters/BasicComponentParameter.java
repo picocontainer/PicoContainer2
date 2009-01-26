@@ -49,25 +49,7 @@ public class BasicComponentParameter implements Parameter, Serializable {
     private static interface Converter {
         Object convert(String paramValue);
     }
-    private static class ValueOfConverter implements Converter {
-        private Method m;
-        private ValueOfConverter(Class clazz) {
-            try {
-                m = clazz.getMethod("valueOf", String.class);
-            } catch (NoSuchMethodException e) {
-            }
-        }
 
-        public Object convert(String paramValue) {
-            try {
-                return m.invoke(null, paramValue);
-            } catch (IllegalAccessException e) {
-            } catch (InvocationTargetException e) {
-            }
-            return null;
-
-        }
-    }
     private static class NewInstanceConverter implements Converter {
         private Constructor c;
 
@@ -97,15 +79,51 @@ public class BasicComponentParameter implements Parameter, Serializable {
 
     private static final Map<Class, Converter> stringConverters = new HashMap<Class, Converter>();
     static {
-        stringConverters.put(Integer.class, new ValueOfConverter(Integer.class));
-        stringConverters.put(Double.class, new ValueOfConverter(Double.class));
-        stringConverters.put(Boolean.class, new ValueOfConverter(Boolean.class));
-        stringConverters.put(Long.class, new ValueOfConverter(Long.class));
-        stringConverters.put(Float.class, new ValueOfConverter(Float.class));
-        stringConverters.put(Character.class, new ValueOfConverter(Character.class));
-        stringConverters.put(Byte.class, new ValueOfConverter(Byte.class));
-        stringConverters.put(Short.class, new ValueOfConverter(Short.class));
-        stringConverters.put(File.class, new NewInstanceConverter(File.class));
+        stringConverters.put(Integer.class, new Converter(){
+            public Object convert(String paramValue) {
+                return Integer.valueOf(paramValue);
+            }
+        });
+        stringConverters.put(Double.class, new Converter() {
+            public Object convert(String paramValue) {
+                return Double.valueOf(paramValue);
+            }
+        });
+        stringConverters.put(Boolean.class, new Converter(){
+            public Object convert(String paramValue) {
+                return Boolean.valueOf(paramValue);
+            }
+        });
+        stringConverters.put(Long.class, new Converter() {
+            public Object convert(String paramValue) {
+                return Long.valueOf(paramValue);
+            }
+        });
+        stringConverters.put(Float.class, new Converter() {
+            public Object convert(String paramValue) {
+                return Float.valueOf(paramValue);
+            }
+        });
+        stringConverters.put(Character.class, new Converter() {
+            public Object convert(String paramValue) {
+                return paramValue.charAt(0);
+            }
+        });
+        stringConverters.put(Byte.class, new Converter() {
+            public Object convert(String paramValue) {
+                return Byte.valueOf(paramValue);
+            }
+        });
+        stringConverters.put(Short.class, new Converter() {
+            public Object convert(String paramValue) {
+                return Short.valueOf(paramValue);
+            }
+        });
+        stringConverters.put(File.class, new Converter() {
+            public Object convert(String paramValue) {
+                return new File(paramValue);
+            }
+        });
 
     }
 
