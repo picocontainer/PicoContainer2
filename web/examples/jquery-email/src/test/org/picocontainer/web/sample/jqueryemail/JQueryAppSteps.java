@@ -1,26 +1,28 @@
 package org.picocontainer.web.sample.jqueryemail;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.jbehave.Ensure.ensureThat;
-
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
+import org.jbehave.scenario.steps.PrintStreamStepMonitor;
 import org.jbehave.scenario.steps.Steps;
+import org.jbehave.scenario.steps.StepsConfiguration;
+
 import com.thoughtworks.selenium.Selenium;
-import com.thoughtworks.selenium.condition.JUnitConditionRunner;
-import com.thoughtworks.selenium.condition.Presence;
-import com.thoughtworks.selenium.condition.Not;
 import com.thoughtworks.selenium.condition.ConditionRunner;
+import com.thoughtworks.selenium.condition.Not;
+import com.thoughtworks.selenium.condition.Presence;
 
 
 public class JQueryAppSteps extends Steps {
 
     private final Selenium selenium;
     private final ConditionRunner runner;
-
+    private static final StepsConfiguration configuration = new StepsConfiguration();
+    
     public JQueryAppSteps(Selenium selenium, ConditionRunner runner) {
-        this.selenium = selenium;
+    	super(configuration);
+        this.configuration.useMonitor(new PrintStreamStepMonitor());        
+    	this.selenium = selenium;
         this.runner = runner;
     }
 
