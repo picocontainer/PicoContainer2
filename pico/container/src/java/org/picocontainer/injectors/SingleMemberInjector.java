@@ -66,10 +66,20 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
     private Object getParameter(PicoContainer container, AccessibleObject member, int i, Type parameterType, Annotation binding, Parameter currentParameter) {
         ParameterNameBinding expectedNameBinding = new ParameterNameBinding(paranamer, getComponentImplementation(), member, i);
         Object result = currentParameter.resolveInstance(container, this, parameterType, expectedNameBinding, useNames(), binding);
+        if (result != null && result instanceof String && parameterType != String.class) {
+            result = convertFromString((String) result, parameterType);
+        }
         if (result == null && !isNullParamAllowed(member, i)) {
             throw new ParameterCannotBeNullException(i, member, expectedNameBinding.getName());
         }
         return result;
+    }
+
+    private Object convertFromString(String stringResult, Type parameterType) {
+        if (parameterType == Integer.class) {
+            return Integer.parseInt(stringResult);
+        }
+        return stringResult;
     }
 
     protected boolean isNullParamAllowed(AccessibleObject member, int i) {
