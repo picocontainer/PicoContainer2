@@ -121,10 +121,10 @@ public interface ComponentMonitor {
                                    Object instance,
                                    RuntimeException cause);
 
-
     /**
-     * No Component has been found for the key in question. Implementors of this have a last ditch opportunity to
-     * specify something for the need.
+     * No Component has been found for the key in question. Implementors of this have a last chance opportunity to
+     * specify something for the need.  This is only relevant to component dependencies, and not to
+     * container.getComponent(<key>) in your user code.
      *
      * @param container
      * @param componentKey

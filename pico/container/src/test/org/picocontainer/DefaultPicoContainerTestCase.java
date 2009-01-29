@@ -766,22 +766,33 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         }
     }
 
-	@SuppressWarnings("serial")
-	@Test public void testNoComponentIsMonitoredAndPotentiallyLateProvided() {
-		final String[] missingKey = new String[1];
+    public static class NeedsString {
+        String string;
 
-		String foo = (String) new DefaultPicoContainer(
-				new NullComponentMonitor() {
-					public Object noComponentFound(
-							MutablePicoContainer container, Object componentKey) {
-						missingKey[0] = (String) componentKey;
-						return "foo";
-					}
-				}).getComponent("missingKey");
+        public NeedsString(String string) {
+            this.string = string;
+        }
+    }
+
+    @SuppressWarnings("serial")
+	@Test public void testNoComponentIsMonitoredAndPotentiallyLateProvided() {
+		final Class[] missingKey = new Class[1];
+
+        DefaultPicoContainer container = new DefaultPicoContainer(
+                new NullComponentMonitor() {
+                    public Object noComponentFound(
+                            MutablePicoContainer container, Object componentKey) {
+                        missingKey[0] = (Class) componentKey;
+                        return "foo";
+                    }
+                });
+        container.addComponent(NeedsString.class);
+        NeedsString needsString = container.getComponent(NeedsString.class);
 
 		assertNotNull(missingKey[0]);
-		assertEquals("missingKey", missingKey[0]);
-		assertEquals("foo", foo);
+		assertEquals(String.class, missingKey[0]);
+		assertNotNull(needsString);
+		assertEquals("foo", needsString.string);
 
 	}
 
