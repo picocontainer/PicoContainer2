@@ -65,9 +65,6 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
     private Object getParameter(PicoContainer container, AccessibleObject member, int i, Type parameterType, Annotation binding, Parameter currentParameter) {
         ParameterNameBinding expectedNameBinding = new ParameterNameBinding(paranamer, getComponentImplementation(), member, i);
         Object result = currentParameter.resolveInstance(container, this, parameterType, expectedNameBinding, useNames(), binding);
-        if (result == null && useNames()) {
-            result = container.getComponent(expectedNameBinding.getName());
-        }
         if (result == null && !isNullParamAllowed(member, i)) {
             throw new ParameterCannotBeNullException(i, member, expectedNameBinding.getName());
         }
