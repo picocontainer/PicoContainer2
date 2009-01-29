@@ -92,13 +92,6 @@ public class JQueryWebappComposer implements WebappComposer {
 
     public void composeRequest(MutablePicoContainer requestContainer) {
 
-        // these are pulled from query-strings (GET) or form-fields (POST)
-        addStringRequestParameters(requestContainer,
-                &quot;to&quot;, &quot;subject&quot;, &quot;message&quot;, &quot;view&quot;,
-                &quot;userName&quot;, &quot;password&quot;, &quot;userId&quot;, &quot;sec&quot;);
-
-        addIntegerRequestParameters(requestContainer, &quot;msgId&quot;);
-
         // User is specified in a Cookie (after signin obviously)
         requestContainer.addAdapter(new User.FromCookie());
 
@@ -220,6 +213,20 @@ be verified and that an exception could be thrown:</p>
 <pre>requestContainer.addComponent("guard", MyGuard.class);
 requestContainer.as(GUARD, USE_NAMES).addComponent(VulnerableThing.class);
 </pre></div>
+
+<h2>Explicit dependance on parameters from HTTP request</h2>
+<p>Binding to parameter from the HTTP Request is implicit as long as you use as(USE_NAMES) when adding components.
+    If you the range of parameter names to be explicit, do the following in WebappComposition class</p>
+<div class="source">
+<pre>
+// these are pulled from query-strings (GET) or form-fields (POST)
+addStringRequestParameters(requestContainer,
+        &quot;to&quot;, &quot;subject&quot;, &quot;message&quot;, &quot;view&quot;,
+        &quot;userName&quot;, &quot;password&quot;, &quot;userId&quot;, &quot;sec&quot;);
+
+addIntegerRequestParameters(requestContainer, &quot;msgId&quot;);
+</pre></div>
+
 <h2>Naming considerations.</h2>
 <p>Consider the this URL: <span class="style1">http://mycompany.com/r/com/mycompany/store/ShoppingCart/addToCart</span></p>
 <p>It is what would result from a Java class called ShoppingCart with a method called addToCart (in package com.mycompany.store). Java is often long winded like this. You are going to want to change the rules when working with PWR. ShoppingCart can be shortened to Cart as it is clear being in a directory (package) 'store' what it is. Method 'addToCart' is also too verbose if we consider the URL and the implicit association with 'Cart'. Thus 'buy' might be clearer intent. </p>
