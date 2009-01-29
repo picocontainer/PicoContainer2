@@ -23,12 +23,6 @@ public class JQueryDemoWebappComposer implements WebappComposer {
 
     public void composeRequest(MutablePicoContainer requestContainer) {
 
-        addStringRequestParameters(requestContainer,
-                "to", "subject", "message", "view",
-                "userName", "password", "userId", "sec");
-
-        addIntegerRequestParameters(requestContainer, "msgId");
-
         requestContainer.addAdapter(new User.FromCookie());
         requestContainer.as(USE_NAMES).addComponent(Auth.class);
 

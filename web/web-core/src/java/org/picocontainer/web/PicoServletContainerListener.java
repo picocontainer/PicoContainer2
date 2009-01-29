@@ -155,22 +155,29 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
      * @return an instance of ScopedContainers
      */
     protected ScopedContainers makeScopedContainers() {
-        DefaultPicoContainer appCtnr = new DefaultPicoContainer(new Guarding().wrap(new Caching()), makeParentContainer());
+        DefaultPicoContainer appCtnr = new DefaultPicoContainer(new Guarding().wrap(new Caching()), makeLifecycleStrategy(), makeParentContainer(), makeAppComponentMonitor());
         Storing sessStoring = new Storing();
-        DefaultPicoContainer sessCtnr = new DefaultPicoContainer(new Guarding().wrap(sessStoring), appCtnr);
+        DefaultPicoContainer sessCtnr = new DefaultPicoContainer(new Guarding().wrap(sessStoring), makeLifecycleStrategy(), appCtnr, makeSessionComponentMonitor());
         Storing reqStoring = new Storing();
-        DefaultPicoContainer reqCtnr = new DefaultPicoContainer(new Guarding().wrap(addRequestBehaviors(reqStoring)), sessCtnr);
+        DefaultPicoContainer reqCtnr = new DefaultPicoContainer(new Guarding().wrap(addRequestBehaviors(reqStoring)), makeLifecycleStrategy(), sessCtnr, makeRequestComponentMonitor());
         return new ScopedContainers(appCtnr, sessCtnr, reqCtnr, sessStoring, reqStoring);
     }
 
     protected LifecycleStrategy makeLifecycleStrategy() {
-        return new StartableLifecycleStrategy(makeComponentMonitor());
+        return new StartableLifecycleStrategy(makeRequestComponentMonitor());
     }
 
-    protected ComponentMonitor makeComponentMonitor() {
+    protected ComponentMonitor makeAppComponentMonitor() {
         return new NullComponentMonitor();
     }
 
+    protected ComponentMonitor makeSessionComponentMonitor() {
+        return new NullComponentMonitor();
+    }
+
+    protected ComponentMonitor makeRequestComponentMonitor() {
+        return new NullComponentMonitor();
+    }
 
     protected BehaviorFactory addRequestBehaviors(BehaviorFactory reqStoring) {
         return reqStoring;

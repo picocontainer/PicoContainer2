@@ -13,7 +13,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Storing;
@@ -22,7 +21,7 @@ public class Struts2PicoServletContainerListener extends PicoServletContainerLis
 
     protected ScopedContainers makeScopedContainers() {
 
-        ComponentMonitor cm = makeComponentMonitor();
+        ComponentMonitor cm = makeRequestComponentMonitor();
 
         NullLifecycleStrategy ls = new NullLifecycleStrategy();
 
@@ -40,7 +39,7 @@ public class Struts2PicoServletContainerListener extends PicoServletContainerLis
      * This enables lazy instantiation of them    
      */
     @Override
-    protected ComponentMonitor makeComponentMonitor() {
+    protected ComponentMonitor makeRequestComponentMonitor() {
         return new StrutsActionInstantiatingComponentMonitor();
     }
 

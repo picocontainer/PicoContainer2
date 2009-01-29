@@ -22,7 +22,7 @@
     </filter-mapping>
 
     <listener>
-        <listener-class>org.picocontainer.web.PicoServletContainerListener</listener-class>
+        <listener-class>org.picocontainer.web.remoting.PWRServletContainerListener</listener-class>
     </listener>
 
     <servlet>
