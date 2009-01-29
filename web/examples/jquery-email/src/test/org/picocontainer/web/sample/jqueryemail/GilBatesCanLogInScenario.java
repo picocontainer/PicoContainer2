@@ -22,7 +22,7 @@ public class GilBatesCanLogInScenario extends JUnitScenario {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost");
+        selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080");
         ConditionRunner runner = new JUnitConditionRunner(selenium, 10, 100, 1000);
         super.addSteps(new JQueryAppSteps(selenium, runner));
         selenium.start();
