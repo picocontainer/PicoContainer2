@@ -135,7 +135,6 @@ public class MethodInjectionTestCase {
         assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo2", pico.getComponentAdapter(Foo2.class).toString());
     }
 
-
     @Test public void testMethodInjectionWithDisallowedNullableParam() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection());
         pico.addComponent(Foo.class);

@@ -101,7 +101,7 @@ public class AbstractComponentMonitorTestCase {
     @Test public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
         final Vector ourIntendedInjectee0 = new Vector();
         final String ourIntendedInjectee1 = "hullo";
-        DefaultPicoContainer parent = new DefaultPicoContainer();
+        final DefaultPicoContainer parent = new DefaultPicoContainer();
         final ComponentMonitor monitor = mockery.mock(ComponentMonitor.class);
         final DefaultPicoContainer child = new DefaultPicoContainer(new AbstractComponentMonitor(monitor), parent);
         final Constructor needsACoupleOfThings = NeedsACoupleOfThings.class.getConstructors()[0];
@@ -137,6 +137,8 @@ public class AbstractComponentMonitorTestCase {
         	one(monitor).instantiating(with(same(child)), with(any(ConstructorInjector.class)), with(equal(needsACoupleOfThings)));
         	will(returnValue(needsACoupleOfThings));
         	one(monitor).instantiated(with(same(child)), with(any(ConstructorInjector.class)), with(equal(needsACoupleOfThings)), with(isANACOTThatWozCreated), with(collectionAndStringWereInjected), with(durationIsGreaterThanOrEqualToZero));
+            atLeast(2).of(monitor).noComponentFound(with(any(DefaultPicoContainer.class)), with(any(Object.class)));
+            will(returnValue(null));
         }});
         parent.addComponent(ourIntendedInjectee0);
         parent.addComponent(ourIntendedInjectee1);

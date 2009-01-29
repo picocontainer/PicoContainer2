@@ -94,9 +94,9 @@ public class Reinjector {
     public Object reinject(Class<?> key, Class implementation, Object instance, Properties properties,
                            InjectionFactory reinjectionFactory) {
         Reinjection reinjection = new Reinjection(reinjectionFactory, parent);
-        org.picocontainer.Injector mi = (org.picocontainer.Injector) reinjection.createComponentAdapter(
+        org.picocontainer.Injector injector = (org.picocontainer.Injector) reinjection.createComponentAdapter(
                 monitor, NO_LIFECYCLE, properties, key, implementation, null);
-        return mi.decorateComponentInstance(parent, null, instance);
+        return injector.decorateComponentInstance(parent, null, instance);
     }
 
 }

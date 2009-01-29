@@ -25,6 +25,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.behaviors.Cached;
@@ -270,8 +271,38 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         if (adapter == null && parent != null) {
             adapter = getParent().getComponentAdapter(componentKey);
         }
+        if (adapter == null) {
+            Object inst = componentMonitor.noComponentFound(this, componentKey);
+            if (inst != null) {
+                adapter = new LateInstance(componentKey, inst);
+            }
+        }
         return adapter;
     }
+
+    public static class LateInstance extends AbstractAdapter {
+        private final Object instance;
+        private LateInstance(Object componentKey, Object instance) {
+            super(componentKey, instance.getClass());
+            this.instance = instance;
+        }
+
+        public Object getComponentInstance() {
+            return instance;
+        }
+
+        public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+            return instance;
+        }
+
+        public void verify(PicoContainer container) throws PicoCompositionException {
+        }
+
+        public String getDescriptor() {
+            return "LateInstance";
+        }
+    }
+
 
     /** {@inheritDoc} **/
     public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final NameBinding componentNameBinding) {
@@ -528,18 +559,17 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         Object retVal;
         if (annotation != null) {
             final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, annotation);
-            retVal = componentAdapter == null ? null : getInstance(componentAdapter, null);
+            return componentAdapter == null ? null : getInstance(componentAdapter, null);
         } else if (componentKeyOrType instanceof Class) {
             final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, (NameBinding) null);
-            retVal = componentAdapter == null ? null : getInstance(componentAdapter, (Class<?>)componentKeyOrType);
+            return componentAdapter == null ? null : getInstance(componentAdapter, (Class<?>)componentKeyOrType);
         } else {
             ComponentAdapter<?> componentAdapter = getComponentAdapter(componentKeyOrType);
-            retVal = componentAdapter == null ? null : getInstance(componentAdapter, null);
+            if (componentAdapter instanceof LateInstance) {
+                return ((LateInstance) componentAdapter).getComponentInstance();                
+            }
+            return componentAdapter == null ? null : getInstance(componentAdapter, null);
         }
-        if (retVal == null) {
-            retVal = componentMonitor.noComponentFound(this, componentKeyOrType);
-        }
-        return retVal;
     }
 
     public <T> T getComponent(final Class<T> componentType) {
@@ -925,8 +955,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 		return orderedComponentAdapters;
 	}
 
-
-
 	/**
 	 * @return the componentKeyToAdapterCache
 	 */
@@ -1002,6 +1030,4 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             return ComponentAdapter.NOTHING.class;
         }
     }
-
-
 }

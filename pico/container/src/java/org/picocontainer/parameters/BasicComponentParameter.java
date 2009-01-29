@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.annotation.Annotation;
@@ -28,6 +27,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 
 /**
@@ -171,15 +171,22 @@ public class BasicComponentParameter implements Parameter, Serializable {
         return resolveAdapter(container, adapter, resolvedClassType, expectedNameBinding, useNames, binding) != null;
     }
 
-
     public Object resolveInstance(PicoContainer container,
                                  ComponentAdapter<?> adapter,
                                  Type expectedType,
                                  NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
-        final ComponentAdapter componentAdapter =
+        ComponentAdapter componentAdapter =
             resolveAdapter(container, adapter, (Class<?>)expectedType, expectedNameBinding, useNames, binding);
+        if (componentAdapter == null && useNames) {
+            componentAdapter = container.getComponentAdapter(expectedNameBinding.getName());             
+        }
         if (componentAdapter != null) {
-            Object o = container.getComponent(componentAdapter.getComponentKey(), adapter.getComponentImplementation());
+            Object o;
+            if (componentAdapter instanceof DefaultPicoContainer.LateInstance) {
+                o = ((DefaultPicoContainer.LateInstance) componentAdapter).getComponentInstance();
+            } else {
+                o = container.getComponent(componentAdapter.getComponentKey(), adapter.getComponentImplementation());
+            }
             if (o instanceof String && expectedType != String.class) {
                 Converter converter = stringConverters.get(expectedType);
                 return converter.convert((String) o);
@@ -243,7 +250,6 @@ public class BasicComponentParameter implements Parameter, Serializable {
         if (result == null) {
             return null;
         }
-
         if (!type.isAssignableFrom(result.getComponentImplementation())) {
             if (!(result.getComponentImplementation() == String.class && stringConverters.containsKey(type))) {
                 return null;

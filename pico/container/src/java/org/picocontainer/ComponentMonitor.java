@@ -11,10 +11,13 @@
 package org.picocontainer;
 
 import org.picocontainer.behaviors.Cached;
+import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.adapters.AbstractAdapter;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 /**
  * A component monitor is responsible for monitoring the component instantiation
