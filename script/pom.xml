@@ -56,22 +56,22 @@
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer</artifactId>
-        <version>2.4</version>
+        <version>2.7</version>
       </dependency>
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer-gems</artifactId>
-        <version>2.4</version>
+        <version>2.7</version>
       </dependency>
       <dependency>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer-tck</artifactId>
-        <version>2.4</version>
+        <version>2.7</version>
       </dependency>
       <dependency>
         <groupId>org.jmock</groupId>
         <artifactId>jmock-junit4</artifactId>
-        <version>2.4.0</version>
+        <version>2.5.1</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
