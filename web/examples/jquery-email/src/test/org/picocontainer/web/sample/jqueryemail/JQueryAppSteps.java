@@ -30,14 +30,13 @@ public class JQueryAppSteps extends Steps {
     public void nobodyLoggedIn() {
         System.out.println("-->1 ");
         selenium.open("/remoting-jqueryemail-webapp/");
-        runner.waitFor(new Presence("Mail"));
+        //runner.waitFor(new Presence("Mail"));
         selenium.click("id=logOut");
     }
 
     @When("user $user with password $password logs in")
     public void logIn(String user, String pw) {
         System.out.println("-->2 ");
-        selenium.click("id=logIn");
         runner.waitFor(new Presence("id=userName"));
         selenium.type("userName", user);
         selenium.type("password", pw);
@@ -58,7 +57,6 @@ public class JQueryAppSteps extends Steps {
 
     @Then("'Invalid User' should be visible")
     public void errInPage() throws InterruptedException {
-        Thread.sleep(100000);
         runner.waitFor(new Presence("Invalid User"));
     }
 
