@@ -16,6 +16,7 @@ import java.util.List;
 import java.awt.*;
 
 import org.junit.Test;
+import org.junit.ComparisonFailure;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.web.NONE;
 import static org.picocontainer.web.remoting.JsonPicoWebRemotingServlet.makeJsonDriver;
@@ -71,12 +72,21 @@ public final class PicoWebRemotingTestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
         String result = pwr.processRequest("/beta/", pico, "GET");
-        assertEquals(
+        try {
+            assertEquals(
                 "[\n" +
-                "  \"hello\",\n" +
-                "  \"color\",\n" +
-                "  \"goodbye\"\n" +
-                "]\n", result);
+                    "  \"hello\",\n" +
+                    "  \"color\",\n" +
+                    "  \"goodbye\"\n" +
+                    "]\n", result);
+        } catch (ComparisonFailure e) { // Eclipse !
+            assertEquals(
+                "[\n" +
+                    "  \"color\",\n" +
+                    "  \"hello\",\n" +
+                    "  \"goodbye\"\n" +
+                    "]\n", result);
+        }
     }
 
     @Test
