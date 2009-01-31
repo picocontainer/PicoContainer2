@@ -12,6 +12,7 @@ import com.thoughtworks.selenium.condition.ConditionRunner;
 import com.thoughtworks.selenium.condition.Not;
 import com.thoughtworks.selenium.condition.Presence;
 import com.thoughtworks.selenium.condition.Text;
+import com.thoughtworks.selenium.condition.Condition;
 
 
 public class JQueryAppSteps extends Steps {
@@ -30,34 +31,38 @@ public class JQueryAppSteps extends Steps {
     @Given("nobody is logged in")
     public void nobodyLoggedIn() {
         selenium.open("/remoting-jqueryemail-webapp/");
-        //runner.waitFor(new Presence("Mail"));
         try {
-            selenium.click("id=logOut");
+            selenium.click("link=Log Out");
         } catch (Exception e) {
         }
     }
 
     @When("user $user with password $password logs in")
-    public void logIn(String user, String pw) {
-        runner.waitFor(new Presence("id=userName"));
-        selenium.type("userName", user);
-        selenium.type("password", pw);
+    public void logIn(String user, String pw) throws InterruptedException {
+        waitFor(new Presence("id=userName"));
+        Thread.sleep(500);
+        selenium.type("id=userName", user);
+        selenium.type("id=password", pw);
         selenium.click("id=submitLogin");
     }
 
     @Then("the Inbox should be visible")
     public void inBoxIsVisible() {
-        runner.waitFor(new Text("Instant Millionaire"));
+        waitFor(new Text("Instant Millionaire"));
+    }
+
+    private void waitFor(Condition condition) {
+        runner.waitFor(condition);
     }
 
     @Then("the Inbox should not be visible")
-    public void inBoxIsNotVisible() {
-        runner.waitFor(new Not(new Text("Instant Millionaire")));
+    public void inBoxIsNotVisible() throws InterruptedException {
+        waitFor(new Not(new Text("Instant Millionaire")));
     }
 
-    @Then("'Invalid User' should be visible")
-    public void errInPage() throws InterruptedException {
-        runner.waitFor(new Text("Invalid User"));
+    @Then("'Invalid Login' should be visible")
+    public void invalidLogin() throws InterruptedException {
+        waitFor(new Text("Invalid Login"));
     }
 
 

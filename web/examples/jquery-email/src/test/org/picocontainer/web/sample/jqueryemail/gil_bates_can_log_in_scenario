@@ -5,4 +5,4 @@ Then the Inbox should be visible
 Given nobody is logged in
 When user Fred with password 99999 logs in
 Then the Inbox should not be visible
-And 'Invalid User' should be visible
+And 'Invalid Login' should be visible
