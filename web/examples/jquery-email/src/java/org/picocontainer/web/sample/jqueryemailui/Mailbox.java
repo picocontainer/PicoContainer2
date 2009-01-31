@@ -43,7 +43,7 @@ public abstract class Mailbox {
     private MessageData getMessage(int msgId) {
         MessageData md = messages.get(msgId);
         if (md == null) {
-            throw new MailAppException("no such message ID");
+            throw new JQueryEmailException("no such message ID");
         }
         return md;
     }

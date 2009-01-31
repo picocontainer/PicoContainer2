@@ -71,10 +71,6 @@ public class JQueryEmailSteps extends Steps {
         waitFor(new Text("Instant Millionaire"));
     }
 
-    private void waitFor(Condition condition) {
-        runner.waitFor(condition);
-    }
-
     @Then("the Inbox should not be visible")
     public void inBoxIsNotVisible() throws InterruptedException {
         waitFor(new Not(new Text("Instant Millionaire")));
@@ -83,6 +79,10 @@ public class JQueryEmailSteps extends Steps {
     @Then("'Invalid Login' should be visible")
     public void invalidLogin() throws InterruptedException {
         waitFor(new Text("Invalid Login"));
+    }
+
+    private void waitFor(Condition condition) {
+        runner.waitFor(condition);
     }
 
 

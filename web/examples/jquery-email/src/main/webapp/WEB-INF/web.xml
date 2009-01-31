@@ -4,11 +4,11 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-    <display-name>jQuery Demo</display-name>
+    <display-name>jQuery Email</display-name>
 
     <context-param>
         <param-name>webapp-composer-class</param-name>
-        <param-value>org.picocontainer.web.sample.jqueryemailui.JQueryDemoWebappComposer</param-value>
+        <param-value>org.picocontainer.web.sample.jqueryemailui.JQueryEmailWebappComposer</param-value>
     </context-param>
 
     <filter>

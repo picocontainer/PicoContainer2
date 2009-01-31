@@ -3,11 +3,6 @@ package org.picocontainer.web.sample.jqueryemailui;
 
 import java.util.Date;
 
-/**
- * Make this follow standard JavaBean conventions to work properly with JSON
- * @author MAbernethy
- *
- */
 public class MessageData {
     
     public int id;
@@ -26,7 +21,7 @@ public class MessageData {
     	this.subject = subject;
     	this.message = message;
     	this.read = isRead;
-        sentTime = new Date(time);
+        this.sentTime = new Date(time);
     }
 
 	public int getId() {

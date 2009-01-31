@@ -1,19 +1,17 @@
 package org.picocontainer.web.sample.jqueryemailui;
 
-import org.picocontainer.web.WebappComposer;
-import org.picocontainer.web.remoting.PicoWebRemotingMonitor;
-import org.picocontainer.web.remoting.NullPicoWebRemotingMonitor;
-import static org.picocontainer.web.StringFromRequest.addStringRequestParameters;
-import static org.picocontainer.web.IntFromRequest.addIntegerRequestParameters;
-import org.picocontainer.MutablePicoContainer;
 import static org.picocontainer.Characteristics.USE_NAMES;
 
 import javax.servlet.ServletContext;
 
-public class JQueryDemoWebappComposer implements WebappComposer {
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.web.WebappComposer;
+import org.picocontainer.web.remoting.PicoWebRemotingMonitor;
+
+public class JQueryEmailWebappComposer implements WebappComposer {
 
     public void composeApplication(MutablePicoContainer appContainer, ServletContext context) {
-        appContainer.addComponent(PicoWebRemotingMonitor.class, JQueryDemoWebRemotingMonitor.class);
+        appContainer.addComponent(PicoWebRemotingMonitor.class, JQueryEmailWebRemotingMonitor.class);
         appContainer.addComponent(MessageStore.class, InMemoryMessageStore.class);
     }
 

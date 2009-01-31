@@ -17,7 +17,7 @@ public class Sent extends Mailbox {
     /**
      * Send a message
      *
-     * @param to      the recipient
+     * @param to  the recipient
      * @param subject the message subject
      * @param message the message body
      * @return the resulting message
