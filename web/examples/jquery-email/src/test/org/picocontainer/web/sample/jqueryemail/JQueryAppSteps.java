@@ -11,6 +11,7 @@ import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.condition.ConditionRunner;
 import com.thoughtworks.selenium.condition.Not;
 import com.thoughtworks.selenium.condition.Presence;
+import com.thoughtworks.selenium.condition.Text;
 
 
 public class JQueryAppSteps extends Steps {
@@ -28,15 +29,16 @@ public class JQueryAppSteps extends Steps {
 
     @Given("nobody is logged in")
     public void nobodyLoggedIn() {
-        System.out.println("-->1 ");
         selenium.open("/remoting-jqueryemail-webapp/");
         //runner.waitFor(new Presence("Mail"));
-        selenium.click("id=logOut");
+        try {
+            selenium.click("id=logOut");
+        } catch (Exception e) {
+        }
     }
 
     @When("user $user with password $password logs in")
     public void logIn(String user, String pw) {
-        System.out.println("-->2 ");
         runner.waitFor(new Presence("id=userName"));
         selenium.type("userName", user);
         selenium.type("password", pw);
@@ -45,19 +47,17 @@ public class JQueryAppSteps extends Steps {
 
     @Then("the Inbox should be visible")
     public void inBoxIsVisible() {
-        System.out.println("-->3 ");
-        runner.waitFor(new Presence("Instant Millionaire"));
+        runner.waitFor(new Text("Instant Millionaire"));
     }
 
     @Then("the Inbox should not be visible")
     public void inBoxIsNotVisible() {
-        System.out.println("-->4 ");
-        runner.waitFor(new Not(new Presence("Instant Millionaire")));
+        runner.waitFor(new Not(new Text("Instant Millionaire")));
     }
 
     @Then("'Invalid User' should be visible")
     public void errInPage() throws InterruptedException {
-        runner.waitFor(new Presence("Invalid User"));
+        runner.waitFor(new Text("Invalid User"));
     }
 
 
