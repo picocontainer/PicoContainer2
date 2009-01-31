@@ -1,5 +1,7 @@
-package org.picocontainer.web.sample.jqueryemail;
+package org.picocontainer.web.sample.jqueryemail.scenarios;
 
+import org.jbehave.scenario.annotations.AfterScenario;
+import org.jbehave.scenario.annotations.BeforeScenario;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
@@ -7,31 +9,41 @@ import org.jbehave.scenario.steps.PrintStreamStepMonitor;
 import org.jbehave.scenario.steps.Steps;
 import org.jbehave.scenario.steps.StepsConfiguration;
 
+import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
+import com.thoughtworks.selenium.condition.Condition;
 import com.thoughtworks.selenium.condition.ConditionRunner;
+import com.thoughtworks.selenium.condition.JUnitConditionRunner;
 import com.thoughtworks.selenium.condition.Not;
 import com.thoughtworks.selenium.condition.Presence;
 import com.thoughtworks.selenium.condition.Text;
-import com.thoughtworks.selenium.condition.Condition;
 
 
-public class JQueryAppSteps extends Steps {
+public class JQueryEmailSteps extends Steps {
 
-    private final Selenium selenium;
+	private final Selenium selenium;
     private final ConditionRunner runner;
     private static final StepsConfiguration configuration = new StepsConfiguration();
     
-    public JQueryAppSteps(final Selenium selenium, ConditionRunner runner) {
+    public JQueryEmailSteps() {
     	super(configuration);
-        this.configuration.useMonitor(new PrintStreamStepMonitor() {
-            public void performing(String s) {
-                super.performing(s);
-                selenium.setContext(s);
-            }
-        });
-    	this.selenium = selenium;
-        this.runner = runner;
+        this.configuration.useMonitor(new PrintStreamStepMonitor());        
+        this.selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080");
+        this.runner =  new JUnitConditionRunner(selenium, 10, 100, 1000);
     }
+
+    @BeforeScenario
+    public void setUp() throws Exception {
+        selenium.start();
+
+    }
+
+    @AfterScenario
+    protected void tearDown() throws Exception {
+        selenium.close();
+        selenium.stop();
+    }
+
 
     @Given("nobody is logged in")
     public void nobodyLoggedIn() {
