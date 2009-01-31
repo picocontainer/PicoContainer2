@@ -21,9 +21,14 @@ public class JQueryAppSteps extends Steps {
     private final ConditionRunner runner;
     private static final StepsConfiguration configuration = new StepsConfiguration();
     
-    public JQueryAppSteps(Selenium selenium, ConditionRunner runner) {
+    public JQueryAppSteps(final Selenium selenium, ConditionRunner runner) {
     	super(configuration);
-        this.configuration.useMonitor(new PrintStreamStepMonitor());        
+        this.configuration.useMonitor(new PrintStreamStepMonitor() {
+            public void performing(String s) {
+                super.performing(s);
+                selenium.setContext(s);
+            }
+        });
     	this.selenium = selenium;
         this.runner = runner;
     }
