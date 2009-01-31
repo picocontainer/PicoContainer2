@@ -4,10 +4,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.runner.RunWith;
-import org.picocontainer.web.sample.jqueryemailui.Sent;
-import org.picocontainer.web.sample.jqueryemailui.User;
-import org.picocontainer.web.sample.jqueryemailui.MessageStore;
-import org.picocontainer.web.sample.jqueryemailui.MessageData;
+import org.picocontainer.web.sample.jqueryemail.MessageData;
+import org.picocontainer.web.sample.jqueryemail.MessageStore;
+import org.picocontainer.web.sample.jqueryemail.Sent;
+import org.picocontainer.web.sample.jqueryemail.User;
+
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 import org.picocontainer.ComponentMonitor;
 import org.jmock.integration.junit4.JMock;

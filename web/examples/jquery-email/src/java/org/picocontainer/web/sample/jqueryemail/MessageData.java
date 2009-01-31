@@ -1,5 +1,5 @@
 
-package org.picocontainer.web.sample.jqueryemailui;
+package org.picocontainer.web.sample.jqueryemail;
 
 import java.util.Date;
 

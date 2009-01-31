@@ -4,11 +4,11 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-    <display-name>jQuery Email</display-name>
+    <display-name>JQuery Email</display-name>
 
     <context-param>
         <param-name>webapp-composer-class</param-name>
-        <param-value>org.picocontainer.web.sample.jqueryemailui.JQueryEmailWebappComposer</param-value>
+        <param-value>org.picocontainer.web.sample.jqueryemail.JQueryEmailWebappComposer</param-value>
     </context-param>
 
     <filter>
@@ -35,7 +35,7 @@
         </init-param>
         <init-param>
             <param-name>package_prefix_to_strip</param-name>
-            <param-value>org.picocontainer.web.sample.jqueryemailui</param-value>
+            <param-value>org.picocontainer.web.sample.jqueryemail</param-value>
         </init-param>
     </servlet>
 

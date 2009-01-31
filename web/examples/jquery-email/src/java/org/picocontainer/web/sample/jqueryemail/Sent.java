@@ -1,4 +1,4 @@
-package org.picocontainer.web.sample.jqueryemailui;
+package org.picocontainer.web.sample.jqueryemail;
 
 /**
  * Send is a type of Mailbox for a user.

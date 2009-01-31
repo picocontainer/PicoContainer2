@@ -1,4 +1,4 @@
-package org.picocontainer.web.sample.jqueryemailui;
+package org.picocontainer.web.sample.jqueryemail;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Cookie;

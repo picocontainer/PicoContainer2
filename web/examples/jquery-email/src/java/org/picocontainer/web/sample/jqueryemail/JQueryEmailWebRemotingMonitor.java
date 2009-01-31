@@ -1,4 +1,4 @@
-package org.picocontainer.web.sample.jqueryemailui;
+package org.picocontainer.web.sample.jqueryemail;
 
 import org.picocontainer.web.remoting.NullPicoWebRemotingMonitor;
 
