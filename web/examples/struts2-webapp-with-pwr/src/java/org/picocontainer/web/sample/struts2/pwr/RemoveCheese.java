@@ -1,4 +1,4 @@
-package org.picocontainer.web.sample.struts2;
+package org.picocontainer.web.sample.struts2.pwr;
 
 import com.opensymphony.xwork2.ActionSupport;
 

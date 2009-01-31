@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picocontainer.web.sample.struts2;
+package org.picocontainer.web.sample.struts2.pwr;
 
 import org.picocontainer.web.sample.service.CheeseService;
 import org.picocontainer.web.sample.model.Brand;

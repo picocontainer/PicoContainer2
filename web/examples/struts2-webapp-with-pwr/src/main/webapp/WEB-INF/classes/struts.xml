@@ -8,16 +8,16 @@
 
     <package name="default" extends="struts-default">
 
-        <action name="cheeses" class="org.picocontainer.web.sample.struts2.CheeseInventory">
+        <action name="cheeses" class="org.picocontainer.web.sample.struts2.pwr.CheeseInventory">
             <result>cheeses.jsp</result>
         </action>
 
-        <action name="addcheese" class="org.picocontainer.web.sample.struts2.AddCheese">
+        <action name="addcheese" class="org.picocontainer.web.sample.struts2.pwr.AddCheese">
             <result name="input">cheeses.jsp</result>
             <result name="success" type="redirect">cheeses.action</result>
         </action>
 
-        <action name="removecheese" class="org.picocontainer.web.sample.struts2.RemoveCheese">
+        <action name="removecheese" class="org.picocontainer.web.sample.struts2.pwr.RemoveCheese">
             <result name="input">cheeses.jsp</result>
             <result name="success" type="redirect">cheeses.action</result>
         </action>
