@@ -24,10 +24,13 @@ public class JQueryEmailSteps extends Steps {
 	private final Selenium selenium;
     private final ConditionRunner runner;
     private static final StepsConfiguration configuration = new StepsConfiguration();
+	private static final boolean DEBUG = false;
     
     public JQueryEmailSteps() {
     	super(configuration);
-        this.configuration.useMonitor(new PrintStreamStepMonitor());        
+    	if ( DEBUG ){
+    		configuration.useMonitor(new PrintStreamStepMonitor());
+    	}
         this.selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080");
         this.runner =  new JUnitConditionRunner(selenium, 10, 100, 1000);
     }
