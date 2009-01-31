@@ -20,7 +20,11 @@ public class User {
     public static class FromCookie extends ProviderAdapter {
         public User provide(HttpServletRequest req) {
             try {
-                return new User(new StringFromCookie("userName").provide(req));
+                String name = new StringFromCookie("userName").provide(req);
+                if (name.equals("")) {
+                    throw new NotLoggedIn();                    
+                }
+                return new User(name);
             } catch (StringFromCookie.CookieNotFound e) {
                 throw new NotLoggedIn();
             }
