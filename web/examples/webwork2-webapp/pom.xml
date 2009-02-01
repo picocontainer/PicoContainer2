@@ -13,6 +13,12 @@
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-webwork2</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.picocontainer.script</groupId>
+          <artifactId>picocontainer-script-core</artifactId>
+        </exclusion>
+      </exclusions>    
     </dependency>
     <dependency>
       <groupId>opensymphony</groupId>
