@@ -1,3 +1,5 @@
+Scenario: Gil Bates can log in
+
 Given nobody is logged in
 When user Gil Bates with password 1234 logs in
 Then the Inbox should be visible
@@ -5,4 +7,4 @@ Then the Inbox should be visible
 Given nobody is logged in
 When user Fred with password 99999 logs in
 Then the Inbox should not be visible
-And 'Invalid Login' should be visible
+And the text "Invalid Login" should be visible

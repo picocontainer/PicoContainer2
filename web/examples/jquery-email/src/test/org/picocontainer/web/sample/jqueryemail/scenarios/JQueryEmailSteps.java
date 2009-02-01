@@ -1,5 +1,7 @@
 package org.picocontainer.web.sample.jqueryemail.scenarios;
 
+import java.util.concurrent.TimeUnit;
+
 import org.jbehave.scenario.annotations.AfterScenario;
 import org.jbehave.scenario.annotations.BeforeScenario;
 import org.jbehave.scenario.annotations.Given;
@@ -57,9 +59,8 @@ public class JQueryEmailSteps extends Steps {
     }
 
     @When("user $user with password $password logs in")
-    public void logIn(String user, String pw) throws InterruptedException {
+    public void logIn(String user, String pw) {
         waitFor(new Presence("id=userName"));
-        Thread.sleep(500);
         selenium.type("id=userName", user);
         selenium.type("id=password", pw);
         selenium.click("id=submitLogin");
@@ -67,23 +68,36 @@ public class JQueryEmailSteps extends Steps {
 
     @Then("the Inbox should be visible")
     public void inBoxIsVisible() {
-        waitFor(new Text("Instant Millionaire"));
+    	textIsVisible("Instant Millionaire");
     }
 
     @Then("the Inbox should not be visible")
-    public void inBoxIsNotVisible() throws InterruptedException {
-        waitFor(new Not(new Text("Instant Millionaire")));
+    public void inBoxIsNotVisible() {
+    	textIsNotVisible("Instant Millionaire");
     }
 
-    @Then("'Invalid Login' should be visible")
-    public void invalidLogin() throws InterruptedException {
-        waitFor(new Text("Invalid Login"));
+    @Then("the text \"$text\" should be visible")
+    public void textIsVisible(String text) {
+        waitFor(new Text(text));
+    }
+
+    @Then("the text \"$text\" should not be visible")
+    public void textIsNotVisible(String text) {
+        waitFor(new Not(new Text(text)));
     }
 
     private void waitFor(Condition condition) {
         runner.waitFor(condition);
+        waitFor(1);
     }
 
+    private void waitFor(int seconds) {
+    	try {
+			TimeUnit.SECONDS.sleep(seconds);
+		} catch (InterruptedException e) {
+			// continue
+		}
+    }
 
 }
 
