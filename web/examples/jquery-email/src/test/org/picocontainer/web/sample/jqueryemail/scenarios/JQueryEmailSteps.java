@@ -42,11 +42,10 @@ public class JQueryEmailSteps extends Steps {
     }
 
     @AfterScenario
-    protected void tearDown() throws Exception {
+    public void tearDown() throws Exception {
         selenium.close();
         selenium.stop();
     }
-
 
     @Given("nobody is logged in")
     public void nobodyLoggedIn() {
