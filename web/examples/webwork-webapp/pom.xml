@@ -13,13 +13,24 @@
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-webwork</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>avalon-framework</artifactId>
+          <groupId>avalon-framework</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>commons-digester</groupId>
       <artifactId>commons-digester</artifactId>
       <version>1.8</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>avalon-framework</artifactId>
+          <groupId>avalon-framework</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
-
   </dependencies>
   <build>
     <plugins>
