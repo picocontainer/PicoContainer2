@@ -17,9 +17,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 
-import org.picocontainer.web.sample.model.Cheese;
-import org.picocontainer.web.sample.service.CheeseService;
-
 /**
  * ListCheeseController
  * @author Michael Rimov

@@ -6,7 +6,7 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picocontainer.web.sample.model;
+package org.picocontainer.web.sample.struts;
 
 import java.io.Serializable;
 
@@ -41,11 +41,11 @@ public class Cheese implements Serializable {
     public void setName( String name ) {
         this.name = name;
     }
-    
+
     public String getCountry() {
         return country;
     }
-    
+
     public void setCountry( String country ) {
         this.country = country;
     }

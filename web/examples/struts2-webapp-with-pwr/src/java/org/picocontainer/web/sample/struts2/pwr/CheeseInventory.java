@@ -8,9 +8,6 @@
  *****************************************************************************/
 package org.picocontainer.web.sample.struts2.pwr;
 
-import org.picocontainer.web.sample.service.CheeseService;
-import org.picocontainer.web.sample.model.Brand;
-
 import com.opensymphony.xwork2.Action;
 
 import java.util.List;

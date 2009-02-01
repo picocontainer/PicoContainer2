@@ -1,4 +1,4 @@
-package org.picocontainer.web.sample.model;
+package org.picocontainer.web.sample.struts;
 
 import javax.servlet.http.HttpServletRequest;
 

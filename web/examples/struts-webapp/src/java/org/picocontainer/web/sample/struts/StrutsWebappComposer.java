@@ -2,9 +2,6 @@ package org.picocontainer.web.sample.struts;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.web.WebappComposer;
-import org.picocontainer.web.sample.dao.CheeseDao;
-import org.picocontainer.web.sample.dao.simple.InMemoryCheeseDao;
-import org.picocontainer.web.sample.service.defaults.DefaultCheeseService;
 
 import javax.servlet.ServletContext;
 

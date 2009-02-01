@@ -41,7 +41,6 @@
   </repositories>
 
   <modules>
-    <module>webapp-common</module>
     <module>jsf-webapp</module>
     <module>struts-webapp</module>
     <module>struts2-webapp</module>
@@ -96,11 +95,6 @@
       <dependency>
         <groupId>org.picocontainer.web</groupId>
         <artifactId>picocontainer-web-webwork2</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.picocontainer.web</groupId>
-        <artifactId>webapp-common</artifactId>
         <version>${pom.version}</version>
       </dependency>
       <dependency>

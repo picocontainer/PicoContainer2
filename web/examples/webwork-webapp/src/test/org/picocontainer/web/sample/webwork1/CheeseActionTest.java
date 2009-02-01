@@ -10,8 +10,6 @@ package org.picocontainer.web.sample.webwork1;
 
 import junit.framework.TestCase;
 
-import org.picocontainer.web.sample.dao.simple.InMemoryCheeseDao;
-import org.picocontainer.web.sample.service.defaults.DefaultCheeseService;
 import org.picocontainer.web.sample.webwork1.CheeseAction;
 /**
  * Simple test case to demonstrate webwork1 action testing

@@ -14,9 +14,5 @@
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-webwork</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.picocontainer.web</groupId>
-      <artifactId>webapp-common</artifactId>
-    </dependency>
   </dependencies> 
 </project>

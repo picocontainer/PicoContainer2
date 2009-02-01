@@ -2,9 +2,6 @@ package org.picocontainer.web.sample.struts2.pwr;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import org.picocontainer.web.sample.model.Cheese;
-import org.picocontainer.web.sample.service.CheeseService;
-
 public class RemoveCheese extends ActionSupport {
 
     private Cheese cheese = new Cheese();

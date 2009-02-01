@@ -6,15 +6,12 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picocontainer.web.sample.dao.simple;
+package org.picocontainer.web.sample.struts2.pwr;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.picocontainer.web.sample.dao.CheeseDao;
-import org.picocontainer.web.sample.model.Cheese;
 
 /**
  * @author Stephen Molitor

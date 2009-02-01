@@ -6,15 +6,13 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picocontainer.web.sample.service;
+package org.picocontainer.web.sample.webwork1;
 
 import java.util.Collection;
 
-import org.picocontainer.web.sample.model.Cheese;
-
 /**
  * This is a service which is independent of any MVC framework.
- * 
+ *
  * @author Mauro Talevi
  */
 public interface CheeseService {
@@ -24,7 +22,7 @@ public interface CheeseService {
     public Cheese find(Cheese example);
 
     public void save(Cheese cheese);
-    
+
     public void remove(Cheese cheese);
 
 }

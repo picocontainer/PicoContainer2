@@ -2,10 +2,6 @@ package org.picocontainer.web.sample.struts2;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import org.picocontainer.web.sample.model.Cheese;
-import org.picocontainer.web.sample.model.Brand;
-import org.picocontainer.web.sample.service.CheeseService;
-
 public class AddCheese extends ActionSupport {
 
     private Cheese cheese = new Cheese();

@@ -10,9 +10,6 @@ package org.picocontainer.web.sample.webwork1;
 
 import java.util.Collection;
 
-import org.picocontainer.web.sample.model.Cheese;
-import org.picocontainer.web.sample.service.CheeseService;
-
 import webwork.action.ActionSupport;
 import webwork.action.CommandDriven;
 

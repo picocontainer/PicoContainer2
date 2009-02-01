@@ -8,11 +8,9 @@
  * *
  * ***************************************************************************
  */
-package org.picocontainer.web.sample.dao;
+package org.picocontainer.web.sample.struts;
 
 import java.util.Collection;
-
-import org.picocontainer.web.sample.model.Cheese;
 
 /**
  * @author Stephen Molitor
@@ -22,7 +20,7 @@ public interface CheeseDao {
     void save(Cheese cheese);
 
     void remove(Cheese cheese);
-    
+
     Cheese get(String name);
 
     Collection all();

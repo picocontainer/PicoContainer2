@@ -8,7 +8,7 @@
     <version>2.3-SNAPSHOT</version>
   </parent>
   <artifactId>struts2-webapp-with-remoting</artifactId>
-  <name>Struts 2 Webapp</name>
+  <name>Struts 2 Webapp with Remoting</name>
   <packaging>war</packaging>
   <dependencies>
     <dependency>
@@ -18,10 +18,6 @@
     <dependency>
       <groupId>org.picocontainer.web</groupId>
       <artifactId>picocontainer-web-remoting</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.picocontainer.web</groupId>
-      <artifactId>webapp-common</artifactId>
     </dependency>
     <dependency>
       <groupId>opensymphony</groupId>

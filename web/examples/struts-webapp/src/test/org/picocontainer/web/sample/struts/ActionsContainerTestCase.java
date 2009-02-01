@@ -9,8 +9,6 @@ import org.junit.Test;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.script.ScriptedContainerBuilder;
 import org.picocontainer.script.xml.XStreamContainerBuilder;
-import org.picocontainer.web.sample.dao.CheeseDao;
-import org.picocontainer.web.sample.service.CheeseService;
 
 /**
  * @author Mauro Talevi
@@ -26,10 +24,10 @@ public final class ActionsContainerTestCase {
     public void testContainerBuildingWithXmlConfig() {
 
         Reader script = new StringReader("<container>"
-                + "	 <implementation type='org.picocontainer.web.sample.dao.CheeseDao'"
-                + "					class='org.picocontainer.web.sample.dao.simple.InMemoryCheeseDao'> " + "  </implementation>"
-                + "	 <implementation type='org.picocontainer.web.sample.service.CheeseService'"
-                + " 				class='org.picocontainer.web.sample.service.defaults.DefaultCheeseService'>"
+                + "	 <implementation type='org.picocontainer.web.sample.struts.CheeseDao'"
+                + "					class='org.picocontainer.web.sample.struts.InMemoryCheeseDao'> " + "  </implementation>"
+                + "	 <implementation type='org.picocontainer.web.sample.struts.CheeseService'"
+                + " 				class='org.picocontainer.web.sample.struts.DefaultCheeseService'>"
                 + "  </implementation>" + " </container>");
 
         PicoContainer pico = buildContainer(script);

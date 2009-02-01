@@ -8,34 +8,21 @@
  *****************************************************************************/
 package org.picocontainer.web.sample.webwork2;
 
-import com.opensymphony.xwork.Action;
-
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Collection;
 
 /**
- * Example of a XWork action that relies on constructor injection.
- * 
- * @author Paul Hammant
+ * This is a service which is independent of any MVC framework.
+ *
+ * @author Mauro Talevi
  */
-public class CheeseInventory implements Action {
+public interface CheeseService {
 
-    private final CheeseService cheeseService;
-    private List cheeses;
+    public Collection getCheeses();
 
-    public CheeseInventory(CheeseService cheeseService) {
-        this.cheeseService = cheeseService;
-    }
+    public Cheese find(Cheese example);
 
-    public List getCheeses() {
-        return cheeses;
-    }
+    public void save(Cheese cheese);
 
-    public String execute() throws Exception {
-        cheeses = new ArrayList(cheeseService.getCheeses());
-        return SUCCESS;
-    }
+    public void remove(Cheese cheese);
 
 }
-
-

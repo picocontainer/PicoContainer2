@@ -17,8 +17,6 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.picocontainer.web.sample.model.Cheese;
-import org.picocontainer.web.sample.service.CheeseService;
 
 
 /**

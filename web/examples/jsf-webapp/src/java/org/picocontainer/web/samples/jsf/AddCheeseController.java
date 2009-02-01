@@ -11,9 +11,6 @@ package org.picocontainer.web.samples.jsf;
 
 import java.io.Serializable;
 
-import org.picocontainer.web.sample.model.Cheese;
-import org.picocontainer.web.sample.service.CheeseService;
-
 /**
  * Add Cheese Controller.
  * @author Michael Rimov
