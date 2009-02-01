@@ -5,7 +5,7 @@ import org.picocontainer.web.WebappComposer;
 
 import javax.servlet.ServletContext;
 
-public class StrutsWebappComposer implements WebappComposer {
+public class StrutsDemoWebappComposer implements WebappComposer {
 
     public void composeApplication(MutablePicoContainer applicationContainer, ServletContext context) {
         applicationContainer.addComponent(CheeseDao.class, InMemoryCheeseDao.class);

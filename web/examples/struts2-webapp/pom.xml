@@ -20,4 +20,12 @@
       <version>2.2.4</version>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>maven-jetty-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 </project>

@@ -6,7 +6,7 @@ import org.picocontainer.web.WebappComposer;
 
 import javax.servlet.ServletContext;
 
-public class JsfWebappComposer implements WebappComposer {
+public class JsfDemoWebappComposer implements WebappComposer {
 
         public void composeApplication(MutablePicoContainer applicationContainer, ServletContext context) {
         applicationContainer.addComponent(CheeseDao.class, InMemoryCheeseDao.class);

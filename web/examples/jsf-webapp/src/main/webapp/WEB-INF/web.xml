@@ -7,7 +7,7 @@
   
 	<context-param>
 	  <param-name>webapp-composer-class</param-name>
-	  <param-value>org.picocontainer.web.samples.jsf.JsfWebappComposer</param-value>
+	  <param-value>org.picocontainer.web.samples.jsf.JsfDemoWebappComposer</param-value>
 	</context-param>	
 	
 	<!--  
