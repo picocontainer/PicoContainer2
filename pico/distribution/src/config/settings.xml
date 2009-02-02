@@ -107,7 +107,7 @@
       <repositories>
         <repository>
           <id>openqa-releases</id>
-          <url>http://archiva.openqa.org/repository/releases/</url>
+          <url>http://nexus.openqa.org/content/repositories/releases</url>
           <snapshots>
             <enabled>false</enabled>
           </snapshots>
@@ -119,7 +119,7 @@
       <pluginRepositories>
         <pluginRepository>
           <id>openqa-releases</id>
-          <url>http://archiva.openqa.org/repository/releases/</url>
+          <url>http://nexus.openqa.org/content/repositories/releases</url>
           <snapshots>
             <enabled>false</enabled>
           </snapshots>
