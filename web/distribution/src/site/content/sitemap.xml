@@ -11,6 +11,7 @@
   </section>
   <section>
     <name>Binding to Web Frameworks</name>
+    <page>jsf.html</page>
     <page>struts2.html</page>
     <page>struts1.html</page>
     <page>webwork2.html</page>
