@@ -13,6 +13,11 @@
       <groupId>com.thoughtworks.paranamer</groupId>
       <artifactId>paranamer</artifactId>
     </dependency>
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>jsr250-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -46,7 +51,11 @@
             </goals>
             <configuration>
               <shadedArtifactId>picocontainer</shadedArtifactId>
-              <artifactSet />
+              <artifactSet>
+                <excludes>
+                  <exclude>javax.annotation:jsr250-api</exclude>
+                </excludes>
+              </artifactSet>
               <relocations>
                 <relocation>
                   <pattern>com.thoughtworks.paranamer</pattern>
