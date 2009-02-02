@@ -56,9 +56,9 @@ public class JQueryEmailSteps extends Steps {
 			selenium.click("link=Log Out");
 		} catch (Exception e) {
 		}
-	}
+    }
 
-	@When("user $userName with password $password logs in")
+    @When("user $userName with password $password attempts to log in")
 	public void logIn(String userName, String password) {
 		waitFor(new Presence("id=userName"));
 		selenium.type("id=userName", userName);
