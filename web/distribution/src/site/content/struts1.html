@@ -12,11 +12,11 @@ below.</p>
 <div class="source"><pre>
 	
 	<web-app>
-	  <display-name>Struts Webapp</display-name>
+	  <display-name>PicoContainer-Web and Struts1 Webapp</display-name>
 
 	  <context-param>
 	    <param-name>webapp-composer-class</param-name>
-	    <param-value>org.picocontainer.web.sample.ExampleWebappComposer</param-value>
+	    <param-value>*your web app composer class name*</param-value>
 	  </context-param>
 
 	  <filter>
@@ -81,7 +81,10 @@ Make sure you make and configure your own <a href="composition.html">WebappCompo
 <p>See <a href="downloads.html">downloads</a> on how to download the struts module either using Maven or by downloading full distribution.</p>
 
 <h3>Example App</h3>
-Our Maven example project is <a href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/struts-webapp/">here</a>
+<p>We have a sample application.  It is a small form-style web-app that shows and list of cheeses, allows you to add and delete from the list.  <a href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/struts-webapp/">See the Maven2 source for it</a>. Here is a screenshot of it running:</p>
+	<img src="images/Struts1_App.jpg"/>
+<p><a href="http://picocontainer/web/warfiles/pico-struts1-demo.war">Download the war file for it</a> (full Java source in WEB-INF/classes).</p>
+
 
 </body>
 </html>
