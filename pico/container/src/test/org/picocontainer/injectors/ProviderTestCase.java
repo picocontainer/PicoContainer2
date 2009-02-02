@@ -248,7 +248,7 @@ public class ProviderTestCase {
 
         public Object provide(StubHttpRequest req) {
             try {
-                return clazz.getConstructors()[0].newInstance(req.getParameter(paramName));
+            	return clazz.getConstructor(String.class).newInstance(req.getParameter(paramName));
             } catch (Exception e) {
                 throw new RuntimeException(e);  
             }
