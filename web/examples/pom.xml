@@ -11,35 +11,6 @@
   <name>PicoContainer Web Examples</name>
   <packaging>pom</packaging>
 
-  <repositories>
-    <repository>
-      <id>openqa.org</id>
-      <name>Openqa Release Repository</name>
-      <url>http://archiva.openqa.org/repository/releases</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>openqa.org</id>
-      <name>Openqa Snapshot Repository</name>
-      <url>http://archiva.openqa.org/repository/snapshots</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-        <checksumPolicy>ignore</checksumPolicy>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
-
   <modules>
     <module>jsf-webapp</module>
     <module>struts-webapp</module>
