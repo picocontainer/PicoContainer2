@@ -18,10 +18,10 @@ import java.util.Map;
  */
 public class InMemoryCheeseDao implements CheeseDao, Serializable {
 
-    private final Map cheeses;
+    private final Map<String, Cheese> cheeses;
 
     public InMemoryCheeseDao() {
-        cheeses = new HashMap();
+        cheeses = new HashMap<String, Cheese>();
         cheeses.put("Cheddar", new Cheese("Cheddar","England"));
         cheeses.put("Brie", new Cheese("Brie","France"));
         cheeses.put("Dolcelatte", new Cheese("Dolcelatte","Italy"));
@@ -36,7 +36,7 @@ public class InMemoryCheeseDao implements CheeseDao, Serializable {
         cheeses.remove(cheese.getName());
     }
     public Cheese get(String name) {
-        return (Cheese) cheeses.get(name);
+        return cheeses.get(name);
     }
 
     public Collection all() {
