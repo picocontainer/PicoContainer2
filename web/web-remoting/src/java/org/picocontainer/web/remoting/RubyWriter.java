@@ -11,13 +11,11 @@ import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.ExtendedHierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-public class
-
-        RubyWriter implements ExtendedHierarchicalStreamWriter {
+public class RubyWriter implements ExtendedHierarchicalStreamWriter {
 
     public static final int DROP_ROOT_MODE = 1;
     public static final int STRICT_MODE = 2;
-	
+
     private final QuickWriter writer;
     private final FastStack elementStack = new FastStack(16);
     private final char[] lineIndenter;
@@ -28,24 +26,24 @@ public class
     private final String newLine;
     private int mode;
 
-	public RubyWriter(Writer out) {
-		
-		this.writer = new QuickWriter(out);
-		this.newLine = "\n";
-		this.lineIndenter = new char[]{' ', ' '};
-		
-		mode = DROP_ROOT_MODE;
-		
-	}
+    public RubyWriter(Writer out) {
 
-	public void startNode(String name) {
-		startNode(name, null);
-	}
+        this.writer = new QuickWriter(out);
+        this.newLine = "\n";
+        this.lineIndenter = new char[]{' ', ' '};
 
-	public void startNode(String name, Class clazz) {
-        Node currNode = (Node)elementStack.peek();
+        mode = DROP_ROOT_MODE;
+
+    }
+
+    public void startNode(String name) {
+        startNode(name, null);
+    }
+
+    public void startNode(String name, Class clazz) {
+        Node currNode = (Node) elementStack.peek();
         if (currNode == null
-            && ((mode & DROP_ROOT_MODE) == 0 || (depth > 0 && !isCollection(clazz)))) {
+                && ((mode & DROP_ROOT_MODE) == 0 || (depth > 0 && !isCollection(clazz)))) {
             writer.write("{");
         }
         if (currNode != null && currNode.fieldAlready) {
@@ -55,8 +53,8 @@ public class
         tagIsEmpty = false;
         finishTag();
         if (currNode == null
-            || currNode.clazz == null
-            || (currNode.clazz != null && !currNode.isCollection)) {
+                || currNode.clazz == null
+                || (currNode.clazz != null && !currNode.isCollection)) {
             if (currNode != null && !currNode.fieldAlready) {
                 writer.write("{");
                 readyForNewLine = true;
@@ -76,9 +74,9 @@ public class
             currNode.fieldAlready = true;
         }
         elementStack.push(new Node(name, clazz));
-        depth++ ;
+        depth++;
         tagIsEmpty = true;
-	}
+    }
 
     public class Node {
         public final String name;
@@ -94,7 +92,7 @@ public class
     }
 
     public void setValue(String text) {
-        Node currNode = (Node)elementStack.peek();
+        Node currNode = (Node) elementStack.peek();
         if (currNode != null && currNode.fieldAlready) {
             startNode("$", String.class);
             tagIsEmpty = false;
@@ -102,7 +100,7 @@ public class
             endNode();
         } else {
             if ((mode & (DROP_ROOT_MODE | STRICT_MODE)) == (DROP_ROOT_MODE | STRICT_MODE)
-                && depth == 1) {
+                    && depth == 1) {
                 throw new ConversionException("Single value cannot be JSON/Ruby?? root element");
             }
             readyForNewLine = false;
@@ -113,7 +111,7 @@ public class
     }
 
     public void addAttribute(String key, String value) {
-        Node currNode = (Node)elementStack.peek();
+        Node currNode = (Node) elementStack.peek();
         if (currNode == null || !currNode.isCollection) {
             startNode('@' + key, String.class);
             tagIsEmpty = false;
@@ -127,7 +125,7 @@ public class
     }
 
     protected void writeText(QuickWriter writer, String text) {
-        Node foo = (Node)elementStack.peek();
+        Node foo = (Node) elementStack.peek();
 
         writeText(text, foo.clazz);
     }
@@ -141,23 +139,23 @@ public class
         }
 
         int length = text.length();
-        for (int i = 0; i < length; i++ ) {
+        for (int i = 0; i < length; i++) {
             char c = text.charAt(i);
             switch (c) {
-            case '"':
-                this.writer.write("\\\"");
-                break;
-            case '\\':
-                this.writer.write("\\\\");
-                break;
-            default:
-                if (c > 0x1f) {
-                    this.writer.write(c);
-                } else {
-                    this.writer.write("\\u");
-                    String hex = "000" + Integer.toHexString(c);
-                    this.writer.write(hex.substring(hex.length() - 4));
-                }
+                case '"':
+                    this.writer.write("\\\"");
+                    break;
+                case '\\':
+                    this.writer.write("\\\\");
+                    break;
+                default:
+                    if (c > 0x1f) {
+                        this.writer.write(c);
+                    } else {
+                        this.writer.write("\\u");
+                        String hex = "000" + Integer.toHexString(c);
+                        this.writer.write(hex.substring(hex.length() - 4));
+                    }
             }
         }
 
@@ -168,7 +166,7 @@ public class
 
     private boolean isCollection(Class clazz) {
         return clazz != null
-            && (Collection.class.isAssignableFrom(clazz)
+                && (Collection.class.isAssignableFrom(clazz)
                 || clazz.isArray()
                 || Map.class.isAssignableFrom(clazz) || Map.Entry.class.isAssignableFrom(clazz));
     }
@@ -179,8 +177,8 @@ public class
     }
 
     public void endNode() {
-        depth-- ;
-        Node node = (Node)elementStack.pop();
+        depth--;
+        Node node = (Node) elementStack.pop();
         if (node.clazz != null && node.isCollection) {
             if (node.fieldAlready) {
                 readyForNewLine = true;
@@ -214,21 +212,21 @@ public class
 
     protected void endOfLine() {
         writer.write(newLine);
-        for (int i = 0; i < depth; i++ ) {
+        for (int i = 0; i < depth; i++) {
             writer.write(lineIndenter);
         }
     }
 
-	public void flush() {
-		writer.flush();
-	}
+    public void flush() {
+        writer.flush();
+    }
 
-	public void close() {
-		writer.close();
-	}
+    public void close() {
+        writer.close();
+    }
 
-	public HierarchicalStreamWriter underlyingWriter() {
-		return this;
-	}
-    
+    public HierarchicalStreamWriter underlyingWriter() {
+        return this;
+    }
+
 }
