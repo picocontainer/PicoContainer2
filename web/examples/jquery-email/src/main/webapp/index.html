@@ -39,7 +39,7 @@ $(document).ready(function() {
         $("#replyMessage").hide();
     }
 
-    $.get("pwr/Auth/whoIsLoggedIn", {}, function(loggedInUser) {
+    $.get("json/Auth/whoIsLoggedIn", {}, function(loggedInUser) {
         if (loggedInUser == "") {
             $.blockUI({message: $('#loginPlease'), css: {width:'540px', height:'180px'}});
         } else {
@@ -110,7 +110,7 @@ function highlightRow() {
 }
 
 function submitLogin() {
-    $.post("pwr/Auth/logIn", {
+    $.post("json/Auth/logIn", {
         userName: document.loginForm.userName.value,
         password: document.loginForm.password.value
     }, function(data) {
@@ -125,7 +125,7 @@ function submitLogin() {
 }
 
 function logOut() {
-    $.post("pwr/Auth/logOut", {}, function(data) {
+    $.post("json/Auth/logOut", {}, function(data) {
         if (data == "OK") {
             loadRows("????");
             window.location.reload();
@@ -135,7 +135,7 @@ function logOut() {
 
 function loadRows(who) {
 	$("#mail_for").html("Mail for " + who);
-    $.get("pwr/" + view + "/messages", {}, function(data) {
+    $.get("json/" + view + "/messages", {}, function(data) {
         if (data.ERROR != true) {
             for (var i = 0; i < data.length; i++) {
                 var sentTime = data[i].sentTime;
@@ -151,7 +151,7 @@ function readMessage() {
     {
         $(this).removeClass("mail_unread");
     }
-    $.post("pwr/" + view + "/read", {msgId: this.id}, function(data) {
+    $.post("json/" + view + "/read", {msgId: this.id}, function(data) {
         if (data.ERROR == undefined) {
             // using JSON objects
             document.readMessageForm.subject.value = data.subject;
@@ -202,7 +202,7 @@ function deleteMessages()
 {
     $(".selectable:checked").each(function() {
         $("#" + $(this).val()).remove();
-        $.post("pwr/" + view + "/delete", {msgId: $(this).val()});
+        $.post("json/" + view + "/delete", {msgId: $(this).val()});
     });
 }
 
@@ -212,7 +212,7 @@ function sendMessage() {
     var message = document.composeMailForm.message.value;
     var to = document.composeMailForm.to.value;
 
-    $.post("pwr/Sent/send", {subject: subject, message: message, to: to},
+    $.post("json/Sent/send", {subject: subject, message: message, to: to},
             function(data) {
 
                 if (data != undefined)
@@ -300,19 +300,19 @@ function sendMessage() {
                     technologies changed to use Pico Web Remoting rather than JSON libraries and a
                     custom servlet. You can mimick the remoting methods that JQuery invokes with these URLs:</p>
                 <ul>
-                    <li><a href="pwr/Inbox/read?msgId=1">pwr/Inbox/read?msgId=1 - read a message (and have it marked as
+                    <li><a href="json/Inbox/read?msgId=1">json/Inbox/read?msgId=1 - read a message (and have it marked as
                         read on the backend)</a></li>
-                    <li><a href="pwr/Inbox/messages">pwr/Inbox/messages - see the contents of the
+                    <li><a href="json/Inbox/messages">json/Inbox/messages - see the contents of the
                         inbox</a></li>
-                    <li><a href="pwr/Sent/messages">pwr/Sent/messages - see the contents of the sent
+                    <li><a href="json/Sent/messages">json/Sent/messages - see the contents of the sent
                         box</a></li>
-                    <li><a href="pwr/Sent/send?to=fred&subject=hello&message=goodbye">pwr/Sent/send?to=fred&subject=hello&message=goodbye
+                    <li><a href="json/Sent/send?to=fred&subject=hello&message=goodbye">json/Sent/send?to=fred&subject=hello&message=goodbye
                         - see send an email (this is normally a POST operation)</a></li>
-                    <li><a href="pwr/Auth/logIn?userName=Gil%20Bates&password=1234">pwr/Auth/logIn?userName=Gil%20Bates&password=1234
+                    <li><a href="json/Auth/logIn?userName=Gil%20Bates&password=1234">json/Auth/logIn?userName=Gil%20Bates&password=1234
                         - to log in (this is normally a POST operation)</a></li>
-                    <li><a href="pwr/Auth/logOut">pwr/Auth/logOut
+                    <li><a href="json/Auth/logOut">json/Auth/logOut
                         - to log in (this is normally a POST operation)</a></li>
-                    <li><a href="pwr/Auth/whoIsLoggedIn">pwr/Auth/whoIsLoggedIn
+                    <li><a href="json/Auth/whoIsLoggedIn">json/Auth/whoIsLoggedIn
                         - check with server to see who is logged in</a></li>
                 </ul>
             </div>

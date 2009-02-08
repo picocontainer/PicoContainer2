@@ -4,7 +4,7 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-    <display-name>JQuery Email</display-name>
+    <display-name>jQuery Demo</display-name>
 
     <context-param>
         <param-name>webapp-composer-class</param-name>
@@ -18,7 +18,8 @@
 
     <filter-mapping>
         <filter-name>picoFilter</filter-name>
-        <url-pattern>/pwr/*</url-pattern>
+        <url-pattern>/json/*</url-pattern>
+        <url-pattern>/ruby/*</url-pattern>
     </filter-mapping>
 
     <listener>
@@ -26,7 +27,7 @@
     </listener>
 
     <servlet>
-        <servlet-name>PWR</servlet-name>
+        <servlet-name>json</servlet-name>
         <servlet-class>org.picocontainer.web.remoting.JsonPicoWebRemotingServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
         <init-param>
@@ -39,9 +40,28 @@
         </init-param>
     </servlet>
 
+    <servlet>
+        <servlet-name>ruby</servlet-name>
+        <servlet-class>org.picocontainer.web.remoting.RubyPicoWebRemotingServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+        <init-param>
+            <param-name>scopes_to_publish</param-name>
+            <param-value>session,request</param-value>
+        </init-param>
+        <init-param>
+            <param-name>package_prefix_to_strip</param-name>
+            <param-value>org.picocontainer.web.sample.jqueryemail</param-value>
+        </init-param>
+    </servlet>
+
     <servlet-mapping>
-        <servlet-name>PWR</servlet-name>
-        <url-pattern>/pwr/*</url-pattern>
+        <servlet-name>json</servlet-name>
+        <url-pattern>/json/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ruby</servlet-name>
+        <url-pattern>/ruby/*</url-pattern>
     </servlet-mapping>
 
     <session-config>
