@@ -38,7 +38,7 @@ public class StringFromRequest extends ProviderAdapter {
     public Object provide(HttpServletRequest req) {
         String parameter = req.getParameter(paramName);
         if (parameter == null) {
-            throw new RuntimeException(paramName + " not in request parameters");
+            throw new ParameterNotFound(paramName);
         }
         return parameter;
     }
@@ -53,4 +53,13 @@ public class StringFromRequest extends ProviderAdapter {
             toContainer.addAdapter(new StringFromRequest(name));
         }
     }
+
+    @SuppressWarnings("serial")
+    public static class ParameterNotFound extends PicoContainerWebException {
+        private ParameterNotFound(String name) {
+            super(name + " not found in request parameters");
+        }
+    }
+
+
 }

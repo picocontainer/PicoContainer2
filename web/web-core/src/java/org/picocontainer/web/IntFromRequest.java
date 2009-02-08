@@ -33,7 +33,7 @@ public class IntFromRequest extends StringFromRequest {
         try {
             return Integer.parseInt(num);
         } catch (NumberFormatException e) {
-            throw new RuntimeException("'" + num + "' cannot be converted to an integer");
+            throw new PicoContainerWebException("'" + num + "' cannot be converted to an integer");
         }
     }
 
