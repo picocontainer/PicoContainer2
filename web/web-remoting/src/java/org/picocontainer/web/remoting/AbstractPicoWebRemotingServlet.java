@@ -17,6 +17,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletConfig;
 import java.io.IOException;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -29,7 +31,7 @@ import com.thoughtworks.xstream.XStream;
  */
 public class AbstractPicoWebRemotingServlet extends HttpServlet {
 
-    private final XStream xStream;
+    private XStream xStream;
     private PicoWebRemoting pwr;
     private String mimeType = "text/plain";
     private PicoWebRemotingMonitor monitor;
@@ -137,7 +139,11 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
 
     private boolean initialized;
 
-    public AbstractPicoWebRemotingServlet(XStream xStream) {
+    public AbstractPicoWebRemotingServlet() {
+        Logger.getLogger(this.getClass().getName()).info("done");
+    }
+
+    protected void setXStream(XStream xStream) {
         this.xStream = xStream;
     }
 

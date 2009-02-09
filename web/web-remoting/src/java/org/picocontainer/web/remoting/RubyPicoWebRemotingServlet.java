@@ -20,6 +20,9 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.WriterWrapper;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+
 /**
  * All for the calling of methods in a tree of components manages by PicoContainer.
  * Ruby is the form of the reply, the request is plainly mapped from Query Strings
@@ -30,8 +33,9 @@ import com.thoughtworks.xstream.io.WriterWrapper;
 @SuppressWarnings("serial")
 public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  {
 
-    public RubyPicoWebRemotingServlet() {
-        super(new XStream(makeRubyDriver()));
+    public void init(ServletConfig servletConfig) throws ServletException {
+        setXStream(new XStream(makeRubyDriver()));
+        super.init(servletConfig);
     }
 
     public static HierarchicalStreamDriver makeRubyDriver() {

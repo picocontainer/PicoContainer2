@@ -8,6 +8,12 @@
 package org.picocontainer.web.remoting;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.json.JsonWriter;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * All for the calling of methods in a tree of components manages by PicoContainer.
@@ -19,8 +25,8 @@ import com.thoughtworks.xstream.XStream;
 @SuppressWarnings("serial")
 public class XmlPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  {
 
-    public XmlPicoWebRemotingServlet() {
-        super(new XStream());
+   public void init(ServletConfig servletConfig) throws ServletException {
+        setXStream(new XStream());
+        super.init(servletConfig);
     }
-
 }

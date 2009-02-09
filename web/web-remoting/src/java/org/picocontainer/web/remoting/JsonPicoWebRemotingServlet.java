@@ -14,6 +14,8 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.WriterWrapper;
 import com.thoughtworks.xstream.io.json.JsonWriter;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -29,8 +31,9 @@ import java.io.Writer;
 @SuppressWarnings("serial")
 public class JsonPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  {
 
-    public JsonPicoWebRemotingServlet() {
-        super(new XStream(makeJsonDriver(JsonWriter.DROP_ROOT_MODE)));
+    public void init(ServletConfig servletConfig) throws ServletException {
+        setXStream(new XStream(makeJsonDriver(JsonWriter.DROP_ROOT_MODE)));
+        super.init(servletConfig);
     }
 
     public static HierarchicalStreamDriver makeJsonDriver(final int dropRootMode) {
