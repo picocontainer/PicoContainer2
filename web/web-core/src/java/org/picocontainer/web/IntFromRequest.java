@@ -10,13 +10,14 @@ package org.picocontainer.web;
 import org.picocontainer.MutablePicoContainer;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
 /**
  * Use this to make a request level component that pulls an integer from a named parameter (GET or POST)
  * of the request.  If a parameter of the supplied name is not available for the current
  * request path, then an exception will be thrown. An exception will also be thrown, if the number format is bad.
  */
-public class IntFromRequest extends StringFromRequest {
+public class IntFromRequest extends StringFromRequest implements Serializable {
 
     public IntFromRequest(String paramName) {
         super(paramName);

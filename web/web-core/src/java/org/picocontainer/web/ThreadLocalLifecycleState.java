@@ -43,11 +43,11 @@ public class ThreadLocalLifecycleState implements LifecycleState {
         tl.get().disposed();
     }
 
-    public void putLifecycleStateModelForThread(DefaultLifecycleState lifecycleState) {
+    public void putLifecycleStateModelForThread(LifecycleState lifecycleState) {
         tl.set(lifecycleState);
     }
 
-    public DefaultLifecycleState resetStateModelForThread() {
+    public LifecycleState resetStateModelForThread() {
         DefaultLifecycleState dls = new DefaultLifecycleState();
         tl.set(dls);
         return dls;
@@ -57,8 +57,8 @@ public class ThreadLocalLifecycleState implements LifecycleState {
         tl.set(null);
     }
 
-    private static class LifecycleStateThreadLocal extends ThreadLocal<DefaultLifecycleState> {
-        protected DefaultLifecycleState initialValue() {
+    private static class LifecycleStateThreadLocal extends ThreadLocal<LifecycleState> {
+        protected LifecycleState initialValue() {
             return new DefaultLifecycleState();
         }
     }

@@ -8,6 +8,8 @@
 package org.picocontainer.web;
 
 import java.io.Serializable;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -91,7 +93,7 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
      * @param sessionStoring the session storing behaviour
      * @param requestStoring the request storing behaviour
      */
-    public PicoServletContainerListener(DefaultPicoContainer applicationContainer,
+    private PicoServletContainerListener(DefaultPicoContainer applicationContainer,
             DefaultPicoContainer sessionContainer, DefaultPicoContainer requestContainer, Storing sessionStoring,
             Storing requestStoring) {
         this.applicationContainer = applicationContainer;
@@ -125,7 +127,7 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         ThreadLocalLifecycleState sessionStateModel = new ThreadLocalLifecycleState();
         sessionContainer.setLifecycleState(sessionStateModel);
 
-        SessionContainerHolder sch = new SessionContainerHolder(sessionContainer, sessionStoring, sessionStateModel) ;
+        SessionContainerHolder sch = new SessionContainerHolder(sessionContainer, sessionStoring, sessionStateModel);
         context.setAttribute(SessionContainerHolder.class.getName(), sch);
 
         requestContainer.setName("request");
@@ -221,11 +223,13 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         HttpSession session = event.getSession();
         ServletContext context = session.getServletContext();
 
-        SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SessionContainerHolder.class
-                .getName());
+        SessionContainerHolder sch = (SessionContainerHolder)
+                context.getAttribute(SessionContainerHolder.class.getName());
         ThreadLocalLifecycleState tlLifecycleState = sch.getLifecycleStateModel();
-        session.setAttribute(SessionStoreHolder.class.getName(), new SessionStoreHolder(sessionStoring
-                .resetCacheForThread(), tlLifecycleState.resetStateModelForThread()));
+        session.setAttribute(SessionStoreHolder.class.getName(),
+                new SessionStoreHolder(
+                        sessionStoring.resetCacheForThread(),
+                        tlLifecycleState.resetStateModelForThread()));
 
         sessionContainer.start();
     }
@@ -241,7 +245,7 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         ThreadLocalLifecycleState tlLifecycleState = sch.getLifecycleStateModel();
 
         sessionStoring.putCacheForThread(ssh.getStoreWrapper());
-        tlLifecycleState.putLifecycleStateModelForThread(ssh.getDefaultLifecycleState());
+        tlLifecycleState.putLifecycleStateModelForThread(ssh.getLifecycleState());
 
         sessionContainer.stop();
         sessionContainer.dispose();

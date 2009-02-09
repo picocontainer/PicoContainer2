@@ -10,6 +10,8 @@ package org.picocontainer.web;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -27,6 +29,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Characteristics;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.lifecycle.DefaultLifecycleState;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.behaviors.Storing;
 
@@ -37,6 +40,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
     private static final String SESS_CONTAINER = SessionContainerHolder.class.getName();
     private static final String REQ_CONTAINER = RequestContainerHolder.class.getName();
     private boolean exposeServletInfrastructure;
+
 
     public void init(FilterConfig filterConfig) throws ServletException {
         ServletContext context = filterConfig.getServletContext();
@@ -89,6 +93,16 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         Storing requestStoring = rch.getStoring();
 
         SessionStoreHolder ssh = (SessionStoreHolder) sess.getAttribute(SessionStoreHolder.class.getName());
+        if (ssh == null) {
+            if (sch.getContainer().getComponentAdapters().size() > 0) {
+                throw new PicoContainerWebException("Session not setup correctly.  There are components registered " +
+                        "at the session level, but no working container to host them");
+            }
+            ssh = new SessionStoreHolder(sch.getStoring().getCacheForThread(),
+                    new DefaultLifecycleState());
+
+        }
+
         sessionStoring.putCacheForThread(ssh.getStoreWrapper());
         requestStoring.resetCacheForThread();
         rch.getLifecycleStateModel().resetStateModelForThread();
@@ -117,6 +131,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
             request.set(null);
             response.set(null);
         }
+
 
     }
 

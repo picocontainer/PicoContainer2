@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.picocontainer.injectors.ProviderAdapter;
 
+import java.io.Serializable;
+
 /**
  * Use this to make a request level component that pulls information from HTTP
  * request header.  If a header of the supplied name is not available for the current
@@ -30,7 +32,7 @@ import org.picocontainer.injectors.ProviderAdapter;
  *	}  
  * </pre>
  */
-public class StringFromHeader extends ProviderAdapter {
+public class StringFromHeader extends ProviderAdapter implements Serializable {
 
 	/**
 	 * The component key that we use to integrate with

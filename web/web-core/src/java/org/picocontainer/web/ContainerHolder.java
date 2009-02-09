@@ -9,7 +9,9 @@ package org.picocontainer.web;
 
 import org.picocontainer.MutablePicoContainer;
 
-public class ContainerHolder {
+import java.io.Serializable;
+
+public class ContainerHolder implements Serializable {
 
     private final MutablePicoContainer container;
 

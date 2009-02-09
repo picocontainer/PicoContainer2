@@ -12,13 +12,14 @@ import org.picocontainer.injectors.ProviderAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Cookie;
+import java.io.Serializable;
 
 /**
  * Use this to make a request level component that pulls information from cookie held on
  * the browser.  If a cookie of the supplied name is not available for the current
  * request path, then a NotFound exception will be thrown.
  */
-public class StringFromCookie extends ProviderAdapter {
+public class StringFromCookie extends ProviderAdapter implements Serializable {
 
     private final String name;
 

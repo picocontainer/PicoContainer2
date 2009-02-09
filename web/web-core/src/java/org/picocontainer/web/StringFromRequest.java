@@ -12,13 +12,14 @@ import org.picocontainer.injectors.ProviderAdapter;
 import org.picocontainer.MutablePicoContainer;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
 /**
  * Use this to make a request level component that pulls an string from a named parameter (GET or POST)
  * of the request.  If a parameter of the supplied name is not available for the current
  * request path, then an exception will be thrown.
  */
-public class StringFromRequest extends ProviderAdapter {
+public class StringFromRequest extends ProviderAdapter implements Serializable {
     private final String paramName;
 
     public StringFromRequest(String paramName) {

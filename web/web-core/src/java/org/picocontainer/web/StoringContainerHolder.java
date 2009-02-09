@@ -10,7 +10,9 @@ package org.picocontainer.web;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Storing;
 
-public class StoringContainerHolder extends ContainerHolder {
+import java.io.Serializable;
+
+public class StoringContainerHolder extends ContainerHolder implements Serializable {
 
     private final Storing storing;
     private final ThreadLocalLifecycleState lifecycleState;
