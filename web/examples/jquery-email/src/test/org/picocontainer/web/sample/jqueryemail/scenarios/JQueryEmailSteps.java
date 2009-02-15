@@ -1,53 +1,16 @@
 package org.picocontainer.web.sample.jqueryemail.scenarios;
 
-import java.util.concurrent.TimeUnit;
-
-import org.jbehave.scenario.annotations.AfterScenario;
-import org.jbehave.scenario.annotations.BeforeScenario;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
-import org.jbehave.scenario.steps.PrintStreamStepMonitor;
-import org.jbehave.scenario.steps.Steps;
-import org.jbehave.scenario.steps.StepsConfiguration;
+import org.jbehave.web.selenium.SeleniumSteps;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.condition.Condition;
-import com.thoughtworks.selenium.condition.ConditionRunner;
-import com.thoughtworks.selenium.condition.JUnitConditionRunner;
 import com.thoughtworks.selenium.condition.Not;
 import com.thoughtworks.selenium.condition.Presence;
 import com.thoughtworks.selenium.condition.Text;
 
-public class JQueryEmailSteps extends Steps {
-
-	private final Selenium selenium;
-	private final ConditionRunner runner;
-	private static final StepsConfiguration configuration = new StepsConfiguration();
-	private static final boolean DEBUG = false;
-
-	public JQueryEmailSteps() {
-		super(configuration);
-		if (DEBUG) {
-			configuration.useMonitor(new PrintStreamStepMonitor());
-		}
-		this.selenium = new DefaultSelenium("localhost", 4444, "*firefox",
-				"http://localhost:8080");
-		this.runner = new JUnitConditionRunner(selenium, 10, 100, 1000);
-	}
-
-	@BeforeScenario
-	public void setUp() throws Exception {
-		selenium.start();
-
-	}
-
-	@AfterScenario
-	public void tearDown() throws Exception {
-		selenium.close();
-		selenium.stop();
-	}
+public class JQueryEmailSteps extends SeleniumSteps {
 
 	@Given("nobody is logged in")
 	public void nobodyLoggedIn() {
@@ -89,14 +52,6 @@ public class JQueryEmailSteps extends Steps {
 	private void waitFor(Condition condition) {
 		runner.waitFor(condition);
 		waitFor(1);
-	}
-
-	private void waitFor(int seconds) {
-		try {
-			TimeUnit.SECONDS.sleep(seconds);
-		} catch (InterruptedException e) {
-			// continue
-		}
 	}
 
 }
