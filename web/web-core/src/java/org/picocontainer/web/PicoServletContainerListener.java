@@ -8,8 +8,6 @@
 package org.picocontainer.web;
 
 import java.io.Serializable;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

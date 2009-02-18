@@ -12,8 +12,6 @@ import com.thoughtworks.xstream.io.json.JsonWriter;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 /**
  * All for the calling of methods in a tree of components manages by PicoContainer.

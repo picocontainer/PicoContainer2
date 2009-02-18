@@ -10,8 +10,6 @@ package org.picocontainer.web;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
