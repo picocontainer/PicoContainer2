@@ -51,20 +51,14 @@ public class PicoObjectFactory extends ObjectFactory {
     @SuppressWarnings("unchecked")
     public Class getClassInstance(String name) throws ClassNotFoundException {
         Class clazz = super.getClassInstance(name);
-        registerAction(clazz);
-        return clazz;
-    }
-
-    private void registerAction(Class<?> clazz) throws NoClassDefFoundError {
-
         synchronized (this) {
-
             MutablePicoContainer reqContainer = currentRequestContainer.get();
-            if (reqContainer == null) {
-                return;
+            if (reqContainer != null) {
+                // forces a registration via noComponentFound()
+                reqContainer.getComponentAdapter(clazz);
             }
-            ComponentAdapter<?> ca = reqContainer.getComponentAdapter(clazz);
         }
+        return clazz;
     }
 
     @SuppressWarnings("unchecked")
