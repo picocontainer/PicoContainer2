@@ -9,7 +9,10 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Type;
 
 import org.junit.Test;
 import org.picocontainer.PicoCompositionException;
@@ -33,4 +36,29 @@ public class ConstantParameterTestCase {
             fail("failed verification for primitive / instance ");
         }
     }
+    
+    @Test
+    public void testClassTypesAllowed() throws Exception {
+        ConstantParameter param = new ConstantParameter(String.class);
+        param.verify(null, null, Class.class, null, false, null);    	
+    }
+    
+	
+    public static class ConstantParameterTestClass {
+    	public ConstantParameterTestClass(Class<String> type) {
+    		assert type != null;
+    	}
+    }
+        
+    
+    @Test
+    public void testParameterizedTypesAllowed() throws Exception {
+    	
+    	Constructor<?>[] ctors = ConstantParameterTestClass.class.getConstructors();
+    	Type[] t = ctors[0].getGenericParameterTypes();
+        ConstantParameter param = new ConstantParameter(String.class);
+        assertTrue(param.isResolvable(null, null, t[0], null, false, null));
+
+    }
+    
 }

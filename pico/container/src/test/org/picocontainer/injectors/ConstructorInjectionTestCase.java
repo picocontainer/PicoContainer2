@@ -11,6 +11,7 @@ package org.picocontainer.injectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.picocontainer.Characteristics.USE_NAMES;
 
 import java.util.Properties;
 
@@ -18,9 +19,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.Characteristics;
-import static org.picocontainer.Characteristics.USE_NAMES;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
 import org.picocontainer.tck.AbstractComponentAdapterTest.RecordingLifecycleStrategy;
 import org.picocontainer.testmodel.NullLifecycle;
@@ -78,6 +78,34 @@ public class ConstructorInjectionTestCase extends AbstractComponentFactoryTest {
         picoContainer.addComponent("x", "1.2");
         assertNotNull(picoContainer.getComponent(ClassB.class));
         assertEquals(1.2,picoContainer.getComponent(ClassB.class).x, 0.0001);
+    }
+    
+    
+    /**
+     * Test class to verify the CICA can handle
+     * a constant parameter class type. 
+     *
+     */
+    @SuppressWarnings({"unchecked", "unused"})
+    public static class ClassAsConstructor {
+		private final Class type;
+
+		public ClassAsConstructor(Class type) {
+			this.type = type;    		
+    	}
+    }
+    
+	@Test 
+    @SuppressWarnings("unchecked")
+    public void allowClassTypesForComponentAdapter() {
+        ConstructorInjection componentFactory = new ConstructorInjection();
+        
+        ConstructorInjector cica =  (ConstructorInjector)
+        componentFactory.createComponentAdapter(new NullComponentMonitor(), null, new Properties(), ClassAsConstructor.class, ClassAsConstructor.class, new ConstantParameter(String.class));
+        
+        ClassAsConstructor instance = (ClassAsConstructor) cica.getComponentInstance(picoContainer);
+        assertNotNull(instance);
+    	
     }
 
 

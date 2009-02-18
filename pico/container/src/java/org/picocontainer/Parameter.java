@@ -11,6 +11,7 @@
 package org.picocontainer;
 
 import org.picocontainer.parameters.ComponentParameter;
+import org.picocontainer.parameters.DefaultConstructorParameter;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -43,9 +44,11 @@ public interface Parameter {
 	 * <p>By specifying the default constructor in this example code, you allow PicoContainer to recognize
 	 * that HashMap(Collection) should <em>not</em> be used and avoid a CircularDependencyException.</p>
 	 */
-    Parameter[] ZERO = new Parameter[0];
+    Parameter[] ZERO =  new Parameter[] {DefaultConstructorParameter.INSTANCE};
+    
     Parameter[] DEFAULT = new Parameter[]{ ComponentParameter.DEFAULT };
-
+    
+    
     /**
      * Retrieve the object from the Parameter that satisfies the expected type.
      *

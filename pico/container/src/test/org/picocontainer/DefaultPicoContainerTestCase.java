@@ -42,6 +42,7 @@ import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.WriterComponentMonitor;
+import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractPicoContainerTest;
 import org.picocontainer.testmodel.DecoratedTouchable;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -117,11 +118,12 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 	@Test public void testComponentsWithCommonSupertypeWhichIsAConstructorArgumentCanBeLookedUpByConcreteType() {
 		MutablePicoContainer pico = createPicoContainer(null);
 		pico.addComponent(LinkedList.class, LinkedList.class, Parameter.ZERO);
-		pico.addComponent(ArrayList.class);
+		pico.addComponent(ArrayList.class, ArrayList.class, Parameter.ZERO);
 		assertEquals(ArrayList.class, pico
 				.getComponent((Class) ArrayList.class).getClass());
 	}
-
+	
+	
 	/*
 	 * When pico tries to resolve DecoratedTouchable it find as dependency
 	 * itself and SimpleTouchable. Problem is basically the same as above. Pico
@@ -812,6 +814,23 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		container.addComponent("foo bar");
 		assertEquals(1, container.getComponentAdapters().size());
 	}
+	
+    public static class ConstantParameterTestClass {
+    	public ConstantParameterTestClass(Class<String> type) {
+    		assert type != null;
+    	}
+    }
+    
+    
+    @Test
+    public void testConstantParameterReferenceClass() {
+    	MutablePicoContainer container = createPicoContainer(null);
+    	container.addComponent(ConstantParameterTestClass.class, ConstantParameterTestClass.class, new ConstantParameter(String.class));
+    	
+    	assertNotNull(container.getComponent(ConstantParameterTestClass.class));
+    	
+    }
+	
 
     @Test public void canInterceptImplementationViaNewInjectionFactoryMethodOnMonitor() {
         DefaultPicoContainer dpc = new DefaultPicoContainer(new MyNullComponentMonitor());
@@ -821,9 +840,9 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         assertEquals("doppleganger", dpc.getComponent(List.class).get(0));
     }
 
-    @SuppressWarnings("serial")
+    @SuppressWarnings({"serial", "unchecked"})
     private static class MyNullComponentMonitor extends NullComponentMonitor {
-        public Injector newInjector(Injector injector) {
+		public Injector newInjector(Injector injector) {
             if (injector.getComponentKey() == List.class) {
                 return new AbstractInjector(List.class, ArrayList.class, Parameter.DEFAULT, MyNullComponentMonitor.this, null, false) {
                     public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
@@ -845,5 +864,6 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
             return behavior;
         }
     }
+    
 
 }

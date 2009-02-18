@@ -42,6 +42,7 @@ import org.picocontainer.lifecycle.DefaultLifecycleState;
 import org.picocontainer.lifecycle.LifecycleState;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.parameters.DefaultConstructorParameter;
 
 /**
  * <p/>
@@ -463,9 +464,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                                              final Object componentImplementationOrInstance,
                                              final Properties properties,
                                              Parameter... parameters) {
-        if (parameters != null && parameters.length == 0 && parameters != Parameter.ZERO) {
+        if (parameters != null && parameters.length == 0) {
             parameters = null; // backwards compatibility!  solve this better later - Paul
         }
+        
+        //New replacement for Parameter.ZERO.
+        if (parameters != null && parameters.length == 1 && DefaultConstructorParameter.INSTANCE.equals(parameters[0])) {
+        	parameters = new Parameter[0];
+        }
+        
         if (componentImplementationOrInstance instanceof Class) {
             Properties tmpProperties = (Properties) properties.clone();
             ComponentAdapter<?> componentAdapter = componentFactory.createComponentAdapter(componentMonitor,

@@ -347,7 +347,7 @@ public class SetterInjectorTestCase
 
     @Test public void testNonSetterMethodInjectionWithoutOverridingSetterPrefix() {
         MutablePicoContainer pico = new DefaultPicoContainer();
-        pico.addAdapter(new SetterInjector(InitBurp.class, InitBurp.class, Parameter.ZERO, new NullComponentMonitor(), new NullLifecycleStrategy(),
+        pico.addAdapter(new SetterInjector(InitBurp.class, InitBurp.class, new Parameter[0], new NullComponentMonitor(), new NullLifecycleStrategy(),
                                            "set", false));
         pico.addComponent(Wind.class, new Wind());
         InitBurp burp = pico.getComponent(InitBurp.class);

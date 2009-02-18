@@ -20,6 +20,7 @@ import org.picocontainer.NameBinding;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.annotation.Annotation;
 
@@ -38,6 +39,7 @@ import java.lang.annotation.Annotation;
 public class ConstantParameter implements Parameter, Serializable {
 
     private final Object value;
+    
 
     public ConstantParameter(Object value) {
         this.value = value;
@@ -52,7 +54,9 @@ public class ConstantParameter implements Parameter, Serializable {
     public boolean isResolvable(PicoContainer container, ComponentAdapter<?> adapter, Type expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         if (expectedType instanceof Class) {
             return isAssignable((Class) expectedType);
-        }
+        } else if (expectedType instanceof ParameterizedType) {
+        	return isAssignable( ((ParameterizedType)expectedType).getRawType());
+        } 
         return false;
     }
 

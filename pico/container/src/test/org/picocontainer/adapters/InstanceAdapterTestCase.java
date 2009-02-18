@@ -115,6 +115,12 @@ public final class InstanceAdapterTestCase extends AbstractComponentAdapterTest 
             assertEquals("componentInstance cannot be null", e.getMessage());
         }
     }
+    
+    @Test
+    public void testFindAdapterOfType() {
+    	ComponentAdapter adapter = new InstanceAdapter("test", "test");
+    	assertEquals(adapter, adapter.findAdapterOfType(InstanceAdapter.class));
+    }
 
 
     /**
