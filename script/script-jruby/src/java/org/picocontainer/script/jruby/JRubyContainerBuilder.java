@@ -19,10 +19,12 @@ import org.jruby.RubyInstanceConfig;
 import org.jruby.exceptions.RaiseException;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.runtime.builtin.IRubyObject;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.script.LifecycleMode;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
@@ -73,11 +75,18 @@ public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
 	 * @todo create a way to prevent initialization and shutdown with each script invocation.
 	 */
 	protected PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope) {
-		if (parentContainer == null) {
-			parentContainer = new EmptyPicoContainer();
-		}
-		parentContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), new DefaultPicoContainer(new Caching(),
-		        parentContainer));
+        if ( parentContainer == null ){
+            parentContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), new DefaultPicoContainer(new Caching(), new EmptyPicoContainer()));
+        }
+		
+        if (! (parentContainer instanceof ClassLoadingPicoContainer)) {
+        	if (parentContainer instanceof MutablePicoContainer) {
+        		parentContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), (MutablePicoContainer)parentContainer);
+        	} else {
+        		//We want this last because it will never propagate parent behaviors
+        		parentContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), new DefaultPicoContainer(new Caching(), parentContainer));
+        	}
+        }
 
 		
 		

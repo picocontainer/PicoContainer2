@@ -21,7 +21,7 @@ module Scripted
   ConstantParameter = org.picocontainer.parameters.ConstantParameter
   JRubyContainerBuilder = org.picocontainer.script.jruby.JRubyContainerBuilder
   ClassPathElementHelper = org.picocontainer.script.util.ClassPathElementHelper
-  ComponentElementHelper = org.picocontainer.script.util.ComponentElementHelper
+  ComponentElementHelper = org.picocontainer.script.util.ComponentElementHelper  
   include_class 'org.picocontainer.script.util.ContainerElementHelper'
 
   MARKUP_EXCEPTION_PREFIX = JRubyContainerBuilder::MARKUP_EXCEPTION_PREFIX
@@ -41,6 +41,12 @@ module Scripted
 
     def build() ConstantParameter.new(@const) end
   end
+  
+  class Zero
+      def build()
+        org.picocontainer.parameters.DefaultConstructorParameter::INSTANCE 
+      end
+  end
 
   class Params
     def initialize(params = [])
@@ -55,6 +61,7 @@ module Scripted
       params
     end
   end
+
 
   class Component
     def initialize(options)
@@ -99,7 +106,10 @@ module Scripted
         options = componentFactories.last
       end
 
-      @impl     = DefaultScriptedPicoContainer
+#      Removed so make child container work  This eventually needs to be
+#      put back in
+#      @impl     = DefaultScriptedPicoContainer
+      @impl = nil      
       @parent   = options[:parent]
       @componentFactory      = options[:component_adapter_factory]
       @monitor  = options[:component_monitor]
@@ -121,7 +131,11 @@ module Scripted
     def constant(val)
       Constant.new(val)
     end
-
+    
+    def zero
+      Zero.new()
+    end
+    
     def component(options)
       @comps << Component.new(options)
     end
