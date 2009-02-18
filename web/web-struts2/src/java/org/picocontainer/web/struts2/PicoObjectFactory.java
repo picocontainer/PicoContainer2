@@ -64,20 +64,6 @@ public class PicoObjectFactory extends ObjectFactory {
                 return;
             }
             ComponentAdapter<?> ca = reqContainer.getComponentAdapter(clazz);
-            if (ca == null) {
-                try {
-                    reqContainer.addComponent(clazz);
-                } catch (NoClassDefFoundError e) {
-                    if (e.getMessage().equals("org/apache/velocity/context/Context")) {
-                        // half expected. XWork seems to setup stuff that cannot
-                        // work
-                        // TODO if this is the case we should make configurable
-                        // the list of classes we "expect" not to find.  Odd!
-                    } else {
-                        throw e;
-                    }
-                }
-            }
         }
     }
 

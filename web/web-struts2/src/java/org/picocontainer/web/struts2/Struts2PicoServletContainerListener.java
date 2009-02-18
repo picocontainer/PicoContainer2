@@ -16,6 +16,8 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Storing;
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.Result;
 
 public class Struts2PicoServletContainerListener extends PicoServletContainerListener {
 
@@ -50,12 +52,32 @@ public class Struts2PicoServletContainerListener extends PicoServletContainerLis
 
         private Object noComponent(MutablePicoContainer mutablePicoContainer, Object o) {
             if (o instanceof Class) {
+                Class clazz = (Class) o;
+                if (Action.class.isAssignableFrom(clazz) || Result.class.isAssignableFrom(clazz)) {
+                    try {
+                        mutablePicoContainer.addComponent(clazz);
+                    } catch (NoClassDefFoundError e) {
+                        if (e.getMessage().equals("org/apache/velocity/context/Context")) {
+                            // half expected. XWork seems to setup stuff that cannot
+                            // work
+                            // TODO if this is the case we should make configurable
+                            // the list of classes we "expect" not to find.  Odd!
+                        } else {
+                            throw e;
+                        }
+                    }
+
+                    return null;
+                }
                 try {
-                    return ((Class) o).newInstance();
+                    if (clazz.getConstructor(new Class[0]) != null) {
+                        return clazz.newInstance();
+                    }
                 } catch (InstantiationException e) {
                     throw new PicoCompositionException("can't instantiate " + o);
                 } catch (IllegalAccessException e) {
                     throw new PicoCompositionException("illegal access " + o);
+                } catch (NoSuchMethodException e) {
                 }
             }
             return super.noComponentFound(mutablePicoContainer, o);

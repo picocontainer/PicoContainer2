@@ -27,7 +27,6 @@ public class Struts2DemoWebappComposer implements WebappComposer {
 
     public void composeRequest(MutablePicoContainer requestContainer) {
         requestContainer.as(Characteristics.NO_CACHE).addComponent(Brand.class, Brand.FromRequest.class);
-
     }
 
 }
