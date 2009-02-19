@@ -5,7 +5,7 @@
 
   <context-param>
     <param-name>webapp-composer-class</param-name>
-    <param-value>org.picocontainer.web.sample.struts2.Struts2DemoWebappComposer</param-value>
+    <param-value>org.picocontainer.web.sample.struts2.Struts2DemoComposer</param-value>
   </context-param>
 
   <filter>

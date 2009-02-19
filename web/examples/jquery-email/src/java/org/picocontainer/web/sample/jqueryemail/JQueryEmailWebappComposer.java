@@ -10,22 +10,22 @@ import org.picocontainer.web.remoting.PicoWebRemotingMonitor;
 
 public class JQueryEmailWebappComposer implements WebappComposer {
 
-    public void composeApplication(MutablePicoContainer appContainer, ServletContext context) {
-        appContainer.addComponent(PicoWebRemotingMonitor.class, JQueryEmailWebRemotingMonitor.class);
-        appContainer.addComponent(MessageStore.class, InMemoryMessageStore.class);
+    public void composeApplication(MutablePicoContainer pico, ServletContext context) {
+        pico.addComponent(PicoWebRemotingMonitor.class, JQueryEmailWebRemotingMonitor.class);
+        pico.addComponent(MessageStore.class, InMemoryMessageStore.class);
     }
 
-    public void composeSession(MutablePicoContainer sessionContainer) {
+    public void composeSession(MutablePicoContainer pico) {
         // stateless
     }
 
-    public void composeRequest(MutablePicoContainer requestContainer) {
+    public void composeRequest(MutablePicoContainer pico) {
 
-        requestContainer.addAdapter(new User.FromCookie());
-        requestContainer.as(USE_NAMES).addComponent(Auth.class);
+        pico.addAdapter(new User.FromCookie());
+        pico.as(USE_NAMES).addComponent(Auth.class);
 
-        requestContainer.as(USE_NAMES).addComponent(Inbox.class);
-        requestContainer.as(USE_NAMES).addComponent(Sent.class);
+        pico.as(USE_NAMES).addComponent(Inbox.class);
+        pico.as(USE_NAMES).addComponent(Sent.class);
     }
 
 }

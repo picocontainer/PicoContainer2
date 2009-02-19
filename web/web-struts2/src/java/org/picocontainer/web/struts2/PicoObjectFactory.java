@@ -70,22 +70,13 @@ public class PicoObjectFactory extends ObjectFactory {
             Object comp = appContainer.getComponent(clazz);
             if (comp == null) {
                 appContainer.addComponent(clazz);
+                System.out.println("-->" + clazz.getName());
                 comp = appContainer.getComponent(clazz);
             }
             return comp;
 
         }
-//        try {
-            return requestContainer.getComponent(clazz);
-//        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-//            Collection<ComponentAdapter<?>> adapters = requestContainer.getComponentAdapters();
-//            for (Iterator<ComponentAdapter<?>> componentAdapterIterator = adapters.iterator(); componentAdapterIterator.hasNext();) {
-//                ComponentAdapter<?> adapter =  componentAdapterIterator.next();
-//                System.out.println("--> " + adapter.getComponentKey());
-//            }
-//            throw e;
-//        }
-
+        return requestContainer.getComponent(clazz);
     }
 
     @SuppressWarnings("unchecked")

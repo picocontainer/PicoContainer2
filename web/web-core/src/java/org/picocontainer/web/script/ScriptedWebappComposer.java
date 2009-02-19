@@ -56,16 +56,16 @@ public class ScriptedWebappComposer implements WebappComposer {
         this.requestScript = requestScript;
     }
 
-    public void composeApplication(MutablePicoContainer applicationContainer, ServletContext context) {
-        populateContainer(applicationScript, applicationContainer);
+    public void composeApplication(MutablePicoContainer pico, ServletContext context) {
+        populateContainer(applicationScript, pico);
     }
 
-    public void composeSession(MutablePicoContainer sessionContainer) {
-        populateContainer(sessionScript, sessionContainer);
+    public void composeSession(MutablePicoContainer pico) {
+        populateContainer(sessionScript, pico);
     }
 
-    public void composeRequest(MutablePicoContainer requestContainer) {
-        populateContainer(requestScript, requestContainer);
+    public void composeRequest(MutablePicoContainer pico) {
+        populateContainer(requestScript, pico);
     }
 
     private void populateContainer(String resourcePath, MutablePicoContainer container) {

@@ -25,10 +25,10 @@ import javax.servlet.ServletContext;
  */
 public interface WebappComposer {
 
-    void composeApplication(MutablePicoContainer applicationContainer, ServletContext servletContext);
+    void composeApplication(MutablePicoContainer pico, ServletContext servletContext);
 
-    void composeSession(MutablePicoContainer sessionContainer);
+    void composeSession(MutablePicoContainer pico);
 
-    void composeRequest(MutablePicoContainer requestContainer);
+    void composeRequest(MutablePicoContainer pico);
 
 }

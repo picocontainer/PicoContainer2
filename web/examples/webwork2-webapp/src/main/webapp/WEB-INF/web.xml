@@ -5,7 +5,7 @@
 
   <context-param>
     <param-name>webapp-composer-class</param-name>
-    <param-value>org.picocontainer.web.sample.webwork2.WebWork2DemoWebappComposer</param-value>
+    <param-value>org.picocontainer.web.sample.webwork2.WebWork2DemoComposer</param-value>
   </context-param>
 
   <filter>
