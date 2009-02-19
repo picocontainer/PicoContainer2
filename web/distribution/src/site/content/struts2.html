@@ -14,7 +14,7 @@ appropriate.</p>
 
 	  <context-param>
 	    <param-name>webapp-composer-class</param-name>
-	    <param-value>org.picocontainer.web.sample.ExampleWebappComposer</param-value>
+	    <param-value>org.picocontainer.web.sample.ExampleStruts2Composer</param-value>
 	  </context-param>
 
 	  <filter>
@@ -49,7 +49,8 @@ appropriate.</p>
 </pre></div>
 <p>The Maven example project is <a
   href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/struts2-webapp/">here</a>. Make sure you make
-and configure your own <a href="composition.html">WebappComposer</a> implementation.</p>
+and configure your own <a href="composition.html">WebappComposer</a> implementation.  Note that we use a base class for
+    Struts2 applications: Struts2Composer</p>
 <p>See <a href="downloads.html">downloads</a> on how to download the struts2 module either using Maven or by downloading full distribution.</p>
 </body>
 </html>
