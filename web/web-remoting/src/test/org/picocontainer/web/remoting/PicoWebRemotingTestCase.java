@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.awt.*;
+import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.ComparisonFailure;
@@ -120,6 +121,48 @@ public final class PicoWebRemotingTestCase {
 
         result = pwr.processRequest("/Foo/goodbye", pico, "GET");
         assertEquals("33\n", result);
+    }
+
+    @Test
+    public void testCanBeVisited() throws Exception {
+        PicoWebRemoting pwr = new PicoWebRemoting(xStream, "alpha/", null, "y", false, true);
+        pwr.directorize("alpha/Foo", Foo.class);
+
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        pico.addComponent(Foo.class);
+        pico.addComponent("longArg", new Long(123));
+
+        final StringBuffer sb = new StringBuffer();
+
+        MethodAndParamVisitor mapv = new MethodAndParamVisitor() {
+            public void startMethod(String method) throws IOException {
+                sb.append("sm:").append(method).append(";");
+            }
+
+            public void endMethod(String method) throws IOException {
+                sb.append("em:").append(method).append(";");
+            }
+
+            public void visitParameter(String parameter) throws IOException {
+                sb.append("p:").append(parameter).append(";");
+            }
+
+            public void superClass(String superClass) throws IOException {
+                sb.append("sc:").append(superClass).append(";");
+            }
+        };
+        
+        pwr.visitClass("Foo", pico, mapv);
+
+        assertEquals(
+                "sc:java/lang/Object;" +
+                  "sm:hello;" +
+                    "p:long;" +
+                  "em:hello;" +
+                  "sm:color;" +
+                  "em:color;" +
+                  "sm:goodbye;" +
+                  "em:goodbye", sb.toString());
     }
 
     @Test

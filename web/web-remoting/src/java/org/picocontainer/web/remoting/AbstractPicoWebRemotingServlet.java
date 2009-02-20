@@ -149,7 +149,10 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
             initialized = true;
         }
 
-        String pathInfo = req.getPathInfo();
+        respond(req, resp, req.getPathInfo());
+    }
+
+    protected void respond(HttpServletRequest req, HttpServletResponse resp, String pathInfo) throws IOException {
         resp.setContentType(mimeType);
 
         String result = pwr.processRequest(pathInfo, currentRequestContainer.get(), req.getMethod());
@@ -213,4 +216,9 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
         }
         pwr.setMonitor(monitor);
     }
+
+    protected void visitClass(String clazz, MethodAndParamVisitor mapv) throws IOException {
+        pwr.visitClass(clazz, currentRequestContainer.get(), mapv);
+    }
+
 }

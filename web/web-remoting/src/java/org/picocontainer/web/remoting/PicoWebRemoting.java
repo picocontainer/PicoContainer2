@@ -19,11 +19,13 @@ import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.web.GET;
 import org.picocontainer.web.POST;
 import org.picocontainer.web.DELETE;
@@ -79,6 +81,7 @@ public class PicoWebRemoting {
     }
 
     protected String processRequest(String pathInfo, PicoContainer reqContainer, String httpMethod) throws IOException {
+
         try {
             String path = pathInfo.substring(1);
             if (path.endsWith("/")) {
@@ -344,6 +347,39 @@ public class PicoWebRemoting {
                 paths.put("", dirs);
             }
             dirs.add(path);
+        }
+    }
+
+    public void visitClass(String clazz, MutablePicoContainer mutablePicoContainer, MethodAndParamVisitor mapv) throws IOException {
+        String s = toStripFromUrls + clazz;
+        Object node = paths.get(s);
+        if (node instanceof WebMethods) {
+            WebMethods wm = (WebMethods) node;
+            Class<?> x = wm.getComponent();
+            Class<?> y = x.getSuperclass();
+            if (y != null) {
+                String s1 = y.getName().replace(".","/");
+                if (s1.startsWith(toStripFromUrls)) {
+                    mapv.superClass(s1.substring(toStripFromUrls.length()));
+                } else {
+                    mapv.superClass(s1);
+                }
+            }
+            Set keys = wm.keySet();
+            for (Object o : keys) {
+                String methodName = o.toString();
+                mapv.startMethod(methodName);
+                HashMap<String, Method> foo = wm.get(methodName);
+                Method m = foo.get(GET);
+                if (m == null) {
+                    m = foo.get(FALLBACK);
+                }
+                Class<?>[] bar = m.getParameterTypes();
+                for (Class<?> aClass : bar) {
+                    mapv.visitParameter(aClass.getName());
+                }
+                mapv.endMethod(methodName);
+            }
         }
     }
 

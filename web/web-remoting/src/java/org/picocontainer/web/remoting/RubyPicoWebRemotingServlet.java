@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.io.IOException;
+import java.util.Arrays;
 
 import org.picocontainer.web.remoting.RubyWriter;
 
@@ -22,6 +24,9 @@ import com.thoughtworks.xstream.io.WriterWrapper;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * All for the calling of methods in a tree of components manages by PicoContainer.
@@ -68,5 +73,45 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
         return driver;
     }
 
+    protected void respond(HttpServletRequest req, HttpServletResponse resp, String pathInfo) throws IOException {
+        if ("/classdefs".equals(pathInfo)) {
+            String classList = req.getQueryString();
+            final String[] classes = classList.split(",");
+            resp.setContentType("text/plain");
+            final ServletOutputStream outputStream = resp.getOutputStream();
+            MethodAndParamVisitor mapv = new MethodAndParamVisitor() {
+                boolean firstParam;
+                public void startMethod(String method) throws IOException {
+                    outputStream.print("\n  def " + method);
+                    firstParam = true;
+                }
+
+                public void endMethod(String method) throws IOException {
+                    outputStream.print("\n  end\n");
+                }
+
+                public void visitParameter(String parameter) throws IOException {
+                    outputStream.print((firstParam == false ? ", " : " ") + parameter);
+                    firstParam = false;
+                }
+
+                public void superClass(String superClass) throws IOException {
+                    if (Arrays.binarySearch(classes, superClass) > -1) {
+                        outputStream.print(" < " + superClass);
+                    }
+                }
+            };
+
+            for (String clazz : classes) {
+                outputStream.println("class " + clazz);
+                super.visitClass(clazz, mapv);
+                outputStream.println("end");
+            }
+
+
+        } else {
+            super.respond(req, resp, pathInfo);
+        }
+    }
 
 }
