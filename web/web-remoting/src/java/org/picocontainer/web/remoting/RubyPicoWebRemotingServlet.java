@@ -87,15 +87,9 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
             resp.setContentType("text/plain");
             final ServletOutputStream outputStream = resp.getOutputStream();
             MethodAndParamVisitor mapv = new MethodAndParamVisitor() {
-                public void startMethod(String method) throws IOException {
-                    outputStream.print("\n  def " + method);
-                }
 
-                public void endMethod(String method) throws IOException {
-                    outputStream.print("\n  end\n");
-                }
-
-                public void methodParameters(Method method) throws IOException {
+                public void method(String methodName, Method method) throws IOException {
+                    outputStream.print("\n  def " + methodName);
                     String[] paramNames;
                     if (paranamer.areParameterNamesAvailable(method.getDeclaringClass(), method.getName()) ==0) {
                         paramNames = paranamer.lookupParameterNames(method);
@@ -106,6 +100,12 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
                         String name = paramNames[i];
                         outputStream.print((i > 0 ? ", " : " ") + name);
                     }
+                    outputStream.print("\n");
+                    outputStream.print("    @connection.submit?(self.class, '" + methodName + "'");
+                    for (String name : paramNames) {
+                        outputStream.print(", :" + name + "=>" + name);
+                    }
+                    outputStream.print(")\n  end\n");
                 }
 
                 public void superClass(String superClass) throws IOException {

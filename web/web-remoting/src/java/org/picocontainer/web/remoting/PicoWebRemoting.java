@@ -367,16 +367,12 @@ public class PicoWebRemoting {
             Set keys = wm.keySet();
             for (Object o : keys) {
                 String methodName = o.toString();
-                mapv.startMethod(methodName);
                 HashMap<String, Method> foo = wm.get(methodName);
                 Method m = foo.get(GET);
                 if (m == null) {
                     m = foo.get(FALLBACK);
                 }
-                if (m.getParameterTypes().length > 0) {
-                    mapv.methodParameters(m);
-                }
-                mapv.endMethod(methodName);
+                mapv.method(methodName, m);
             }
         }
     }
