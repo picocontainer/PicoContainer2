@@ -162,7 +162,7 @@ public final class PicoWebRemotingTestCase {
                   "sm:color;" +
                   "em:color;" +
                   "sm:goodbye;" +
-                  "em:goodbye", sb.toString());
+                  "em:goodbye;", sb.toString());
     }
 
     @Test
