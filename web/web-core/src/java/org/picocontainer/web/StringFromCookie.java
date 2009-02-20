@@ -39,9 +39,11 @@ public class StringFromCookie extends ProviderAdapter implements Serializable {
 
     public String provide(HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(name)) {
-                return cookie.getValue();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(name)) {
+                    return cookie.getValue();
+                }
             }
         }
         throw new CookieNotFound(name);
