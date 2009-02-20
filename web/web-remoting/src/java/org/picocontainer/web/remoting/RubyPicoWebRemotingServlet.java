@@ -82,8 +82,15 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
 
     protected void respond(HttpServletRequest req, HttpServletResponse resp, String pathInfo) throws IOException {
         if ("/classdefs".equals(pathInfo)) {
+
+            final String function = req.getParameter("fn") != null ? req.getParameter("fn") : "@connection.submit";
+
             String classList = req.getQueryString();
+            if (classList.contains("&")) {
+                classList = classList.substring(0, classList.indexOf("&"));
+            }
             final String[] classes = classList.split(",");
+
             resp.setContentType("text/plain");
             final ServletOutputStream outputStream = resp.getOutputStream();
             MethodAndParamVisitor mapv = new MethodAndParamVisitor() {
@@ -101,7 +108,7 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
                         outputStream.print((i > 0 ? ", " : " ") + name);
                     }
                     outputStream.print("\n");
-                    outputStream.print("    @connection.submit?(self.class, '" + methodName + "'");
+                    outputStream.print("    "+function+"?(self.class, '" + methodName + "'");
                     for (String name : paramNames) {
                         outputStream.print(", :" + name + "=>" + name);
                     }
