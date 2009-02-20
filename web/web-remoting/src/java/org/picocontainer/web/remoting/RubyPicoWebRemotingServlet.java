@@ -13,8 +13,12 @@ import java.io.Reader;
 import java.io.Writer;
 import java.io.IOException;
 import java.util.Arrays;
+import java.lang.reflect.Method;
 
 import org.picocontainer.web.remoting.RubyWriter;
+import org.picocontainer.paranamer.CachingParanamer;
+import org.picocontainer.paranamer.DefaultParanamer;
+import org.picocontainer.paranamer.BytecodeReadingParanamer;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
@@ -37,6 +41,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @SuppressWarnings("serial")
 public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  {
+
+    CachingParanamer paranamer = new CachingParanamer(new DefaultParanamer());
+    CachingParanamer paranamer2 = new CachingParanamer(new BytecodeReadingParanamer());
 
     public void init(ServletConfig servletConfig) throws ServletException {
         setXStream(new XStream(makeRubyDriver()));
@@ -80,19 +87,25 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
             resp.setContentType("text/plain");
             final ServletOutputStream outputStream = resp.getOutputStream();
             MethodAndParamVisitor mapv = new MethodAndParamVisitor() {
-                boolean firstParam;
                 public void startMethod(String method) throws IOException {
                     outputStream.print("\n  def " + method);
-                    firstParam = true;
                 }
 
                 public void endMethod(String method) throws IOException {
                     outputStream.print("\n  end\n");
                 }
 
-                public void visitParameter(String parameter) throws IOException {
-                    outputStream.print((firstParam == false ? ", " : " ") + parameter);
-                    firstParam = false;
+                public void methodParameters(Method method) throws IOException {
+                    String[] paramNames;
+                    if (paranamer.areParameterNamesAvailable(method.getDeclaringClass(), method.getName()) ==0) {
+                        paramNames = paranamer.lookupParameterNames(method);
+                    } else {
+                        paramNames = paranamer2.lookupParameterNames(method);
+                    }
+                    for (int i = 0; i < paramNames.length; i++) {
+                        String name = paramNames[i];
+                        outputStream.print((i > 0 ? ", " : " ") + name);
+                    }
                 }
 
                 public void superClass(String superClass) throws IOException {

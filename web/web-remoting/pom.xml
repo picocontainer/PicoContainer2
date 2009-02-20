@@ -54,12 +54,6 @@
       <version>${pom.version}</version>
       <optional>true</optional>
     </dependency>
-	<dependency>
-	    <groupId>com.thoughtworks.paranamer</groupId>
-	    <artifactId>paranamer</artifactId>
-	    <version>1.1.7</version>
-        <optional>true</optional>
-	</dependency>
   </dependencies>
   <build>
     <plugins>

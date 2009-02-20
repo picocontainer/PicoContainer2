@@ -19,7 +19,6 @@ import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Characteristics;
@@ -374,9 +373,8 @@ public class PicoWebRemoting {
                 if (m == null) {
                     m = foo.get(FALLBACK);
                 }
-                Class<?>[] bar = m.getParameterTypes();
-                for (Class<?> aClass : bar) {
-                    mapv.visitParameter(aClass.getName());
+                if (m.getParameterTypes().length > 0) {
+                    mapv.methodParameters(m);
                 }
                 mapv.endMethod(methodName);
             }

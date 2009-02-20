@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.awt.*;
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 import org.junit.Test;
 import org.junit.ComparisonFailure;
@@ -143,8 +144,8 @@ public final class PicoWebRemotingTestCase {
                 sb.append("em:").append(method).append(";");
             }
 
-            public void visitParameter(String parameter) throws IOException {
-                sb.append("p:").append(parameter).append(";");
+            public void methodParameters(Method m) throws IOException {
+                sb.append("p:").append(m.getName()).append(";");
             }
 
             public void superClass(String superClass) throws IOException {
@@ -157,7 +158,7 @@ public final class PicoWebRemotingTestCase {
         assertEquals(
                 "sc:java/lang/Object;" +
                   "sm:hello;" +
-                    "p:long;" +
+                    "p:hello;" +
                   "em:hello;" +
                   "sm:color;" +
                   "em:color;" +
