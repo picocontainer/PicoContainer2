@@ -15,6 +15,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.NameBinding;
+import org.picocontainer.lifecycle.LifecycleState;
 
 import java.util.Collection;
 import java.util.List;
@@ -32,7 +33,6 @@ import org.apache.commons.logging.LogFactory;
 @Deprecated
 @SuppressWarnings("serial")
 public class CommonsLoggingTracingContainerDecorator implements MutablePicoContainer, Serializable {
-
 
 
 	/** Wrapped container. */
@@ -514,7 +514,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
 
     private void readObject(final java.io.ObjectInputStream s)
         throws java.io.IOException, java.lang.ClassNotFoundException {
-	        s.defaultReadObject();
+	        s.defaultReadObject();                                    
 	        log = LogFactory.getLog(this.logCategory);
 	}
 
@@ -525,4 +525,14 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
     public MutablePicoContainer as(final Properties... properties) {
         return delegate.as(properties);
     }
+
+    public void setName(String name) {
+        delegate.setName(name);
+    }
+
+    public void setLifecycleState(LifecycleState lifecycleState) {
+        delegate.setLifecycleState(lifecycleState);
+    }
+
+
 }

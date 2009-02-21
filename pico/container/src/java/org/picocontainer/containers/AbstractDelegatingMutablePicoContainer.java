@@ -15,6 +15,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.lifecycle.LifecycleState;
 
 /**
  * abstract base class for delegating to mutable containers
@@ -88,4 +89,13 @@ public abstract class AbstractDelegatingMutablePicoContainer extends AbstractDel
 	public MutablePicoContainer getDelegate() {
 		return (MutablePicoContainer) super.getDelegate();
 	}
+
+    public void setName(String name) {
+        getDelegate().setName(name);
+    }
+
+    public void setLifecycleState(LifecycleState lifecycleState) {
+        getDelegate().setLifecycleState(lifecycleState);
+    }
+
 }

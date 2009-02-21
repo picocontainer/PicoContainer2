@@ -22,6 +22,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.BehaviorFactory;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.containers.EmptyPicoContainer;
@@ -69,9 +70,9 @@ import org.picocontainer.behaviors.Guarding;
 public class PicoServletContainerListener implements ServletContextListener, HttpSessionListener, Serializable {
 
     public static final String WEBAPP_COMPOSER_CLASS = "webapp-composer-class";
-    private DefaultPicoContainer applicationContainer;
-    private DefaultPicoContainer sessionContainer;
-    private DefaultPicoContainer requestContainer;
+    private MutablePicoContainer applicationContainer;
+    private MutablePicoContainer sessionContainer;
+    private MutablePicoContainer requestContainer;
     private Storing sessionStoring;
     private Storing requestStoring;
     private boolean useCompositionClass = true;
@@ -252,13 +253,13 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
 
     public static class ScopedContainers {
 
-        private DefaultPicoContainer applicationContainer;
-        private DefaultPicoContainer sessionContainer;
-        private DefaultPicoContainer requestContainer;
+        private MutablePicoContainer applicationContainer;
+        private MutablePicoContainer sessionContainer;
+        private MutablePicoContainer requestContainer;
         private Storing sessionStoring;
         private Storing requestStoring;
 
-        public ScopedContainers(DefaultPicoContainer applicationContainer, DefaultPicoContainer sessionContainer, DefaultPicoContainer requestContainer, Storing sessionStoring, Storing requestStoring) {
+        public ScopedContainers(MutablePicoContainer applicationContainer, MutablePicoContainer sessionContainer, MutablePicoContainer requestContainer, Storing sessionStoring, Storing requestStoring) {
             this.applicationContainer = applicationContainer;
             this.sessionContainer = sessionContainer;
             this.requestContainer = requestContainer;

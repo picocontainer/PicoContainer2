@@ -16,6 +16,7 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.NameBinding;
+import org.picocontainer.lifecycle.LifecycleState;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -584,5 +585,13 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 
     public MutablePicoContainer as(final Properties... properties) {
         return delegate.as(properties);
+    }
+
+    public void setName(String name) {
+        delegate.setName(name);
+    }
+
+    public void setLifecycleState(LifecycleState lifecycleState) {
+        delegate.setLifecycleState(lifecycleState);
     }
 }

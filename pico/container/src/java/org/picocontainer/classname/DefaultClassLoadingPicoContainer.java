@@ -22,6 +22,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.lifecycle.LifecycleState;
 import org.picocontainer.classname.ClassPathElement;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.behaviors.Caching;
@@ -516,6 +517,14 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
 
         public void dispose() {
 
+        }
+
+        public void setName(String name) {
+            DefaultClassLoadingPicoContainer.this.setName(name);
+        }
+
+        public void setLifecycleState(LifecycleState lifecycleState) {
+            DefaultClassLoadingPicoContainer.this.setLifecycleState(lifecycleState);
         }
     }
 

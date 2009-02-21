@@ -9,6 +9,8 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import org.picocontainer.lifecycle.LifecycleState;
+
 import java.util.Properties;
 
 /**
@@ -168,4 +170,18 @@ public interface MutablePicoContainer extends PicoContainer, Startable, Disposab
      */
     MutablePicoContainer as(Properties... properties);
 
+    /**
+     * Name the container instance, to assit debugging.
+     *
+     * @param name the name to call it.
+     * @since 2.8
+     */
+    void setName(String name);
+
+    /**
+     * To assist ThreadLocal usage, LifecycleState can be set.  No need to use this for normal usages.
+     * @param lifecycleState the lifecyle state to use.
+     * @since 2.8
+     */
+    void setLifecycleState(LifecycleState lifecycleState);
 }

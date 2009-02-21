@@ -147,11 +147,19 @@ public final class PicoWebRemotingTestCase {
         
         pwr.visitClass("Foo", pico, visitor);
 
-        assertEquals(
+        try {
+            assertEquals(
                 "sc:java/lang/Object;" +
-                  "m:color,getColor;" +
-                  "m:hello,hello;" +
-                  "m:goodbye,goodbye;", sb.toString());
+                      "m:color,getColor;" +
+                      "m:hello,hello;" +
+                      "m:goodbye,goodbye;", sb.toString());
+        } catch (ComparisonFailure e) {
+            assertEquals(
+                "sc:java/lang/Object;" +
+                      "m:hello,hello;" +
+                      "m:color,getColor;" +
+                      "m:goodbye,goodbye;", sb.toString());
+        }
     }
 
     @Test
