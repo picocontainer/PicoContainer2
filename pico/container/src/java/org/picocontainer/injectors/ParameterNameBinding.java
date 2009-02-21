@@ -21,11 +21,11 @@ public class ParameterNameBinding implements NameBinding {
     private final Class impl;
     private final AccessibleObject member;
     private final int index;
-    private final CachingParanamer paranamer;
+    private final Paranamer paranamer;
 
     private String name;
 
-    public ParameterNameBinding(CachingParanamer paranamer, Class impl, AccessibleObject member, int index) {
+    public ParameterNameBinding(Paranamer paranamer, Class impl, AccessibleObject member, int index) {
         this.impl = impl;
         this.member = member;
         this.paranamer = paranamer;
@@ -37,9 +37,6 @@ public class ParameterNameBinding implements NameBinding {
             return name;
         }
         String[] strings = null;
-        if (paranamer.areParameterNamesAvailable(impl, "<init>") != Paranamer.PARAMETER_NAMES_FOUND) {
-            paranamer.switchtoAsm();
-        }
         if (member instanceof Constructor) {
             strings = paranamer.lookupParameterNames((Constructor)member);
         } else {

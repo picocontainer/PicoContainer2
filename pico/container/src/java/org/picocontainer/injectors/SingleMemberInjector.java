@@ -20,6 +20,8 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Type;
 
 import com.thoughtworks.paranamer.CachingParanamer;
+import com.thoughtworks.paranamer.AdaptiveParanamer;
+import com.thoughtworks.paranamer.Paranamer;
 
 /**
  * Injection will happen in a single member function on the component.
@@ -29,7 +31,7 @@ import com.thoughtworks.paranamer.CachingParanamer;
  */
 public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
 
-    private transient CachingParanamer paranamer = new CachingParanamer();
+    private transient Paranamer paranamer = new CachingParanamer(new AdaptiveParanamer());
 
     public SingleMemberInjector(Object componentKey,
                                 Class componentImplementation,
@@ -39,7 +41,7 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
     }
 
-    protected CachingParanamer getParanamer() {
+    protected Paranamer getParanamer() {
         return paranamer;
     }
 

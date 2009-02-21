@@ -23,7 +23,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.thoughtworks.paranamer.Paranamer;
 import com.thoughtworks.paranamer.CachingParanamer;
+import com.thoughtworks.paranamer.AdaptiveParanamer;
 
 /**
  * Injection will happen iteratively after component instantiation
@@ -34,7 +36,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     protected transient Type[] injectionTypes;
     protected transient Annotation[] bindings;
 
-    private transient CachingParanamer paranamer = new CachingParanamer();
+    private transient Paranamer paranamer = new CachingParanamer(new AdaptiveParanamer());
 
     /**
      * Constructs a IterativeInjector
@@ -54,7 +56,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
     }
 
-    protected CachingParanamer getParanamer() {
+    protected Paranamer getParanamer() {
         return paranamer;
     }
 
