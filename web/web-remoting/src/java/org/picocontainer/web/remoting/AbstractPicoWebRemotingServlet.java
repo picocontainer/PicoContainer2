@@ -7,16 +7,17 @@
  ******************************************************************************/
 package org.picocontainer.web.remoting;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.web.PicoServletContainerFilter;
+import java.io.IOException;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletConfig;
-import java.io.IOException;
+
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.web.PicoServletContainerFilter;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -30,7 +31,7 @@ import com.thoughtworks.xstream.XStream;
 @SuppressWarnings("serial")
 public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
-    private XStream xStream;
+    private XStream xstream;
     private PicoWebRemoting pwr;
     private String mimeType = "text/plain";
     private PicoWebRemotingMonitor monitor;
@@ -138,10 +139,8 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
     private boolean initialized;
 
-    protected void setXStream(XStream xStream) {
-        this.xStream = xStream;
-    }
-
+    protected abstract XStream createXStream();
+    
     protected void service(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
@@ -167,6 +166,7 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
     }
 
     public void init(ServletConfig servletConfig) throws ServletException {
+    	this.xstream = createXStream();
         String packagePrefixToStrip = servletConfig.getInitParameter(PACKAGE_PREFIX_TO_STRIP);
         String prefixToStripFromUrls;
         if (packagePrefixToStrip == null) {
@@ -203,7 +203,7 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
         }
 
         super.init(servletConfig);
-        pwr = new PicoWebRemoting(xStream, prefixToStripFromUrls, suffixToStrip, scopesToPublish, lowerCasePath, useMethodNamePrefixesForVerbs);
+        pwr = new PicoWebRemoting(xstream, prefixToStripFromUrls, suffixToStrip, scopesToPublish, lowerCasePath, useMethodNamePrefixesForVerbs);
     }
 
     private void publishAdapters() {

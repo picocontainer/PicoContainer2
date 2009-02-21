@@ -7,30 +7,27 @@
  ******************************************************************************/
 package org.picocontainer.web.remoting;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
-import java.io.IOException;
-import java.util.Arrays;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
-import org.picocontainer.web.remoting.RubyWriter;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.picocontainer.paranamer.BytecodeReadingParanamer;
 import org.picocontainer.paranamer.CachingParanamer;
 import org.picocontainer.paranamer.DefaultParanamer;
-import org.picocontainer.paranamer.BytecodeReadingParanamer;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.WriterWrapper;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet that uses Ruby as the form of the reply.
@@ -43,10 +40,10 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
     private CachingParanamer paranamer = new CachingParanamer(new DefaultParanamer());
     private CachingParanamer paranamer2 = new CachingParanamer(new BytecodeReadingParanamer());
 
-    public void init(ServletConfig servletConfig) throws ServletException {
-        setXStream(new XStream(makeRubyDriver()));
-        super.init(servletConfig);
-    }
+    @Override
+	protected XStream createXStream() {
+		return new XStream(makeRubyDriver());
+	}
 
     public static HierarchicalStreamDriver makeRubyDriver() {
         HierarchicalStreamDriver driver = new HierarchicalStreamDriver() {
