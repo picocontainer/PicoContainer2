@@ -33,17 +33,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * All for the calling of methods in a tree of components manages by PicoContainer.
- * Ruby is the form of the reply, the request is plainly mapped from Query Strings
- * and form fields to the method signature.
+ * Servlet that uses Ruby as the form of the reply.
  *
  * @author Jean Lazarou
  */
 @SuppressWarnings("serial")
 public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  {
 
-    CachingParanamer paranamer = new CachingParanamer(new DefaultParanamer());
-    CachingParanamer paranamer2 = new CachingParanamer(new BytecodeReadingParanamer());
+    private CachingParanamer paranamer = new CachingParanamer(new DefaultParanamer());
+    private CachingParanamer paranamer2 = new CachingParanamer(new BytecodeReadingParanamer());
 
     public void init(ServletConfig servletConfig) throws ServletException {
         setXStream(new XStream(makeRubyDriver()));
@@ -67,7 +65,8 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
                         startNode(name, null);
                     }
 
-                    public void startNode(String name, Class clazz) {
+                    @SuppressWarnings("unchecked")
+					public void startNode(String name, Class clazz) {
                         ((RubyWriter) wrapped).startNode(name.replace('-', '_'), clazz);
                     }
                 };
@@ -93,7 +92,7 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
 
             resp.setContentType("text/plain");
             final ServletOutputStream outputStream = resp.getOutputStream();
-            MethodAndParamVisitor mapv = new MethodAndParamVisitor() {
+            MethodVisitor mapv = new MethodVisitor() {
 
                 public void method(String methodName, Method method) throws IOException {
                     outputStream.print("\n  def " + methodName);

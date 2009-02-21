@@ -40,7 +40,8 @@ public class RubyWriter implements ExtendedHierarchicalStreamWriter {
         startNode(name, null);
     }
 
-    public void startNode(String name, Class clazz) {
+    @SuppressWarnings("unchecked")
+	public void startNode(String name, Class clazz) {
         Node currNode = (Node) elementStack.peek();
         if (currNode == null
                 && ((mode & DROP_ROOT_MODE) == 0 || (depth > 0 && !isCollection(clazz)))) {
@@ -80,11 +81,11 @@ public class RubyWriter implements ExtendedHierarchicalStreamWriter {
 
     public class Node {
         public final String name;
-        public final Class clazz;
+		public final Class<?> clazz;
         public boolean fieldAlready;
         public boolean isCollection;
 
-        public Node(String name, Class clazz) {
+        public Node(String name, Class<?> clazz) {
             this.name = name;
             this.clazz = clazz;
             isCollection = isCollection(clazz);
@@ -130,7 +131,7 @@ public class RubyWriter implements ExtendedHierarchicalStreamWriter {
         writeText(text, foo.clazz);
     }
 
-    private void writeText(String text, Class clazz) {
+	private void writeText(String text, Class<?> clazz) {
         if (needsQuotes(clazz)) {
             writer.write("\"");
         }
@@ -164,14 +165,14 @@ public class RubyWriter implements ExtendedHierarchicalStreamWriter {
         }
     }
 
-    private boolean isCollection(Class clazz) {
+	private boolean isCollection(Class<?> clazz) {
         return clazz != null
                 && (Collection.class.isAssignableFrom(clazz)
                 || clazz.isArray()
                 || Map.class.isAssignableFrom(clazz) || Map.Entry.class.isAssignableFrom(clazz));
     }
 
-    private boolean needsQuotes(Class clazz) {
+	private boolean needsQuotes(Class<?> clazz) {
         clazz = clazz != null && clazz.isPrimitive() ? clazz : Primitives.unbox(clazz);
         return clazz == null || clazz == Character.TYPE;
     }

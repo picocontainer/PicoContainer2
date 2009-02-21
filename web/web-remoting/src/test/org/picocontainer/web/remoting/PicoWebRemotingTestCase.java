@@ -135,7 +135,7 @@ public final class PicoWebRemotingTestCase {
 
         final StringBuffer sb = new StringBuffer();
 
-        MethodAndParamVisitor mapv = new MethodAndParamVisitor() {
+        MethodVisitor visitor = new MethodVisitor() {
             public void method(String methodName, Method m) throws IOException {
                 sb.append("m:").append(methodName).append(",").append(m.getName()).append(";");
             }
@@ -145,12 +145,12 @@ public final class PicoWebRemotingTestCase {
             }
         };
         
-        pwr.visitClass("Foo", pico, mapv);
+        pwr.visitClass("Foo", pico, visitor);
 
         assertEquals(
                 "sc:java/lang/Object;" +
-                  "m:hello,hello;" +
                   "m:color,getColor;" +
+                  "m:hello,hello;" +
                   "m:goodbye,goodbye;", sb.toString());
     }
 

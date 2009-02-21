@@ -21,13 +21,14 @@ import java.io.IOException;
 import com.thoughtworks.xstream.XStream;
 
 /**
- * All for the calling of methods in a tree of components manages by PicoContainer.
+ * Abstract Servlet used for the calling of methods in a tree of components managed by PicoContainer.
  * The form of the reply is determined by the XStream implementation passed into the constructor,
  * the request is plainly mapped from Query Strings and form fields to the method signature.
  *
  * @author Paul Hammant
  */
-public class AbstractPicoWebRemotingServlet extends HttpServlet {
+@SuppressWarnings("serial")
+public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
     private XStream xStream;
     private PicoWebRemoting pwr;
@@ -217,7 +218,7 @@ public class AbstractPicoWebRemotingServlet extends HttpServlet {
         pwr.setMonitor(monitor);
     }
 
-    protected void visitClass(String clazz, MethodAndParamVisitor mapv) throws IOException {
+    protected void visitClass(String clazz, MethodVisitor mapv) throws IOException {
         pwr.visitClass(clazz, currentRequestContainer.get(), mapv);
     }
 

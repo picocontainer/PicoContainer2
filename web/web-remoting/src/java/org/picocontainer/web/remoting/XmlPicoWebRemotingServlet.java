@@ -7,16 +7,13 @@
  ******************************************************************************/
 package org.picocontainer.web.remoting;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.json.JsonWriter;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 
+import com.thoughtworks.xstream.XStream;
+
 /**
- * All for the calling of methods in a tree of components manages by PicoContainer.
- * XML is the form of the reply, the request is plainly mapped from Query Strings
- * and form fields to the method signature.
+ * Servlet that uses plain XML as the form of the reply.
  *
  * @author Paul Hammant
  */

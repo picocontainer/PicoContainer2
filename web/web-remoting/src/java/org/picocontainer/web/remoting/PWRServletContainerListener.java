@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Modifier;
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class PWRServletContainerListener extends PicoServletContainerListener {
 
     protected ComponentMonitor makeRequestComponentMonitor() {
@@ -30,7 +31,7 @@ public class PWRServletContainerListener extends PicoServletContainerListener {
 
         public Object noComponentFound(MutablePicoContainer mutablePicoContainer, Object componentKey) {
             if (componentKey instanceof Class) {
-                Class clazz = (Class) componentKey;
+                Class<?> clazz = (Class<?>) componentKey;
                 if (clazz.getName().startsWith("java.lang")) {
                     return null;
                 }

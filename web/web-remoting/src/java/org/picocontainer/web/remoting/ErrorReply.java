@@ -8,10 +8,17 @@
 package org.picocontainer.web.remoting;
 
 public class ErrorReply {
-    private boolean ERROR = true;
-    private String message;
+	
+    @SuppressWarnings("unused")
+	private boolean ERROR = true;
+	private String message;
 
     public ErrorReply(String message) {
         this.message = message;
     }
+
+	public String getMessage() {
+		return message;
+	}
+
 }

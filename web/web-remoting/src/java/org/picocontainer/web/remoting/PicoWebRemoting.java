@@ -349,7 +349,7 @@ public class PicoWebRemoting {
         }
     }
 
-    public void visitClass(String clazz, MutablePicoContainer mutablePicoContainer, MethodAndParamVisitor mapv) throws IOException {
+    public void visitClass(String clazz, MutablePicoContainer mutablePicoContainer, MethodVisitor mapv) throws IOException {
         String s = toStripFromUrls + clazz;
         Object node = paths.get(s);
         if (node instanceof WebMethods) {
@@ -364,7 +364,7 @@ public class PicoWebRemoting {
                     mapv.superClass(s1);
                 }
             }
-            Set keys = wm.keySet();
+            Set<?> keys = wm.keySet();
             for (Object o : keys) {
                 String methodName = o.toString();
                 HashMap<String, Method> foo = wm.get(methodName);

@@ -22,9 +22,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 /**
- * All for the calling of methods in a tree of components manages by PicoContainer.
- * JSON is the form of the reply, the request is plainly mapped from Query Strings
- * and form fields to the method signature.
+ * Servlet that uses JSON as the form of the reply.
  *
  * @author Paul Hammant
  */
@@ -53,7 +51,8 @@ public class JsonPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
                         startNode(name, null);
                     }
 
-                    public void startNode(String name, Class clazz) {
+                    @SuppressWarnings("unchecked")
+					public void startNode(String name, Class clazz) {
                         ((JsonWriter) wrapped).startNode(name.replace('-', '_'), clazz);
                     }
                 };
