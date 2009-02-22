@@ -36,7 +36,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     protected transient Type[] injectionTypes;
     protected transient Annotation[] bindings;
 
-    private transient Paranamer paranamer = new CachingParanamer(new AdaptiveParanamer());
+    private transient Paranamer paranamer;
 
     /**
      * Constructs a IterativeInjector
@@ -54,10 +54,6 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     public IterativeInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
                              LifecycleStrategy lifecycleStrategy, boolean useNames) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
-    }
-
-    protected Paranamer getParanamer() {
-        return paranamer;
     }
 
     protected Constructor getConstructor()  {
@@ -127,6 +123,9 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     }
 
     protected NameBinding makeParameterNameImpl(AccessibleObject member) {
+        if (paranamer == null) {
+            paranamer = new CachingParanamer(new AdaptiveParanamer());
+        }
         return new ParameterNameBinding(paranamer, getComponentImplementation(),  member, 0);
     }
 

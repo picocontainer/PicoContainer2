@@ -31,7 +31,7 @@ import com.thoughtworks.paranamer.Paranamer;
  */
 public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
 
-    private transient Paranamer paranamer = new CachingParanamer(new AdaptiveParanamer());
+    private transient Paranamer paranamer;
 
     public SingleMemberInjector(Object componentKey,
                                 Class componentImplementation,
@@ -42,6 +42,9 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
     }
 
     protected Paranamer getParanamer() {
+        if (paranamer == null) {
+            paranamer = new CachingParanamer(new AdaptiveParanamer());
+        }
         return paranamer;
     }
 
@@ -65,7 +68,7 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
     }
 
     private Object getParameter(PicoContainer container, AccessibleObject member, int i, Type parameterType, Annotation binding, Parameter currentParameter) {
-        ParameterNameBinding expectedNameBinding = new ParameterNameBinding(paranamer, getComponentImplementation(), member, i);
+        ParameterNameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), getComponentImplementation(), member, i);
         Object result = currentParameter.resolveInstance(container, this, parameterType, expectedNameBinding, useNames(), binding);
         if (result == null && !isNullParamAllowed(member, i)) {
             throw new ParameterCannotBeNullException(i, member, expectedNameBinding.getName());
