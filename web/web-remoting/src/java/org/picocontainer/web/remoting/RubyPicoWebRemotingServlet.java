@@ -92,7 +92,7 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
             MethodVisitor mapv = new MethodVisitor() {
 
                 public void method(String methodName, Method method) throws IOException {
-                    outputStream.print("\n  def " + methodName);
+                    outputStream.print("\n\n  def " + methodName);
                     String[] paramNames;
                     if (paranamer.areParameterNamesAvailable(method.getDeclaringClass(), method.getName()) ==0) {
                         paramNames = paranamer.lookupParameterNames(method);
@@ -106,9 +106,9 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
                     outputStream.print("\n");
                     outputStream.print("    "+function+"?(self.class, '" + methodName + "'");
                     for (String name : paramNames) {
-                        outputStream.print(", :" + name + "=>" + name);
+                        outputStream.print(", :" + name + " => " + name);
                     }
-                    outputStream.print(")\n  end\n");
+                    outputStream.println(")\n  end");
                 }
 
                 public void superClass(String superClass) throws IOException {
@@ -119,9 +119,9 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
             };
 
             for (String clazz : classes) {
-                outputStream.println("class " + clazz);
+                outputStream.print("class " + clazz);
                 super.visitClass(clazz, mapv);
-                outputStream.println("end");
+                outputStream.println("\nend");
             }
 
 
