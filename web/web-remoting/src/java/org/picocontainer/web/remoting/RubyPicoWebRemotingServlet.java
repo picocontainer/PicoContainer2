@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.picocontainer.paranamer.BytecodeReadingParanamer;
 import org.picocontainer.paranamer.CachingParanamer;
 import org.picocontainer.paranamer.DefaultParanamer;
+import org.picocontainer.paranamer.AdaptiveParanamer;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
@@ -37,8 +38,7 @@ import com.thoughtworks.xstream.io.WriterWrapper;
 @SuppressWarnings("serial")
 public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  {
 
-    private CachingParanamer paranamer = new CachingParanamer(new DefaultParanamer());
-    private CachingParanamer paranamer2 = new CachingParanamer(new BytecodeReadingParanamer());
+    private CachingParanamer paranamer = new CachingParanamer(new AdaptiveParanamer());
 
     @Override
 	protected XStream createXStream() {
@@ -93,11 +93,9 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
 
                 public void method(String methodName, Method method) throws IOException {
                     outputStream.print("\n\n  def " + methodName);
-                    String[] paramNames;
-                    if (paranamer.areParameterNamesAvailable(method.getDeclaringClass(), method.getName()) ==0) {
+                    String[] paramNames = new String[0];
+                    if (method.getParameterTypes().length >0) {
                         paramNames = paranamer.lookupParameterNames(method);
-                    } else {
-                        paramNames = paranamer2.lookupParameterNames(method);
                     }
                     for (int i = 0; i < paramNames.length; i++) {
                         String name = paramNames[i];
