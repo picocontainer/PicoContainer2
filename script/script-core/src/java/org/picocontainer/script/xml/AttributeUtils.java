@@ -17,6 +17,10 @@ public class AttributeUtils {
 	public static boolean notSet(Object string) {
         return string == null || string.equals(EMPTY);
     }
+    
+    public static boolean isSet(Object string) {
+        return !notSet(string);
+    }
 
     public static boolean boolValue(String string, boolean defaultValue) {
         if (notSet(string)) {

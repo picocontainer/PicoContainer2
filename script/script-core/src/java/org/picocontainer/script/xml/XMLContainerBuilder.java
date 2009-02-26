@@ -166,7 +166,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                 classLoader = classLoader.loadClass(parentClass).getClassLoader();
             }
             ClassLoadingPicoContainer scriptedContainer = new DefaultClassLoadingPicoContainer(classLoader, container);
-            registerComponentsAndChildContainers(scriptedContainer, rootElement, new DefaultClassLoadingPicoContainer(getClassLoader()));
+            addComponentsAndChildContainers(scriptedContainer, rootElement, new DefaultClassLoadingPicoContainer(getClassLoader()));
         } catch (ClassNotFoundException e) {
             throw new ScriptedPicoContainerMarkupException("Class not found: " + e.getMessage(), e);
         } catch (IOException e) {
@@ -176,7 +176,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
     }
 
-    private void registerComponentsAndChildContainers(ClassLoadingPicoContainer parentContainer, Element containerElement, ClassLoadingPicoContainer knownComponentAdapterFactories) throws ClassNotFoundException, IOException, SAXException {
+    private void addComponentsAndChildContainers(ClassLoadingPicoContainer parentContainer, Element containerElement, ClassLoadingPicoContainer knownComponentAdapterFactories) throws ClassNotFoundException, IOException, SAXException {
 
         ClassLoadingPicoContainer metaContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), knownComponentAdapterFactories);
         NodeList children = containerElement.getChildNodes();
@@ -186,7 +186,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                 Element childElement = (Element) children.item(i);
                 String name = childElement.getNodeName();
                 if (CLASSPATH.equals(name)) {
-                    registerClasspath(parentContainer, childElement);
+                    addClasspath(parentContainer, childElement);
                 }
             }
         }
@@ -197,10 +197,10 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                 if (CONTAINER.equals(name)) {
                     MutablePicoContainer childContainer = parentContainer.makeChildContainer();
                     ClassLoadingPicoContainer childPicoContainer = new DefaultClassLoadingPicoContainer(parentContainer.getComponentClassLoader(), childContainer);
-                    registerComponentsAndChildContainers(childPicoContainer, childElement, metaContainer);
+                    addComponentsAndChildContainers(childPicoContainer, childElement, metaContainer);
                 } else if (COMPONENT_IMPLEMENTATION.equals(name)
                         || COMPONENT.equals(name)) {
-                    registerComponent(parentContainer, childElement);
+                    addComponent(parentContainer, childElement);
                 } else if (COMPONENT_INSTANCE.equals(name)) {
                     registerComponentInstance(parentContainer, childElement);
                 } else if (COMPONENT_ADAPTER.equals(name)) {
@@ -208,7 +208,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                 } else if (COMPONENT_ADAPTER_FACTORY.equals(name)) {
                     addComponentFactory(childElement, metaContainer);
                 } else if (CLASSLOADER.equals(name)) {
-                    registerClassLoader(parentContainer, childElement, metaContainer);
+                    addClassLoader(parentContainer, childElement, metaContainer);
                 } else if (!CLASSPATH.equals(name)) {
                     throw new ScriptedPicoContainerMarkupException("Unsupported element:" + name);
                 }
@@ -232,7 +232,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                         throw new ScriptedPicoContainerMarkupException("'" + KEY + "' attribute must not be specified for nested " + element.getNodeName());
                     }
                     childElement = (Element)childElement.cloneNode(true);
-                    String key = String.valueOf(System.identityHashCode(childElement));
+                    String key = "ContrivedKey:" + String.valueOf(System.identityHashCode(childElement));
                     childElement.setAttribute(KEY, key);
                     addComponentFactory(childElement, metaContainer);
                     // replace nested CAF with a ComponentParameter using an internally generated key
@@ -245,20 +245,20 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             }
         }
         // handle CAF now as standard component in the metaContainer
-        registerComponent(metaContainer, node);
+        addComponent(metaContainer, node);
     }
 
-    private void registerClassLoader(ClassLoadingPicoContainer parentContainer, Element childElement, ClassLoadingPicoContainer metaContainer) throws IOException, SAXException, ClassNotFoundException {
+    private void addClassLoader(ClassLoadingPicoContainer parentContainer, Element childElement, ClassLoadingPicoContainer metaContainer) throws IOException, SAXException, ClassNotFoundException {
         String parentClass = childElement.getAttribute("parentclassloader");
         ClassLoader parentClassLoader = parentContainer.getComponentClassLoader();
         if (parentClass != null && !EMPTY.equals(parentClass)) {
             parentClassLoader = parentClassLoader.loadClass(parentClass).getClassLoader();
         }
         ClassLoadingPicoContainer scripted = new DefaultClassLoadingPicoContainer(parentClassLoader, parentContainer);
-        registerComponentsAndChildContainers(scripted, childElement, metaContainer);
+        addComponentsAndChildContainers(scripted, childElement, metaContainer);
     }
 
-    private void registerClasspath(ClassLoadingPicoContainer container, Element classpathElement) throws IOException, ClassNotFoundException {
+    private void addClasspath(ClassLoadingPicoContainer container, Element classpathElement) throws IOException, ClassNotFoundException {
         NodeList children = classpathElement.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             if (children.item(i) instanceof Element) {
@@ -277,12 +277,12 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                     url = file.toURL();
                 }
                 ClassPathElement cpe = container.addClassLoaderURL(url);
-                registerPermissions(cpe, childElement);
+                addPermissions(cpe, childElement);
             }
         }
     }
 
-    private void registerPermissions(ClassPathElement classPathElement, Element classPathXmlElement) throws ClassNotFoundException {
+    private void addPermissions(ClassPathElement classPathElement, Element classPathXmlElement) throws ClassNotFoundException {
         NodeList children = classPathXmlElement.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             if (children.item(i) instanceof Element) {
@@ -301,7 +301,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
 
     }
 
-    private void registerComponent(ClassLoadingPicoContainer container, Element element) throws ClassNotFoundException, MalformedURLException {
+    private void addComponent(ClassLoadingPicoContainer container, Element element) throws ClassNotFoundException, MalformedURLException {
         String className = element.getAttribute(CLASS);
         if (notSet(className)) {
             throw new ScriptedPicoContainerMarkupException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
@@ -310,9 +310,9 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         Parameter[] parameters = createChildParameters(container, element);
         Class<?> clazz = container.getComponentClassLoader().loadClass(className);
         Object key = element.getAttribute(KEY);
-        String classKey = element.getAttribute(CLASS_NAME_KEY);
         if (notSet(key)) {
-            if (!notSet(classKey)) {
+            String classKey = element.getAttribute(CLASS_NAME_KEY);
+            if (isSet(classKey)) {
                 key = getClassLoader().loadClass(classKey);
             } else {
                 key = clazz;
