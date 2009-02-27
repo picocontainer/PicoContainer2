@@ -28,6 +28,7 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.swing.JButton;
 
@@ -40,6 +41,10 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Locked;
@@ -785,7 +790,9 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         // This test suggests that testComponentCanUsePredefinedNestedCAF() is not testing what it hopes to test
     }
 
-    @Ignore
+    public static class Hello {
+    }
+
     @Test
     public void testComponentCanUsePredefinedNestedCAF() {
         Reader script = new StringReader("" +
@@ -794,12 +801,15 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "    <component-adapter-factory class='"+ MyComponentFactory.class.getName()+"'/>" +
                 "  </component-adapter-factory>" +
                 "  <component-adapter class-name-key='org.picocontainer.script.testmodel.WebServerConfig' class='org.picocontainer.script.testmodel.DefaultWebServerConfig' factory='factory'/>" +
+                "  <component-implementation class='" + Hello.class.getName() + "'/>" +
                 "</container>");
         PicoContainer pico = buildContainer(script);
         WebServerConfig cfg1 = pico.getComponent(WebServerConfig.class);
         WebServerConfig cfg2 = pico.getComponent(WebServerConfig.class);
         assertNotSame("Instances for components registered with a CICA must not be the same", cfg1, cfg2);
         assertFalse("Instance exposes only interface", cfg1 instanceof DefaultWebServerConfig);
+        Hello hello = pico.getComponent(Hello.class);
+        assertNotNull(hello);
     }
 
     @Test public void testChainOfWrappedComponents() {

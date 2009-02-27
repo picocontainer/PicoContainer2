@@ -17,6 +17,7 @@ import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.lang.reflect.Type;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,11 +31,19 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Injector;
+import org.picocontainer.BehaviorFactory;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.injectors.AbstractInjectionFactory;
+import org.picocontainer.injectors.SingleMemberInjector;
 import org.picocontainer.classname.ClassPathElement;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.behaviors.Caching;
-import org.picocontainer.injectors.ConstructorInjection;
+//import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
@@ -166,7 +175,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                 classLoader = classLoader.loadClass(parentClass).getClassLoader();
             }
             ClassLoadingPicoContainer scriptedContainer = new DefaultClassLoadingPicoContainer(classLoader, container);
-            addComponentsAndChildContainers(scriptedContainer, rootElement, new DefaultClassLoadingPicoContainer(getClassLoader()));
+            ClassLoadingPicoContainer classLoadingPicoContainer = new DefaultClassLoadingPicoContainer(getClassLoader());
+            addComponentsAndChildContainers(scriptedContainer, rootElement, classLoadingPicoContainer);
         } catch (ClassNotFoundException e) {
             throw new ScriptedPicoContainerMarkupException("Class not found: " + e.getMessage(), e);
         } catch (IOException e) {
@@ -178,7 +188,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
 
     private void addComponentsAndChildContainers(ClassLoadingPicoContainer parentContainer, Element containerElement, ClassLoadingPicoContainer knownComponentAdapterFactories) throws ClassNotFoundException, IOException, SAXException {
 
-        ClassLoadingPicoContainer metaContainer = new DefaultClassLoadingPicoContainer(getClassLoader(), knownComponentAdapterFactories);
+        ClassLoadingPicoContainer metaContainer = new DefaultClassLoadingPicoContainer(getClassLoader(),
+                new CompFactoryWrappingComponentFactory(), knownComponentAdapterFactories);
         NodeList children = containerElement.getChildNodes();
         // register classpath first, regardless of order in the document.
         for (int i = 0; i < children.getLength(); i++) {
@@ -200,11 +211,11 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                     addComponentsAndChildContainers(childPicoContainer, childElement, metaContainer);
                 } else if (COMPONENT_IMPLEMENTATION.equals(name)
                         || COMPONENT.equals(name)) {
-                    addComponent(parentContainer, childElement);
+                    addComponent(parentContainer, childElement, new Properties[0]);
                 } else if (COMPONENT_INSTANCE.equals(name)) {
                     registerComponentInstance(parentContainer, childElement);
                 } else if (COMPONENT_ADAPTER.equals(name)) {
-                    registerComponentAdapter(parentContainer, childElement, metaContainer);
+                    addComponentAdapter(parentContainer, childElement, metaContainer);
                 } else if (COMPONENT_ADAPTER_FACTORY.equals(name)) {
                     addComponentFactory(childElement, metaContainer);
                 } else if (CLASSLOADER.equals(name)) {
@@ -223,6 +234,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
         Element node = (Element)element.cloneNode(false);
         NodeList children = element.getChildNodes();
+        String key = null;
         for (int i = 0; i < children.getLength(); i++) {
             if (children.item(i) instanceof Element) {
                 Element childElement = (Element) children.item(i);
@@ -232,20 +244,31 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                         throw new ScriptedPicoContainerMarkupException("'" + KEY + "' attribute must not be specified for nested " + element.getNodeName());
                     }
                     childElement = (Element)childElement.cloneNode(true);
-                    String key = "ContrivedKey:" + String.valueOf(System.identityHashCode(childElement));
+                    key = "ContrivedKey:" + String.valueOf(System.identityHashCode(childElement));
                     childElement.setAttribute(KEY, key);
                     addComponentFactory(childElement, metaContainer);
                     // replace nested CAF with a ComponentParameter using an internally generated key
-                    Element parameter = node.getOwnerDocument().createElement(PARAMETER);
-                    parameter.setAttribute(KEY, key);
-                    node.appendChild(parameter);
+                    //Element parameter = node.getOwnerDocument().createElement(PARAMETER);
+                    //parameter.setAttribute(KEY, key);
+                    //node.appendChild(parameter);
                 } else if (PARAMETER.equals(name)) {
                     node.appendChild(childElement.cloneNode(true));
                 }
             }
         }
         // handle CAF now as standard component in the metaContainer
-        addComponent(metaContainer, node);
+        if (key != null) {
+            addComponent(metaContainer, node, new ForCaf(key));
+        } else {
+            addComponent(metaContainer, node, new ForCaf[0]);
+        }
+    }
+
+    public class ForCaf extends Properties {
+        private String key;
+        public ForCaf(String key) {
+            super.put("ForCAF", key);
+        }
     }
 
     private void addClassLoader(ClassLoadingPicoContainer parentContainer, Element childElement, ClassLoadingPicoContainer metaContainer) throws IOException, SAXException, ClassNotFoundException {
@@ -301,7 +324,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
 
     }
 
-    private void addComponent(ClassLoadingPicoContainer container, Element element) throws ClassNotFoundException, MalformedURLException {
+    private void addComponent(ClassLoadingPicoContainer container, Element element, Properties... props) throws ClassNotFoundException, MalformedURLException {
         String className = element.getAttribute(CLASS);
         if (notSet(className)) {
             throw new ScriptedPicoContainerMarkupException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
@@ -321,7 +344,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         if (parameters == null) {
             container.addComponent(key, clazz);
         } else {
-            container.addComponent(key, clazz, parameters);
+            container.as(props).addComponent(key, clazz, parameters);
         }
     }
 
@@ -505,7 +528,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
     }
 
-    private void registerComponentAdapter(ClassLoadingPicoContainer container, Element element, ClassLoadingPicoContainer metaContainer) throws ClassNotFoundException, PicoCompositionException, MalformedURLException {
+    private void addComponentAdapter(ClassLoadingPicoContainer container, Element element, ClassLoadingPicoContainer metaContainer) throws ClassNotFoundException, PicoCompositionException, MalformedURLException {
         String className = element.getAttribute(CLASS);
         if (notSet(className)) {
             throw new ScriptedPicoContainerMarkupException("'" + CLASS + "' attribute not specified for " + element.getNodeName());
@@ -541,7 +564,39 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
     }
 
 
+    public static class CompFactoryWrappingComponentFactory extends AbstractInjectionFactory {
 
+        ConstructorInjection constructorInjection = new ConstructorInjection();
 
+        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycle, Properties props, Object key, Class<T> impl, Parameter... parms)
+                throws PicoCompositionException {
 
+            ComponentAdapter<T> adapter = constructorInjection.createComponentAdapter(monitor, lifecycle, props, key, impl, parms);
+            String otherKey = props.getProperty("ForCAF");
+            if (otherKey != null && !otherKey.equals("")) {
+                props.remove("ForCAF");
+                return new MySingleMemberInjector(key, impl, parms, monitor, lifecycle, false, otherKey, (Injector) adapter);
+            }
+            return adapter;
+        }
+    }
+
+    private static class MySingleMemberInjector extends SingleMemberInjector {
+        private final String otherKey;
+        private final Injector injector;
+
+        private MySingleMemberInjector(Object key, Class impl, Parameter[] parms,
+                                       ComponentMonitor monitor, LifecycleStrategy lifecycle,
+                                       boolean useNames, String otherKey, Injector injector) {
+            super(key, impl, parms, monitor, lifecycle, useNames);
+            this.otherKey = otherKey;
+            this.injector = injector;
+        }
+
+        public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+            BehaviorFactory bf = (BehaviorFactory) injector.getComponentInstance(container, into);
+            bf.wrap((ComponentFactory) container.getComponent(otherKey));
+            return bf;
+        }
+    }
 }
