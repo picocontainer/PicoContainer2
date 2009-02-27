@@ -20,6 +20,10 @@ import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
 
+import java.net.URL;
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * Facade to build ScriptedScriptedPicoContainer
  *
@@ -30,6 +34,7 @@ public final class ScriptedBuilder {
     private Class<? extends ClassLoadingPicoContainer> scriptClass = DefaultClassLoadingPicoContainer.class;
     private final PicoBuilder picoBuilder;
     private ClassLoader classLoader = DefaultClassLoadingPicoContainer.class.getClassLoader();
+    private List<URL> urls = new ArrayList<URL>();
 
     public ScriptedBuilder(PicoContainer parentcontainer, InjectionFactory injectionType) {
         picoBuilder = new PicoBuilder(parentcontainer, injectionType);
@@ -51,12 +56,12 @@ public final class ScriptedBuilder {
         DefaultPicoContainer tpc = new TransientPicoContainer();
         tpc.addComponent(ClassLoader.class, classLoader);
         tpc.addComponent("sc", scriptClass);
-        tpc.addComponent(MutablePicoContainer.class, buildPico());
-        return (ClassLoadingPicoContainer)tpc.getComponent("sc");
-    }
-
-    public MutablePicoContainer buildPico() {
-        return picoBuilder.build();
+        tpc.addComponent(MutablePicoContainer.class, picoBuilder.build());
+        ClassLoadingPicoContainer pico = (ClassLoadingPicoContainer) tpc.getComponent("sc");
+        for (URL url : urls) {
+            pico.addClassLoaderURL(url);
+        }
+        return pico;
     }
 
     public ScriptedBuilder withConsoleMonitor() {
@@ -158,6 +163,11 @@ public final class ScriptedBuilder {
         if (monitorName != null && !monitorName.equals("")) {
             picoBuilder.withMonitor(loadClass(monitorName, ComponentMonitor.class));
         }
+        return this;
+    }
+
+    public ScriptedBuilder addClassLoaderURL(URL url) {
+        urls.add(url);
         return this;
     }
 }

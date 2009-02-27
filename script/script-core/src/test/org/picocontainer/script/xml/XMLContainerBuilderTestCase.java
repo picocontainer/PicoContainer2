@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Collection;
 
 import javax.swing.JButton;
 
@@ -45,12 +46,17 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Locked;
+import org.picocontainer.behaviors.Cached;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.injectors.SetterInjection;
+import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.WriterComponentMonitor;
@@ -677,17 +683,20 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
     @Test public void testCustomInjectionFactory() throws IOException {
         Reader script = new StringReader("" +
-                "<container component-adapter-factory='" + ConstructorInjection.class.getName() + "'>" +
+                "<container component-adapter-factory='" + SetterInjection.class.getName() + "'>" +
                 "</container>");
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script);
 
-        NullComponentMonitor cm = new NullComponentMonitor();
-        DefaultPicoContainer expected = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()),new StartableLifecycleStrategy(cm), new EmptyPicoContainer(), cm);
-        expected.start();
+        pico.addComponent(String.class);
 
-        XStream xs = new XStream();
-        assertEquals(xs.toXML(expected),xs.toXML(pico));
+        Collection<ComponentAdapter<?>> foo = pico.getComponentAdapters();
+        assertEquals(1, foo.size());
+        ComponentAdapter o = (ComponentAdapter) foo.toArray()[0];
+        assertTrue(o instanceof Cached);
+        o = o.findAdapterOfType(SetterInjector.class);
+        assertNotNull(o);
+        assertTrue(o instanceof SetterInjector);
 
     }
 

@@ -163,7 +163,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             .withLifecycle()
             .withComponentFactory(componentFactoryName)
             .withMonitor(monitorName)
-            .buildPico();
+            .build();
 
     }
 

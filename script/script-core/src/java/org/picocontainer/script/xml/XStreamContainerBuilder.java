@@ -369,7 +369,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
             .withLifecycle()
             .withComponentFactory(componentFactoryName)
             .withMonitor(monitorName)
-            .buildPico();
+            .build();
 
     }
 
