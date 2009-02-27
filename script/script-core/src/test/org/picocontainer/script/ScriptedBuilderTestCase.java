@@ -100,7 +100,7 @@ public class ScriptedBuilderTestCase {
     }
 
     @Test public void testWithComponentFactoriesListChainThingy() throws IOException{
-        ClassLoadingPicoContainer nc = new ScriptedBuilder(SDI()).withComponentAdapterFactories(caching(), implementationHiding()).build();
+        ClassLoadingPicoContainer nc = new ScriptedBuilder(SDI()).withBehaviors(caching(), implementationHiding()).build();
         ComponentMonitor cm = new NullComponentMonitor();
         ClassLoadingPicoContainer expected = new DefaultClassLoadingPicoContainer(new Caching().wrap(new ImplementationHiding().wrap(new SetterInjection())),new NullLifecycleStrategy(), new EmptyPicoContainer(), null, cm);
         assertEquals(xs.toXML(expected),xs.toXML(nc));
@@ -161,7 +161,7 @@ public class ScriptedBuilderTestCase {
     }
 
     @Test public void testWithThreadSafety() throws IOException {
-        ClassLoadingPicoContainer nc = new ScriptedBuilder().withThreadSafety().build();
+        ClassLoadingPicoContainer nc = new ScriptedBuilder().withSynchronizing().build();
         ComponentMonitor cm = new NullComponentMonitor();
         ClassLoadingPicoContainer expected = new DefaultClassLoadingPicoContainer(new Synchronizing().wrap(new AdaptingInjection()),new NullLifecycleStrategy(), new EmptyPicoContainer(), null, cm);
         assertEquals(xs.toXML(expected),xs.toXML(nc));

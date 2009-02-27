@@ -89,7 +89,7 @@ public final class ScriptedBuilder {
         return this;
     }
 
-    public ScriptedBuilder withComponentAdapterFactories(BehaviorFactory... factories) {
+    public ScriptedBuilder withBehaviors(BehaviorFactory... factories) {
         picoBuilder.withBehaviors(factories);
         return this;
     }
@@ -114,13 +114,18 @@ public final class ScriptedBuilder {
         return this;
     }
 
-    public ScriptedBuilder withThreadSafety() {
+    public ScriptedBuilder withSynchronizing() {
         picoBuilder.withSynchronizing();
         return this;
     }
 
     public ScriptedBuilder implementedBy(Class<? extends ClassLoadingPicoContainer> scriptedContainerClass) {
         scriptClass = scriptedContainerClass;
+        return this;
+    }
+
+    public ScriptedBuilder implementedBy(String scriptedContainerClass) {
+        scriptClass = loadClass(scriptedContainerClass, ClassLoadingPicoContainer.class);
         return this;
     }
 
