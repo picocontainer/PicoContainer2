@@ -19,9 +19,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.picocontainer.paranamer.BytecodeReadingParanamer;
 import org.picocontainer.paranamer.CachingParanamer;
-import org.picocontainer.paranamer.DefaultParanamer;
 import org.picocontainer.paranamer.AdaptiveParanamer;
 
 import com.thoughtworks.xstream.XStream;
@@ -34,6 +32,7 @@ import com.thoughtworks.xstream.io.WriterWrapper;
  * Servlet that uses Ruby as the form of the reply.
  *
  * @author Jean Lazarou
+ * @author Paul Hammant
  */
 @SuppressWarnings("serial")
 public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  {
@@ -76,6 +75,9 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
         return driver;
     }
 
+    /**
+     * Write the response as a Ruby hash, also handle classdef requests
+     */
     protected void respond(HttpServletRequest req, HttpServletResponse resp, String pathInfo) throws IOException {
         if ("/classdefs".equals(pathInfo)) {
 
@@ -94,17 +96,23 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
                 public void method(String methodName, Method method) throws IOException {
                     outputStream.print("\n\n  def " + methodName);
                     String[] paramNames = new String[0];
-                    if (method.getParameterTypes().length >0) {
+                    Class<?>[] pTypes = method.getParameterTypes();
+                    if (pTypes.length >0) {
                         paramNames = paranamer.lookupParameterNames(method);
                     }
                     for (int i = 0; i < paramNames.length; i++) {
                         String name = paramNames[i];
-                        outputStream.print((i > 0 ? ", " : " ") + name);
+                        if (!isExcludedFromClassDefPublication(pTypes[i], name)) {
+                            outputStream.print((i > 0 ? ", " : " ") + name);
+                        }
                     }
                     outputStream.print("\n");
                     outputStream.print("    "+function+"?(self.class, '" + methodName + "'");
-                    for (String name : paramNames) {
-                        outputStream.print(", :" + name + " => " + name);
+                    for (int i = 0; i < paramNames.length; i++) {
+                        String name = paramNames[i];
+                        if (!isExcludedFromClassDefPublication(pTypes[i], name)) {
+                            outputStream.print(", :" + name + " => " + name);
+                        }
                     }
                     outputStream.println(")\n  end");
                 }
@@ -126,6 +134,16 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
         } else {
             super.respond(req, resp, pathInfo);
         }
+    }
+
+    /**
+     * Some parameter types are excluded from being published in Ruby classdef fragments
+     * @param pType the type that is possibly excluded
+     * @param name the name of the param that is possibly excluded
+     * @return is or is not excluded
+     */
+    protected boolean isExcludedFromClassDefPublication(Class<?> type, String name) {
+        return type.getName().startsWith("javax.servlet");
     }
 
 }
