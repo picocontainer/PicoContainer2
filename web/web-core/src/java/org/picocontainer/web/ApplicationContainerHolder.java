@@ -11,7 +11,14 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Storing;
 
 public class ApplicationContainerHolder extends ContainerHolder {
-    public ApplicationContainerHolder(MutablePicoContainer container) {
+    private Storing sessionStoring;
+
+    public ApplicationContainerHolder(MutablePicoContainer container, Storing sessionStoring) {
         super(container);
+        this.sessionStoring = sessionStoring;
+    }
+
+    public Storing getSessionStoring() {
+        return sessionStoring;
     }
 }

@@ -10,6 +10,7 @@ package org.picocontainer.web;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.util.logging.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -41,6 +42,9 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
 
 
     public void init(FilterConfig filterConfig) throws ServletException {
+        Logger logger = Logger.getLogger(this.getClass().getName());
+        logger.info("fi");
+
         ServletContext context = filterConfig.getServletContext();
         ApplicationContainerHolder ach = (ApplicationContainerHolder) context.getAttribute(APP_CONTAINER);
         setAppContainer(ach.getContainer());
@@ -73,61 +77,69 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
     }
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
+        Logger logger = Logger.getLogger(this.getClass().getName());
+        logger.info("f0");
 
-        HttpSession sess = ((HttpServletRequest) req).getSession();
-        if (exposeServletInfrastructure) {
-            session.set(sess);
-            request.set(req);
-            response.set(resp);
-        }
-
-        ServletContext context = sess.getServletContext();
-
-        ApplicationContainerHolder ach = (ApplicationContainerHolder) context.getAttribute(APP_CONTAINER);
-        SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SESS_CONTAINER);
-        RequestContainerHolder rch = (RequestContainerHolder) context.getAttribute(REQ_CONTAINER);
-
-        Storing sessionStoring = sch.getStoring();
-        Storing requestStoring = rch.getStoring();
-
-        SessionStoreHolder ssh = (SessionStoreHolder) sess.getAttribute(SessionStoreHolder.class.getName());
-        if (ssh == null) {
-            if (sch.getContainer().getComponentAdapters().size() > 0) {
-                throw new PicoContainerWebException("Session not setup correctly.  There are components registered " +
-                        "at the session level, but no working container to host them");
+        try {
+            HttpSession sess = ((HttpServletRequest) req).getSession();
+            if (exposeServletInfrastructure) {
+                session.set(sess);
+                request.set(req);
+                response.set(resp);
             }
-            ssh = new SessionStoreHolder(sch.getStoring().getCacheForThread(),
-                    new DefaultLifecycleState());
 
-        }
+            ServletContext context = sess.getServletContext();
 
-        sessionStoring.putCacheForThread(ssh.getStoreWrapper());
-        requestStoring.resetCacheForThread();
-        rch.getLifecycleStateModel().resetStateModelForThread();
-        rch.getContainer().start();
+            ApplicationContainerHolder ach = (ApplicationContainerHolder) context.getAttribute(APP_CONTAINER);
+            SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SESS_CONTAINER);
+            RequestContainerHolder rch = (RequestContainerHolder) context.getAttribute(REQ_CONTAINER);
 
-        setAppContainer(ach.getContainer());
-        setSessionContainer(sch.getContainer());
-        setRequestContainer(rch.getContainer());
+            Storing sessionStoring = sch.getStoring();
+            Storing requestStoring = rch.getStoring();
 
-        containersSetupForRequest(ach.getContainer(), sch.getContainer(), rch.getContainer(), req, resp);
+            SessionStoreHolder ssh = (SessionStoreHolder) sess.getAttribute(SessionStoreHolder.class.getName());
+            if (ssh == null) {
+                if (sch.getContainer().getComponentAdapters().size() > 0) {
+                    throw new PicoContainerWebException("Session not setup correctly.  There are components registered " +
+                            "at the session level, but no working container to host them");
+                }
+                ssh = new SessionStoreHolder(sch.getStoring().getCacheForThread(),
+                        new DefaultLifecycleState());
 
-        filterChain.doFilter(req, resp);
+            }
 
-        setAppContainer(null);
-        setSessionContainer(null);
-        setRequestContainer(null);
+            sessionStoring.putCacheForThread(ssh.getStoreWrapper());
+            requestStoring.resetCacheForThread();
+            rch.getLifecycleStateModel().resetStateModelForThread();
+            rch.getContainer().start();
 
-        rch.getContainer().stop();
-        rch.getContainer().dispose();
-        rch.getLifecycleStateModel().invalidateStateModelForThread();
-        sessionStoring.invalidateCacheForThread();
-        requestStoring.invalidateCacheForThread();
+            setAppContainer(ach.getContainer());
+            setSessionContainer(sch.getContainer());
+            setRequestContainer(rch.getContainer());
 
-        if (exposeServletInfrastructure) {
-            session.set(null);
-            request.set(null);
-            response.set(null);
+            containersSetupForRequest(ach.getContainer(), sch.getContainer(), rch.getContainer(), req, resp);
+
+            filterChain.doFilter(req, resp);
+
+            setAppContainer(null);
+            setSessionContainer(null);
+            setRequestContainer(null);
+
+            rch.getContainer().stop();
+            rch.getContainer().dispose();
+            rch.getLifecycleStateModel().invalidateStateModelForThread();
+            sessionStoring.invalidateCacheForThread();
+            requestStoring.invalidateCacheForThread();
+
+            if (exposeServletInfrastructure) {
+                session.set(null);
+                request.set(null);
+                response.set(null);
+            }
+        } catch (Throwable e) {
+            logger.info("f1:"+e.getMessage());
+            logger.info("f2:"+e.getClass().getName());
+
         }
 
 
