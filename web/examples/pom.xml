@@ -19,6 +19,7 @@
     <module>webwork-webapp</module>
     <module>webwork2-webapp</module>
     <module>jquery-email</module>
+    <module>stub-webapp</module>
   </modules>
 
   <dependencyManagement>
