@@ -373,7 +373,6 @@ public class GroovyNodeBuilderTestCase extends AbstractScriptedContainerBuilderT
         pico.getComponent(WebServerConfig.class);
         StringWriter writer = pico.getComponent(StringWriter.class);
         String s = writer.toString();
-        System.err.println("--> " + s);
         assertTrue(s.length() > 0);
     }
 

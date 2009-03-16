@@ -668,7 +668,6 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 	
 	    File testCompJar = TestHelper.getTestCompJarFile();
 	    assertTrue("Cannot find TestComp.jar. " + testCompJar.getAbsolutePath() + " Please set testcomp.jar system property before running.", testCompJar.exists());
-	    //System.err.println("--> " + testCompJar.getAbsolutePath());
 	    URLClassLoader classLoader = new URLClassLoader(new URL[] {testCompJar.toURI().toURL()}, this.getClass().getClassLoader());
 	    Class<?> testComp = null;
 	    PicoContainer parent = new DefaultPicoContainer();

@@ -91,7 +91,6 @@ public class ClassNameDefaultClassLoadingPicoContainerTestCase {
         // Set up child
         ClassLoadingPicoContainer childContainer = (ClassLoadingPicoContainer) parentContainer.makeChildContainer();
         File testCompJar2 = new File(testCompJar.getParentFile(), "TestComp2.jar");
-        // System.err.println("--> " + testCompJar2.getAbsolutePath());
         childContainer.addClassLoaderURL(testCompJar2.toURL());
         childContainer.addComponent("childTestComp", new ClassName("TestComp2"));
 
