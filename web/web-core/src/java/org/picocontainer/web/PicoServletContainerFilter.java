@@ -10,7 +10,6 @@ package org.picocontainer.web;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
-import java.util.logging.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -28,6 +27,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Characteristics;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
+import static org.picocontainer.web.PicoServletContainerListener.*;
 import org.picocontainer.lifecycle.DefaultLifecycleState;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.behaviors.Storing;
@@ -35,38 +35,33 @@ import org.picocontainer.behaviors.Storing;
 @SuppressWarnings("serial")
 public abstract class PicoServletContainerFilter implements Filter, Serializable {
 
-    private static final String APP_CONTAINER = ApplicationContainerHolder.class.getName();
-    private static final String SESS_CONTAINER = SessionContainerHolder.class.getName();
-    private static final String REQ_CONTAINER = RequestContainerHolder.class.getName();
     private boolean exposeServletInfrastructure;
 
-
     public void init(FilterConfig filterConfig) throws ServletException {
-        Logger logger = Logger.getLogger(this.getClass().getName());
-        logger.info("fi");
-
         ServletContext context = filterConfig.getServletContext();
-        ApplicationContainerHolder ach = (ApplicationContainerHolder) context.getAttribute(APP_CONTAINER);
-        setAppContainer(ach.getContainer());
-        SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SESS_CONTAINER);
-        RequestContainerHolder rch = (RequestContainerHolder) context.getAttribute(REQ_CONTAINER);
+        ScopedContainers scopedContainers = getScopedContainers(context);
+        setAppContainer(scopedContainers.getApplicationContainer());
 
         String exposeServletInfrastructureString = filterConfig.getInitParameter("exposeServletInfrastructure");
         if (exposeServletInfrastructureString == null || Boolean.parseBoolean(exposeServletInfrastructureString)) {
             exposeServletInfrastructure = true;
         }
 
-        rch.getContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpSessionInjector());
-        rch.getContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpServletRequestInjector());
-        rch.getContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpServletResponseInjector());
+        scopedContainers.getRequestContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpSessionInjector());
+        scopedContainers.getRequestContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpServletRequestInjector());
+        scopedContainers.getRequestContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpServletResponseInjector());
 
-        initAdditionalScopedComponents(sch.getContainer(), rch.getContainer());
-    }
-
-    protected void initAdditionalScopedComponents(MutablePicoContainer sessionContainer, MutablePicoContainer reqContainer) {
+        initAdditionalScopedComponents(scopedContainers.getSessionContainer(), scopedContainers.getRequestContainer());
     }
 
     public void destroy() {
+    }
+
+    private ScopedContainers getScopedContainers(ServletContext context) {
+        return (ScopedContainers) context.getAttribute(ScopedContainers.class.getName());
+    }
+
+    protected void initAdditionalScopedComponents(MutablePicoContainer sessionContainer, MutablePicoContainer reqContainer) {
     }
 
     public static Object getRequestComponentForThread(Class<?> type) {
@@ -77,69 +72,60 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
     }
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
-        Logger logger = Logger.getLogger(this.getClass().getName());
-        logger.info("f0");
 
-        try {
-            HttpSession sess = ((HttpServletRequest) req).getSession();
-            if (exposeServletInfrastructure) {
-                session.set(sess);
-                request.set(req);
-                response.set(resp);
+        HttpSession sess = ((HttpServletRequest) req).getSession();
+        if (exposeServletInfrastructure) {
+            session.set(sess);
+            request.set(req);
+            response.set(resp);
+        }
+
+        ServletContext context = sess.getServletContext();
+
+        ScopedContainers scopedContainers = getScopedContainers(context);
+
+        SessionStoreHolder ssh = (SessionStoreHolder) sess.getAttribute(SessionStoreHolder.class.getName());
+        if (ssh == null) {
+            if (scopedContainers.getSessionContainer().getComponentAdapters().size() > 0) {
+                throw new PicoContainerWebException("Session not setup correctly.  There are components registered " +
+                        "at the session level, but no working container to host them");
             }
+            ssh = new SessionStoreHolder(scopedContainers.getSessionStoring().getCacheForThread(), new DefaultLifecycleState());
+        }
 
-            ServletContext context = sess.getServletContext();
+        scopedContainers.getSessionStoring().putCacheForThread(ssh.getStoreWrapper());
+        scopedContainers.getSessionState().putLifecycleStateModelForThread(ssh.getLifecycleState());
 
-            ApplicationContainerHolder ach = (ApplicationContainerHolder) context.getAttribute(APP_CONTAINER);
-            SessionContainerHolder sch = (SessionContainerHolder) context.getAttribute(SESS_CONTAINER);
-            RequestContainerHolder rch = (RequestContainerHolder) context.getAttribute(REQ_CONTAINER);
+        scopedContainers.getRequestStoring().resetCacheForThread();
+        scopedContainers.getRequestState().resetStateModelForThread();
 
-            Storing sessionStoring = sch.getStoring();
-            Storing requestStoring = rch.getStoring();
+        scopedContainers.getRequestContainer().start();
 
-            SessionStoreHolder ssh = (SessionStoreHolder) sess.getAttribute(SessionStoreHolder.class.getName());
-            if (ssh == null) {
-                if (sch.getContainer().getComponentAdapters().size() > 0) {
-                    throw new PicoContainerWebException("Session not setup correctly.  There are components registered " +
-                            "at the session level, but no working container to host them");
-                }
-                ssh = new SessionStoreHolder(sch.getStoring().getCacheForThread(),
-                        new DefaultLifecycleState());
+        setAppContainer(scopedContainers.getApplicationContainer());
+        setSessionContainer(scopedContainers.getSessionContainer());
+        setRequestContainer(scopedContainers.getRequestContainer());
 
-            }
+        containersSetupForRequest(scopedContainers.getApplicationContainer(), scopedContainers.getSessionContainer(), scopedContainers.getRequestContainer(), req, resp);
 
-            sessionStoring.putCacheForThread(ssh.getStoreWrapper());
-            requestStoring.resetCacheForThread();
-            rch.getLifecycleStateModel().resetStateModelForThread();
-            rch.getContainer().start();
+        filterChain.doFilter(req, resp);
 
-            setAppContainer(ach.getContainer());
-            setSessionContainer(sch.getContainer());
-            setRequestContainer(rch.getContainer());
+        setAppContainer(null);
+        setSessionContainer(null);
+        setRequestContainer(null);
 
-            containersSetupForRequest(ach.getContainer(), sch.getContainer(), rch.getContainer(), req, resp);
+        scopedContainers.getRequestContainer().stop();
+        scopedContainers.getRequestContainer().dispose();
 
-            filterChain.doFilter(req, resp);
+        scopedContainers.getRequestStoring().invalidateCacheForThread();
+        scopedContainers.getRequestState().invalidateStateModelForThread();
 
-            setAppContainer(null);
-            setSessionContainer(null);
-            setRequestContainer(null);
+        scopedContainers.getSessionStoring().invalidateCacheForThread();
+        scopedContainers.getSessionState().invalidateStateModelForThread();
 
-            rch.getContainer().stop();
-            rch.getContainer().dispose();
-            rch.getLifecycleStateModel().invalidateStateModelForThread();
-            sessionStoring.invalidateCacheForThread();
-            requestStoring.invalidateCacheForThread();
-
-            if (exposeServletInfrastructure) {
-                session.set(null);
-                request.set(null);
-                response.set(null);
-            }
-        } catch (Throwable e) {
-            logger.info("f1:"+e.getMessage());
-            logger.info("f2:"+e.getClass().getName());
-
+        if (exposeServletInfrastructure) {
+            session.set(null);
+            request.set(null);
+            response.set(null);
         }
 
 
@@ -166,14 +152,23 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
 
         protected void setAppContainer(MutablePicoContainer container) {
+            if (currentRequestContainer == null) {
+                currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
+            }
             currentAppContainer.set(container);
         }
 
         protected void setRequestContainer(MutablePicoContainer container) {
+            if (currentRequestContainer == null) {
+                currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
+            }
             currentRequestContainer.set(container);
         }
 
         protected void setSessionContainer(MutablePicoContainer container) {
+            if (currentSessionContainer == null) {
+                currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
+            }
             currentSessionContainer.set(container);
         }
     }
