@@ -3,18 +3,23 @@ package org.picocontainer.web.sample.jqueryemail;
 import static org.picocontainer.Characteristics.USE_NAMES;
 
 import javax.servlet.ServletContext;
+import javax.jdo.PersistenceManager;
+import javax.jdo.JDOHelper;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.web.WebappComposer;
 import org.picocontainer.web.remoting.PicoWebRemotingMonitor;
 
-public class JQueryEmailWebappComposer implements WebappComposer {
+public abstract class JQueryEmailWebappComposer implements WebappComposer {
 
     public void composeApplication(MutablePicoContainer pico, ServletContext context) {
         pico.addComponent(PicoWebRemotingMonitor.class, JQueryEmailWebRemotingMonitor.class);
-        pico.addComponent(MessageStore.class, InMemoryMessageStore.class);
-        pico.addComponent(UserStore.class, InMemoryUserStore.class);
-    }
+
+        composeStores(pico);
+
+   }
+
+    protected abstract void composeStores(MutablePicoContainer pico);
 
     public void composeSession(MutablePicoContainer pico) {
         // stateless
