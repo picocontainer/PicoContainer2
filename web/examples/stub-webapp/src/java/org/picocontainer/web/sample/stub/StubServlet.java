@@ -13,11 +13,15 @@ import java.util.logging.Logger;
 
 public class StubServlet extends HttpServlet {
 
+    private static Integer ctr = 0;
+
     private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
 
     @SuppressWarnings("serial")
     public static class ServletFilter extends PicoServletContainerFilter {
         protected void setAppContainer(MutablePicoContainer container) {
+        }
+        protected void setSessionContainer(MutablePicoContainer container) {
         }
         protected void setRequestContainer(MutablePicoContainer container) {
             if (currentRequestContainer == null) {
@@ -25,13 +29,10 @@ public class StubServlet extends HttpServlet {
             }
             currentRequestContainer.set(container);
         }
-        protected void setSessionContainer(MutablePicoContainer container) {
-        }
     }
 
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Logger logger = Logger.getLogger(this.getClass().getName());
-        logger.info("s0");
         ServletOutputStream os = response.getOutputStream();
         os.print("<html><body><p>");
         try {
@@ -39,7 +40,9 @@ public class StubServlet extends HttpServlet {
             MutablePicoContainer container = currentRequestContainer.get();
             RequestScopeComp requestScopeComp = container.getComponent(RequestScopeComp.class);
 
-            os.println(requestScopeComp.getCounter());
+            String message = "Servlet object ID: " + System.identityHashCode(this) + "<br/>Servlet counter: " + ++ctr + "<br/>Component counters via injection: " + requestScopeComp.getCounter();
+            os.println(message);
+            logger.info(message);
         } catch (Throwable e) {
             logger.info("s1:"+e.getMessage());
             logger.info("s2:"+e.getClass().getName());
