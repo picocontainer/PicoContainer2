@@ -4,7 +4,7 @@ import java.util.Map;
 
 public interface MessageStore {
 
-	Map<Integer, MessageData> inboxFor(User name);
+	Map<Integer, Message> inboxFor(User name);
 
-	Map<Integer, MessageData> sentFor(User name);
+	Map<Integer, Message> sentFor(User name);
 }

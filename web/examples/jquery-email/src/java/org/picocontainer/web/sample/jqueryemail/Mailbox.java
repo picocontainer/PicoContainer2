@@ -10,16 +10,16 @@ import java.util.Iterator;
  */
 public abstract class Mailbox {
 
-    private final Map<Integer, MessageData> messages;
-    public Mailbox(Map<Integer, MessageData> messages) {
+    private final Map<Integer, Message> messages;
+    public Mailbox(Map<Integer, Message> messages) {
         this.messages = messages;
     }
 
-    protected MessageData addMessage(MessageData newMsg) {
+    protected Message addMessage(Message newMsg) {
         int highestId = 0;
-        Iterator<Map.Entry<Integer, MessageData>> entryIterator = messages.entrySet().iterator();
+        Iterator<Map.Entry<Integer, Message>> entryIterator = messages.entrySet().iterator();
         while (entryIterator.hasNext()) {
-            MessageData messageData = entryIterator.next().getValue();
+            Message messageData = entryIterator.next().getValue();
             if (messageData.id > highestId) {
                 highestId = messageData.id;
             }
@@ -34,14 +34,14 @@ public abstract class Mailbox {
      * @param msgId the message to read
      * @return the message
      */
-    public MessageData read(int msgId) {
-        MessageData messageData = getMessage(msgId);
+    public Message read(int msgId) {
+        Message messageData = getMessage(msgId);
         messageData.read = true;
         return messageData;
     }
 
-    private MessageData getMessage(int msgId) {
-        MessageData md = messages.get(msgId);
+    private Message getMessage(int msgId) {
+        Message md = messages.get(msgId);
         if (md == null) {
             throw new JQueryEmailException("no such message ID");
         }
@@ -61,13 +61,13 @@ public abstract class Mailbox {
      * List the messages for the user
      * @return the messages
      */
-    public MessageData[] messages() {
-        List<MessageData> list = new ArrayList<MessageData>();
-        Iterator<Map.Entry<Integer, MessageData>> entryIterator = messages.entrySet().iterator();
+    public Message[] messages() {
+        List<Message> list = new ArrayList<Message>();
+        Iterator<Map.Entry<Integer, Message>> entryIterator = messages.entrySet().iterator();
         while (entryIterator.hasNext()) {
             list.add(entryIterator.next().getValue());
         }
-        MessageData[] messages = new MessageData[list.size()];
+        Message[] messages = new Message[list.size()];
         return list.toArray(messages);
     }
 

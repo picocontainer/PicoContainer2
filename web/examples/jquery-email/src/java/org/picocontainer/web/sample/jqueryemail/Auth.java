@@ -9,11 +9,10 @@ import java.util.HashMap;
 
 public class Auth {
 
-    Map<String, String> users = new HashMap<String, String>();
+    private UserStore userStore;
 
-    {
-        users.put(InMemoryMessageStore.GIL_BATES, "1234");
-        users.put(InMemoryMessageStore.BEEVE_SALMER, "1234");
+    public Auth(UserStore userStore) {
+        this.userStore = userStore;
     }
 
     public String whoIsLoggedIn(HttpServletRequest req) {
@@ -30,12 +29,16 @@ public class Auth {
     }
 
     public void logIn(String userName, String password, HttpSession session, HttpServletResponse resp) {
-        String actualPassword = users.get(userName);
-        if (actualPassword == null || !actualPassword.equals(password)) {
-            writeCookie("", resp);
-            throw new JQueryEmailException("Invalid Login. User name or password incorrect.");
+        User user = userStore.getUser(userName);
+        if (user != null) {
+            String actualPassword = user.getPassword();
+            if (actualPassword.equals(password)) {
+                writeCookie(userName, resp);
+                return;
+            }
         }
-        writeCookie(userName, resp);
+        writeCookie("", resp);
+        throw new JQueryEmailException("Invalid Login. User name or password incorrect.");
     }
 
     public void logOut(HttpServletResponse resp) {

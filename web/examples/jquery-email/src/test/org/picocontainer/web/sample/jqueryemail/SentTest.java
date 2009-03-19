@@ -4,7 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.runner.RunWith;
-import org.picocontainer.web.sample.jqueryemail.MessageData;
+import org.picocontainer.web.sample.jqueryemail.Message;
 import org.picocontainer.web.sample.jqueryemail.MessageStore;
 import org.picocontainer.web.sample.jqueryemail.Sent;
 import org.picocontainer.web.sample.jqueryemail.User;
@@ -16,8 +16,6 @@ import org.jmock.Mockery;
 import org.jmock.Expectations;
 import org.jmock.lib.CamelCaseNamingScheme;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -30,9 +28,9 @@ public class SentTest {
     public void testSendingAMessageWorks() {
 
         final MessageStore store = mockery.mock(MessageStore.class);
-        final User fred = new User("Fred");
+        final User fred = new User("Fred", "password");
 
-        final Map<Integer, MessageData> data = new HashMap<Integer, MessageData>();
+        final Map<Integer, Message> data = new HashMap<Integer, Message>();
 
         mockery.checking(new Expectations(){{
     		one(store).sentFor(fred);
@@ -42,7 +40,7 @@ public class SentTest {
         Sent sent = new Sent(store, fred);
         long before = System.currentTimeMillis();
 
-        MessageData md = sent.send("to","subj","message");
+        Message md = sent.send("to","subj","message");
 
         long after = System.currentTimeMillis();
         assertEquals("to", md.getTo());

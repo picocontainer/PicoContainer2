@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.runner.RunWith;
 import org.picocontainer.web.sample.jqueryemail.Inbox;
-import org.picocontainer.web.sample.jqueryemail.MessageData;
+import org.picocontainer.web.sample.jqueryemail.Message;
 import org.picocontainer.web.sample.jqueryemail.MessageStore;
 import org.picocontainer.web.sample.jqueryemail.User;
 import org.jmock.integration.junit4.JMock;
@@ -14,16 +14,15 @@ import org.jmock.Mockery;
 import org.jmock.Expectations;
 
 import java.util.Map;
-import java.util.HashMap;
 import java.util.HashSet;
 
 @RunWith(JMock.class)
 public class InboxTest {
 
     private Mockery mockery = new Mockery();
-    private Map<Integer, MessageData> data;
+    private Map<Integer, Message> data;
     private MessageStore store;
-    private User fred = new User("Fred");
+    private User fred = new User("Fred", "password");
 
     @Before
     public void setUp() {

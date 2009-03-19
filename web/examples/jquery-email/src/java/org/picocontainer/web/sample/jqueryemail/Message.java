@@ -2,18 +2,38 @@
 package org.picocontainer.web.sample.jqueryemail;
 
 import java.util.Date;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
 
-public class MessageData {
-    
+@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
+public class Message {
+
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.INCREMENT)
     public int id;
+
+    @Persistent
     public String from;
+
+    @Persistent
     public String to;
+
+    @Persistent
     public String subject;
+
+    @Persistent
     public String message;
+    
+    @Persistent
     public Date sentTime;
+
+    @Persistent
     public boolean read;
 
-    public MessageData(int id, String from, String to,
+    public Message(int id, String from, String to,
             String subject, String message, boolean isRead, long time) {
     	this.id = id;
     	this.from = from;

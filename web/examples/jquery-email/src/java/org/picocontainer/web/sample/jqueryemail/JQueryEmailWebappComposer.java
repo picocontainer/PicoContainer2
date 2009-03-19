@@ -13,6 +13,7 @@ public class JQueryEmailWebappComposer implements WebappComposer {
     public void composeApplication(MutablePicoContainer pico, ServletContext context) {
         pico.addComponent(PicoWebRemotingMonitor.class, JQueryEmailWebRemotingMonitor.class);
         pico.addComponent(MessageStore.class, InMemoryMessageStore.class);
+        pico.addComponent(UserStore.class, InMemoryUserStore.class);
     }
 
     public void composeSession(MutablePicoContainer pico) {

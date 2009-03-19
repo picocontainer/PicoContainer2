@@ -22,9 +22,9 @@ public class Sent extends Mailbox {
      * @param message the message body
      * @return the resulting message
      */
-    public MessageData send(String to, String subject, String message) {
+    public Message send(String to, String subject, String message) {
         return super.addMessage(
-                new MessageData(0, user.getName(), to, subject,
+                new Message(0, user.getName(), to, subject,
                         message, false, System.currentTimeMillis()));
     }
 

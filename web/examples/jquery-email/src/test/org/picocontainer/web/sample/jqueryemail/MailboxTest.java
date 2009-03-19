@@ -5,10 +5,8 @@ import org.junit.Before;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.runner.RunWith;
-import org.picocontainer.web.sample.jqueryemail.Inbox;
 import org.picocontainer.web.sample.jqueryemail.Mailbox;
-import org.picocontainer.web.sample.jqueryemail.MessageData;
-import org.picocontainer.web.sample.jqueryemail.MessageStore;
+import org.picocontainer.web.sample.jqueryemail.Message;
 import org.picocontainer.web.sample.jqueryemail.User;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.Mockery;
@@ -19,9 +17,9 @@ import java.util.HashMap;
 
 public class MailboxTest {
 
-    private Map<Integer, MessageData> data = new HashMap<Integer, MessageData>();
-    private User fred = new User("Fred");
-    private MessageData md = new MessageData(2, "Fred", "to", "subj", "message", false, 12345);
+    private Map<Integer, Message> data = new HashMap<Integer, Message>();
+    private User fred = new User("Fred", "password");
+    private Message md = new Message(2, "Fred", "to", "subj", "message", false, 12345);
 
     @Before
     public void setUp() {
@@ -33,7 +31,7 @@ public class MailboxTest {
     @Test
     public void testReadingOfMessages() {
         Mailbox mailbox = new Mailbox(data) {};
-        MessageData[] messages = mailbox.messages();
+        Message[] messages = mailbox.messages();
         assertEquals(1, messages.length);
         assertEquals(md, messages[0]);
         verifyMessage(messages[0], false);
@@ -42,7 +40,7 @@ public class MailboxTest {
     @Test
     public void testReadOfSingleMessageFlipsReadFlag() {
         Mailbox mailbox = new Mailbox(data) {};
-        MessageData message = mailbox.read(2);
+        Message message = mailbox.read(2);
         assertEquals(md, message);
         verifyMessage(message, true);
     }
@@ -51,7 +49,7 @@ public class MailboxTest {
     public void testReadOfMissingMessageCausesException() {
         Mailbox mailbox = new Mailbox(data) {};
         try {
-            MessageData message = mailbox.read(22222);
+            Message message = mailbox.read(22222);
         } catch (Exception e) {
             assertEquals("no such message ID", e.getMessage());
         }
@@ -76,7 +74,7 @@ public class MailboxTest {
     }
 
 
-    private void verifyMessage(MessageData md, boolean read) {
+    private void verifyMessage(Message md, boolean read) {
         assertEquals("to", md.getTo());
         assertEquals(2, md.getId());
         assertEquals("subj", md.getSubject());

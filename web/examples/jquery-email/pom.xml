@@ -28,6 +28,12 @@
       <version>2.0-beta-1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>javax.jdo</groupId>
+      <artifactId>jdo2-api</artifactId>
+      <version>2.2</version>
+      <!--<scope>optional</scope>-->
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -59,7 +65,6 @@
           </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
 
