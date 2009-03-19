@@ -8,6 +8,8 @@
 package org.picocontainer.web.struts2;
 
 import org.picocontainer.web.PicoServletContainerListener;
+import org.picocontainer.web.ThreadLocalLifecycleState;
+import org.picocontainer.web.ScopedContainers;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
@@ -27,12 +29,16 @@ public class Struts2PicoServletContainerListener extends PicoServletContainerLis
 
         NullLifecycleStrategy ls = new NullLifecycleStrategy();
 
-        DefaultPicoContainer ac = new DefaultPicoContainer(new Caching(), makeParentContainer());
-        Storing ss = new Storing();
-        DefaultPicoContainer sc = new DefaultPicoContainer(ss, ac);
-        Storing rs = new Storing();
-        DefaultPicoContainer rc = new DefaultPicoContainer(rs, ls, sc, cm);
-        return new ScopedContainers(ac,sc,rc,ss,rs);
+        DefaultPicoContainer appContainer = new DefaultPicoContainer(new Caching(), makeParentContainer());
+        Storing sessStoring = new Storing();
+        DefaultPicoContainer sessContainer = new DefaultPicoContainer(sessStoring, appContainer);
+        Storing reqStoring = new Storing();
+        DefaultPicoContainer reqContainer = new DefaultPicoContainer(reqStoring, ls, sessContainer, cm);
+        ThreadLocalLifecycleState sessionState = new ThreadLocalLifecycleState();
+        ThreadLocalLifecycleState requestState = new ThreadLocalLifecycleState();
+
+        return new ScopedContainers(appContainer, sessContainer, reqContainer,
+                sessStoring, reqStoring, sessionState, requestState);
 
     }
 
