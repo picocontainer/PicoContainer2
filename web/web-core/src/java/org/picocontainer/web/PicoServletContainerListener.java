@@ -12,7 +12,6 @@ import java.io.Serializable;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.Filter;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
@@ -23,16 +22,12 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.BehaviorFactory;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.picocontainer.lifecycle.LifecycleState;
-import org.picocontainer.lifecycle.DefaultLifecycleState;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.behaviors.Storing;
 import org.picocontainer.behaviors.Guarding;
 import org.picocontainer.behaviors.Caching;
-import com.thoughtworks.xstream.XStream;
 
 /**
  * Servlet listener class that hooks into the underlying servlet container and
@@ -75,8 +70,6 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
 
     public static final String WEBAPP_COMPOSER_CLASS = "webapp-composer-class";
     
-    private ScopedContainers scopedContainers;
-
     /**
      * Default constructor used in webapp containers
      */
@@ -87,17 +80,13 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
 
         ServletContext context = event.getServletContext();
 
-        scopedContainers = makeScopedContainers();
+        ScopedContainers scopedContainers = makeScopedContainers();
 
         scopedContainers.getApplicationContainer().setName("application");
-
         scopedContainers.getSessionContainer().setName("session");
-        scopedContainers.getSessionContainer().setLifecycleState(scopedContainers.getSessionState());
-
         scopedContainers.getRequestContainer().setName("request");
-        scopedContainers.getRequestContainer().setLifecycleState(scopedContainers.getRequestState());
 
-        compose(loadComposer(context), context);
+        compose(loadComposer(context), context, scopedContainers);
 
         scopedContainers.getApplicationContainer().start();
 
@@ -127,6 +116,8 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         DefaultPicoContainer reqCtnr = new DefaultPicoContainer(new Guarding().wrap(addRequestBehaviors(reqStoring)), makeLifecycleStrategy(), sessCtnr, makeRequestComponentMonitor());
         ThreadLocalLifecycleState sessionState = new ThreadLocalLifecycleState();
         ThreadLocalLifecycleState requestState = new ThreadLocalLifecycleState();
+        sessCtnr.setLifecycleState(sessionState);
+        reqCtnr.setLifecycleState(requestState);
 
         return new ScopedContainers(appCtnr, sessCtnr, reqCtnr, sessStoring, reqStoring, sessionState, requestState);
     }
@@ -178,31 +169,37 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         }
     }
 
-    protected void compose(WebappComposer composer, ServletContext context) {
+    protected void compose(WebappComposer composer, ServletContext context, ScopedContainers scopedContainers) {
         composer.composeApplication(scopedContainers.getApplicationContainer(), context);
         composer.composeSession(scopedContainers.getSessionContainer());
         composer.composeRequest(scopedContainers.getRequestContainer());
     }
 
     public void contextDestroyed(ServletContextEvent event) {
+        ScopedContainers scopedContainers = getScopedContainers(event.getServletContext());
         scopedContainers.getApplicationContainer().stop();
         scopedContainers.getApplicationContainer().dispose();
+    }
+
+    private ScopedContainers getScopedContainers(ServletContext context) {
+        return (ScopedContainers) context.getAttribute(ScopedContainers.class.getName());
     }
 
     public void sessionCreated(HttpSessionEvent event) {
 
         HttpSession session = event.getSession();
-        ServletContext context = session.getServletContext();
+        ScopedContainers scopedContainers = getScopedContainers(session.getServletContext());
 
         SessionStoreHolder ssh = new SessionStoreHolder(scopedContainers.getSessionStoring().resetCacheForThread(), scopedContainers.getSessionState().resetStateModelForThread());
 
         scopedContainers.getSessionContainer().start();
         session.setAttribute(SessionStoreHolder.class.getName(), ssh);
+
     }
 
     public void sessionDestroyed(HttpSessionEvent event) {
         HttpSession session = event.getSession();
-        ServletContext context = session.getServletContext();
+        ScopedContainers scopedContainers = getScopedContainers(session.getServletContext());
 
         SessionStoreHolder ssh = (SessionStoreHolder) session.getAttribute(SessionStoreHolder.class.getName());
 
@@ -216,56 +213,6 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         scopedContainers.getSessionState().invalidateStateModelForThread();
         
         session.setAttribute(SessionStoreHolder.class.getName(), null);
-    }
-
-    public final static class ScopedContainers {
-
-        private final MutablePicoContainer applicationContainer;
-        private final MutablePicoContainer sessionContainer;
-        private final MutablePicoContainer requestContainer;
-        private final Storing sessionStoring;
-        private final Storing requestStoring;
-        private final ThreadLocalLifecycleState sessionState;
-        private final ThreadLocalLifecycleState requestState;
-
-        public ScopedContainers(MutablePicoContainer applicationContainer, MutablePicoContainer sessionContainer, MutablePicoContainer requestContainer, Storing sessionStoring, Storing requestStoring, ThreadLocalLifecycleState sessionState, ThreadLocalLifecycleState requestState) {
-            this.applicationContainer = applicationContainer;
-            this.sessionContainer = sessionContainer;
-            this.requestContainer = requestContainer;
-            this.sessionStoring = sessionStoring;
-            this.requestStoring = requestStoring;
-            this.sessionState = sessionState;
-            this.requestState = requestState;
-        }
-
-        MutablePicoContainer getApplicationContainer() {
-            return applicationContainer;
-        }
-
-        MutablePicoContainer getSessionContainer() {
-            return sessionContainer;
-        }
-
-        MutablePicoContainer getRequestContainer() {
-            return requestContainer;
-        }
-
-        Storing getSessionStoring() {
-            return sessionStoring;
-        }
-
-        Storing getRequestStoring() {
-            return requestStoring;
-
-        }
-
-        ThreadLocalLifecycleState getSessionState() {
-            return sessionState;
-        }
-
-        ThreadLocalLifecycleState getRequestState() {
-            return requestState;
-        }
     }
 
 }

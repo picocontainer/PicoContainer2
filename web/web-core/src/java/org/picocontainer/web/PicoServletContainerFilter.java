@@ -27,10 +27,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Characteristics;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
-import static org.picocontainer.web.PicoServletContainerListener.*;
 import org.picocontainer.lifecycle.DefaultLifecycleState;
 import org.picocontainer.adapters.AbstractAdapter;
-import org.picocontainer.behaviors.Storing;
 
 @SuppressWarnings("serial")
 public abstract class PicoServletContainerFilter implements Filter, Serializable {
@@ -52,6 +50,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         scopedContainers.getRequestContainer().as(Characteristics.NO_CACHE).addAdapter(new HttpServletResponseInjector());
 
         initAdditionalScopedComponents(scopedContainers.getSessionContainer(), scopedContainers.getRequestContainer());
+
     }
 
     public void destroy() {
@@ -75,16 +74,14 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
 
         HttpSession sess = ((HttpServletRequest) req).getSession();
         if (exposeServletInfrastructure) {
-            session.set(sess);
-            request.set(req);
-            response.set(resp);
+            currentSession.set(sess);
+            currentRequest.set(req);
+            currentResponse.set(resp);
         }
 
-        ServletContext context = sess.getServletContext();
+        ScopedContainers scopedContainers = getScopedContainers(sess.getServletContext());
 
-        ScopedContainers scopedContainers = getScopedContainers(context);
-
-        SessionStoreHolder ssh = (SessionStoreHolder) sess.getAttribute(SessionStoreHolder.class.getName());
+        SessionStoreHolder ssh = (SessionStoreHolder) getSessionAttribute(sess, SessionStoreHolder.class.getName());
         if (ssh == null) {
             if (scopedContainers.getSessionContainer().getComponentAdapters().size() > 0) {
                 throw new PicoContainerWebException("Session not setup correctly.  There are components registered " +
@@ -116,6 +113,8 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         scopedContainers.getRequestContainer().stop();
         scopedContainers.getRequestContainer().dispose();
 
+        sess.setAttribute(SessionStoreHolder.class.getName(), ssh);
+
         scopedContainers.getRequestStoring().invalidateCacheForThread();
         scopedContainers.getRequestState().invalidateStateModelForThread();
 
@@ -123,21 +122,24 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         scopedContainers.getSessionState().invalidateStateModelForThread();
 
         if (exposeServletInfrastructure) {
-            session.set(null);
-            request.set(null);
-            response.set(null);
+            currentSession.set(null);
+            currentRequest.set(null);
+            currentResponse.set(null);
         }
 
+    }
 
+    private Object getSessionAttribute(HttpSession sess, String name) {
+        return sess.getAttribute(name);
     }
 
     protected void containersSetupForRequest(MutablePicoContainer appcontainer, MutablePicoContainer sessionContainer,
                                              MutablePicoContainer requestContainer, ServletRequest req, ServletResponse resp) {
     }
 
-    private static ThreadLocal<HttpSession> session = new ThreadLocal<HttpSession>();
-    private static ThreadLocal<ServletRequest> request = new ThreadLocal<ServletRequest>();
-    private static ThreadLocal<ServletResponse> response = new ThreadLocal<ServletResponse>();
+    private static ThreadLocal<HttpSession> currentSession = new ThreadLocal<HttpSession>();
+    private static ThreadLocal<ServletRequest> currentRequest = new ThreadLocal<ServletRequest>();
+    private static ThreadLocal<ServletResponse> currentResponse = new ThreadLocal<ServletResponse>();
 
     protected abstract void setAppContainer(MutablePicoContainer container);
 
@@ -147,9 +149,9 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
 
     public static class ServletFilter extends PicoServletContainerFilter {
 
-        private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
-        private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
         private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+        private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
+        private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
 
         protected void setAppContainer(MutablePicoContainer container) {
             if (currentRequestContainer == null) {
@@ -180,7 +182,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         }
 
         public Object getComponentInstance(PicoContainer picoContainer, Type type) throws PicoCompositionException {
-            return session.get();
+            return currentSession.get();
         }
 
         public void verify(PicoContainer picoContainer) throws PicoCompositionException {
@@ -198,7 +200,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         }
 
         public Object getComponentInstance(PicoContainer picoContainer, Type type) throws PicoCompositionException {
-            return request.get();
+            return currentRequest.get();
         }
 
         public void verify(PicoContainer picoContainer) throws PicoCompositionException {
@@ -216,7 +218,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         }
 
         public Object getComponentInstance(PicoContainer picoContainer, Type type) throws PicoCompositionException {
-            return response.get();
+            return currentResponse.get();
         }
 
         public void verify(PicoContainer picoContainer) throws PicoCompositionException {
