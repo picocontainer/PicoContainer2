@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class LoadDummyData {
-    public LoadDummyData(JdoMessageStore userStore, JdoMessageStore messageStore, PersistenceManager pm) {
+    public LoadDummyData(JDOMessageStore userStore, JDOMessageStore messageStore, PersistenceManager pm) {
         try {
             UserStore users1 = new InMemoryUserStore();
             MessageStore messages1 = new InMemoryMessageStore();
