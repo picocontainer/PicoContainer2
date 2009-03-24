@@ -8,7 +8,8 @@
 
     <context-param>
         <param-name>webapp-composer-class</param-name>
-        <param-value>org.picocontainer.web.sample.jqueryemail.InMemoryJQueryEmailWebappComposer</param-value>
+        <param-value>org.picocontainer.web.sample.jqueryemail.JdoJQueryEmailWebappComposer</param-value>
+        <!-- One of JdoJQueryEmailWebappComposer or InMemoryJQueryEmailWebappComposer -->
     </context-param>
 
     <filter>
