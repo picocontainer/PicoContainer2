@@ -32,7 +32,7 @@ public class JDOMessageStore implements MessageStore {
         }
 
         private JDOMessageDataMap(String fromTo, String who) {
-            Query query = pm.newQuery("javax.jdo.query.JDOQL", DEFAULT_QUERY + " WHERE " + fromTo + " = '" + who + "'");
+            Query query = pm.newQuery("javax.jdo.query.JDOQL", DEFAULT_QUERY + " WHERE " + fromTo + " == \"" + who + "\"");
             query.declareImports("import java.lang.String");
             query.declareParameters("String " + fromTo);
             query.setOrdering("param1 ascending");

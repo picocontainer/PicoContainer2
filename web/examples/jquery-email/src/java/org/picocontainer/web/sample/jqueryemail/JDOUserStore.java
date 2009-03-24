@@ -15,7 +15,7 @@ public class JDOUserStore implements UserStore {
     }
 
     public User getUser(String name) {
-        Query query = pm.newQuery("javax.jdo.query.JDOQL", DEFAULT_QUERY + " WHERE name = '" + name + "'");
+        Query query = pm.newQuery("javax.jdo.query.JDOQL", DEFAULT_QUERY + " WHERE name == \"" + name + "\"");
         query.declareImports("import java.lang.String");
         query.declareParameters("String name");
         Collection<User> messages = (Collection<User>) query.execute();
