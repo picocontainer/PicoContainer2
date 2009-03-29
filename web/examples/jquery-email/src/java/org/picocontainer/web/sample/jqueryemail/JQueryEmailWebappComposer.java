@@ -14,9 +14,7 @@ public abstract class JQueryEmailWebappComposer implements WebappComposer {
 
     public void composeApplication(MutablePicoContainer pico, ServletContext context) {
         pico.addComponent(PicoWebRemotingMonitor.class, JQueryEmailWebRemotingMonitor.class);
-
         composeStores(pico);
-
    }
 
     protected abstract void composeStores(MutablePicoContainer pico);

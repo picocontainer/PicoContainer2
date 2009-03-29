@@ -1,31 +1,34 @@
 package org.picocontainer.web.sample.jqueryemail;
 
+import javax.jdo.Query;
+import javax.jdo.PersistenceManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Iterator;
+import java.util.Collection;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.logging.Logger;
 
 /**
  * Abstract Mailbox
  */
 public abstract class Mailbox {
 
-    private final Map<Integer, Message> messages;
-    public Mailbox(Map<Integer, Message> messages) {
-        this.messages = messages;
+    private final PersistenceManager pm;
+    protected final User user;
+    private final QueryStore queryStore;
+
+    public Mailbox(PersistenceManager pm, User user, QueryStore queryStore) {
+        this.pm = pm;
+        this.user = user;
+        this.queryStore = queryStore;
     }
 
     protected Message addMessage(Message newMsg) {
-        int highestId = 0;
-        Iterator<Map.Entry<Integer, Message>> entryIterator = messages.entrySet().iterator();
-        while (entryIterator.hasNext()) {
-            Message messageData = entryIterator.next().getValue();
-            if (messageData.id > highestId) {
-                highestId = messageData.id;
-            }
-        }
-        newMsg.setId(++highestId);
-        messages.put(newMsg.getId(), newMsg);
+        pm.makePersistent(newMsg);
         return newMsg;
     }
 
@@ -34,27 +37,46 @@ public abstract class Mailbox {
      * @param msgId the message to read
      * @return the message
      */
-    public Message read(int msgId) {
+    public Message read(long msgId) {
         Message messageData = getMessage(msgId);
         messageData.read = true;
         return messageData;
     }
 
-    private Message getMessage(int msgId) {
-        Message md = messages.get(msgId);
-        if (md == null) {
-            throw new JQueryEmailException("no such message ID");
+    private Message getMessage(long msgId) {
+        Collection<Message> coll = (Collection<Message>) getSingleMessageQuery().execute(msgId);
+        if (coll != null && coll.size() == 1) {
+            Message message = coll.iterator().next();
+            checkUser(message);
+            return message;
         }
-        return md;
+        throw new JQueryEmailException("no such message ID");
+    }
+
+    protected abstract void checkUser(Message message) ;
+
+    protected void throwNotForThisUser() {
+        throw new JQueryEmailException("email ID not for the user logged in");
+    }
+
+    private Query getSingleMessageQuery() {
+        Query query = queryStore.get("SM_" + fromOrTo());
+        if (query == null) {
+            query = pm.newQuery(Message.class, "id == message_id");
+            query.declareImports("import java.lang.Long");
+            query.declareParameters("Long message_id");
+            queryStore.put("SM_"+fromOrTo(), query);
+        }
+        return query;
     }
 
     /**
      * Delete a message
      * @param msgId the message to delete
      */
-    public void delete(int msgId) {
-        getMessage(msgId);
-        messages.remove(msgId);
+    public void delete(long msgId) {
+        Message message = getMessage(msgId);
+        pm.deletePersistent(message);
     }
 
     /**
@@ -62,13 +84,21 @@ public abstract class Mailbox {
      * @return the messages
      */
     public Message[] messages() {
-        List<Message> list = new ArrayList<Message>();
-        Iterator<Map.Entry<Integer, Message>> entryIterator = messages.entrySet().iterator();
-        while (entryIterator.hasNext()) {
-            list.add(entryIterator.next().getValue());
-        }
-        Message[] messages = new Message[list.size()];
-        return list.toArray(messages);
+        List<Message> messageCollection = (List<Message>) getMultipleMessageQuery().execute(user.getName());
+        return messageCollection.toArray(new Message[messageCollection.size()]);
     }
+
+    private Query getMultipleMessageQuery() {
+        Query query = queryStore.get("MM_" + fromOrTo());
+        if (query == null) {
+            query = pm.newQuery(Message.class, fromOrTo() + " == user_name");
+            query.declareImports("import java.lang.String");
+            query.declareParameters("String user_name");
+            queryStore.put("MM_" + fromOrTo(), query);
+        }
+        return query;
+    }
+
+    protected abstract String fromOrTo();
 
 }

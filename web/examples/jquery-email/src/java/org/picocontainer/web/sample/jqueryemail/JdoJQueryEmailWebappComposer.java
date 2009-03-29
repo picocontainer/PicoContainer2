@@ -11,10 +11,10 @@ import java.io.ByteArrayOutputStream;
 public class JdoJQueryEmailWebappComposer extends JQueryEmailWebappComposer {
     protected void composeStores(MutablePicoContainer pico) {
         try {
-            pico.addComponent(MessageStore.class, JDOMessageStore.class);
             pico.addComponent(UserStore.class, JDOUserStore.class);
             PersistenceManagerFactory factory = JDOHelper.getPersistenceManagerFactory("transactional");
             pico.addComponent(PersistenceManager.class, factory.getPersistenceManager());
+            pico.addComponent(QueryStore.class);
         } catch (Throwable e) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             e.printStackTrace(new PrintStream(byteArrayOutputStream));
@@ -28,6 +28,6 @@ public class JdoJQueryEmailWebappComposer extends JQueryEmailWebappComposer {
 
     public void composeRequest(MutablePicoContainer pico) {
         super.composeRequest(pico);
-        pico.addComponent(LoadDummyData.class);
+        pico.addComponent(ReloadData.class);
     }
 }

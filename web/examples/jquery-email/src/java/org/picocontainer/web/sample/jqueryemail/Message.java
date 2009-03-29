@@ -12,8 +12,8 @@ import javax.jdo.annotations.IdentityType;
 public class Message {
 
     @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.INCREMENT)
-    public int id;
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    public Long id;
 
     @Persistent
     public String from;
@@ -33,7 +33,7 @@ public class Message {
     @Persistent
     public boolean read;
 
-    public Message(int id, String from, String to,
+    public Message(String from, String to,
             String subject, String message, boolean isRead, long time) {
     	this.id = id;
     	this.from = from;
@@ -44,11 +44,11 @@ public class Message {
         this.sentTime = new Date(time);
     }
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
