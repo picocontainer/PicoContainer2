@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public abstract class Mailbox {
 
-    private final PersistenceManager pm;
+    protected final PersistenceManager pm;
     protected final User user;
     private final QueryStore queryStore;
 
@@ -60,12 +60,13 @@ public abstract class Mailbox {
     }
 
     private Query getSingleMessageQuery() {
-        Query query = queryStore.get("SM_" + fromOrTo());
+        String key = "SM_" + fromOrTo();
+        Query query = queryStore.get(key);
         if (query == null) {
             query = pm.newQuery(Message.class, "id == message_id");
             query.declareImports("import java.lang.Long");
             query.declareParameters("Long message_id");
-            queryStore.put("SM_"+fromOrTo(), query);
+            queryStore.put(key, query);
         }
         return query;
     }
@@ -89,12 +90,13 @@ public abstract class Mailbox {
     }
 
     private Query getMultipleMessageQuery() {
-        Query query = queryStore.get("MM_" + fromOrTo());
+        String key = "MM_" + fromOrTo();
+        Query query = queryStore.get(key);
         if (query == null) {
             query = pm.newQuery(Message.class, fromOrTo() + " == user_name");
             query.declareImports("import java.lang.String");
             query.declareParameters("String user_name");
-            queryStore.put("MM_" + fromOrTo(), query);
+            queryStore.put(key, query);
         }
         return query;
     }

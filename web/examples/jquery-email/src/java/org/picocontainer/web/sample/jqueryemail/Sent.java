@@ -11,8 +11,6 @@ public class Sent extends Mailbox {
         super(pm, user, queryStore);
     }
 
-    // Inherit methods from Mailbox
-
     /**
      * Send a message
      *
@@ -22,11 +20,14 @@ public class Sent extends Mailbox {
      * @return the resulting message
      */
     public Message send(String to, String subject, String message) {
-        return super.addMessage(
-                new Message(user.getName(), to, subject,
-                        message, false, System.currentTimeMillis()));
+        return pm.makePersistent(new Message(user.getName(), to, subject,
+                message, false, System.currentTimeMillis()));
     }
 
+    /**
+     * A guard to prevent someone trying to read emails for others users (they are not logged in as)
+     * @param message
+     */
     protected void checkUser(Message message) {
         if (message.getTo().equals(user.getName())) {
             throwNotForThisUser();
