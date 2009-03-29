@@ -8,14 +8,14 @@ import javax.servlet.ServletContext;
 public class StubAppComposer implements WebappComposer {
 
     public void composeApplication(MutablePicoContainer pico, ServletContext context) {
-        pico.addComponent(AppScopeComp.class);
+        pico.addComponent(AppScoped.class);
     }
 
     public void composeSession(MutablePicoContainer pico) {
-        pico.addComponent(SessionScopeComp.class);
+        pico.addComponent(SessionScoped.class);
     }
 
     public void composeRequest(MutablePicoContainer pico) {
-        pico.addComponent(RequestScopeComp.class);
+        pico.addComponent(RequestScoped.class);
     }
 }

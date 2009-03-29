@@ -3,50 +3,47 @@ package org.picocontainer.web.sample.stub;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.web.PicoServletContainerFilter;
 
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import java.io.IOException;
-import java.util.logging.Logger;
 
+/**
+ * Use this as a starting pont to work out how to integrate you web framework with PicoContainer
+ */
 public class StubServlet extends HttpServlet {
 
     private static Integer ctr = 0;
 
     private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
 
-    @SuppressWarnings("serial")
     public static class ServletFilter extends PicoServletContainerFilter {
         protected void setAppContainer(MutablePicoContainer container) {
         }
         protected void setSessionContainer(MutablePicoContainer container) {
         }
         protected void setRequestContainer(MutablePicoContainer container) {
-            if (currentRequestContainer == null) {
-                currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
-            }
             currentRequestContainer.set(container);
         }
     }
 
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Logger logger = Logger.getLogger(this.getClass().getName());
         ServletOutputStream os = response.getOutputStream();
         os.print("<html><body><p>");
         try {
             response.setContentType("text/html");
-            MutablePicoContainer container = currentRequestContainer.get();
-            RequestScopeComp requestScopeComp = container.getComponent(RequestScopeComp.class);
-
-            String message = "Servlet object ID: " + System.identityHashCode(this) + "<br/>Servlet counter: " + ++ctr + "<br/>Component counters via injection: " + requestScopeComp.getCounter();
-            os.println(message);
-            logger.info(message);
+            RequestScoped requestScopeComp = currentRequestContainer.get().getComponent(RequestScoped.class);
+            os.println("Servlet object id: " + System.identityHashCode(this) + "<br/>Servlet counter: "
+                    + ++ctr + "<br/>Scoped components using Depenency Injection with their counters: " + requestScopeComp.getCounterAndDependantsCounters());
         } catch (Throwable e) {
-            logger.info("s1:"+e.getMessage());
-            logger.info("s2:"+e.getClass().getName());
+            os.println("some exception in Servlet.service():" + e.getMessage());
         }
-        os.print("</p></body></html>");
+        os.print("<br/><br/>Note - 'System.identityHashCode(this)' is used to determine id for each object</p></body></html>");
+    }
+
+    public void destroy() {
+        currentRequestContainer = null;
     }
 }
