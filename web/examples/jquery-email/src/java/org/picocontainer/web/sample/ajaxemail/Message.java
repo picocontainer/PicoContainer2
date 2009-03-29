@@ -1,5 +1,5 @@
 
-package org.picocontainer.web.sample.jqueryemail;
+package org.picocontainer.web.sample.ajaxemail;
 
 import java.util.Date;
 import javax.jdo.annotations.PersistenceCapable;

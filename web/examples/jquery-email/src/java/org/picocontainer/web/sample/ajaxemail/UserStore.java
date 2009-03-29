@@ -1,9 +1,8 @@
-package org.picocontainer.web.sample.jqueryemail;
+package org.picocontainer.web.sample.ajaxemail;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import java.util.Collection;
-import java.util.logging.Logger;
 
 public class UserStore {
 

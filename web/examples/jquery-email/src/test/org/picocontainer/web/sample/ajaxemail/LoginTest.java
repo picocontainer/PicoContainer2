@@ -1,13 +1,7 @@
-package org.picocontainer.web.sample.jqueryemail;
+package org.picocontainer.web.sample.ajaxemail;
 
-import org.jbehave.scenario.annotations.Given;
-import org.jbehave.scenario.annotations.Then;
-import org.jbehave.scenario.annotations.When;
-import org.jbehave.web.selenium.SeleniumSteps;
 import org.junit.Test;
 
-import com.thoughtworks.selenium.condition.Condition;
-import com.thoughtworks.selenium.condition.Not;
 import com.thoughtworks.selenium.condition.Presence;
 import com.thoughtworks.selenium.condition.Text;
 import com.thoughtworks.selenium.condition.ConditionRunner;
@@ -27,7 +21,7 @@ public class LoginTest {
         browser.start();
         browser.setContext("test that Fred can login");
         ConditionRunner conditionRunner = new JUnit4AndTestNgConditionRunner(browser, 10, 100, 10000);
-        browser.open("/remoting-jqueryemail-webapp/");
+        browser.open("/remoting-ajaxemail-webapp/");
         conditionRunner.waitFor(new Presence("id=userName"));
         browser.type("id=userName", "Gil Bates");
         browser.type("id=password", "1234");

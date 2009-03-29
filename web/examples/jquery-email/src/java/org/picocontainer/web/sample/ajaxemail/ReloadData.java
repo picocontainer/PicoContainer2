@@ -1,4 +1,4 @@
-package org.picocontainer.web.sample.jqueryemail;
+package org.picocontainer.web.sample.ajaxemail;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 

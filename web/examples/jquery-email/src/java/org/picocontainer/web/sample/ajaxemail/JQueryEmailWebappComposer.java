@@ -1,4 +1,4 @@
-package org.picocontainer.web.sample.jqueryemail;
+package org.picocontainer.web.sample.ajaxemail;
 
 import static org.picocontainer.Characteristics.USE_NAMES;
 
@@ -10,10 +10,6 @@ import javax.jdo.PersistenceManagerFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.web.WebappComposer;
 import org.picocontainer.web.remoting.PicoWebRemotingMonitor;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.logging.Logger;
 
 public abstract class JQueryEmailWebappComposer implements WebappComposer {
 

@@ -1,4 +1,4 @@
-package org.picocontainer.web.sample.jqueryemail;
+package org.picocontainer.web.sample.ajaxemail;
 
 @SuppressWarnings("serial")
 public class JQueryEmailException extends RuntimeException {

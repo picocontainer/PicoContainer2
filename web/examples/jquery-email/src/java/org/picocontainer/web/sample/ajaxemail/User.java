@@ -1,4 +1,4 @@
-package org.picocontainer.web.sample.jqueryemail;
+package org.picocontainer.web.sample.ajaxemail;
 
 import org.picocontainer.web.StringFromCookie;
 import org.picocontainer.injectors.ProviderAdapter;

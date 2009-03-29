@@ -1,23 +1,19 @@
-package org.picocontainer.web.sample.jqueryemail;
+package org.picocontainer.web.sample.ajaxemail;
 
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import org.picocontainer.web.sample.jqueryemail.Mailbox;
-import org.picocontainer.web.sample.jqueryemail.Message;
-import org.picocontainer.web.sample.jqueryemail.User;
+import org.picocontainer.web.sample.ajaxemail.Mailbox;
+import org.picocontainer.web.sample.ajaxemail.Message;
+import org.picocontainer.web.sample.ajaxemail.User;
 import org.jmock.Mockery;
 import org.jmock.Expectations;
-import org.jmock.api.Action;
-import org.jmock.api.Invocation;
-import org.hamcrest.Description;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collection;
 
 import static junit.framework.Assert.fail;
 

@@ -1,4 +1,4 @@
-package org.picocontainer.web.sample.jqueryemail.scenarios;
+package org.picocontainer.web.sample.ajaxemail.scenarios;
 
 import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.PropertyBasedConfiguration;

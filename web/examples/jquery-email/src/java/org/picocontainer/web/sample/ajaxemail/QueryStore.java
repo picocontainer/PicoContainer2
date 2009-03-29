@@ -1,4 +1,4 @@
-package org.picocontainer.web.sample.jqueryemail;
+package org.picocontainer.web.sample.ajaxemail;
 
 import javax.jdo.Query;
 import java.util.Map;

@@ -1,16 +1,9 @@
-package org.picocontainer.web.sample.jqueryemail;
+package org.picocontainer.web.sample.ajaxemail;
 
 import javax.jdo.Query;
 import javax.jdo.PersistenceManager;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Iterator;
 import java.util.Collection;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.logging.Logger;
 
 /**
  * Abstract Mailbox

@@ -1,4 +1,4 @@
-package org.picocontainer.web.sample.jqueryemail.scenarios;
+package org.picocontainer.web.sample.ajaxemail.scenarios;
 
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
@@ -14,7 +14,7 @@ public class JQueryEmailSteps extends SeleniumSteps {
 
 	@Given("nobody is logged in")
 	public void nobodyLoggedIn() {
-		selenium.open("/remoting-jqueryemail-webapp/");
+		selenium.open("/remoting-ajaxemail-webapp/");
 		try {
 			selenium.click("link=Log Out");
 		} catch (Exception e) {
