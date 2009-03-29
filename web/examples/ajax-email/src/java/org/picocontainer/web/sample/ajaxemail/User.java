@@ -47,7 +47,7 @@ public class User {
 	}
 
 	@SuppressWarnings("serial")
-	public static class NotLoggedIn extends JQueryEmailException {
+	public static class NotLoggedIn extends AjaxEmailException {
 		NotLoggedIn() {
 			super("not logged in");
 		}

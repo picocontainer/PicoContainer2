@@ -36,7 +36,7 @@ public class Auth {
             }
         }
         writeCookie("", resp);
-        throw new JQueryEmailException("Invalid Login. User name or password incorrect.");
+        throw new AjaxEmailException("Invalid Login. User name or password incorrect.");
     }
 
     public void logOut(HttpServletResponse resp) {

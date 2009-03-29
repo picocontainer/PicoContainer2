@@ -8,7 +8,7 @@
         <version>2.4-SNAPSHOT</version>
     </parent>
     <artifactId>remoting-ajaxemail-webapp</artifactId>
-    <name>PWR AJAX Email Webapp</name>
+    <name>PicoWebRemoting AJAX Email Webapp</name>
     <packaging>war</packaging>
 
     <repositories>

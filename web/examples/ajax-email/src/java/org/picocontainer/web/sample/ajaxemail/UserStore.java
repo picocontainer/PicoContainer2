@@ -6,8 +6,8 @@ import java.util.Collection;
 
 public class UserStore {
 
-    private PersistenceManager pm;
-    private final QueryStore queryStore;
+    private transient PersistenceManager pm;
+    private transient final QueryStore queryStore;
 
     public UserStore(PersistenceManager pm, QueryStore queryStore) {
         this.pm = pm;

@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public class QueryStore {
 
-    private Map<String,Query> queries = new HashMap<String,Query>();
+    private transient Map<String,Query> queries = new HashMap<String,Query>();
 
     public Query get(String key) {
         return queries.get(key);

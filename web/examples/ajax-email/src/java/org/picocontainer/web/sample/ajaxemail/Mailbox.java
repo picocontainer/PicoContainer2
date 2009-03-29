@@ -43,13 +43,13 @@ public abstract class Mailbox {
             checkUser(message);
             return message;
         }
-        throw new JQueryEmailException("no such message ID");
+        throw new AjaxEmailException("no such message ID");
     }
 
     protected abstract void checkUser(Message message) ;
 
     protected void throwNotForThisUser() {
-        throw new JQueryEmailException("email ID not for the user logged in");
+        throw new AjaxEmailException("email ID not for the user logged in");
     }
 
     private Query getSingleMessageQuery() {

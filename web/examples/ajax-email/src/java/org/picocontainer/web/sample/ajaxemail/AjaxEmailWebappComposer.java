@@ -11,10 +11,10 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.web.WebappComposer;
 import org.picocontainer.web.remoting.PicoWebRemotingMonitor;
 
-public class JQueryEmailWebappComposer implements WebappComposer {
+public class AjaxEmailWebappComposer implements WebappComposer {
 
     public void composeApplication(MutablePicoContainer pico, ServletContext context) {
-        pico.addComponent(PicoWebRemotingMonitor.class, JQueryEmailWebRemotingMonitor.class);
+        pico.addComponent(PicoWebRemotingMonitor.class, AjaxEmailWebRemotingMonitor.class);
         pico.addComponent(UserStore.class);
         PersistenceManagerFactory factory = JDOHelper.getPersistenceManagerFactory("transactional");
         pico.addComponent(PersistenceManager.class, factory.getPersistenceManager());

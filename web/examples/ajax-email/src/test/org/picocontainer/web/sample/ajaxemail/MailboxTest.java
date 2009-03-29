@@ -87,7 +87,7 @@ public class MailboxTest {
         try {
             Message message = mailbox.read(22222);
             fail();
-        } catch (JQueryEmailException e) {
+        } catch (AjaxEmailException e) {
             assertEquals("no such message ID", e.getMessage());
         }
     }
@@ -121,7 +121,7 @@ public class MailboxTest {
         Mailbox mailbox = new MyMailbox(pm, fred);
         try {
             mailbox.delete(22222);
-        } catch (JQueryEmailException e) {
+        } catch (AjaxEmailException e) {
             assertEquals("no such message ID", e.getMessage());
         }
     }
