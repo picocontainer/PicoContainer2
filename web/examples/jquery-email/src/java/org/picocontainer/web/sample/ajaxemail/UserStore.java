@@ -17,7 +17,7 @@ public class UserStore {
     public User getUser(String name) {
         Query query = queryStore.get("GU");
         if (query == null) {
-            query = pm.newQuery(User.class.getName(), "name == user_name");
+            query = pm.newQuery(User.class, "name == user_name");
             query.declareImports("import java.lang.String");
             query.declareParameters("String user_name");
             queryStore.put("GU", query);

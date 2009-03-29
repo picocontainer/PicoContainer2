@@ -11,7 +11,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.web.WebappComposer;
 import org.picocontainer.web.remoting.PicoWebRemotingMonitor;
 
-public abstract class JQueryEmailWebappComposer implements WebappComposer {
+public class JQueryEmailWebappComposer implements WebappComposer {
 
     public void composeApplication(MutablePicoContainer pico, ServletContext context) {
         pico.addComponent(PicoWebRemotingMonitor.class, JQueryEmailWebRemotingMonitor.class);
