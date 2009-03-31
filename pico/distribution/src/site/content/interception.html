@@ -57,9 +57,9 @@
 ...
 pico = new DefaultPicoContainer(new Intercepting());
 pico.addComponent(Apple.class, BraeburnApple.class);
-Intercpeted intercepted = pico.getComponentAdapter(Apple.class).findAdapterOfType(Intercpeted.class);
-intercepted.pre(Apple.class, new BiteReporter(intercepted.getController()));
-// see also Intercpeted.post(...) method.
+Intercepted intercepted = pico.getComponentAdapter(Apple.class).findAdapterOfType(Intercepted.class);
+intercepted.addPreInvocation(Apple.class, new BiteReporter(intercepted.getController()));
+// see also Intercpeted.addPostInvocation(...) method.
 Apple a1 = pico.getComponent(Apple.class);
 a1.takeBite(100); 
 // prints Bite of 100 grams of apple 'Braeburn' 
