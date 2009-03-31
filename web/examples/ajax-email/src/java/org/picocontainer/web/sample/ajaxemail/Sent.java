@@ -5,7 +5,7 @@ import javax.jdo.PersistenceManager;
 /**
  * Send is a type of Mailbox for a user.
  */
-public class Sent extends Mailbox {
+public class Sent extends Mailbox implements ISent {
 
     public Sent(PersistenceManager pm, User user, QueryStore queryStore) {
         super(pm, user, queryStore);
@@ -37,4 +37,9 @@ public class Sent extends Mailbox {
     protected String fromOrTo() {
         return "from";
     }
+
+    public String toString() {
+        return "sent-for-" + user.getName();  
+    }
+
 }

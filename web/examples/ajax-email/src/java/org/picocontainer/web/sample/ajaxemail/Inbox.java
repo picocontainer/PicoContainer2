@@ -5,7 +5,7 @@ import javax.jdo.PersistenceManager;
 /**
  * Inbox is a type of Mailbox for a user.
  */
-public class Inbox extends Mailbox {
+public class Inbox extends Mailbox implements IInbox {
 
     public Inbox(PersistenceManager pm, User user, QueryStore queryStore) {
         super(pm, user, queryStore);
@@ -20,4 +20,9 @@ public class Inbox extends Mailbox {
     protected String fromOrTo() {
         return "to";
     }
+
+    public String toString() {
+        return "inbox-for-" + user.getName();
+    }
+    
 }

@@ -8,7 +8,7 @@
 <script type="text/javascript" src="js/jquery.corner.min.js"></script>
 <script type="text/javascript" src="js/jquery.dates.js"></script>
 <script type="text/javascript" src="js/jquery.blockUI.js"></script>
-<script type="text/javascript" src="js/johnresig_date_pretty.js"></script>
+<script type="text/javascript" src="js/date.format.js"></script>
 
 <script>
 
@@ -139,8 +139,12 @@ function loadRows(who) {
         if (data.ERROR != true) {
             for (var i = 0; i < data.length; i++) {
                 var sentTime = data[i].sentTime;
-                var mailDate = sentTime.substr(0, 19); // drop millis etc
-                insertRow(data[i].id, data[i].to, data[i].from, data[i].subject, prettyDate(mailDate), data[i].read);
+                var mailDate = sentTime.substr(0, 19) + "Z"; // drop millis etc
+                var myStringDate = mailDate.replace(/\D/g, " ");
+                var dObj = myStringDate.split(" ");
+                var myDate = new Date(dObj[0], (dObj[1]-1), dObj[2], dObj[3], dObj[4], dObj[5]);
+                var pd = dateFormat(myDate, "m/dd/yy h:MM:ss TT");
+                insertRow(data[i].id, data[i].to, data[i].from, data[i].subject, pd, data[i].read);
             }
         }
     }, "json");

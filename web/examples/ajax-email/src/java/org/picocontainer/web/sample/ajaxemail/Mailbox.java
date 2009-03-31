@@ -4,11 +4,12 @@ import javax.jdo.Query;
 import javax.jdo.PersistenceManager;
 import java.util.List;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 /**
  * Abstract Mailbox
  */
-public abstract class Mailbox {
+public abstract class Mailbox implements IMailbox {
 
     protected final PersistenceManager pm;
     protected final User user;
@@ -37,7 +38,10 @@ public abstract class Mailbox {
     }
 
     private Message getMessage(long msgId) {
+        long b4 = System.currentTimeMillis();
         Collection<Message> coll = (Collection<Message>) getSingleMessageQuery().execute(msgId);
+        long dur = System.currentTimeMillis() - b4;
+        Logger.getAnonymousLogger().info("get msg " + dur);
         if (coll != null && coll.size() == 1) {
             Message message = coll.iterator().next();
             checkUser(message);
@@ -56,10 +60,13 @@ public abstract class Mailbox {
         String key = "SM_" + fromOrTo();
         Query query = queryStore.get(key);
         if (query == null) {
+            long b4 = System.currentTimeMillis();
             query = pm.newQuery(Message.class, "id == message_id");
             query.declareImports("import java.lang.Long");
             query.declareParameters("Long message_id");
             queryStore.put(key, query);
+            long dur = System.currentTimeMillis() - b4;
+            Logger.getAnonymousLogger().info("make Query " + dur);
         }
         return query;
     }
@@ -78,7 +85,12 @@ public abstract class Mailbox {
      * @return the messages
      */
     public Message[] messages() {
-        List<Message> messageCollection = (List<Message>) getMultipleMessageQuery().execute(user.getName());
+        Query query = getMultipleMessageQuery();
+        long b4 = System.currentTimeMillis();
+
+        List<Message> messageCollection = (List<Message>) query.execute(user.getName());
+        long dur = System.currentTimeMillis() - b4;
+        Logger.getAnonymousLogger().info("get msgs " + dur);
         return messageCollection.toArray(new Message[messageCollection.size()]);
     }
 
