@@ -5,9 +5,9 @@ import javax.jdo.PersistenceManager;
 /**
  * Send is a type of Mailbox for a user.
  */
-public class Sent extends Mailbox implements ISent {
+public class JdoSent extends JdoMailbox implements ISent {
 
-    public Sent(PersistenceManager pm, User user, QueryStore queryStore) {
+    public JdoSent(PersistenceManager pm, User user, QueryStore queryStore) {
         super(pm, user, queryStore);
     }
 

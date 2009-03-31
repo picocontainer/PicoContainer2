@@ -9,13 +9,13 @@ import java.util.logging.Logger;
 /**
  * Abstract Mailbox
  */
-public abstract class Mailbox implements IMailbox {
+public abstract class JdoMailbox implements IMailbox {
 
     protected final PersistenceManager pm;
     protected final User user;
     private final QueryStore queryStore;
 
-    public Mailbox(PersistenceManager pm, User user, QueryStore queryStore) {
+    public JdoMailbox(PersistenceManager pm, User user, QueryStore queryStore) {
         this.pm = pm;
         this.user = user;
         this.queryStore = queryStore;
