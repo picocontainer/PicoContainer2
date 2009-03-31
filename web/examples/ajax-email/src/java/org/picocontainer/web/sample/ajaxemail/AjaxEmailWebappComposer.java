@@ -30,8 +30,8 @@ public class AjaxEmailWebappComposer implements WebappComposer {
         pico.addAdapter(new User.FromCookie());
         pico.as(USE_NAMES).addComponent(Auth.class);
 
-        pico.as(USE_NAMES).addComponent(IInbox.class, JdoInbox.class);
-        pico.as(USE_NAMES).addComponent(ISent.class, JdoSent.class);
+        pico.as(USE_NAMES).addComponent(Inbox.class, JdoInbox.class);
+        pico.as(USE_NAMES).addComponent(Sent.class, JdoSent.class);
         pico.addComponent(ReloadData.class);
 
     }

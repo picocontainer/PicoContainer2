@@ -5,7 +5,7 @@ import javax.jdo.PersistenceManager;
 /**
  * Inbox is a type of Mailbox for a user.
  */
-public class JdoInbox extends JdoMailbox implements IInbox {
+public class JdoInbox extends JdoMailbox implements Inbox {
 
     public JdoInbox(PersistenceManager pm, User user, QueryStore queryStore) {
         super(pm, user, queryStore);

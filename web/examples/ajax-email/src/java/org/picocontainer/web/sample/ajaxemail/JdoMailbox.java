@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 /**
  * Abstract Mailbox
  */
-public abstract class JdoMailbox implements IMailbox {
+public abstract class JdoMailbox implements Mailbox {
 
     protected final PersistenceManager pm;
     protected final User user;

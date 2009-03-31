@@ -7,7 +7,7 @@ package org.picocontainer.web.sample.ajaxemail;
  * Time: 10:05:37 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface IMailbox {
+public interface Mailbox {
     Message read(long msgId);
 
     void delete(long msgId);
