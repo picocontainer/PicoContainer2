@@ -52,7 +52,7 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
     protected Object[] getMemberArguments(PicoContainer container, final AccessibleObject member, final Type[] parameterTypes, final Annotation[] bindings) {
         boxParameters(parameterTypes);
         Object[] result = new Object[parameterTypes.length];
-        Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
         for (int i = 0; i < currentParameters.length; i++) {
             result[i] = getParameter(container, member, i, parameterTypes[i], bindings[i], currentParameters[i]);

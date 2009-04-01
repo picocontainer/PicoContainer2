@@ -115,7 +115,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             Type[] parameterTypes = sortedMatchingConstructor.getGenericParameterTypes();
             fixParameterType(sortedMatchingConstructor, parameterTypes);
             Annotation[] bindings = getBindings(sortedMatchingConstructor.getParameterAnnotations());
-            Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+            final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
             // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {

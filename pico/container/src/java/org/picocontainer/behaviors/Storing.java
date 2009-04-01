@@ -23,7 +23,7 @@ import java.util.Properties;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Collections;
-import java.util.concurrent.ConcurrentHashMap;
+//import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Paul Hammant
@@ -75,7 +75,7 @@ public class Storing extends AbstractBehaviorFactory {
     }
 
     public StoreWrapper resetCacheForThread() {
-        Map map = new ConcurrentHashMap();
+        Map map = new HashMap();
         mapThreadLocalObjectReference.set(map);
         StoreWrapper storeWrapper = new StoreWrapper();
         storeWrapper.wrapped = map;
@@ -92,7 +92,7 @@ public class Storing extends AbstractBehaviorFactory {
 
     public static class StoreThreadLocal extends ThreadLocal<Map> implements Serializable {
         protected Map initialValue() {
-            return new ConcurrentHashMap();
+            return new HashMap();
         }
     }
 
