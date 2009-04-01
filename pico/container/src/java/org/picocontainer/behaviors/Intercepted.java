@@ -89,6 +89,8 @@ public class Intercepted<T> extends HiddenImplementation {
 
         void instance(Object instance);
 
+        Object getInstance();
+
         Object getOriginalRetVal();
 
         void override();
@@ -130,49 +132,57 @@ public class Intercepted<T> extends HiddenImplementation {
             this.instance = instance;
         }
 
+        public Object getInstance() {
+            return instance;
+        }
+
         public void override() {
             overridden = true;
         }
     }
 
     public class ControllerWrapper implements Controller {
-        private final ThreadLocal threadLocal;
+        private final ThreadLocal<Controller> threadLocal;
 
-        public ControllerWrapper(ThreadLocal threadLocal) {
+        public ControllerWrapper(ThreadLocal<Controller> threadLocal) {
             this.threadLocal = threadLocal;
         }
 
         public void veto() {
-            ((Controller) threadLocal.get()).veto();
+            threadLocal.get().veto();
         }
 
         public void clear() {
-            ((Controller) threadLocal.get()).clear();
+            threadLocal.get().clear();
         }
 
         public boolean isVetoed() {
-            return ((Controller) threadLocal.get()).isVetoed();
+            return threadLocal.get().isVetoed();
         }
 
         public void setOriginalRetVal(Object retVal) {
-            ((Controller) threadLocal.get()).setOriginalRetVal(retVal);
+            threadLocal.get().setOriginalRetVal(retVal);
         }
 
         public Object getOriginalRetVal() {
-            return ((Controller) threadLocal.get()).getOriginalRetVal();
+            return threadLocal.get().getOriginalRetVal();
         }
 
         public boolean isOverridden() {
-            return ((Controller) threadLocal.get()).isOverridden();
+            return threadLocal.get().isOverridden();
         }
 
         public void instance(Object instance) {
-            ((Controller) threadLocal.get()).instance(instance);
+            threadLocal.get().instance(instance);
 
         }
 
+        public Object getInstance() {
+            return threadLocal.get().getInstance();
+        }
+
         public void override() {
-            ((Controller) threadLocal.get()).override();
+            threadLocal.get().override();
         }
     }
 
