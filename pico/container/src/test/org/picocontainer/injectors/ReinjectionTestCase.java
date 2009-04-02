@@ -51,7 +51,15 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
     public @interface Hurrah {
     }
 
-    public static class NeedsShoe {
+    public static interface INeedsShoe {
+        int doIt(String s);
+
+        Object getBar();
+
+        Object getString();
+    }
+
+    public static class NeedsShoe implements INeedsShoe {
         private Shoe bar;
         private String string;
 
@@ -64,12 +72,28 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
             this.string = s;
             return Integer.parseInt(s) / 2;
         }
+
+        public Object getBar() {
+            return bar;
+        }
+
+        public Object getString() {
+            return string;
+        }
     }
 
     public static class Shoe {
     }
 
-    private static Method DOIT_METHOD = NeedsShoe.class.getMethods()[0];
+    private static Method DOIT_METHOD;
+
+    static {
+        try {
+            DOIT_METHOD = NeedsShoe.class.getMethod("doIt", String.class);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test public void testCachedComponentCanBeReflectionMethodReinjectedByATransientChildContainer() {
         cachedComponentCanBeReinjectedByATransientChildContainer(new MethodInjection(DOIT_METHOD));
@@ -85,32 +109,35 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
 
     private void cachedComponentCanBeReinjectedByATransientChildContainer(AbstractInjectionFactory methodInjection) {
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
-        parent.addComponent(NeedsShoe.class);
+        parent.addComponent(INeedsShoe.class, NeedsShoe.class);
         parent.addComponent(Shoe.class);
         parent.addComponent("12");
 
-        NeedsShoe needsShoe = parent.getComponent(NeedsShoe.class);
-        assertNotNull(needsShoe.bar);
-        assertTrue(needsShoe.string == null);
+        INeedsShoe needsShoe = parent.getComponent(INeedsShoe.class);
+        assertNotNull(needsShoe.getBar());
+        assertTrue(needsShoe.getString() == null);
 
         TransientPicoContainer tpc = new TransientPicoContainer(new Reinjection(methodInjection, parent), parent);
-        tpc.addComponent(NeedsShoe.class);
+        tpc.addComponent(INeedsShoe.class, NeedsShoe.class);
 
-        NeedsShoe needsShoe2 = tpc.getComponent(NeedsShoe.class);
+        INeedsShoe needsShoe2 = tpc.getComponent(INeedsShoe.class);
         assertSame(needsShoe, needsShoe2);
-        assertNotNull(needsShoe2.bar);
-        assertNotNull(needsShoe2.string);
+        assertNotNull(needsShoe2.getBar());
+        assertNotNull(needsShoe2.getString());
 
-        NeedsShoe needsShoe3 = parent.getComponent(NeedsShoe.class);
+        INeedsShoe needsShoe3 = parent.getComponent(INeedsShoe.class);
         assertSame(needsShoe, needsShoe3);
-        assertNotNull(needsShoe3.bar);
-        assertNotNull(needsShoe3.string);
+        assertNotNull(needsShoe3.getBar());
+        assertNotNull(needsShoe3.getString());
     }
 
     @Test
     public void confirmThatReinjectionCanLeverageParameterNamesForDisambiguation() {
         MethodInjection methodInjection = new MethodInjection(DOIT_METHOD);
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
+
+        // parameter name leverage can't work on interfaces if using bytecode retrieval technique
+
         parent.addComponent(NeedsShoe.class);
         parent.addComponent(Shoe.class);
         parent.addComponent("a", "1333");
@@ -162,13 +189,13 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
     private void cachedComponentCanBeReinjectedByATransientReinjector(AbstractInjectionFactory methodInjection) {
         final DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
         parent.setName("parent");
-        parent.addComponent(NeedsShoe.class);
+        parent.addComponent(INeedsShoe.class, NeedsShoe.class);
         parent.addComponent(Shoe.class);
         parent.addComponent("12");
 
-        final NeedsShoe foo = parent.getComponent(NeedsShoe.class);
-        assertNotNull(foo.bar);
-        assertTrue(foo.string == null);
+        final INeedsShoe foo = parent.getComponent(INeedsShoe.class);
+        assertNotNull(foo.getBar());
+        assertTrue(foo.getString() == null);
 
         final ComponentMonitor cm = mockery.mock(ComponentMonitor.class);
         Reinjector reinjector = new Reinjector(parent, cm);
@@ -183,16 +210,16 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         int result = (Integer) o;
         assertEquals(6, result);
 
-        NeedsShoe foo3 = parent.getComponent(NeedsShoe.class);
+        INeedsShoe foo3 = parent.getComponent(INeedsShoe.class);
         assertSame(foo, foo3);
-        assertNotNull(foo3.bar);
-        assertNotNull(foo3.string);
-        assertEquals("12", foo3.string);
+        assertNotNull(foo3.getBar());
+        assertNotNull(foo3.getString());
+        assertEquals("12", foo3.getString());
     }
 
     @Test public void testOverloadedReinjectMethodsAreIdentical() {
         final DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
-        parent.addComponent(NeedsShoe.class);
+        parent.addComponent(INeedsShoe.class, NeedsShoe.class);
         parent.addComponent(Shoe.class);
         parent.addComponent("12");
 
