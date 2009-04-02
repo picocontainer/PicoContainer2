@@ -31,25 +31,4 @@ public class User {
         return password;
     }
 
-    public static class FromCookie extends ProviderAdapter {
-
-        public User provide(UserStore userStore, HttpServletRequest req) {
-			try {
-				String name = new StringFromCookie("userName").provide(req);
-				if (name.equals("")) {
-					throw new NotLoggedIn();
-				}
-				return userStore.getUser(name);
-			} catch (StringFromCookie.CookieNotFound e) {
-				throw new NotLoggedIn();
-			}
-		}
-	}
-
-	@SuppressWarnings("serial")
-	public static class NotLoggedIn extends AjaxEmailException {
-		NotLoggedIn() {
-			super("not logged in");
-		}
-	}
 }

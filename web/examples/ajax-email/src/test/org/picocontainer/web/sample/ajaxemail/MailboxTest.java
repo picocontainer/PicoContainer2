@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import org.picocontainer.web.sample.ajaxemail.JdoMailbox;
 import org.picocontainer.web.sample.ajaxemail.Message;
 import org.picocontainer.web.sample.ajaxemail.User;
 import org.jmock.Mockery;
@@ -49,7 +48,7 @@ public class MailboxTest {
             will(returnValue(data));
         }});
 
-        JdoMailbox mailbox = new MyMailbox(pm, fred);
+        Mailbox mailbox = new MyMailbox(pm, fred);
         Message[] messages = mailbox.messages();
         assertEquals(1, messages.length);
         assertEquals(message, messages[0]);
@@ -67,7 +66,7 @@ public class MailboxTest {
             will(returnValue(data));
         }});
 
-        JdoMailbox mailbox = new MyMailbox(pm, fred);
+        Mailbox mailbox = new MyMailbox(pm, fred);
         assertEquals(message, mailbox.read(2));
         verifyMessage(message, true);
     }
@@ -83,7 +82,7 @@ public class MailboxTest {
             will(returnValue(new ArrayList()));
         }});
 
-        JdoMailbox mailbox = new MyMailbox(pm, fred);
+        Mailbox mailbox = new MyMailbox(pm, fred);
         try {
             Message message = mailbox.read(22222);
             fail();
@@ -104,7 +103,7 @@ public class MailboxTest {
             one(pm).deletePersistent(message);
         }});
 
-        JdoMailbox mailbox = new MyMailbox(pm, fred);
+        Mailbox mailbox = new MyMailbox(pm, fred);
         mailbox.delete(2);
     }
 
@@ -118,7 +117,7 @@ public class MailboxTest {
             one(query).execute(22222L);
             will(returnValue(null));
         }});
-        JdoMailbox mailbox = new MyMailbox(pm, fred);
+        Mailbox mailbox = new MyMailbox(pm, fred);
         try {
             mailbox.delete(22222);
         } catch (AjaxEmailException e) {
@@ -137,7 +136,7 @@ public class MailboxTest {
         assertEquals(12345, md.getSentTime().getTime());
     }
 
-    private class MyMailbox extends JdoMailbox {
+    private class MyMailbox extends Mailbox {
         public MyMailbox(PersistenceManager pm, User user) {
             super(pm, user, new QueryStore());
         }

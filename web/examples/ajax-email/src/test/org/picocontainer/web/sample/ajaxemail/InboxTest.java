@@ -5,7 +5,6 @@ import org.junit.Before;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.runner.RunWith;
-import org.picocontainer.web.sample.ajaxemail.JdoInbox;
 import org.picocontainer.web.sample.ajaxemail.Message;
 import org.picocontainer.web.sample.ajaxemail.User;
 import org.jmock.integration.junit4.JMock;
@@ -43,7 +42,7 @@ public class InboxTest {
 
     @Test
     public void testInboxCallsRightStoreMethod() {
-        JdoInbox inbox = new JdoInbox(pm, fred, new QueryStore());
+        Inbox inbox = new Inbox(pm, fred, new QueryStore());
         assertEquals(0, inbox.messages().length);
     }
 

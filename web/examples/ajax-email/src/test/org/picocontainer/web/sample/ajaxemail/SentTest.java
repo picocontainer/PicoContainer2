@@ -42,7 +42,7 @@ public class SentTest {
 
     @Test
     public void testInboxCallsRightStoreMethod() {
-        JdoSent sent = new JdoSent(pm, fred, new QueryStore());
+        Sent sent = new Sent(pm, fred, new QueryStore());
         assertEquals(0, sent.messages().length);    }
 
 }

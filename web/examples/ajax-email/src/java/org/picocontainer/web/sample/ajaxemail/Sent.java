@@ -1,15 +1,37 @@
 package org.picocontainer.web.sample.ajaxemail;
 
-public interface Sent extends Mailbox {
+import javax.jdo.PersistenceManager;
+
+/**
+ * Send is a type of Mailbox for a user.
+ */
+public class Sent extends Mailbox {
+
+    public Sent(PersistenceManager pm, User user, QueryStore queryStore) {
+        super(pm, user, queryStore);
+    }
+
+    public Message send(String to, String subject, String message) {
+        return pm.makePersistent(new Message(user.getName(), to, subject,
+                message, false, System.currentTimeMillis()));
+    }
 
     /**
-     * Send a message
-     *
-     * @param to  the recipient
-     * @param subject the message subject
-     * @param message the message body
-     * @return the resulting message
+     * A guard to prevent someone trying to read emails for others users (they are not logged in as)
+     * @param message
      */
-    Message send(String to, String subject, String message);
+    protected void checkUser(Message message) {
+        if (message.getTo().equals(user.getName())) {
+            throwNotForThisUser();
+        }
+    }
+
+    protected String fromOrTo() {
+        return "from";
+    }
+
+    public String toString() {
+        return "sent-for-" + user.getName();
+    }
 
 }

@@ -27,11 +27,11 @@ public class AjaxEmailWebappComposer implements WebappComposer {
 
     public void composeRequest(MutablePicoContainer pico) {
 
-        pico.addAdapter(new User.FromCookie());
+        pico.addAdapter(new UserFromCookie());
         pico.as(USE_NAMES).addComponent(Auth.class);
 
-        pico.as(USE_NAMES).addComponent(Inbox.class, JdoInbox.class);
-        pico.as(USE_NAMES).addComponent(Sent.class, JdoSent.class);
+        pico.as(USE_NAMES).addComponent(Inbox.class);
+        pico.as(USE_NAMES).addComponent(Sent.class);
         pico.addComponent(ReloadData.class);
 
     }
