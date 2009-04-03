@@ -8,6 +8,11 @@
 package org.picocontainer.web;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -22,9 +27,14 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.BehaviorFactory;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.NameBinding;
+import org.picocontainer.PicoException;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.containers.AbstractDelegatingPicoContainer;
 import org.picocontainer.behaviors.Storing;
 import org.picocontainer.behaviors.Guarding;
 import org.picocontainer.behaviors.Caching;
@@ -142,8 +152,8 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
         return new NullComponentMonitor();
     }
 
-    protected BehaviorFactory addRequestBehaviors(BehaviorFactory reqStoring) {
-        return reqStoring;
+    protected BehaviorFactory addRequestBehaviors(BehaviorFactory beforeThisBehaviorFactory) {
+        return beforeThisBehaviorFactory;
     }
 
     /**

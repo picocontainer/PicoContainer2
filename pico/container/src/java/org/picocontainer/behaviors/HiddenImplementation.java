@@ -77,13 +77,12 @@ public class HiddenImplementation<T> extends AbstractBehavior<T> {
     protected Object invokeMethod(Object componentInstance, Method method, Object[] args, PicoContainer container) throws Throwable {
         ComponentMonitor componentMonitor = currentMonitor();
         try {
-            componentMonitor.invoking(container, this, method, componentInstance);
+            componentMonitor.invoking(container, this, method, componentInstance, args);
             long startTime = System.currentTimeMillis();
-            Object object = method.invoke(componentInstance, args);
-            componentMonitor.invoked(container,
-                                     this,
-                                     method, componentInstance, System.currentTimeMillis() - startTime);
-            return object;
+            Object rv = method.invoke(componentInstance, args);
+            componentMonitor.invoked(container, this,
+                                     method, componentInstance, System.currentTimeMillis() - startTime, args, rv);
+            return rv;
         } catch (final InvocationTargetException ite) {
             componentMonitor.invocationFailed(method, componentInstance, ite);
             throw ite.getTargetException();

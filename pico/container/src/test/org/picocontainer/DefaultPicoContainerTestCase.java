@@ -255,11 +255,12 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		final StringBuffer sb = new StringBuffer();
 		DefaultPicoContainer dpc = new DefaultPicoContainer(
 				new NullComponentMonitor() {
-					public void invoking(PicoContainer container,
-							ComponentAdapter componentAdapter, Member member,
-							Object instance) {
+					public Object invoking(PicoContainer container,
+                                           ComponentAdapter componentAdapter, Member member,
+                                           Object instance, Object[] args) {
 						sb.append(member.toString());
-					}
+                        return null;
+                    }
 				});
 		dpc.as(Characteristics.CACHE).addComponent(DefaultPicoContainer.class);
 		dpc.start();

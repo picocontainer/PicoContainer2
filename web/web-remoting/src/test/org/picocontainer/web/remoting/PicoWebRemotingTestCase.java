@@ -13,13 +13,19 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Collection;
+import java.util.logging.Logger;
 import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Member;
 
 import org.junit.Test;
 import org.junit.ComparisonFailure;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.web.NONE;
 import static org.picocontainer.web.remoting.JsonPicoWebRemotingServlet.makeJsonDriver;
 
@@ -69,24 +75,28 @@ public final class PicoWebRemotingTestCase {
     @Test
     public void testMissingMethodWillCauseAMethodList() throws Exception {
         PicoWebRemoting pwr = new PicoWebRemoting(xStream, "alpha/", null, "y", false, true);
-        pwr.directorize("alpha/beta", Foo.class);
+        pwr.directorize("alpha/beta", Foo.class, Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
-        String result = pwr.processRequest("/beta/", pico, "GET");
+        String result = pwr.processRequest("/beta/", pico, "GET", new NullComponentMonitor());
         try {
             assertEquals(
                 "[\n" +
+                    "  \"aCol\",\n" +
                     "  \"hello\",\n" +
                     "  \"color\",\n" +
-                    "  \"goodbye\"\n" +
+                    "  \"goodbye\",\n" +
+                    "  \"aList\"\n" +
                     "]\n", result);
         } catch (ComparisonFailure e) { // Eclipse !
             assertEquals(
                 "[\n" +
                     "  \"color\",\n" +
                     "  \"hello\",\n" +
-                    "  \"goodbye\"\n" +
+                    "  \"goodbye\",\n" +
+                    "  \"aList\",\n" +
+                    "  \"aCol\"\n" +
                     "]\n", result);
         }
     }
@@ -95,12 +105,12 @@ public final class PicoWebRemotingTestCase {
     public void testMissingParamWillCauseASuitableMessage() throws Exception {
         PicoWebRemoting pwr = new PicoWebRemoting(xStream, "alpha/", null, "y", false, true);
         pwr.setMonitor(new NullPicoWebRemotingMonitor());
-        pwr.directorize("alpha/Foo", Foo.class);
+        pwr.directorize("alpha/Foo", Foo.class, Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Foo.class);
 
-        String result = pwr.processRequest("/Foo/hello", pico, "GET");
+        String result = pwr.processRequest("/Foo/hello", pico, "GET", new NullComponentMonitor());
         assertEquals(
                 "{\n" +
                 "  \"ERROR\": true,\n" +
@@ -111,23 +121,23 @@ public final class PicoWebRemotingTestCase {
     @Test
     public void testRightParamWillCauseInvocation() throws Exception {
         PicoWebRemoting pwr = new PicoWebRemoting(xStream, "alpha/", null, "y", false, true);
-        pwr.directorize("alpha/Foo", Foo.class);
+        pwr.directorize("alpha/Foo", Foo.class, Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Foo.class);
         pico.addComponent("longArg", new Long(123));
 
-        String result = pwr.processRequest("/Foo/hello", pico, "GET");
+        String result = pwr.processRequest("/Foo/hello", pico, "GET", new NullComponentMonitor());
         assertEquals("11\n", result);
 
-        result = pwr.processRequest("/Foo/goodbye", pico, "GET");
+        result = pwr.processRequest("/Foo/goodbye", pico, "GET", new NullComponentMonitor());
         assertEquals("33\n", result);
     }
 
     @Test
     public void testCanBeVisited() throws Exception {
         PicoWebRemoting pwr = new PicoWebRemoting(xStream, "alpha/", null, "y", false, true);
-        pwr.directorize("alpha/Foo", Foo.class);
+        pwr.directorize("alpha/Foo", Foo.class, Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Foo.class);
@@ -150,15 +160,19 @@ public final class PicoWebRemotingTestCase {
         try {
             assertEquals(
                 "sc:java/lang/Object;" +
-                      "m:color,getColor;" +
+                      "m:aCol,aCol;" +
                       "m:hello,hello;" +
-                      "m:goodbye,goodbye;", sb.toString());
+                      "m:color,getColor;" +
+                      "m:goodbye,goodbye;" +
+                      "m:aList,aList;", sb.toString());
         } catch (ComparisonFailure e) {
             assertEquals(
                 "sc:java/lang/Object;" +
                       "m:hello,hello;" +
                       "m:color,getColor;" +
-                      "m:goodbye,goodbye;", sb.toString());
+                      "m:goodbye,goodbye;" +
+                      "m:aCol,aCol;" +
+                      "m:aList,aList;", sb.toString());
         }
     }
 
@@ -173,23 +187,23 @@ public final class PicoWebRemotingTestCase {
 
         pico.addComponent("longArg", new Long(123));
 
-        String result = pwr.processRequest("/picowebremotingtestcase$foo/hello", pico, "GET");
+        String result = pwr.processRequest("/picowebremotingtestcase$foo/hello", pico, "GET", new NullComponentMonitor());
         assertEquals("11\n", result);
 
-        result = pwr.processRequest("/picowebremotingtestcase$foo/goodbye", pico, "GET");
+        result = pwr.processRequest("/picowebremotingtestcase$foo/goodbye", pico, "GET", new NullComponentMonitor());
         assertEquals("33\n", result);
     }
 
     @Test
     public void testRightParamWillCauseInvocation2() throws Exception {
         PicoWebRemoting pwr = new PicoWebRemoting(xStream, "alpha/", ".ajax", "y", false, true);
-        pwr.directorize("alpha/Foo", Foo.class);
+        pwr.directorize("alpha/Foo", Foo.class, Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Foo.class);
         pico.addComponent("longArg", new Long(123));
 
-        String result = pwr.processRequest("/Foo/hello.ajax", pico, "GET");
+        String result = pwr.processRequest("/Foo/hello.ajax", pico, "GET", new NullComponentMonitor());
         assertEquals("11\n", result);
 
     }
@@ -198,19 +212,19 @@ public final class PicoWebRemotingTestCase {
     public void testRightParamWillCauseInvocationWithNoPrefix() throws Exception {
         PicoWebRemoting pwr = new PicoWebRemoting(xStream, "", null, "y", false, true);
         pwr.setMonitor(new NullPicoWebRemotingMonitor());
-        pwr.directorize("Foo", Foo.class);
+        pwr.directorize("Foo", Foo.class, Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Foo.class);
         pico.addComponent("longArg", new Long(123));
 
-        String result = pwr.processRequest("/Foo/hello", pico, "GET");
+        String result = pwr.processRequest("/Foo/hello", pico, "GET", new NullComponentMonitor());
         assertEquals("11\n", result);
 
-        result = pwr.processRequest("/Foo/goodbye", pico, "GET");
+        result = pwr.processRequest("/Foo/goodbye", pico, "GET", new NullComponentMonitor());
         assertEquals("33\n", result);
         
-        result = pwr.processRequest("/Foo/color", pico, "GET");
+        result = pwr.processRequest("/Foo/color", pico, "GET", new NullComponentMonitor());
         assertEquals("{\n" +
                 "  \"red\": 255,\n" +
                 "  \"green\": 0,\n" +
@@ -218,13 +232,13 @@ public final class PicoWebRemotingTestCase {
                 "  \"alpha\": 255\n" +
                 "}\n", result);
 
-        result = pwr.processRequest("/Foo/color", pico, "DELETE");
+        result = pwr.processRequest("/Foo/color", pico, "DELETE", new NullComponentMonitor());
         assertEquals("true\n", result);
 
-        result = pwr.processRequest("/Foo/color", pico, "POST");
+        result = pwr.processRequest("/Foo/color", pico, "POST", new NullComponentMonitor());
         assertEquals("\"posted color\"\n", result);
 
-        result = pwr.processRequest("/Foo/color", pico, "PUT");
+        result = pwr.processRequest("/Foo/color", pico, "PUT", new NullComponentMonitor());
         assertEquals("\"put color\"\n", result);
     }
 
@@ -233,12 +247,12 @@ public final class PicoWebRemotingTestCase {
         PicoWebRemoting pwr = new PicoWebRemoting(xStream, "alpha/", null, "y", false, true);
         pwr.setMonitor(new NullPicoWebRemotingMonitor());
 
-        pwr.directorize("alpha/Foo", Foo.class);
+        pwr.directorize("alpha/Foo", Foo.class, Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Foo.class);
 
-        String result = pwr.processRequest("/Foo/shhh", pico, "GET");
+        String result = pwr.processRequest("/Foo/shhh", pico, "GET", new NullComponentMonitor());
         assertEquals("{\n" +
                 "  \"ERROR\": true,\n" +
                 "  \"message\": \"Nothing matches the path requested\"\n" +
@@ -251,18 +265,42 @@ public final class PicoWebRemotingTestCase {
         PicoWebRemoting pwr = new PicoWebRemoting(xStream, "alpha/", null, "y", false, true);
         pwr.setMonitor(new NullPicoWebRemotingMonitor());
 
-        pwr.directorize("alpha/Foo", Foo.class);
+        pwr.directorize("alpha/Foo", Foo.class, Foo.class);
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
         pico.addComponent(Foo.class);
 
-        String result = pwr.processRequest("/Foo/kjhsdfjhsdfjhgasdfadfsdf", pico, "GET");
+        String result = pwr.processRequest("/Foo/kjhsdfjhsdfjhgasdfadfsdf", pico, "GET", new NullComponentMonitor());
         assertEquals("{\n" +
                 "  \"ERROR\": true,\n" +
                 "  \"message\": \"Nothing matches the path requested\"\n" +
                 "}\n", result);
 
     }
+
+    @Test
+    public void testCollectionAndListResults() throws Exception {
+        PicoWebRemoting pwr = new PicoWebRemoting(new XStream(makeJsonDriver(JsonWriter.DROP_ROOT_MODE)), "org/picocontainer/web/remoting/", null, "y", true, true);
+        pwr.setMonitor(new NullPicoWebRemotingMonitor());
+
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        pico.addComponent(Foo.class);
+        pwr.publishAdapters(pico.getComponentAdapters(), "y");
+
+        pico.addComponent("longArg", new Long(123));
+
+        assertEquals("[\n" +
+                "  12,\n" +
+                "  13\n" +
+                "]\n", pwr.processRequest("/picowebremotingtestcase$foo/aCol", pico, "GET", new NullComponentMonitor()));
+
+        assertEquals("[\n" +
+                "  33,\n" +
+                "  34\n" +
+                "]\n", pwr.processRequest("/picowebremotingtestcase$foo/aList", pico, "GET", new NullComponentMonitor()));
+
+    }
+
 
     public static class Foo {
         public int hello(long longArg) {
@@ -292,6 +330,20 @@ public final class PicoWebRemotingTestCase {
         @NONE
         public boolean shhh() {
             return true;
+        }
+
+        public Collection<Integer> aCol() {
+            ArrayList<Integer> list = new ArrayList<Integer>();
+            list.add(12);
+            list.add(13);
+            return list;
+        }
+
+        public List<Integer> aList() {
+            ArrayList<Integer> list = new ArrayList<Integer>();
+            list.add(33);
+            list.add(34);
+            return list;
         }
     }
 

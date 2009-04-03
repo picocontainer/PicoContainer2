@@ -39,7 +39,7 @@ $(document).ready(function() {
         $("#replyMessage").hide();
     }
 
-    $.get("json/Auth/whoIsLoggedIn", {}, function(loggedInUser) {
+    $.post("json/Auth/whoIsLoggedIn", {}, function(loggedInUser) {
         if (loggedInUser == "") {
             $.blockUI({message: $('#loginPlease'), css: {width:'540px', height:'180px'}});
         } else {
@@ -155,7 +155,7 @@ function readMessage() {
     {
         $(this).removeClass("mail_unread");
     }
-    $.post("json/" + view + "/read", {msgId: this.id}, function(data) {
+    $.get("json/" + view + "/read", {msgId: this.id}, function(data) {
         if (data.ERROR == undefined) {
             // using JSON objects
             document.readMessageForm.subject.value = data.subject;

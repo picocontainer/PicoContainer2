@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Use this as a starting pont to work out how to integrate you web framework with PicoContainer
+ * Use this as a starting point to work out how to integrate your web framework with PicoContainer
  */
 public class StubServlet extends HttpServlet {
 

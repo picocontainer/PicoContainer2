@@ -91,12 +91,12 @@ public class PropertyApplicator<T> extends AbstractBehavior<T> {
                 Object valueToInvoke = this.getSetterParameter(propertyName, propertyValue, componentInstance, container);
 
                 try {
-                    componentMonitor.invoking(container, PropertyApplicator.this, setter, componentInstance);
+                    componentMonitor.invoking(container, PropertyApplicator.this, setter, componentInstance, new Object[] {valueToInvoke});
                     long startTime = System.currentTimeMillis();
                     setter.invoke(componentInstance, valueToInvoke);
                     componentMonitor.invoked(container,
                                              PropertyApplicator.this,
-                                             setter, componentInstance, System.currentTimeMillis() - startTime);
+                                             setter, componentInstance, System.currentTimeMillis() - startTime, new Object[] {valueToInvoke}, null);
                 } catch (final Exception e) {
                     componentMonitor.invocationFailed(setter, componentInstance, e);
                     throw new PicoCompositionException("Failed to set property " + propertyName + " to " + propertyValue + ": " + e.getMessage(), e);

@@ -10,14 +10,9 @@
 
 package org.picocontainer;
 
-import org.picocontainer.behaviors.Cached;
-import org.picocontainer.adapters.InstanceAdapter;
-import org.picocontainer.adapters.AbstractAdapter;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 
 /**
  * A component monitor is responsible for monitoring the component instantiation
@@ -29,6 +24,8 @@ import java.lang.reflect.Type;
  * @author Mauro Talevi
  */
 public interface ComponentMonitor {
+
+    Object KEEP = new Object();
 
     /**
      * Event thrown as the component is being instantiated using the given constructor
@@ -79,23 +76,26 @@ public interface ComponentMonitor {
      * @param componentAdapter
      * @param member
      * @param instance the component instance
+     * @param args
      */
-    void invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance);
+    Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object[] args);
 
     /**
      * Event thrown after the component method has been invoked on the given instance
      * 
      * @param container
      * @param componentAdapter
-     * @param method the Method invoked on the component instance
+     * @param member
      * @param instance the component instance
-     * @param duration the duration in millis of the invocation
+     * @param duration
+     * @param args
+     * @param retVal
      */
     void invoked(PicoContainer container,
                  ComponentAdapter<?> componentAdapter,
-                 Method method,
+                 Member member,
                  Object instance,
-                 long duration);
+                 long duration, Object[] args, Object retVal);
 
     /**
      * Event thrown if the component method invocation failed on the given instance

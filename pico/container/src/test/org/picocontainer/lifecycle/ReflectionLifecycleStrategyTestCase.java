@@ -86,20 +86,20 @@ public class ReflectionLifecycleStrategyTestCase {
 				one(componentMonitor).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
-						with(isDisposeMember), with(same(disposable)));
+						with(isDisposeMember), with(same(disposable)), with(any(Object[].class)));
 				one(componentMonitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isDisposeMethod), with(same(disposable)),
-						with(any(Long.class)));
+                        with(any(Long.class)), with(any(Object[].class)), with(same(null)));
 				one(componentMonitor2).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
-						with(isDisposeMember), with(same(disposable)));
+						with(isDisposeMember), with(same(disposable)), with(any(Object[].class)));
 				one(componentMonitor2).invoked(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isDisposeMethod), with(same(disposable)),
-						with(any(Long.class)));
+                        with(any(Long.class)), with(any(Object[].class)), with(same(null)));
 			}
 		});
 		strategy.dispose(disposable);
@@ -124,27 +124,27 @@ public class ReflectionLifecycleStrategyTestCase {
 				one(componentMonitor).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
-						with(isStartMember), with(same(lifecycle)));
+						with(isStartMember), with(same(lifecycle)), with(any(Object[].class)));
 				one(componentMonitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isStartMethod), with(same(lifecycle)),
-						with(any(Long.class)));
+                        with(any(Long.class)), with(any(Object[].class)), with(same(null)));
 				one(componentMonitor).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
-						with(isStopMember), with(same(lifecycle)));
+						with(isStopMember), with(same(lifecycle)), with(any(Object[].class)));
 				one(componentMonitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isStopMethod), with(same(lifecycle)),
-						with(any(Long.class)));
+                        with(any(Long.class)), with(any(Object[].class)), with(same(null)));
 				one(componentMonitor).invoking(
 						with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
-						with(isDisposeMember), with(same(lifecycle)));
+						with(isDisposeMember), with(same(lifecycle)), with(any(Object[].class)));
 				one(componentMonitor).invoked(with(aNull(PicoContainer.class)),
 						with(aNull(ComponentAdapter.class)),
 						with(isDisposeMethod), with(same(lifecycle)),
-						with(any(Long.class)));
+                        with(any(Long.class)), with(any(Object[].class)), with(same(null)));
 			}
 		});
 
@@ -174,20 +174,20 @@ public class ReflectionLifecycleStrategyTestCase {
 					one(componentMonitor).invoking(
 							with(aNull(PicoContainer.class)),
 							with(aNull(ComponentAdapter.class)),
-							with(isStartMember), with(same(mock)));
+							with(isStartMember), with(same(mock)), with(any(Object[].class)));
 					one(componentMonitor)
 							.invoked(with(aNull(PicoContainer.class)),
 									with(aNull(ComponentAdapter.class)),
 									with(isStartMethod), with(same(mock)),
-									with(any(Long.class)));
+                                    with(any(Long.class)), with(any(Object[].class)), with(same(null)));
 					one(componentMonitor).invoking(
 							with(aNull(PicoContainer.class)),
 							with(aNull(ComponentAdapter.class)),
-							with(isStopMember), with(same(mock)));
+							with(isStopMember), with(same(mock)), with(any(Object[].class)));
 					one(componentMonitor).invoked(
 							with(aNull(PicoContainer.class)),
 							with(aNull(ComponentAdapter.class)),
-							with(isStopMethod), with(same(mock)), with(any(Long.class)));
+							with(isStopMethod), with(same(mock)), with(any(Long.class)), with(any(Object[].class)), with(same(null)));
 				}
 			});
 			return mock;
@@ -200,12 +200,12 @@ public class ReflectionLifecycleStrategyTestCase {
 					one(componentMonitor).invoking(
 							with(aNull(PicoContainer.class)),
 							with(aNull(ComponentAdapter.class)),
-							with(isDisposeMember), with(same(mock)));
+							with(isDisposeMember), with(same(mock)), with(any(Object[].class)));
 					one(componentMonitor)
 							.invoked(with(aNull(PicoContainer.class)),
 									with(aNull(ComponentAdapter.class)),
 									with(isDisposeMethod), with(same(mock)),
-									with(any(Long.class)));
+                                    with(any(Long.class)), with(any(Object[].class)), with(same(null)));
 				}
 			});
 			return mock;

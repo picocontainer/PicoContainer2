@@ -405,16 +405,21 @@ public class DefaultPicoContainerLifecycleTestCase {
             one(s2).start();
             one(s2).stop();
             // s1 expectations
-            one(cm).invoking(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("start", (Class[])null))), with(same(s1)));
+            one(cm).invoking(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("start", (Class[])null))), with(same(s1)), with(any(Object[].class)));
             one(cm).lifecycleInvocationFailed(with(aNull(MutablePicoContainer.class)), with(aNull(ComponentAdapter.class)), with(any(Method.class)), with(same(s1)), with(any(RuntimeException.class)));
-            one(cm).invoking(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("stop", (Class[])null))), with(same(s1)));
-            one(cm).invoked(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("stop", (Class[])null))), with(same(s1)), with(any(Long.class)));
-
+            one(cm).invoking(with(aNull(PicoContainer.class)),
+                    with(aNull(ComponentAdapter.class)),
+                    with(equal(Startable.class.getMethod("stop", (Class[])null))),
+                    with(same(s1)), with(any(Object[].class)));
+            one(cm).invoked(with(aNull(PicoContainer.class)),
+                    with(aNull(ComponentAdapter.class)),
+                    with(equal(Startable.class.getMethod("stop", (Class[])null))),
+                    with(same(s1)), with(any(Long.class)), with(any(Object[].class)), with(same(null)));
             // s2 expectations
-            one(cm).invoking(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("start", (Class[])null))), with(same(s2)));
-            one(cm).invoked(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("start", (Class[])null))), with(same(s2)), with(any(Long.class)));
-            one(cm).invoking(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("stop", (Class[])null))), with(same(s2)));
-            one(cm).invoked(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("stop", (Class[])null))), with(same(s2)), with(any(Long.class)));
+            one(cm).invoking(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("start", (Class[])null))), with(same(s2)), with(any(Object[].class)));
+            one(cm).invoked(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("start", (Class[])null))), with(same(s2)), with(any(Long.class)), with(any(Object[].class)), with(same(null)));
+            one(cm).invoking(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("stop", (Class[])null))), with(same(s2)), with(any(Object[].class)));
+            one(cm).invoked(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("stop", (Class[])null))), with(same(s2)), with(any(Long.class)), with(any(Object[].class)), with(same(null)));
     	}});
 
         DefaultPicoContainer dpc = new DefaultPicoContainer(cm);

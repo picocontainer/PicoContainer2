@@ -56,9 +56,9 @@ public final class JavaEE5LifecycleStrategy extends AbstractMonitoringLifecycleS
             if (method.isAnnotationPresent(annotation)) {
                 try {
                     long str = System.currentTimeMillis();
-                    currentMonitor().invoking(null, null, method, component);
+                    currentMonitor().invoking(null, null, method, component, new Object[0]);
                     method.invoke(component);
-                    currentMonitor().invoked(null, null, method, component, System.currentTimeMillis() - str);
+                    currentMonitor().invoked(null, null, method, component, System.currentTimeMillis() - str, new Object[0], null);
                 } catch (IllegalAccessException e) {
                     throw new PicoLifecycleException(method, component, e);
                 } catch (InvocationTargetException e) {

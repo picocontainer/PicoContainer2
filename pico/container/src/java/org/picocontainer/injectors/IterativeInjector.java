@@ -155,12 +155,18 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         try {
             for (int i = 0; i < injectionMembers.size(); i++) {
                 member = injectionMembers.get(i);
-                componentMonitor.invoking(container, this, (Member) member, componentInstance);
                 if (matchingParameters[i] != null) {
                     Object toInject = matchingParameters[i].resolveInstance(guardedContainer, this, injectionTypes[i],
                                                                             makeParameterNameImpl(injectionMembers.get(i)),
                                                                             useNames(), bindings[i]);
-                    lastReturn = injectIntoMember(member, componentInstance, toInject);
+                    Object rv = componentMonitor.invoking(container, this, (Member) member, componentInstance, new Object[] {toInject});
+                    if (rv == ComponentMonitor.KEEP) {
+                        long str = System.currentTimeMillis();
+                        lastReturn = injectIntoMember(member, componentInstance, toInject);
+                        componentMonitor.invoked(container, this, (Member) member, componentInstance, System.currentTimeMillis() - str, new Object[] {toInject}, lastReturn);
+                    } else {
+                        lastReturn = rv;
+                    }
                     injected[i] = toInject;
                 }
             }

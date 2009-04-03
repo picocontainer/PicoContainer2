@@ -15,13 +15,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.Characteristics;
+import org.picocontainer.*;
+import org.picocontainer.Injector;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
@@ -36,6 +31,8 @@ import org.jmock.api.Invocation;
 import org.hamcrest.Description;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Member;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -163,9 +160,11 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
     @Test public void testCachedComponentCanBeReinjectedByATransientReflectionMethodReinjector() {
         cachedComponentCanBeReinjectedByATransientReinjector(new MethodInjection(DOIT_METHOD));
     }
+
     @Test public void testCachedComponentCanBeReinjectedByATransientMethodNameReinjector() {
         cachedComponentCanBeReinjectedByATransientReinjector(new MethodInjection("doIt"));
     }
+
     @Test public void testCachedComponentCanBeReinjectedByATransientAnnotatedMethodReinjector() {
         cachedComponentCanBeReinjectedByATransientReinjector(new AnnotatedMethodInjection(Hurrah.class, false));
     }
@@ -203,7 +202,10 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
             atLeast(1).of(cm).newInjector(with(any(org.picocontainer.Injector.class)));
             will(new ReturnParameterAction(0));
             one(cm).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)),
-                    with(any(Method.class)), with(any(Object.class)));
+                    with(any(Method.class)), with(any(Object.class)), with(any(Object[].class)));
+            will(returnValue(ComponentMonitor.KEEP));
+            one(cm).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)),
+                    with(any(Method.class)), with(any(Object.class)), with(any(Long.class)), with(any(Object[].class)), with(any(Integer.class)));
         }});
 
         Object o = reinjector.reinject(NeedsShoe.class, methodInjection);
@@ -229,6 +231,60 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         int result = (Integer) reinjector.reinject(NeedsShoe.class, DOIT_METHOD);
         assertEquals(6, (int) (Integer) reinjector.reinject(NeedsShoe.class, DOIT_METHOD));
         assertEquals(6, (int) (Integer) reinjector.reinject(NeedsShoe.class, new MethodInjection(DOIT_METHOD)));
+
+    }
+
+    @Test public void testReinjectorCanBeOverridenByComponentMonitor() {
+        final DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
+        parent.addComponent(INeedsShoe.class, NeedsShoe.class);
+        parent.addComponent(Shoe.class);
+        parent.addComponent("12");
+
+        final ComponentMonitor cm = new NullComponentMonitor() {
+            public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object[] args) {
+                return 4444;
+            }
+        };
+        Reinjector reinjector = new Reinjector(parent, cm);
+
+        int result = (Integer) reinjector.reinject(NeedsShoe.class, DOIT_METHOD);
+        assertEquals(4444, (int) (Integer) reinjector.reinject(NeedsShoe.class, DOIT_METHOD));
+
+    }
+
+    @Test public void testReinjectorCanBeHonoredByComponentMonitor() {
+        final DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
+        parent.addComponent(INeedsShoe.class, NeedsShoe.class);
+        parent.addComponent(Shoe.class);
+        parent.addComponent("12");
+
+        final ComponentMonitor cm = new NullComponentMonitor() {
+            public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object[] args) {
+                return ComponentMonitor.KEEP;
+            }
+        };
+        Reinjector reinjector = new Reinjector(parent, cm);
+
+        int result = (Integer) reinjector.reinject(NeedsShoe.class, DOIT_METHOD);
+        assertEquals(6, (int) (Integer) reinjector.reinject(NeedsShoe.class, DOIT_METHOD));
+
+    }
+
+    @Test public void testReinjectorCanBeNullifiedByComponentMonitor() {
+        final DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
+        parent.addComponent(INeedsShoe.class, NeedsShoe.class);
+        parent.addComponent(Shoe.class);
+        parent.addComponent("12");
+
+        final ComponentMonitor cm = new NullComponentMonitor() {
+            public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object[] args) {
+                return null;
+            }
+        };
+        Reinjector reinjector = new Reinjector(parent, cm);
+
+        Object retval = reinjector.reinject(NeedsShoe.class, DOIT_METHOD);
+        assertTrue(retval == null);
 
     }
 

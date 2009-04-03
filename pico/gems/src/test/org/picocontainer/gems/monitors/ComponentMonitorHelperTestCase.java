@@ -81,12 +81,12 @@ public abstract class ComponentMonitorHelperTestCase {
     }
 
     @Test public void testShouldTraceInvoking() throws IOException {
-        componentMonitor.invoking(null, null, method, this);
+        componentMonitor.invoking(null, null, method, this, new Object[] {"1","2"});
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKING, methodToString(method), this));
     }
 
     @Test public void testShouldTraceInvoked() throws IOException {
-        componentMonitor.invoked(null, null, method, this, 543);
+        componentMonitor.invoked(null, null, method, this, 543, new Object[] {"1","2"}, "3");
         assertFileContent(getLogPrefix() + ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, methodToString(method), this, (long) 543));
     }
 

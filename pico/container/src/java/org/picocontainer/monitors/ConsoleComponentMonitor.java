@@ -104,21 +104,22 @@ public class ConsoleComponentMonitor implements ComponentMonitor, Serializable {
         delegate.instantiationFailed(container, componentAdapter, constructor, cause);
     }
 
-    public void invoking(PicoContainer container,
-                         ComponentAdapter<?> componentAdapter,
-                         Member member,
-                         Object instance) {
+    public Object invoking(PicoContainer container,
+                           ComponentAdapter<?> componentAdapter,
+                           Member member,
+                           Object instance, Object[] args) {
         out.println(format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));
-        delegate.invoking(container, componentAdapter, member, instance);
+        return delegate.invoking(container, componentAdapter, member, instance, args);
     }
 
     public void invoked(PicoContainer container,
                         ComponentAdapter<?> componentAdapter,
-                        Method method,
+                        Member member,
                         Object instance,
-                        long duration) {
-        out.println(format(ComponentMonitorHelper.INVOKED, methodToString(method), instance, duration));
-        delegate.invoked(container, componentAdapter, method, instance, duration);
+                        long duration,
+                        Object[] args, Object retVal) {
+        out.println(format(ComponentMonitorHelper.INVOKED, methodToString(member), instance, duration));
+        delegate.invoked(container, componentAdapter, member, instance, duration, args, retVal);
     }
 
     public void invocationFailed(Member member, Object instance, Exception cause) {

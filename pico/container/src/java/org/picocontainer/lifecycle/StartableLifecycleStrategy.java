@@ -82,10 +82,10 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         doMethodsIfNotDone();
         if (component != null && getStartableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
-            currentMonitor().invoking(null, null, start, component);
+            currentMonitor().invoking(null, null, start, component, new Object[0]);
             try {
                 startComponent(component);
-                currentMonitor().invoked(null, null, start, component, System.currentTimeMillis() - str);
+                currentMonitor().invoked(null, null, start, component, System.currentTimeMillis() - str, new Object[0], null);
             } catch (RuntimeException cause) {
                 currentMonitor().lifecycleInvocationFailed(null, null, start, component, cause); // may re-throw
             }
@@ -121,10 +121,10 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         doMethodsIfNotDone();
         if (component != null && getStartableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
-            currentMonitor().invoking(null, null, stop, component);
+            currentMonitor().invoking(null, null, stop, component, new Object[0]);
             try {
                 stopComponent(component);
-                currentMonitor().invoked(null, null, stop, component, System.currentTimeMillis() - str);
+                currentMonitor().invoked(null, null, stop, component, System.currentTimeMillis() - str, new Object[0], null);
             } catch (RuntimeException cause) {
                 currentMonitor().lifecycleInvocationFailed(null, null, stop, component, cause); // may re-throw
             }
@@ -136,10 +136,10 @@ public class StartableLifecycleStrategy extends AbstractMonitoringLifecycleStrat
         doMethodsIfNotDone();
         if (component != null && getDisposableInterface().isAssignableFrom(component.getClass())) {
             long str = System.currentTimeMillis();
-            currentMonitor().invoking(null, null, dispose, component);
+            currentMonitor().invoking(null, null, dispose, component, new Object[0]);
             try {
                 disposeComponent(component);
-                currentMonitor().invoked(null, null, dispose, component, System.currentTimeMillis() - str);
+                currentMonitor().invoked(null, null, dispose, component, System.currentTimeMillis() - str, new Object[0], null);
             } catch (RuntimeException cause) {
                 currentMonitor().lifecycleInvocationFailed(null, null, dispose, component, cause); // may re-throw
             }

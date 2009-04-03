@@ -50,17 +50,18 @@ public class NullComponentMonitor implements ComponentMonitor, Serializable {
                              long duration) {
     }
 
-    public void invoking(PicoContainer container,
-                         ComponentAdapter<?> componentAdapter,
-                         Member member,
-                         Object instance) {
+    public Object invoking(PicoContainer container,
+                           ComponentAdapter<?> componentAdapter,
+                           Member member,
+                           Object instance, Object[] args) {
+        return KEEP;
     }
 
     public void invoked(PicoContainer container,
                         ComponentAdapter<?> componentAdapter,
-                        Method method,
+                        Member member,
                         Object instance,
-                        long duration) {
+                        long duration, Object[] args, Object retVal) {
     }
 
     public void invocationFailed(Member member, Object instance, Exception e) {

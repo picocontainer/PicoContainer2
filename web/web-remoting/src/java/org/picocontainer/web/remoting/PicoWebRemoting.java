@@ -19,12 +19,14 @@ import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 import org.picocontainer.PicoContainer;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.web.GET;
 import org.picocontainer.web.POST;
 import org.picocontainer.web.DELETE;
@@ -79,7 +81,7 @@ public class PicoWebRemoting {
         this.monitor = monitor;
     }
 
-    protected String processRequest(String pathInfo, PicoContainer reqContainer, String httpMethod) throws IOException {
+    protected String processRequest(String pathInfo, PicoContainer reqContainer, String httpMethod, NullComponentMonitor monitor) throws IOException {
 
         try {
             String path = pathInfo.substring(1);
@@ -92,7 +94,10 @@ public class PicoWebRemoting {
                 path = path.substring(0, path.indexOf(suffixToStrip));
             }
 
-            Object node = getNode(reqContainer, httpMethod, path);
+            long b4 = System.currentTimeMillis();
+            Object node = getNode(reqContainer, httpMethod, path, monitor);
+            long dur = System.currentTimeMillis() - b4;
+            Logger.getAnonymousLogger().info("Invocation duration " + dur);
 
             if (node instanceof Directories) {
                 Directories directories = (Directories) node;
@@ -101,7 +106,11 @@ public class PicoWebRemoting {
                 WebMethods methods = (WebMethods) node;
                 return xStream.toXML(methods.keySet().toArray()) + "\n";
             } else if (node != null && isComposite(node)) {
-                return xStream.toXML(node) + "\n";
+                b4 = System.currentTimeMillis();
+                String s = xStream.toXML(node) + "\n";
+                dur = System.currentTimeMillis() - b4;
+                Logger.getAnonymousLogger().info("XStream duration " + dur);
+                return s;
             } else if (node != null) {
                 return node != null ? xStream.toXML(node) + "\n" : null;
             } else {
@@ -109,11 +118,11 @@ public class PicoWebRemoting {
             }
 
         } catch (SingleMemberInjector.ParameterCannotBeNullException e) {
-            return errorResult(monitor.nullParameterForMethodInvocation(e.getParameterName()));
+            return errorResult(this.monitor.nullParameterForMethodInvocation(e.getParameterName()));
         } catch (PicoCompositionException e) {
-            return errorResult(monitor.picoCompositionExceptionForMethodInvocation(e));
+            return errorResult(this.monitor.picoCompositionExceptionForMethodInvocation(e));
         } catch (RuntimeException e) {
-            Object o = monitor.runtimeExceptionForMethodInvocation(e);
+            Object o = this.monitor.runtimeExceptionForMethodInvocation(e);
             return errorResult(o);
         }
 
@@ -123,7 +132,7 @@ public class PicoWebRemoting {
         return new PicoContainerWebException("Nothing matches the path requested");
     }
 
-    private Object getNode(PicoContainer reqContainer, String httpMethod, String path) throws IOException {
+    private Object getNode(PicoContainer reqContainer, String httpMethod, String path, NullComponentMonitor monitor) throws IOException {
         Object node = paths.get(path);
 
         if (node == null) {
@@ -133,7 +142,7 @@ public class PicoWebRemoting {
                 path = path.substring(0, ix);
                 Object node2 = paths.get(path);
                 if (node2 instanceof WebMethods) {
-                    node = processWebMethodRequest(reqContainer, httpMethod, methodName, node2);
+                    node = processWebMethodRequest(reqContainer, httpMethod, methodName, node2, monitor);
                 }
             } else {
                 node = null;
@@ -142,7 +151,7 @@ public class PicoWebRemoting {
         return node;
     }
 
-    private Object processWebMethodRequest(PicoContainer reqContainer, String verb, String methodName, Object node2) throws IOException {
+    private Object processWebMethodRequest(PicoContainer reqContainer, String verb, String methodName, Object node2, NullComponentMonitor monitor) throws IOException {
         WebMethods methods = (WebMethods) node2;
         if (!methods.containsKey(methodName)) {
             throw makeNothingMatchingException();
@@ -158,7 +167,7 @@ public class PicoWebRemoting {
         if (method == null) {
             throw new PicoContainerWebException("method not allowed for " + verb);
         }
-        return reinject(methodName, method, methods.getComponent(), reqContainer);
+        return reinject(methodName, method, methods.getKey(), methods.getImpl(), reqContainer, monitor);
     }
 
     private boolean delete(Method method) {
@@ -182,7 +191,7 @@ public class PicoWebRemoting {
             for (ComponentAdapter<?> ca : adapters) {
                 Object key = ca.getComponentKey();
                 if (notAProvider(ca) && notServletMechanics(key) && keyIsAType(key)) {
-                    publishAdapter((Class<?>) key);
+                    publishAdapter(ca);
                 }
             }
         }
@@ -232,7 +241,7 @@ public class PicoWebRemoting {
             }
         }
         Class<?> superClass = component.getSuperclass();
-        if (superClass != Object.class) {
+        if (superClass != null && superClass != Object.class) {
             determineEligibleMethods(superClass, webMethods);
         }
     }
@@ -278,11 +287,12 @@ public class PicoWebRemoting {
                 && Character.isUpperCase(name.charAt(prefix.length()));
     }
 
-    private void publishAdapter(Class<?> key) {
+    private void publishAdapter(ComponentAdapter<?> ca) {
+        Class<?> key = (Class<?>) ca.getComponentKey();
         String path = getClassName(key).replace('.', '/');
         if (toStripFromUrls != "" || path.startsWith(toStripFromUrls)) {
             paths.put(path, key);
-            directorize(path, key);
+            directorize(path, key, ca.getComponentImplementation());
             directorize(path);
         }
     }
@@ -296,10 +306,10 @@ public class PicoWebRemoting {
         }
     }
 
-    protected void directorize(String path, Class<?> comp) {
-        WebMethods webMethods = new WebMethods(comp);
+    protected void directorize(String path, Class<?> key, Class<?> componentImplementation) {
+        WebMethods webMethods = new WebMethods(key, componentImplementation);
         paths.put(path, webMethods);
-        determineEligibleMethods(comp, webMethods);
+        determineEligibleMethods(componentImplementation, webMethods);
     }
 
     private String errorResult(Object errorResult) {
@@ -314,12 +324,14 @@ public class PicoWebRemoting {
                 || node instanceof Float || node instanceof Character);
     }
 
-    private Object reinject(String methodName, Method method, Class<?> component, PicoContainer reqContainer) throws IOException {
+    private Object reinject(String methodName, Method method, Class<?> key, Class<?> impl, PicoContainer reqContainer, NullComponentMonitor monitor) throws IOException {
         MethodInjection methodInjection = new MethodInjection(method);
-        Reinjector reinjector = new Reinjector(reqContainer);
+        Reinjector reinjector = new Reinjector(reqContainer, monitor);
+
+        
         Properties props = (Properties) Characteristics.USE_NAMES.clone();
-        Object inst = reqContainer.getComponent(component);
-        Object rv = reinjector.reinject(component, component, inst, props, methodInjection);
+        Object inst = reqContainer.getComponent(key);
+        Object rv = reinjector.reinject(key, impl, inst, props, methodInjection);
         if (method.getReturnType() == void.class) {
             return "OK";
         }
@@ -354,7 +366,7 @@ public class PicoWebRemoting {
         Object node = paths.get(s);
         if (node instanceof WebMethods) {
             WebMethods wm = (WebMethods) node;
-            Class<?> x = wm.getComponent();
+            Class<?> x = wm.getKey();
             Class<?> y = x.getSuperclass();
             if (y != null) {
                 String s1 = y.getName().replace(".","/");
@@ -383,14 +395,20 @@ public class PicoWebRemoting {
 
     @SuppressWarnings("serial")
 	public static class WebMethods extends HashMap<String, HashMap<String, Method>> {
-        private final Class<?> component;
+        private final Class<?> key;
+        private final Class<?> impl;
 
-        public WebMethods(Class<?> component) {
-            this.component = component;
+        public WebMethods(Class<?> key, Class<?> impl) {
+            this.key = key;
+            this.impl = impl;
         }
 
-        public Class<?> getComponent() {
-            return component;
+        public Class<?> getKey() {
+            return key;
+        }
+
+        public Class<?> getImpl() {
+            return impl;
         }
     }
 }

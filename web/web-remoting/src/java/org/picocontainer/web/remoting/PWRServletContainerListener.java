@@ -9,16 +9,18 @@
 
 package org.picocontainer.web.remoting;
 
-import org.picocontainer.web.PicoServletContainerListener;
-import org.picocontainer.web.StringFromRequest;
+import org.picocontainer.BehaviorFactory;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.behaviors.Intercepting;
 import org.picocontainer.containers.TransientPicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.web.PicoServletContainerListener;
+import org.picocontainer.web.StringFromRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Modifier;
 import java.io.Serializable;
+import java.lang.reflect.Modifier;
 
 @SuppressWarnings("serial")
 public class PWRServletContainerListener extends PicoServletContainerListener {
@@ -53,4 +55,8 @@ public class PWRServletContainerListener extends PicoServletContainerListener {
         }
 
     }
+
+//    protected BehaviorFactory addRequestBehaviors(BehaviorFactory beforeThisBehaviorFactory) {
+//        return (BehaviorFactory) new Intercepting().wrap(beforeThisBehaviorFactory);    
+//    }
 }

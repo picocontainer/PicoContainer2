@@ -167,28 +167,31 @@ public class CommonsLoggingComponentMonitor implements ComponentMonitor, Seriali
     }
 
     /** {@inheritDoc} **/
-    public void invoking(final PicoContainer container,
+    public Object invoking(final PicoContainer container,
                          final ComponentAdapter<?> componentAdapter,
                          final Member member,
-                         final Object instance) {
+                         final Object instance,
+                         final Object[] args) {
         Log log = getLog(member);
         if (log.isDebugEnabled()) {
             log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));
         }
-        delegate.invoking(container, componentAdapter, member, instance);
+        return delegate.invoking(container, componentAdapter, member, instance, args);
     }
 
     /** {@inheritDoc} **/
     public void invoked(final PicoContainer container,
                         final ComponentAdapter<?> componentAdapter,
-                        final Method method,
+                        final Member member,
                         final Object instance,
-                        final long duration) {
-        Log log = getLog(method);
+                        final long duration,
+                        final Object[] args,
+                        final Object retVal) {
+        Log log = getLog(member);
         if (log.isDebugEnabled()) {
-            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, methodToString(method), instance, duration));
+            log.debug(ComponentMonitorHelper.format(ComponentMonitorHelper.INVOKED, methodToString(member), instance, duration));
         }
-        delegate.invoked(container, componentAdapter, method, instance,  duration);
+        delegate.invoked(container, componentAdapter, member, instance,  duration, args, retVal);
     }
 
     /** {@inheritDoc} **/

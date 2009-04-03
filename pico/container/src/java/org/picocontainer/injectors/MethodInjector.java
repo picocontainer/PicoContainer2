@@ -15,6 +15,7 @@ import java.lang.reflect.Type;
 import java.lang.reflect.Member;
 import java.lang.reflect.AccessibleObject;
 import java.lang.annotation.Annotation;
+import java.util.logging.Logger;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
@@ -127,14 +128,19 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
             };
         }
         instantiationGuard.setGuardedContainer(container);
-        return instantiationGuard.observe(getComponentImplementation());
-
+        Object o = instantiationGuard.observe(getComponentImplementation());
+        return o;
     }
 
     private Object invokeMethod(Method method, Object[] parameters, T instance, PicoContainer container) {
         try {
-            currentMonitor().invoking(container, MethodInjector.this, (Member) method, instance);
-            return method.invoke(instance, parameters);
+            Object rv = currentMonitor().invoking(container, MethodInjector.this, (Member) method, instance, parameters);
+            if (rv == ComponentMonitor.KEEP) {
+                long str = System.currentTimeMillis();
+                rv = method.invoke(instance, parameters);
+                currentMonitor().invoked(container, MethodInjector.this, method, instance, System.currentTimeMillis() - str, parameters, rv);
+            }
+            return rv;
         } catch (IllegalAccessException e) {
             return caughtIllegalAccessException(currentMonitor(), method, instance, e);
         } catch (InvocationTargetException e) {

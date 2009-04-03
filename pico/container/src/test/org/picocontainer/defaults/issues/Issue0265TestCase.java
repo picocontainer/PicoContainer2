@@ -54,13 +54,13 @@ public class Issue0265TestCase {
             one(monitor1).instantiated(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(any(Constructor.class)), 
             		with(any(Object.class)), with(any(Object[].class)), with(any(Long.class)));
             one(monitor1).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)), 
-            		with(any(Object.class)));
+            		with(any(Object.class)), with(any(Object[].class)));
             one(monitor1).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)), 
-            		with(any(Object.class)), with(any(Long.class)));
+            		with(any(Object.class)), with(any(Long.class)), with(any(Object[].class)), with(same(null)));
             one(monitor1).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)), 
-            		with(any(Object.class)));
+            		with(any(Object.class)), with(any(Object[].class)));
             one(monitor1).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)), 
-            		with(any(Object.class)), with(any(Long.class)));        	
+            		with(any(Object.class)), with(any(Long.class)), with(any(Object[].class)), with(same(null)));
         }});
         pico.as(Characteristics.CACHE).addComponent(DefaultPicoContainerTestCase.MyStartable.class);
         pico.start();
@@ -70,13 +70,13 @@ public class Issue0265TestCase {
         pico.changeMonitor(monitor2);
         mockery.checking(new Expectations(){{
             one(monitor2).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)),
-            		with(any(Object.class)));
+            		with(any(Object.class)), with(any(Object[].class)));
             one(monitor2).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(start)), 
-            		with(any(Object.class)), with(any(Long.class)));
+            		with(any(Object.class)), with(any(Long.class)), with(any(Object[].class)), with(same(null)));
             one(monitor2).invoking(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)), 
-            		with(any(Object.class)));
+            		with(any(Object.class)), with(any(Object[].class)));
             one(monitor2).invoked(with(any(PicoContainer.class)), with(any(ComponentAdapter.class)), with(equal(stop)), 
-            		with(any(Object.class)), with(any(Long.class)));        	
+            		with(any(Object.class)), with(any(Long.class)), with(any(Object[].class)), with(same(null)));
         }});
         pico.start();
         pico.stop();

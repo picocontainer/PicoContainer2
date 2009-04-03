@@ -83,19 +83,19 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
         delegate.instantiationFailed(container, componentAdapter, constructor, e);
     }
 
-    public void invoking(PicoContainer container,
-                         ComponentAdapter<?> componentAdapter,
-                         Member member,
-                         Object instance) {
-        delegate.invoking(container, componentAdapter, member, instance);
+    public Object invoking(PicoContainer container,
+                           ComponentAdapter<?> componentAdapter,
+                           Member member,
+                           Object instance, Object[] args) {
+        return delegate.invoking(container, componentAdapter, member, instance, args);
     }
 
     public void invoked(PicoContainer container,
                         ComponentAdapter<?> componentAdapter,
-                        Method method,
+                        Member member,
                         Object instance,
-                        long duration) {
-        delegate.invoked(container, componentAdapter, method, instance, duration);
+                        long duration, Object[] args, Object retVal) {
+        delegate.invoked(container, componentAdapter, member, instance, duration, args, retVal);
     }
 
     public void invocationFailed(Member member, Object instance, Exception e) {

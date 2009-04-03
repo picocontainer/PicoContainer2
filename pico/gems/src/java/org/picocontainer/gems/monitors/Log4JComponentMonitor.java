@@ -173,28 +173,29 @@ public class Log4JComponentMonitor implements ComponentMonitor, Serializable {
     }
 
     /** {@inheritDoc} **/
-    public void invoking(final PicoContainer container,
+    public Object invoking(final PicoContainer container,
                          final ComponentAdapter<?> componentAdapter,
                          final Member member,
-                         final Object instance) {
+                         final Object instance, Object[] args) {
         Logger logger = getLogger(member);
         if (logger.isDebugEnabled()) {
             logger.debug(format(ComponentMonitorHelper.INVOKING, memberToString(member), instance));
         }
-        delegate.invoking(container, componentAdapter, member, instance);
+        return delegate.invoking(container, componentAdapter, member, instance, args);
     }
 
     /** {@inheritDoc} **/
-    public void invoked(final PicoContainer container,
-                        final ComponentAdapter<?> componentAdapter,
-                        final Method method,
-                        final Object instance,
-                        final long duration) {
-        Logger logger = getLogger(method);
+    public void invoked(PicoContainer container,
+                        ComponentAdapter<?> componentAdapter,
+                        Member member,
+                        Object instance,
+                        long duration,
+                        Object[] args, Object retVal) {
+        Logger logger = getLogger(member);
         if (logger.isDebugEnabled()) {
-            logger.debug(format(ComponentMonitorHelper.INVOKED, methodToString(method), instance, duration));
+            logger.debug(format(ComponentMonitorHelper.INVOKED, methodToString(member), instance, duration));
         }
-        delegate.invoked(container, componentAdapter, method, instance, duration);
+        delegate.invoked(container, componentAdapter, member, instance, duration, args, retVal);
     }
 
     /** {@inheritDoc} **/

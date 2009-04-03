@@ -67,7 +67,12 @@ public class Reinjector {
      * @return the result of the reinjection-method invocation.
      */
     public Object reinject(Class<?> key, InjectionFactory reinjectionFactory) {
-        return reinject(key, key, parent.getComponent(key), reinjectionFactory);
+        Object o = reinject(key, key, parent.getComponent(key), reinjectionFactory);
+        return o;
+    }
+
+    public Object reinject(Class<?> key, Class<?> impl, InjectionFactory reinjectionFactory) {
+        return reinject(key, impl, parent.getComponent(key), reinjectionFactory);
     }
 
     /**
@@ -79,7 +84,8 @@ public class Reinjector {
      * @return the result of the reinjection-method invocation.
      */
     public Object reinject(Class<?> key, Class implementation, Object instance, InjectionFactory reinjectionFactory) {
-        return reinject(key, implementation, instance, NO_PROPERTIES, reinjectionFactory);
+        Object o = reinject(key, implementation, instance, NO_PROPERTIES, reinjectionFactory);
+        return o;
     }
 
     /**
@@ -96,7 +102,8 @@ public class Reinjector {
         Reinjection reinjection = new Reinjection(reinjectionFactory, parent);
         org.picocontainer.Injector injector = (org.picocontainer.Injector) reinjection.createComponentAdapter(
                 monitor, NO_LIFECYCLE, properties, key, implementation, null);
-        return injector.decorateComponentInstance(parent, null, instance);
+        Object o = injector.decorateComponentInstance(parent, null, instance);
+        return o;
     }
 
 }

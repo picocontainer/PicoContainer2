@@ -8,6 +8,10 @@
 package org.picocontainer.web.remoting;
 
 import java.io.IOException;
+import java.util.logging.Logger;
+import java.util.Map;
+import java.util.HashMap;
+import java.lang.reflect.Member;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -17,6 +21,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.web.PicoServletContainerFilter;
 
 import com.thoughtworks.xstream.XStream;
@@ -49,6 +57,8 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
     private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+
+    Map foo = new HashMap();
 
     public static class ServletFilter extends PicoServletContainerFilter {
 
@@ -143,6 +153,7 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
     
     protected void service(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        long b4 = System.currentTimeMillis();
 
         if (!initialized) {
             publishAdapters();
@@ -150,12 +161,52 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
         }
 
         respond(req, resp, req.getPathInfo());
+        Logger.getAnonymousLogger().info("total AbstractPicoWebRemotingServlet.service() time = " + (System.currentTimeMillis() - b4) + "ms");
     }
 
     protected void respond(HttpServletRequest req, HttpServletResponse resp, String pathInfo) throws IOException {
         resp.setContentType(mimeType);
 
-        String result = pwr.processRequest(pathInfo, currentRequestContainer.get(), req.getMethod());
+        final String httpMethod = req.getMethod();
+
+        final String[] cacheKey = new String[1];
+        final String[] cached = new String[1];
+        final long[] time = new long[1];
+
+        long str = System.currentTimeMillis();
+
+        String result = pwr.processRequest(pathInfo, currentRequestContainer.get(), httpMethod, new NullComponentMonitor() {
+                            public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object[] args) {
+                                if (httpMethod.equals("GET")) {
+                                    StringBuilder sb = new StringBuilder().append("[").append(instance.toString()).append("].").append(member.getName());
+                                    parmsString(sb, args);
+                                    cacheKey[0] = sb.toString();
+                                    cached[0] = (String) foo.get(cacheKey[0]);
+                                    if (cached[0] != null) {
+                                        time[0] = System.currentTimeMillis();
+                                        return null;
+                                    }
+                                }
+                                time[0] = System.currentTimeMillis();
+                                return ComponentMonitor.KEEP;
+                            }
+
+                            public void invoked(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, long duration, Object[] args, Object retVal) {
+                                Logger.getAnonymousLogger().info("method duration = " + duration + "ms ");
+                            }
+                        });
+
+        String duration = ", duration = " + (System.currentTimeMillis() - str) + "ms ";
+
+        if (httpMethod.equals("GET")) {
+            if (cached[0] != null) {
+                Logger.getAnonymousLogger().info("cached" + duration);
+                result = cached[0];
+            } else {
+                Logger.getAnonymousLogger().info("not cached" + duration);
+                foo.put(cacheKey[0], result);
+            }
+        }
 
         ServletOutputStream outputStream = resp.getOutputStream();
         if (result != null) {
@@ -164,6 +215,14 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
             resp.sendError(400, "Nothing is mapped to this URL, try removing the last term for directory list.");
         }
     }
+
+    private void parmsString(StringBuilder sb, Object[] parms) {
+        for (int i = 0; i < parms.length; i++) {
+            Object parm = parms[i];
+            sb.append(" ").append(i).append(":").append(parm == null ? "**null**" : parm.toString());
+        }
+    }
+
 
     public void init(ServletConfig servletConfig) throws ServletException {
     	this.xstream = createXStream();

@@ -9,6 +9,7 @@
 package org.picocontainer.injectors;
 
 import java.lang.reflect.Type;
+import java.util.logging.Logger;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Injector;
@@ -57,7 +58,7 @@ public class CompositeInjector<T> extends AbstractInjector<T> {
         Object result = null;
         for (int i = 0; i < injectors.length; i++) {
             result = injectors[i].decorateComponentInstance(container, into, instance);
-        }
+        }        
         return result;
     }
 

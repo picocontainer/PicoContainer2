@@ -65,18 +65,20 @@ public final class ComponentMonitorHelper  {
         return sb.toString();
     }
 
-    public static String methodToString(Method method) {
-        Class[] params = method.getParameterTypes();
-        StringBuffer sb = new StringBuffer(method.getName());
-        sb.append("(");
-        for (int i = 0; i < params.length; i++) {
-            String s = params[i].getName();
-            sb.append(s);
-            if (i < params.length-1) {
-                sb.append(", ");
+    public static String methodToString(Member member) {
+        StringBuffer sb = new StringBuffer(member.getName());
+        if (member instanceof Method) {
+            Class[] params = ((Method) member).getParameterTypes();
+            sb.append("(");
+            for (int i = 0; i < params.length; i++) {
+                String s = params[i].getName();
+                sb.append(s);
+                if (i < params.length-1) {
+                    sb.append(", ");
+                }
             }
+            sb.append(")");            
         }
-        sb.append(")");
         return sb.toString();
     }
 

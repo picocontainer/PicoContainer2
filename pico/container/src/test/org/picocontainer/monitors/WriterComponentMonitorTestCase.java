@@ -55,13 +55,13 @@ public class WriterComponentMonitorTestCase  {
     }
 
     @SuppressWarnings("unchecked")
-   @Test public void testShouldTraceInstantiating() {
+    @Test public void testShouldTraceInstantiating() {
         componentMonitor.instantiating(null, null, constructor);
         assertEquals(format(ComponentMonitorHelper.INSTANTIATING, ctorToString(constructor)) +NL,  out.toString());
     }
 
     @SuppressWarnings("unchecked")
-   @Test public void testShouldTraceInstantiatedWithInjected() {
+    @Test public void testShouldTraceInstantiatedWithInjected() {
         Object[] injected = new Object[0];
         Object instantiated = new Object();
         componentMonitor.instantiated(null, null, constructor, instantiated, injected, 543);
@@ -79,13 +79,13 @@ public class WriterComponentMonitorTestCase  {
     }
 
     @Test public void testShouldTraceInvoking() {
-        componentMonitor.invoking(null, null, method, this);
+        componentMonitor.invoking(null, null, method, this, new Object[0]);
         Assert.assertEquals(format(ComponentMonitorHelper.INVOKING,
                                                    methodToString(method), this) +NL,  out.toString());
     }
 
     @Test public void testShouldTraceInvoked() {
-        componentMonitor.invoked(null, null, method, this, 543);
+        componentMonitor.invoked(null, null, method, this, 543, new Object[0], null);
         Assert.assertEquals(format(ComponentMonitorHelper.INVOKED,
                                                    methodToString(method), this,
                                                    (long)543) +NL,  out.toString());

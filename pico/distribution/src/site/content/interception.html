@@ -50,7 +50,7 @@
 
     } 
     public boolean takeBite(int grams) {
-        System.out.println(&quot;Bite of &quot; + grams + &quot; grams of apple '&quot; + controller.instance().getName() + &quot;'&quot;);
+        System.out.println(&quot;Bite of &quot; + grams + &quot; grams of apple '&quot; + controller.getInstance().getName() + &quot;'&quot;);
         return false; // ignored, but necessary.
     }
 }
@@ -103,7 +103,7 @@ pico.addComponent(Apple.class, BraeburnApple.class);
 
         if (grams &gt; 50) {
              controller.override();
-             (Apple) realApple = (Apple) controller.instance();
+             (Apple) realApple = (Apple) controller.getInstance();
              realApple.takeBite(-1 * grams); // undo !
         }
         return false; // will be passed back to the caller.

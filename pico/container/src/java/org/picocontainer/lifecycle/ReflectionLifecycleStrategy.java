@@ -106,9 +106,9 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
         if (component != null && method != null) {
             try {
                 long str = System.currentTimeMillis();
-                currentMonitor().invoking(null, null, method, component);
+                currentMonitor().invoking(null, null, method, component, new Object[0]);
                 method.invoke(component);
-                currentMonitor().invoked(null, null, method, component, System.currentTimeMillis() - str);
+                currentMonitor().invoked(null, null, method, component, System.currentTimeMillis() - str, new Object[0], null);
             } catch (IllegalAccessException e) {
                 monitorAndThrowReflectionLifecycleException(method, e, component);
             } catch (InvocationTargetException e) {
