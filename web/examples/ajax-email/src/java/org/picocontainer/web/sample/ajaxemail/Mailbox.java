@@ -11,8 +11,8 @@ import java.util.logging.Logger;
  */
 public abstract class Mailbox {
 
-    protected final PersistenceManager pm;
-    protected final User user;
+    private final PersistenceManager pm;
+    private final User user;
     private final QueryStore queryStore;
 
     public Mailbox(PersistenceManager pm, User user, QueryStore queryStore) {
@@ -32,9 +32,11 @@ public abstract class Mailbox {
      * @return the message
      */
     public Message read(long msgId) {
-        Message messageData = getMessage(msgId);
-        messageData.read = true;
-        return messageData;
+        pm.currentTransaction().begin();
+        Message message = getMessage(msgId);
+        message.markRead();
+        pm.currentTransaction().commit();
+        return message;
     }
 
     private Message getMessage(long msgId) {
@@ -97,5 +99,9 @@ public abstract class Mailbox {
     }
 
     protected abstract String fromOrTo();
+
+    protected String getUserName() {
+        return user.getName();
+    }
 
 }

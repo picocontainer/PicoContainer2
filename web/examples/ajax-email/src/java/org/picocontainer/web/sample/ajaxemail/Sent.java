@@ -12,7 +12,7 @@ public class Sent extends Mailbox {
     }
 
     public Message send(String to, String subject, String message) {
-        return pm.makePersistent(new Message(user.getName(), to, subject,
+        return super.addMessage(new Message(getUserName(), to, subject,
                 message, false, System.currentTimeMillis()));
     }
 
@@ -21,7 +21,7 @@ public class Sent extends Mailbox {
      * @param message
      */
     protected void checkUser(Message message) {
-        if (message.getTo().equals(user.getName())) {
+        if (message.getTo().equals(getUserName())) {
             throwNotForThisUser();
         }
     }
@@ -31,7 +31,7 @@ public class Sent extends Mailbox {
     }
 
     public String toString() {
-        return "sent-for-" + user.getName();
+        return "sent-for-" + getUserName();
     }
 
 }

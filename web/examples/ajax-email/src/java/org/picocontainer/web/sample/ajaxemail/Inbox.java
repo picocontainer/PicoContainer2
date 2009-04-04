@@ -12,7 +12,7 @@ public class Inbox extends Mailbox {
     }
 
     protected void checkUser(Message message) {
-        if (!message.getTo().equals(user.getName())) {
+        if (!message.getTo().equals(getUserName())) {
             throwNotForThisUser();
         }
     }
@@ -22,7 +22,7 @@ public class Inbox extends Mailbox {
     }
 
     public String toString() {
-        return "inbox-for-" + user.getName();
+        return "inbox-for-" + getUserName();
     }
 
 }

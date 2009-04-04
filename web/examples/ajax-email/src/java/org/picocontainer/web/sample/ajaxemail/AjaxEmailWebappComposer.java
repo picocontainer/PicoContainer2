@@ -27,7 +27,7 @@ public class AjaxEmailWebappComposer implements WebappComposer {
 
     public void composeRequest(MutablePicoContainer pico) {
 
-        pico.addAdapter(new UserFromCookie());
+        pico.addAdapter(new UserFromCookieProvider());
         pico.as(USE_NAMES).addComponent(Auth.class);
 
         pico.as(USE_NAMES).addComponent(Inbox.class);

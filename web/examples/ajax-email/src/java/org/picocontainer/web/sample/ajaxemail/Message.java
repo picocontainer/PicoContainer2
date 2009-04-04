@@ -2,6 +2,7 @@
 package org.picocontainer.web.sample.ajaxemail;
 
 import java.util.Date;
+import java.util.logging.Logger;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -13,29 +14,28 @@ public class Message {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    public Long id;
+    private Long id;
 
     @Persistent
-    public String from;
+    private String from;
 
     @Persistent
-    public String to;
+    private String to;
 
     @Persistent
-    public String subject;
+    private String subject;
 
     @Persistent
-    public String message;
+    private String message;
     
     @Persistent
-    public Date sentTime;
+    private Date sentTime;
 
     @Persistent
-    public boolean read;
+    private boolean read;
 
     public Message(String from, String to,
             String subject, String message, boolean isRead, long time) {
-    	this.id = id;
     	this.from = from;
     	this.to = to;
     	this.subject = subject;
@@ -76,4 +76,8 @@ public class Message {
 		return sentTime;
 	}
 
+    public void markRead() {
+        Logger.getAnonymousLogger().info("markRead " + id);
+        read = true;
+    }
 }

@@ -5,7 +5,7 @@ import org.picocontainer.web.StringFromCookie;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class UserFromCookie extends ProviderAdapter {
+public class UserFromCookieProvider extends ProviderAdapter {
 
     public User provide(UserStore userStore, HttpServletRequest req) {
         try {
