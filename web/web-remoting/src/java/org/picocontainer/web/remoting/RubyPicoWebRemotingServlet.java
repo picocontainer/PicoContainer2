@@ -108,7 +108,11 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
                         }
                     }
                     outputStream.print("\n");
-                    outputStream.print("    @"+function+"?(self.class, '" + methodName + "'");
+                    String rubyFunctionName = function;
+                    if (method.getReturnType() == void.class) {
+                    	rubyFunctionName += "?";
+                    }
+                    outputStream.print("    @"+rubyFunctionName+"(self.class, '" + methodName + "'");
                     for (int i = 0; i < paramNames.length; i++) {
                         String name = paramNames[i];
                         if (!isExcludedFromClassDefPublication(pTypes[i], name)) {
