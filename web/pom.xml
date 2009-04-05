@@ -71,6 +71,12 @@
         <optional>true</optional>
       </dependency>
       <dependency>
+        <groupId>com.thoughtworks.paranamer</groupId>
+        <artifactId>paranamer</artifactId>
+        <version>1.3</version>
+        <optional>true</optional>
+      </dependency>
+      <dependency>
         <groupId>com.thoughtworks.xstream</groupId>
         <artifactId>xstream</artifactId>
         <version>1.3.2-SNAPSHOT</version>
