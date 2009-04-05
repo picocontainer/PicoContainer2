@@ -1,8 +1,5 @@
 package org.picocontainer.web.sample.ajaxemail;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
-import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +7,8 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 public class ReloadData {
-    private final PersistenceManager pm;
+
+    private final PersistenceManagerWrapper pm;
     private final UserStore userStore;
 
     static final User GILL_BATES = new User("Gill Bates", "1234");
@@ -36,12 +34,11 @@ public class ReloadData {
 
         messages.add(new Message(BEEVE_SALMER.getName(), "Jeeves Sobs", "Rubbish OS", "Your OS is just a joke", false, time()));
 
-
     }
 
     private long time;
 
-    public ReloadData(PersistenceManager pm, UserStore userStore) {
+    public ReloadData(PersistenceManagerWrapper pm, UserStore userStore) {
         this.pm = pm;
         this.userStore = userStore;
         time = System.currentTimeMillis();
@@ -58,18 +55,17 @@ public class ReloadData {
             User gill = userStore.getUser(GILL_BATES.getName());
             if (gill == null) {
                 gill = GILL_BATES;
-                mp(gill);
+                makePersistent(gill);
             }
-            Logger.getAnonymousLogger().info("gill - yes");
             User beeve = userStore.getUser(BEEVE_SALMER.getName());
             if (beeve == null) {
                 beeve = BEEVE_SALMER;
-                mp(beeve);
+                makePersistent(beeve);
             }
             
-            Query query = pm.newQuery("javax.jdo.query.JDOQL", "SELECT FROM " + Message.class.getName());
+            Query query = pm.newQuery(Message.class, "");
 
-            for (Message aColl : (Collection<Message>) query.execute()) {
+            for (Message aColl : (Collection<Message>) query.execute(null)) {
                 pm.deletePersistent(aColl);
             }
 
@@ -78,21 +74,15 @@ public class ReloadData {
             }
 
         } catch (Exception e) {
-            Logger.getAnonymousLogger().log(Level.SEVERE, "1:1", e);
+            Logger.getAnonymousLogger().log(Level.SEVERE, "should have been able to load initial data", e);
         }
     }
 
-    private void mp(Map<Integer, Message> messageMap) {
-        for ( Map.Entry<Integer, Message> entry : messageMap.entrySet() ) {
-                mp(entry.getValue());
-            }
-    }
-
-    private void mp(Object obj) {
+    private void makePersistent(Object obj) {
         try {
             pm.makePersistent(obj);
         } catch (Exception e) {
-            Logger.getAnonymousLogger().log(Level.SEVERE, "2:1", e);
+            Logger.getAnonymousLogger().log(Level.SEVERE, "should have been able to make item persistent", e);
         }
     }
 }

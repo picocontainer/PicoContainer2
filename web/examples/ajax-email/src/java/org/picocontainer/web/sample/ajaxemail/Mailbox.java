@@ -1,7 +1,5 @@
 package org.picocontainer.web.sample.ajaxemail;
 
-import javax.jdo.Query;
-import javax.jdo.PersistenceManager;
 import java.util.List;
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -11,11 +9,11 @@ import java.util.logging.Logger;
  */
 public abstract class Mailbox {
 
-    private final PersistenceManager pm;
+    private final PersistenceManagerWrapper pm;
     private final User user;
     private final QueryStore queryStore;
 
-    public Mailbox(PersistenceManager pm, User user, QueryStore queryStore) {
+    public Mailbox(PersistenceManagerWrapper pm, User user, QueryStore queryStore) {
         this.pm = pm;
         this.user = user;
         this.queryStore = queryStore;
@@ -32,10 +30,10 @@ public abstract class Mailbox {
      * @return the message
      */
     public Message read(long msgId) {
-        pm.currentTransaction().begin();
+        pm.beginTransaction();
         Message message = getMessage(msgId);
         message.markRead();
-        pm.currentTransaction().commit();
+        pm.commitTransaction();
         return message;
     }
 

@@ -3,11 +3,11 @@ package org.picocontainer.web.sample.ajaxemail;
 import javax.jdo.PersistenceManager;
 
 /**
- * Send is a type of Mailbox for a user.
+ * Send is a type of Mailbox for a user with a special function for sending
  */
 public class Sent extends Mailbox {
 
-    public Sent(PersistenceManager pm, User user, QueryStore queryStore) {
+    public Sent(PersistenceManagerWrapper pm, User user, QueryStore queryStore) {
         super(pm, user, queryStore);
     }
 

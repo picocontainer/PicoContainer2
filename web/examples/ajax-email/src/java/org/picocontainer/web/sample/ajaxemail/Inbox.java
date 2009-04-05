@@ -7,7 +7,7 @@ import javax.jdo.PersistenceManager;
  */
 public class Inbox extends Mailbox {
 
-    public Inbox(PersistenceManager pm, User user, QueryStore queryStore) {
+    public Inbox(PersistenceManagerWrapper pm, User user, QueryStore queryStore) {
         super(pm, user, queryStore);
     }
 

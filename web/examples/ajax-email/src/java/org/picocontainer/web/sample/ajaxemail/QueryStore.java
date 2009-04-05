@@ -1,6 +1,5 @@
 package org.picocontainer.web.sample.ajaxemail;
 
-import javax.jdo.Query;
 import java.util.Map;
 import java.util.HashMap;
 
