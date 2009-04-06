@@ -41,20 +41,20 @@
     </dependency>
     <dependency>
       <groupId>org.mortbay.jetty</groupId>
-      <artifactId>servlet-api-2.5</artifactId>
-      <version>6.1.9</version>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5-20081211</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jsp-2.1</artifactId>
-      <version>6.1.9</version>
+      <artifactId>jsp-2.1-glassfish</artifactId>
+      <version>9.1.1.B51.25.p1</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jsp-api-2.1</artifactId>
-      <version>6.1.9</version>
+      <artifactId>jsp-api-2.1-glassfish</artifactId>
+      <version>9.1.1.B51.25.p1</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -65,13 +65,13 @@
     <dependency>
       <groupId>org.mortbay.jetty</groupId>
       <artifactId>jetty</artifactId>
-      <version>6.1.9</version>
+      <version>6.1.16</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.mortbay.jetty</groupId>
       <artifactId>jetty-util</artifactId>
-      <version>6.1.9</version>
+      <version>6.1.16</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
