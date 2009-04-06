@@ -37,11 +37,20 @@ public class PicoJettyServer extends EmptyPicoContainer implements PicoContainer
         this(parentContainer);
         createBlockingChannelConnector(host, port);
     }
+    public PicoJettyServer(String host, int port, PicoContainer parentContainer, int timeout) {
+        this(parentContainer);
+        createBlockingChannelConnector(host, port, timeout);
+    }
 
     public Connector createBlockingChannelConnector(String host, int port) {
+        return createBlockingChannelConnector(host, port, 10*1000);
+    }
+
+    public Connector createBlockingChannelConnector(String host, int port, int timeout) {
         BlockingChannelConnector connector = new BlockingChannelConnector();
         connector.setHost(host);
         connector.setPort(port);
+        connector.setLowResourceMaxIdleTime(timeout);
         server.addConnector(connector);
         return connector;
     }

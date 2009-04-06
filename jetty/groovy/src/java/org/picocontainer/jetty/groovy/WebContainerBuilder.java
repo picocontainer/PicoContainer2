@@ -34,12 +34,16 @@ public class WebContainerBuilder extends AbstractBuilderNode {
         } else {
             host = null;
         }
+        int timeout = 10*1000;
+        if (map.containsKey("timeout")) {
+            timeout = (Integer) map.remove("timeout");
+        }
 
         MutablePicoContainer parentContainer = (MutablePicoContainer) current;
 
         PicoJettyServer server;
         if (port != 0) {
-            server = new PicoJettyServer(host, port, parentContainer);
+            server = new PicoJettyServer(host, port, parentContainer, timeout);
         } else {
             server = new PicoJettyServer(parentContainer);
         }
