@@ -52,7 +52,7 @@ public class InMemoryPersistenceManagerWrapper implements PersistenceManagerWrap
                                 retVal.add(message);
                             }
                         }
-                    } else if (query.equals("")) {
+                    } else if (query.equals("id > -1")) {
                         retVal = messages;
                     }
                     return retVal;
