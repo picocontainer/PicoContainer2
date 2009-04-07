@@ -18,6 +18,7 @@ public class AjaxEmailWebappComposer implements WebappComposer {
         pico.addComponent(UserStore.class);
         pico.addComponent(PersistenceManagerWrapper.class, getPersistenceManagerWrapperClass());
         pico.addComponent(QueryStore.class);
+        pico.addAdapter(new CacheProvider());
     }
 
     public void composeSession(MutablePicoContainer pico) {

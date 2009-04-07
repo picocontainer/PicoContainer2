@@ -63,7 +63,7 @@ public class ReloadData {
                 makePersistent(beeve);
             }
             
-            Query query = pm.newQuery(Message.class, "");
+            Query query = pm.newQuery(Message.class, null);
 
             for (Message aColl : (Collection<Message>) query.execute(null)) {
                 pm.deletePersistent(aColl);

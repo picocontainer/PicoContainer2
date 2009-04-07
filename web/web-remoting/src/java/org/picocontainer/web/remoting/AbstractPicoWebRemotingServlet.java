@@ -58,8 +58,6 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
     private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
 
-    Map foo = new HashMap();
-
     public static class ServletFilter extends PicoServletContainerFilter {
 
         protected void setAppContainer(MutablePicoContainer container) {
@@ -175,13 +173,15 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
         long str = System.currentTimeMillis();
 
+        final Cache cache = currentAppContainer.get().getComponent(Cache.class);
+
         String result = pwr.processRequest(pathInfo, currentRequestContainer.get(), httpMethod, new NullComponentMonitor() {
                             public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object[] args) {
                                 if (httpMethod.equals("GET")) {
                                     StringBuilder sb = new StringBuilder().append("[").append(instance.toString()).append("].").append(member.getName());
                                     parmsString(sb, args);
                                     cacheKey[0] = sb.toString();
-                                    cached[0] = (String) foo.get(cacheKey[0]);
+                                    cached[0] = (String) cache.get((Object)cacheKey[0]);
                                     if (cached[0] != null) {
                                         time[0] = System.currentTimeMillis();
                                         return null;
@@ -204,7 +204,7 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
                 result = cached[0];
             } else {
                 Logger.getAnonymousLogger().info("not cached" + duration);
-                foo.put(cacheKey[0], result);
+                cache.put(cacheKey[0], result);
             }
         }
 
