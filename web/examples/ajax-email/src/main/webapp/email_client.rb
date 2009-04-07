@@ -33,7 +33,7 @@ class LoginController
     auth = Auth.new(@connection)
     
     unless auth.logIn(@login, @password)
-      @error_message = "<html><font color='red'>#{auth.last_error[:message]}</font>"
+      @error_message = "<html><font color='red'>#{@connection.last_error[:message]}</font>"
     else
       Views[:mailbox_view].instantiate(MailboxController.new(@connection))
       @window.close

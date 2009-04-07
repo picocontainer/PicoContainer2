@@ -25,8 +25,8 @@ Swiby.define_named_view(:login_view) {
     
     title 'Login'
 
-    autosize
-    height 200
+    width 540
+    height 270
 
     content {
 
@@ -62,8 +62,8 @@ Swiby.define_named_view(:mailbox_view) {
     
     title 'Mailbox View' 
 
-    width 500
-    height 400
+    width 700
+    height 645
 
     toolbar {
       combo ['In box', 'Sent box'], :name => :mailbox
