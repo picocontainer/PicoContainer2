@@ -3,8 +3,8 @@
 
     <persistence-manager-factory name="transactional">
         <property name="javax.jdo.option.RetainValues" value="true"/>
-        <property name="javax.jdo.PersistenceManagerFactoryClass" value="$STORE"/>
-        <property name="javax.jdo.option.ConnectionURL" value="$URL"/>
+        <property name="javax.jdo.PersistenceManagerFactoryClass" value="org.datanucleus.store.appengine.jdo.DatastoreJDOPersistenceManagerFactory"/>
+        <property name="javax.jdo.option.ConnectionURL" value="appengine"/>
         <property name="javax.jdo.option.NontransactionalWrite" value="true"/>
         <property name="javax.jdo.option.NontransactionalRead" value="true"/>
     </persistence-manager-factory>
