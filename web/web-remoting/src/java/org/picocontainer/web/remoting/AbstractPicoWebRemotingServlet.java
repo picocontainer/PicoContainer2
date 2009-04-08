@@ -162,7 +162,7 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
         Logger.getAnonymousLogger().info("total AbstractPicoWebRemotingServlet.service() time = " + (System.currentTimeMillis() - b4) + "ms");
     }
 
-    protected void respond(HttpServletRequest req, HttpServletResponse resp, String pathInfo) throws IOException {
+    protected void respond(final HttpServletRequest req, HttpServletResponse resp, String pathInfo) throws IOException {
         resp.setContentType(mimeType);
 
         final String httpMethod = req.getMethod();
@@ -178,7 +178,8 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
         String result = pwr.processRequest(pathInfo, currentRequestContainer.get(), httpMethod, new NullComponentMonitor() {
                             public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object[] args) {
                                 if (httpMethod.equals("GET")) {
-                                    StringBuilder sb = new StringBuilder().append("[").append(instance.toString()).append("].").append(member.getName());
+                                    StringBuilder sb = new StringBuilder().append("[").append(req.getRequestURI())
+                                            .append("/").append(instance.toString()).append("].").append(member.getName());
                                     parmsString(sb, args);
                                     cacheKey[0] = sb.toString();
                                     cached[0] = (String) cache.get((Object)cacheKey[0]);
@@ -200,10 +201,10 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
         if (httpMethod.equals("GET")) {
             if (cached[0] != null) {
-                Logger.getAnonymousLogger().info("cached" + duration);
+                Logger.getAnonymousLogger().info("cached-" + cacheKey[0] + "- " + duration);
                 result = cached[0];
             } else {
-                Logger.getAnonymousLogger().info("not cached" + duration);
+                Logger.getAnonymousLogger().info("not cached" + cacheKey[0] + "- " + duration);
                 cache.put(cacheKey[0], result);
             }
         }
