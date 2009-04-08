@@ -1,7 +1,7 @@
 Scenario: log in scenarios
 
 Given nobody is logged in
-When user Gil Bates with password 1234 attempts to log in
+When user Gill Bates with password 1234 attempts to log in
 Then the Inbox should be visible
 
 Given nobody is logged in

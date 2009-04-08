@@ -9,8 +9,6 @@ import org.picocontainer.web.sample.ajaxemail.User;
 import org.jmock.Mockery;
 import org.jmock.Expectations;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -23,7 +21,7 @@ public class MailboxTest {
     private List<Message> data;
     private User fred = new User("Fred", "password");
     private Message message = new Message("Fred", "to", "subj", "message", false, 12345);
-    private PersistenceManager pm;
+    private PersistenceManagerWrapper pm;
     private Query query;
 
     @Before
@@ -32,7 +30,7 @@ public class MailboxTest {
         data = new ArrayList<Message>();
         data.add(message);
         message.setId(2L);
-        pm = mockery.mock(PersistenceManager.class);
+        pm = mockery.mock(PersistenceManagerWrapper.class);
         query = mockery.mock(Query.class);
 
     }
@@ -60,6 +58,8 @@ public class MailboxTest {
         mockery.checking(new Expectations(){{
             one(pm).newQuery(Message.class, "id == message_id");
     		will(returnValue(query));
+            one(pm).beginTransaction();
+            one(pm).commitTransaction();
             one(query).declareImports("import java.lang.Long");
             one(query).declareParameters("Long message_id");                        
             one(query).execute(2L);
@@ -76,6 +76,8 @@ public class MailboxTest {
         mockery.checking(new Expectations(){{
             one(pm).newQuery(Message.class, "id == message_id");
     		will(returnValue(query));
+            one(pm).beginTransaction();
+            one(pm).commitTransaction();
             one(query).declareImports("import java.lang.Long");
             one(query).declareParameters("Long message_id");
             one(query).execute(22222L);
@@ -137,7 +139,7 @@ public class MailboxTest {
     }
 
     private class MyMailbox extends Mailbox {
-        public MyMailbox(PersistenceManager pm, User user) {
+        public MyMailbox(PersistenceManagerWrapper pm, User user) {
             super(pm, user, new QueryStore());
         }
 

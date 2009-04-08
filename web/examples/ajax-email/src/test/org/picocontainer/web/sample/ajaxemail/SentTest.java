@@ -11,8 +11,6 @@ import org.jmock.integration.junit4.JMock;
 import org.jmock.Mockery;
 import org.jmock.Expectations;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 import java.util.Collection;
 import java.util.ArrayList;
 
@@ -21,13 +19,13 @@ public class SentTest {
 
     private Mockery mockery = new Mockery();
     private Collection<Message> data;
-    private PersistenceManager pm;
+    private PersistenceManagerWrapper pm;
     private User fred = new User("Fred", "password");
     private Query query;
 
     @Before
     public void setUp() {
-        pm = mockery.mock(PersistenceManager.class);
+        pm = mockery.mock(PersistenceManagerWrapper.class);
         query = mockery.mock(Query.class);
         data = new ArrayList();
         mockery.checking(new Expectations(){{
