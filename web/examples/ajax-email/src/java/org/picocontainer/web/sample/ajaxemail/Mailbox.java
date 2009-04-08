@@ -30,10 +30,12 @@ public abstract class Mailbox {
      * @return the message
      */
     public Message read(long msgId) {
-        pm.beginTransaction();
         Message message = getMessage(msgId);
-        message.markRead();
-        pm.commitTransaction();
+        if (!message.isRead()) {
+            pm.beginTransaction();
+            message.markRead();
+            pm.commitTransaction();
+        }
         return message;
     }
 
