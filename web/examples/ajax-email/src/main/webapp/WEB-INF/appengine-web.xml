@@ -1,7 +1,7 @@
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
   <application>ph-jdo</application>
   <sessions-enabled>true</sessions-enabled>
-  <version>96</version>
+  <version>97</version>
   <static-files>
       <include path="images/*" />
       <include path="js/*" />

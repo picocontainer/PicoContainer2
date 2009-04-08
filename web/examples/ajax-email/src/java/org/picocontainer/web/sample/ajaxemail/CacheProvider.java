@@ -12,9 +12,15 @@ import org.picocontainer.injectors.ProviderAdapter;
 
 public class CacheProvider extends ProviderAdapter {
     public Cache provide() throws CacheException {
+
+        Map props = new HashMap();
+        // com.google.appengine.api.memcache.stdimpl.GCacheFactory.EXPIRATION_DELTA (yeesh) == 0
+        // 120 == 1 min
+        props.put(0, 120);
+
         CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
         try {
-            final javax.cache.Cache jCache = cacheFactory.createCache(Collections.emptyMap());
+            final javax.cache.Cache jCache = cacheFactory.createCache(props);
             return new Cache() {
                 public Object get(Object key) {
                     return jCache.get(key);
