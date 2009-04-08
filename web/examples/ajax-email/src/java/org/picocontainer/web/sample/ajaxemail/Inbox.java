@@ -21,8 +21,4 @@ public class Inbox extends Mailbox {
         return "to";
     }
 
-    public String toString() {
-        return "inbox-for-" + getUserName();
-    }
-
 }

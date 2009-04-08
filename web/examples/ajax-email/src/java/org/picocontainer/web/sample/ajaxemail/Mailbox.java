@@ -102,4 +102,9 @@ public abstract class Mailbox {
         return user.getName();
     }
 
+    public String toString() {
+        return getUserName();
+    }
+
+
 }

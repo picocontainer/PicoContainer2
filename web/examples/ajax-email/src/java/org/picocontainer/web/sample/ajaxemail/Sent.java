@@ -30,8 +30,5 @@ public class Sent extends Mailbox {
         return "from";
     }
 
-    public String toString() {
-        return "sent-for-" + getUserName();
-    }
 
 }
