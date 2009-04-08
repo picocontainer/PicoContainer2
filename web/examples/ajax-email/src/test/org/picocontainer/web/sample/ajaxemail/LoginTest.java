@@ -21,6 +21,7 @@ public class LoginTest {
         browser.start();
         browser.setContext("test that Fred can login");
         ConditionRunner conditionRunner = new JUnit4AndTestNgConditionRunner(browser, 10, 100, 10000);
+        browser.open("/remoting-ajaxemail-webapp/json/ReloadData/doIt");
         browser.open("/remoting-ajaxemail-webapp/");
         conditionRunner.waitFor(new Presence("id=userName"));
         browser.type("id=userName", "Gill Bates");
