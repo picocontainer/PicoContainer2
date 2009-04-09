@@ -57,7 +57,15 @@ public class PicoContext {
 
     public PicoFilterHolder addFilterWithMapping(Class filterClass, String pathMapping, int dispatchers) {
         PicoFilterHolder filterHolder = new PicoFilterHolder(filterClass, parentContainer);
-        context.addFilter(filterHolder, pathMapping, 0);
+        context.addFilter(filterHolder, pathMapping, dispatchers);
+        return filterHolder;
+    }
+
+    public PicoFilterHolder addFilterWithMappings(Class filterClass, String[] pathMappings, int dispatchers) {
+        PicoFilterHolder filterHolder = new PicoFilterHolder(filterClass, parentContainer);
+        for (String pathMapping : pathMappings) {
+            context.addFilter(filterHolder, pathMapping, dispatchers);
+        }
         return filterHolder;
     }
 

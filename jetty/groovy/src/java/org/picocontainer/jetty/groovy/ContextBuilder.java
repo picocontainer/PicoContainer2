@@ -103,9 +103,22 @@ public class ContextBuilder extends NodeBuilder {
     }
 
     private Object makeFilter(Map map) {
-        FilterHolder filter = context.addFilterWithMapping((Class)map.remove("class"), (String)map.remove("path"),
+        FilterHolder filter = context.addFilterWithMappings((Class)map.remove("class"), getPaths(map),
                                                            extractDispatchers(map));
         return new FilterHolderBuilder(filter);
+    }
+
+    private String[] getPaths(Map map) {
+        String[] paths = {};
+        String mapping = (String) map.remove("path");
+        if (mapping != null) {
+            paths = new String[] { mapping };
+        }
+        String mappings = (String) map.remove("paths");
+        if (mappings != null) {
+            paths = mappings.replaceAll(" ", "").split(",");
+        }
+        return paths;
     }
 
     private int extractDispatchers(Map map) {
