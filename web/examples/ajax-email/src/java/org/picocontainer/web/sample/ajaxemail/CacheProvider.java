@@ -21,19 +21,10 @@ public class CacheProvider extends ProviderAdapter {
 
         CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
         try {
-            final javax.cache.Cache jCache = cacheFactory.createCache(props);
-            return new Cache() {
-                public Object get(Object key) {
-                    return jCache.get(key);
-                }
-
-                public void put(Object key, Object toCache) {
-                    jCache.put(key, toCache);
-                }
-            };
-        } catch (NullPointerException e) {
-            //return new CrudeCache();
+            //return new JCache(cacheFactory.createCache(props));
             return new NotACache();
+        } catch (NullPointerException e) {
+            return new CrudeCache();
         }
     }
 
@@ -56,6 +47,22 @@ public class CacheProvider extends ProviderAdapter {
         }
 
         public void put(Object key, Object toCache) {
+        }
+    }
+
+    private static class JCache implements Cache {
+        private final javax.cache.Cache jCache;
+
+        public JCache(javax.cache.Cache jCache) {
+            this.jCache = jCache;
+        }
+
+        public Object get(Object key) {
+            return jCache.get(key);
+        }
+
+        public void put(Object key, Object toCache) {
+            jCache.put(key, toCache);
         }
     }
 }
