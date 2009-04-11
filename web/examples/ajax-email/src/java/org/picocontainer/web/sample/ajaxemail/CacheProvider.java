@@ -11,6 +11,7 @@ import org.picocontainer.web.remoting.Cache;
 import org.picocontainer.injectors.ProviderAdapter;
 
 public class CacheProvider extends ProviderAdapter {
+    
     public Cache provide() throws CacheException {
 
         Map props = new HashMap();
@@ -31,16 +32,30 @@ public class CacheProvider extends ProviderAdapter {
                 }
             };
         } catch (NullPointerException e) {
-            final Map fallBackImpl = new HashMap();
-            return new Cache() {
-                public Object get(Object key) {
-                    return fallBackImpl.get(key);
-                }
+            //return new CrudeCache();
+            return new NotACache();
+        }
+    }
 
-                public void put(Object key, Object toCache) {
-                    fallBackImpl.put(key, toCache);
-                }
-            };
+    private static class CrudeCache implements Cache {
+        final Map fallBackImpl = new HashMap();
+
+        public Object get(Object key) {
+            return fallBackImpl.get(key);
+        }
+
+        public void put(Object key, Object toCache) {
+            fallBackImpl.put(key, toCache);
+        }
+    }
+
+    private static class NotACache implements Cache {
+
+        public Object get(Object key) {
+            return null;
+        }
+
+        public void put(Object key, Object toCache) {
         }
     }
 }
