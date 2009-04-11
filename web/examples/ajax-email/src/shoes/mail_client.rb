@@ -191,7 +191,7 @@ Shoes.app :title => "Mail client", :width => 1000, :height => 700 do
   def logIn(name , password)
     Shoes.p "logging in #{name}.. #{password}"  
 
-    @auth = Auth.new(Connection.new('ph-jdo.appspot.com', 8080, '/ruby', RubyParser.new))
+    @auth = Auth.new(Connection.new('ph-jdo.appspot.com', 80, '/ruby', RubyParser.new))
     result = @auth.login(name, password)      
     if(result)
       @logged_in = true 
@@ -231,11 +231,11 @@ Shoes.app :title => "Mail client", :width => 1000, :height => 700 do
   @main_window  = stack :margin => 10, :margin_top => 10, :hidden => true do   
      background "#C7EAFB"  
 
-     code = Net::HTTP.get URI.parse URL
+     # code = Net::HTTP.get URI.parse URL
      #some day we will eval the code
-     File.open("classes.rb", "w+") do |f|
-       f << code
-     end                            
+     # File.open("classes.rb", "w+") do |f|
+      # f << code
+     # end                            
 
      #require "#{File.dirname(__FILE__)}/classes.rb"
 
