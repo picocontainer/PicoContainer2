@@ -38,14 +38,14 @@ public final class DefaultConstructorParameter implements Parameter, Serializabl
 	}
 
 	public boolean isResolvable(PicoContainer container,
-			ComponentAdapter<?> adapter, Type expectedType,
+			ComponentAdapter<?> forAdapter, Type expectedType,
 			NameBinding expectedNameBinding, boolean useNames,
 			Annotation binding) {
 		return false;
 	}
 
 	public Object resolveInstance(PicoContainer container,
-			ComponentAdapter<?> adapter, Type expectedType,
+			ComponentAdapter<?> forAdapter, Type expectedType,
 			NameBinding expectedNameBinding, boolean useNames,
 			Annotation binding) {
 		return null;

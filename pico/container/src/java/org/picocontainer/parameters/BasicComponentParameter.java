@@ -172,11 +172,11 @@ public class BasicComponentParameter implements Parameter, Serializable {
     }
 
     public Object resolveInstance(PicoContainer container,
-                                 ComponentAdapter<?> adapter,
+                                 ComponentAdapter<?> forAdapter,
                                  Type expectedType,
                                  NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         ComponentAdapter componentAdapter =
-            resolveAdapter(container, adapter, (Class<?>)expectedType, expectedNameBinding, useNames, binding);
+            resolveAdapter(container, forAdapter, (Class<?>)expectedType, expectedNameBinding, useNames, binding);
         if (componentAdapter == null && useNames) {
             componentAdapter = container.getComponentAdapter(expectedNameBinding.getName());             
         }
@@ -185,7 +185,7 @@ public class BasicComponentParameter implements Parameter, Serializable {
             if (componentAdapter instanceof DefaultPicoContainer.LateInstance) {
                 o = ((DefaultPicoContainer.LateInstance) componentAdapter).getComponentInstance();
             } else {
-                o = container.getComponent(componentAdapter.getComponentKey(), adapter.getComponentImplementation());
+                o = container.getComponent(componentAdapter.getComponentKey(), forAdapter.getComponentImplementation());
             }
             if (o instanceof String && expectedType != String.class) {
                 Converter converter = stringConverters.get(expectedType);
@@ -197,15 +197,15 @@ public class BasicComponentParameter implements Parameter, Serializable {
     }
 
     public void verify(PicoContainer container,
-                       ComponentAdapter<?> adapter,
+                       ComponentAdapter<?> forAdapter,
                        Type expectedType,
                        NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
         final ComponentAdapter componentAdapter =
-            resolveAdapter(container, adapter, (Class<?>)expectedType, expectedNameBinding, useNames, binding);
+            resolveAdapter(container, forAdapter, (Class<?>)expectedType, expectedNameBinding, useNames, binding);
         if (componentAdapter == null) {
             final Set<Type> set = new HashSet<Type>();
             set.add(expectedType);
-            throw new AbstractInjector.UnsatisfiableDependenciesException(adapter, null, set, container);
+            throw new AbstractInjector.UnsatisfiableDependenciesException(forAdapter, null, set, container);
         }
         componentAdapter.verify(container);
     }

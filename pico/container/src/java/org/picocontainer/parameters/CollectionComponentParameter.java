@@ -123,7 +123,7 @@ public class CollectionComponentParameter implements Parameter, Serializable {
      */
     @SuppressWarnings({"unchecked"})
     public Object resolveInstance(PicoContainer container,
-                                  ComponentAdapter<?> adapter,
+                                  ComponentAdapter<?> forAdapter,
                                   Type expectedType,  NameBinding expectedNameBinding,
                                   boolean useNames, Annotation binding) {
         // type check is done in isResolvable
@@ -131,7 +131,7 @@ public class CollectionComponentParameter implements Parameter, Serializable {
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
             final Map<Object, ComponentAdapter<?>> adapterMap =
-                    getMatchingComponentAdapters(container, adapter, componentKeyType, getValueType(expectedType));
+                    getMatchingComponentAdapters(container, forAdapter, componentKeyType, getValueType(expectedType));
             if (collectionType.isArray()) {
                 result = getArrayInstance(container, collectionType, adapterMap);
             } else if (Map.class.isAssignableFrom(collectionType)) {
@@ -160,11 +160,11 @@ public class CollectionComponentParameter implements Parameter, Serializable {
      * @return <code>true</code> if matching components were found or an empty collective type
      *         is allowed
      */
-    public boolean isResolvable(PicoContainer container, ComponentAdapter<?> adapter,
+    public boolean isResolvable(PicoContainer container, ComponentAdapter<?> forAdapter,
                                 Type expectedType, NameBinding expectedNameBinding,
                                 boolean useNames, Annotation binding) {
         return getCollectionType(expectedType) != null &&
-                (emptyCollection || getMatchingComponentAdapters(container, adapter,
+                (emptyCollection || getMatchingComponentAdapters(container, forAdapter,
                         componentKeyType, getValueType(expectedType)).size() > 0);
     }
 

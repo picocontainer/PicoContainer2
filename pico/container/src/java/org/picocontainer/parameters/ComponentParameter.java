@@ -113,30 +113,30 @@ public class ComponentParameter
     }
 
     public Object resolveInstance(PicoContainer container,
-                                  ComponentAdapter<?> adapter,
+                                  ComponentAdapter<?> forAdapter,
                                   Type expectedType,
                                   NameBinding expectedNameBinding,
                                   boolean useNames, Annotation binding) {
         // type check is done in isResolvable
         Object result = null;
         if (expectedType instanceof Class) {
-            result = super.resolveInstance(container, adapter, expectedType, expectedNameBinding, useNames, binding);
+            result = super.resolveInstance(container, forAdapter, expectedType, expectedNameBinding, useNames, binding);
         } else if (expectedType instanceof ParameterizedType) {
-        	result = super.resolveInstance(container, adapter, ((ParameterizedType) expectedType).getRawType(), expectedNameBinding, useNames, binding);
+        	result = super.resolveInstance(container, forAdapter, ((ParameterizedType) expectedType).getRawType(), expectedNameBinding, useNames, binding);
         }
         if (result == null && collectionParameter != null) {
-            result = collectionParameter.resolveInstance(container, adapter, expectedType, expectedNameBinding,
+            result = collectionParameter.resolveInstance(container, forAdapter, expectedType, expectedNameBinding,
                                                          useNames, binding);
         }
         return result;
     }
 
-    public boolean isResolvable(PicoContainer container, ComponentAdapter<?> adapter,
+    public boolean isResolvable(PicoContainer container, ComponentAdapter<?> forAdapter,
                                 Type expectedType, NameBinding expectedNameBinding,
                                 boolean useNames, Annotation binding) {
-        if (!super.isResolvable(container, adapter, expectedType, expectedNameBinding, useNames, binding)) {
+        if (!super.isResolvable(container, forAdapter, expectedType, expectedNameBinding, useNames, binding)) {
             if (collectionParameter != null) {
-                return collectionParameter.isResolvable(container, adapter, expectedType, expectedNameBinding,
+                return collectionParameter.isResolvable(container, forAdapter, expectedType, expectedNameBinding,
                                                         useNames, binding);
             }
             return false;

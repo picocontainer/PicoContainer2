@@ -45,13 +45,15 @@ public class ConstantParameter implements Parameter, Serializable {
         this.value = value;
     }
 
-    public Object resolveInstance(PicoContainer container, ComponentAdapter<?> adapter,
+    public Object resolveInstance(PicoContainer container, ComponentAdapter<?> forAdapter,
                                   Type expectedType, NameBinding expectedNameBinding,
                                   boolean useNames, Annotation binding) {
         return value;
     }
 
-    public boolean isResolvable(PicoContainer container, ComponentAdapter<?> adapter, Type expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+    public boolean isResolvable(PicoContainer container, ComponentAdapter<?> forAdapter,
+                                Type expectedType, NameBinding expectedNameBinding,
+                                boolean useNames, Annotation binding) {
         if (expectedType instanceof Class) {
             return isAssignable((Class) expectedType);
         } else if (expectedType instanceof ParameterizedType) {
