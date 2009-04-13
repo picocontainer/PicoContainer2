@@ -80,4 +80,9 @@ public class Message {
         Logger.getAnonymousLogger().info("markRead " + id);
         read = true;
     }
+
+    public void clearMessageBody() {
+        message = null;
+    }
+
 }

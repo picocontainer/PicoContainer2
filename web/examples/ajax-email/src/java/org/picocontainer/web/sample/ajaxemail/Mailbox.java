@@ -2,7 +2,6 @@ package org.picocontainer.web.sample.ajaxemail;
 
 import java.util.List;
 import java.util.Collection;
-import java.util.logging.Logger;
 
 /**
  * Abstract Mailbox
@@ -83,7 +82,15 @@ public abstract class Mailbox {
     public Message[] messages() {
         Query query = getMultipleMessageQuery();
         List<Message> messageCollection = (List<Message>) query.execute(user.getName());
-        return messageCollection.toArray(new Message[messageCollection.size()]);
+        return toArrayWithoutMessageBody(messageCollection);
+    }
+
+    private Message[] toArrayWithoutMessageBody(List<Message> messageCollection) {
+        Message[] msgAry = messageCollection.toArray(new Message[messageCollection.size()]);
+        for (Message message : msgAry) {
+            message.clearMessageBody();
+        }
+        return msgAry;
     }
 
     private Query getMultipleMessageQuery() {
