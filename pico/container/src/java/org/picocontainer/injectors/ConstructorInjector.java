@@ -181,6 +181,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                     Constructor<T> ctor = null;
                     try {
                         if (chosenConstructor == null) {
+                            // (***) this resolves adapters then discards them to return a ctor
                             ctor = getGreediestSatisfiableConstructor(guardedContainer);
                         }
                         if (rememberChosenConstructor) {
@@ -196,6 +197,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                     }
                     ComponentMonitor componentMonitor = currentMonitor();
                     try {
+                        // (***) this resolves adapters again
                         Object[] parameters = getMemberArguments(guardedContainer, ctor);
                         ctor = componentMonitor.instantiating(container, ConstructorInjector.this, ctor);
                         if(ctor == null) {
