@@ -16,7 +16,6 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.NameBinding;
@@ -38,20 +37,7 @@ public class ResolveAdapterReductionTestCase {
     public void testThatResolveAdapterCanBeDoneOnceForASituationWhereItWasPreviouslyDoneAtLeastTwice() throws Exception {
         resolveAdapterCalls = 0;
         DefaultPicoContainer pico = new DefaultPicoContainer(new ConstructorInjection());
-        pico.addAdapter(new ConstructorInjector(One.class, One.class, null) {
-            protected Parameter[] createDefaultParameters(Type[] parameters) {
-                Parameter[] componentParameters = new Parameter[parameters.length];
-                for (int i = 0; i < parameters.length; i++) {
-                    componentParameters[i] = new ComponentParameter() {
-                        protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container, ComponentAdapter adapter, Class<T> expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
-                            resolveAdapterCalls++;
-                            return super.resolveAdapter(container, adapter, expectedType, expectedNameBinding, useNames, binding);    //To change body of overridden methods use File | Settings | File Templates.
-                        }
-                    };
-                }
-                return componentParameters;
-            }
-        });
+        pico.addAdapter(new CountingConstructorInjector(One.class, One.class));
         pico.addComponent(new Two());
         long start = System.currentTimeMillis();
         for (int x = 0; x<30000; x++) {
@@ -77,5 +63,22 @@ public class ResolveAdapterReductionTestCase {
         }
     }
 
+    private class CountingConstructorInjector extends ConstructorInjector {
+        public CountingConstructorInjector(Class<?> componentKey, Class<?> componentImplementation) {
+            super(componentKey, componentImplementation, null);
+        }
 
+        protected Parameter[] createDefaultParameters(Type[] parameters) {
+            Parameter[] componentParameters = new Parameter[parameters.length];
+            for (int i = 0; i < parameters.length; i++) {
+                componentParameters[i] = new ComponentParameter() {
+                    protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container, ComponentAdapter adapter, Class<T> expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+                        resolveAdapterCalls++;
+                        return super.resolveAdapter(container, adapter, expectedType, expectedNameBinding, useNames, binding);    //To change body of overridden methods use File | Settings | File Templates.
+                    }
+                };
+            }
+            return componentParameters;
+        }
+    }
 }
