@@ -25,6 +25,8 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoVisitor;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Parameter;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.testmodel.AlternativeTouchable;
@@ -59,18 +61,18 @@ public class ConstraintsTestCase {
     @Test public void testIsKeyConstraint() {
         Constraint c = new IsKey(SimpleTouchable.class);
 
-        Object object = c.resolveInstance(container, 
-                container.getComponentAdapter(DependsOnTouchable.class, (NameBinding) null),
-                Touchable.class, null, false, null);
-        assertEquals(SimpleTouchable.class, object.getClass());
+        ComponentAdapter<DependsOnTouchable> forAdapter = container.getComponentAdapter(DependsOnTouchable.class, (NameBinding) null);
+        Parameter.Resolver resolver = c.resolve(container, forAdapter, null, Touchable.class, null, false, null);
+        Object inst = resolver.resolveInstance();
+        assertEquals(SimpleTouchable.class, inst.getClass());
     }
 
     @Test public void testIsTypeConstraint() {
         Constraint c = new IsType(AlternativeTouchable.class);
 
-        Object object = c.resolveInstance(container, 
+        Object object = c.resolve(container,
                 container.getComponentAdapter(DependsOnTouchable.class, (NameBinding) null),
-                Touchable.class, null, false, null);
+                null, Touchable.class, null, false, null).resolveInstance();
         assertEquals(AlternativeTouchable.class, object.getClass());
     }
 
@@ -82,18 +84,18 @@ public class ConstraintsTestCase {
         
         Constraint c = new IsKeyType(Boolean.class);
 
-        assertSame(t, c.resolveInstance(container, 
+        assertSame(t, c.resolve(container,
                 container.getComponentAdapter(DependsOnTouchable.class, (NameBinding) null),
-                Touchable.class, null, false, null));
+                null, Touchable.class, null, false, null).resolveInstance());
     }
 
     @Test public void testConstraintTooBroadThrowsAmbiguityException() {
         Constraint c = new IsType(Touchable.class);
 
         try {
-            c.resolveInstance(container, 
+            c.resolve(container,
                     container.getComponentAdapter(DependsOnTouchable.class, (NameBinding) null),
-                    Touchable.class, null, false, null);
+                    null, Touchable.class, null, false, null).resolveInstance();
             fail("did not throw ambiguous resolution exception");
         } catch (AbstractInjector.AmbiguousComponentResolutionException acre) {
             // success
@@ -105,9 +107,9 @@ public class ConstraintsTestCase {
             new CollectionConstraint(
                 new And(new IsType(Touchable.class),
                 new Not(new IsType(DecoratedTouchable.class))));
-        Touchable[] touchables = (Touchable[]) c.resolveInstance(container, 
+        Touchable[] touchables = (Touchable[]) c.resolve(container,
                 container.getComponentAdapter(DependsOnTouchable.class,(NameBinding) null),
-                Touchable[].class, null, false, null);
+                null, Touchable[].class, null, false, null).resolveInstance();
         assertEquals(2, touchables.length);
         for (Touchable touchable : touchables) {
             assertFalse(touchable instanceof DecoratedTouchable);

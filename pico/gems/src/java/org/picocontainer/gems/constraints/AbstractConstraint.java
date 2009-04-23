@@ -12,6 +12,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.Parameter;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.parameters.CollectionComponentParameter;
 
@@ -33,36 +34,29 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
     }
 
     @Override
-	public Object resolveInstance(final PicoContainer container,
-                                  final ComponentAdapter<?> forAdapter,
-                                  final Type expectedType,
-                                  final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) throws PicoCompositionException
-    {
-        final Object[] array =
-            (Object[])super.resolveInstance(container, forAdapter, getArrayType((Class) expectedType), expectedNameBinding,
-                                            useNames, null);
-        if (array.length == 1) {
-            return array[0];
-        }
-        return null;
-    }
-
-    @Override
-	public boolean isResolvable(final PicoContainer container,
-                                final ComponentAdapter<?> forAdapter,
-                                final Type expectedType,
-                                final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) throws PicoCompositionException
-    {
-        return super.isResolvable(container, forAdapter, getArrayType((Class) expectedType), expectedNameBinding, useNames,
-                                  binding);
+	public Resolver resolve(final PicoContainer container,
+                         final ComponentAdapter<?> forAdapter,
+                         ComponentAdapter<?> injecteeAdapter, final Type expectedType,
+                         final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) throws PicoCompositionException {
+        final Resolver resolver;
+        return new Parameter.DelegateResolver(super.resolve(container, forAdapter,
+                null, getArrayType((Class) expectedType), expectedNameBinding, useNames, binding)) {
+            @Override
+            public Object resolveInstance() {
+                final Object[] array = (Object[]) super.resolveInstance();
+                if (array.length == 1) {
+                    return array[0];
+                }
+                return null;
+            }
+        };
     }
 
     @Override
 	public void verify(final PicoContainer container,
                        final ComponentAdapter<?> adapter,
                        final Type expectedType,
-                       final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) throws PicoCompositionException
-    {
+                       final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) throws PicoCompositionException {
         super.verify(container, adapter, getArrayType((Class) expectedType), expectedNameBinding, useNames, binding);
     }
 
@@ -73,8 +67,7 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
 	protected Map<Object, ComponentAdapter<?>> getMatchingComponentAdapters(final PicoContainer container,
                                                                             final ComponentAdapter adapter,
                                                                             final Class keyType,
-                                                                            final Class valueType)
-    {
+                                                                            final Class valueType) {
         final Map<Object, ComponentAdapter<?>> map =
             super.getMatchingComponentAdapters(container, adapter, keyType, valueType);
         if (map.size() > 1) {
