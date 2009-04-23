@@ -50,8 +50,8 @@ public final class ParameterTestCase {
                                                                                                                  (NameBinding) null);
         assertNotNull(adapter);
         assertNotNull(pico.getComponent(Touchable.class));
-        Touchable touchable = (Touchable) ComponentParameter.DEFAULT.resolveInstance(pico, new NullCA(String.class), Touchable.class, pn,
-                                                                                     false, null);
+        Touchable touchable = (Touchable) ComponentParameter.DEFAULT.resolve(pico, new NullCA(String.class), null, Touchable.class, pn,
+                                                                                     false, null).resolveInstance();
         assertNotNull(touchable);
     }
 
@@ -61,8 +61,8 @@ public final class ParameterTestCase {
                                                                                                                  (NameBinding) null);
 
         assertNotNull(pico.getComponent(Touchable.class));
-        Touchable touchable = (Touchable) ComponentParameter.DEFAULT.resolveInstance(pico, adapter, Touchable.class, pn,
-                                                                                     false, null);
+        Touchable touchable = (Touchable) ComponentParameter.DEFAULT.resolve(pico, adapter, null, Touchable.class, pn,
+                                                                                     false, null).resolveInstance();
         assertNull(touchable);
     }
 
@@ -70,7 +70,7 @@ public final class ParameterTestCase {
         Object value = new Object();
         ConstantParameter parameter = new ConstantParameter(value);
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
-        assertSame(value, parameter.resolveInstance(picoContainer, null, Object.class, pn, false, null));
+        assertSame(value, parameter.resolve(picoContainer, null, null, Object.class, pn, false, null).resolveInstance());
     }
 
     @Test public void testDependsOnTouchableWithTouchableSpecifiedAsConstant() throws PicoCompositionException {
@@ -85,7 +85,7 @@ public final class ParameterTestCase {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         ComponentAdapter adapter = picoContainer.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class,
                                                                                                                           (NameBinding) null);
-        assertNull(ComponentParameter.DEFAULT.resolveInstance(picoContainer, adapter, TestCase.class, pn, false, null));
+        assertNull(ComponentParameter.DEFAULT.resolve(picoContainer, adapter, null, TestCase.class, pn, false, null).resolveInstance());
     }
 	
 	@Test public void testComponentParameterResolvesPrimitiveType() {
@@ -93,8 +93,8 @@ public final class ParameterTestCase {
         ComponentAdapter adapter = picoContainer.addComponent("glarch", 239).getComponentAdapter("glarch");
         assertNotNull(adapter);
 		Parameter parameter = new ComponentParameter("glarch");
-		assertNotNull(parameter.resolveInstance(picoContainer,adapter,Integer.TYPE, pn, false, null));
-		assertEquals(239, ((Integer)parameter.resolveInstance(picoContainer,adapter,Integer.TYPE, pn, false, null)).intValue());
+		assertNotNull(parameter.resolve(picoContainer,adapter, null, Integer.TYPE, pn, false, null).resolveInstance());
+		assertEquals(239, ((Integer)parameter.resolve(picoContainer,adapter, null, Integer.TYPE, pn, false, null).resolveInstance()).intValue());
 	}
 
     @Test public void testConstantParameterRespectsExpectedType() {
@@ -102,82 +102,82 @@ public final class ParameterTestCase {
         Parameter parameter = new ConstantParameter(new SimpleTouchable());
         ComponentAdapter adapter = picoContainer.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class,
                                                                                                                           (NameBinding) null);
-        assertFalse(parameter.isResolvable(picoContainer, adapter, TestCase.class, pn, false, null));
+        assertFalse(parameter.resolve(picoContainer, adapter, null, TestCase.class, pn, false, null).isResolved());
     }
 
     @Test public void testParameterRespectsExpectedType() throws PicoCompositionException {
         Parameter parameter = new ConstantParameter(Touchable.class);
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
-        assertFalse(parameter.isResolvable(picoContainer, null, TestCase.class, pn, false, null));
+        assertFalse(parameter.resolve(picoContainer, null, null, TestCase.class, pn, false, null).isResolved());
 
         ComponentAdapter adapter = picoContainer.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class,
                                                                                                                           (NameBinding) null);
 
-        assertNull(ComponentParameter.DEFAULT.resolveInstance(picoContainer, adapter, TestCase.class, pn, false, null));
+        assertNull(ComponentParameter.DEFAULT.resolve(picoContainer, adapter, null, TestCase.class, pn, false, null).resolveInstance());
     }
 
     @Test public void testConstantParameterWithPrimitives() throws PicoCompositionException {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         Byte byteValue = (byte)5;
         ConstantParameter parameter = new ConstantParameter(byteValue);
-        assertSame(byteValue, parameter.resolveInstance(picoContainer, null, Byte.TYPE, pn, false, null));
-        assertSame(byteValue, parameter.resolveInstance(picoContainer, null, Byte.class, pn, false, null));
+        assertSame(byteValue, parameter.resolve(picoContainer, null, null, Byte.TYPE, pn, false, null).resolveInstance());
+        assertSame(byteValue, parameter.resolve(picoContainer, null, null, Byte.class, pn, false, null).resolveInstance());
         Short shortValue = (short)5;
         parameter = new ConstantParameter(shortValue);
-        assertSame(shortValue, parameter.resolveInstance(picoContainer, null, Short.TYPE, pn, false, null));
-        assertSame(shortValue, parameter.resolveInstance(picoContainer, null, Short.class, pn, false, null));
+        assertSame(shortValue, parameter.resolve(picoContainer, null, null, Short.TYPE, pn, false, null).resolveInstance());
+        assertSame(shortValue, parameter.resolve(picoContainer, null, null, Short.class, pn, false, null).resolveInstance());
         Integer intValue = 5;
         parameter = new ConstantParameter(intValue);
-        assertSame(intValue, parameter.resolveInstance(picoContainer, null, Integer.TYPE, pn, false, null));
-        assertSame(intValue, parameter.resolveInstance(picoContainer, null, Integer.class, pn, false, null));
+        assertSame(intValue, parameter.resolve(picoContainer, null, null, Integer.TYPE, pn, false, null).resolveInstance());
+        assertSame(intValue, parameter.resolve(picoContainer, null, null, Integer.class, pn, false, null).resolveInstance());
         Long longValue = (long)5;
         parameter = new ConstantParameter(longValue);
-        assertSame(longValue, parameter.resolveInstance(picoContainer, null, Long.TYPE, pn, false, null));
-        assertSame(longValue, parameter.resolveInstance(picoContainer, null, Long.class, pn, false, null));
+        assertSame(longValue, parameter.resolve(picoContainer, null, null, Long.TYPE, pn, false, null).resolveInstance());
+        assertSame(longValue, parameter.resolve(picoContainer, null, null, Long.class, pn, false, null).resolveInstance());
         Float floatValue = new Float(5.5);
         parameter = new ConstantParameter(floatValue);
-        assertSame(floatValue, parameter.resolveInstance(picoContainer, null, Float.TYPE, pn, false, null));
-        assertSame(floatValue, parameter.resolveInstance(picoContainer, null, Float.class, pn, false, null));
+        assertSame(floatValue, parameter.resolve(picoContainer, null, null, Float.TYPE, pn, false, null).resolveInstance());
+        assertSame(floatValue, parameter.resolve(picoContainer, null, null, Float.class, pn, false, null).resolveInstance());
         Double doubleValue = 5.5;
         parameter = new ConstantParameter(doubleValue);
-        assertSame(doubleValue, parameter.resolveInstance(picoContainer, null, Double.TYPE, pn, false, null));
-        assertSame(doubleValue, parameter.resolveInstance(picoContainer, null, Double.class, pn, false, null));
+        assertSame(doubleValue, parameter.resolve(picoContainer, null, null, Double.TYPE, pn, false, null).resolveInstance());
+        assertSame(doubleValue, parameter.resolve(picoContainer, null, null, Double.class, pn, false, null).resolveInstance());
         Boolean booleanValue = true;
         parameter = new ConstantParameter(booleanValue);
-        assertSame(booleanValue, parameter.resolveInstance(picoContainer, null, Boolean.TYPE, pn, false, null));
-        assertSame(booleanValue, parameter.resolveInstance(picoContainer, null, Boolean.class, pn, false, null));
+        assertSame(booleanValue, parameter.resolve(picoContainer, null, null, Boolean.TYPE, pn, false, null).resolveInstance());
+        assertSame(booleanValue, parameter.resolve(picoContainer, null, null, Boolean.class, pn, false, null).resolveInstance());
         Character charValue = 'x';
         parameter = new ConstantParameter(charValue);
-        assertSame(charValue, parameter.resolveInstance(picoContainer, null, Character.TYPE, pn, false, null));
-        assertSame(charValue, parameter.resolveInstance(picoContainer, null, Character.class, pn, false, null));
+        assertSame(charValue, parameter.resolve(picoContainer, null, null, Character.TYPE, pn, false, null).resolveInstance());
+        assertSame(charValue, parameter.resolve(picoContainer, null, null, Character.class, pn, false, null).resolveInstance());
     }
 
     @Test public void testConstantParameterWithPrimitivesRejectsUnexpectedType() throws PicoCompositionException {
         MutablePicoContainer picoContainer = new DefaultPicoContainer();
         Byte byteValue = (byte)5;
         ConstantParameter parameter = new ConstantParameter(byteValue);
-        assertFalse(parameter.isResolvable(picoContainer, null, Integer.TYPE, pn, false, null));
+        assertFalse(parameter.resolve(picoContainer, null, null, Integer.TYPE, pn, false, null).isResolved());
         Short shortValue = (short)5;
         parameter = new ConstantParameter(shortValue);
-        assertFalse(parameter.isResolvable(picoContainer, null, Byte.TYPE, pn, false, null));
+        assertFalse(parameter.resolve(picoContainer, null, null, Byte.TYPE, pn, false, null).isResolved());
         Integer intValue = 5;
         parameter = new ConstantParameter(intValue);
-        assertFalse(parameter.isResolvable(picoContainer, null, Byte.TYPE, pn, false, null));
+        assertFalse(parameter.resolve(picoContainer, null, null, Byte.TYPE, pn, false, null).isResolved());
         Long longValue = (long)5;
         parameter = new ConstantParameter(longValue);
-        assertFalse(parameter.isResolvable(picoContainer, null, Byte.TYPE, pn, false, null));
+        assertFalse(parameter.resolve(picoContainer, null, null, Byte.TYPE, pn, false, null).isResolved());
         Float floatValue = new Float(5.5);
         parameter = new ConstantParameter(floatValue);
-        assertFalse(parameter.isResolvable(picoContainer, null, Byte.TYPE, pn, false, null));
+        assertFalse(parameter.resolve(picoContainer, null, null, Byte.TYPE, pn, false, null).isResolved());
         Double doubleValue = 5.5;
         parameter = new ConstantParameter(doubleValue);
-        assertFalse(parameter.isResolvable(picoContainer, null, Byte.TYPE, pn, false, null));
+        assertFalse(parameter.resolve(picoContainer, null, null, Byte.TYPE, pn, false, null).isResolved());
         Boolean booleanValue = true;
         parameter = new ConstantParameter(booleanValue);
-        assertFalse(parameter.isResolvable(picoContainer, null, Byte.TYPE, pn, false, null));
+        assertFalse(parameter.resolve(picoContainer, null, null, Byte.TYPE, pn, false, null).isResolved());
         Character charValue = 'x';
         parameter = new ConstantParameter(charValue);
-        assertFalse(parameter.isResolvable(picoContainer, null, Byte.TYPE, pn, false, null));
+        assertFalse(parameter.resolve(picoContainer, null, null, Byte.TYPE, pn, false, null).isResolved());
     }
 
     @Test public void testKeyClashBug118() throws PicoCompositionException {

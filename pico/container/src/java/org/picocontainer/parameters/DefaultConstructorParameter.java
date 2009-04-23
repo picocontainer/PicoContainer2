@@ -37,18 +37,11 @@ public final class DefaultConstructorParameter implements Parameter, Serializabl
 		visitor.visitParameter(this);
 	}
 
-	public boolean isResolvable(PicoContainer container,
-			ComponentAdapter<?> forAdapter, Type expectedType,
-			NameBinding expectedNameBinding, boolean useNames,
-			Annotation binding) {
-		return false;
-	}
-
-	public Object resolveInstance(PicoContainer container,
-			ComponentAdapter<?> forAdapter, Type expectedType,
-			NameBinding expectedNameBinding, boolean useNames,
-			Annotation binding) {
-		return null;
+	public Resolver resolve(PicoContainer container,
+                            ComponentAdapter<?> forAdapter, ComponentAdapter<?> injecteeAdapter, Type expectedType,
+                            NameBinding expectedNameBinding, boolean useNames,
+                            Annotation binding) {
+		return new Parameter.NotResolved();
 	}
 
 	public void verify(PicoContainer container,

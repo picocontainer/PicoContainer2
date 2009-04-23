@@ -38,6 +38,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.Parameter;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AbstractInjector;
@@ -63,35 +64,34 @@ public class CollectionComponentParameterTestCase {
 	@Test
 	public void testShouldInstantiateArrayOfStrings() {
 		CollectionComponentParameter ccp = new CollectionComponentParameter();
-		final ComponentAdapter componentAdapter = mockery
+		final ComponentAdapter forAdapter = mockery
 				.mock(ComponentAdapter.class);
-		final PicoContainer picoContainer = mockery.mock(PicoContainer.class);
+		final PicoContainer pico = mockery.mock(PicoContainer.class);
 		mockery.checking(new Expectations() {
 			{
-				atLeast(1).of(componentAdapter).getComponentKey();
+				atLeast(1).of(forAdapter).getComponentKey();
 				will(returnValue("x"));
-				one(picoContainer).getComponentAdapters();
+				one(pico).getComponentAdapters();
 				will(returnValue(new HashSet()));
-				one(picoContainer).getComponentAdapters(
+				one(pico).getComponentAdapters(
 						with(equal(String.class)));
 				will(returnValue(Arrays.asList(new InstanceAdapter("y",
 						"Hello", new NullLifecycleStrategy(),
 						new NullComponentMonitor()), new InstanceAdapter("z",
 						"World", new NullLifecycleStrategy(),
 						new NullComponentMonitor()))));
-				one(picoContainer).getComponent(with(equal("z")));
+				one(pico).getComponent(with(equal("z")));
 				will(returnValue("World"));
-				one(picoContainer).getComponent(with(equal("y")));
+				one(pico).getComponent(with(equal("y")));
 				will(returnValue("Hello"));
-				one(picoContainer).getParent();
+				one(pico).getParent();
 				will(returnValue(null));
 			}
 		});
 		List expected = Arrays.asList("Hello", "World");
 		Collections.sort(expected);
-		List actual = Arrays.asList((Object[]) ccp.resolveInstance(
-				picoContainer, componentAdapter, String[].class,
-				null, false, null));
+        Parameter.Resolver resolver = ccp.resolve(pico, forAdapter, null, String[].class, null, false, null);
+        List actual = Arrays.asList((Object[]) resolver.resolveInstance());
 		Collections.sort(actual);
 		assertEquals(expected, actual);
 	}

@@ -112,9 +112,9 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     private boolean matchParameter(PicoContainer container, List<Object> matchingParameterList, Parameter parameter) {
         for (int j = 0; j < injectionTypes.length; j++) {
             if (matchingParameterList.get(j) == null
-                    && parameter.isResolvable(container, this, injectionTypes[j],
+                    && parameter.resolve(container, this, null, injectionTypes[j],
                                                makeParameterNameImpl(injectionMembers.get(j)),
-                                               useNames(), bindings[j])) {
+                                               useNames(), bindings[j]).isResolved()) {
                 matchingParameterList.set(j, parameter);
                 return true;
             }
@@ -156,9 +156,9 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             for (int i = 0; i < injectionMembers.size(); i++) {
                 member = injectionMembers.get(i);
                 if (matchingParameters[i] != null) {
-                    Object toInject = matchingParameters[i].resolveInstance(guardedContainer, this, injectionTypes[i],
+                    Object toInject = matchingParameters[i].resolve(guardedContainer, this, null, injectionTypes[i],
                                                                             makeParameterNameImpl(injectionMembers.get(i)),
-                                                                            useNames(), bindings[i]);
+                                                                            useNames(), bindings[i]).resolveInstance();
                     Object rv = componentMonitor.invoking(container, this, (Member) member, componentInstance, new Object[] {toInject});
                     if (rv == ComponentMonitor.KEEP) {
                         long str = System.currentTimeMillis();

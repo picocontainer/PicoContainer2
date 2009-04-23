@@ -15,6 +15,7 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -50,7 +51,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
 	private transient List<Constructor<T>> sortedMatchingConstructors;
     private transient ThreadLocalCyclicDependencyGuard<T> instantiationGuard;
     private boolean rememberChosenConstructor = true;
-    private transient Constructor<T> chosenConstructor;
+    private transient CtorAndAdapters<T> chosenConstructor;
 
     /**
      * Constructor injector that uses no monitor and no lifecycle adapter.  This is a more
@@ -101,13 +102,35 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         this.rememberChosenConstructor = rememberChosenCtor;
     }
 
-    protected Constructor<T> getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
+    private CtorAndAdapters<T> getGreediestSatisfiableConstructor(PicoContainer guardedContainer, Class<T> componentImplementation) {
+        CtorAndAdapters<T> ctor = null;
+        try {
+            if (chosenConstructor == null) {
+                ctor = getGreediestSatisfiableConstructor(guardedContainer);
+            }
+            if (rememberChosenConstructor) {
+                if (chosenConstructor == null) {
+                    chosenConstructor = ctor;
+                } else {
+                    ctor = chosenConstructor;
+                }
+            }
+        } catch (AmbiguousComponentResolutionException e) {
+            e.setComponent(getComponentImplementation());
+            throw e;
+        }
+        return ctor;
+    }
+
+    protected CtorAndAdapters<T> getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
         final Set<Constructor> conflicts = new HashSet<Constructor>();
         final Set<List<Type>> unsatisfiableDependencyTypes = new HashSet<List<Type>>();
         if (sortedMatchingConstructors == null) {
             sortedMatchingConstructors = getSortedMatchingConstructors();
         }
         Constructor<T> greediestConstructor = null;
+        Parameter[] greediestConstructorsParameters = null;
+        ComponentAdapter[] greediestConstructorsParametersComponentAdapters = null;
         int lastSatisfiableConstructorSize = -1;
         Type unsatisfiedDependencyType = null;
         for (final Constructor<T> sortedMatchingConstructor : sortedMatchingConstructors) {
@@ -116,15 +139,17 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             fixParameterType(sortedMatchingConstructor, parameterTypes);
             Annotation[] bindings = getBindings(sortedMatchingConstructor.getParameterAnnotations());
             final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
-
+            final ComponentAdapter<?>[] currentAdapters = new ComponentAdapter<?>[currentParameters.length];
             // remember: all constructors with less arguments than the given parameters are filtered out already
             for (int j = 0; j < currentParameters.length; j++) {
                 // check whether this constructor is satisfiable
                 Type boxed = box(parameterTypes[j]);
                 boolean un = useNames();
-                if (currentParameters[j].isResolvable(container, this, boxed,
+                Parameter.Resolver resolver = currentParameters[j].resolve(container, this, null, boxed,
                         new ParameterNameBinding(getParanamer(), getComponentImplementation(), sortedMatchingConstructor, j),
-                        un, bindings[j])) {
+                        un, bindings[j]);
+                if (resolver.isResolved()) {
+                    currentAdapters[j] = resolver.getComponentAdapter();
                     continue;
                 }
                 unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
@@ -136,7 +161,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             if (greediestConstructor != null && parameterTypes.length != lastSatisfiableConstructorSize) {
                 if (conflicts.isEmpty()) {
                     // we found our match [aka. greedy and satisfied]
-                    return greediestConstructor;
+                    return new CtorAndAdapters<T>(greediestConstructor, greediestConstructorsParameters, greediestConstructorsParametersComponentAdapters);
                 } else {
                     // fits although not greedy
                     conflicts.add(sortedMatchingConstructor);
@@ -147,6 +172,8 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                 conflicts.add(greediestConstructor);
             } else if (!failedDependency) {
                 greediestConstructor = sortedMatchingConstructor;
+                greediestConstructorsParameters = currentParameters;
+                greediestConstructorsParametersComponentAdapters = currentAdapters;
                 lastSatisfiableConstructorSize = parameterTypes.length;
             }
         }
@@ -162,15 +189,51 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             }
             throw new PicoCompositionException("Either the specified parameters do not match any of the following constructors: " + nonMatching.toString() + "; OR the constructors were not accessible for '" + getComponentImplementation().getName() + "'");
         }
-        return greediestConstructor;
+        return new CtorAndAdapters<T>(greediestConstructor, greediestConstructorsParameters, greediestConstructorsParametersComponentAdapters);
     }
 
-    private void fixParameterType(Constructor<T> sortedMatchingConstructor, Type[] parameterTypes) {
+    private void fixParameterType(Constructor<T> ctor, Type[] parameterTypes) {
         for (int i = 0; i < parameterTypes.length; i++) {
             Type parameterType = parameterTypes[i];
             if (parameterType instanceof TypeVariable) {
-                parameterTypes[i] = sortedMatchingConstructor.getParameterTypes()[i];
+                parameterTypes[i] = ctor.getParameterTypes()[i];
             }
+        }
+    }
+
+    protected class CtorAndAdapters<T> {
+        Constructor<T> ctor;
+        Parameter[] parameters;
+        ComponentAdapter[] injecteeAdapters;
+
+        public CtorAndAdapters(Constructor<T> ctor, Parameter[] parameters, ComponentAdapter[] injecteeAdapters) {
+            this.ctor = ctor;
+            this.parameters = parameters;
+            this.injecteeAdapters = injecteeAdapters;
+        }
+
+        public Constructor<T> getConstructor() {
+            return ctor;
+        }
+
+        public Object[] getParameters(PicoContainer container) {
+            Type[] parameterTypes = ctor.getGenericParameterTypes();
+            // as per fixParameterType()
+            for (int i = 0; i < parameterTypes.length; i++) {
+                Type parameterType = parameterTypes[i];
+                if (parameterType instanceof TypeVariable) {
+                    parameterTypes[i] = ctor.getParameterTypes()[i];
+                }
+            }
+            boxParameters(parameterTypes);            
+            Object[] result = new Object[parameters.length];
+            Annotation[] bindings = getBindings(ctor.getParameterAnnotations());
+            for (int i = 0; i < parameters.length; i++) {
+
+                result[i] = getParameter(container, ctor, i, parameterTypes[i],
+                        bindings[i], parameters[i], injecteeAdapters[i]);
+            }
+            return result;
         }
     }
 
@@ -178,40 +241,23 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
                 public T run() {
-                    Constructor<T> ctor = null;
-                    try {
-                        if (chosenConstructor == null) {
-                            // (***) this resolves adapters then discards them to return a ctor
-                            ctor = getGreediestSatisfiableConstructor(guardedContainer);
-                        }
-                        if (rememberChosenConstructor) {
-                            if (chosenConstructor == null) {
-                                chosenConstructor = ctor;
-                            } else {
-                                ctor = chosenConstructor;
-                            }
-                        }
-                    } catch (AmbiguousComponentResolutionException e) {
-                        e.setComponent(getComponentImplementation());
-                        throw e;
-                    }
+                    CtorAndAdapters<T> ctor = getGreediestSatisfiableConstructor(guardedContainer, getComponentImplementation());
                     ComponentMonitor componentMonitor = currentMonitor();
+                    Constructor<T> ct = ctor.getConstructor();
                     try {
-                        // (***) this resolves adapters again
-                        Object[] parameters = getMemberArguments(guardedContainer, ctor);
-                        ctor = componentMonitor.instantiating(container, ConstructorInjector.this, ctor);
+                        Object[] parameters = ctor.getParameters(guardedContainer);
+                        ct = componentMonitor.instantiating(container, ConstructorInjector.this, ct);
                         if(ctor == null) {
                             throw new NullPointerException("Component Monitor " + componentMonitor 
                                             + " returned a null constructor from method 'instantiating' after passing in " + ctor);
                         }
                         long startTime = System.currentTimeMillis();
-                        T inst = instantiate(ctor, parameters);
-                        componentMonitor.instantiated(container,
-                                                      ConstructorInjector.this,
-                                ctor, inst, parameters, System.currentTimeMillis() - startTime);
+                        T inst = instantiate(ct, parameters);
+                        componentMonitor.instantiated(container, ConstructorInjector.this,
+                                ct, inst, parameters, System.currentTimeMillis() - startTime);
                         return inst;
                     } catch (InvocationTargetException e) {
-                        componentMonitor.instantiationFailed(container, ConstructorInjector.this, ctor, e);
+                        componentMonitor.instantiationFailed(container, ConstructorInjector.this, ct, e);
                         if (e.getTargetException() instanceof RuntimeException) {
                             throw (RuntimeException) e.getTargetException();
                         } else if (e.getTargetException() instanceof Error) {
@@ -219,9 +265,9 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                         }
                         throw new PicoCompositionException(e.getTargetException());
                     } catch (InstantiationException e) {
-                        return caughtInstantiationException(componentMonitor, ctor, e, container);
+                        return caughtInstantiationException(componentMonitor, ct, e, container);
                     } catch (IllegalAccessException e) {
-                        return caughtIllegalAccessException(componentMonitor, ctor, e, container);
+                        return caughtIllegalAccessException(componentMonitor, ct, e, container);
 
                     }
                 }
@@ -231,15 +277,10 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         return instantiationGuard.observe(getComponentImplementation());
     }
 
+
     protected T instantiate(Constructor<T> constructor, Object[] parameters) throws InstantiationException, IllegalAccessException, InvocationTargetException {
         T inst = newInstance(constructor, parameters);
         return inst;
-    }
-
-    protected Object[] getMemberArguments(PicoContainer container, final Constructor ctor) {
-        Type[] parameterTypes = ctor.getGenericParameterTypes();
-        fixParameterType(ctor, parameterTypes);
-        return super.getMemberArguments(container, ctor, parameterTypes, getBindings(ctor.getParameterAnnotations()));
     }
 
     private List<Constructor<T>> getSortedMatchingConstructors() {
@@ -275,7 +316,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         if (verifyingGuard == null) {
             verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
                 public Object run() {
-                    final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer);
+                    final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer).getConstructor();
                     final Class[] parameterTypes = constructor.getParameterTypes();
                     final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
                     for (int i = 0; i < currentParameters.length; i++) {

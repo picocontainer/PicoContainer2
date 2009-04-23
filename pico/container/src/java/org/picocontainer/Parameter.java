@@ -50,39 +50,20 @@ public interface Parameter {
     
     
     /**
-     * Retrieve the object from the Parameter that satisfies the expected type.
-     *
-     * @param container             the container from which dependencies are resolved.
-     * @param forAdapter            the {@link ComponentAdapter} that is asking for the instance
-     * @param expectedType          the type that the returned instance needs to match.
-     * @param expectedNameBinding Expected parameter name
-     *
-     * @param useNames
-     * @param binding
-     * @return the instance or <code>null</code> if no suitable instance can be found.
-     *
-     * @throws PicoCompositionException if a referenced component could not be instantiated.
-     */
-     Object resolveInstance(PicoContainer container, ComponentAdapter<?> forAdapter,
-                           Type expectedType, NameBinding expectedNameBinding,
-                           boolean useNames, Annotation binding);
-
-    /**
      * Check if the Parameter can satisfy the expected type using the container.
      *
      * @param container             the container from which dependencies are resolved.
      * @param forAdapter            the {@link org.picocontainer.ComponentAdapter} that is asking for the instance
+     * @param injecteeAdapter
      * @param expectedType          the required type
      * @param expectedNameBinding Expected parameter name
-     *
      * @param useNames
-     * @param binding
-     * @return <code>true</code> if the component parameter can be resolved.
+     * @param binding @return <code>true</code> if the component parameter can be resolved.
      *
      */
-    boolean isResolvable(PicoContainer container, ComponentAdapter<?> forAdapter,
-                                Type expectedType, NameBinding expectedNameBinding,
-                                boolean useNames, Annotation binding);
+    Resolver resolve(PicoContainer container, ComponentAdapter<?> forAdapter,
+                     ComponentAdapter<?> injecteeAdapter, Type expectedType, NameBinding expectedNameBinding,
+                     boolean useNames, Annotation binding);
 
     /**
      * Verify that the Parameter can satisfy the expected type using the container
@@ -108,4 +89,96 @@ public interface Parameter {
      *
      */
     void accept(PicoVisitor visitor);
+
+    /**
+     * Resolver is used transitarily during resolving of Parameters.
+     * isResolvable() and resolveInstance() in series do not cause resolveAdapter() twice
+     */
+    public static interface Resolver {
+
+        /**
+         * @return can the parameter be resolved
+         */
+        public boolean isResolved();
+
+        /**
+         * @return the instance to be used to inject as a parameter
+         */
+        public Object resolveInstance();
+
+        /**
+         * @return the ComponentAdapter for the parameter in question
+         */
+        public ComponentAdapter<?> getComponentAdapter();
+
+    }
+
+    /**
+     * The Parameter cannot (ever) be resolved
+     */
+    public static class NotResolved implements Resolver {
+        public boolean isResolved() {
+            return false;
+        }
+
+        public Object resolveInstance() {
+            return null;
+        }
+
+        public ComponentAdapter<?> getComponentAdapter() {
+            return null;
+        }
+    }
+
+    /**
+     * Delegate to another reolver
+     */
+    public abstract static class DelegateResolver implements Resolver {
+        private final Resolver delegate;
+
+        public DelegateResolver(Resolver delegate) {
+            this.delegate = delegate;
+        }
+
+        public boolean isResolved() {
+            return delegate.isResolved();
+        }
+
+        public Object resolveInstance() {
+            return delegate.resolveInstance();
+        }
+
+        public ComponentAdapter<?> getComponentAdapter() {
+            return delegate.getComponentAdapter();
+        }
+    }
+
+    /**
+     * A fixed value wrapped as a Resolver
+     */
+    public static class ValueResolver implements Resolver {
+
+        private final boolean resolvable;
+        private final Object value;
+        private final ComponentAdapter<?> adapter;
+
+        public ValueResolver(boolean resolvable, Object value, ComponentAdapter<?> adapter) {
+            this.resolvable = resolvable;
+            this.value = value;
+            this.adapter = adapter;
+        }
+
+        public boolean isResolved() {
+            return resolvable;
+        }
+
+        public Object resolveInstance() {
+            return value;
+        }
+
+        public ComponentAdapter<?> getComponentAdapter() {
+            return adapter;
+        }
+    }
+
 }

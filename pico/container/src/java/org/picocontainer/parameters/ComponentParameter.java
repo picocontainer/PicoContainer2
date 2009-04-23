@@ -112,36 +112,42 @@ public class ComponentParameter
         this.collectionParameter = collectionParameter;
     }
 
-    public Object resolveInstance(PicoContainer container,
-                                  ComponentAdapter<?> forAdapter,
-                                  Type expectedType,
-                                  NameBinding expectedNameBinding,
-                                  boolean useNames, Annotation binding) {
-        // type check is done in isResolvable
-        Object result = null;
-        if (expectedType instanceof Class) {
-            result = super.resolveInstance(container, forAdapter, expectedType, expectedNameBinding, useNames, binding);
-        } else if (expectedType instanceof ParameterizedType) {
-        	result = super.resolveInstance(container, forAdapter, ((ParameterizedType) expectedType).getRawType(), expectedNameBinding, useNames, binding);
-        }
-        if (result == null && collectionParameter != null) {
-            result = collectionParameter.resolveInstance(container, forAdapter, expectedType, expectedNameBinding,
-                                                         useNames, binding);
-        }
-        return result;
-    }
+    public Resolver resolve(final PicoContainer container, final ComponentAdapter<?> forAdapter,
+                            final ComponentAdapter<?> injecteeAdapter, final Type expectedType, final NameBinding expectedNameBinding,
+                            final boolean useNames, final Annotation binding) {
 
-    public boolean isResolvable(PicoContainer container, ComponentAdapter<?> forAdapter,
-                                Type expectedType, NameBinding expectedNameBinding,
-                                boolean useNames, Annotation binding) {
-        if (!super.isResolvable(container, forAdapter, expectedType, expectedNameBinding, useNames, binding)) {
-            if (collectionParameter != null) {
-                return collectionParameter.isResolvable(container, forAdapter, expectedType, expectedNameBinding,
-                                                        useNames, binding);
+        return new Resolver() {
+            final Resolver resolver = ComponentParameter.super.resolve(container, forAdapter, injecteeAdapter, expectedType, expectedNameBinding, useNames, binding);
+            public boolean isResolved() {
+                boolean superResolved = resolver.isResolved();
+                if (!superResolved) {
+                    if (collectionParameter != null) {
+                        return collectionParameter.resolve(container, forAdapter, null, expectedType, expectedNameBinding,
+                                                                useNames, binding).isResolved();
+                    }
+                    return false;
+                }
+                return superResolved;
             }
-            return false;
-        }
-        return true;
+
+            public Object resolveInstance() {
+                Object result = null;
+                if (expectedType instanceof Class) {
+                    result = ComponentParameter.super.resolve(container, forAdapter, injecteeAdapter, expectedType, expectedNameBinding, useNames, binding).resolveInstance();
+                } else if (expectedType instanceof ParameterizedType) {
+                    result = ComponentParameter.super.resolve(container, forAdapter, injecteeAdapter, ((ParameterizedType) expectedType).getRawType(), expectedNameBinding, useNames, binding).resolveInstance();
+                }
+                if (result == null && collectionParameter != null) {
+                    result = collectionParameter.resolve(container, forAdapter, injecteeAdapter, expectedType, expectedNameBinding,
+                                                                 useNames, binding).resolveInstance();
+                }
+                return result;
+            }
+
+            public ComponentAdapter<?> getComponentAdapter() {
+                return resolver.getComponentAdapter();
+            }
+        };
     }
 
     public void verify(PicoContainer container,

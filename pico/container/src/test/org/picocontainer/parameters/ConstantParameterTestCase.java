@@ -57,7 +57,7 @@ public class ConstantParameterTestCase {
     	Constructor<?>[] ctors = ConstantParameterTestClass.class.getConstructors();
     	Type[] t = ctors[0].getGenericParameterTypes();
         ConstantParameter param = new ConstantParameter(String.class);
-        assertTrue(param.isResolvable(null, null, t[0], null, false, null));
+        assertTrue(param.resolve(null, null, null, t[0], null, false, null).isResolved());
 
     }
     

@@ -137,13 +137,11 @@ public class SimpleNamedBindingAnnotationTestCase {
             try {
                 inst = getComponentImplementation().newInstance();
                 Field[] declaredFields = getComponentImplementation().getDeclaredFields();
-                for (int i = 0; i < declaredFields.length; i++ ) {
-                    final Field field = declaredFields[i];
+                for (final Field field : declaredFields) {
                     Named bindAnnotation = field.getAnnotation(Named.class);
                     Object value;
                     if (bindAnnotation != null) {
-                        value = container.getComponent(bindKey(field.getType(), bindAnnotation
-                            .value()));
+                        value = container.getComponent(bindKey(field.getType(), bindAnnotation.value()));
                     } else {
                         value = container.getComponent(field.getType());
                     }

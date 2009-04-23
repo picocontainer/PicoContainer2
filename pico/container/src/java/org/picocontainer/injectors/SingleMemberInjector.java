@@ -13,6 +13,7 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.annotations.Bind;
 
 import java.lang.annotation.Annotation;
@@ -55,25 +56,29 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
         final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
 
         for (int i = 0; i < currentParameters.length; i++) {
-            result[i] = getParameter(container, member, i, parameterTypes[i], bindings[i], currentParameters[i]);
+            result[i] = getParameter(container, member, i, parameterTypes[i], bindings[i], currentParameters[i], null);
         }
 
         return result;
     }
 
-    private void boxParameters(Type[] parameterTypes) {
+    protected void boxParameters(Type[] parameterTypes) {
         for (int i = 0; i < parameterTypes.length; i++) {
             parameterTypes[i] = box(parameterTypes[i]);
         }
     }
 
-    private Object getParameter(PicoContainer container, AccessibleObject member, int i, Type parameterType, Annotation binding, Parameter currentParameter) {
+    protected Object getParameter(PicoContainer container, AccessibleObject member, int i, Type parameterType, Annotation binding, Parameter currentParameter, ComponentAdapter<?> injecteeAdapter) {
         ParameterNameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), getComponentImplementation(), member, i);
-        Object result = currentParameter.resolveInstance(container, this, parameterType, expectedNameBinding, useNames(), binding);
+        Object result = currentParameter.resolve(container, this, injecteeAdapter, parameterType, expectedNameBinding, useNames(), binding).resolveInstance();
+        nullCheck(member, i, expectedNameBinding, result);
+        return result;
+    }
+
+    protected void nullCheck(AccessibleObject member, int i, ParameterNameBinding expectedNameBinding, Object result) {
         if (result == null && !isNullParamAllowed(member, i)) {
             throw new ParameterCannotBeNullException(i, member, expectedNameBinding.getName());
         }
-        return result;
     }
 
     protected boolean isNullParamAllowed(AccessibleObject member, int i) {
