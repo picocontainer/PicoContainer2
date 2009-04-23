@@ -32,38 +32,11 @@ import java.lang.annotation.Annotation;
  */
 public class ResolveAdapterReductionTestCase {
 
-    public static class One {
-        private final Two two;
-        private final String string;
-        private final Integer integer;
-
-//        public One(Two two, String string, Integer integer) {
-//            this.two = two;
-//            this.string = string;
-//            this.integer = integer;
-//        }
-//        public One(Two two, String string) {
-//            this.two = two;
-//            this.string = string;
-//            integer = null;
-//        }
-        public One(Two two) {
-            this.two = two;
-            string = null;
-            integer = null;
-        }
-    }
-
-    public static class Two {
-        public Two() {
-        }
-    }
+    int resolveAdapterCalls;
 
     @Test
     public void testThatResolveAdapterCanBeDoneOnceForASituationWhereItWasPreviouslyDoneAtLeastTwice() throws Exception {
-
-        final int[] resolveAdapterCalls = new int[1];
-        
+        resolveAdapterCalls = 0;
         DefaultPicoContainer pico = new DefaultPicoContainer(new ConstructorInjection());
         pico.addAdapter(new ConstructorInjector(One.class, One.class, null) {
             protected Parameter[] createDefaultParameters(Type[] parameters) {
@@ -71,7 +44,7 @@ public class ResolveAdapterReductionTestCase {
                 for (int i = 0; i < parameters.length; i++) {
                     componentParameters[i] = new ComponentParameter() {
                         protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container, ComponentAdapter adapter, Class<T> expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
-                            resolveAdapterCalls[0]++;
+                            resolveAdapterCalls++;
                             return super.resolveAdapter(container, adapter, expectedType, expectedNameBinding, useNames, binding);    //To change body of overridden methods use File | Settings | File Templates.
                         }
                     };
@@ -85,12 +58,24 @@ public class ResolveAdapterReductionTestCase {
             One one = pico.getComponent(One.class);
             assertNotNull(one);
             assertNotNull(one.two);
-            assertNull(one.string);
-            assertNull(one.integer);
-            assertEquals("resolveAdapter should only be called once, regardless of how many getComponents there are", 
-                    1, resolveAdapterCalls[0]);
+            assertEquals("resolveAdapter should only be called once, regardless of how many getComponents there are",
+                    1, resolveAdapterCalls);
         }
         System.out.println("GreediestConstructorTestCase elapsed: " + (System.currentTimeMillis() - start));
     }
+
+    public static class One {
+        private final Two two;
+
+        public One(Two two) {
+            this.two = two;
+        }
+    }
+
+    public static class Two {
+        public Two() {
+        }
+    }
+
 
 }
