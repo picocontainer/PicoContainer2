@@ -9,25 +9,20 @@ package org.picocontainer.web.remoting;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.picocontainer.web.remoting.JsonPicoWebRemotingServlet.makeJsonDriver;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Collection;
-import java.util.logging.Logger;
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Member;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.Test;
-import org.junit.ComparisonFailure;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.web.NONE;
-import static org.picocontainer.web.remoting.JsonPicoWebRemotingServlet.makeJsonDriver;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JsonWriter;
@@ -80,25 +75,14 @@ public final class PicoWebRemotingTestCase {
         DefaultPicoContainer pico = new DefaultPicoContainer();
 
         String result = pwr.processRequest("/beta/", pico, "GET", new NullComponentMonitor());
-        try {
-            assertEquals(
+        assertEquals(
                 "[\n" +
                     "  \"aCol\",\n" +
-                    "  \"hello\",\n" +
-                    "  \"color\",\n" +
-                    "  \"goodbye\",\n" +
-                    "  \"aList\"\n" +
-                    "]\n", result);
-        } catch (ComparisonFailure e) { // Eclipse !
-            assertEquals(
-                "[\n" +
-                    "  \"color\",\n" +
-                    "  \"hello\",\n" +
-                    "  \"goodbye\",\n" +
                     "  \"aList\",\n" +
-                    "  \"aCol\"\n" +
+                    "  \"color\",\n" +
+                    "  \"goodbye\",\n" +
+                    "  \"hello\"\n" +
                     "]\n", result);
-        }
     }
 
     @Test
@@ -157,23 +141,13 @@ public final class PicoWebRemotingTestCase {
         
         pwr.visitClass("Foo", pico, visitor);
 
-        try {
-            assertEquals(
+        assertEquals(
                 "sc:java/lang/Object;" +
                       "m:aCol,aCol;" +
-                      "m:hello,hello;" +
+                      "m:aList,aList;" +
                       "m:color,getColor;" +
                       "m:goodbye,goodbye;" +
-                      "m:aList,aList;", sb.toString());
-        } catch (ComparisonFailure e) {
-            assertEquals(
-                "sc:java/lang/Object;" +
-                      "m:hello,hello;" +
-                      "m:color,getColor;" +
-                      "m:goodbye,goodbye;" +
-                      "m:aCol,aCol;" +
-                      "m:aList,aList;", sb.toString());
-        }
+                      "m:hello,hello;", sb.toString());
     }
 
     @Test
