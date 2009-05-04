@@ -8,10 +8,8 @@
 package org.picocontainer.web.remoting;
 
 import java.io.IOException;
-import java.util.logging.Logger;
-import java.util.Map;
-import java.util.HashMap;
 import java.lang.reflect.Member;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -20,10 +18,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.web.PicoServletContainerFilter;
 
@@ -39,11 +37,14 @@ import com.thoughtworks.xstream.XStream;
 @SuppressWarnings("serial")
 public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
-    private XStream xstream;
-    private PicoWebRemoting pwr;
-    private String mimeType = "text/plain";
-    private PicoWebRemotingMonitor monitor;
-
+    private static final String EMPTY = "";
+	private static final String DOT = ".";
+	private static final String COLON = ":";
+	private static final String SPACE = " ";
+	private static final String GET = "GET";
+	private static final String CLOSE = "].";
+	private static final String OPEN = "[";
+	private static final String SLASH = "/";
     private static final String APPLICATION_SCOPE = "application";
     private static final String SESSION_SCOPE = "session";
     private static final String REQUEST_SCOPE = "request";
@@ -57,6 +58,11 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
     private static ThreadLocal<MutablePicoContainer> currentRequestContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentSessionContainer = new ThreadLocal<MutablePicoContainer>();
     private static ThreadLocal<MutablePicoContainer> currentAppContainer = new ThreadLocal<MutablePicoContainer>();
+
+	private XStream xstream;
+    private PicoWebRemoting pwr;
+    private String mimeType = "text/plain";
+    private PicoWebRemotingMonitor monitor;
 
     public static class ServletFilter extends PicoServletContainerFilter {
 
@@ -149,7 +155,7 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
     protected abstract XStream createXStream();
     
-    protected void service(HttpServletRequest req, HttpServletResponse resp)
+    protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         long b4 = System.currentTimeMillis();
 
@@ -158,14 +164,14 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
             initialized = true;
         }
 
-        respond(req, resp, req.getPathInfo());
+        respond(request, response, request.getPathInfo());
         Logger.getAnonymousLogger().info("total AbstractPicoWebRemotingServlet.service() time = " + (System.currentTimeMillis() - b4) + "ms");
     }
 
-    protected void respond(final HttpServletRequest req, HttpServletResponse resp, String pathInfo) throws IOException {
-        resp.setContentType(mimeType);
+    protected void respond(final HttpServletRequest request, HttpServletResponse response, String pathInfo) throws IOException {
+        response.setContentType(mimeType);
 
-        final String httpMethod = req.getMethod();
+        final String httpMethod = request.getMethod();
 
         final String[] cacheKey = new String[1];
         final String[] cached = new String[1];
@@ -177,10 +183,10 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
         String result = pwr.processRequest(pathInfo, currentRequestContainer.get(), httpMethod, new NullComponentMonitor() {
                             public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object[] args) {
-                                if (httpMethod.equals("GET")) {
-                                    StringBuilder sb = new StringBuilder().append("[").append(req.getRequestURI())
-                                            .append("/").append(instance.toString()).append("].").append(member.getName());
-                                    parmsString(sb, args);
+                                if (httpMethod.equals(GET)) {
+                                    StringBuilder sb = new StringBuilder().append(OPEN).append(request.getRequestURI())
+                                            .append(SLASH).append(instance.toString()).append(CLOSE).append(member.getName());
+                                    appendArgsAsString(sb, args);
                                     cacheKey[0] = sb.toString();
                                     cached[0] = (String) cache.get((Object)cacheKey[0]);
                                     if (cached[0] != null) {
@@ -199,7 +205,7 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
         String duration = ", duration = " + (System.currentTimeMillis() - str) + "ms ";
 
-        if (httpMethod.equals("GET")) {
+        if (httpMethod.equals(GET)) {
             if (cached[0] != null) {
                 Logger.getAnonymousLogger().info("cached-" + cacheKey[0] + "- " + duration);
                 result = cached[0];
@@ -209,18 +215,18 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
             }
         }
 
-        ServletOutputStream outputStream = resp.getOutputStream();
+        ServletOutputStream outputStream = response.getOutputStream();
         if (result != null) {
             outputStream.print(result);
         } else {
-            resp.sendError(400, "Nothing is mapped to this URL, try removing the last term for directory list.");
+            response.sendError(400, "Nothing is mapped to this URL, try removing the last term for directory list.");
         }
     }
 
-    private void parmsString(StringBuilder sb, Object[] parms) {
-        for (int i = 0; i < parms.length; i++) {
-            Object parm = parms[i];
-            sb.append(" ").append(i).append(":").append(parm == null ? "**null**" : parm.toString());
+    private void appendArgsAsString(StringBuilder sb, Object[] args) {
+        for (int i = 0; i < args.length; i++) {
+            Object arg = args[i];
+            sb.append(SPACE).append(i).append(COLON).append(arg == null ? "**null**" : arg.toString());
         }
     }
 
@@ -230,16 +236,16 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
         String packagePrefixToStrip = servletConfig.getInitParameter(PACKAGE_PREFIX_TO_STRIP);
         String prefixToStripFromUrls;
         if (packagePrefixToStrip == null) {
-            prefixToStripFromUrls = "";
+            prefixToStripFromUrls = EMPTY;
         } else {
-            prefixToStripFromUrls = packagePrefixToStrip.replace('.', '/') + "/";
+            prefixToStripFromUrls = packagePrefixToStrip.replace(DOT, SLASH) + SLASH;
         }
 
         String suffixToStrip = servletConfig.getInitParameter(SUFFIX_TO_STRIP);
 
         String scopesToPublish = servletConfig.getInitParameter(SCOPES_TO_PUBLISH);
         if (scopesToPublish == null) {
-            scopesToPublish = "";
+            scopesToPublish = EMPTY;
         }
         String mimeTypeFromConfig = servletConfig.getInitParameter(MIME_TYPE);
         if (mimeTypeFromConfig != null) {
