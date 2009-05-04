@@ -60,7 +60,7 @@ public class PicoWebRemoting {
 	private static final String POST = "POST";
 	private static final String FALLBACK = "FALLBACK";
 
-	private final XStream xStream;
+	private final XStream xstream;
 	private final String toStripFromUrls;
 	private final String suffixToStrip;
 	private final String scopesToPublish;
@@ -70,16 +70,26 @@ public class PicoWebRemoting {
 
 	private Map<String, Object> paths = new HashMap<String, Object>();
 
-	public PicoWebRemoting(XStream xStream, String prefixToStripFromUrls,
+	public PicoWebRemoting(XStream xstream, String prefixToStripFromUrls,
 			String suffixToStrip, String scopesToPublish,
 			boolean lowerCasePath, boolean useMethodNamePrefixesForVerbs) {
-		this.xStream = xStream;
+		this(xstream, prefixToStripFromUrls, suffixToStrip, scopesToPublish,
+				lowerCasePath, useMethodNamePrefixesForVerbs,
+				new NullPicoWebRemotingMonitor());
+	}
+
+	public PicoWebRemoting(XStream xstream, String prefixToStripFromUrls,
+			String suffixToStrip, String scopesToPublish,
+			boolean lowerCasePath, boolean useMethodNamePrefixesForVerbs,
+			PicoWebRemotingMonitor monitor) {
+		this.xstream = xstream;
 		this.toStripFromUrls = prefixToStripFromUrls;
 		this.suffixToStrip = suffixToStrip;
 		this.scopesToPublish = scopesToPublish;
 		this.lowerCasePath = lowerCasePath;
 		this.useMethodNamePrefixesForVerbs = useMethodNamePrefixesForVerbs;
-		this.xStream.registerConverter(new ISO8601DateConverter());
+		this.monitor = monitor;
+		this.xstream.registerConverter(new ISO8601DateConverter());
 	}
 
 	public Map<String, Object> getPaths() {
@@ -111,19 +121,19 @@ public class PicoWebRemoting {
 
 			if (node instanceof Directories) {
 				Directories directories = (Directories) node;
-				return xStream.toXML(sortedSet(directories).toArray()) + NL;
+				return xstream.toXML(sortedSet(directories).toArray()) + NL;
 			} else if (node instanceof WebMethods) {
 				WebMethods methods = (WebMethods) node;
-				return xStream.toXML(sortedSet(methods.keySet()).toArray())
+				return xstream.toXML(sortedSet(methods.keySet()).toArray())
 						+ NL;
 			} else if (node != null && isComposite(node)) {
 				b4 = System.currentTimeMillis();
-				String s = xStream.toXML(node) + NL;
+				String s = xstream.toXML(node) + NL;
 				dur = System.currentTimeMillis() - b4;
 				Logger.getAnonymousLogger().info("XStream duration " + dur);
 				return s;
 			} else if (node != null) {
-				return node != null ? xStream.toXML(node) + NL : null;
+				return node != null ? xstream.toXML(node) + NL : null;
 			} else {
 				throw makeNothingMatchingException();
 			}
@@ -339,7 +349,7 @@ public class PicoWebRemoting {
 	}
 
 	private String errorResult(Object errorResult) {
-		return xStream.toXML(errorResult) + NL;
+		return xstream.toXML(errorResult) + NL;
 	}
 
 	private boolean isComposite(Object node) {
