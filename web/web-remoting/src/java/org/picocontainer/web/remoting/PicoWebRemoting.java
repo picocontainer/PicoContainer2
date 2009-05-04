@@ -47,20 +47,25 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class PicoWebRemoting {
 
+    private static final String SLASH = "/";
+	private static final String DOT = ".";
+	private static final String OK = "OK";
+	private static final String NL = "\n";
+	private static final String GET = "GET";
+    private static final String PUT = "PUT";
+    private static final String DELETE = "DELETE";
+    private static final String POST = "POST";
+    private static final String FALLBACK = "FALLBACK";
+
     private final XStream xStream;
-    private PicoWebRemotingMonitor monitor;
     private final String toStripFromUrls;
     private final String suffixToStrip;
     private final String scopesToPublish;
     private final boolean lowerCasePath;
     private final boolean useMethodNamePrefixesForVerbs;
+    private PicoWebRemotingMonitor monitor;
 
     private Map<String, Object> paths = new HashMap<String, Object>();
-    private static final String GET = "GET";
-    private static final String PUT = "PUT";
-    private static final String DELETE = "DELETE";
-    private static final String POST = "POST";
-    private static final String FALLBACK = "FALLBACK";
 
     public PicoWebRemoting(XStream xStream, String prefixToStripFromUrls, String suffixToStrip, String scopesToPublish,
                            boolean lowerCasePath, boolean useMethodNamePrefixesForVerbs) {
@@ -82,10 +87,9 @@ public class PicoWebRemoting {
     }
 
     protected String processRequest(String pathInfo, PicoContainer reqContainer, String httpMethod, NullComponentMonitor monitor) throws IOException {
-
         try {
             String path = pathInfo.substring(1);
-            if (path.endsWith("/")) {
+            if (path.endsWith(SLASH)) {
                 path = path.substring(0, path.length() - 1);
             }
             path = toStripFromUrls + path;
@@ -101,18 +105,18 @@ public class PicoWebRemoting {
 
             if (node instanceof Directories) {
                 Directories directories = (Directories) node;
-                return xStream.toXML(directories.toArray()) + "\n";
+                return xStream.toXML(directories.toArray()) + NL;
             } else if (node instanceof WebMethods) {
                 WebMethods methods = (WebMethods) node;
-                return xStream.toXML(methods.keySet().toArray()) + "\n";
+                return xStream.toXML(methods.keySet().toArray()) + NL;
             } else if (node != null && isComposite(node)) {
                 b4 = System.currentTimeMillis();
-                String s = xStream.toXML(node) + "\n";
+                String s = xStream.toXML(node) + NL;
                 dur = System.currentTimeMillis() - b4;
                 Logger.getAnonymousLogger().info("XStream duration " + dur);
                 return s;
             } else if (node != null) {
-                return node != null ? xStream.toXML(node) + "\n" : null;
+                return node != null ? xStream.toXML(node) + NL : null;
             } else {
                 throw makeNothingMatchingException();
             }
@@ -136,7 +140,7 @@ public class PicoWebRemoting {
         Object node = paths.get(path);
 
         if (node == null) {
-            int ix = path.lastIndexOf('/');
+            int ix = path.lastIndexOf(SLASH);
             if (ix > 0) {
                 String methodName = path.substring(ix + 1);
                 path = path.substring(0, ix);
@@ -251,13 +255,13 @@ public class PicoWebRemoting {
         if (!useMethodNamePrefixesForVerbs) {
             return name;
         }
-        if (prefixFolledByUpperChar(name, "get")) {
+        if (prefixFolledByUpperChar(name, GET.toLowerCase())) {
             return name.substring(3,4).toLowerCase() + name.substring(4);
-        } else if (prefixFolledByUpperChar(name, "put")) {
+        } else if (prefixFolledByUpperChar(name, PUT.toLowerCase())) {
             return name.substring(3,4).toLowerCase() + name.substring(4);
-        } else if (prefixFolledByUpperChar(name, "delete")) {
+        } else if (prefixFolledByUpperChar(name, DELETE.toLowerCase())) {
             return name.substring(6,7).toLowerCase() + name.substring(7);
-        } else if (prefixFolledByUpperChar(name, "post")) {
+        } else if (prefixFolledByUpperChar(name, POST.toLowerCase())) {
             return name.substring(4,5).toLowerCase() + name.substring(5);
         } else {
             return name;
@@ -269,13 +273,13 @@ public class PicoWebRemoting {
             return FALLBACK;
         }
         String name = method.getName();
-        if (prefixFolledByUpperChar(name, "get")) {
+        if (prefixFolledByUpperChar(name, GET.toLowerCase())) {
             return GET;
-        } else if (prefixFolledByUpperChar(name, "put")) {
+        } else if (prefixFolledByUpperChar(name, PUT.toLowerCase())) {
             return PUT;
-        } else if (prefixFolledByUpperChar(name, "delete")) {
+        } else if (prefixFolledByUpperChar(name, DELETE.toLowerCase())) {
             return DELETE;
-        } else if (prefixFolledByUpperChar(name, "post")) {
+        } else if (prefixFolledByUpperChar(name, POST.toLowerCase())) {
             return POST;
         } else {
             return FALLBACK;
@@ -289,7 +293,7 @@ public class PicoWebRemoting {
 
     private void publishAdapter(ComponentAdapter<?> ca) {
         Class<?> key = (Class<?>) ca.getComponentKey();
-        String path = getClassName(key).replace('.', '/');
+        String path = getClassName(key).replace(DOT, SLASH);
         if (toStripFromUrls != "" || path.startsWith(toStripFromUrls)) {
             paths.put(path, key);
             directorize(path, key, ca.getComponentImplementation());
@@ -313,7 +317,7 @@ public class PicoWebRemoting {
     }
 
     private String errorResult(Object errorResult) {
-        return xStream.toXML(errorResult) + "\n";
+        return xStream.toXML(errorResult) + NL;
     }
 
     private boolean isComposite(Object node) {
@@ -333,14 +337,14 @@ public class PicoWebRemoting {
         Object inst = reqContainer.getComponent(key);
         Object rv = reinjector.reinject(key, impl, inst, props, methodInjection);
         if (method.getReturnType() == void.class) {
-            return "OK";
+            return OK;
         }
         return rv;
     }
 
     @SuppressWarnings("unchecked")
     protected void directorize(String path) {
-        int lastSlashIx = path.lastIndexOf("/");
+        int lastSlashIx = path.lastIndexOf(SLASH);
         if (lastSlashIx != -1) {
             String dir = path.substring(0, lastSlashIx);
             String file = path.substring(lastSlashIx + 1);
@@ -352,7 +356,7 @@ public class PicoWebRemoting {
             dirs.add(file);
             directorize(dir);
         } else {
-            Set<String> dirs = (Set<String>) paths.get("/");
+            Set<String> dirs = (Set<String>) paths.get(SLASH);
             if (dirs == null) {
                 dirs = new Directories();
                 paths.put("", dirs);
@@ -369,7 +373,7 @@ public class PicoWebRemoting {
             Class<?> x = wm.getKey();
             Class<?> y = x.getSuperclass();
             if (y != null) {
-                String s1 = y.getName().replace(".","/");
+                String s1 = y.getName().replace(DOT, SLASH);
                 if (s1.startsWith(toStripFromUrls)) {
                     mapv.superClass(s1.substring(toStripFromUrls.length()));
                 } else {
