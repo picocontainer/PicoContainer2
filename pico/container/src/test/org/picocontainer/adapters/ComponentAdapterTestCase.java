@@ -93,10 +93,6 @@ public class ComponentAdapterTestCase {
         TestInstantiatingAdapter(Object componentKey, Class<T> componentImplementation, Parameter... parameters) {
             super(componentKey, componentImplementation, parameters, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
         }
-        protected Constructor<T> getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
-            return null;
-        }
-
         @Override
         public void verify(PicoContainer container) throws PicoCompositionException {
         }

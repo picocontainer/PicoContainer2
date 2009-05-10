@@ -65,12 +65,11 @@ public class ResolveAdapterReductionTestCase {
             assertNotNull(three.two);
             assertNull(three.string);
             assertNull(three.integer);
-            assertEquals("resolveAdapter for 'Two' should only be called once, regardless of how many getComponents there are",
-                    3, resolveAdapterCalls);
-            // TODO
 
-//            assertEquals("resolveAdapter for 'Two' should only be called once, regardless of how many getComponents there are",
-//                    1, resolveAdapterCalls);
+            // if we did not cache the results of the longer (unsatisfiable) constructors, then we'd be doing
+            // resolveAdapter(..) more than once.  See ConstructorInjector.ResolverKey.
+            assertEquals("resolveAdapter for 'Two' should only be called once, regardless of how many getComponents there are",
+                    1, resolveAdapterCalls);
         }
         System.out.println("GreediestConstructorTestCase elapsed: " + (System.currentTimeMillis() - start));
     }
@@ -115,10 +114,19 @@ public class ResolveAdapterReductionTestCase {
             super(componentKey, componentImplementation, null);
         }
 
+
         protected Parameter[] createDefaultParameters(Type[] parameters) {
             Parameter[] componentParameters = new Parameter[parameters.length];
             for (int i = 0; i < parameters.length; i++) {
                 componentParameters[i] = new ComponentParameter() {
+                    public int hashCode() {
+                        return ResolveAdapterReductionTestCase.super.hashCode();
+                    }
+
+                    public boolean equals(Object o) {
+                        return true;
+                    }
+
                     protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container, ComponentAdapter adapter, Class<T> expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
                         if (expectedType == Two.class) {
                             resolveAdapterCalls++;
@@ -126,6 +134,7 @@ public class ResolveAdapterReductionTestCase {
                         return super.resolveAdapter(container, adapter, expectedType, expectedNameBinding, useNames, binding);    //To change body of overridden methods use File | Settings | File Templates.
                     }
                 };
+
             }
             return componentParameters;
         }

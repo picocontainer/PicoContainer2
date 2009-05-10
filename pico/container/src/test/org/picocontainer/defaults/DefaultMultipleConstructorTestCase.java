@@ -26,4 +26,10 @@ public class DefaultMultipleConstructorTestCase extends AbstractMultipleConstruc
     @Test public void testEclipseDummy() {
     }
 
+    @Test
+    public void testMultiWithSatisfyingDependencyAndParametersWorks() {
+        super.testMultiWithSatisfyingDependencyAndParametersWorks();
+    }
+
+
 }
