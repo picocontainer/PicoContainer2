@@ -13,6 +13,7 @@ import org.picocontainer.NameBinding;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Member;
 
 import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
@@ -38,9 +39,19 @@ public class ParameterNameBinding implements NameBinding {
         }
         String[] strings = null;
         if (member instanceof Constructor) {
-            strings = paranamer.lookupParameterNames((Constructor)member);
+            Constructor constructor = (Constructor) member;
+            if (paranamer.areParameterNamesAvailable(impl, "<init>") != Paranamer.PARAMETER_NAMES_FOUND) {
+                strings = new String[0];
+            } else {
+                strings = paranamer.lookupParameterNames(constructor);
+            }
         } else {
-            strings = paranamer.lookupParameterNames((Method)member);
+            Method method = (Method) member;
+            if (paranamer.areParameterNamesAvailable(impl, method.getName()) != Paranamer.PARAMETER_NAMES_FOUND) {
+                strings = new String[0];
+            } else {
+                strings = paranamer.lookupParameterNames(method);
+            }
         }
         name = strings.length == 0 ? "" : strings[index];
         return name;

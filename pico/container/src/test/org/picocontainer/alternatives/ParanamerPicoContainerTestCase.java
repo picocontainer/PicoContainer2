@@ -10,17 +10,43 @@
 package org.picocontainer.alternatives;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.picocontainer.injectors.ParameterNameBinding;
 
 import com.thoughtworks.paranamer.DefaultParanamer;
 import com.thoughtworks.paranamer.Paranamer;
+import com.thoughtworks.paranamer.AdaptiveParanamer;
+import com.thoughtworks.paranamer.CachingParanamer;
+
+import java.lang.reflect.Method;
 
 public class ParanamerPicoContainerTestCase {
 
-    @Test public void testCanInstantiateParanamer(){
+    @Test
+    public void testCanInstantiateParanamer() {
         Paranamer paranamer = new DefaultParanamer();
         assertNotNull(paranamer);
     }
+
+
+    public void methodToFind(String name) {
+		assert name != null;
+	}
     
+
+    @Test
+    public void
+           testNameBindingShouldNotThrowWhenAreParameterNamesAreNotAvailable()
+            throws Exception {
+        Paranamer paranamer = new CachingParanamer(new AdaptiveParanamer());
+
+        Method method = getClass().getMethod("methodToFind", String.class);
+        ParameterNameBinding binding = new ParameterNameBinding(paranamer, getClass(), method, 0);
+
+        assertEquals("name", binding.getName());
+    }
+
+
 }
