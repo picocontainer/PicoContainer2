@@ -174,6 +174,7 @@ public class Stored<T> extends AbstractBehavior<T> {
         }
 
         public boolean isStarted() {
+            guardInstRef();
             return instanceReference.get().started;
         }
     }
