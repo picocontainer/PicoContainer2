@@ -18,7 +18,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 
-public final class Issue342TestCase {
+public final class Issue0342TestCase {
 
     interface Interface {
     }
