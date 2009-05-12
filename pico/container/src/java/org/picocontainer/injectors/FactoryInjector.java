@@ -134,7 +134,7 @@ public abstract class FactoryInjector<T> implements Injector<T> {
         return null;
     }
 
-    public <U extends ComponentAdapter> U findAdapterOfType(Class<U> componentAdapterType) {
+    public <U extends ComponentAdapter> U findAdapterOfType(Class<U> adapterType) {
         return null;
     }
 

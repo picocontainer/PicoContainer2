@@ -75,13 +75,11 @@ public abstract class AbstractBehavior<T> implements Behavior<T>, ComponentMonit
     }
 
     @SuppressWarnings("unchecked")
-	public final <U extends ComponentAdapter> U findAdapterOfType(Class<U> componentAdapterType) {
-        if (componentAdapterType.isAssignableFrom(this.getClass())) {
+    public final <U extends ComponentAdapter> U findAdapterOfType(Class<U> adapterType) {
+        if (adapterType.isAssignableFrom(this.getClass())) {
             return (U) this;
-        } else if (componentAdapterType.isAssignableFrom(delegate.getClass())) {
-            return (U) delegate;
         } else {
-            return delegate.findAdapterOfType(componentAdapterType);
+            return delegate.findAdapterOfType(adapterType);
         }
     }
 

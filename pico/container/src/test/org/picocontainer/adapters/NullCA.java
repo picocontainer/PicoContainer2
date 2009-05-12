@@ -40,7 +40,7 @@ public class NullCA implements ComponentAdapter {
         return null;
     }
 
-    public ComponentAdapter findAdapterOfType(Class componentAdapterType) {
+    public ComponentAdapter findAdapterOfType(Class adapterType) {
         return null;
     }
 

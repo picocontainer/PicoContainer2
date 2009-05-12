@@ -109,7 +109,7 @@ public interface ComponentAdapter<T> {
      * @return the appropriate component adapter of type <em>U</em>.  May return null if the component adapter type is not
      * returned.
      */
-    <U extends ComponentAdapter> U findAdapterOfType(Class<U> componentAdapterType);
+    <U extends ComponentAdapter> U findAdapterOfType(Class<U> adapterType);
 
     /**
      * Get a string key descriptor of the component adapter.  

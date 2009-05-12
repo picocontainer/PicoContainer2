@@ -103,7 +103,7 @@ public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
         return null;
     }
 
-    public <U extends ComponentAdapter> U findAdapterOfType(final Class<U> componentAdapterType) {
+    public <U extends ComponentAdapter> U findAdapterOfType(final Class<U> adapterType) {
         return null;
     }
 

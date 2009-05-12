@@ -436,7 +436,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 			return null;
 		}
 
-		public ComponentAdapter findAdapterOfType(Class componentAdapterType) {
+		public ComponentAdapter findAdapterOfType(Class adapterType) {
 			return null;
 		}
 

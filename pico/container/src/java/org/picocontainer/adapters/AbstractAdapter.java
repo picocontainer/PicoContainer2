@@ -138,14 +138,14 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
         return null;
     }
 
-    public final <U extends ComponentAdapter> U findAdapterOfType(Class<U> componentAdapterType) {
-    	if (this.getClass().isAssignableFrom(componentAdapterType)) {
-    		return (U) this;
-    	} else if (getDelegate() !=  null) {
-    		return getDelegate().findAdapterOfType(componentAdapterType);
-    	}
+    public final <U extends ComponentAdapter> U findAdapterOfType(Class<U> adapterType) {
+        if (adapterType.isAssignableFrom(this.getClass())) {
+            return (U) this;
+        } else if (getDelegate() != null) {
+            return getDelegate().findAdapterOfType(adapterType);
+        }
         return null;
     }
-    
-    
+
+
 }

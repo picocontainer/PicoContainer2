@@ -156,12 +156,12 @@ public class DelegateMethodAdapter<T> implements ComponentAdapter<T> {
 	}
 
 	/** {@inheritDoc} **/
-	public ComponentAdapter<T> findAdapterOfType(final Class componentAdapterType) {
-		if (componentAdapterType == null) {
+	public ComponentAdapter<T> findAdapterOfType(final Class adapterType) {
+		if (adapterType == null) {
 			return null;
 		}
 
-		if (DelegateMethodAdapter.class.isAssignableFrom(componentAdapterType)) {
+		if (DelegateMethodAdapter.class.isAssignableFrom(adapterType)) {
 			return this;
 		}
 

@@ -118,7 +118,7 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider {
         return null;
     }
 
-    public ComponentAdapter findAdapterOfType(Class componentAdapterType) {
+    public ComponentAdapter findAdapterOfType(Class adapterType) {
         return null;
     }
 
