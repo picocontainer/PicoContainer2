@@ -126,7 +126,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         if (paranamer == null) {
             paranamer = new CachingParanamer(new AdaptiveParanamer());
         }
-        return new ParameterNameBinding(paranamer, getComponentImplementation(),  member, 0);
+        return new ParameterNameBinding(paranamer,  member, 0);
     }
 
     protected void unsatisfiedDependencies(PicoContainer container, Set<Type> unsatisfiableDependencyTypes) {

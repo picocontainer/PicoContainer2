@@ -19,15 +19,13 @@ import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
 
 public class ParameterNameBinding implements NameBinding {
-    private final Class impl;
     private final AccessibleObject member;
     private final int index;
     private final Paranamer paranamer;
 
     private String name;
 
-    public ParameterNameBinding(Paranamer paranamer, Class impl, AccessibleObject member, int index) {
-        this.impl = impl;
+    public ParameterNameBinding(Paranamer paranamer, AccessibleObject member, int index) {
         this.member = member;
         this.paranamer = paranamer;
         this.index = index;
@@ -37,22 +35,7 @@ public class ParameterNameBinding implements NameBinding {
         if (name != null) {
             return name;
         }
-        String[] strings = null;
-        if (member instanceof Constructor) {
-            Constructor constructor = (Constructor) member;
-            if (paranamer.areParameterNamesAvailable(impl, "<init>") != Paranamer.PARAMETER_NAMES_FOUND) {
-                strings = new String[0];
-            } else {
-                strings = paranamer.lookupParameterNames(constructor);
-            }
-        } else {
-            Method method = (Method) member;
-            if (paranamer.areParameterNamesAvailable(impl, method.getName()) != Paranamer.PARAMETER_NAMES_FOUND) {
-                strings = new String[0];
-            } else {
-                strings = paranamer.lookupParameterNames(method);
-            }
-        }
+        String[] strings = paranamer.lookupParameterNames(member, false);
         name = strings.length == 0 ? "" : strings[index];
         return name;
     }

@@ -43,7 +43,7 @@ public class ParanamerPicoContainerTestCase {
         Paranamer paranamer = new CachingParanamer(new AdaptiveParanamer());
 
         Method method = getClass().getMethod("methodToFind", String.class);
-        ParameterNameBinding binding = new ParameterNameBinding(paranamer, getClass(), method, 0);
+        ParameterNameBinding binding = new ParameterNameBinding(paranamer, method, 0);
 
         assertEquals("name", binding.getName());
     }
