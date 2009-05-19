@@ -252,9 +252,9 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
     }
 
     protected class CtorAndAdapters<T> {
-        Constructor<T> ctor;
-        Parameter[] parameters;
-        ComponentAdapter[] injecteeAdapters;
+        private final Constructor<T> ctor;
+        private final Parameter[] parameters;
+        private final ComponentAdapter[] injecteeAdapters;
 
         public CtorAndAdapters(Constructor<T> ctor, Parameter[] parameters, ComponentAdapter[] injecteeAdapters) {
             this.ctor = ctor;
@@ -266,7 +266,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             return ctor;
         }
 
-        public Object[] getParameters(PicoContainer container) {
+        public Object[] getParameterArguments(PicoContainer container) {
             Type[] parameterTypes = ctor.getGenericParameterTypes();
             // as per fixParameterType()
             for (int i = 0; i < parameterTypes.length; i++) {
@@ -285,6 +285,14 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             }
             return result;
         }
+
+        public ComponentAdapter[] getInjecteeAdapters() {
+            return injecteeAdapters;
+        }
+
+        public Parameter[] getParameters() {
+            return parameters;
+        }
     }
 
     public T getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
@@ -295,7 +303,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                     ComponentMonitor componentMonitor = currentMonitor();
                     Constructor<T> ct = ctor.getConstructor();
                     try {
-                        Object[] parameters = ctor.getParameters(guardedContainer);
+                        Object[] parameters = ctor.getParameterArguments(guardedContainer);
                         ct = componentMonitor.instantiating(container, ConstructorInjector.this, ct);
                         if(ctor == null) {
                             throw new NullPointerException("Component Monitor " + componentMonitor 

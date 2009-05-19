@@ -19,6 +19,8 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.NameBinding;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
@@ -32,6 +34,8 @@ import java.lang.annotation.Annotation;
 public class ResolveAdapterReductionTestCase {
 
     int resolveAdapterCalls;
+    private Parameter[] parms;
+    private ComponentAdapter[] injecteeAdapters;
 
     @Test
     public void testThatResolveAdapterCanBeDoneOnceForASituationWhereItWasPreviouslyDoneAtLeastTwice() throws Exception {
@@ -48,6 +52,12 @@ public class ResolveAdapterReductionTestCase {
                     1, resolveAdapterCalls);
         }
         System.out.println("GreediestConstructorTestCase elapsed: " + (System.currentTimeMillis() - start));
+        assertNotNull(parms);
+        assertEquals(1, parms.length);
+        assertEquals(true, parms[0] instanceof CountingComponentParameter);
+        assertNotNull(injecteeAdapters);
+        assertEquals(1, injecteeAdapters.length);
+        assertEquals(true, injecteeAdapters[0] instanceof InstanceAdapter);
     }
 
     @Test
@@ -110,33 +120,42 @@ public class ResolveAdapterReductionTestCase {
     }
 
     private class CountingConstructorInjector extends ConstructorInjector {
+
         public CountingConstructorInjector(Class<?> componentKey, Class<?> componentImplementation) {
             super(componentKey, componentImplementation, null);
         }
 
+        protected CtorAndAdapters getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
+            CtorAndAdapters adapters = super.getGreediestSatisfiableConstructor(container);
+            parms = adapters.getParameters();
+            injecteeAdapters = adapters.getInjecteeAdapters();
+            return adapters;
+        }
 
         protected Parameter[] createDefaultParameters(Type[] parameters) {
             Parameter[] componentParameters = new Parameter[parameters.length];
             for (int i = 0; i < parameters.length; i++) {
-                componentParameters[i] = new ComponentParameter() {
-                    public int hashCode() {
-                        return ResolveAdapterReductionTestCase.super.hashCode();
-                    }
-
-                    public boolean equals(Object o) {
-                        return true;
-                    }
-
-                    protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container, ComponentAdapter adapter, Class<T> expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
-                        if (expectedType == Two.class) {
-                            resolveAdapterCalls++;
-                        }
-                        return super.resolveAdapter(container, adapter, expectedType, expectedNameBinding, useNames, binding);    //To change body of overridden methods use File | Settings | File Templates.
-                    }
-                };
+                componentParameters[i] = new CountingComponentParameter();
 
             }
             return componentParameters;
+        }
+
+    }
+    private class CountingComponentParameter extends ComponentParameter {
+        public int hashCode() {
+            return ResolveAdapterReductionTestCase.super.hashCode();
+        }
+
+        public boolean equals(Object o) {
+            return true;
+        }
+
+        protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container, ComponentAdapter adapter, Class<T> expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+            if (expectedType == Two.class) {
+                resolveAdapterCalls++;
+            }
+            return super.resolveAdapter(container, adapter, expectedType, expectedNameBinding, useNames, binding);    //To change body of overridden methods use File | Settings | File Templates.
         }
     }
 }
