@@ -23,7 +23,7 @@ import org.picocontainer.PicoVisitor;
  * @since PicoContainer 2.8
  */
 @SuppressWarnings("serial")
-public final class DefaultConstructorParameter implements Parameter, Serializable {
+public final class DefaultConstructorParameter extends AbstractParameter implements Parameter, Serializable {
 
 	/**
 	 * The one and only instance
@@ -60,8 +60,8 @@ public final class DefaultConstructorParameter implements Parameter, Serializabl
 			throw new IllegalArgumentException("No default constructor for type " + expectedType,e );
 		}	
 	}
-	
-	@Override
+
+    @Override
 	public String toString() {
 		return "Force Default Constructor Parameter";
 	}

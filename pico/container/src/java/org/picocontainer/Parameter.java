@@ -54,11 +54,12 @@ public interface Parameter {
      *
      * @param container             the container from which dependencies are resolved.
      * @param forAdapter            the {@link org.picocontainer.ComponentAdapter} that is asking for the instance
-     * @param injecteeAdapter
+     * @param injecteeAdapter       the adapter to be injected into (null for N/A)
      * @param expectedType          the required type
      * @param expectedNameBinding Expected parameter name
-     * @param useNames
+     * @param useNames              should use parameter names for disambiguation
      * @param binding @return <code>true</code> if the component parameter can be resolved.
+     * @since 2.8.1
      *
      */
     Resolver resolve(PicoContainer container, ComponentAdapter<?> forAdapter,
@@ -89,6 +90,17 @@ public interface Parameter {
      *
      */
     void accept(PicoVisitor visitor);
+
+
+    @Deprecated
+    Object resolveInstance(PicoContainer container, ComponentAdapter<?> forAdapter,
+                           Type expectedType, NameBinding expectedNameBinding,
+                           boolean useNames, Annotation binding);
+
+    @Deprecated
+    boolean isResolvable(PicoContainer container, ComponentAdapter<?> forAdapter,
+                         Type expectedType, NameBinding expectedNameBinding,
+                         boolean useNames, Annotation binding);
 
     /**
      * Resolver is used transitarily during resolving of Parameters.

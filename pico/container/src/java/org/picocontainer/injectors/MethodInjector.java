@@ -15,7 +15,6 @@ import java.lang.reflect.Type;
 import java.lang.reflect.Member;
 import java.lang.reflect.AccessibleObject;
 import java.lang.annotation.Annotation;
-import java.util.logging.Logger;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;

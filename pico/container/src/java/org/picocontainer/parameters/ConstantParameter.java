@@ -36,7 +36,7 @@ import java.lang.annotation.Annotation;
  * @author Thomas Heller
  */
 @SuppressWarnings("serial")
-public class ConstantParameter implements Parameter, Serializable {
+public class ConstantParameter extends AbstractParameter implements Parameter, Serializable {
 
     private final Object value;
     

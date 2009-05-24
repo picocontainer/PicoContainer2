@@ -44,7 +44,7 @@ import org.picocontainer.injectors.AbstractInjector;
  * @author Thomas Heller
  */
 @SuppressWarnings("serial")
-public class BasicComponentParameter implements Parameter, Serializable {
+public class BasicComponentParameter extends AbstractParameter implements Parameter, Serializable {
 
     private static interface Converter {
         Object convert(String paramValue);

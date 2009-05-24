@@ -45,7 +45,7 @@ import java.util.TreeSet;
  * @author J&ouml;rg Schaible
  */
 @SuppressWarnings("serial")
-public class CollectionComponentParameter implements Parameter, Serializable {
+public class CollectionComponentParameter extends AbstractParameter implements Parameter, Serializable {
 
     /**
      * Use <code>ARRAY</code> as {@link Parameter}for an Array that must have elements.

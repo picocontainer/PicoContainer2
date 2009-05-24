@@ -20,7 +20,10 @@ import org.picocontainer.Parameter;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.NameBinding;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.testmodel.Touchable;
+import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.adapters.NullCA;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
@@ -44,7 +47,7 @@ public class ResolveAdapterReductionTestCase {
         pico.addAdapter(new CountingConstructorInjector(One.class, One.class));
         pico.addComponent(new Two());
         long start = System.currentTimeMillis();
-        for (int x = 0; x<30000; x++) {
+        for (int x = 0; x < 30000; x++) {
             One one = pico.getComponent(One.class);
             assertNotNull(one);
             assertNotNull(one.two);
@@ -69,7 +72,7 @@ public class ResolveAdapterReductionTestCase {
         // .. but we ain't going to provide them, forcing the smallest constructor to be used.
         pico.addComponent(new Two());
         long start = System.currentTimeMillis();
-        for (int x = 0; x<30000; x++) {
+        for (int x = 0; x < 30000; x++) {
             Three three = pico.getComponent(Three.class);
             assertNotNull(three);
             assertNotNull(three.two);
@@ -107,11 +110,13 @@ public class ResolveAdapterReductionTestCase {
             this.string = string;
             this.integer = integer;
         }
+
         public Three(Two two, String string) {
             this.two = two;
             this.string = string;
             integer = null;
         }
+
         public Three(Two two) {
             this.two = two;
             string = null;
@@ -142,6 +147,7 @@ public class ResolveAdapterReductionTestCase {
         }
 
     }
+
     private class CountingComponentParameter extends ComponentParameter {
         public int hashCode() {
             return ResolveAdapterReductionTestCase.super.hashCode();
@@ -152,10 +158,40 @@ public class ResolveAdapterReductionTestCase {
         }
 
         protected <T> ComponentAdapter<T> resolveAdapter(PicoContainer container, ComponentAdapter adapter, Class<T> expectedType, NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
-            if (expectedType == Two.class) {
+            if (expectedType == Two.class || expectedType == Touchable.class) {
                 resolveAdapterCalls++;
             }
             return super.resolveAdapter(container, adapter, expectedType, expectedNameBinding, useNames, binding);    //To change body of overridden methods use File | Settings | File Templates.
         }
     }
+
+    public static class FooNameBinding implements NameBinding {
+        public String getName() {
+            return "";
+        }
+    }
+
+    final NameBinding pn = new FooNameBinding();
+
+    @Test
+    public void testOldWayResolvingStillWorks() throws PicoCompositionException {
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        ComponentAdapter adapter = pico.addComponent(Touchable.class, SimpleTouchable.class).getComponentAdapter(Touchable.class,
+                (NameBinding) null);
+
+        CountingComponentParameter ccp = new CountingComponentParameter();
+
+        assertNotNull(adapter);
+        assertNotNull(pico.getComponent(Touchable.class));
+        Touchable touchable = (Touchable) ccp.resolveInstance(pico, new NullCA(String.class), Touchable.class, pn,
+                false, null);
+        assertNotNull(touchable);
+        assertEquals(2, resolveAdapterCalls);
+
+        boolean isResolvable = ccp.isResolvable(pico, new NullCA(String.class), Touchable.class, pn,
+                false, null);
+        assertEquals(true, isResolvable);
+        assertEquals(3, resolveAdapterCalls);
+    }
+
 }
