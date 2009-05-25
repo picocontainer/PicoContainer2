@@ -140,7 +140,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         for (final Constructor<T> sortedMatchingConstructor : sortedMatchingConstructors) {
             boolean failedDependency = false;
             Type[] parameterTypes = sortedMatchingConstructor.getGenericParameterTypes();
-            fixParameterType(sortedMatchingConstructor, parameterTypes);
+            fixGenericParameterTypes(sortedMatchingConstructor, parameterTypes);
             Annotation[] bindings = getBindings(sortedMatchingConstructor.getParameterAnnotations());
             final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
             final ComponentAdapter<?>[] currentAdapters = new ComponentAdapter<?>[currentParameters.length];
@@ -242,7 +242,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         }
     }
 
-    private void fixParameterType(Constructor<T> ctor, Type[] parameterTypes) {
+    private void fixGenericParameterTypes(Constructor<T> ctor, Type[] parameterTypes) {
         for (int i = 0; i < parameterTypes.length; i++) {
             Type parameterType = parameterTypes[i];
             if (parameterType instanceof TypeVariable) {

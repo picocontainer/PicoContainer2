@@ -14,6 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.lang.annotation.Annotation;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -249,7 +250,9 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         final List<Type> typeList = new ArrayList<Type>();
         final Method[] methods = getMethods();
         for (final Method method : methods) {
-            final Class[] parameterTypes = method.getParameterTypes();
+            final Type[] parameterTypes = method.getGenericParameterTypes();
+            fixGenericParameterTypes(method, parameterTypes);
+
             // We're only interested if there is only one parameter and the method name is bean-style.
             if (parameterTypes.length == 1) {
                 boolean isInjector = isInjectorMethod(method);
@@ -263,6 +266,16 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         injectionTypes = typeList.toArray(new Type[0]);
         bindings = bingingIds.toArray(new Annotation[0]);
     }
+
+    private void fixGenericParameterTypes(Method method, Type[] parameterTypes) {
+        for (int i = 0; i < parameterTypes.length; i++) {
+            Type parameterType = parameterTypes[i];
+            if (parameterType instanceof TypeVariable) {
+                parameterTypes[i] = method.getParameterTypes()[i];
+            }
+        }
+    }
+
 
     private Annotation getBindings(Method method, int i) {
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
