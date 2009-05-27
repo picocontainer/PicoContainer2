@@ -10,12 +10,10 @@ import org.picocontainer.behaviors.Cached;
 public class Issue0353TestCase {
 
     public static class FooStartable implements Startable {
-        @Override
 		public void start() {
 			// empty
 		}
 
-		@Override
 		public void stop() {
 			// empty
 		}
