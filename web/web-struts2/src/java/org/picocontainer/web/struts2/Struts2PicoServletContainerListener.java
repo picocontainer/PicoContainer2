@@ -18,27 +18,36 @@ import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.Storing;
+import org.picocontainer.behaviors.Guarding;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.Result;
 
+import javax.servlet.ServletContextEvent;
+
+import ognl.OgnlRuntime;
+
 public class Struts2PicoServletContainerListener extends PicoServletContainerListener {
+
+    public void contextInitialized(ServletContextEvent event) {
+        OgnlRuntime.setSecurityManager(null);
+        super.contextInitialized(event);
+    }
 
     protected ScopedContainers makeScopedContainers() {
 
-        ComponentMonitor cm = makeRequestComponentMonitor();
+        //NullLifecycleStrategy ls = new NullLifecycleStrategy();
 
-        NullLifecycleStrategy ls = new NullLifecycleStrategy();
-
-        DefaultPicoContainer appContainer = new DefaultPicoContainer(new Caching(), makeParentContainer());
+        DefaultPicoContainer appCtnr = new DefaultPicoContainer(new Guarding().wrap(new Caching()), makeLifecycleStrategy(), makeParentContainer(), makeAppComponentMonitor());
         Storing sessStoring = new Storing();
-        DefaultPicoContainer sessContainer = new DefaultPicoContainer(sessStoring, appContainer);
+        DefaultPicoContainer sessCtnr = new DefaultPicoContainer(new Guarding().wrap(sessStoring), makeLifecycleStrategy(), appCtnr, makeSessionComponentMonitor());
         Storing reqStoring = new Storing();
-        DefaultPicoContainer reqContainer = new DefaultPicoContainer(reqStoring, ls, sessContainer, cm);
+        DefaultPicoContainer reqCtnr = new DefaultPicoContainer(new Guarding().wrap(addRequestBehaviors(reqStoring)), makeLifecycleStrategy(), sessCtnr, makeRequestComponentMonitor());
         ThreadLocalLifecycleState sessionState = new ThreadLocalLifecycleState();
         ThreadLocalLifecycleState requestState = new ThreadLocalLifecycleState();
+        sessCtnr.setLifecycleState(sessionState);
+        reqCtnr.setLifecycleState(requestState);
 
-        return new ScopedContainers(appContainer, sessContainer, reqContainer,
-                sessStoring, reqStoring, sessionState, requestState);
+        return new ScopedContainers(appCtnr, sessCtnr, reqCtnr, sessStoring, reqStoring, sessionState, requestState);
 
     }
 

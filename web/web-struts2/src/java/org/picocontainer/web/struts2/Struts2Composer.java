@@ -30,9 +30,12 @@ import org.picocontainer.web.WebappComposer;
 
 import javax.servlet.ServletContext;
 
+import ognl.OgnlRuntime;
+
 public abstract class Struts2Composer implements WebappComposer {
 
     public void composeApplication(MutablePicoContainer pico, ServletContext servletContext) {
+
         pico.addComponent(ExceptionMappingInterceptor.class);
         pico.addComponent(ServletConfigInterceptor.class);
         pico.addComponent(PrepareInterceptor.class);

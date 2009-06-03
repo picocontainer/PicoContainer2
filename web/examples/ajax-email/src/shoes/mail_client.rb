@@ -164,22 +164,10 @@ class InboxView
     end
   end  
   
-end
-
-=begin
-  TODO:
-  Compose functionality
-=end                   
+end             
 
 
 Shoes.app :title => "Mail client", :width => 1000, :height => 700 do
-  #login success or exit with dialog
-  #get classes from server and instantiate
-  SERVER_URI='http://ph-jdo.appspot.com/ruby'
-  CLASS_LIST='Auth,Mailbox,Inbox,Sent,Connection,RubyParser,JSONParser'
-  URL = "http://ph-jdo.appspot.com/ruby/classdefs?#{CLASS_LIST}"
-  
-  @binding = binding 
   
   @inbox_view = nil  
   @navigation = nil
@@ -230,14 +218,6 @@ Shoes.app :title => "Mail client", :width => 1000, :height => 700 do
   
   @main_window  = stack :margin => 10, :margin_top => 10, :hidden => true do   
      background "#C7EAFB"  
-
-     # code = Net::HTTP.get URI.parse URL
-     #some day we will eval the code
-     # File.open("classes.rb", "w+") do |f|
-      # f << code
-     # end                            
-
-     #require "#{File.dirname(__FILE__)}/classes.rb"
 
      flow :margin_right => 1 do  
        border "#00D0FF", :strokewidth => 3, :curve => 5
