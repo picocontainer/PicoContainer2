@@ -21,6 +21,7 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
 import org.picocontainer.annotations.Nullable;
 
 /**
@@ -149,7 +150,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
             } else if (e.getTargetException() instanceof Error) {
                 throw (Error) e.getTargetException();
             }
-            return null;
+            throw new PicoCompositionException(e);
         }
     }
 
