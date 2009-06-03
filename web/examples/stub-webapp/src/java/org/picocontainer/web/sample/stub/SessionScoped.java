@@ -1,7 +1,6 @@
 package org.picocontainer.web.sample.stub;
 
 import java.io.Serializable;
-import java.util.logging.Logger;
 
 public class SessionScoped implements Serializable {
 

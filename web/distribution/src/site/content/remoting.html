@@ -61,7 +61,7 @@ client in the following style:</p>
   WebappComposer, like so:</p>
 <div class="source">
   <pre>
-package org.picocontainer.web.sample.jqueryemailui;
+package org.picocontainer.web.sample.ajaxemail;
 
 import org.picocontainer.web.WebappComposer;
 import static org.picocontainer.web.StringFromRequest.addStringRequestParameters;
@@ -69,7 +69,7 @@ import static org.picocontainer.web.IntFromRequest.addIntegerRequestParameters;
 import org.picocontainer.MutablePicoContainer;
 import static org.picocontainer.Characteristics.USE_NAMES;
 
-public class JQueryWebappComposer implements WebappComposer {
+public class AjaxEmailWebappComposer implements WebappComposer {
 
 
     // These will be cached and shared for all sessions unless otherwise specified
@@ -128,7 +128,7 @@ public class JQueryWebappComposer implements WebappComposer {
 
 	  <context-param>
 	    <param-name>webapp-composer-class</param-name>
-	    <param-value>org.picocontainer.web.sample.jqueryemailui.JQueryDemoWebappComposer</param-value>
+	    <param-value>org.picocontainer.web.sample.ajaxemail.JQueryDemoWebappComposer</param-value>
 	  </context-param>
 
 	  <filter>
@@ -155,7 +155,7 @@ public class JQueryWebappComposer implements WebappComposer {
         </init-param>
         <init-param>
             <param-name>package_prefix_to_strip</param-name>
-            <param-value>org.picocontainer.web.sample.jqueryemailui</param-value>
+            <param-value>org.picocontainer.web.sample.ajaxemail</param-value>
         </init-param>
       </servlet>
 
@@ -235,7 +235,7 @@ addIntegerRequestParameters(requestContainer, &quot;msgId&quot;);
 <h2>Further reading.</h2>
 <p>The Maven based example project can be checked out with
   Subversion from <a
-    href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/jquery-email/">here</a>.</p>
+    href="http://svn.codehaus.org/picocontainer/java/2.x/trunk/web/examples/ajax-email/">here</a>.</p>
 <h2>Downloading.</h2>
 <p>See <a href="downloads.html">downloads</a> on how to download the
 Pico Web Remoting jar either using Maven or by downloading the full

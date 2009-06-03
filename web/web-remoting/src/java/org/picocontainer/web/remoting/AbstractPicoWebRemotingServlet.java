@@ -9,7 +9,6 @@ package org.picocontainer.web.remoting;
 
 import java.io.IOException;
 import java.lang.reflect.Member;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -165,7 +164,6 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
         }
 
         respond(request, response, request.getPathInfo());
-        Logger.getAnonymousLogger().info("total AbstractPicoWebRemotingServlet.service() time = " + (System.currentTimeMillis() - b4) + "ms");
     }
 
     protected void respond(final HttpServletRequest request, HttpServletResponse response, String pathInfo) throws IOException {
@@ -199,7 +197,6 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
                             }
 
                             public void invoked(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, long duration, Object[] args, Object retVal) {
-                                Logger.getAnonymousLogger().info("method duration = " + duration + "ms ");
                             }
                         });
 
@@ -207,10 +204,8 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
         if (httpMethod.equals(GET)) {
             if (cached[0] != null) {
-                Logger.getAnonymousLogger().info("cached-" + cacheKey[0] + "- " + duration + ", response = " + cached[0]);
                 result = cached[0];
             } else {
-                Logger.getAnonymousLogger().info("not cached" + cacheKey[0] + "- " + duration + ", response = " + result);
                 cache.put(cacheKey[0], result);
             }
         }

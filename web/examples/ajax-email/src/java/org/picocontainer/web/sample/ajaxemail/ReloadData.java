@@ -3,8 +3,6 @@ package org.picocontainer.web.sample.ajaxemail;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 public class ReloadData {
 
@@ -17,7 +15,7 @@ public class ReloadData {
     private List<Message> messages = new ArrayList<Message>();
 
     {
-        messages.add(new Message("J Query", GILL_BATES.getName(), "Nice Example", "Very nice example application you've created", false, time() ));
+        messages.add(new Message("J Query", GILL_BATES.getName(), "Nice Example", "Very nice example application you've created", false, time()));
         messages.add(new Message("Needie Joe", GILL_BATES.getName(), "Give me Money!", "You're one of the most rich people in the world, help me out", false, time()));
         messages.add(new Message("LotteryWinner", GILL_BATES.getName(), "You've Won the Lottery", "Just send us $2000 and we'll send you the money.", false, time()));
         messages.add(new Message("Barbara Smith", GILL_BATES.getName(), "Leaving Early on Friday", "I have to take my son to the doctor.", false, time()));
@@ -50,39 +48,31 @@ public class ReloadData {
     }
 
     public void doIt() {
-        try {
 
-            User gill = userStore.getUser(GILL_BATES.getName());
-            if (gill == null) {
-                gill = GILL_BATES;
-                makePersistent(gill);
-            }
-            User beeve = userStore.getUser(BEEVE_SALMER.getName());
-            if (beeve == null) {
-                beeve = BEEVE_SALMER;
-                makePersistent(beeve);
-            }
-            
-            Query query = pm.newQuery(Message.class, "id > -1");
-
-            for (Message aColl : (Collection<Message>) query.execute(null)) {
-                pm.deletePersistent(aColl);
-            }
-
-            for (Message message : messages) {
-                pm.makePersistent(message);
-            }
-
-        } catch (Exception e) {
-            Logger.getAnonymousLogger().log(Level.SEVERE, "should have been able to load initial data", e);
+        User gill = userStore.getUser(GILL_BATES.getName());
+        if (gill == null) {
+            gill = GILL_BATES;
+            makePersistent(gill);
         }
+        User beeve = userStore.getUser(BEEVE_SALMER.getName());
+        if (beeve == null) {
+            beeve = BEEVE_SALMER;
+            makePersistent(beeve);
+        }
+
+        Query query = pm.newQuery(Message.class, "id > -1");
+
+        for (Message aColl : (Collection<Message>) query.execute(null)) {
+            pm.deletePersistent(aColl);
+        }
+
+        for (Message message : messages) {
+            pm.makePersistent(message);
+        }
+
     }
 
     private void makePersistent(Object obj) {
-        try {
-            pm.makePersistent(obj);
-        } catch (Exception e) {
-            Logger.getAnonymousLogger().log(Level.SEVERE, "should have been able to make item persistent", e);
-        }
+        pm.makePersistent(obj);
     }
 }

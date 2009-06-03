@@ -14,7 +14,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +44,6 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
 	}
 
     public static HierarchicalStreamDriver makeRubyDriver() {
-        Logger.getAnonymousLogger().info("ruby!! 1");
         HierarchicalStreamDriver driver = new HierarchicalStreamDriver() {
             public HierarchicalStreamReader createReader(Reader reader) {
                 throw new UnsupportedOperationException();
@@ -56,7 +54,6 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
             }
 
             public HierarchicalStreamWriter createWriter(Writer out) {
-                Logger.getAnonymousLogger().info("ruby!! 2");
                 HierarchicalStreamWriter rubyWriter = new RubyWriter(out);
                 return new WriterWrapper(rubyWriter) {
                     public void startNode(String name) {

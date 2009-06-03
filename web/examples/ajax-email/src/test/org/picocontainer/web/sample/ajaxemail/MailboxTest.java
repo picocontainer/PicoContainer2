@@ -50,7 +50,7 @@ public class MailboxTest {
         Message[] messages = mailbox.messages();
         assertEquals(1, messages.length);
         assertEquals(message, messages[0]);
-        verifyMessage(message, false);
+        verifyMessage(message, false, null);
     }
 
     @Test
@@ -68,7 +68,7 @@ public class MailboxTest {
 
         Mailbox mailbox = new MyMailbox(pm, fred);
         assertEquals(message, mailbox.read(2));
-        verifyMessage(message, true);
+        verifyMessage(message, true, "message");
     }
 
     @Test
@@ -128,14 +128,14 @@ public class MailboxTest {
     }
 
 
-    private void verifyMessage(Message md, boolean read) {
-        assertEquals("to", md.getTo());
-        assertEquals(2L, (long)md.getId());
-        assertEquals("subj", md.getSubject());
-        assertEquals("message", md.getMessage());
-        assertEquals("Fred", md.getFrom());
-        assertEquals(read, md.isRead());
-        assertEquals(12345, md.getSentTime().getTime());
+    private void verifyMessage(Message m, boolean read, String messageVal) {
+        assertEquals("to", m.getTo());
+        assertEquals(2L, (long) m.getId());
+        assertEquals("subj", m.getSubject());
+        assertEquals(messageVal, m.getMessage());
+        assertEquals("Fred", m.getFrom());
+        assertEquals(read, m.isRead());
+        assertEquals(12345, m.getSentTime().getTime());
     }
 
     private class MyMailbox extends Mailbox {

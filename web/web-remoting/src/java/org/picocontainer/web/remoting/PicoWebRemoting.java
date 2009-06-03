@@ -18,7 +18,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -117,7 +116,6 @@ public class PicoWebRemoting {
 			long b4 = System.currentTimeMillis();
 			Object node = getNode(reqContainer, httpMethod, path, monitor);
 			long dur = System.currentTimeMillis() - b4;
-			Logger.getAnonymousLogger().info("Invocation duration " + dur);
 
 			if (node instanceof Directories) {
 				Directories directories = (Directories) node;
@@ -130,7 +128,6 @@ public class PicoWebRemoting {
 				b4 = System.currentTimeMillis();
 				String s = xstream.toXML(node) + NL;
 				dur = System.currentTimeMillis() - b4;
-				Logger.getAnonymousLogger().info("XStream duration " + dur);
 				return s;
 			} else if (node != null) {
 				return node != null ? xstream.toXML(node) + NL : null;

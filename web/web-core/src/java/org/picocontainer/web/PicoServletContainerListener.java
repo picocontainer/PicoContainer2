@@ -12,7 +12,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;

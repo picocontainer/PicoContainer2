@@ -2,7 +2,6 @@
 package org.picocontainer.web.sample.ajaxemail;
 
 import java.util.Date;
-import java.util.logging.Logger;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -77,7 +76,6 @@ public class Message {
 	}
 
     public void markRead() {
-        Logger.getAnonymousLogger().info("markRead " + id);
         read = true;
     }
 

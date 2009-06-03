@@ -70,7 +70,6 @@ public class PicoObjectFactory extends ObjectFactory {
             Object comp = appContainer.getComponent(clazz);
             if (comp == null) {
                 appContainer.addComponent(clazz);
-                System.out.println("-->" + clazz.getName());
                 comp = appContainer.getComponent(clazz);
             }
             return comp;
