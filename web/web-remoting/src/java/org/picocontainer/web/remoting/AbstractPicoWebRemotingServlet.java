@@ -207,10 +207,10 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
         if (httpMethod.equals(GET)) {
             if (cached[0] != null) {
-                Logger.getAnonymousLogger().info("cached-" + cacheKey[0] + "- " + duration);
+                Logger.getAnonymousLogger().info("cached-" + cacheKey[0] + "- " + duration + ", response = " + cached[0]);
                 result = cached[0];
             } else {
-                Logger.getAnonymousLogger().info("not cached" + cacheKey[0] + "- " + duration);
+                Logger.getAnonymousLogger().info("not cached" + cacheKey[0] + "- " + duration + ", response = " + result);
                 cache.put(cacheKey[0], result);
             }
         }
