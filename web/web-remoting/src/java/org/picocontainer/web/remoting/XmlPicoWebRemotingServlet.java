@@ -8,6 +8,7 @@
 package org.picocontainer.web.remoting;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 
 /**
  * Servlet that uses plain XML as the form of the reply.
@@ -19,6 +20,6 @@ public class XmlPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet {
 
 	@Override
 	protected XStream createXStream() {
-		return new XStream();
+		return new XStream(new PureJavaReflectionProvider());
 	}
 }
