@@ -5,7 +5,7 @@
  * license a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  ******************************************************************************/
-package org.picocontainer.web.sample.struts2;
+package org.picocontainer.web.sample.struts2.pwr;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Characteristics;
@@ -13,7 +13,7 @@ import org.picocontainer.web.struts2.Struts2Composer;
 
 import javax.servlet.ServletContext;
 
-public class Struts2DemoComposer extends Struts2Composer {
+public class Struts2PwrComposer extends Struts2Composer {
 
     public void composeApplication(MutablePicoContainer container, ServletContext context) {
         super.composeApplication(container, context);
@@ -26,6 +26,7 @@ public class Struts2DemoComposer extends Struts2Composer {
 
     public void composeRequest(MutablePicoContainer container) {
         container.as(Characteristics.NO_CACHE).addComponent(Brand.class, Brand.FromRequest.class);
+
     }
 
 }

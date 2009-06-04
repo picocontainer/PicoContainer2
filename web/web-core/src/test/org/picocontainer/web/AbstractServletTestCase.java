@@ -102,13 +102,13 @@ abstract public class AbstractServletTestCase {
 
     static final class MockWebappComposer implements WebappComposer {
 
-        public void composeApplication(MutablePicoContainer applicationContainer, ServletContext context) {
+        public void composeApplication(MutablePicoContainer container, ServletContext context) {
         }
 
-        public void composeRequest(MutablePicoContainer requestContainer) {
+        public void composeRequest(MutablePicoContainer container) {
         }
 
-        public void composeSession(MutablePicoContainer sessionContainer) {
+        public void composeSession(MutablePicoContainer container) {
         }
     }
     

@@ -11,26 +11,26 @@ import org.picocontainer.web.remoting.PicoWebRemotingMonitor;
 
 public class AjaxEmailWebappComposer implements WebappComposer {
 
-    public void composeApplication(MutablePicoContainer pico, ServletContext context) {
-        pico.addComponent(PicoWebRemotingMonitor.class, AjaxEmailWebRemotingMonitor.class);
-        pico.addComponent(UserStore.class);
-        pico.addComponent(PersistenceManagerWrapper.class, getPersistenceManagerWrapperClass());
-        pico.addComponent(QueryStore.class);
-        pico.addAdapter(new FallbackCacheProvider());
+    public void composeApplication(MutablePicoContainer container, ServletContext context) {
+        container.addComponent(PicoWebRemotingMonitor.class, AjaxEmailWebRemotingMonitor.class);
+        container.addComponent(UserStore.class);
+        container.addComponent(PersistenceManagerWrapper.class, getPersistenceManagerWrapperClass());
+        container.addComponent(QueryStore.class);
+        container.addAdapter(new FallbackCacheProvider());
     }
 
-    public void composeSession(MutablePicoContainer pico) {
+    public void composeSession(MutablePicoContainer container) {
         // stateless
     }
 
-    public void composeRequest(MutablePicoContainer pico) {
+    public void composeRequest(MutablePicoContainer container) {
 
-        pico.addAdapter(new UserFromCookieProvider());
-        pico.as(USE_NAMES).addComponent(Auth.class);
+        container.addAdapter(new UserFromCookieProvider());
+        container.as(USE_NAMES).addComponent(Auth.class);
 
-        pico.as(USE_NAMES).addComponent(Inbox.class);
-        pico.as(USE_NAMES).addComponent(Sent.class);
-        pico.addComponent(ReloadData.class);
+        container.as(USE_NAMES).addComponent(Inbox.class);
+        container.as(USE_NAMES).addComponent(Sent.class);
+        container.addComponent(ReloadData.class);
 
     }
 

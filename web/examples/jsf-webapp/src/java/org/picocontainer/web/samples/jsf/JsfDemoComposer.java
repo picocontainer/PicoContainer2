@@ -8,18 +8,18 @@ import javax.servlet.ServletContext;
 
 public class JsfDemoComposer implements WebappComposer {
 
-    public void composeApplication(MutablePicoContainer pico, ServletContext context) {
-        pico.addComponent(CheeseDao.class, InMemoryCheeseDao.class);
+    public void composeApplication(MutablePicoContainer container, ServletContext context) {
+        container.addComponent(CheeseDao.class, InMemoryCheeseDao.class);
     }
 
-    public void composeSession(MutablePicoContainer pico) {
-        pico.addComponent(CheeseService.class, DefaultCheeseService.class);
+    public void composeSession(MutablePicoContainer container) {
+        container.addComponent(CheeseService.class, DefaultCheeseService.class);
     }
 
-    public void composeRequest(MutablePicoContainer pico) {
-        pico.as(Characteristics.NO_CACHE).addComponent(Brand.class, Brand.FromRequest.class);
-        pico.addComponent("cheeseBean", org.picocontainer.web.samples.jsf.ListCheeseController.class);
-        pico.addComponent("addCheeseBean", org.picocontainer.web.samples.jsf.AddCheeseController.class);
+    public void composeRequest(MutablePicoContainer container) {
+        container.as(Characteristics.NO_CACHE).addComponent(Brand.class, Brand.FromRequest.class);
+        container.addComponent("cheeseBean", org.picocontainer.web.samples.jsf.ListCheeseController.class);
+        container.addComponent("addCheeseBean", org.picocontainer.web.samples.jsf.AddCheeseController.class);
     }
 
 }

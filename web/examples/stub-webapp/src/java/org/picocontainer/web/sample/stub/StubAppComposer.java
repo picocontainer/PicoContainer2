@@ -7,15 +7,15 @@ import javax.servlet.ServletContext;
 
 public class StubAppComposer implements WebappComposer {
 
-    public void composeApplication(MutablePicoContainer pico, ServletContext context) {
-        pico.addComponent(AppScoped.class);
+    public void composeApplication(MutablePicoContainer container, ServletContext context) {
+        container.addComponent(AppScoped.class);
     }
 
-    public void composeSession(MutablePicoContainer pico) {
-        pico.addComponent(SessionScoped.class);
+    public void composeSession(MutablePicoContainer container) {
+        container.addComponent(SessionScoped.class);
     }
 
-    public void composeRequest(MutablePicoContainer pico) {
-        pico.addComponent(RequestScoped.class);
+    public void composeRequest(MutablePicoContainer container) {
+        container.addComponent(RequestScoped.class);
     }
 }

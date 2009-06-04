@@ -17,16 +17,16 @@ import javax.servlet.ServletContext;
 
 public class WebWork2DemoComposer implements WebappComposer {
 
-    public void composeApplication(MutablePicoContainer pico, ServletContext context) {
-        pico.addComponent(CheeseDao.class, InMemoryCheeseDao.class);
+    public void composeApplication(MutablePicoContainer container, ServletContext context) {
+        container.addComponent(CheeseDao.class, InMemoryCheeseDao.class);
     }
 
-    public void composeSession(MutablePicoContainer pico) {
-        pico.addComponent(CheeseService.class, DefaultCheeseService.class);
+    public void composeSession(MutablePicoContainer container) {
+        container.addComponent(CheeseService.class, DefaultCheeseService.class);
     }
 
-    public void composeRequest(MutablePicoContainer pico) {
-        pico.as(Characteristics.NO_CACHE).addComponent(Brand.class, Brand.FromRequest.class);
+    public void composeRequest(MutablePicoContainer container) {
+        container.as(Characteristics.NO_CACHE).addComponent(Brand.class, Brand.FromRequest.class);
 
     }
 

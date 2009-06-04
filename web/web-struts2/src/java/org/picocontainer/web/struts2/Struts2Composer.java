@@ -34,25 +34,25 @@ import ognl.OgnlRuntime;
 
 public abstract class Struts2Composer implements WebappComposer {
 
-    public void composeApplication(MutablePicoContainer pico, ServletContext servletContext) {
+    public void composeApplication(MutablePicoContainer container, ServletContext servletContext) {
 
-        pico.addComponent(ExceptionMappingInterceptor.class);
-        pico.addComponent(ServletConfigInterceptor.class);
-        pico.addComponent(PrepareInterceptor.class);
-        pico.addComponent(CheckboxInterceptor.class);
-        pico.addComponent(ParametersInterceptor.class);
-        pico.addComponent(StrutsConversionErrorInterceptor.class);
-        pico.addComponent(AnnotationValidationInterceptor.class);
-        pico.addComponent(DefaultWorkflowInterceptor.class);
-        pico.addComponent(FileUploadInterceptor.class);
-        pico.addComponent(ModelDrivenInterceptor.class);
-        pico.addComponent(ChainingInterceptor.class);
-        pico.addComponent(I18nInterceptor.class);
-        pico.addComponent(AliasInterceptor.class);
-        pico.addComponent(StaticParametersInterceptor.class);
-        pico.addComponent(DebuggingInterceptor.class);
-        pico.addComponent(ProfilingActivationInterceptor.class);
-        pico.addComponent(ScopedModelDrivenInterceptor.class);
-        pico.addComponent(ExecuteAndWaitInterceptor.class);
+        container.addComponent(ExceptionMappingInterceptor.class);
+        container.addComponent(ServletConfigInterceptor.class);
+        container.addComponent(PrepareInterceptor.class);
+        container.addComponent(CheckboxInterceptor.class);
+        container.addComponent(ParametersInterceptor.class);
+        container.addComponent(StrutsConversionErrorInterceptor.class);
+        container.addComponent(AnnotationValidationInterceptor.class);
+        container.addComponent(DefaultWorkflowInterceptor.class);
+        container.addComponent(FileUploadInterceptor.class);
+        container.addComponent(ModelDrivenInterceptor.class);
+        container.addComponent(ChainingInterceptor.class);
+        container.addComponent(I18nInterceptor.class);
+        container.addComponent(AliasInterceptor.class);
+        container.addComponent(StaticParametersInterceptor.class);
+        container.addComponent(DebuggingInterceptor.class);
+        container.addComponent(ProfilingActivationInterceptor.class);
+        container.addComponent(ScopedModelDrivenInterceptor.class);
+        container.addComponent(ExecuteAndWaitInterceptor.class);
     }
 }
