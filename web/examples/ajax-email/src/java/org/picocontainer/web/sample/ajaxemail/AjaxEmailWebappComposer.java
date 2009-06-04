@@ -6,7 +6,7 @@ import javax.servlet.ServletContext;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.web.WebappComposer;
-import org.picocontainer.web.CacheProvider;
+import org.picocontainer.web.caching.FallbackCacheProvider;
 import org.picocontainer.web.remoting.PicoWebRemotingMonitor;
 
 public class AjaxEmailWebappComposer implements WebappComposer {
@@ -16,7 +16,7 @@ public class AjaxEmailWebappComposer implements WebappComposer {
         pico.addComponent(UserStore.class);
         pico.addComponent(PersistenceManagerWrapper.class, getPersistenceManagerWrapperClass());
         pico.addComponent(QueryStore.class);
-        pico.addAdapter(new CacheProvider());
+        pico.addAdapter(new FallbackCacheProvider());
     }
 
     public void composeSession(MutablePicoContainer pico) {
