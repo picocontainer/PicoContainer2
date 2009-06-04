@@ -1,4 +1,4 @@
-package org.picocontainer.web.sample.ajaxemail;
+package org.picocontainer.web;
 
 import javax.cache.CacheManager;
 import javax.cache.CacheFactory;
@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.HashMap;
 
-import org.picocontainer.web.remoting.Cache;
 import org.picocontainer.injectors.ProviderAdapter;
 
 public class CacheProvider extends ProviderAdapter {

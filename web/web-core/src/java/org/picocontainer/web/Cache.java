@@ -1,4 +1,4 @@
-package org.picocontainer.web.remoting;
+package org.picocontainer.web;
 
 public interface Cache {
     Object get(Object key);

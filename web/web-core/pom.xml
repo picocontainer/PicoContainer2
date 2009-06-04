@@ -31,5 +31,11 @@
       <artifactId>picocontainer-script-groovy</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>jcache</groupId>
+      <artifactId>jcache</artifactId>
+      <version>1.0-dev-2</version>
+      <optional>true</optional>
+    </dependency>
   </dependencies>
 </project>

@@ -23,6 +23,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.web.PicoServletContainerFilter;
+import org.picocontainer.web.Cache;
 
 import com.thoughtworks.xstream.XStream;
 
