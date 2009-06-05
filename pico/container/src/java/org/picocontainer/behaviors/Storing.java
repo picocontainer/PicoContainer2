@@ -23,7 +23,6 @@ import java.util.Properties;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Collections;
-//import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Paul Hammant
@@ -31,7 +30,13 @@ import java.util.Collections;
 @SuppressWarnings("serial")
 public class Storing extends AbstractBehaviorFactory {
 
-    private final StoreThreadLocal mapThreadLocalObjectReference = new StoreThreadLocal();
+    private MapMaker mapMaker = new MapMaker() {
+        public Map makeMap() {
+            return Storing.this.makeMap();
+        }
+    };
+
+    private final StoreThreadLocal mapThreadLocalObjectReference = new StoreThreadLocal(mapMaker);
 
     public <T> ComponentAdapter<T>  createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, final Object componentKey, Class<T> componentImplementation, Parameter... parameters)
 
@@ -65,9 +70,9 @@ public class Storing extends AbstractBehaviorFactory {
     }
 
     public StoreWrapper getCacheForThread() {
-        StoreWrapper wrappedMap = new StoreWrapper();
-        wrappedMap.wrapped = (Map)mapThreadLocalObjectReference.get();
-        return wrappedMap;
+        StoreWrapper storeWrapper = new StoreWrapper();
+        storeWrapper.wrapped = (Map) mapThreadLocalObjectReference.get();
+        return storeWrapper;
     }
 
     public void putCacheForThread(StoreWrapper wrappedMap) {
@@ -75,7 +80,7 @@ public class Storing extends AbstractBehaviorFactory {
     }
 
     public StoreWrapper resetCacheForThread() {
-        Map map = new HashMap();
+        Map map = makeMap();
         mapThreadLocalObjectReference.set(map);
         StoreWrapper storeWrapper = new StoreWrapper();
         storeWrapper.wrapped = map;
@@ -90,9 +95,21 @@ public class Storing extends AbstractBehaviorFactory {
         return ((Map)mapThreadLocalObjectReference.get()).size();
     }
 
+    protected Map makeMap() {
+        return new HashMap();
+    }
+
+    private static interface MapMaker {
+        Map makeMap();
+    }
+
     public static class StoreThreadLocal extends ThreadLocal<Map> implements Serializable {
+        private MapMaker mapMaker;
+        public StoreThreadLocal(MapMaker mapMaker) {
+            this.mapMaker = mapMaker;
+        }
         protected Map initialValue() {
-            return new HashMap();
+            return mapMaker.makeMap();
         }
     }
 
