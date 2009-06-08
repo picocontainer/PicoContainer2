@@ -475,7 +475,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         
         if (componentImplementationOrInstance instanceof Class) {
             Properties tmpProperties = (Properties) properties.clone();
-            ComponentAdapter<?> componentAdapter = componentFactory.createComponentAdapter(componentMonitor,
+            ComponentAdapter<?> adapter = componentFactory.createComponentAdapter(componentMonitor,
                                                                                                lifecycleStrategy,
                                                                                                tmpProperties,
                                                                                                componentKey,
@@ -483,11 +483,19 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                                                                                                parameters);
             AbstractBehaviorFactory.removePropertiesIfPresent(tmpProperties, Characteristics.USE_NAMES);
             throwIfPropertiesLeft(tmpProperties);
-            return addAdapterInternal(componentAdapter);
+            if (lifecycleState.isStarted()) {
+                addAdapterIfStartable(adapter);
+                potentiallyStartAdapter(adapter);
+            }
+            return addAdapterInternal(adapter);
         } else {
-            ComponentAdapter<?> componentAdapter =
+            ComponentAdapter<?> adapter =
                 new InstanceAdapter<Object>(componentKey, componentImplementationOrInstance, lifecycleStrategy, componentMonitor);
-            return addAdapter(componentAdapter, properties);
+            if (lifecycleState.isStarted()) {
+                addAdapterIfStartable(adapter);
+                potentiallyStartAdapter(adapter);
+            }
+            return addAdapter(adapter, properties);
         }
     }
 
@@ -898,22 +906,30 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     private void startAdapters() {
         Collection<ComponentAdapter<?>> adapters = getComponentAdapters();
         for (ComponentAdapter<?> adapter : adapters) {
-            if (adapter instanceof ComponentLifecycle) {
-                ComponentLifecycle<?> componentLifecycle = (ComponentLifecycle<?>)adapter;
-                if (componentLifecycle.componentHasLifecycle()) {
-                    // create an instance, it will be added to the ordered CA list
-                    adapter.getComponentInstance(DefaultPicoContainer.this, ComponentAdapter.NOTHING.class);
-                    addOrderedComponentAdapter(adapter);
-                }
-            }
+            addAdapterIfStartable(adapter);
         }
         adapters = getOrderedComponentAdapters();
         // clone the adapters
         List<ComponentAdapter<?>> adaptersClone = new ArrayList<ComponentAdapter<?>>(adapters);
         for (final ComponentAdapter<?> adapter : adaptersClone) {
-            if (adapter instanceof ComponentLifecycle) {
-                ComponentLifecycle<?> componentLifecycle = (ComponentLifecycle<?>)adapter;
-                componentLifecycle.start(DefaultPicoContainer.this);
+            potentiallyStartAdapter(adapter);
+        }
+    }
+
+    private void potentiallyStartAdapter(ComponentAdapter<?> adapter) {
+        if (adapter instanceof ComponentLifecycle) {
+            ComponentLifecycle<?> componentLifecycle = (ComponentLifecycle<?>)adapter;
+            componentLifecycle.start(DefaultPicoContainer.this);
+        }
+    }
+
+    private void addAdapterIfStartable(ComponentAdapter<?> adapter) {
+        if (adapter instanceof ComponentLifecycle) {
+            ComponentLifecycle<?> componentLifecycle = (ComponentLifecycle<?>)adapter;
+            if (componentLifecycle.componentHasLifecycle()) {
+                // create an instance, it will be added to the ordered CA list
+                adapter.getComponentInstance(DefaultPicoContainer.this, ComponentAdapter.NOTHING.class);
+                addOrderedComponentAdapter(adapter);
             }
         }
     }

@@ -10,6 +10,7 @@ package org.picocontainer.lifecycle;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.picocontainer.Characteristics.AUTOMATIC;
 import static org.picocontainer.Characteristics.CACHE;
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
@@ -21,6 +22,7 @@ import org.jmock.integration.junit4.JMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Disposable;
 import org.picocontainer.PicoLifecycleException;
@@ -115,6 +117,24 @@ public class StartableLifecycleStrategyTestCase {
         pico.stop();
         pico.dispose();
         assertEquals("<>!", sb.toString());
+
+    }
+
+    @Test public void testLazyAdditionofStartableAlsoStarted() {
+    	DefaultPicoContainer pico = new DefaultPicoContainer(new MyStartableLifecycleStrategy(), new EmptyPicoContainer());
+    	StringBuilder sb = new StringBuilder();
+    	pico.addComponent(sb);
+    	pico.as(CACHE).addComponent(NonStartable.class);
+    	pico.start();
+    	assertEquals("", sb.toString());
+        pico.as(CACHE).addComponent(ThirdPartyStartableComponent.class);
+    	assertEquals("<", sb.toString());
+    	pico.stop();
+    	pico.dispose();
+    	assertEquals("<>!", sb.toString());
+    }
+
+    public static class NonStartable {
 
     }
 
