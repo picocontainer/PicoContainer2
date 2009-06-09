@@ -11,6 +11,11 @@
         <param-value>org.picocontainer.web.sample.ajaxemail.AjaxEmailWebappComposer</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>stateless-webapp</param-name>
+        <param-value>true</param-`value>
+    </context-param>
+
     <filter>
         <filter-name>picoFilter</filter-name>
         <filter-class>org.picocontainer.web.remoting.AbstractPicoWebRemotingServlet$ServletFilter</filter-class>

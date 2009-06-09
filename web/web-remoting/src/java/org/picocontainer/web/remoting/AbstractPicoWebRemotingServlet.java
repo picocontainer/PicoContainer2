@@ -270,7 +270,10 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
     private void publishAdapters() {
         pwr.publishAdapters(currentRequestContainer.get().getComponentAdapters(), REQUEST_SCOPE);
-        pwr.publishAdapters(currentSessionContainer.get().getComponentAdapters(), SESSION_SCOPE);
+        MutablePicoContainer sessionContainer = currentSessionContainer.get();
+        if (sessionContainer != null) {
+            pwr.publishAdapters(sessionContainer.getComponentAdapters(), SESSION_SCOPE);
+        }
         pwr.publishAdapters(currentAppContainer.get().getComponentAdapters(), APPLICATION_SCOPE);
 
         monitor = currentAppContainer.get().getComponent(PicoWebRemotingMonitor.class);
