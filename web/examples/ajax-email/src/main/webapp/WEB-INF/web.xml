@@ -13,7 +13,12 @@
 
     <context-param>
         <param-name>stateless-webapp</param-name>
-        <param-value>true</param-`value>
+        <param-value>false</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>print-session-size</param-name>
+        <param-value>true</param-value>
     </context-param>
 
     <filter>

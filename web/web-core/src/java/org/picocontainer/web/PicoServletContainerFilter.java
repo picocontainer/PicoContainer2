@@ -9,6 +9,8 @@ package org.picocontainer.web;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
 
 import javax.servlet.Filter;
@@ -29,12 +31,15 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.lifecycle.DefaultLifecycleState;
 import org.picocontainer.adapters.AbstractAdapter;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 
 @SuppressWarnings("serial")
 public abstract class PicoServletContainerFilter implements Filter, Serializable {
 
     private boolean exposeServletInfrastructure;
     private boolean isStateless;
+    private boolean printSessionSize;
 
     public void init(FilterConfig filterConfig) throws ServletException {
         ServletContext context = filterConfig.getServletContext();
@@ -42,6 +47,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         setAppContainer(scopedContainers.getApplicationContainer());
 
         isStateless = Boolean.parseBoolean(context.getInitParameter(PicoServletContainerListener.STATELESS_WEBAPP));
+        printSessionSize = Boolean.parseBoolean(context.getInitParameter(PicoServletContainerListener.PRINT_SESSION_SIZE));
 
         String exposeServletInfrastructureString = filterConfig.getInitParameter("exposeServletInfrastructure");
         if (exposeServletInfrastructureString == null || Boolean.parseBoolean(exposeServletInfrastructureString)) {
@@ -126,7 +132,9 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
         scopedContainers.getRequestContainer().dispose();
 
         if (!isStateless) {
-            System.out.println("********** Write to Session *******");
+            if (printSessionSize) {
+                printSessionSizeDetailsForDebugging(ssh);
+            }
             sess.setAttribute(SessionStoreHolder.class.getName(), ssh);
         }
         scopedContainers.getRequestStoring().invalidateCacheForThread();
@@ -143,6 +151,17 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
             currentResponse.set(null);
         }
 
+    }
+
+    private void printSessionSizeDetailsForDebugging(SessionStoreHolder ssh) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(ssh);
+        oos.close();
+        baos.close();
+        String xml = new XStream(new PureJavaReflectionProvider()).toXML(ssh);
+        int bytes = baos.toByteArray().length;
+        System.out.println("** Session written (" + bytes + " bytes), xml representation= " + xml);
     }
 
     protected void containersSetupForRequest(MutablePicoContainer appcontainer, MutablePicoContainer sessionContainer,

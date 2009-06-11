@@ -73,6 +73,8 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
 
     public static final String STATELESS_WEBAPP = "stateless-webapp";
 
+    public static final String PRINT_SESSION_SIZE = "print-session-size";
+
     private boolean isStateless;
     /**
      * Default constructor used in webapp containers
@@ -82,7 +84,7 @@ public class PicoServletContainerListener implements ServletContextListener, Htt
 
     public void contextInitialized(final ServletContextEvent event) {
         ServletContext context = event.getServletContext();
-        isStateless = Boolean.parseBoolean(context.getInitParameter(STATELESS_WEBAPP));
+        isStateless = Boolean.parseBoolean(context.getInitParameter(STATELESS_WEBAPP));        
         ScopedContainers scopedContainers = makeScopedContainers(isStateless);
         scopedContainers.getApplicationContainer().setName("application");
         if (!isStateless) {
