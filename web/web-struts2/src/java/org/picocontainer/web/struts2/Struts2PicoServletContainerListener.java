@@ -33,7 +33,7 @@ public class Struts2PicoServletContainerListener extends PicoServletContainerLis
         super.contextInitialized(event);
     }
 
-    protected ScopedContainers makeScopedContainers() {
+    protected ScopedContainers makeScopedContainers(boolean stateless) {
 
         //NullLifecycleStrategy ls = new NullLifecycleStrategy();
 
