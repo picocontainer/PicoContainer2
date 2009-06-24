@@ -9,6 +9,7 @@
 package org.picocontainer.injectors;
 
 import org.junit.Test;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import org.picocontainer.MutablePicoContainer;
@@ -82,7 +83,7 @@ public class FactoryInjectorTestCase {
             public Swede getComponentInstance(PicoContainer container, final Type into) {
                 return new Swede() {
                     public String toString() {
-                        return "Swede for " + ((Class) into).getName();
+                        return "Swede for " + ((InjectInto) into).getIntoClass().getName();
                     }
                 };
             }
@@ -103,7 +104,7 @@ public class FactoryInjectorTestCase {
             public Swede getComponentInstance(PicoContainer container, final Type into) {
                 return new Swede() {
                     public String toString() {
-                        return "Swede for " + ((Class) into).getName();
+                        return "Swede for " + ((InjectInto) into).getIntoClass().getName();
                     }
                 };
             }
@@ -124,7 +125,7 @@ public class FactoryInjectorTestCase {
             public Swede getComponentInstance(PicoContainer container, final Type into) {
                 return new Swede() {
                     public String toString() {
-                        return "Swede for " + ((Class) into).getName();
+                        return "Swede for " + ((InjectInto) into).getIntoClass().getName();
                     }
                 };
             }
@@ -168,7 +169,7 @@ public class FactoryInjectorTestCase {
             // Mauro: you can do anything in here by way of startegy for injecting a specific logger :-)
             return new Swede() {
                 public String toString() {
-                    return "Swede for " + ((Class) into).getName();
+                    return "Swede for " + ((InjectInto) into).getIntoClass().getName();
                 }
             };
         }
@@ -183,7 +184,7 @@ public class FactoryInjectorTestCase {
             // Mauro: you can do anything in here by way of startegy for injecting a specific logger :-)
             return new Swede() {
                 public String toString() {
-                    return "Swede for " + ((Class) into).getName();
+                    return "Swede for " + ((InjectInto) into).getIntoClass().getName();
                 }
             };
         }
@@ -230,4 +231,32 @@ public class FactoryInjectorTestCase {
         Tree tree = pico.getComponent(Tree.class);
     }
 
+    private static class KeyAwareSwedeFactoryInjector extends FactoryInjector<Swede> {
+
+    	public Swede getComponentInstance(PicoContainer container, final Type into) throws PicoCompositionException {
+            return new Swede() {
+                public String toString() {
+                    InjectInto intoType = (InjectInto) into;
+                    return "Swede for " + intoType.getIntoClass().getName() + " " + intoType.getIntoKey();
+                }
+            };
+        }
+    }
+
+    @Test
+    public void testThatFactoryCanUseTargetComponentKey() {
+        MutablePicoContainer container = new DefaultPicoContainer(new MultiInjection());
+        container.addComponent(String.class, "foo");
+        container.addComponent("turnip1", Turnip.class);
+        container.addComponent("turnip2", Turnip.class);
+        container.addAdapter(new KeyAwareSwedeFactoryInjector());
+        Turnip turnip1 = (Turnip)container.getComponent("turnip1");
+        Turnip turnip2 = (Turnip)container.getComponent("turnip2");
+        assertNotNull(turnip1);
+        assertNotNull(turnip2);
+        assertNotSame(turnip1, turnip2);
+        assertNotSame(turnip1.getSwede(), turnip2.getSwede());
+        assertEquals("Swede for " + Turnip.class.getName() + " turnip1", turnip1.getSwede().toString());
+        assertEquals("Swede for " + Turnip.class.getName() + " turnip2", turnip2.getSwede().toString());        
+    }
 }

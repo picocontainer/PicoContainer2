@@ -38,6 +38,7 @@ import org.picocontainer.containers.ImmutablePicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.FactoryInjector;
+import org.picocontainer.injectors.InjectInto;
 import org.picocontainer.lifecycle.DefaultLifecycleState;
 import org.picocontainer.lifecycle.LifecycleState;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
@@ -611,7 +612,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                             intoThreadLocal = new IntoThreadLocal();
                         }
                     }
-                    intoThreadLocal.set(componentAdapter.getComponentImplementation());
+                    intoThreadLocal.set(new InjectInto(componentAdapter.getComponentImplementation(), componentAdapter.getComponentKey()));
                     instance = componentAdapter.getComponentInstance(this, ComponentAdapter.NOTHING.class);
                 }
             } catch (AbstractInjector.CyclicDependencyException e) {

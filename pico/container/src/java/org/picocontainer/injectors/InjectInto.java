@@ -6,26 +6,29 @@
  * the LICENSE.txt file.                                                     *
  *                                                                           *
  *****************************************************************************/
-package org.picocontainer.gems.injectors;
-
-import org.picocontainer.injectors.FactoryInjector;
-import org.picocontainer.injectors.InjectInto;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.apache.log4j.Logger;
-import org.apache.log4j.LogManager;
+package org.picocontainer.injectors;
 
 import java.lang.reflect.Type;
 
-/**
- * This will Inject a Log4J Logger for the injectee's class name
- */
-public class Log4JInjector extends FactoryInjector<Logger> {
+public class InjectInto implements Type {
+    private Type intoType;
+    private Object intoKey;
 
-    @Override
-	public Logger getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
-        return LogManager.getLogger((((InjectInto) into).getIntoClass()));
+    public InjectInto(Type intoType, Object intoKey) {
+        this.intoType = intoType;
+        this.intoKey = intoKey;
     }
 
-}
+    public Type getIntoType() {
+        return intoType;
+    }
 
+    // at FactoryInjector implementor's risk
+    public Class getIntoClass() {
+        return (Class) getIntoType();
+    }
+
+    public Object getIntoKey() {
+        return intoKey;
+    }
+}

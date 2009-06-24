@@ -11,6 +11,7 @@ package org.picocontainer.gems.injectors;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.FactoryInjector;
+import org.picocontainer.injectors.InjectInto;
 
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
@@ -22,7 +23,7 @@ public class JavaLoggingInjector extends FactoryInjector<Logger> {
 
     @Override
 	public java.util.logging.Logger getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
-        String name = ((Class) into).getName();
+        String name = ((InjectInto) into).getIntoClass().getName();
         Logger logger = Logger.getLogger(name);
         if (logger == null) {
             Logger.getLogger(name);

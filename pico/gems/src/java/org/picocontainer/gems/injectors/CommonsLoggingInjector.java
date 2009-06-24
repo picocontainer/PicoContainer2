@@ -9,6 +9,7 @@
 package org.picocontainer.gems.injectors;
 
 import org.picocontainer.injectors.FactoryInjector;
+import org.picocontainer.injectors.InjectInto;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.apache.commons.logging.Log;
@@ -23,6 +24,6 @@ public class CommonsLoggingInjector extends FactoryInjector<Log> {
 
     @Override
 	public Log getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
-        return LogFactory.getLog(((Class) into).getName());
+        return LogFactory.getLog((((InjectInto) into).getIntoClass()).getName());
     }
 }

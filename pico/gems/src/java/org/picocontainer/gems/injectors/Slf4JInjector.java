@@ -9,6 +9,7 @@
 package org.picocontainer.gems.injectors;
 
 import org.picocontainer.injectors.FactoryInjector;
+import org.picocontainer.injectors.InjectInto;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
 import org.slf4j.Logger;
@@ -23,6 +24,6 @@ public class Slf4JInjector extends FactoryInjector<Logger> {
 
     @Override
 	public Logger getComponentInstance(final PicoContainer container, final Type into) throws PicoCompositionException {
-        return LoggerFactory.getLogger(((Class) into).getName());
+        return LoggerFactory.getLogger((((InjectInto) into).getIntoClass()).getName());
     }
 }

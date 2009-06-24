@@ -29,6 +29,7 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.InjectInto;
 
 /**
  * A BasicComponentParameter should be used to pass in a particular component as argument to a
@@ -187,7 +188,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
                 if (componentAdapter instanceof DefaultPicoContainer.LateInstance) {
                     o = ((DefaultPicoContainer.LateInstance) componentAdapter).getComponentInstance();
                 } else {
-                    o = container.getComponent(componentAdapter.getComponentKey(), forAdapter.getComponentImplementation());
+                    o = container.getComponent(componentAdapter.getComponentKey(), new InjectInto(forAdapter.getComponentImplementation(), forAdapter.getComponentKey()));
                 }
                 if (o instanceof String && expectedType != String.class) {
                     Converter converter = stringConverters.get(expectedType);
