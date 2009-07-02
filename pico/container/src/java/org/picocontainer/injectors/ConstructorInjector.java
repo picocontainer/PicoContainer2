@@ -299,23 +299,23 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
                 public T run() {
-                    CtorAndAdapters<T> ctor = getGreediestSatisfiableConstructor(guardedContainer, getComponentImplementation());
+                    CtorAndAdapters<T> ctorAndAdapters = getGreediestSatisfiableConstructor(guardedContainer, getComponentImplementation());
                     ComponentMonitor componentMonitor = currentMonitor();
-                    Constructor<T> ct = ctor.getConstructor();
+                    Constructor<T> ctor = ctorAndAdapters.getConstructor();
                     try {
-                        Object[] parameters = ctor.getParameterArguments(guardedContainer);
-                        ct = componentMonitor.instantiating(container, ConstructorInjector.this, ct);
-                        if(ctor == null) {
+                        Object[] parameters = ctorAndAdapters.getParameterArguments(guardedContainer);
+                        ctor = componentMonitor.instantiating(container, ConstructorInjector.this, ctor);
+                        if(ctorAndAdapters == null) {
                             throw new NullPointerException("Component Monitor " + componentMonitor 
-                                            + " returned a null constructor from method 'instantiating' after passing in " + ctor);
+                                            + " returned a null constructor from method 'instantiating' after passing in " + ctorAndAdapters);
                         }
                         long startTime = System.currentTimeMillis();
-                        T inst = instantiate(ct, parameters);
+                        T inst = newInstance(ctor, parameters);
                         componentMonitor.instantiated(container, ConstructorInjector.this,
-                                ct, inst, parameters, System.currentTimeMillis() - startTime);
+                                ctor, inst, parameters, System.currentTimeMillis() - startTime);
                         return inst;
                     } catch (InvocationTargetException e) {
-                        componentMonitor.instantiationFailed(container, ConstructorInjector.this, ct, e);
+                        componentMonitor.instantiationFailed(container, ConstructorInjector.this, ctor, e);
                         if (e.getTargetException() instanceof RuntimeException) {
                             throw (RuntimeException) e.getTargetException();
                         } else if (e.getTargetException() instanceof Error) {
@@ -323,9 +323,9 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                         }
                         throw new PicoCompositionException(e.getTargetException());
                     } catch (InstantiationException e) {
-                        return caughtInstantiationException(componentMonitor, ct, e, container);
+                        return caughtInstantiationException(componentMonitor, ctor, e, container);
                     } catch (IllegalAccessException e) {
-                        return caughtIllegalAccessException(componentMonitor, ct, e, container);
+                        return caughtIllegalAccessException(componentMonitor, ctor, e, container);
 
                     }
                 }
@@ -333,12 +333,6 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         }
         instantiationGuard.setGuardedContainer(container);
         return instantiationGuard.observe(getComponentImplementation());
-    }
-
-
-    protected T instantiate(Constructor<T> constructor, Object[] parameters) throws InstantiationException, IllegalAccessException, InvocationTargetException {
-        T inst = newInstance(constructor, parameters);
-        return inst;
     }
 
     private List<Constructor<T>> getSortedMatchingConstructors() {
