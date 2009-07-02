@@ -52,6 +52,12 @@ public class PicoBuilder {
     private ComponentMonitor componentMonitor;
     private List<Object> containerComps = new ArrayList<Object>();
     private boolean addChildToParent;
+    private LifecycleStrategy lifecycleStrategy;
+    private final Stack<Object> componentFactories = new Stack<Object>();
+    private InjectionFactory injectionType;
+    private Class<? extends ComponentMonitor> componentMonitorClass = NullComponentMonitor.class;
+    private Class<? extends LifecycleStrategy> lifecycleStrategyClass = NullLifecycleStrategy.class;
+
 
     public PicoBuilder(PicoContainer parentContainer, InjectionFactory injectionType) {
         this.injectionType = injectionType;
@@ -74,30 +80,33 @@ public class PicoBuilder {
         this(new EmptyPicoContainer(), adaptiveDI());
     }
 
-    private final Stack<Object> componentFactories = new Stack<Object>();
-
-    private InjectionFactory injectionType;
-
-    private Class<? extends ComponentMonitor> componentMonitorClass = NullComponentMonitor.class;
-    private Class<? extends LifecycleStrategy> lifecycleStrategyClass = NullLifecycleStrategy.class;
-
     public PicoBuilder withLifecycle() {
         lifecycleStrategyClass = StartableLifecycleStrategy.class;
+        lifecycleStrategy = null;
         return this;
     }
 
     public PicoBuilder withReflectionLifecycle() {
         lifecycleStrategyClass = ReflectionLifecycleStrategy.class;
+        lifecycleStrategy = null;
         return this;
     }
 
     public PicoBuilder withLifecycle(Class<? extends LifecycleStrategy> lifecycleStrategyClass) {
         this.lifecycleStrategyClass = lifecycleStrategyClass;
+        lifecycleStrategy = null;
         return this;
     }
 
     public PicoBuilder withJavaEE5Lifecycle() {
         this.lifecycleStrategyClass = JavaEE5LifecycleStrategy.class;
+        lifecycleStrategy = null;
+        return this;
+    }
+
+    public PicoBuilder withLifecycle(LifecycleStrategy lifecycleStrategy) {
+        this.lifecycleStrategy = lifecycleStrategy;
+        lifecycleStrategyClass = null;
         return this;
     }
 
@@ -136,7 +145,12 @@ public class PicoBuilder {
 
         buildComponentMonitor(tempContainer);
 
-        tempContainer.addComponent(LifecycleStrategy.class, lifecycleStrategyClass);
+        if (lifecycleStrategy == null) {
+            tempContainer.addComponent(LifecycleStrategy.class, lifecycleStrategyClass);
+        } else {
+            tempContainer.addComponent(LifecycleStrategy.class, lifecycleStrategy);
+
+        }
         tempContainer.addComponent("mpc", mpcClass);
 
         MutablePicoContainer newContainer = (MutablePicoContainer) tempContainer.getComponent("mpc");

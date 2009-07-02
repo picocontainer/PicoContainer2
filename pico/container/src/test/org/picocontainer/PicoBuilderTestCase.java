@@ -91,6 +91,29 @@ public class PicoBuilderTestCase {
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
+    @Test public void testWithLifecycleInstance() {
+
+        NullComponentMonitor ncm = new NullComponentMonitor();
+
+        MutablePicoContainer actual = new PicoBuilder().withLifecycle(new FooLifecycleStrategy()).build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
+                new FooLifecycleStrategy(), new EmptyPicoContainer());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
+    }
+
+    @Test public void testThatLastOfInstanceOrClassLifecycleIsDominant() {
+        NullComponentMonitor ncm = new NullComponentMonitor();
+        MutablePicoContainer actual = new PicoBuilder().withLifecycle(new FooLifecycleStrategy()).withLifecycle().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
+                new StartableLifecycleStrategy(ncm), new EmptyPicoContainer(), ncm);
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
+        actual = new PicoBuilder().withLifecycle().withLifecycle(new FooLifecycleStrategy()).build();
+        expected = new DefaultPicoContainer(new AdaptingInjection(),
+                new FooLifecycleStrategy(), new EmptyPicoContainer());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
+    }
+
+
     @Test public void testWithReflectionLifecycle() {
         NullComponentMonitor ncm = new NullComponentMonitor();
 
