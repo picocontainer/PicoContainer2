@@ -35,6 +35,7 @@ import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
+import org.picocontainer.lifecycle.JavaEE5LifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -66,6 +67,27 @@ public class PicoBuilderTestCase {
         MutablePicoContainer actual = new PicoBuilder().withLifecycle().build();
         MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
                 new StartableLifecycleStrategy(ncm), new EmptyPicoContainer(), ncm);
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
+    }
+
+    public static class FooLifecycleStrategy extends NullLifecycleStrategy{
+    }
+
+    @Test public void testWithCustomLifecycle() {
+
+        MutablePicoContainer actual = new PicoBuilder().withLifecycle(FooLifecycleStrategy.class).build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
+                new FooLifecycleStrategy(), new EmptyPicoContainer());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
+    }
+
+    @Test public void testWithJEE5Lifecycle() {
+
+        NullComponentMonitor ncm = new NullComponentMonitor();
+
+        MutablePicoContainer actual = new PicoBuilder().withJavaEE5Lifecycle().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
+                new JavaEE5LifecycleStrategy(ncm), new EmptyPicoContainer(), ncm);
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 

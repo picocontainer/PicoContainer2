@@ -26,6 +26,7 @@ import static org.picocontainer.injectors.Injectors.adaptiveDI;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
+import org.picocontainer.lifecycle.JavaEE5LifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -89,6 +90,17 @@ public class PicoBuilder {
         lifecycleStrategyClass = ReflectionLifecycleStrategy.class;
         return this;
     }
+
+    public PicoBuilder withLifecycle(Class<? extends LifecycleStrategy> lifecycleStrategyClass) {
+        this.lifecycleStrategyClass = lifecycleStrategyClass;
+        return this;
+    }
+
+    public PicoBuilder withJavaEE5Lifecycle() {
+        this.lifecycleStrategyClass = JavaEE5LifecycleStrategy.class;
+        return this;
+    }
+
 
     public PicoBuilder withConsoleMonitor() {
         componentMonitorClass =  ConsoleComponentMonitor.class;
