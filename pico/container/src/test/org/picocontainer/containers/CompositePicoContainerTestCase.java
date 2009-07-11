@@ -158,10 +158,8 @@ public class CompositePicoContainerTestCase {
 
         final PicoVisitor visitor = mockery.mock(PicoVisitor.class);
         composite.accept(visitor);
-        // nothing called
+        // nothing called proven by JMock.
 
-    }
-
-
+   }
 
 }

@@ -97,4 +97,25 @@ public class ChildContainerTestCase {
 
         assertNotNull(child.getComponent(DependsOnTouchable.class));
     }
+
+    @Test public void testResolveFromGrandParentAndParentOnlyIfChildCannotResolve() {
+        MutablePicoContainer grandParent = new DefaultPicoContainer();
+        SimpleTouchable gp = new SimpleTouchable();
+        grandParent.addComponent(Touchable.class, gp);
+
+        MutablePicoContainer parent = new DefaultPicoContainer(grandParent);
+        SimpleTouchable p = new SimpleTouchable();
+        parent.addComponent(Touchable.class, p);
+
+        MutablePicoContainer child = new DefaultPicoContainer(parent);
+        SimpleTouchable c = new SimpleTouchable();
+        child.addComponent(Touchable.class, c);
+        child.addComponent(DependsOnTouchable.class);
+
+        DependsOnTouchable dot = child.getComponent(DependsOnTouchable.class);
+        assertNotNull(dot);
+        assertEquals(c, dot.getTouchable());
+    }
+
+
 }
