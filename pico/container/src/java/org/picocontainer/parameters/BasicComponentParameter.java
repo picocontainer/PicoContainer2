@@ -253,11 +253,20 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
             }
         }
 
-        final ComponentAdapter<T> result = getTargetAdapter(container, type, expectedNameBinding, adapter, useNames,
-                                                            binding);
+        ComponentAdapter<T> result = null;
+        if (componentKey != null) {
+            // key tells us where to look so we follow
+            result = typeComponentAdapter(container.getComponentAdapter(componentKey));
+        } else if (adapter == null) {
+            result = container.getComponentAdapter(type, (NameBinding) null);
+        } else {
+            result = findTargetAdapter(container, type, expectedNameBinding, adapter, useNames, binding);
+        }
+
         if (result == null) {
             return null;
         }
+
         if (!type.isAssignableFrom(result.getComponentImplementation())) {
             if (!(result.getComponentImplementation() == String.class && stringConverters.containsKey(type))) {
                 return null;
@@ -269,19 +278,6 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
     @SuppressWarnings({ "unchecked" })
     private static <T> ComponentAdapter<T> typeComponentAdapter(ComponentAdapter<?> componentAdapter) {
         return (ComponentAdapter<T>)componentAdapter;
-    }
-
-    private <T> ComponentAdapter<T> getTargetAdapter(PicoContainer container, Class<T> expectedType,
-                                                     NameBinding expectedNameBinding,
-                                                     ComponentAdapter excludeAdapter, boolean useNames, Annotation binding) {
-        if (componentKey != null) {
-            // key tells us where to look so we follow
-            return typeComponentAdapter(container.getComponentAdapter(componentKey));
-        } else if (excludeAdapter == null) {
-            return container.getComponentAdapter(expectedType, (NameBinding) null);
-        } else {
-            return findTargetAdapter(container, expectedType, expectedNameBinding, excludeAdapter, useNames, binding);
-        }
     }
 
     private <T> ComponentAdapter<T> findTargetAdapter(PicoContainer container, Class<T> expectedType,
