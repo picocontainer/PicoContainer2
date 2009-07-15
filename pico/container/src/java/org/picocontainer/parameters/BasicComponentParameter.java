@@ -260,7 +260,31 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         } else if (adapter == null) {
             result = container.getComponentAdapter(type, (NameBinding) null);
         } else {
-            result = findTargetAdapter(container, type, expectedNameBinding, adapter, useNames, binding);
+            Object excludeKey = adapter.getComponentKey();
+            ComponentAdapter byKey = container.getComponentAdapter((Object)expectedType);
+            if (byKey != null && !excludeKey.equals(byKey.getComponentKey())) {
+                result = typeComponentAdapter(byKey);
+            }
+
+            if (result == null && useNames) {
+                ComponentAdapter found = container.getComponentAdapter(expectedNameBinding.getName());
+                if ((found != null) && areCompatible(expectedType, found) && found != adapter) {
+                    result = found;
+                }
+            }
+
+            if (result == null) {
+                List<ComponentAdapter<T>> found = binding == null ? container.getComponentAdapters(expectedType) :
+                        container.getComponentAdapters(expectedType, binding.annotationType());
+                removeExcludedAdapterIfApplicable(excludeKey, found);
+                if (found.size() == 0) {
+                    result = noMatchingAdaptersFound(container, expectedType, expectedNameBinding, binding);
+                } else if (found.size() == 1) {
+                    result = found.get(0);
+                } else {
+                    throw tooManyMatchingAdaptersFound(expectedType, found);
+                }
+            }
         }
 
         if (result == null) {
@@ -278,32 +302,6 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
     @SuppressWarnings({ "unchecked" })
     private static <T> ComponentAdapter<T> typeComponentAdapter(ComponentAdapter<?> componentAdapter) {
         return (ComponentAdapter<T>)componentAdapter;
-    }
-
-    private <T> ComponentAdapter<T> findTargetAdapter(PicoContainer container, Class<T> expectedType,
-                                                      NameBinding expectedNameBinding, ComponentAdapter excludeAdapter,
-                                                      boolean useNames, Annotation binding) {
-        Object excludeKey = excludeAdapter.getComponentKey();
-        ComponentAdapter byKey = container.getComponentAdapter((Object)expectedType);
-        if (byKey != null && !excludeKey.equals(byKey.getComponentKey())) {
-            return typeComponentAdapter(byKey);
-        }
-        if (useNames) {
-            ComponentAdapter found = container.getComponentAdapter(expectedNameBinding.getName());
-            if ((found != null) && areCompatible(expectedType, found) && found != excludeAdapter) {
-                return (ComponentAdapter<T>) found;
-            }
-        }
-        List<ComponentAdapter<T>> found = binding == null ? container.getComponentAdapters(expectedType) :
-                                          container.getComponentAdapters(expectedType, binding.annotationType());
-        removeExcludedAdapterIfApplicable(excludeKey, found);
-        if (found.size() == 0) {
-            return noMatchingAdaptersFound(container, expectedType, expectedNameBinding, binding);
-        } else if (found.size() == 1) {
-            return found.get(0);
-        } else {
-            throw tooManyMatchingAdaptersFound(expectedType, found);
-        }
     }
 
     private <T> ComponentAdapter<T> noMatchingAdaptersFound(PicoContainer container, Class<T> expectedType,
