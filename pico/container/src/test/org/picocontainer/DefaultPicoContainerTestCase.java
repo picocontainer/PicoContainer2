@@ -77,16 +77,18 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 
 	@Test public void testUpDownDependenciesCannotBeFollowed() {
 		MutablePicoContainer parent = createPicoContainer(null);
+		parent.setName("parent");
 		MutablePicoContainer child = createPicoContainer(parent);
+		child.setName("child");
 
 		// ComponentF -> ComponentA -> ComponentB+C
 		child.addComponent(ComponentF.class);
 		parent.addComponent(ComponentA.class);
-		child.addComponent(ComponentB.class);
-		child.addComponent(ComponentC.class);
+		child.addComponent(new ComponentB());
+		child.addComponent(new ComponentC());
 
 		try {
-			child.getComponent(ComponentF.class);
+			Object f = child.getComponent(ComponentF.class);
 			fail("Thrown "
 					+ AbstractInjector.UnsatisfiableDependenciesException.class
 							.getName() + " expected");
@@ -865,6 +867,6 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
             return behavior;
         }
     }
-    
+        
 
 }

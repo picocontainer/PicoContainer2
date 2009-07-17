@@ -267,11 +267,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return Collections.unmodifiableList(getModifiableComponentAdapterList());
     }
 
+
     /** {@inheritDoc} **/
     public final ComponentAdapter<?> getComponentAdapter(final Object componentKey) {
         ComponentAdapter<?> adapter = getComponentKeyToAdapterCache().get(componentKey);
         if (adapter == null && parent != null) {
             adapter = getParent().getComponentAdapter(componentKey);
+            if (adapter != null) {
+                adapter = new KnowsContainerAdapter(adapter, getParent());
+            }
         }
         if (adapter == null) {
             Object inst = componentMonitor.noComponentFound(this, componentKey);
@@ -305,6 +309,55 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
     }
 
+    public static class KnowsContainerAdapter<T> implements ComponentAdapter<T> {
+        private final ComponentAdapter<T> ca;
+        private final PicoContainer ctr;
+
+        public KnowsContainerAdapter(ComponentAdapter<T> ca, PicoContainer ctr) {
+            this.ca = ca;
+            this.ctr = ctr;
+        }
+
+        public T getComponentInstance(Type into) throws PicoCompositionException {
+            return getComponentInstance(ctr, into);
+        }
+
+        public Object getComponentKey() {
+            return ca.getComponentKey();
+        }
+
+        public Class getComponentImplementation() {
+            return ca.getComponentImplementation();
+        }
+
+        public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
+            return ca.getComponentInstance(container);
+        }
+
+        public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
+            return ca.getComponentInstance(container, into);
+        }
+
+        public void verify(PicoContainer container) throws PicoCompositionException {
+            ca.verify(container);
+        }
+
+        public void accept(PicoVisitor visitor) {
+            ca.accept(visitor);
+        }
+
+        public ComponentAdapter getDelegate() {
+            return ca.getDelegate();
+        }
+
+        public <U extends ComponentAdapter> U findAdapterOfType(Class<U> adapterType) {
+            return ca.findAdapterOfType(adapterType);
+        }
+
+        public String getDescriptor() {
+            return null;
+        }
+    }
 
     /** {@inheritDoc} **/
     public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final NameBinding componentNameBinding) {

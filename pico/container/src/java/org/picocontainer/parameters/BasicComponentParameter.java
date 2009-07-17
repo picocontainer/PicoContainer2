@@ -153,7 +153,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
      */
     public Resolver resolve(final PicoContainer container,
                             final ComponentAdapter<?> forAdapter,
-                            ComponentAdapter<?> injecteeAdapter, final Type expectedType,
+                            final ComponentAdapter<?> injecteeAdapter, final Type expectedType,
                             NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
     	
     	Class<?> resolvedClassType = null;
@@ -184,24 +184,31 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
                 if (componentAdapter == null) {
                     return null;
                 }
-                Object o;
                 if (componentAdapter instanceof DefaultPicoContainer.LateInstance) {
-                    o = ((DefaultPicoContainer.LateInstance) componentAdapter).getComponentInstance();
+                    return convert(((DefaultPicoContainer.LateInstance) componentAdapter).getComponentInstance(), expectedType);
+//                } else if (injecteeAdapter != null && injecteeAdapter instanceof DefaultPicoContainer.KnowsContainerAdapter) {
+//                    return convert(((DefaultPicoContainer.KnowsContainerAdapter) injecteeAdapter).getComponentInstance(makeInjectInto(forAdapter)), expectedType);
                 } else {
-                    o = container.getComponent(componentAdapter.getComponentKey(), new InjectInto(forAdapter.getComponentImplementation(), forAdapter.getComponentKey()));
+                    return convert(container.getComponent(componentAdapter.getComponentKey(), makeInjectInto(forAdapter)), expectedType);
                 }
-                if (o instanceof String && expectedType != String.class) {
-                    Converter converter = stringConverters.get(expectedType);
-                    return converter.convert((String) o);
-                }
-                return o;
-
             }
 
             public ComponentAdapter<?> getComponentAdapter() {
                 return componentAdapter;
             }
         };
+    }
+
+    private static InjectInto makeInjectInto(ComponentAdapter<?> forAdapter) {
+        return new InjectInto(forAdapter.getComponentImplementation(), forAdapter.getComponentKey());
+    }
+
+    private static Object convert(Object o, Type expectedType) {
+        if (o instanceof String && expectedType != String.class) {
+            Converter converter = stringConverters.get(expectedType);
+            o = converter.convert((String) o);
+        }
+        return o;
     }
 
     public void verify(PicoContainer container,

@@ -37,6 +37,7 @@ import java.lang.annotation.Annotation;
 public class ResolveAdapterReductionTestCase {
 
     int resolveAdapterCalls;
+    int getCompInstCalls;
     private Parameter[] parms;
     private ComponentAdapter[] injecteeAdapters;
 
@@ -61,6 +62,7 @@ public class ResolveAdapterReductionTestCase {
         assertNotNull(injecteeAdapters);
         assertEquals(1, injecteeAdapters.length);
         assertEquals(true, injecteeAdapters[0] instanceof InstanceAdapter);
+        System.out.println("--> " + getCompInstCalls);
     }
 
     @Test
