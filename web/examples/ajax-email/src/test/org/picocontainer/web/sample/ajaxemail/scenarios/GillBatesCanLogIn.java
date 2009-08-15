@@ -9,13 +9,13 @@ import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
 import org.picocontainer.web.sample.ajaxemail.scenarios.steps.JQueryEmailSteps;
 
-public class GilBatesCanLogIn extends JUnitScenario {
+public class GillBatesCanLogIn extends JUnitScenario {
 
-    public GilBatesCanLogIn() {
+    public GillBatesCanLogIn() {
         this(Thread.currentThread().getContextClassLoader());
     }
 
-    public GilBatesCanLogIn(final ClassLoader classLoader) {
+    public GillBatesCanLogIn(final ClassLoader classLoader) {
         super(new PropertyBasedConfiguration() {
             @Override
             public ClasspathScenarioDefiner forDefiningScenarios() {

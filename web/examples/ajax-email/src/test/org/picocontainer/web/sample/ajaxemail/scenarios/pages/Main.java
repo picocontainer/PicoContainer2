@@ -3,6 +3,8 @@ package org.picocontainer.web.sample.ajaxemail.scenarios.pages;
 import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.condition.ConditionRunner;
 import com.thoughtworks.selenium.condition.Presence;
+import com.thoughtworks.selenium.condition.Condition;
+
 
 public class Main extends BasePage {
     private String box;
@@ -20,8 +22,14 @@ public class Main extends BasePage {
     }
 
 
-    public void selectedBox(String box) {
-        waitFor(new Presence("id('"+box+"')[@class=\"mailbox_selected\"]"));
+    public void selectedBox(final String box) {
+        
+        waitFor(new Condition(box + " selected"){
+            @Override
+            public boolean isTrue(ConditionRunner.Context context) {
+                return box.equals(context.getSelenium().getText("//span[@class=\"mailbox_selected\"]")); 
+            }
+        });
         this.box = box;
     }
 }
