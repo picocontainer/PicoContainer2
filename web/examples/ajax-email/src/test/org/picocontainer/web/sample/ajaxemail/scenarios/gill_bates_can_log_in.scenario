@@ -6,6 +6,6 @@ Then the Inbox is selected
 
 Given nobody is logged in
 When user Fred with password 99999 attempts to log in
-Then the Inbox should not be visible
+Then no box should be selected
 And the text "Invalid Login" should be visible
 
