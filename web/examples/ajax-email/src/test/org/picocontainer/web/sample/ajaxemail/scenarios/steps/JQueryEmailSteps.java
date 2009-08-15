@@ -1,35 +1,29 @@
-package org.picocontainer.web.sample.ajaxemail.scenarios;
+package org.picocontainer.web.sample.ajaxemail.scenarios.steps;
 
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
 import org.jbehave.web.selenium.SeleniumSteps;
+import org.picocontainer.web.sample.ajaxemail.scenarios.pages.LoginForm;
+import org.picocontainer.web.sample.ajaxemail.scenarios.pages.Main;
 
 import com.thoughtworks.selenium.condition.Condition;
 import com.thoughtworks.selenium.condition.Not;
-import com.thoughtworks.selenium.condition.Presence;
 import com.thoughtworks.selenium.condition.Text;
 
 public class JQueryEmailSteps extends SeleniumSteps {
 
 	@Given("nobody is logged in")
 	public void nobodyLoggedIn() {
-		selenium.open("/remoting-ajaxemail-webapp/");
-		try {
-			selenium.click("link=Log Out");
-		} catch (Exception e) {
-		}
+        Main.logout(selenium);
     }
 
     @When("user $userName with password $password attempts to log in")
 	public void logIn(String userName, String password) {
-		waitFor(new Presence("id=userName"));
-		selenium.type("id=userName", userName);
-		selenium.type("id=password", password);
-		selenium.click("id=submitLogin");
+        LoginForm.login(userName, password, selenium, runner);
 	}
 
-	@Then("the Inbox should be visible")
+    @Then("the Inbox should be visible")
 	public void inBoxIsVisible() {
 		textIsVisible("Instant Millionaire");
 	}

@@ -7,24 +7,26 @@ import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
+import org.picocontainer.web.sample.ajaxemail.scenarios.steps.JQueryEmailSteps;
 
-public class GilBatesCanLogInScenario extends JUnitScenario {
+public class GilBatesCanLogIn extends JUnitScenario {
 
-    public GilBatesCanLogInScenario() {
+    public GilBatesCanLogIn() {
         this(Thread.currentThread().getContextClassLoader());
     }
 
-    public GilBatesCanLogInScenario(final ClassLoader classLoader) {
+    public GilBatesCanLogIn(final ClassLoader classLoader) {
         super(new PropertyBasedConfiguration() {
             @Override
             public ClasspathScenarioDefiner forDefiningScenarios() {
-                return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(), 
+                return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(".scenario"),
                         new PatternScenarioParser(this), classLoader);
             }
             @Override
 			public ScenarioReporter forReportingScenarios() {
 				return new PrintStreamScenarioReporter();
 			}
-        }, new JQueryEmailSteps());
+        });
+        super.addSteps(new JQueryEmailSteps());
     }
 }

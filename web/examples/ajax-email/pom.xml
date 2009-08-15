@@ -93,7 +93,7 @@
             <phase>integration-test</phase>
             <configuration>
               <scenarioIncludes>
-                <scenarioInclude>**/*Scenario.java</scenarioInclude>
+                <scenarioInclude>**/scenarios/*.java</scenarioInclude>
               </scenarioIncludes>
               <scope>test</scope>
             </configuration>
