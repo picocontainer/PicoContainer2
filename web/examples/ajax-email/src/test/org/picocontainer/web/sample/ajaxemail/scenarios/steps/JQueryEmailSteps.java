@@ -13,29 +13,31 @@ import com.thoughtworks.selenium.condition.Text;
 
 public class JQueryEmailSteps extends SeleniumSteps {
 
-	@Given("nobody is logged in")
+    private Main main;
+
+    @Given("nobody is logged in")
 	public void nobodyLoggedIn() {
         Main.logout(selenium);
     }
 
     @When("user $userName with password $password attempts to log in")
 	public void logIn(String userName, String password) {
-        LoginForm.login(userName, password, selenium, runner);
+        main = new LoginForm(selenium, runner).login(userName, password);
 	}
 
     @Then("the Inbox should be visible")
 	public void inBoxIsVisible() {
-		textIsVisible("Instant Millionaire");
+		main.textIsVisible("Instant Millionaire");
 	}
 
 	@Then("the Inbox should not be visible")
 	public void inBoxIsNotVisible() {
-		textIsNotVisible("Instant Millionaire");
+		main.textIsNotVisible("Instant Millionaire");
 	}
 
 	@Then("the text \"$text\" should be visible")
 	public void textIsVisible(String text) {
-		waitFor(new Text(text));
+		main.waitFor(new Text(text));
 	}
 
 	@Then("the text \"$text\" should not be visible")
