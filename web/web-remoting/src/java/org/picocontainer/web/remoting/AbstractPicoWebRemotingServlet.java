@@ -178,7 +178,7 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
         long str = System.currentTimeMillis();
 
-        final Cache cache = currentAppContainer.get().getComponent(Cache.class);
+        //final Cache cache = currentAppContainer.get().getComponent(Cache.class);
 
         String result = pwr.processRequest(pathInfo, currentRequestContainer.get(), httpMethod, new NullComponentMonitor() {
                             public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object[] args) {
@@ -187,11 +187,11 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
                                             .append(SLASH).append(instance.toString()).append(CLOSE).append(member.getName());
                                     appendArgsAsString(sb, args);
                                     cacheKey[0] = sb.toString();
-                                    cached[0] = (String) cache.get((Object)cacheKey[0]);
-                                    if (cached[0] != null) {
-                                        time[0] = System.currentTimeMillis();
-                                        return null;
-                                    }
+//                                    cached[0] = (String) cache.get((Object)cacheKey[0]);
+//                                    if (cached[0] != null) {
+//                                        time[0] = System.currentTimeMillis();
+//                                        return null;
+//                                    }
                                 }
                                 time[0] = System.currentTimeMillis();
                                 return ComponentMonitor.KEEP;
@@ -204,11 +204,11 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
         String duration = ", duration = " + (System.currentTimeMillis() - str) + "ms ";
 
         if (httpMethod.equals(GET)) {
-            if (cached[0] != null) {
-                result = cached[0];
-            } else {
-                cache.put(cacheKey[0], result);
-            }
+//            if (cached[0] != null) {
+//                result = cached[0];
+//            } else {
+//                cache.put(cacheKey[0], result);
+//            }
         }
 
         ServletOutputStream outputStream = response.getOutputStream();
