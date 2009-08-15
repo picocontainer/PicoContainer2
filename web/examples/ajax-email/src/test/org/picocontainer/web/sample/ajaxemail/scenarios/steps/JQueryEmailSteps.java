@@ -25,9 +25,9 @@ public class JQueryEmailSteps extends SeleniumSteps {
         main = new LoginForm(selenium, runner).login(userName, password);
 	}
 
-    @Then("the Inbox should be visible")
-	public void inBoxIsVisible() {
-		main.textIsVisible("Instant Millionaire");
+    @Then("the $box is selected")
+	public void boxIsSelected(String box) {
+		main.selectedBox(box);
 	}
 
 	@Then("the Inbox should not be visible")
