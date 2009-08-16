@@ -40,6 +40,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
     private boolean exposeServletInfrastructure;
     private boolean isStateless;
     private boolean printSessionSize;
+	private boolean debug = false;
 
     public void init(FilterConfig filterConfig) throws ServletException {
         ServletContext context = filterConfig.getServletContext();
@@ -154,14 +155,16 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
     }
 
     private void printSessionSizeDetailsForDebugging(SessionStoreHolder ssh) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(ssh);
-        oos.close();
-        baos.close();
-        String xml = new XStream(new PureJavaReflectionProvider()).toXML(ssh);
-        int bytes = baos.toByteArray().length;
-        System.out.println("** Session written (" + bytes + " bytes), xml representation= " + xml);
+        if ( debug ){
+	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	        ObjectOutputStream oos = new ObjectOutputStream(baos);
+	        oos.writeObject(ssh);
+	        oos.close();
+	        baos.close();
+	        String xml = new XStream(new PureJavaReflectionProvider()).toXML(ssh);
+	        int bytes = baos.toByteArray().length;        
+	        System.out.println("** Session written (" + bytes + " bytes), xml representation= " + xml);
+        }
     }
 
     protected void containersSetupForRequest(MutablePicoContainer appcontainer, MutablePicoContainer sessionContainer,
