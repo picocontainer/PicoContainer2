@@ -1,13 +1,9 @@
 package org.picocontainer.web.sample.ajaxemail;
 
-import org.picocontainer.web.StringFromCookie;
-import org.picocontainer.injectors.ProviderAdapter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable = "true")
 public class User {

@@ -1,26 +1,23 @@
 package org.picocontainer.web.sample.ajaxemail.persistence;
 
-import javax.jdo.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.picocontainer.web.sample.ajaxemail.Message;
 import org.picocontainer.web.sample.ajaxemail.Query;
 import org.picocontainer.web.sample.ajaxemail.User;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.ArrayList;
-
 public class InMemoryPersister implements Persister {
 
     private List<Message> messages = new ArrayList<Message>();
     private List<User> users = new ArrayList<User>();
-    private long msgCtr = 0;
+    private long messageCounter = 0;
 
     public void makePersistent(Object persistent) {
         if (persistent instanceof Message) {
 
             Message message = (Message) persistent;
-            message.setId(++msgCtr);
+            message.setId(++messageCounter);
             messages.add(message);
         } else {
             users.add((User) persistent);

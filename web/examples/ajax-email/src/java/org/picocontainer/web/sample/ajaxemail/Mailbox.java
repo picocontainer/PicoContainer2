@@ -40,7 +40,8 @@ public abstract class Mailbox {
         return message;
     }
 
-    private Message getMessage(long msgId) {
+    @SuppressWarnings("unchecked")
+	private Message getMessage(long msgId) {
         Collection<Message> coll = (Collection<Message>) getSingleMessageQuery().execute(msgId);
         if (coll != null && coll.size() == 1) {
             Message message = coll.iterator().next();
@@ -81,7 +82,8 @@ public abstract class Mailbox {
      * List the messages for the user
      * @return the messages
      */
-    public Message[] messages() {
+    @SuppressWarnings("unchecked")
+	public Message[] messages() {
         Query query = getMultipleMessageQuery();
         List<Message> messageCollection = (List<Message>) query.execute(user.getName());
         return toArrayWithoutMessageBody(messageCollection);

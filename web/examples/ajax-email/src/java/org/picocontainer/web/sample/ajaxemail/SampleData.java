@@ -8,7 +8,7 @@ import org.picocontainer.web.sample.ajaxemail.persistence.Persister;
 
 public class SampleData {
 
-    private final Persister pm;
+    private final Persister persister;
     private final UserStore userStore;
 
     static final User GILL_BATES = new User("Gill Bates", "1234");
@@ -34,7 +34,7 @@ public class SampleData {
     private long time;
 
     public SampleData(Persister pm, UserStore userStore) {
-        this.pm = pm;
+        this.persister = pm;
         this.userStore = userStore;
         time = System.currentTimeMillis();
     }
@@ -44,7 +44,7 @@ public class SampleData {
         return time;
     }
 
-    public void load() {
+	public void load() {
 
         User gill = userStore.getUser(GILL_BATES.getName());
         if (gill == null) {
@@ -57,19 +57,19 @@ public class SampleData {
             makePersistent(beeve);
         }
 
-        Query query = pm.newQuery(Message.class, "id > -1");
+        Query query = persister.newQuery(Message.class, "id > -1");
 
-        for (Message message : (Collection<Message>) query.execute(null)) {
-            pm.deletePersistent(message);
+        for (Object message : (Collection<?>) query.execute(null)) {
+            persister.deletePersistent(message);
         }
 
         for (Message message : messages) {
-            pm.makePersistent(message);
+            persister.makePersistent(message);
         }
 
     }
 
     private void makePersistent(Object obj) {
-        pm.makePersistent(obj);
+        persister.makePersistent(obj);
     }
 }

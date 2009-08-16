@@ -1,7 +1,5 @@
 package org.picocontainer.web.sample.ajaxemail;
 
-import javax.jdo.PersistenceManager;
-
 import org.picocontainer.web.sample.ajaxemail.persistence.Persister;
 
 /**
@@ -9,8 +7,8 @@ import org.picocontainer.web.sample.ajaxemail.persistence.Persister;
  */
 public class Sent extends Mailbox {
 
-    public Sent(Persister pm, User user, QueryStore queryStore) {
-        super(pm, user, queryStore);
+    public Sent(Persister persister, User user, QueryStore queryStore) {
+        super(persister, user, queryStore);
     }
 
     public Message send(String to, String subject, String message) {
