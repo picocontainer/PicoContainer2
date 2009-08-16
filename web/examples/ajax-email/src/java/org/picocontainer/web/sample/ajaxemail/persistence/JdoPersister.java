@@ -7,7 +7,6 @@ import org.picocontainer.web.sample.ajaxemail.Query;
 
 public class JdoPersister implements Persister {
 
-
 //    public static interface GoogleServices {
 //        <T> T getService(Class<T> clazz);
 //        <T> T getService(Class<T> clazz, String hint);
@@ -47,24 +46,24 @@ public class JdoPersister implements Persister {
         pm.currentTransaction().commit();        
     }
 
-    public Query newQuery(Class<?> clazz, String query) {
-        final javax.jdo.Query qry = pm.newQuery(clazz, query);
+    public Query newQuery(Class<?> type, String query) {
+        final javax.jdo.Query jdoQuery = pm.newQuery(type, query);
         return new Query() {
             public Object execute(Object arg) {
                 if (arg == null) {
-                    return qry.execute();                    
+                    return jdoQuery.execute();                    
                 } else {
-                    return qry.execute(arg);
+                    return jdoQuery.execute(arg);
                 }
 
             }
 
             public void declareImports(String imports) {
-                qry.declareImports(imports);
+                jdoQuery.declareImports(imports);
             }
 
             public void declareParameters(String parameters) {
-                qry.declareParameters(parameters);
+                jdoQuery.declareParameters(parameters);
             }
 
         };

@@ -30,42 +30,42 @@ public class InMemoryPersister implements Persister {
     public void commitTransaction() {
     }
 
-    public Query newQuery(final Class<?> clazz, final String query) {
+    public Query newQuery(final Class<?> type, final String query) {
 
         return new Query() {
             public Object execute(Object arg) {
-                if (clazz == Message.class) {
-                    List<Message> retVal = new ArrayList<Message>();
+                if (type == Message.class) {
+                    List<Message> result = new ArrayList<Message>();
                     if (query.equals("id == message_id")) {
                         for (Message message : messages) {
                             if (message.getId() == (Long) arg) {
-                                retVal.add(message);
+                                result.add(message);
                             }
                         }
                     } else if (query.equals("from == user_name")) {
                         for (Message message : messages) {
                             if (message.getFrom().equals((String) arg)) {
-                                retVal.add(message);
+                                result.add(message);
                             }
                         }
                     } else if (query.equals("to == user_name")) {
                         for (Message message : messages) {
                             if (message.getTo().equals((String) arg)) {
-                                retVal.add(message);
+                                result.add(message);
                             }
                         }
                     } else if (query.equals("id > -1")) {
-                        retVal = messages;
+                        result = messages;
                     }
-                    return retVal;
+                    return result;
                 } else {
-                    List<User> retVal = new ArrayList<User>();
+                    List<User> result = new ArrayList<User>();
                     for (User user : users) {
                         if (user.getName().equals((String) arg)) {
-                            retVal.add(user);
+                            result.add(user);
                         }
                     }
-                    return retVal;
+                    return result;
                 }
             }
 

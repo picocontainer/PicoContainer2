@@ -10,7 +10,7 @@ public interface Persister {
 
     void commitTransaction();
 
-    Query newQuery(Class<?> clazz, String query);
+    Query newQuery(Class<?> type, String query);
 
     void deletePersistent(Object persistent);
 
