@@ -27,11 +27,11 @@ public abstract class Mailbox {
 
     /**
      * Read a message (flip its read flag if not already)
-     * @param msgId the message to read
+     * @param messageId the message to read
      * @return the message
      */
-    public Message read(long msgId) {
-        Message message = getMessage(msgId);
+    public Message read(long messageId) {
+        Message message = getMessage(messageId);
         if (!message.isRead()) {
             persister.beginTransaction();
             message.markRead();
@@ -41,8 +41,8 @@ public abstract class Mailbox {
     }
 
     @SuppressWarnings("unchecked")
-	private Message getMessage(long msgId) {
-        Collection<Message> coll = (Collection<Message>) getSingleMessageQuery().execute(msgId);
+	private Message getMessage(long messageId) {
+        Collection<Message> coll = (Collection<Message>) getSingleMessageQuery().execute(messageId);
         if (coll != null && coll.size() == 1) {
             Message message = coll.iterator().next();
             checkUser(message);
@@ -71,10 +71,10 @@ public abstract class Mailbox {
 
     /**
      * Delete a message
-     * @param msgId the message to delete
+     * @param messageId the message to delete
      */
-    public void delete(long msgId) {
-        Message message = getMessage(msgId);
+    public void delete(long messageId) {
+        Message message = getMessage(messageId);
         persister.deletePersistent(message);
     }
 
@@ -85,16 +85,16 @@ public abstract class Mailbox {
     @SuppressWarnings("unchecked")
 	public Message[] messages() {
         Query query = getMultipleMessageQuery();
-        List<Message> messageCollection = (List<Message>) query.execute(user.getName());
-        return toArrayWithoutMessageBody(messageCollection);
+        List<Message> messages = (List<Message>) query.execute(user.getName());
+        return clearMessageBody(messages);
     }
 
-    private Message[] toArrayWithoutMessageBody(List<Message> messageCollection) {
-        Message[] msgAry = messageCollection.toArray(new Message[messageCollection.size()]);
-        for (Message message : msgAry) {
+    private Message[] clearMessageBody(List<Message> messages) {
+        Message[] array = messages.toArray(new Message[messages.size()]);
+        for (Message message : array) {
             message.clearMessageBody();
         }
-        return msgAry;
+        return array;
     }
 
     private Query getMultipleMessageQuery() {
@@ -118,6 +118,5 @@ public abstract class Mailbox {
     public String toString() {
         return getUserName();
     }
-
 
 }
