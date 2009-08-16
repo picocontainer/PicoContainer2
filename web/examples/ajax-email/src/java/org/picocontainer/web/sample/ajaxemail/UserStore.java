@@ -23,11 +23,12 @@ public class UserStore {
             query.declareParameters("String user_name");
             queryStore.put("GU", query);
         }
-        Collection<User> messages = (Collection<User>) query.execute(name);
-        if (messages != null && messages.size() > 0) {
-            return messages.iterator().next();
+        Collection<User> users = (Collection<User>) query.execute(name);
+        if (users != null && users.size() > 0) {
+            return users.iterator().next();
         } else {
             return null;
         }
     }
+    
 }

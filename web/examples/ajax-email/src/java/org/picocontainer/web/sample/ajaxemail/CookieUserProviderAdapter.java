@@ -5,12 +5,12 @@ import org.picocontainer.web.StringFromCookie;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class UserFromCookieProvider extends ProviderAdapter {
+public class CookieUserProviderAdapter extends ProviderAdapter {
 
     public User provide(UserStore userStore, HttpServletRequest req) {
         try {
             String name = new StringFromCookie("userName").provide(req);
-            if (name.equals("")) {
+            if (name.trim().length() == 0) {
                 throw new UserNotLoggedIn();
             }
             return userStore.getUser(name);

@@ -1,19 +1,16 @@
 package org.picocontainer.web.sample.ajaxemail;
 
-import org.junit.Test;
-import org.junit.Before;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import org.picocontainer.web.sample.ajaxemail.Message;
-import org.picocontainer.web.sample.ajaxemail.User;
-import org.picocontainer.web.sample.ajaxemail.persistence.Persister;
-import org.jmock.Mockery;
-import org.jmock.Expectations;
-
-import java.util.List;
-import java.util.ArrayList;
-
 import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.junit.Before;
+import org.junit.Test;
+import org.picocontainer.web.sample.ajaxemail.persistence.Persister;
 
 public class MailboxTest {
 
@@ -22,7 +19,7 @@ public class MailboxTest {
     private List<Message> data;
     private User fred = new User("Fred", "password");
     private Message message = new Message("Fred", "to", "subj", "message", false, 12345);
-    private Persister pm;
+    private Persister persister;
     private Query query;
 
     @Before
@@ -31,7 +28,7 @@ public class MailboxTest {
         data = new ArrayList<Message>();
         data.add(message);
         message.setId(2L);
-        pm = mockery.mock(Persister.class);
+        persister = mockery.mock(Persister.class);
         query = mockery.mock(Query.class);
 
     }
@@ -39,7 +36,7 @@ public class MailboxTest {
     @Test
     public void testReadingOfMessages() {
         mockery.checking(new Expectations(){{
-    		one(pm).newQuery(Message.class, "XXX == user_name");
+    		one(persister).newQuery(Message.class, "XXX == user_name");
     		will(returnValue(query));
             one(query).declareImports("import java.lang.String");
             one(query).declareParameters("String user_name");
@@ -47,7 +44,7 @@ public class MailboxTest {
             will(returnValue(data));
         }});
 
-        Mailbox mailbox = new MyMailbox(pm, fred);
+        Mailbox mailbox = new MyMailbox(persister, fred);
         Message[] messages = mailbox.messages();
         assertEquals(1, messages.length);
         assertEquals(message, messages[0]);
@@ -57,17 +54,17 @@ public class MailboxTest {
     @Test
     public void testReadOfSingleMessageFlipsReadFlag() {
         mockery.checking(new Expectations(){{
-            one(pm).newQuery(Message.class, "id == message_id");
+            one(persister).newQuery(Message.class, "id == message_id");
     		will(returnValue(query));
-            one(pm).beginTransaction();
-            one(pm).commitTransaction();
+            one(persister).beginTransaction();
+            one(persister).commitTransaction();
             one(query).declareImports("import java.lang.Long");
             one(query).declareParameters("Long message_id");                        
             one(query).execute(2L);
             will(returnValue(data));
         }});
 
-        Mailbox mailbox = new MyMailbox(pm, fred);
+        Mailbox mailbox = new MyMailbox(persister, fred);
         assertEquals(message, mailbox.read(2));
         verifyMessage(message, true, "message");
     }
@@ -75,19 +72,19 @@ public class MailboxTest {
     @Test
     public void testReadOfMissingMessageCausesException() {
         mockery.checking(new Expectations(){{
-            one(pm).newQuery(Message.class, "id == message_id");
+            one(persister).newQuery(Message.class, "id == message_id");
     		will(returnValue(query));
-            one(pm).beginTransaction();
-            one(pm).commitTransaction();
+            one(persister).beginTransaction();
+            one(persister).commitTransaction();
             one(query).declareImports("import java.lang.Long");
             one(query).declareParameters("Long message_id");
             one(query).execute(22222L);
-            will(returnValue(new ArrayList()));
+            will(returnValue(new ArrayList<Object>()));
         }});
 
-        Mailbox mailbox = new MyMailbox(pm, fred);
+		Mailbox mailbox = new MyMailbox(persister, fred);
         try {
-            Message message = mailbox.read(22222);
+            mailbox.read(22222);
             fail();
         } catch (AjaxEmailException e) {
             assertEquals("no such message ID", e.getMessage());
@@ -97,30 +94,30 @@ public class MailboxTest {
     @Test
     public void testDeleteOfSingleMessage() {
         mockery.checking(new Expectations(){{
-            one(pm).newQuery(Message.class, "id == message_id");
+            one(persister).newQuery(Message.class, "id == message_id");
             will(returnValue(query));
             one(query).declareImports("import java.lang.Long");
             one(query).declareParameters("Long message_id");
             one(query).execute(2L);
             will(returnValue(data));
-            one(pm).deletePersistent(message);
+            one(persister).deletePersistent(message);
         }});
 
-        Mailbox mailbox = new MyMailbox(pm, fred);
+        Mailbox mailbox = new MyMailbox(persister, fred);
         mailbox.delete(2);
     }
 
     @Test
     public void testDeleteOfMissingMessageCausesException() {
         mockery.checking(new Expectations(){{
-            one(pm).newQuery(Message.class, "id == message_id");
+            one(persister).newQuery(Message.class, "id == message_id");
             will(returnValue(query));
             one(query).declareImports("import java.lang.Long");
             one(query).declareParameters("Long message_id");
             one(query).execute(22222L);
             will(returnValue(null));
         }});
-        Mailbox mailbox = new MyMailbox(pm, fred);
+        Mailbox mailbox = new MyMailbox(persister, fred);
         try {
             mailbox.delete(22222);
         } catch (AjaxEmailException e) {
