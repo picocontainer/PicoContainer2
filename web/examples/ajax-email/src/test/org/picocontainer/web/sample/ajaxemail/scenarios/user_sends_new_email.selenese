@@ -1,0 +1,18 @@
+package com.example.tests;
+
+import com.thoughtworks.selenium.*;
+import java.util.regex.Pattern;
+
+public class Untitled extends SeleneseTestCase {
+	public void setUp() throws Exception {
+		setUp("http://change-this-to-the-site-you-are-testing/", "*chrome");
+	}
+	public void testUntitled() throws Exception {
+		selenium.open("/remoting-ajaxemail-webapp/");
+		selenium.click("compose");
+		selenium.type("to", "Mauro");
+		selenium.type("//form[@id='composeMailForm']/table/tbody/tr[2]/td[2]/input", "Ciao");
+		selenium.type("//form[@id='composeMailForm']/table/tbody/tr[3]/td[2]/textarea", "Ehi there, long time no hear!");
+		selenium.click("submitMessage");
+	}
+}
