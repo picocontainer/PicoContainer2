@@ -34,8 +34,8 @@ public class Main extends BasePage {
     }
 
 
-    public String firstListedEmailSubject() {
-        return selenium.getText("(//tr[contains(@class,\"messageRow\")])[1]/td[4][text()]");
+    public int numberOfMailItemsVisible() {
+        return selenium.getXpathCount("//tr[contains(@class,\"messageRow\")]").intValue();
     }
 
 

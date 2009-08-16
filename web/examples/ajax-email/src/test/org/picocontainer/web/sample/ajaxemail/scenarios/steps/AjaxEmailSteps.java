@@ -10,6 +10,8 @@ import org.picocontainer.web.sample.ajaxemail.scenarios.pages.Main;
 import com.thoughtworks.selenium.condition.Condition;
 import com.thoughtworks.selenium.condition.Not;
 import com.thoughtworks.selenium.condition.Text;
+import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
+import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
 
 public class AjaxEmailSteps extends SeleniumSteps {
 
@@ -38,6 +40,18 @@ public class AjaxEmailSteps extends SeleniumSteps {
 	@Then("the text \"$text\" should be visible")
 	public void textIsVisible(String text) {
 		main.waitFor(new Text(text));
+	}
+
+
+	@Then("there are $qty messages listed")
+	public void numMessages(String qty) {
+        int ct = main.numberOfMailItemsVisible();
+        System.err.println("--> QTY " + ct);
+        if ("some".equals(qty)) {
+            assertTrue(ct > 0);
+        } else {
+            assertEquals(qty, ct);
+        }
 	}
 
 	@Then("the text \"$text\" should not be visible")
