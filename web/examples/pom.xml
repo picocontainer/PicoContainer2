@@ -103,6 +103,9 @@
             </dependency>
           </dependencies>
           <configuration>
+            <webAppConfig>
+              <contextPath>${context.path}</contextPath>
+            </webAppConfig>
             <connectors>
               <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
                 <port>8080</port>
@@ -139,7 +142,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>selenium-maven-plugin</artifactId>
-          <version>1.0-rc-1</version>
+          <version>1.0</version>
           <executions>
             <execution>
               <id>start-selenium</id>
@@ -209,5 +212,9 @@
       </plugin>
     </plugins>
   </build>
+  
+  <properties>
+    <context.path>${pom.artifactId}</context.path>
+  </properties>
 
 </project>

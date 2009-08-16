@@ -13,7 +13,7 @@ public class Main extends Page {
 	}
 
 	public static void logout(Selenium selenium) {
-		selenium.open("/remoting-ajaxemail-webapp/");
+		selenium.open("/ajaxemail/");
 		try {
 			selenium.click("link=Log Out");
 		} catch (RuntimeException e) {

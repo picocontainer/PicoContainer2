@@ -153,4 +153,7 @@
     </plugins>
   </build>
 
+  <properties>
+    <context.path>/ajaxemail</context.path>
+  </properties>
 </project>
