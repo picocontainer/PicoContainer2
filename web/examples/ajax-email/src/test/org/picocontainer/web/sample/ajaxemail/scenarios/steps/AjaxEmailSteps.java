@@ -45,8 +45,8 @@ public class AjaxEmailSteps extends SeleniumSteps {
 
 	@Then("there are $qty messages listed")
 	public void numMessages(String qty) {
+        qty = qty.replace("no","0");
         int ct = main.numberOfMailItemsVisible();
-        System.err.println("--> QTY " + ct);
         if ("some".equals(qty)) {
             assertTrue(ct > 0);
         } else {
