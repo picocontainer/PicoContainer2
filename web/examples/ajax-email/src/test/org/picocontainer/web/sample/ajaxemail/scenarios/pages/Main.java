@@ -32,4 +32,11 @@ public class Main extends BasePage {
         });
         this.box = box;
     }
+
+
+    public String firstListedEmailSubject() {
+        return selenium.getText("(//tr[contains(@class,\"messageRow\")])[1]/td[4][text()]");
+    }
+
+
 }
