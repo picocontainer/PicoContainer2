@@ -1,14 +1,20 @@
 package org.picocontainer.web.sample.ajaxemail.scenarios.pages;
 
 import com.thoughtworks.selenium.Selenium;
+import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
 import com.thoughtworks.selenium.condition.Condition;
 import com.thoughtworks.selenium.condition.ConditionRunner;
+import com.thoughtworks.selenium.condition.Presence;
+import com.thoughtworks.selenium.condition.Not;
+import static org.junit.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 
 public class Main extends Page {
 
 	private String box;
+    private static final String MAIL_FORM = "//div[contains(@class,\"blockPage\")]//form";
 
-	public Main(Selenium selenium, ConditionRunner runner) {
+    public Main(Selenium selenium, ConditionRunner runner) {
 		super(selenium, runner);
 	}
 
@@ -46,4 +52,33 @@ public class Main extends Page {
 				.intValue();
 	}
 
+    public void clickButton(String legend) {
+        selenium.click("//input[@value='"+legend+"']");
+    }
+
+    public void mainPageObscured() {
+        waitFor(obscured());
+    }
+
+    public void mainPageNotObscured() {
+        waitFor(new Not(obscured()));
+    }
+
+    private Presence obscured() {
+        return new Presence("//div[contains(@class,\"blockOverlay\")]");
+    }
+
+
+    public String blockingMailFormPresent() {
+        assertTrue(selenium.isElementPresent(MAIL_FORM +"//textarea[@id = 'message']"));
+        return MAIL_FORM;
+    }
+
+    public void blockingMailFormNotPresent() {
+        assertFalse(selenium.isElementPresent(MAIL_FORM +"//textarea[@id = 'message']"));
+    }
+
+    public String[] fillMailForm() {
+        return super.formFieldValues(MAIL_FORM, true);
+    }
 }

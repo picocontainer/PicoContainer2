@@ -1,9 +1,11 @@
 Given user is viewing their Inbox
-When 'send email' is clicked
-Then a mail-form should overlay the inbox
-And the Inbox should be inaccessible
+When the 'Compose' button is clicked
+Then main page should be obscured
+And a blocking mail-form should be visible
+And that form should have nothing in it
 
 When the mail-form is filled
-And the mail-form is sent
-Then the Inbox should be accessible
+And the 'Send' button is clicked
+Then main page should not be obscured
+And a blocking mail-form should be gone
 And the mail should be visible in the sent mails list

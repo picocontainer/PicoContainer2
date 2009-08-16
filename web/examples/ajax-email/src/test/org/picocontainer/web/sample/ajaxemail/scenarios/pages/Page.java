@@ -8,6 +8,8 @@ import com.thoughtworks.selenium.Selenium;
 
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.Assert.assertEquals;
+
 public class Page {
 
 	protected final Selenium selenium;
@@ -44,5 +46,20 @@ public class Page {
 	public void textIsNotVisible(String text) {
 		waitFor(new Not(new Text(text)));
 	}
+
+    public String[] formFieldValues(String node, boolean fillEm) {
+        String fieldsXpath = node + "//*[@class=\"textfield\"]";
+        int fields = selenium.getXpathCount(fieldsXpath).intValue() ;
+        String[] values = new String[fields];
+        for (int field = 1; field <= fields; field++) {
+            String locator = "xpath=(" + fieldsXpath + ")[" + field + "]";
+            if (fillEm) {
+                selenium.type(locator, "Test:" + Math.random());
+            }
+            values[field-1] = selenium.getText(locator);
+        }
+        return values;
+    }
+
 
 }
