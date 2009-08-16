@@ -1,0 +1,9 @@
+Given user is viewing their Inbox
+When 'send email' is clicked
+Then a mail-form should overlay the inbox
+And the Inbox should be inaccessible
+
+When the mail-form is filled
+And the mail-form is sent
+Then the Inbox should be accessible
+And the mail should be visible in the sent mails list

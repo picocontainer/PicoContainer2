@@ -1,0 +1,8 @@
+Given user is viewing their Inbox
+When an email is double-clicked
+Then a mail-form should overlay the inbox
+And the mail-form should show the clicked email
+And the Inbox should be inaccessible
+
+When the mail-form is cancelled
+Then the Inbox should be accessible
