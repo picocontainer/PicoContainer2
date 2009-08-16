@@ -8,13 +8,16 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.web.WebappComposer;
 //import org.picocontainer.web.caching.FallbackCacheProvider;
 import org.picocontainer.web.remoting.PicoWebRemotingMonitor;
+import org.picocontainer.web.sample.ajaxemail.persistence.InMemoryPersister;
+import org.picocontainer.web.sample.ajaxemail.persistence.JdoPersister;
+import org.picocontainer.web.sample.ajaxemail.persistence.Persister;
 
 public class AjaxEmailWebappComposer implements WebappComposer {
 
     public void composeApplication(MutablePicoContainer container, ServletContext context) {
         container.addComponent(PicoWebRemotingMonitor.class, AjaxEmailWebRemotingMonitor.class);
         container.addComponent(UserStore.class);
-        container.addComponent(PersistenceManagerWrapper.class, getPersistenceManagerWrapperClass());
+        container.addComponent(Persister.class, getPersisterClass());
         container.addComponent(QueryStore.class);
 //        container.addAdapter(new FallbackCacheProvider());
     }
@@ -30,7 +33,7 @@ public class AjaxEmailWebappComposer implements WebappComposer {
 
         container.as(USE_NAMES).addComponent(Inbox.class);
         container.as(USE_NAMES).addComponent(Sent.class);
-        container.addComponent(ReloadData.class);
+        container.addComponent(SampleData.class);
 
     }
 
@@ -38,7 +41,7 @@ public class AjaxEmailWebappComposer implements WebappComposer {
      * Some ugliness to determine if the user is deploying the app via "maven jetty:run-war"
      * @return
      */
-    private Class<? extends PersistenceManagerWrapper> getPersistenceManagerWrapperClass() {
+    private Class<? extends Persister> getPersisterClass() {
         boolean isMaven = false;
         try {
             throw new RuntimeException();
@@ -50,9 +53,9 @@ public class AjaxEmailWebappComposer implements WebappComposer {
             }
         }
         if (isMaven) {
-            return InMemoryPersistenceManagerWrapper.class;
+            return InMemoryPersister.class;
         } else {
-            return JdoPersistenceManagerWrapper.class;
+            return JdoPersister.class;
         }
 
     }

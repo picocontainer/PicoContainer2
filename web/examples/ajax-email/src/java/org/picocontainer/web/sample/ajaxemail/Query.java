@@ -1,7 +1,5 @@
 package org.picocontainer.web.sample.ajaxemail;
 
-import java.util.Collection;
-import java.util.List;
 
 public interface Query {
     

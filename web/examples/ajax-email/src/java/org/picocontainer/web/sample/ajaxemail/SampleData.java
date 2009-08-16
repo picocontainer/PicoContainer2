@@ -4,16 +4,17 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ReloadData {
+import org.picocontainer.web.sample.ajaxemail.persistence.Persister;
 
-    private final PersistenceManagerWrapper pm;
+public class SampleData {
+
+    private final Persister pm;
     private final UserStore userStore;
 
     static final User GILL_BATES = new User("Gill Bates", "1234");
     static final User BEEVE_SALMER = new User("Beeve Salmer", "1234");
 
     private List<Message> messages = new ArrayList<Message>();
-
     {
         messages.add(new Message("J Query", GILL_BATES.getName(), "Nice Example", "Very nice example application you've created", false, time()));
         messages.add(new Message("Needie Joe", GILL_BATES.getName(), "Give me Money!", "You're one of the most rich people in the world, help me out", false, time()));
@@ -25,18 +26,14 @@ public class ReloadData {
         messages.add(new Message("Trudy Barker", GILL_BATES.getName(), "Coming in Late", "Not that you'll ever notice", false, time()));
         messages.add(new Message("Sammy Shaggs", GILL_BATES.getName(), "Lunch?", "Let's Do Lunch at McDonald's - you can buy!", false, time()));
         messages.add(new Message("Kate Robertson", GILL_BATES.getName(), "When are our raises coming?", "I need more money", false, time()));
-
         messages.add(new Message(GILL_BATES.getName(), "Jeeves Sobs", "Nice OS", "You've made a great OS there Jeeves", false, time()));
-
         messages.add(new Message("Parah Salin", BEEVE_SALMER.getName(), "Job", "I need a job pls.", false, time()));
-
         messages.add(new Message(BEEVE_SALMER.getName(), "Jeeves Sobs", "Rubbish OS", "Your OS is just a joke", false, time()));
-
     }
 
     private long time;
 
-    public ReloadData(PersistenceManagerWrapper pm, UserStore userStore) {
+    public SampleData(Persister pm, UserStore userStore) {
         this.pm = pm;
         this.userStore = userStore;
         time = System.currentTimeMillis();
@@ -47,7 +44,7 @@ public class ReloadData {
         return time;
     }
 
-    public void doIt() {
+    public void load() {
 
         User gill = userStore.getUser(GILL_BATES.getName());
         if (gill == null) {
@@ -62,8 +59,8 @@ public class ReloadData {
 
         Query query = pm.newQuery(Message.class, "id > -1");
 
-        for (Message aColl : (Collection<Message>) query.execute(null)) {
-            pm.deletePersistent(aColl);
+        for (Message message : (Collection<Message>) query.execute(null)) {
+            pm.deletePersistent(message);
         }
 
         for (Message message : messages) {

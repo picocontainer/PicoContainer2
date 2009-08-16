@@ -1,6 +1,9 @@
-package org.picocontainer.web.sample.ajaxemail;
+package org.picocontainer.web.sample.ajaxemail.persistence;
 
-public interface PersistenceManagerWrapper {
+import org.picocontainer.web.sample.ajaxemail.Query;
+
+public interface Persister {
+	
     void makePersistent(Object persistent);
 
     void beginTransaction();

@@ -2,12 +2,14 @@ package org.picocontainer.web.sample.ajaxemail;
 
 import java.util.Collection;
 
+import org.picocontainer.web.sample.ajaxemail.persistence.Persister;
+
 public class UserStore {
 
-    private transient PersistenceManagerWrapper pm;
+    private transient Persister pm;
     private transient final QueryStore queryStore;
 
-    public UserStore(PersistenceManagerWrapper pm, QueryStore queryStore) {
+    public UserStore(Persister pm, QueryStore queryStore) {
         this.pm = pm;
         this.queryStore = queryStore;
     }

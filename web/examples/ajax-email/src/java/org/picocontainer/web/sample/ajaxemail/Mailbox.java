@@ -3,23 +3,25 @@ package org.picocontainer.web.sample.ajaxemail;
 import java.util.List;
 import java.util.Collection;
 
+import org.picocontainer.web.sample.ajaxemail.persistence.Persister;
+
 /**
  * Abstract Mailbox
  */
 public abstract class Mailbox {
 
-    private final PersistenceManagerWrapper pm;
+    private final Persister persister;
     private final User user;
     private final QueryStore queryStore;
 
-    public Mailbox(PersistenceManagerWrapper pm, User user, QueryStore queryStore) {
-        this.pm = pm;
+    public Mailbox(Persister persister, User user, QueryStore queryStore) {
+        this.persister = persister;
         this.user = user;
         this.queryStore = queryStore;
     }
 
     protected Message addMessage(Message newMsg) {
-        pm.makePersistent(newMsg);
+        persister.makePersistent(newMsg);
         return newMsg;
     }
 
@@ -31,9 +33,9 @@ public abstract class Mailbox {
     public Message read(long msgId) {
         Message message = getMessage(msgId);
         if (!message.isRead()) {
-            pm.beginTransaction();
+            persister.beginTransaction();
             message.markRead();
-            pm.commitTransaction();
+            persister.commitTransaction();
         }
         return message;
     }
@@ -58,7 +60,7 @@ public abstract class Mailbox {
         String key = "SM_" + fromOrTo();
         Query query = queryStore.get(key);
         if (query == null) {
-            query = pm.newQuery(Message.class, "id == message_id");
+            query = persister.newQuery(Message.class, "id == message_id");
             query.declareImports("import java.lang.Long");
             query.declareParameters("Long message_id");
             queryStore.put(key, query);
@@ -72,7 +74,7 @@ public abstract class Mailbox {
      */
     public void delete(long msgId) {
         Message message = getMessage(msgId);
-        pm.deletePersistent(message);
+        persister.deletePersistent(message);
     }
 
     /**
@@ -97,7 +99,7 @@ public abstract class Mailbox {
         String key = "MM_" + fromOrTo();
         Query query = queryStore.get(key);
         if (query == null) {
-            query = pm.newQuery(Message.class, fromOrTo() + " == user_name");
+            query = persister.newQuery(Message.class, fromOrTo() + " == user_name");
             query.declareImports("import java.lang.String");
             query.declareParameters("String user_name");
             queryStore.put(key, query);

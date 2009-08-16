@@ -1,11 +1,16 @@
-package org.picocontainer.web.sample.ajaxemail;
+package org.picocontainer.web.sample.ajaxemail.persistence;
 
 import javax.jdo.*;
+
+import org.picocontainer.web.sample.ajaxemail.Message;
+import org.picocontainer.web.sample.ajaxemail.Query;
+import org.picocontainer.web.sample.ajaxemail.User;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 
-public class InMemoryPersistenceManagerWrapper implements PersistenceManagerWrapper {
+public class InMemoryPersister implements Persister {
 
     private List<Message> messages = new ArrayList<Message>();
     private List<User> users = new ArrayList<User>();

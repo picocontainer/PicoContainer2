@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.runner.RunWith;
 import org.picocontainer.web.sample.ajaxemail.Message;
 import org.picocontainer.web.sample.ajaxemail.User;
+import org.picocontainer.web.sample.ajaxemail.persistence.Persister;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.Mockery;
 import org.jmock.Expectations;
@@ -19,13 +20,13 @@ public class SentTest {
 
     private Mockery mockery = new Mockery();
     private Collection<Message> data;
-    private PersistenceManagerWrapper pm;
+    private Persister pm;
     private User fred = new User("Fred", "password");
     private Query query;
 
     @Before
     public void setUp() {
-        pm = mockery.mock(PersistenceManagerWrapper.class);
+        pm = mockery.mock(Persister.class);
         query = mockery.mock(Query.class);
         data = new ArrayList();
         mockery.checking(new Expectations(){{

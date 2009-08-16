@@ -1,15 +1,11 @@
-package org.picocontainer.web.sample.ajaxemail;
+package org.picocontainer.web.sample.ajaxemail.persistence;
 
-import javax.jdo.*;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
-import java.util.Collection;
-import java.util.List;
-import java.io.IOException;
+import javax.jdo.JDOHelper;
+import javax.jdo.PersistenceManager;
 
-public class JdoPersistenceManagerWrapper implements PersistenceManagerWrapper {
+import org.picocontainer.web.sample.ajaxemail.Query;
+
+public class JdoPersister implements Persister {
 
 
 //    public static interface GoogleServices {

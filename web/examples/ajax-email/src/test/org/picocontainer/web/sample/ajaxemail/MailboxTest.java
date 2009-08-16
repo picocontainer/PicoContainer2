@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.picocontainer.web.sample.ajaxemail.Message;
 import org.picocontainer.web.sample.ajaxemail.User;
+import org.picocontainer.web.sample.ajaxemail.persistence.Persister;
 import org.jmock.Mockery;
 import org.jmock.Expectations;
 
@@ -21,7 +22,7 @@ public class MailboxTest {
     private List<Message> data;
     private User fred = new User("Fred", "password");
     private Message message = new Message("Fred", "to", "subj", "message", false, 12345);
-    private PersistenceManagerWrapper pm;
+    private Persister pm;
     private Query query;
 
     @Before
@@ -30,7 +31,7 @@ public class MailboxTest {
         data = new ArrayList<Message>();
         data.add(message);
         message.setId(2L);
-        pm = mockery.mock(PersistenceManagerWrapper.class);
+        pm = mockery.mock(Persister.class);
         query = mockery.mock(Query.class);
 
     }
@@ -139,7 +140,7 @@ public class MailboxTest {
     }
 
     private class MyMailbox extends Mailbox {
-        public MyMailbox(PersistenceManagerWrapper pm, User user) {
+        public MyMailbox(Persister pm, User user) {
             super(pm, user, new QueryStore());
         }
 

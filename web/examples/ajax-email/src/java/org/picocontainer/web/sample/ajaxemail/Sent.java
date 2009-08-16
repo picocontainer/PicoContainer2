@@ -2,12 +2,14 @@ package org.picocontainer.web.sample.ajaxemail;
 
 import javax.jdo.PersistenceManager;
 
+import org.picocontainer.web.sample.ajaxemail.persistence.Persister;
+
 /**
  * Send is a type of Mailbox for a user with a special function for sending
  */
 public class Sent extends Mailbox {
 
-    public Sent(PersistenceManagerWrapper pm, User user, QueryStore queryStore) {
+    public Sent(Persister pm, User user, QueryStore queryStore) {
         super(pm, user, queryStore);
     }
 
