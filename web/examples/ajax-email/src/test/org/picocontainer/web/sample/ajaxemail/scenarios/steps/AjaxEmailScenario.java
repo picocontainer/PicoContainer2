@@ -1,4 +1,4 @@
-package org.picocontainer.web.sample.ajaxemail.scenarios;
+package org.picocontainer.web.sample.ajaxemail.scenarios.steps;
 
 import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.PropertyBasedConfiguration;
@@ -7,15 +7,14 @@ import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
-import org.picocontainer.web.sample.ajaxemail.scenarios.steps.JQueryEmailSteps;
 
-public class GillBatesCanLogIn extends JUnitScenario {
+public class AjaxEmailScenario extends JUnitScenario {
 
-    public GillBatesCanLogIn() {
+    public AjaxEmailScenario() {
         this(Thread.currentThread().getContextClassLoader());
     }
 
-    public GillBatesCanLogIn(final ClassLoader classLoader) {
+    public AjaxEmailScenario(final ClassLoader classLoader) {
         super(new PropertyBasedConfiguration() {
             @Override
             public ClasspathScenarioDefiner forDefiningScenarios() {
@@ -27,6 +26,6 @@ public class GillBatesCanLogIn extends JUnitScenario {
 				return new PrintStreamScenarioReporter();
 			}
         });
-        super.addSteps(new JQueryEmailSteps());
+        super.addSteps(new AjaxEmailSteps());
     }
 }

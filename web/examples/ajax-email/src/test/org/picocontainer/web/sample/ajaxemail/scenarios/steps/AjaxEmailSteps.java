@@ -11,7 +11,7 @@ import com.thoughtworks.selenium.condition.Condition;
 import com.thoughtworks.selenium.condition.Not;
 import com.thoughtworks.selenium.condition.Text;
 
-public class JQueryEmailSteps extends SeleniumSteps {
+public class AjaxEmailSteps extends SeleniumSteps {
 
     private Main main;
 
