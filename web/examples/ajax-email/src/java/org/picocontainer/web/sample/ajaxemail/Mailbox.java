@@ -27,11 +27,11 @@ public abstract class Mailbox {
 
     /**
      * Read a message (flip its read flag if not already)
-     * @param messageId the message to read
+     * @param id the message to read
      * @return the message
      */
-    public Message read(long messageId) {
-        Message message = getMessage(messageId);
+    public Message read(long id) {
+        Message message = getMessage(id);
         if (!message.isRead()) {
             persister.beginTransaction();
             message.markRead();
@@ -71,10 +71,10 @@ public abstract class Mailbox {
 
     /**
      * Delete a message
-     * @param messageId the message to delete
+     * @param id the message to delete
      */
-    public void delete(long messageId) {
-        Message message = getMessage(messageId);
+    public void delete(long id) {
+        Message message = getMessage(id);
         persister.deletePersistent(message);
     }
 
@@ -86,13 +86,16 @@ public abstract class Mailbox {
 	public Message[] messages() {
         Query query = getMultipleMessageQuery();
         List<Message> messages = (List<Message>) query.execute(user.getName());
-        return clearMessageBody(messages);
+        return cloneListWithoutMessageBody(messages);
     }
 
-    private Message[] clearMessageBody(List<Message> messages) {
-        Message[] array = messages.toArray(new Message[messages.size()]);
-        for (Message message : array) {
-            message.clearMessageBody();
+    private Message[] cloneListWithoutMessageBody(List<Message> messages) {
+        Message[] array = new Message[messages.size()];
+        for (int i = 0; i < messages.size(); i++) {
+            Message message = messages.get(i);
+            array[i] = new Message(message.getFrom(), message.getTo(), message.getSubject(),
+                    null, message.isRead(), message.getSentTime().getTime());
+            array[i].setId(message.getId());
         }
         return array;
     }

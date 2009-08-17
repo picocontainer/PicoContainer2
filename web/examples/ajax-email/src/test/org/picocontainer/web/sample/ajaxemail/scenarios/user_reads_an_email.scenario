@@ -1,8 +1,11 @@
 Given user is viewing their Inbox
-When an email is double-clicked
-Then a mail-form should overlay the inbox
+When the first email listed is double-clicked to read an email
+Then main page should be obscured
+And a blocking mail-form should be visible
 And the mail-form should show the clicked email
-And the Inbox should be inaccessible
 
-When the mail-form is cancelled
+When the 'Cancel' button is clicked
 Then the Inbox should be accessible
+Then main page should not be obscured
+And a blocking mail-form should be gone
+

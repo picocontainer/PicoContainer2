@@ -155,7 +155,7 @@ function readMessage() {
     {
         $(this).removeClass("mail_unread");
     }
-    $.get("json/" + view + "/read", {msgId: this.id}, function(data) {
+    $.get("json/" + view + "/read", {id: this.id}, function(data) {
         if (data.ERROR == undefined) {
             // using JSON objects
             document.readMessageForm.subject.value = data.subject;
@@ -206,7 +206,7 @@ function deleteMessages()
 {
     $(".selectable:checked").each(function() {
         $("#" + $(this).val()).remove();
-        $.post("json/" + view + "/delete", {msgId: $(this).val()});
+        $.post("json/" + view + "/delete", {id: $(this).val()});
     });
 }
 
@@ -253,18 +253,18 @@ function sendMessage() {
             </div>
 
 
-            <div id=topnavigation style="width:690px;">
-                <input type=button class=iButton id=compose value="Compose">
-                <input type=button class=iButton id=delete value="Delete">
+            <div id="topnavigation" style="width:690px;">
+                <input type="button" class="iButton" id="compose" value="Compose">
+                <input type="button" class="iButton" id="delete" value="Delete">
             </div>
 
             <form name="mailForm" id="mailForm">
 
                 <p>
-                <table id=mailtable cellpadding=0 cellspacing=0>
+                <table id="mailtable" cellpadding=0 cellspacing=0>
                     <thead>
-                        <tr class=header>
-                            <th width=5%><input type=checkbox id=selectall></th>
+                        <tr class="header">
+                            <th width=5%><input type="checkbox" id="selectall"></th>
                             <th width=15%>To</th>
                             <th width=20%>From</th>
                             <th width=40%>Subject</th>
@@ -275,7 +275,7 @@ function sendMessage() {
                     <tbody>
 
                         <tr class="mail_unread messageRow" id="1">
-                            <td class="mail"><input type=checkbox name="delId" value="1" class=selectable></td>
+                            <td class="mail"><input type=checkbox name="delId" value="1" class="selectable"></td>
                             <td class="mail mail-to">TO</td>
                             <td class="mail mail-from">FROM</td>
                             <td class="mail mail-subj">SUBJECT</td>
@@ -293,7 +293,7 @@ function sendMessage() {
                 }
             </script>
 
-            <div id=about style="width:690px;">
+            <div id="about" style="width:690px;">
 
                 <p><b>Technical infomation for this Web Application</b></p>
 
@@ -304,7 +304,7 @@ function sendMessage() {
                     technologies changed to use Pico Web Remoting rather than JSON libraries and a
                     custom servlet. You can mimick the remoting methods that JQuery invokes with these URLs:</p>
                 <ul>
-                    <li><a href="json/Inbox/read?messageId=1">json/Inbox/read?messageId=1 - read a message (and have it marked as
+                    <li><a href="json/Inbox/read?id=1">json/Inbox/read?id=1 - read a message (and have it marked as
                         read on the backend)</a></li>
                     <li><a href="json/Inbox/messages">json/Inbox/messages - see the contents of the
                         inbox</a></li>
@@ -327,94 +327,98 @@ function sendMessage() {
     </div>
 </center>
 
-<div id=composeMessage style="display:none;cursor:default;">
-    <p>
+<div id="composeMessage" style="display:none;cursor:default;">
 
     <h2>Compose Mail</h2>
 
     <form name="composeMailForm" id="composeMailForm">
-        <table width=100% class="content_table">
+        <table width="100%" class="content_table">
             <tr>
-                <td class=right>To</td>
-                <td class=left_offset><input class="textfield" type=text name=to id=to> <span class=error_message
-                                                                                              id=subject_error></span>
+                <td class="right">To</td>
+                <td class="left_offset">
+                    <input class="textfield" type="text" name="to" id="to"> <span class="error_message" id="subject_error"></span>
                 </td>
             </tr>
             <tr>
-                <td class=right>Subject</td>
-                <td class=left_offset><input class="textfield" type=text name=subject id=subject> <span
-                        class=error_message id=subject_error></span></td>
+                <td class="right">Subject</td>
+                <td class=left_offset>
+                    <input class="textfield" type="text" name="subject" id="subject"> <span class="error_message" id="subject_error"></span></td>
             </tr>
             <tr>
-                <td class=right>Message</td>
-                <td class=left_offset><textarea class="textfield" name=message id=message
-                                                style="height:120px;width:400px;"></textarea> <span class=error_message
-                                                                                                    id=message_error></span>
+                <td class="right">Message</td>
+                <td class="left_offset">
+                    <textarea class="textfield" name="message" id="message" style="height:120px;width:400px;"></textarea> <span class="error_message" id="message_error"></span>
                 </td>
-            </tr>
-        </table>
-        <p><input class=iButton type=button id=submitMessage value="Send"> <input class=iButton type=button
-                                                                                  id=cancelCompose value="Cancel">
-    </form>
-</div>
-
-<div id=readMessage style="display:none;cursor:default;">
-    <p>
-
-    <h2>Read Message</h2>
-
-    <form id=readMessageForm name=readMessageForm>
-        <table width=100% class="content_table">
-            <tr>
-                <td class=right>From</td>
-                <td class=left_offset><input class="textfield" type=text id=from name=from></td>
-            </tr>
-            <tr>
-                <td class=right>Subject</td>
-                <td class=left_offset><input class="textfield" type=text id=subject name=subject></td>
-            </tr>
-            <tr>
-                <td class=right>Message</td>
-                <td class=left_offset><textarea name=message id=message class="textfield"
-                                                style="height:120px;width:400px;"></textarea></td>
             </tr>
         </table>
         <p>
-            <input class=iButton type=button id=replyMessage value="Reply">
-            <input class=iButton type=button id=cancelRead value="Cancel">
+            <input class="iButton" type="button" id="submitMessage" value="Send">
+            <input class="iButton" type="button" id="cancelCompose" value="Cancel">
+        </p>
     </form>
 </div>
 
-<div id=deleteMessage style="display:none;cursor:default;">
-    <p>
+<div id="readMessage" style="display:none;cursor:default;">
+
+    <h2>Read Message</h2>
+
+    <form id="readMessageForm" name="readMessageForm">
+        <table width=100% class="content_table">
+            <tr>
+                <td class="right">From</td>
+                <td class="left_offset">
+                    <input class="textfield" type="text" id="from" name="from"></td>
+            </tr>
+            <tr>
+                <td class="right">Subject</td>
+                <td class="left_offset">
+                    <input class="textfield" type="text" id="subject" name="subject"></td>
+            </tr>
+            <tr>
+                <td class="right">Message</td>
+                <td class="left_offset">
+                    <textarea name="message" id="message" class="textfield" style="height:120px;width:400px;"></textarea>
+                </td>
+            </tr>
+        </table>
+        <p>
+            <input class="iButton" type="button" id="replyMessage" value="Reply">
+            <input class="iButton" type="button" id="cancelRead" value="Cancel">
+        </p>
+    </form>
+</div>
+
+<div id="deleteMessage" style="display:none;cursor:default;">
 
     <h2>Delete Message</h2>
 
-    <p><span id=deleteConfirm>Are you sure you want to delete these messages?</span>
+    <span id="deleteConfirm">Are you sure you want to delete these messages?</span>
 
-    <p><input class=iButton type=button id=submitDelete value="Yes"> <input class=iButton type=button id=cancelDelete
-                                                                            value="No">
+    <p>
+       <input class="iButton" type="button" id="submitDelete" value="Yes">
+       <input class="iButton" type="button" id="cancelDelete" value="No">
+    </p>
 </div>
 
-<div id=loginPlease style="display:none;cursor:default;">
+<div id="loginPlease" style="display:none;cursor:default;">
 
     <h2>Login please</h2>
 
     <form name="loginForm" id="loginForm">
         <table width=100% class="content_table">
             <tr>
-                <td class=right>User ID</td>
-                <td class=left_offset><input class="textfield" type=text name=to id=userName></td>
+                <td class="right">User ID</td>
+                <td class="left_offset"><input class="textfield" type="text" name="userName" id="userName"></td>
             </tr>
             <tr>
-                <td class=right>Password</td>
-                <td class=left_offset><input class="textfield" type=password name=password id=password></td>
+                <td class="right">Password</td>
+                <td class="left_offset"><input class="textfield" type="password" name="password" id="password"></td>
             </tr>
             <tr>
                 <td colspan="2" id="login_err" class=error_message></td>
             </tr>
         </table>
-        <input class=iButton type=button id=submitLogin value="Login">
+        <input class="iButton" type="button" id="submitLogin" value="Login">
 
         <p>Login as 'Gill Bates' or 'Beeve Salmer'. Both have a password of '1234'.</p>
     </form>

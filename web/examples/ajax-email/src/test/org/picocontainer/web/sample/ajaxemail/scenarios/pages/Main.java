@@ -81,4 +81,13 @@ public class Main extends Page {
     public String[] fillMailForm() {
         return super.formFieldValues(MAIL_FORM, true);
     }
+
+    public String[] firstEmailDoubleClicked() {
+        String[] values = new String[2];
+        String row1 = "//tr[contains(@class,\"messageRow\")][1]";
+        values[0] = selenium.getText(row1 + "/td[contains(@class,\"mail-from\")]");
+        values[1] = selenium.getText(row1 + "/td[contains(@class,\"mail-subj\")]");
+        selenium.doubleClick(row1);
+        return values;
+    }
 }

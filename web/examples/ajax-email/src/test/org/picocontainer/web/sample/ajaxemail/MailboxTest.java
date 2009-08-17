@@ -47,8 +47,8 @@ public class MailboxTest {
         Mailbox mailbox = new MyMailbox(persister, fred);
         Message[] messages = mailbox.messages();
         assertEquals(1, messages.length);
-        assertEquals(message, messages[0]);
-        verifyMessage(message, false, null);
+        assertEquals(message.getId(), messages[0].getId());
+        verifyMessage(messages[0], false, null);
     }
 
     @Test

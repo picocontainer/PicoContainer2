@@ -1,5 +1,5 @@
 Given user is viewing their Inbox
-When the 'Compose' button is clicked
+When the 'Compose' button is clicked to compose an email
 Then main page should be obscured
 And a blocking mail-form should be visible
 And that form should have nothing in it

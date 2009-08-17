@@ -79,8 +79,4 @@ public class Message {
         read = true;
     }
 
-    public void clearMessageBody() {
-        message = null;
-    }
-
 }

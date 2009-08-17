@@ -6,19 +6,19 @@ import org.jbehave.scenario.annotations.When;
 import org.jbehave.web.selenium.SeleniumSteps;
 import org.picocontainer.web.sample.ajaxemail.scenarios.pages.LoginForm;
 import org.picocontainer.web.sample.ajaxemail.scenarios.pages.Main;
+import static org.junit.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.thoughtworks.selenium.condition.Condition;
 import com.thoughtworks.selenium.condition.Not;
 import com.thoughtworks.selenium.condition.Text;
-import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
-import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
-import static com.thoughtworks.selenium.SeleneseTestBase.fail;
 
 public class AjaxEmailSteps extends SeleniumSteps {
 
     private Main main;
-    private String currentNode;
     private String[] lastFormValues;
+    private String prefix;
 
     @Given("nobody is logged in")
 	public void nobodyLoggedIn() {
@@ -42,14 +42,18 @@ public class AjaxEmailSteps extends SeleniumSteps {
         lastFormValues = main.fillMailForm();
 	}
 
-    //the mail-form is filled
+    @When("the first email listed is double-clicked to $prefix an email")
+	public void firstEmailDoubleClicked(String prefix) {
+        this.prefix = prefix;
+        lastFormValues = main.firstEmailDoubleClicked();
+	}
 
     @Then("the $box is selected")
 	public void boxIsSelected(String box) {
 		main.selectedBox(box);
 	}
 
-    @Then("the '$button' button is clicked")
+    @When("the '$button' button is clicked to $prefix an email")
 	public void clickButton(String legend) {
 		main.clickButton(legend);
 	}
@@ -78,11 +82,23 @@ public class AjaxEmailSteps extends SeleniumSteps {
 
     @Then("that form should have nothing in it")
 	public void withNothingInIt() {
-		String[] values = main.formFieldValues(currentNode, false);
+		String[] values = main.formFieldValues(prefix, false);
         for (int i = 0; i < values.length; i++) {
             assertEquals("", values[i]);
         }
 	}
+
+    @Then("the mail-form should show the clicked email")
+	public void mailFormShouldShowClickedEmail() {
+		String[] values = main.formFieldValues(prefix, false);
+        System.err.println("");
+        for (int i = 0; i < lastFormValues.length; i++) {
+            assertEquals(lastFormValues[i], values[i]);
+        }
+
+	}
+
+
 
 	@Then("the Inbox should not be visible")
 	public void inBoxIsNotVisible() {
@@ -97,11 +113,11 @@ public class AjaxEmailSteps extends SeleniumSteps {
 	@Then("there are $qty messages listed")
 	public void numMessages(String qty) {
         qty = qty.replace("no","0");
-        int ct = main.numberOfMailItemsVisible();
+        int ct = main.numberOfMailItemsVisible();        
         if ("some".equals(qty)) {
             assertTrue(ct > 0);
         } else {
-            assertEquals(qty, ct);
+            assertEquals(qty, ""+ct);
         }
 	}
 
