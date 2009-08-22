@@ -90,4 +90,10 @@ public class Main extends Page {
         selenium.doubleClick(row1);
         return values;
     }
+
+    public void fieldsAreBlank(String[] fields) {
+        for (String field : fields) {
+            assertEquals("", selenium.getText(field));
+        }
+    }
 }

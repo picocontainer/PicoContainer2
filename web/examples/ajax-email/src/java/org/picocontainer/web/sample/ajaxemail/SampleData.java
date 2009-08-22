@@ -3,6 +3,7 @@ package org.picocontainer.web.sample.ajaxemail;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.picocontainer.web.sample.ajaxemail.persistence.Persister;
 
@@ -59,7 +60,7 @@ public class SampleData {
 
         Query query = persister.newQuery(Message.class, "id > -1");
 
-        for (Object message : (Collection<?>) query.execute(null)) {
+        for (Object message : (Collection<?>) new ArrayList((Collection<?>) query.execute(null))) {
             persister.deletePersistent(message);
         }
 

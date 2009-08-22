@@ -20,6 +20,11 @@ public class AjaxEmailSteps extends SeleniumSteps {
     private String[] lastFormValues;
     private String prefix;
 
+    @Given("test data")
+	public void testData() {
+        selenium.open("/ajaxemail/json/SampleData/load");
+    }
+
     @Given("nobody is logged in")
 	public void nobodyLoggedIn() {
         Main.logout(selenium);
@@ -53,12 +58,12 @@ public class AjaxEmailSteps extends SeleniumSteps {
 		main.selectedBox(box);
 	}
 
-    @When("the '$button' button is clicked to $prefix an email")
+    @When("the '$button' button is clicked")
 	public void clickButton(String legend) {
 		main.clickButton(legend);
 	}
 
-    @Then("main page should $beOrNotBe obscured")
+    @Then("the main page should $beOrNotBe obscured")
 	public void mainPageObscured(String beOrNotBe) {
         if ("be".equals(beOrNotBe)) {
 		    main.mainPageObscured();
@@ -80,17 +85,17 @@ public class AjaxEmailSteps extends SeleniumSteps {
         }
 	}
 
-    @Then("that form should have nothing in it")
-	public void withNothingInIt() {
-		String[] values = main.formFieldValues(prefix, false);
-        for (int i = 0; i < values.length; i++) {
-            assertEquals("", values[i]);
-        }
+    @Then("$fields in the form should be blank")
+	public void withNothingInIt(String fieldz) {
+        main.fieldsAreBlank(fieldz.split(","));
 	}
 
     @Then("the mail-form should show the clicked email")
 	public void mailFormShouldShowClickedEmail() {
-		String[] values = main.formFieldValues(prefix, false);
+
+        selenium.setContext("waiting");
+        waitFor(1);
+		String[] values = main.formFieldValues(prefix, false, "from", "subject");
         System.err.println("");
         for (int i = 0; i < lastFormValues.length; i++) {
             assertEquals(lastFormValues[i], values[i]);

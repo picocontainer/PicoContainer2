@@ -44,17 +44,18 @@ public class Page {
 		waitFor(new Not(new Text(text)));
 	}
 
-    public String[] formFieldValues(String prefix, boolean fillEm) {
-        String fieldsXpath = "//div[@id='"+prefix+"Message']//form" + "//input[@class=\"textfield\"]";
-        int fields = selenium.getXpathCount(fieldsXpath).intValue() ;
-        String[] values = new String[fields];
-        for (int field = 1; field <= fields; field++) {
-            String locator = "xpath=(" + fieldsXpath + ")[" + field + "]";
+    public String[] formFieldValues(String prefix, boolean fillEm, String... fields) {
+        //                    css=form[name=readMessageForm]  input.textfield[name=subject]
+        //String fieldsXpath = "//div[name='"+prefix+"Message']//form" + "//input[@class=\"textfield\"]";
+        String[] values = new String[fields.length];
+        for (int i = 0; i < fields.length; i++) {
+            String field = fields[i];
+            String locator = "css=form[name="+prefix+"MessageForm] input.textfield[name="+field+"]";
             if (fillEm) {
                 selenium.type(locator, "Test:" + Math.random());
             }
-            runner.waitFor(new NonBlank(locator));
-            values[field-1] = selenium.getText(locator);
+            //runner.waitFor(new NonBlank(locator));
+            values[i] = selenium.getValue(locator);
         }
         return values;
     }
