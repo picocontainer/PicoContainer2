@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.picocontainer.web</groupId>
-    <artifactId>picocontainer-web-examples</artifactId>
+    <artifactId>ajaxemail-example</artifactId>
     <version>2.4-SNAPSHOT</version>
   </parent>
   <artifactId>ajaxemail-webapp</artifactId>
@@ -33,13 +33,11 @@
     <dependency>
       <groupId>org.jbehave</groupId>
       <artifactId>jbehave-core</artifactId>
-      <version>2.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jbehave.web</groupId>
       <artifactId>jbehave-web-selenium</artifactId>
-      <version>2.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -64,9 +62,11 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <!-- NOTE:  replacing all dependencies on javax.transaction:transaction-api with  javax.transaction:jta 
-                until the transaction-api is available on a public maven repo
-     -->
+    <!--
+      NOTE: replacing all dependencies on
+      javax.transaction:transaction-api with javax.transaction:jta until
+      the transaction-api is available on a public maven repo
+    -->
     <dependency>
       <groupId>javax.transaction</groupId>
       <artifactId>jta</artifactId>
@@ -81,27 +81,11 @@
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
-        <artifactId>selenium-maven-plugin</artifactId>        
+        <artifactId>selenium-maven-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.jbehave</groupId>
         <artifactId>jbehave-maven-plugin</artifactId>
-        <version>2.2</version>
-        <executions>
-          <execution>
-            <id>run-scenarios-found</id>
-            <phase>integration-test</phase>
-            <configuration>
-              <scenarioIncludes>
-                <scenarioInclude>${scenarios.include}</scenarioInclude>
-              </scenarioIncludes>
-              <scope>test</scope>
-            </configuration>
-            <goals>
-              <goal>run-scenarios</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.datanucleus</groupId>
@@ -152,6 +136,23 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>skip-scenarios</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jbehave</groupId>
+            <artifactId>jbehave-maven-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <properties>
     <context.path>/ajaxemail</context.path>

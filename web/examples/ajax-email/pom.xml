@@ -7,12 +7,57 @@
     <artifactId>picocontainer-web-examples</artifactId>
     <version>2.4-SNAPSHOT</version>
   </parent>
-  <artifactId>ajaxemail</artifactId>
+  <artifactId>ajaxemail-example</artifactId>
   <name>Ajax Email Example</name>
   <packaging>pom</packaging>
 
   <modules>
     <module>ajax-email-webapp</module>
+    <module>ajax-email-scenarios</module>
   </modules>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jbehave</groupId>
+        <artifactId>jbehave-core</artifactId>
+        <version>2.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jbehave.web</groupId>
+        <artifactId>jbehave-web-selenium</artifactId>
+        <version>2.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.jbehave</groupId>
+          <artifactId>jbehave-maven-plugin</artifactId>
+          <version>2.2</version>
+          <executions>
+            <execution>
+              <id>run-scenarios-found</id>
+              <phase>integration-test</phase>
+              <configuration>
+                <scenarioIncludes>
+                  <scenarioInclude>${scenarios.include}</scenarioInclude>
+                </scenarioIncludes>
+                <scope>test</scope>
+              </configuration>
+              <goals>
+                <goal>run-scenarios</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <properties>
+    <scenarios.include>**/scenarios/*.java</scenarios.include>
+  </properties>
 </project>
