@@ -39,7 +39,7 @@ public class AjaxEmailScenario extends JUnitScenario {
 				return new PrintStreamScenarioReporter() {
                     @Override
                     public void beforeScenario(String title) {
-                        currentScenario.setCurrentScenario(title);
+                        currentScenario.setCurrent(title);
                         super.beforeScenario(title);
                     }
                 };
@@ -57,12 +57,12 @@ public class AjaxEmailScenario extends JUnitScenario {
     public static class CurrentScenario {
         String currentScenario;
 
-        public String getCurrentScenario() {
+        public String toString() {
             return currentScenario;
         }
 
-        public void setCurrentScenario(String currentScenario) {
-            this.currentScenario = currentScenario;
+        public void setCurrent(String current) {
+            this.currentScenario = current;
         }
     }
 }
