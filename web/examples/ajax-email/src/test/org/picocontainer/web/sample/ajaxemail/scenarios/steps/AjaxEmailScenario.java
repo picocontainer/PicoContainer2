@@ -15,14 +15,14 @@ public class AjaxEmailScenario extends JUnitScenario {
     private Selenium selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080");
 
     public AjaxEmailScenario() {
-        this(Thread.currentThread().getContextClassLoader(), new CurrrentScenario());
+        this(Thread.currentThread().getContextClassLoader(), new CurrentScenario());
     }
 
     public AjaxEmailScenario(final ClassLoader classLoader) {
-        this(classLoader, new CurrrentScenario());
+        this(classLoader, new CurrentScenario());
     }
 
-    public AjaxEmailScenario(final ClassLoader classLoader, final CurrrentScenario currentScenario) {
+    public AjaxEmailScenario(final ClassLoader classLoader, final CurrentScenario currentScenario) {
         super(new PropertyBasedConfiguration() {
             @Override
             public ClasspathScenarioDefiner forDefiningScenarios() {
@@ -49,7 +49,7 @@ public class AjaxEmailScenario extends JUnitScenario {
         });
     }
 
-    public static class CurrrentScenario {
+    public static class CurrentScenario {
         String currentScenario;
 
         public String getCurrentScenario() {
