@@ -40,14 +40,13 @@ public class AjaxEmailScenario extends JUnitScenario {
                 };
 			}
         });
-        AjaxEmailSteps steps = new AjaxEmailSteps(selenium, currentScenario) {
+
+        super.addSteps((AjaxEmailSteps) new AjaxEmailSteps(selenium, currentScenario) {
             @Override
             protected Selenium createSelenium() {
                 return AjaxEmailScenario.this.selenium;
             }
-        };
-
-        super.addSteps(steps);
+        });
     }
 
     public static class CurrrentScenario {
