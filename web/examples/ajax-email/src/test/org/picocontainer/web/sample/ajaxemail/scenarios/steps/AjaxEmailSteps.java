@@ -1,9 +1,6 @@
 package org.picocontainer.web.sample.ajaxemail.scenarios.steps;
 
-import org.jbehave.scenario.annotations.Aliases;
-import org.jbehave.scenario.annotations.Given;
-import org.jbehave.scenario.annotations.Then;
-import org.jbehave.scenario.annotations.When;
+import org.jbehave.scenario.annotations.*;
 import org.jbehave.scenario.steps.StepsConfiguration;
 import org.jbehave.scenario.steps.SilentStepMonitor;
 import org.jbehave.scenario.steps.ParameterConverters;
@@ -34,6 +31,13 @@ public class AjaxEmailSteps extends SeleniumSteps {
                 super.performing(step);
             }
         }, new ParameterConverters(), StepsConfiguration.DEFAULT_STARTING_WORDS));
+    }
+
+    @Override
+    @BeforeScenario    
+    public void beforeScenario() throws Exception {
+        super.beforeScenario();
+        selenium.getEval( "window.moveTo(1,250); window.resizeTo(1021,737);" );
     }
 
     @Given("test data")
