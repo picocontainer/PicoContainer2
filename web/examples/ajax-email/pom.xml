@@ -8,7 +8,7 @@
     <version>2.4-SNAPSHOT</version>
   </parent>
   <artifactId>ajaxemail-example</artifactId>
-  <name>Ajax Email Example</name>
+  <name>Ajax Email Parent</name>
   <packaging>pom</packaging>
 
   <modules>
