@@ -12,14 +12,13 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>ajax-email</module>
     <module>jsf-webapp</module>
     <module>struts-webapp</module>
     <module>struts2-webapp</module>
     <module>struts2-webapp-with-pwr</module>
     <module>webwork-webapp</module>
     <module>webwork2-webapp</module>
-    <module>ajax-email-webapp</module>
-    <module>ajax-email-runner</module>
     <module>stub-webapp</module>
   </modules>
 
