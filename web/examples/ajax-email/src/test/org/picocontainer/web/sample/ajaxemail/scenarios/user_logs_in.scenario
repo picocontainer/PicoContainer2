@@ -1,9 +1,9 @@
 Scenario: User logs in successfully
 
-Given test data
+Given sample data is loaded
 And nobody is logged in
 When user Gill Bates with password 1234 attempts to log in
-Then the Inbox is selected
+Then the Inbox is displayed
 And there are some messages listed
 
 Scenario: User fails to login with invalid password

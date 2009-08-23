@@ -1,5 +1,6 @@
 package org.picocontainer.web.sample.ajaxemail.scenarios.steps;
 
+import org.jbehave.scenario.annotations.Aliases;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
@@ -36,7 +37,8 @@ public class AjaxEmailSteps extends SeleniumSteps {
     }
 
     @Given("test data")
-	public void testData() {
+    @Aliases(values="sample data is loaded")
+	public void sampleData() {
         selenium.open("/ajaxemail/json/SampleData/load");
     }
 
@@ -70,6 +72,7 @@ public class AjaxEmailSteps extends SeleniumSteps {
 	}
 
     @Then("the $box is selected")
+    @Aliases(values="the $box is displayed")
 	public void boxIsSelected(String box) {
 		main.selectedBox(box);
 	}
@@ -108,18 +111,13 @@ public class AjaxEmailSteps extends SeleniumSteps {
 
     @Then("the mail-form should show the clicked email")
 	public void mailFormShouldShowClickedEmail() {
-
-        selenium.setContext("waiting");
         waitFor(1);
 		String[] values = main.formFieldValues(prefix, false, "from", "subject");
         System.err.println("");
         for (int i = 0; i < lastFormValues.length; i++) {
             assertEquals(lastFormValues[i], values[i]);
         }
-
 	}
-
-
 
 	@Then("the Inbox should not be visible")
 	public void inBoxIsNotVisible() {
@@ -155,7 +153,6 @@ public class AjaxEmailSteps extends SeleniumSteps {
             main.waitFor(new Text(lastFormValue));
         }
     }
-
 
 	private void waitFor(Condition condition) {
 		runner.waitFor(condition);
