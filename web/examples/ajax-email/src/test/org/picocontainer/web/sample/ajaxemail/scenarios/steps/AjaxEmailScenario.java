@@ -37,6 +37,7 @@ public class AjaxEmailScenario extends JUnitScenario {
                 return AjaxEmailScenario.this.selenium;
             }
         };
+
         super.addSteps(steps);
     }
 }
