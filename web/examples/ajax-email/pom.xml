@@ -39,7 +39,7 @@
     <dependency>
       <groupId>org.jbehave.web</groupId>
       <artifactId>jbehave-web-selenium</artifactId>
-      <version>2.0-rc1</version>
+      <version>2.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
