@@ -44,22 +44,6 @@ public class Page {
 		waitFor(new Not(new Text(text)));
 	}
 
-    public String[] formFieldValues(String prefix, boolean fillEm, String... fields) {
-        //                    css=form[name=readMessageForm]  input.textfield[name=subject]
-        //String fieldsXpath = "//div[name='"+prefix+"Message']//form" + "//input[@class=\"textfield\"]";
-        String[] values = new String[fields.length];
-        for (int i = 0; i < fields.length; i++) {
-            String field = fields[i];
-            String locator = "css=form[name="+prefix+"MessageForm] input.textfield[name="+field+"]";
-            if (fillEm) {
-                selenium.type(locator, "Test:" + Math.random());
-            }
-            //runner.waitFor(new NonBlank(locator));
-            values[i] = selenium.getValue(locator);
-        }
-        return values;
-    }
-
     public static class NonBlank extends Presence {
         private String locator;
 

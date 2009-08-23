@@ -1,6 +1,7 @@
 Scenario: User logs in successfully
 
-Given nobody is logged in
+Given test data
+And nobody is logged in
 When user Gill Bates with password 1234 attempts to log in
 Then the Inbox is selected
 And there are some messages listed

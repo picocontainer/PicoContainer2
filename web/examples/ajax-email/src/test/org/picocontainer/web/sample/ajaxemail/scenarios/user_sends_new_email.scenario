@@ -1,3 +1,5 @@
+Scenario: User sends an email
+
 Given test data
 And user is viewing their Inbox
 When the 'Compose' button is clicked

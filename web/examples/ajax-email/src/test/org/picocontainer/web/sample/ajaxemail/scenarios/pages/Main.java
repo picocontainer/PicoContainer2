@@ -56,6 +56,10 @@ public class Main extends Page {
         selenium.click("//input[@value='"+legend+"']");
     }
 
+    public void clickLink(String link) {
+        selenium.click("link="+link);
+    }
+
     public void mainPageObscured() {
         waitFor(obscured());
     }
@@ -78,17 +82,23 @@ public class Main extends Page {
         assertFalse(selenium.isElementPresent(MAIL_FORM +"//textarea[@id = 'message']"));
     }
 
-    public String[] fillMailForm() {
-        return super.formFieldValues(MAIL_FORM, true);
+    public String[] formFieldValues(String prefix, boolean fillEm, String... fields) {
+        String[] values = new String[fields.length];
+        for (int i = 0; i < fields.length; i++) {
+            String field = fields[i];
+            String locator = "css=form[name="+prefix+"MessageForm] input.textfield[name="+field+"]";
+            if (fillEm) {
+                selenium.type(locator, "Test:" + Math.random());
+            }
+            //runner.waitFor(new NonBlank(locator));
+            values[i] = selenium.getValue(locator);
+        }
+        return values;
     }
 
-    public String[] firstEmailDoubleClicked() {
-        String[] values = new String[2];
-        String row1 = "//tr[contains(@class,\"messageRow\")][1]";
-        values[0] = selenium.getText(row1 + "/td[contains(@class,\"mail-from\")]");
-        values[1] = selenium.getText(row1 + "/td[contains(@class,\"mail-subj\")]");
-        selenium.doubleClick(row1);
-        return values;
+
+    public void firstEmailDoubleClicked() {
+        selenium.doubleClick("//tr[contains(@class,\"messageRow\")][1]");
     }
 
     public void fieldsAreBlank(String[] fields) {

@@ -44,13 +44,14 @@ public class AjaxEmailSteps extends SeleniumSteps {
 
     @When("the mail-form is filled")
 	public void mailFormFilled() {
-        lastFormValues = main.fillMailForm();
+        lastFormValues = main.formFieldValues("compose", true, "to", "subject");
 	}
 
     @When("the first email listed is double-clicked to $prefix an email")
 	public void firstEmailDoubleClicked(String prefix) {
         this.prefix = prefix;
-        lastFormValues = main.firstEmailDoubleClicked();
+        main.firstEmailDoubleClicked();
+        lastFormValues = main.formFieldValues(prefix, false);
 	}
 
     @Then("the $box is selected")
@@ -86,8 +87,8 @@ public class AjaxEmailSteps extends SeleniumSteps {
 	}
 
     @Then("$fields in the form should be blank")
-	public void withNothingInIt(String fieldz) {
-        main.fieldsAreBlank(fieldz.split(","));
+	public void withNothingInIt(String fields) {
+        main.fieldsAreBlank(fields.split(","));
 	}
 
     @Then("the mail-form should show the clicked email")
@@ -130,6 +131,16 @@ public class AjaxEmailSteps extends SeleniumSteps {
 	public void textIsNotVisible(String text) {
 		waitFor(new Not(new Text(text)));
 	}
+
+    @Then("the mail should be visible in the sent mails list")
+    public void mailIsVisibleInSentMails() {
+        main.clickLink("Sent");
+        assertTrue(lastFormValues.length > 0);
+        for (String lastFormValue : lastFormValues) {
+            main.waitFor(new Text(lastFormValue));
+        }
+    }
+
 
 	private void waitFor(Condition condition) {
 		runner.waitFor(condition);
