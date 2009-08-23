@@ -12,14 +12,17 @@ import com.thoughtworks.selenium.DefaultSelenium;
 
 public class AjaxEmailScenario extends JUnitScenario {
 
-    private Selenium selenium = new DefaultSelenium("localhost", 4444, "*firefox",
-				"http://localhost:8080");
+    private Selenium selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080");
 
     public AjaxEmailScenario() {
-        this(Thread.currentThread().getContextClassLoader());
+        this(Thread.currentThread().getContextClassLoader(), new CurrrentScenario());
     }
 
     public AjaxEmailScenario(final ClassLoader classLoader) {
+        this(classLoader, new CurrrentScenario());
+    }
+
+    public AjaxEmailScenario(final ClassLoader classLoader, final CurrrentScenario currentScenario) {
         super(new PropertyBasedConfiguration() {
             @Override
             public ClasspathScenarioDefiner forDefiningScenarios() {
@@ -28,10 +31,16 @@ public class AjaxEmailScenario extends JUnitScenario {
             }
             @Override
 			public ScenarioReporter forReportingScenarios() {
-				return new PrintStreamScenarioReporter();
+				return new PrintStreamScenarioReporter() {
+                    @Override
+                    public void beforeScenario(String title) {
+                        currentScenario.setCurrentScenario(title);
+                        super.beforeScenario(title);
+                    }
+                };
 			}
         });
-        AjaxEmailSteps steps = new AjaxEmailSteps(selenium) {
+        AjaxEmailSteps steps = new AjaxEmailSteps(selenium, currentScenario) {
             @Override
             protected Selenium createSelenium() {
                 return AjaxEmailScenario.this.selenium;
@@ -39,5 +48,17 @@ public class AjaxEmailScenario extends JUnitScenario {
         };
 
         super.addSteps(steps);
+    }
+
+    public static class CurrrentScenario {
+        String currentScenario;
+
+        public String getCurrentScenario() {
+            return currentScenario;
+        }
+
+        public void setCurrentScenario(String currentScenario) {
+            this.currentScenario = currentScenario;
+        }
     }
 }

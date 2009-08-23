@@ -25,11 +25,11 @@ public class AjaxEmailSteps extends SeleniumSteps {
     private String[] lastFormValues;
     private String prefix;
 
-    public AjaxEmailSteps(final Selenium selenium) {
+    public AjaxEmailSteps(final Selenium selenium, final AjaxEmailScenario.CurrrentScenario currentScenario) {
         super(new StepsConfiguration(new PrefixCapturingPatternBuilder(), new SilentStepMonitor() {
             @Override
             public void performing(String step) {
-                selenium.setContext(step);
+                selenium.setContext(currentScenario.getCurrentScenario() + "<br>" + step);
                 super.performing(step);
             }
         }, new ParameterConverters(), StepsConfiguration.DEFAULT_STARTING_WORDS));
