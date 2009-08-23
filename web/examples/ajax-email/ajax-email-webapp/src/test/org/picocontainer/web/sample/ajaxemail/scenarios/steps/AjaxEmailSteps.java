@@ -44,7 +44,7 @@ public class AjaxEmailSteps extends SeleniumSteps {
     @Given("test data")
     @Aliases(values="sample data is loaded")
 	public void sampleData() {
-        selenium.open("/ajaxemail/json/SampleData/load");
+        selenium.open("/ajaxemail-webapp/json/SampleData/load");
     }
 
     @Given("nobody is logged in")
