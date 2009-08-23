@@ -8,7 +8,7 @@
     <version>2.4-SNAPSHOT</version>
   </parent>
   <artifactId>ajaxemail-scenarios</artifactId>
-  <name>AJAX Email Scenarios</name>
+  <name>Ajax Email Scenarios</name>
   <packaging>jar</packaging>
 
   <dependencies>

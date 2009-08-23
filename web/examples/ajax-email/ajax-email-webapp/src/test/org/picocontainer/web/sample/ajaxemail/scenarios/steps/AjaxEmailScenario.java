@@ -14,6 +14,7 @@ import com.thoughtworks.selenium.DefaultSelenium;
 public class AjaxEmailScenario extends JUnitScenario {
 
     private Selenium selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080");
+	private AjaxEmailSteps ajaxEmailSteps;
 
     public AjaxEmailScenario() {
         this(Thread.currentThread().getContextClassLoader(), new CurrentScenario());
@@ -46,15 +47,22 @@ public class AjaxEmailScenario extends JUnitScenario {
 			}
         });
 
-        super.addSteps((AjaxEmailSteps) new AjaxEmailSteps(selenium, currentScenario) {
+         ajaxEmailSteps = new AjaxEmailSteps(selenium, currentScenario) {
             @Override
             protected Selenium createSelenium() {
                 return AjaxEmailScenario.this.selenium;
             }
-        });
+        };
+		super.addSteps(ajaxEmailSteps);
     }
+    
+    public AjaxEmailSteps getAjaxEmailSteps() {
+		return ajaxEmailSteps;
+	}
 
-    public static class CurrentScenario {
+
+
+	public static class CurrentScenario {
         String currentScenario;
 
         public String toString() {
