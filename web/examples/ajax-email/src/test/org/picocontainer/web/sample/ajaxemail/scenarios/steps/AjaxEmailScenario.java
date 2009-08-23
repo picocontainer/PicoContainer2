@@ -2,6 +2,7 @@ package org.picocontainer.web.sample.ajaxemail.scenarios.steps;
 
 import org.jbehave.scenario.JUnitScenario;
 import org.jbehave.scenario.PropertyBasedConfiguration;
+import org.jbehave.scenario.errors.PendingErrorStrategy;
 import org.jbehave.scenario.parser.ClasspathScenarioDefiner;
 import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
@@ -28,6 +29,10 @@ public class AjaxEmailScenario extends JUnitScenario {
             public ClasspathScenarioDefiner forDefiningScenarios() {
                 return new ClasspathScenarioDefiner(new UnderscoredCamelCaseResolver(".scenario"),
                         new PatternScenarioParser(this), classLoader);
+            }
+            @Override
+            public PendingErrorStrategy forPendingSteps() {
+                return PendingErrorStrategy.FAILING;
             }
             @Override
 			public ScenarioReporter forReportingScenarios() {
