@@ -93,7 +93,7 @@
             <phase>integration-test</phase>
             <configuration>
               <scenarioIncludes>
-                <scenarioInclude>**/scenarios/*.java</scenarioInclude>
+                <scenarioInclude>${scenarios.include}</scenarioInclude>
               </scenarioIncludes>
               <scope>test</scope>
             </configuration>
@@ -155,5 +155,6 @@
 
   <properties>
     <context.path>/ajaxemail</context.path>
+    <scenarios.include>**/scenarios/*.java</scenarios.include>
   </properties>
 </project>
