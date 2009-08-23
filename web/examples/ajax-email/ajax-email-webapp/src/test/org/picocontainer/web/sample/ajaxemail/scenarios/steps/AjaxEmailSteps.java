@@ -27,7 +27,8 @@ public class AjaxEmailSteps extends SeleniumSteps {
         super(new StepsConfiguration(new PrefixCapturingPatternBuilder(), new SilentStepMonitor() {
             @Override
             public void performing(String step) {
-                selenium.setContext(currentScenario + "<br>" + step);
+            	String context = ( currentScenario != null ? currentScenario + "<br>" : "" ) + step;
+                selenium.setContext(context);
                 super.performing(step);
             }
         }, new ParameterConverters(), StepsConfiguration.DEFAULT_STARTING_WORDS));
