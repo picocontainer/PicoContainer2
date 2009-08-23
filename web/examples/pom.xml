@@ -18,7 +18,7 @@
     <module>struts2-webapp-with-pwr</module>
     <module>webwork-webapp</module>
     <module>webwork2-webapp</module>
-    <module>ajax-email</module>
+    <module>ajax-email-webapp</module>
     <module>ajax-email-runner</module>
     <module>stub-webapp</module>
   </modules>
