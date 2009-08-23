@@ -6,8 +6,8 @@
     <artifactId>ajaxemail-parent</artifactId>
     <version>2.4-SNAPSHOT</version>
   </parent>
-  <artifactId>ajaxemail-runner-webapp</artifactId>
-  <name>AJAX Email Runner Webapp</name>
+  <artifactId>ajaxemail-scenario-runner-webapp</artifactId>
+  <name>AJAX Email Scenario Runner Webapp</name>
   <packaging>war</packaging>
   <properties>
     <webapp.name>ajaxemail-runner</webapp.name>
