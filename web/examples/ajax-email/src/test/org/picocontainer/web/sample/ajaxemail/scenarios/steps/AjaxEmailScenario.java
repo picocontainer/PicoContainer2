@@ -31,7 +31,7 @@ public class AjaxEmailScenario extends JUnitScenario {
 				return new PrintStreamScenarioReporter();
 			}
         });
-        AjaxEmailSteps steps = new AjaxEmailSteps(){
+        AjaxEmailSteps steps = new AjaxEmailSteps(selenium) {
             @Override
             protected Selenium createSelenium() {
                 return AjaxEmailScenario.this.selenium;

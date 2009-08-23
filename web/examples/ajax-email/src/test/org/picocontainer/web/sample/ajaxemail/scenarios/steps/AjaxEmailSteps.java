@@ -17,6 +17,7 @@ import static org.junit.Assert.assertTrue;
 import com.thoughtworks.selenium.condition.Condition;
 import com.thoughtworks.selenium.condition.Not;
 import com.thoughtworks.selenium.condition.Text;
+import com.thoughtworks.selenium.Selenium;
 
 public class AjaxEmailSteps extends SeleniumSteps {
 
@@ -24,9 +25,14 @@ public class AjaxEmailSteps extends SeleniumSteps {
     private String[] lastFormValues;
     private String prefix;
 
-    public AjaxEmailSteps() {
-        super(new StepsConfiguration(new PrefixCapturingPatternBuilder(), new SilentStepMonitor(),
-				new ParameterConverters(), StepsConfiguration.DEFAULT_STARTING_WORDS));
+    public AjaxEmailSteps(final Selenium selenium) {
+        super(new StepsConfiguration(new PrefixCapturingPatternBuilder(), new SilentStepMonitor() {
+            @Override
+            public void performing(String step) {
+                selenium.setContext(step);
+                super.performing(step);
+            }
+        }, new ParameterConverters(), StepsConfiguration.DEFAULT_STARTING_WORDS));
     }
 
     @Given("test data")
