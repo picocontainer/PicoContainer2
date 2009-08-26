@@ -9,11 +9,9 @@ import org.jbehave.scenario.annotations.BeforeScenario;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;
-import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
-import org.jbehave.scenario.steps.ParameterConverters;
-import org.jbehave.scenario.steps.SilentStepMonitor;
-import org.jbehave.scenario.steps.StepsConfiguration;
+import org.jbehave.web.selenium.SeleniumContext;
 import org.jbehave.web.selenium.SeleniumSteps;
+import org.jbehave.web.selenium.SeleniumStepsConfiguration;
 import org.picocontainer.web.sample.ajaxemail.scenarios.pages.LoginForm;
 import org.picocontainer.web.sample.ajaxemail.scenarios.pages.Main;
 
@@ -28,15 +26,8 @@ public class AjaxEmailSteps extends SeleniumSteps {
     private String[] lastFormValues;
     private String prefix;
 
-    public AjaxEmailSteps(final Selenium selenium, final AjaxEmailScenario.CurrentScenario currentScenario) {
-        super(new StepsConfiguration(new PrefixCapturingPatternBuilder(), new SilentStepMonitor() {
-            @Override
-            public void performing(String step) {
-            	String context = ( currentScenario != null ? currentScenario + "<br>" : "" ) + step;
-                selenium.setContext(context);
-                super.performing(step);
-            }
-        }, new ParameterConverters(), StepsConfiguration.DEFAULT_STARTING_WORDS), selenium);
+    public AjaxEmailSteps(Selenium selenium, SeleniumContext seleniumContext) {
+        super(new SeleniumStepsConfiguration(selenium, seleniumContext), selenium);
     }
 
     @Override

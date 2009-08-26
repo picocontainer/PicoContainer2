@@ -8,8 +8,10 @@ import org.jbehave.scenario.parser.PatternScenarioParser;
 import org.jbehave.scenario.parser.UnderscoredCamelCaseResolver;
 import org.jbehave.scenario.reporters.PrintStreamScenarioReporter;
 import org.jbehave.scenario.reporters.ScenarioReporter;
-import com.thoughtworks.selenium.Selenium;
+import org.jbehave.web.selenium.SeleniumContext;
+
 import com.thoughtworks.selenium.DefaultSelenium;
+import com.thoughtworks.selenium.Selenium;
 
 public class AjaxEmailScenario extends JUnitScenario {
 
@@ -17,14 +19,14 @@ public class AjaxEmailScenario extends JUnitScenario {
 	private AjaxEmailSteps ajaxEmailSteps;
 
     public AjaxEmailScenario() {
-        this(Thread.currentThread().getContextClassLoader(), new CurrentScenario());
+        this(Thread.currentThread().getContextClassLoader(), new SeleniumContext());
     }
 
     public AjaxEmailScenario(final ClassLoader classLoader) {
-        this(classLoader, new CurrentScenario());
+        this(classLoader, new SeleniumContext());
     }
 
-    public AjaxEmailScenario(final ClassLoader classLoader, final CurrentScenario currentScenario) {
+    public AjaxEmailScenario(final ClassLoader classLoader, final SeleniumContext seleniumContext) {
         super(new PropertyBasedConfiguration() {
             @Override
             public ClasspathScenarioDefiner forDefiningScenarios() {
@@ -40,14 +42,14 @@ public class AjaxEmailScenario extends JUnitScenario {
 				return new PrintStreamScenarioReporter() {
                     @Override
                     public void beforeScenario(String title) {
-                        currentScenario.setCurrent(title);
+                        seleniumContext.setCurrentScenario(title);
                         super.beforeScenario(title);
                     }
                 };
 			}
         });
 
-        ajaxEmailSteps = new AjaxEmailSteps(selenium, currentScenario);
+        ajaxEmailSteps = new AjaxEmailSteps(selenium, seleniumContext);
 		super.addSteps(ajaxEmailSteps);
     }
     
@@ -55,15 +57,4 @@ public class AjaxEmailScenario extends JUnitScenario {
 		return ajaxEmailSteps;
 	}
 
-	public static class CurrentScenario {
-		private String currentScenario = "";
-
-        public String toString() {
-            return currentScenario;
-        }
-
-        public void setCurrent(String current) {
-            this.currentScenario = current;        		
-        }
-    }
 }
