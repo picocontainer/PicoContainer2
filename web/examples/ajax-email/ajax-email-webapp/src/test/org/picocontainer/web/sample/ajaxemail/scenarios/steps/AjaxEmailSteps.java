@@ -27,7 +27,7 @@ public class AjaxEmailSteps extends SeleniumSteps {
     private String prefix;
 
     public AjaxEmailSteps(Selenium selenium, SeleniumContext seleniumContext) {
-        super(new SeleniumStepsConfiguration(selenium, seleniumContext), selenium);
+        super(new SeleniumStepsConfiguration(selenium, seleniumContext));
     }
 
     @Override
