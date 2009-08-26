@@ -47,12 +47,7 @@ public class AjaxEmailScenario extends JUnitScenario {
 			}
         });
 
-         ajaxEmailSteps = new AjaxEmailSteps(selenium, currentScenario) {
-            @Override
-            protected Selenium createSelenium() {
-                return AjaxEmailScenario.this.selenium;
-            }
-        };
+        ajaxEmailSteps = new AjaxEmailSteps(selenium, currentScenario);
 		super.addSteps(ajaxEmailSteps);
     }
     
@@ -60,17 +55,15 @@ public class AjaxEmailScenario extends JUnitScenario {
 		return ajaxEmailSteps;
 	}
 
-
-
 	public static class CurrentScenario {
-        String currentScenario;
+		private String currentScenario = "";
 
         public String toString() {
             return currentScenario;
         }
 
         public void setCurrent(String current) {
-            this.currentScenario = current;
+            this.currentScenario = current;        		
         }
     }
 }

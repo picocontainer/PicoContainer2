@@ -1,21 +1,26 @@
 package org.picocontainer.web.sample.ajaxemail.scenarios.steps;
 
-import org.jbehave.scenario.annotations.*;
-import org.jbehave.scenario.steps.StepsConfiguration;
-import org.jbehave.scenario.steps.SilentStepMonitor;
-import org.jbehave.scenario.steps.ParameterConverters;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import org.jbehave.scenario.annotations.Aliases;
+import org.jbehave.scenario.annotations.BeforeScenario;
+import org.jbehave.scenario.annotations.Given;
+import org.jbehave.scenario.annotations.Then;
+import org.jbehave.scenario.annotations.When;
 import org.jbehave.scenario.parser.PrefixCapturingPatternBuilder;
+import org.jbehave.scenario.steps.ParameterConverters;
+import org.jbehave.scenario.steps.SilentStepMonitor;
+import org.jbehave.scenario.steps.StepsConfiguration;
 import org.jbehave.web.selenium.SeleniumSteps;
 import org.picocontainer.web.sample.ajaxemail.scenarios.pages.LoginForm;
 import org.picocontainer.web.sample.ajaxemail.scenarios.pages.Main;
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
+import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.condition.Condition;
 import com.thoughtworks.selenium.condition.Not;
 import com.thoughtworks.selenium.condition.Text;
-import com.thoughtworks.selenium.Selenium;
 
 public class AjaxEmailSteps extends SeleniumSteps {
 
@@ -31,7 +36,7 @@ public class AjaxEmailSteps extends SeleniumSteps {
                 selenium.setContext(context);
                 super.performing(step);
             }
-        }, new ParameterConverters(), StepsConfiguration.DEFAULT_STARTING_WORDS));
+        }, new ParameterConverters(), StepsConfiguration.DEFAULT_STARTING_WORDS), selenium);
     }
 
     @Override
