@@ -3,7 +3,7 @@
 # starts server
 start()
 {
-	java -jar "$HOME/.m2/repository/org/seleniumhq/selenium/server/selenium-server/$VERSION/selenium-server-$VERSION-standalone.jar" 
+	java -jar "$M2_REPOSITORY/org/seleniumhq/selenium/server/selenium-server/$VERSION/selenium-server-$VERSION-standalone.jar" 
 }
 
 # ----- Execute the commands -----------------------------------------
