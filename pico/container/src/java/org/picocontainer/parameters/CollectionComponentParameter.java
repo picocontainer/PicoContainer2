@@ -248,7 +248,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
         for (ComponentAdapter componentAdapter : allAdapters) {
             adapterMap.remove(componentAdapter.getComponentKey());
         }
-        final List<ComponentAdapter> adapterList = container.getComponentAdapters(valueType);
+        final List<ComponentAdapter> adapterList = List.class.cast(container.getComponentAdapters(valueType));
         for (ComponentAdapter componentAdapter : adapterList) {
             final Object key = componentAdapter.getComponentKey();
             if (adapter != null && key.equals(adapter.getComponentKey())) {
