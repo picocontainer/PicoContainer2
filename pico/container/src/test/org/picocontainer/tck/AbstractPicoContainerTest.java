@@ -889,4 +889,22 @@ public abstract class AbstractPicoContainerTest {
         assertNotNull(instance);
     }
 
+    public class ConstantParameterTestService {
+    	private final String arg;
+    	
+    	public ConstantParameterTestService(String arg) {
+			this.arg = arg;    		
+    	}
+
+		public String getArg() {
+			return arg;
+		}
+    }
+    
+    @Test
+    public void testNullConstantParameter() {
+    	MutablePicoContainer pico = this.createPicoContainer(null);
+    	pico.addComponent(ConstantParameterTestService.class, ConstantParameterTestService.class, new ConstantParameter(null));
+    }
+
 }
