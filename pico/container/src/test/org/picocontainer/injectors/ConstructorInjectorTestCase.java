@@ -392,6 +392,9 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
         }
     }
 
+    /**
+     * @todo:  On some machines, the number of iterations aren't enough.
+     */
     @Test public void testSpeedOfRememberedConstructor()  {
         long with, without;
         injectionFactory = new ForgetfulConstructorInjection();
