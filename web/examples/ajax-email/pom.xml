@@ -17,8 +17,8 @@
   </modules>
 
   <properties>
-    <jbehave.core.version>2.2</jbehave.core.version>
-    <jbehave.web.version>2.0.1</jbehave.web.version>
+    <jbehave.core.version>2.3-SNAPSHOT</jbehave.core.version>
+    <jbehave.web.version>2.1-SNAPSHOT</jbehave.web.version>
   </properties>
 
   <dependencyManagement>
