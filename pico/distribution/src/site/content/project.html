@@ -23,7 +23,7 @@
 
 <p>For other languages:</p>
 <blockquote>
-    <p>Ruby ("Rico") - http://svn.codehaus.org/picocontainer/ruby/</p>
+    <p>Ruby (&quot;Rico&quot;) - http://svn.codehaus.org/picocontainer/ruby/</p>
 
     <p>Php - http://svn.codehaus.org/picocontainer/php/</p>
 
@@ -36,6 +36,14 @@
 
     <p>snapshot (work in progress) releases <a href="http://snapshots.repository.codehaus.org/org/picocontainer/">http://snapshots.repository.codehaus.org/org/picocontainer/</a>
     </p>
+</blockquote>
+<blockquote>
+	<h3>Developer's Note</h3>
+    <p>If you wish to work with the Pico Sources, somtimes the 3rd party library Paranamer is updated before it gets synced to the maven
+    central repository.  You can get past frustrating compile error during those few days beteween update and sync by adding the following code to your maven's settings.xml file.</p>
+    <pre>
+   &lt;profiles&gt;<br />	  	&lt;profile&gt;<br />		  &lt;id&gt;pico&lt;/id&gt;<br />		  &lt;activation&gt;<br />			  &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;<br />		  &lt;/activation&gt;<br />		  &lt;repositories&gt;<br />			  &lt;repository&gt;<br />				  &lt;id&gt;codehaus&lt;/id&gt;<br />				  &lt;snapshots&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/snapshots&gt;<br />				  &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;<br />				  &lt;url&gt;http://repository.codehaus.org/&lt;/url&gt;<br />			  &lt;/repository&gt;<br />		  &lt;/repositories&gt;<br />	  	&lt;/profile&gt;<br />  &lt;/profiles&gt;
+    </pre>
 </blockquote>
 <h2>License</h2>
 
