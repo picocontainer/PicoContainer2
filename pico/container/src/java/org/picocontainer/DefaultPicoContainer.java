@@ -654,7 +654,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         // we need to check this to ensure up-down dependencies cannot be followed
         final boolean isLocal = getModifiableComponentAdapterList().contains(componentAdapter);
 
-        if (isLocal) {
+        if (isLocal || componentAdapter instanceof LateInstance) {
             Object instance;
             try {
                 if (componentAdapter instanceof FactoryInjector) {
