@@ -11,20 +11,6 @@
   <name>Ajax Email Webapp</name>
   <packaging>war</packaging>
 
-  <repositories>
-    <repository>
-      <id>DataNucleus_Repos2</id>
-      <name>DataNucleus Repository</name>
-      <url>http://www.datanucleus.org/downloads/maven2</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>DataNucleus_2</id>
-      <url>http://www.datanucleus.org/downloads/maven2/</url>
-    </pluginRepository>
-  </pluginRepositories>
-
   <dependencies>
     <dependency>
       <groupId>org.picocontainer.web</groupId>
