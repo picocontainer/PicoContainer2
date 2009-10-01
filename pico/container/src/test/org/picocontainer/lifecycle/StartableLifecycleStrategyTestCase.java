@@ -10,7 +10,7 @@ package org.picocontainer.lifecycle;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.picocontainer.Characteristics.AUTOMATIC;
+import org.junit.Ignore;
 import static org.picocontainer.Characteristics.CACHE;
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
@@ -22,7 +22,6 @@ import org.jmock.integration.junit4.JMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Disposable;
 import org.picocontainer.PicoLifecycleException;
@@ -40,29 +39,29 @@ public class StartableLifecycleStrategyTestCase {
 
 	private Mockery mockery = mockeryWithCountingNamingScheme();
 	
-    private StartableLifecycleStrategy strategy;
-    
+    private StartableLifecycleStrategy startableLifecycle;
+
     @Before
     public void setUp(){
-        strategy = new StartableLifecycleStrategy(new NullComponentMonitor());
+        startableLifecycle = new StartableLifecycleStrategy(new NullComponentMonitor());
     }
 
     @Test public void testStartable(){
         Object startable = mockComponent(true, false);
-        strategy.start(startable);
-        strategy.stop(startable);
+        startableLifecycle.start(startable);
+        startableLifecycle.stop(startable);
     }
 
     @Test public void testDisposable(){
         Object startable = mockComponent(false, true);
-        strategy.dispose(startable);
+        startableLifecycle.dispose(startable);
     }
 
     @Test public void testSerializable(){
         Object serializable = mockComponent(false, false);
-        strategy.start(serializable);
-        strategy.stop(serializable);
-        strategy.dispose(serializable);
+        startableLifecycle.start(serializable);
+        startableLifecycle.stop(serializable);
+        startableLifecycle.dispose(serializable);
     }
     
     private Object mockComponent(boolean startable, boolean disposeable) {
@@ -106,6 +105,21 @@ public class StartableLifecycleStrategyTestCase {
 
         public void ddispose() {
         }
+    }
+
+    @Ignore("PICO-355 ... todo")
+    @Test public void testStartAndDisposeIsLazy() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(startableLifecycle, new EmptyPicoContainer());
+        StringBuilder sb = new StringBuilder();
+        pico.addComponent(sb);
+        pico.as(CACHE).addComponent(BuiltInStartableComponent.class);
+        pico.start();
+        assertEquals("", sb.toString());
+        pico.getComponent(BuiltInStartableComponent.class);
+        assertEquals("<", sb.toString());
+        pico.stop();
+        pico.dispose();
+        assertEquals("<>!", sb.toString());
     }
 
     @Test public void testThirdPartyStartableAndDisposable() {
