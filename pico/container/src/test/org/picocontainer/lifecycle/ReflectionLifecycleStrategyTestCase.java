@@ -8,9 +8,11 @@
 package org.picocontainer.lifecycle;
 
 import static org.junit.Assert.assertFalse;
+import org.picocontainer.monitors.NullComponentMonitor;
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
@@ -48,7 +50,7 @@ public class ReflectionLifecycleStrategyTestCase {
 		strategy = new ReflectionLifecycleStrategy(componentMonitor);
 	}
 
-	 @Test
+	@Test
 	public void testStartable() {
 		Object startable = mockComponent(true, false);
 		strategy.start(startable);
@@ -72,6 +74,19 @@ public class ReflectionLifecycleStrategyTestCase {
 		strategy.stop(serializable);
 		strategy.dispose(serializable);
 	}
+
+	@Test
+	public void testStartableBarfingWithError() {
+        try {
+            new ReflectionLifecycleStrategy(new NullComponentMonitor()).start(new Object() {
+                public void start() throws InvocationTargetException {
+                    throw new NoClassDefFoundError("foo");
+                }
+            });
+        } catch (Exception e) {
+            System.out.println("");
+        }
+    }
 
 	@Test
 	public void testMonitorChanges() {

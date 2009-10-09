@@ -112,17 +112,20 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
             } catch (IllegalAccessException e) {
                 monitorAndThrowReflectionLifecycleException(method, e, component);
             } catch (InvocationTargetException e) {
-                monitorAndThrowReflectionLifecycleException(method, (Exception) e.getCause(), component);
+                monitorAndThrowReflectionLifecycleException(method, e.getCause(), component);
             }
         }
     }
 
     protected void monitorAndThrowReflectionLifecycleException(final Method method,
-                                                             final Exception e,
+                                                             final Throwable e,
                                                              final Object component) {
         RuntimeException re;
         if (e.getCause() instanceof RuntimeException) {
             re = (RuntimeException) e.getCause();
+        // TODO - change lifecycleInvocationFailed to take a throwable in future version
+//        } else if (e.getCause() instanceof Error) {
+//            re = (Error) e.getCause();
         } else {
             re = new RuntimeException("wrapper", e);
         }
