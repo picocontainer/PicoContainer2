@@ -8,21 +8,19 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.annotations.Bind;
-
+import com.thoughtworks.paranamer.AdaptiveParanamer;
+import com.thoughtworks.paranamer.CachingParanamer;
+import com.thoughtworks.paranamer.Paranamer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Type;
-
-import com.thoughtworks.paranamer.CachingParanamer;
-import com.thoughtworks.paranamer.AdaptiveParanamer;
-import com.thoughtworks.paranamer.Paranamer;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.annotations.Bind;
 
 /**
  * Injection will happen in a single member function on the component.
@@ -30,6 +28,7 @@ import com.thoughtworks.paranamer.Paranamer;
  * @author Paul Hammant 
  * 
  */
+@SuppressWarnings("serial")
 public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
 
     private transient Paranamer paranamer;
@@ -75,14 +74,23 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
         return result;
     }
 
+    @SuppressWarnings("synthetic-access")
     protected void nullCheck(AccessibleObject member, int i, ParameterNameBinding expectedNameBinding, Object result) {
         if (result == null && !isNullParamAllowed(member, i)) {
             throw new ParameterCannotBeNullException(i, member, expectedNameBinding.getName());
         }
     }
 
+    /**
+     * Checks to see if a null parameter is allowed in the given
+     * constructor/field/method.  The default version allows null 
+     * if the target object is not a primitive type.
+     * @param member
+     * @param i parameter #.
+     * @return true if the null parameter might be allowed.
+     */
     protected boolean isNullParamAllowed(AccessibleObject member, int i) {
-        return false;
+        return !(new PrimitiveMemberChecker().isPrimitiveArgument(member, i));
     }
 
     protected Annotation[] getBindings(Annotation[][] annotationss) {

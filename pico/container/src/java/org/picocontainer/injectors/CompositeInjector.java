@@ -31,10 +31,12 @@ public class CompositeInjector<T> extends AbstractInjector<T> {
     }
 
 
+    @Override
     public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
         return getComponentInstance(container, NOTHING.class);
     }
 
+    @Override
     public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
         T instance = null;
         for (int i = 0; i < injectors.length; i++) {
@@ -61,12 +63,14 @@ public class CompositeInjector<T> extends AbstractInjector<T> {
         return result;
     }
 
+    @Override
     public void verify(PicoContainer container) throws PicoCompositionException {
         for (int i = 0; i < injectors.length; i++) {
             injectors[i].verify(container);
         }
     }
 
+    @Override
     public final void accept(PicoVisitor visitor) {
         super.accept(visitor);
         for (int i = 0; i < injectors.length; i++) {
@@ -74,6 +78,7 @@ public class CompositeInjector<T> extends AbstractInjector<T> {
         }
     }
 
+    @Override
     public String getDescriptor() {
         return "CompositeInjector";
     }

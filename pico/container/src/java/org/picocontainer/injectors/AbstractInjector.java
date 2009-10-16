@@ -33,7 +33,7 @@ import org.picocontainer.parameters.ComponentParameter;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to
- * {@link org.picocontainer.ComponentAdapter#getComponentInstance(PicoContainer, Class)}.
+ * {@link org.picocontainer.ComponentAdapter#getComponentInstance(PicoContainer, Type)}.
  * That means that when used with a PicoContainer, getComponent will
  * return a new object each time.
  *
@@ -94,26 +94,29 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
     /**
      * Create default parameters for the given types.
      *
-     * @param parameters the parameter types
+     * @param parameterTypes the parameter types
      * @return the array with the default parameters.
      */
-    protected Parameter[] createDefaultParameters(final Type[] parameters) {
-        Parameter[] componentParameters = new Parameter[parameters.length];
-        for (int i = 0; i < parameters.length; i++) {
+    protected Parameter[] createDefaultParameters(final Type[] parameterTypes) {
+        Parameter[] componentParameters = new Parameter[parameterTypes.length];
+        for (int i = 0; i < parameterTypes.length; i++) {
             componentParameters[i] = ComponentParameter.DEFAULT;
         }
         return componentParameters;
     }
 
+    @SuppressWarnings("unused") 
     public void verify(PicoContainer container) throws PicoCompositionException {
     }
 
+    @Override
     public T getComponentInstance(PicoContainer container) throws PicoCompositionException {
         return getComponentInstance(container, NOTHING.class);
     }
 
     public abstract T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException;
 
+    @SuppressWarnings("unused") 
     public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
         return null;
     }
@@ -199,7 +202,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @param member
      * @param componentInstance
      * @param e
-     * @return
+     * @return 
      */
     protected T caughtInvocationTargetException(final ComponentMonitor componentMonitor,
                                                    final Member member,
@@ -302,7 +305,6 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 
     }
 
-    @SuppressWarnings("serial")
 	public static class CyclicDependencyException extends PicoCompositionException {
         private final List<Class> stack;
 
@@ -341,7 +343,6 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @author Aslak Helles&oslash;y
      * @author Jon Tirs&eacute;n
      */
-    @SuppressWarnings("serial")
     public static final class AmbiguousComponentResolutionException extends PicoCompositionException {
 
 

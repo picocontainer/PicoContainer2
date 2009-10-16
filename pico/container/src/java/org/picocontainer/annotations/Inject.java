@@ -17,4 +17,5 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value={ElementType.METHOD, ElementType.FIELD})
 public @interface Inject {
+    //Marker annotation only, no attributes.
 }

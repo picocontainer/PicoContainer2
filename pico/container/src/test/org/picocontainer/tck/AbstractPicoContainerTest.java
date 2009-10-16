@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,9 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.lang.reflect.Type;
-
-import org.junit.Ignore;
 import org.junit.Test;
 import org.picocontainer.Behavior;
 import org.picocontainer.Characteristics;
@@ -58,10 +56,11 @@ import org.picocontainer.behaviors.AbstractBehavior;
 import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.injectors.AbstractInjector.UnsatisfiableDependenciesException;
+import org.picocontainer.injectors.SingleMemberInjector.ParameterCannotBeNullException;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.BasicComponentParameter;
-import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.parameters.NullParameter;
 import org.picocontainer.testmodel.DependsOnTouchable;
@@ -386,6 +385,7 @@ public abstract class AbstractPicoContainerTest {
             fail("Shouldn't be able to register an Object.class as Serializable because it is not, " +
                  "it does not implement it, Object.class does not implement much.");
         } catch (ClassCastException e) {
+            assertNotNull(e.getMessage());
         }
 
     }
@@ -421,9 +421,11 @@ public abstract class AbstractPicoContainerTest {
     }
 
     public static class ComponentB {
+        //Does nothing.
     }
 
     public static class ComponentC {
+        //Does nothing.
     }
 
     public static class ComponentD {
@@ -606,6 +608,7 @@ public abstract class AbstractPicoContainerTest {
         // should hand to each Behavior's start(..) at each appropriate node. See mail-list discussion.
     }
 
+    @SuppressWarnings("unused") 
     public static final class TestBehavior extends AbstractBehavior implements Behavior {
 
         public final ArrayList<PicoContainer> started = new ArrayList<PicoContainer>();
@@ -614,16 +617,22 @@ public abstract class AbstractPicoContainerTest {
             super(delegate);
         }
 
+        @Override
         public void start(PicoContainer node) {
             started.add(node);
         }
 
+        @Override
         public void stop(PicoContainer node) {
+            //Does nothing.
         }
 
+        @Override
         public void dispose(PicoContainer node) {
+            //Does nothing.
         }
 
+        @Override
         public boolean componentHasLifecycle() {
             return true;
         }
@@ -641,6 +650,7 @@ public abstract class AbstractPicoContainerTest {
         }
 
         public void stop() {
+            //Does nothing.
         }
     }
 
@@ -803,9 +813,8 @@ public abstract class AbstractPicoContainerTest {
         TraversalCheckingVisitor parentComponentCountingVisitor = new TraversalCheckingVisitor() {
         	private int containerCount = 0;
         	
-        	private int componentInParentCount = 0;
-        	
 			@Override
+            @SuppressWarnings("unused") 
 			public void visitComponentAdapter(ComponentAdapter<?> componentAdapter) {
 				if (containerCount == 0) {
 					fail("Should have visited a container first");
@@ -814,6 +823,7 @@ public abstract class AbstractPicoContainerTest {
 			}
 
 			@Override
+	        @SuppressWarnings("unused") 
 			public boolean visitContainer(PicoContainer pico) {
 				containerCount++;
 				if (containerCount > 1) {
@@ -862,6 +872,7 @@ public abstract class AbstractPicoContainerTest {
 
     public static class DerivedTouchable extends SimpleTouchable {
         public DerivedTouchable() {
+            //Does nothing.
         }
     }
 
@@ -908,13 +919,57 @@ public abstract class AbstractPicoContainerTest {
      * Currently failing
      */
     @Test
-    @Ignore
     public void testNullConstantParameter() {
     	MutablePicoContainer pico = createPicoContainer(null);
     	pico.addComponent(ConstantParameterTestService.class, ConstantParameterTestService.class, NullParameter.INSTANCE);
     	ConstantParameterTestService service = (ConstantParameterTestService) pico.getComponent(ConstantParameterTestService.class);
     	assertNotNull(service);
     	assertNull(service.getArg());
+    }
+    
+    
+    public static class PrimitiveConstructor {
+        @SuppressWarnings("unused")
+        public PrimitiveConstructor(int number) {
+            //does nothing.
+        }
+    }
+
+    @Test(expected=ParameterCannotBeNullException.class)
+    public void testNullConstantParametersDoNotInjectOnPrimitives() {
+        MutablePicoContainer pico = createPicoContainer(null);
+        pico.addComponent(PrimitiveConstructor.class, PrimitiveConstructor.class, NullParameter.INSTANCE);
+        
+        //Should throw exception here.
+        pico.getComponent(PrimitiveConstructor.class);
+     }
+
+    
+    @Test
+    public void testNullValuesDoNotInject() {
+        MutablePicoContainer pico = createPicoContainer(null);
+        pico.addComponent(ConstantParameterTestService.class, ConstantParameterTestService.class, new ConstantParameter(null));
+        try {
+            ConstantParameterTestService service = (ConstantParameterTestService) pico.getComponent(ConstantParameterTestService.class);
+            fail("Should have thrown unsatisfiable dependencies exception.  Instead got " + service + " as a return value");
+        } catch (UnsatisfiableDependenciesException e) {
+            assertNotNull(e.getMessage());
+        }
+    }
+    
+    @Test
+    public void testNullComponentsDoNotInject() {
+        MutablePicoContainer pico = createPicoContainer(null)
+            .addComponent(ComponentA.class)
+            .addComponent(ComponentB.class);
+        
+        
+        try {
+            pico.addComponent(ComponentC.class, null);
+            fail("Pico should not have been able to register null component instance");
+        } catch (NullPointerException e) {
+            assertNotNull(e.getMessage());
+        }
     }
 
 }

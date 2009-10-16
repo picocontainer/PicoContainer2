@@ -9,19 +9,17 @@
 
 package org.picocontainer.injectors;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.lang.reflect.Member;
-import java.lang.reflect.AccessibleObject;
-import java.lang.annotation.Annotation;
-
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
 import org.picocontainer.annotations.Nullable;
 
 /**
@@ -77,9 +75,12 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         return null;
     }
 
-    public T getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
+    @Override
+    public T getComponentInstance(final PicoContainer container, @SuppressWarnings("unused") Type into) throws PicoCompositionException {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
+                @Override
+                @SuppressWarnings("synthetic-access")
                 public Object run() {
                     Method method = getInjectorMethod();
                     T inst = null;
@@ -87,14 +88,14 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
                     try {
                         componentMonitor.instantiating(container, MethodInjector.this, null);
                         long startTime = System.currentTimeMillis();
-                        Object[] parameters = null;
+                        Object[] methodParameters = null;
                         inst = getComponentImplementation().newInstance();
                         if (method != null) {
-                            parameters = getMemberArguments(guardedContainer, method);
-                            invokeMethod(method, parameters, inst, container);
+                            methodParameters = getMemberArguments(guardedContainer, method);
+                            invokeMethod(method, methodParameters, inst, container);
                         }
                         componentMonitor.instantiated(container, MethodInjector.this,
-                                                      null, inst, parameters, System.currentTimeMillis() - startTime);
+                                                      null, inst, methodParameters, System.currentTimeMillis() - startTime);
                         return inst;
                     } catch (InstantiationException e) {
                         return caughtInstantiationException(componentMonitor, null, e, container);
@@ -114,14 +115,16 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
     }
 
     @Override
-    public Object decorateComponentInstance(final PicoContainer container, final Type into, final T instance) {
+    public Object decorateComponentInstance(final PicoContainer container, @SuppressWarnings("unused") final Type into, final T instance) {
         if (instantiationGuard == null) {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
+                @Override
+                @SuppressWarnings("synthetic-access")
                 public Object run() {
                     Method method = getInjectorMethod();
                     if (method.getDeclaringClass().isAssignableFrom(instance.getClass())) {
-                        Object[] parameters = getMemberArguments(guardedContainer, method);
-                        return invokeMethod(method, parameters, instance, container);
+                        Object[] methodParameters = getMemberArguments(guardedContainer, method);
+                        return invokeMethod(method, methodParameters, instance, container);
                     }
                     return null;
                 }
@@ -132,13 +135,13 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         return o;
     }
 
-    private Object invokeMethod(Method method, Object[] parameters, T instance, PicoContainer container) {
+    private Object invokeMethod(Method method, Object[] methodParameters, T instance, PicoContainer container) {
         try {
-            Object rv = currentMonitor().invoking(container, MethodInjector.this, (Member) method, instance, parameters);
+            Object rv = currentMonitor().invoking(container, MethodInjector.this, (Member) method, instance, methodParameters);
             if (rv == ComponentMonitor.KEEP) {
                 long str = System.currentTimeMillis();
-                rv = method.invoke(instance, parameters);
-                currentMonitor().invoked(container, MethodInjector.this, method, instance, System.currentTimeMillis() - str, parameters, rv);
+                rv = method.invoke(instance, methodParameters);
+                currentMonitor().invoked(container, MethodInjector.this, method, instance, System.currentTimeMillis() - str, methodParameters, rv);
             }
             return rv;
         } catch (IllegalAccessException e) {
@@ -159,6 +162,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
     public void verify(final PicoContainer container) throws PicoCompositionException {
         if (verifyingGuard == null) {
             verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
+                @Override
                 public Object run() {
                     final Method method = getInjectorMethod();
                     final Class[] parameterTypes = method.getParameterTypes();
@@ -176,10 +180,12 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         verifyingGuard.observe(getComponentImplementation());
     }
 
+    @Override
     public String getDescriptor() {
         return "MethodInjector-";
     }
 
+    @Override
     protected boolean isNullParamAllowed(AccessibleObject member, int i) {
         Annotation[] annotations = ((Method) member).getParameterAnnotations()[i];
         for (Annotation annotation : annotations) {
@@ -203,6 +209,8 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         protected Method getInjectorMethod() {
             return injectionMethod;
         }
+        
+        @Override
         public String getDescriptor() {
             return "ReflectionMethodInjector[" + injectionMethod + "]-";
         }

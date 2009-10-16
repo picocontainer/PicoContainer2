@@ -192,7 +192,8 @@ public final class Characteristics {
          * Read Only Object:  will throw UnsupportedOperationException.
          */
         @Override
-        public Object remove(Object o) {
+        @SuppressWarnings("unused")
+        public Object remove( Object o) {
             throw new UnsupportedOperationException("immutable properties are read only");
         }
 
@@ -200,6 +201,7 @@ public final class Characteristics {
          * Read Only Object:  will throw UnsupportedOperationException.
          */
         @Override
+        @SuppressWarnings("unused")
         public synchronized Object setProperty(String string, String string1) {
             throw new UnsupportedOperationException("immutable properties are read only");
         }
@@ -231,6 +233,7 @@ public final class Characteristics {
          * Read Only Object:  will throw UnsupportedOperationException.
          */
 		@Override
+		@SuppressWarnings("unused")
 		public synchronized void putAll(Map<? extends Object, ? extends Object> t) {
             throw new UnsupportedOperationException("immutable properties are read only");
 		}

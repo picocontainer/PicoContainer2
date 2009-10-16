@@ -11,11 +11,9 @@
 package org.picocontainer.injectors;
 
 import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Method;
-import java.util.Properties;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-
+import java.util.Properties;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -29,8 +27,8 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
  * Creates injector instances, depending on the injection characteristics of the component class. 
  * It will attempt to create a component adapter with - in order of priority:
  * <ol>
- *  <li>Annotated field injection: if annotation {@link @Inject} is found for field</li>
- *  <li>Annotated method injection: if annotation {@link @Inject} is found for method</li>
+ *  <li>Annotated field injection: if annotation {@link org.picocontainer.annotations.Inject} is found for field</li>
+ *  <li>Annotated method injection: if annotation {@link org.picocontainer.annotations.Inject} is found for method</li>
  *  <li>Setter injection: if {@link Characteristics.SDI} is found</li>
  *  <li>Method injection: if {@link Characteristics.METHOD_INJECTION} if found</li>
  *  <li>Constructor injection (the default, must find {@link Characteristics.CDI})</li>
@@ -200,6 +198,7 @@ public class AdaptingInjection extends AbstractInjectionFactory {
 
     private boolean injectionMethodAnnotated(final Class<?> componentImplementation) {
         return (Boolean) AccessController.doPrivileged(new PrivilegedAction<Object>() {
+            @SuppressWarnings("synthetic-access")
             public Object run() {
                 return injectionAnnotated(componentImplementation.getDeclaredMethods());
             }
@@ -208,6 +207,7 @@ public class AdaptingInjection extends AbstractInjectionFactory {
 
     private boolean injectionFieldAnnotated(final Class<?> componentImplementation) {
         return (Boolean) AccessController.doPrivileged(new PrivilegedAction<Object>() {
+            @SuppressWarnings("synthetic-access")
             public Object run() {
                 if (componentImplementation.isInterface()) {
                     return false;

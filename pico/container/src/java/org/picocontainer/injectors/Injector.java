@@ -1,3 +1,11 @@
+/*****************************************************************************
+ * Copyright (C) PicoContainer Organization. All rights reserved.            *
+ * ------------------------------------------------------------------------- *
+ * The software in this package is published under the terms of the BSD      *
+ * style license a copy of which has been included with this distribution in *
+ * the LICENSE.txt file.                                                     *
+ *                                                                           *
+ *****************************************************************************/
 package org.picocontainer.injectors;
 
 import org.picocontainer.ComponentAdapter;
@@ -66,7 +74,7 @@ public class Injector {
     }
 
     /**
-     * convenience method to create annotated field injector
+     * Convenience method to create annotated field injector
      *
      * @param key
      * @param impl
@@ -75,7 +83,7 @@ public class Injector {
      * @param lifecycleStrategy
      * @param injectionAnnotation
      * @param useNames
-     * @return
+     * @return annotated field injector instance.
      */
     public static ComponentAdapter annotatedField(Object key,
                                                   Class<?> impl,
@@ -96,7 +104,7 @@ public class Injector {
      * @param lifecycleStrategy
      * @param injectionAnnotation
      * @param useNames
-     * @return
+     * @return method injector instance.
      */
     public static ComponentAdapter annotatedMethod(Object key,
                                                    Class<?> impl,
@@ -118,7 +126,7 @@ public class Injector {
      * @param lifecycleStrategy
      * @param useNames
      * @param injectors
-     * @return
+     * @return composite injector instance.
      */
     public static ComponentAdapter composite(Object componentKey, Class<?> componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy,
                                              boolean useNames, org.picocontainer.Injector... injectors) {
@@ -136,7 +144,7 @@ public class Injector {
      * @param lifecycleStrategy
      * @param methodName
      * @param useNames
-     * @return
+     * @return method injector instance.
      * @throws AbstractInjector.NotConcreteRegistrationException
      *
      */
@@ -156,7 +164,7 @@ public class Injector {
      * @param lifecycleStrategy
      * @param setterPrefix
      * @param useNames
-     * @return
+     * @return MultiInjector component adapter instance.
      */
 
     public static ComponentAdapter multi(Object componentKey,
@@ -175,7 +183,7 @@ public class Injector {
      * @param componentMonitor
      * @param lifecycleStrategy
      * @param fieldNames
-     * @return
+     * @return named field component injector instance.
      */
     public static ComponentAdapter namedField(Object key,
                                               Class<?> impl,
@@ -196,7 +204,7 @@ public class Injector {
      * @param lifecycleStrategy
      * @param setterMethodPrefix
      * @param useNames
-     * @return
+     * @return setter injector instance.
      * @throws AbstractInjector.NotConcreteRegistrationException
      *
      */
@@ -218,7 +226,7 @@ public class Injector {
      * @param componentMonitor
      * @param lifecycleStrategy
      * @param classNames
-     * @return
+     * @return typed field injector instance.
      */
     public static ComponentAdapter typedField(Object key,
                                               Class<?> impl,
