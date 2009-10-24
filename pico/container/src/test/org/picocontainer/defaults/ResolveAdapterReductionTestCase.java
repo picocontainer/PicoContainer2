@@ -55,14 +55,14 @@ public class ResolveAdapterReductionTestCase {
             assertEquals("resolveAdapter for 'Two' should only be called once, regardless of how many getComponents there are",
                     1, resolveAdapterCalls);
         }
-        System.out.println("GreediestConstructorTestCase elapsed: " + (System.currentTimeMillis() - start));
+        System.out.println("ResolveAdapterReductionTestCase elapsed: " + (System.currentTimeMillis() - start));
         assertNotNull(parms);
         assertEquals(1, parms.length);
         assertEquals(true, parms[0] instanceof CountingComponentParameter);
         assertNotNull(injecteeAdapters);
         assertEquals(1, injecteeAdapters.length);
         assertEquals(true, injecteeAdapters[0] instanceof InstanceAdapter);
-        System.out.println("--> " + getCompInstCalls);
+        //System.out.println("--> " + getCompInstCalls);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class ResolveAdapterReductionTestCase {
             assertEquals("resolveAdapter for 'Two' should only be called once, regardless of how many getComponents there are",
                     1, resolveAdapterCalls);
         }
-        System.out.println("GreediestConstructorTestCase elapsed: " + (System.currentTimeMillis() - start));
+        System.out.println("ResolveAdapterReductionTestCase elapsed: " + (System.currentTimeMillis() - start));
     }
 
     public static class One {

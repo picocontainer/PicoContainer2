@@ -107,21 +107,6 @@ public class StartableLifecycleStrategyTestCase {
         }
     }
 
-    @Ignore("PICO-355 ... todo")
-    @Test public void testStartAndDisposeIsLazy() {
-        DefaultPicoContainer pico = new DefaultPicoContainer(startableLifecycle, new EmptyPicoContainer());
-        StringBuilder sb = new StringBuilder();
-        pico.addComponent(sb);
-        pico.as(CACHE).addComponent(BuiltInStartableComponent.class);
-        pico.start();
-        assertEquals("", sb.toString());
-        pico.getComponent(BuiltInStartableComponent.class);
-        assertEquals("<", sb.toString());
-        pico.stop();
-        pico.dispose();
-        assertEquals("<>!", sb.toString());
-    }
-
     @Test public void testThirdPartyStartableAndDisposable() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new MyStartableLifecycleStrategy(), new EmptyPicoContainer());
         StringBuilder sb = new StringBuilder();
@@ -134,7 +119,7 @@ public class StartableLifecycleStrategyTestCase {
 
     }
 
-    @Test public void testLazyAdditionofStartableAlsoStarted() {
+    @Test public void testLateAdditionofStartableAlsoStarted() {
     	DefaultPicoContainer pico = new DefaultPicoContainer(new MyStartableLifecycleStrategy(), new EmptyPicoContainer());
     	StringBuilder sb = new StringBuilder();
     	pico.addComponent(sb);

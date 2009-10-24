@@ -403,6 +403,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     /** {@inheritDoc} **/
     public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final Class<? extends Annotation> binding) {
+        // 1
         return getComponentAdapter(componentType, null, binding);
     }
 
@@ -625,17 +626,30 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public Object getComponent(final Object componentKeyOrType, final Class<? extends Annotation> annotation) {
-        Object retVal;
+        ComponentAdapter<?> componentAdapter;
+        Object component;
         if (annotation != null) {
-            final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, annotation);
-            return componentAdapter == null ? null : getInstance(componentAdapter, null);
+            componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, annotation);
+            component = componentAdapter == null ? null : getInstance(componentAdapter, null);
         } else if (componentKeyOrType instanceof Class) {
-            final ComponentAdapter<?> componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, (NameBinding) null);
-            return componentAdapter == null ? null : getInstance(componentAdapter, (Class<?>)componentKeyOrType);
+            componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, (NameBinding) null);
+            component = componentAdapter == null ? null : getInstance(componentAdapter, (Class<?>)componentKeyOrType);
         } else {
-            ComponentAdapter<?> componentAdapter = getComponentAdapter(componentKeyOrType);
-            return componentAdapter == null ? null : getInstance(componentAdapter, null);
+            componentAdapter = getComponentAdapter(componentKeyOrType);
+            component = componentAdapter == null ? null : getInstance(componentAdapter, null);
         }
+        return decorateComponent(component, componentAdapter);
+    }
+
+    /**
+     * This is invoked when getComponent(..) is called.  It allows extendees to decorate a
+     * component before it is returned to the caller.
+     * @param component the component that will be returned for getComponent(..)
+     * @param componentAdapter the component adapter that made that component
+     * @return the component (the same as that passed in by default)
+     */
+    protected Object decorateComponent(Object component, ComponentAdapter<?> componentAdapter) {
+        return component;
     }
 
     public <T> T getComponent(final Class<T> componentType) {
@@ -644,7 +658,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     public <T> T getComponent(final Class<T> componentType, final Class<? extends Annotation> binding) {
-         Object o = getComponent((Object)componentType, binding);
+        Object o = getComponent((Object)componentType, binding);
         return componentType.cast(o);
     }
 
@@ -970,7 +984,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         }
     }
 
-    private void potentiallyStartAdapter(ComponentAdapter<?> adapter) {
+    protected void potentiallyStartAdapter(ComponentAdapter<?> adapter) {
         if (adapter instanceof ComponentLifecycle) {
             ComponentLifecycle<?> componentLifecycle = (ComponentLifecycle<?>)adapter;
             componentLifecycle.start(DefaultPicoContainer.this);
@@ -982,10 +996,14 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
             ComponentLifecycle<?> componentLifecycle = (ComponentLifecycle<?>)adapter;
             if (componentLifecycle.componentHasLifecycle()) {
                 // create an instance, it will be added to the ordered CA list
-                adapter.getComponentInstance(DefaultPicoContainer.this, ComponentAdapter.NOTHING.class);
+                instantiateComponentAsIsStartable(adapter);
                 addOrderedComponentAdapter(adapter);
             }
         }
+    }
+
+    protected void instantiateComponentAsIsStartable(ComponentAdapter<?> adapter) {
+        adapter.getComponentInstance(DefaultPicoContainer.this, ComponentAdapter.NOTHING.class);
     }
 
     /**
