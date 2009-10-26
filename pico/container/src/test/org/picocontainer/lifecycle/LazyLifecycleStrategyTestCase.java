@@ -25,8 +25,8 @@ public class LazyLifecycleStrategyTestCase {
 
             @Override
             protected Object decorateComponent(Object component, ComponentAdapter<?> componentAdapter) {
-                if (component instanceof Startable) {
-                    // will need to enhance this to prevent processing same multiple times
+                if (componentAdapter instanceof ComponentLifecycle<?>
+                    && !((ComponentLifecycle<?>) componentAdapter).isStarted()) {
                     super.potentiallyStartAdapter(componentAdapter);
                 }
                 return component;
@@ -38,6 +38,8 @@ public class LazyLifecycleStrategyTestCase {
         pico.start();
         assertEquals("", sb.toString()); // normally would be "<" here
         Object bar = pico.getComponent(MyStartableComp.class);
+        assertEquals("<", sb.toString());
+        Object baz = pico.getComponent(MyStartableComp.class);
         assertEquals("<", sb.toString());
         pico.stop();
         assertEquals("<>", sb.toString());
