@@ -13,21 +13,21 @@
 <p>Consider the following example of class that could benefit from reinjection:</p>
 
 <div class="source"><pre>public class ShoppingCart {
-  private Store store;
-  private User user;
-  public ShoppingCart(Store store, User user) {
-    this.store = store;
-    this.user = user;
-  }
-  public boolean addItemTo(Make make, Model model, int quantity) {
-	Cart cart = store.getCart(user);
-	if (cart.contains(make, model)) {
-		cart.for(make, model).increaseQuantity(quantity);
-	} else {
-		cart.addItem(make, model, quantity);
-	}
-	return true;
-  }
+    private Store store;
+    private User user;
+    public ShoppingCart(Store store, User user) {
+        this.store = store;
+        this.user = user;
+    }
+    public boolean addItemTo(Make make, Model model, int quantity) {
+	    Cart cart = store.getCart(user);
+	    if (cart.contains(make, model)) {
+		    cart.on(make, model).increaseQuantity(quantity);
+	    } else {
+		    cart.addItem(make, model, quantity);
+	    }
+	    return true;
+    }
 }
 </pre>
 </div>
@@ -37,9 +37,14 @@
 
 <p>And here is a fragment of Java showing reinjection in use:</p>
 
-<div class="source"><pre>addItemMethod = ShoppingCart.class.getMethods()[0]; // a poor way to select a method!
-reinjector = new Reinjector(picoContainer);
-boolean result = (Boolean) reinjector.reinject(ShoppingCart.class, addItemMethod);
+<div class="source"><pre>
+MutablePicoContainer pico = new TransientPicoContainer();
+pico.addComponent(myShoppingCartInstance);
+pico.addComponent(Make.class, myMake); // you are more likely to use providers that directly hard code values like this.
+pico.addComponent(Model.class, myModel);
+pico.addComponent(int.class, myQuantity);
+Method addItemToMethod = ShoppingCart.class.getMethod("addItemTo", Make.class, Model.class, int.class); 
+boolean result = (Boolean) new Reinjector(pico).reinject(ShoppingCart.class, addItemToMethod);
 </pre>
 </div>
 <p>In the above example, the PicoContainer instance (or one of its parents) can inject a Make, a Model and a quantity
@@ -57,16 +62,16 @@ boolean result = (Boolean) reinjector.reinject(ShoppingCart.class, addItemMethod
 <p>This is where reinjection is managed by a PicoContainer instance, rather than directly.</p>
 
 <div class="source"><pre>public class ShoppingCart {
-  List<Item> list = new ArrayList
-    <Item>();
-        public void addItemTo(Make make, Model model, int quantity) {
+    private List&lt;Item> list = new ArrayList&lt;Item>();
+    public void addItemTo(Make make, Model model, int quantity) {
         list.add(new Item(make, model, quantity));
-        }
-        }
-        ...
-        addItemMethod = ShoppingCart.class.getMethods()[0]
-        pico = new TransientPicoContainer(new Reinjection(new MethodInjection(addItemMethod), parent), parent);
-        cart = pico.getComponent(ShoppingCart.class);
+    }
+}
+...
+// parent container has a ShoppingCart instance
+Method addItemToMethod = ShoppingCart.class.getMethods("addItemTo", Make.class, Model.class, int.class);
+PicoContainer pico = new TransientPicoContainer(new Reinjection(new MethodInjection(addItemToMethod), parent), parent);
+ShoppingCart cart = pico.getComponent(ShoppingCart.class);
 </pre>
 </div>
 <p>The method addItemTo() is called during the getComponent() invocation. This works because the return type is void. A
