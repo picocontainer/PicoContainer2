@@ -39,20 +39,32 @@
 
 <div class="source"><pre>
 MutablePicoContainer pico = new TransientPicoContainer();
-pico.addComponent(myShoppingCartInstance);
+pico.addComponent(ShoppingCart.class, myShoppingCartInstance);
 pico.addComponent(Make.class, myMake); // you are more likely to use providers that directly hard code values like this.
 pico.addComponent(Model.class, myModel);
 pico.addComponent(int.class, myQuantity);
-Method addItemToMethod = ShoppingCart.class.getMethod("addItemTo", Make.class, Model.class, int.class); 
-boolean result = (Boolean) new Reinjector(pico).reinject(ShoppingCart.class, addItemToMethod);
+boolean result = (Boolean) new Reinjector(pico).reinject(ShoppingCart.class, "addItemTo");
 </pre>
 </div>
 <p>In the above example, the PicoContainer instance (or one of its parents) can inject a Make, a Model and a quantity
     (int / Integer).</p>
 
+<p>And here the same scenario this time leveraging parameter names:</p>
+
+<div class="source"><pre>
+MutablePicoContainer pico = new TransientPicoContainer();
+pico.as(USE_NAMES).addComponent(ShoppingCart.class, myShoppingCartInstance);
+pico.addComponent("make", myMake); // you are more likely to use providers that directly hard code values like this.
+pico.addComponent("model", myModel);
+pico.addComponent("quantity", myQuantity);
+boolean result = (Boolean) new Reinjector(pico).reinject(ShoppingCart.class, "addItemTo");
+</pre>
+</div>
+<p>The above would be most useful if you had ambiguous parameter types like 'addItemTo(String make, String model)'</p>
+
 <p>For reinjection to work, you really need to know the exact method to be injected into. You indicate which method by a
-    reflection method reference (as in the example above), or by method name ("addItemTo" should be unique in the
-    class). You could also rely on an @Inject annotation, but that only makes sense where there is one method in the
+    reflection method reference (not shown), or by method name (as above). In our case for the method name to work it should not be overloaded in the
+    class. You could also rely on an @Inject annotation, but that only makes sense where there is one method in the
     class to be used in this way. If you are implicating a reinjection method by name (rather than reflection method
     reference), and there are more than one matching, then the last one invoked will have it's return value returned to
     the caller.</p>
