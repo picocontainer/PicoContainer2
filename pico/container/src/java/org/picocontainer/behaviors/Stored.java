@@ -18,12 +18,11 @@ import org.picocontainer.ComponentLifecycle;
 import java.lang.reflect.Type;
 import java.io.Serializable;
 
-/**
+/*
  * behaviour for all behaviours wishing to store
  * their component in "awkward places" ( object references )
  *
  * @author Konstantin Pribluda
- * @param <T>
  */
 @SuppressWarnings("serial")
 public class Stored<T> extends AbstractBehavior<T> {
@@ -117,7 +116,6 @@ public class Stored<T> extends AbstractBehavior<T> {
      */
     public void stop(PicoContainer container) {
         lifecycleDelegate.stop(container);
-
     }
 
     public boolean isStarted() {
@@ -210,7 +208,5 @@ public class Stored<T> extends AbstractBehavior<T> {
         protected boolean started;
         protected boolean disposed;
     }
-
-
 
 }
