@@ -25,6 +25,20 @@ public class LazyLifecycleStrategyTestCase {
     }
 
     @Test
+    public void testStartStopAndDisposeCanBeLazyWithoutGet() {
+        final StringBuilder sb = new StringBuilder();
+        MutablePicoContainer pico = new LazyStartingPicoContainer();
+        pico.addComponent(sb);
+        pico.as(CACHE).addComponent(MyStartableComp.class);
+        pico.start();
+        assertEquals("", sb.toString()); 
+        pico.stop();
+        assertEquals("", sb.toString());
+        pico.dispose();
+        assertEquals("", sb.toString());
+    }
+
+    @Test
     public void testStartStopAndDisposeCanBeConditionallyLazy() {
         final StringBuilder sb = new StringBuilder();
         MutablePicoContainer pico = new ConditionallyLazyStartingPicoContainer();

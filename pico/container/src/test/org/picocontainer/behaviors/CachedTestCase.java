@@ -7,10 +7,12 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
+import static junit.framework.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
+import org.picocontainer.*;
 import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 import org.jmock.Expectations;
@@ -18,14 +20,10 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoContainer;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 
+import java.lang.reflect.Field;
 
 
 /**
@@ -70,16 +68,12 @@ public class CachedTestCase {
         }
     }
 
-    @Test public void testComponentCannotBeDisposedIfNotInstantiated() {
+    @Test public void testComponentDisposedEffectivelyIgnoredIfNotInstantiated() throws NoSuchFieldException, IllegalAccessException {
         Cached adapter = new Cached(
-                mockComponentAdapterSupportingLifecycleStrategy(false, false, false, true, false));
+                mockComponentAdapterSupportingLifecycleStrategy(false, false, false, false, false));
         PicoContainer pico = new DefaultPicoContainer();
-        try {
-            adapter.dispose(pico);
-         //   fail("IllegalStateException expected");
-        } catch (Exception e) {
-            assertEquals("'interface org.picocontainer.testmodel.Touchable' not instantiated", e.getMessage());
-        }
+        adapter.dispose(pico);
+        assertNull(adapter.getStoredObject());
     }
 
     @Test public void testComponentCannotBeStartedIfAlreadyStarted() {

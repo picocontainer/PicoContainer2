@@ -40,7 +40,7 @@ public class Stored<T> extends AbstractBehavior<T> {
 
     private void guardInstRef() {
         if (instanceReference.get() == null) {
-            instanceReference.set(new Instance());
+            instanceReference.set(new Instance<T>());
         }
     }
 
@@ -147,10 +147,12 @@ public class Stored<T> extends AbstractBehavior<T> {
 
         public void dispose(PicoContainer container) {
             guardInstRef();
-            guardNotInstantiated();
-            guardAlreadyDisposed();
-            Stored.this.dispose(instanceReference.get().instance);
-            instanceReference.get().disposed = true;
+            Instance<?> instance = instanceReference.get();
+            if (instance.instance != null) {
+                guardAlreadyDisposed();
+                Stored.this.dispose(instance.instance);
+                instance.disposed = true;
+            }
         }
 
 
