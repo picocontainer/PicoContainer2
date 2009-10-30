@@ -63,8 +63,7 @@ public class AbstractComponentMonitor implements ComponentMonitor, ComponentMoni
     }
     
     public <T> Constructor<T> instantiating(PicoContainer container, ComponentAdapter<T> componentAdapter,
-                                     Constructor<T> constructor
-    ) {
+                                     Constructor<T> constructor) {
         return delegate.instantiating(container, componentAdapter, constructor);
     }
 

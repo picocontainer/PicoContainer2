@@ -22,6 +22,8 @@ import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Bind;
 
+import static org.picocontainer.injectors.PrimitiveMemberChecker.isPrimitiveArgument;
+
 /**
  * Injection will happen in a single member function on the component.
  *
@@ -67,7 +69,8 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
         }
     }
 
-    protected Object getParameter(PicoContainer container, AccessibleObject member, int i, Type parameterType, Annotation binding, Parameter currentParameter, ComponentAdapter<?> injecteeAdapter) {
+    protected Object getParameter(PicoContainer container, AccessibleObject member, int i, Type parameterType, Annotation binding,
+                                  Parameter currentParameter, ComponentAdapter<?> injecteeAdapter) {
         ParameterNameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), member, i);
         Object result = currentParameter.resolve(container, this, injecteeAdapter, parameterType, expectedNameBinding, useNames(), binding).resolveInstance();
         nullCheck(member, i, expectedNameBinding, result);
@@ -85,12 +88,12 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
      * Checks to see if a null parameter is allowed in the given
      * constructor/field/method.  The default version allows null 
      * if the target object is not a primitive type.
-     * @param member
+     * @param member constructor method or field
      * @param i parameter #.
      * @return true if the null parameter might be allowed.
      */
     protected boolean isNullParamAllowed(AccessibleObject member, int i) {
-        return !(new PrimitiveMemberChecker().isPrimitiveArgument(member, i));
+        return !(isPrimitiveArgument(member, i));
     }
 
     protected Annotation[] getBindings(Annotation[][] annotationss) {

@@ -29,7 +29,7 @@ public class PrimitiveMemberChecker {
      * @throws ArrayIndexOutOfBoundsException if 'i' is an inappropriate index for the
      * given parameters.  For example, i should never be anything but zero for a field.
      */
-    public boolean isPrimitiveArgument(AccessibleObject member, int i) throws ArrayIndexOutOfBoundsException, UnsupportedOperationException {
+    public static boolean isPrimitiveArgument(AccessibleObject member, int i) throws ArrayIndexOutOfBoundsException, UnsupportedOperationException {
         Class[] types;
         if (member instanceof Constructor) {
             types = ((Constructor)member).getParameterTypes();           

@@ -121,8 +121,8 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      *         is allowed
      */
     public Resolver resolve(final PicoContainer container, final ComponentAdapter<?> forAdapter,
-                            ComponentAdapter<?> injecteeAdapter, final Type expectedType, NameBinding expectedNameBinding,
-                            boolean useNames, Annotation binding) {
+                            ComponentAdapter<?> injecteeAdapter, final Type expectedType, final NameBinding expectedNameBinding,
+                            final boolean useNames, Annotation binding) {
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
             final Map<Object, ComponentAdapter<?>> componentAdapters = getMatchingComponentAdapters(container, forAdapter,
@@ -139,7 +139,8 @@ public class CollectionComponentParameter extends AbstractParameter implements P
                     } else if (Map.class.isAssignableFrom(collectionType)) {
                         result = getMapInstance(container, collectionType, componentAdapters);
                     } else if (Collection.class.isAssignableFrom(collectionType)) {
-                        result = getCollectionInstance(container, (Class<? extends Collection>) collectionType, componentAdapters);
+                        result = getCollectionInstance(container, (Class<? extends Collection>) collectionType,
+                                componentAdapters, expectedNameBinding, useNames);
                     } else {
                         throw new PicoCompositionException(expectedType + " is not a collective type");
                     }
@@ -316,7 +317,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
     @SuppressWarnings({"unchecked"})
     private Collection getCollectionInstance(final PicoContainer container,
                                              final Class<? extends Collection> expectedType,
-                                             final Map<Object, ComponentAdapter<?>> adapterList) {
+                                             final Map<Object, ComponentAdapter<?>> adapterList, NameBinding expectedNameBinding, boolean useNames) {
         Class<? extends Collection> collectionType = expectedType;
         if (collectionType.isInterface()) {
             // The order of tests are significant. The least generic types last.
@@ -337,6 +338,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
         try {
             Collection result = collectionType.newInstance();
             for (ComponentAdapter componentAdapter : adapterList.values()) {
+                if (!useNames || componentAdapter.getComponentKey() == expectedNameBinding)
                 result.add(container.getComponent(componentAdapter.getComponentKey()));
             }
             return result;

@@ -150,7 +150,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                 // check whether this constructor is satisfiable
                 Type expectedType = box(parameterTypes[j]);
                 NameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), sortedMatchingConstructor, j);
-                ResolverKey resolverKey = new ResolverKey(expectedType, useNames() == true ? expectedNameBinding.getName() : null, useNames(), bindings[j], currentParameters[j]);
+                ResolverKey resolverKey = new ResolverKey(expectedType, useNames() ? expectedNameBinding.getName() : null, useNames(), bindings[j], currentParameters[j]);
                 Parameter.Resolver resolver = resolvers.get(resolverKey);
                 if (resolver == null) {
                     resolver = currentParameters[j].resolve(container, this, null, expectedType, expectedNameBinding, useNames(), bindings[j]);
