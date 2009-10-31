@@ -114,7 +114,7 @@ public class BehaviorAdapterTestCase {
         return ca;
     }
 
-    public static interface ComponentAdapterThatCanManageLifecycle extends ComponentAdapter, Behavior, LifecycleStrategy {
+    public static interface ComponentAdapterThatCanManageLifecycle extends ComponentAdapter, org.picocontainer.Behavior, LifecycleStrategy {
     }
 
     static class FooAbstractBehavior extends AbstractBehavior {
