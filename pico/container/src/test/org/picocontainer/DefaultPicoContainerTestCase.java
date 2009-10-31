@@ -521,7 +521,10 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 			return true;
 		}
 
-	}
+        public boolean isLazy(Class<?> type) {
+            return false;
+        }
+    }
 
 	public static class MyStartable implements Startable {
 		public MyStartable() {

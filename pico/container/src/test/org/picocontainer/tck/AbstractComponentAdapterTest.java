@@ -623,7 +623,11 @@ public abstract class AbstractComponentAdapterTest  {
         public boolean hasLifecycle(Class type) {
             return true;
         }
-        
+
+        public boolean isLazy(Class<?> type) {
+            return false;
+        }
+
         public String recording() {
             return recorder.toString();
         }

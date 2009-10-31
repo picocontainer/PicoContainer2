@@ -21,7 +21,6 @@ import java.util.Set;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Injector;
 import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.Parameter;
@@ -43,7 +42,7 @@ import org.picocontainer.parameters.ComponentParameter;
  * @author Mauro Talevi
  */
 @SuppressWarnings("serial")
-public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements LifecycleStrategy, Injector<T> {
+public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements LifecycleStrategy, org.picocontainer.Injector<T> {
     /** The cycle guard for the verification. */
     protected transient ThreadLocalCyclicDependencyGuard verifyingGuard;
     /** The parameters to use for initialization. */
@@ -144,6 +143,10 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 
     public boolean hasLifecycle(final Class<?> type) {
         return lifecycleStrategy.hasLifecycle(type);
+    }
+
+    public boolean isLazy(Class<?> type) {
+        return lifecycleStrategy.isLazy(type);
     }
 
     public String getDescriptor() {

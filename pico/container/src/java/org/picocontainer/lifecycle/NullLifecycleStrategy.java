@@ -40,4 +40,8 @@ public class NullLifecycleStrategy implements LifecycleStrategy, Serializable {
     public boolean hasLifecycle(final Class<?> type) {
         return false;
     }
+
+    public boolean isLazy(Class<?> type) {
+        return false;
+    }
 }

@@ -53,4 +53,13 @@ public interface LifecycleStrategy {
      */
     boolean hasLifecycle(Class<?> type);
 
+    /**
+     * Is a component eager (not lazy) in that it should start when start() or equivalent is called,
+     * or lazy (it will only start on first getComponent() ).
+     * The default is the first of those two.
+     *
+     * @param type the component type in question
+     * @return true if lazy, false if not lazy
+     */
+    boolean isLazy(Class<?> type);
 }

@@ -3,6 +3,9 @@ package org.picocontainer.lifecycle;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.picocontainer.*;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.monitors.NullComponentMonitor;
+
 import static org.picocontainer.Characteristics.CACHE;
 
 public class LazyLifecycleStrategyTestCase {
@@ -10,7 +13,12 @@ public class LazyLifecycleStrategyTestCase {
     @Test
     public void testStartStopAndDisposeCanBeLazy() {
         final StringBuilder sb = new StringBuilder();
-        MutablePicoContainer pico = new LazyStartingPicoContainer();
+        MutablePicoContainer pico = new DefaultPicoContainer(new StartableLifecycleStrategy(new NullComponentMonitor()) {
+            @Override
+            public boolean isLazy(Class<?> type) {
+                return true;
+            }
+        }, new EmptyPicoContainer());        
         pico.addComponent(sb);
         pico.as(CACHE).addComponent(MyStartableComp.class);
         pico.start();
@@ -27,7 +35,12 @@ public class LazyLifecycleStrategyTestCase {
     @Test
     public void testStartStopAndDisposeCanBeLazyWithoutGet() {
         final StringBuilder sb = new StringBuilder();
-        MutablePicoContainer pico = new LazyStartingPicoContainer();
+        MutablePicoContainer pico = new DefaultPicoContainer(new StartableLifecycleStrategy(new NullComponentMonitor()) {
+            @Override
+            public boolean isLazy(Class<?> type) {
+                return true;
+            }
+        }, new EmptyPicoContainer());
         pico.addComponent(sb);
         pico.as(CACHE).addComponent(MyStartableComp.class);
         pico.start();
@@ -41,14 +54,19 @@ public class LazyLifecycleStrategyTestCase {
     @Test
     public void testStartStopAndDisposeCanBeConditionallyLazy() {
         final StringBuilder sb = new StringBuilder();
-        MutablePicoContainer pico = new ConditionallyLazyStartingPicoContainer();
+        MutablePicoContainer pico = new DefaultPicoContainer(new StartableLifecycleStrategy(new NullComponentMonitor()) {
+            @Override
+            public boolean isLazy(Class<?> type) {
+                return type == MyStartableComp.class;
+            }
+        }, new EmptyPicoContainer());
         pico.addComponent(sb);
         pico.as(CACHE).addComponent(MyStartableComp.class);
         pico.as(CACHE).addComponent(MyDifferentStartableComp.class);
         pico.start();
         assertEquals("{", sb.toString()); // one component started, one not
         pico.getComponent(MyStartableComp.class);
-        pico.getComponent(MyStartableComp.class);
+        pico.getComponent(MyStartableComp.class); // should not start a second time
         assertEquals("{<", sb.toString()); // both components now started, one lazily.
         pico.stop();
         assertEquals("{<}>", sb.toString());
@@ -96,51 +114,4 @@ public class LazyLifecycleStrategyTestCase {
         }
     }
 
-
-    private static class ConditionallyLazyStartingPicoContainer extends DefaultPicoContainer {
-        @Override
-        public void potentiallyStartAdapter(ComponentAdapter<?> adapter) {
-            if (adapter.getComponentImplementation() == MyDifferentStartableComp.class) {
-                super.potentiallyStartAdapter(adapter);
-            }
-        }
-
-        @Override
-        protected void instantiateComponentAsIsStartable(ComponentAdapter<?> adapter) {
-            if (adapter.getComponentImplementation() == MyDifferentStartableComp.class) {
-                super.instantiateComponentAsIsStartable(adapter);
-            }
-        }
-
-        @Override
-        protected Object decorateComponent(Object component, ComponentAdapter<?> componentAdapter) {
-            if (componentAdapter instanceof ComponentLifecycle<?>
-                && !((ComponentLifecycle<?>) componentAdapter).isStarted()) {
-                super.potentiallyStartAdapter(componentAdapter);
-            }
-            return component;
-        }
-    }
-
-
-    private static class LazyStartingPicoContainer extends DefaultPicoContainer {
-        @Override
-        public void potentiallyStartAdapter(ComponentAdapter<?> adapter) {
-            // veto
-        }
-
-        @Override
-        protected void instantiateComponentAsIsStartable(ComponentAdapter<?> adapter) {
-            // veto
-        }
-
-        @Override
-        protected Object decorateComponent(Object component, ComponentAdapter<?> componentAdapter) {
-            if (componentAdapter instanceof ComponentLifecycle<?>
-                && !((ComponentLifecycle<?>) componentAdapter).isStarted()) {
-                super.potentiallyStartAdapter(componentAdapter);
-            }
-            return component;
-        }
-    }
 }

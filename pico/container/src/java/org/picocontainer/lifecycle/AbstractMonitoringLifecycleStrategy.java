@@ -25,7 +25,6 @@ public abstract class AbstractMonitoringLifecycleStrategy implements LifecycleSt
 	 */
     private ComponentMonitor componentMonitor;
 
-
     /**
      * Construct a AbstractMonitoringLifecycleStrategy.
      *
@@ -48,11 +47,12 @@ public abstract class AbstractMonitoringLifecycleStrategy implements LifecycleSt
         this.componentMonitor = monitor;
     }
 
-    /**
-     * Retrieves access to the current monitor.
-     */
     public ComponentMonitor currentMonitor() {
         return componentMonitor;
+    }
+
+    public boolean isLazy(Class<?> type) {
+        return false;
     }
 
 }

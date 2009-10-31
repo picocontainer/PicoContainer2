@@ -649,6 +649,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
      * @return the component (the same as that passed in by default)
      */
     protected Object decorateComponent(Object component, ComponentAdapter<?> componentAdapter) {
+        if (componentAdapter instanceof ComponentLifecycle<?>
+                && lifecycleStrategy.isLazy(componentAdapter.getComponentImplementation()) // is Lazy
+                && !((ComponentLifecycle<?>) componentAdapter).isStarted()) {
+            ((ComponentLifecycle<?>)componentAdapter).start(this);
+        }
         return component;
     }
 
@@ -986,8 +991,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
     protected void potentiallyStartAdapter(ComponentAdapter<?> adapter) {
         if (adapter instanceof ComponentLifecycle) {
-            ComponentLifecycle<?> componentLifecycle = (ComponentLifecycle<?>)adapter;
-            componentLifecycle.start(DefaultPicoContainer.this);
+            if (!lifecycleStrategy.isLazy(adapter.getComponentImplementation())) {
+                ((ComponentLifecycle<?>)adapter).start(this);
+            }
         }
     }
 
@@ -1003,7 +1009,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
     }
 
     protected void instantiateComponentAsIsStartable(ComponentAdapter<?> adapter) {
-        adapter.getComponentInstance(DefaultPicoContainer.this, ComponentAdapter.NOTHING.class);
+        if (!lifecycleStrategy.isLazy(adapter.getComponentImplementation())) {
+            adapter.getComponentInstance(DefaultPicoContainer.this, ComponentAdapter.NOTHING.class);
+        }
     }
 
     /**

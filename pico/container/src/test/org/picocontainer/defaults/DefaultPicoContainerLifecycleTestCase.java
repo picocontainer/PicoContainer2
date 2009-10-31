@@ -323,6 +323,10 @@ public class DefaultPicoContainerLifecycleTestCase {
             public boolean hasLifecycle(Class type) {
                 return true;
             }
+
+            public boolean isLazy(Class<?> type) {
+                return false;
+            }
         };
         MutablePicoContainer pico = new DefaultPicoContainer( new AdaptingInjection(), strategy, null );
 
@@ -355,6 +359,10 @@ public class DefaultPicoContainerLifecycleTestCase {
 
             public boolean hasLifecycle(Class type) {
                 return true;
+            }
+
+            public boolean isLazy(Class<?> type) {
+                return false;
             }
         };
         MutablePicoContainer parent = new DefaultPicoContainer(strategy, null);

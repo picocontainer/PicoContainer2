@@ -50,4 +50,13 @@ public class CompositeLifecycleStrategy implements LifecycleStrategy {
         }
         return false;
     }
+
+    public boolean isLazy(Class<?> type) {
+        for (StartableLifecycleStrategy lifecycleStrategy : alternateStrategies) {
+            if (lifecycleStrategy.isLazy(type)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
