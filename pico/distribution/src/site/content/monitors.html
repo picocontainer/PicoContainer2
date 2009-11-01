@@ -55,7 +55,7 @@ public class MyComponentMonitor implements ComponentMonitor {
         return different values, making them modify PicoContainer's behavior.
     </li>
 </ol>
-
+<br/>
 <h2>Supplied ComponentMonitor implementations</h2>
 
 <h3>Logging or text-centric varieties of ComponentMonitor </h3>
@@ -97,12 +97,6 @@ public class MyComponentMonitor implements ComponentMonitor {
     is a ComponentMonitor that stores life-cycle failures and rethrows them later if rethrowLifecycleFailuresException()
     is called. </p>
 
-<h3>Future work</h3>
-
-<p>Implementations that:</p>
-<ul>
-    <li>Record component injections and play them back later (optimized web frameworks)</li>
-</ul>
 <h3>DotDependencyGraphComponentMonitor (Gems)</h3>
 
 <p>
@@ -121,5 +115,28 @@ public class MyComponentMonitor implements ComponentMonitor {
     instance to a <a
         href="http://picocontainer.org/javadoc/gems/org/picocontainer/gems/monitors/ComponentDependencyMonitor.html">ComponentDependencyMonitor</a>
     one. Call getGraph() to retrieve the graph for use with Prefuse</p>
+<br/>
+<h2>Composers</h2>
+
+	<p>ComposingMonitor is an implementation of the Monitor design that works specifically in conjunction with noComponentFound(..) to allow greater collaboration in the supply of components for the purposes of injection </p>
+
+<div class="source">
+<pre>MutablePicoContainer pico = new DefaultPicoContainer(new ComposingMonitor( /* varargs of composer instances */));
+</pre>
+</div>
+<p>If more than one is specified in the varargs above, then the first in the list to actually return non-null will be used.  It is also possible for a fallback component monitor to be specified:</p>
+<div class="source">
+<pre>ComponentMonitor otherCM = ...
+MutablePicoContainer pico = new DefaultPicoContainer(new ComposingMonitor(otherCM, /* varargs of composer instances */));
+</pre>
+</div>
+<p>See <a href="regex.html">Regex Composer</a></p>	
+<h2>Future work</h2>
+
+	<p>Implementations that:</p>
+	<ul>
+	    <li>Record component injections and play them back later (optimized web frameworks)</li>
+	</ul>
+
 </body>
 </html>

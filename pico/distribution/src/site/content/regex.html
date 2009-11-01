@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>Regex Composer</title>
+
+    <style type="text/css">
+        <!--
+        .style1 {
+            font-family: "Courier New", Courier, monospace
+        }
+
+        -->
+    </style>
+</head>
+<body>
+<p>A RegexComposer allows for regular expressions to be used in conjunction with making lists of components that match that regular expression.</p>
+<div class="source">
+<pre>
+MutablePicoContainer pico = new DefaultPicoContainer(new ComposingMonitor(new RegexComposer()));
+pico.addComponent("apple1", "Braeburn");
+pico.addComponent("apple2", "Granny Smith");
+pico.addComponent("plum", "Victoria");
+List apples = (List) pico.getComponent("apple[1-9]");
+assertEquals("[Braeburn, Granny Smith]", apples.toString());
+</pre>
+</div>
+</body>
+</html>
