@@ -6,6 +6,46 @@
 </head>
 <body>
 
+	<p><strong>Nov 2, 2009</strong></p>
+
+	<p>PicoContainer 2.9 released (292K jar) </p>
+	<p>New (since 2.8.3):</p>
+	<ul>
+	    <li>Lifecycle strategy allows for concept of lazy starting.  This means components are started at first access. <a href="http://jira.codehaus.org/browse/PICO-355">PICO-355</a></li>
+	    <li>Regex collecting of components for injection, or just on getComponent() now built in. </li>
+	</ul>
+	<p>Changes (versus 2.8.3):</p>
+	<ul>
+	    <li>Purposeful injection of a Null parameter fixed <a href="http://jira.codehaus.org/browse/PICO-364">PICO-364</a></li>
+	    <li>Small performance improvements for getAdapter/getInstance</li>
+	    <li>Dependencies for Log4J and SLF4J moved forward</li>
+        <li>Paranamer upgraded to 2.1</li>
+	    <li>Exception in Lifecycle methods bug fixed <a href="http://jira.codehaus.org/browse/PICO-363">PICO-363</a></li>
+	    <li>PicoBuilder able to do more with Lifecycle strategies</li>
+	    <li>Factory Injection improved with an 'InjectInto' type <a href="http://jira.codehaus.org/browse/PICO-358">PICO-358</a></li>
+	</ul>
+
+	<p><strong>Jun 18, 2009</strong></p>
+
+	<p>PicoContainer 2.8.3 released (292K jar) </p>
+	<p>New (since 2.8.2):</p>
+	<ul>
+	    <li>DefaultPicoContainer opened up a to facilitate rudimentary lazy lifecycle<a> 
+	</ul>
+	<p>Changes (versus 2.8.2):</p>
+	<ul>
+	    <li>Providers not passing on exceptions bug fixed: <a href="http://jira.codehaus.org/browse/PICO-357">PICO-357</a></li>
+	</ul>
+
+	<p><strong>May 27, 2009</strong></p>
+	<p>PicoContainer 2.8.2 released (292K jar) </p>
+	<p>Changes (versus 2.8.1):</p>
+	<ul>
+	    <li>Constructor Injection is slightly faster for second/subsequent injections and for multi-constructor components</li>
+	    <li>More optimized Paranamer usage and upgrade to 2.0</li>
+	    <li>Generic Collections more consistent between Setter and Constructor injection <a href="http://jira.codehaus.org/browse/PICO-354">PICO-354</a></li>
+	</ul>
+	
 	<p><strong>May 20, 2009</strong></p>
 
 	<p>PicoContainer 2.8.1 released (292K jar) </p>
@@ -35,8 +75,7 @@
 <p>Changes (versus 2.7):</p>
 <ul>
     <li>JSR 250 annotations themselves (@PostConstruct etc) not included in the Jar anymore</li>
-    <li>Paranamer upgraded to 1.3</li>
-    <li>Paranamer usage change to better caching and fallback model</li>
+    <li>Paranamer upgraded to 1.3 and PicoContainer's usage of it changed to better caching and fallback model</li>
     <li>Improved handling of Constant Parameters for class instances</li>
     <li>Adapter.findAdapterofType() null handling improved</li>
 </ul>
