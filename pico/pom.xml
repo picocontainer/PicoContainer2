@@ -55,7 +55,7 @@
 				<groupId>${pom.groupId}</groupId>
 				<artifactId>picocontainer-tck</artifactId>
 				<version>${pom.version}</version>
-				<scope>test</scope>				
+				<scope>test</scope>
 			</dependency>
 			<!-- For JavaEE5 annotations -->
 			<dependency>
@@ -109,6 +109,10 @@
 						<groupId>com.sun.jdmk</groupId>
 						<artifactId>jmxtools</artifactId>
 					</exclusion>
+					<exclusion>
+						<groupId>javax.mail</groupId>
+						<artifactId>mail</artifactId>
+					</exclusion>
 				</exclusions>
 			</dependency>
 			<dependency>
@@ -120,13 +124,13 @@
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>1.5.6</version>
+				<version>1.5.8</version>
 				<optional>true</optional>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.5.6</version>
+				<version>1.5.8</version>
 				<optional>true</optional>
 			</dependency>
 			<!-- For test -->
@@ -161,7 +165,7 @@
 		<dependency>
 			<groupId>org.jmock</groupId>
 			<artifactId>jmock-junit4</artifactId>
-			<scope>test</scope>			
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
@@ -171,7 +175,7 @@
 		<dependency>
 			<groupId>xpp3</groupId>
 			<artifactId>xpp3_min</artifactId>
-			<scope>test</scope>			
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>
