@@ -116,9 +116,9 @@ public class MyComponentMonitor implements ComponentMonitor {
         href="http://picocontainer.org/javadoc/gems/org/picocontainer/gems/monitors/ComponentDependencyMonitor.html">ComponentDependencyMonitor</a>
     one. Call getGraph() to retrieve the graph for use with Prefuse</p>
 <br/>
-<h2>Composers</h2>
+<h2><a name="composers">Composers</a></h2>
 
-	<p>ComposingMonitor is an implementation of the Monitor design that works specifically in conjunction with noComponentFound(..) to allow greater collaboration in the supply of components for the purposes of injection </p>
+	<p>ComposingMonitor is an implementation of the Monitor design that works specifically in conjunction with noComponentFound(..) to allow greater collaboration in the supply of components for the purposes of injection.  By definition it is only going to work if the type or object key that's required is missing from the container.</p>
 
 <div class="source">
 <pre>MutablePicoContainer pico = new DefaultPicoContainer(new ComposingMonitor( /* varargs of composer instances */));
