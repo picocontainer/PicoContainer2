@@ -42,6 +42,7 @@
         <page>hiding.html</page>
         <page>thread-safety.html</page>
         <page>interception.html</page>
+        <page>other-behaviors.html</page>
     </section>
     <section>
         <name>Advanced Concepts</name>

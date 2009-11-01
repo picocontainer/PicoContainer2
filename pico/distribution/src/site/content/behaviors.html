@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head><title>Modifying Behaviors</title>
+<head><title>Behaviors Overview</title>
 
     <style type="text/css">
         <!--
@@ -16,15 +16,10 @@
 <p>PicoContainer can add behaviors to components automatically
     during instantiation.</p>
 
-<p>Behaviors are deleivered by passing a BehaviorFactory
+<p>Behaviors are delivered by passing a BehaviorFactory
     reference into the PicoContainer instance on construction. For the most
     part BehaviorFactories are completely stateless, and the Behavior
     instances they make are not.</p>
-
-<p>See below for details on <a href="#cns">Caching
-    and Singletons</a>, <a href="#hasi">Implementation
-    Hiding and Hot Swapping</a>, as well as <a href="#o">Other</a>
-    behaviors</p>
 
 <h3>General use</h3>
 
@@ -93,217 +88,24 @@ pico.addComponent(Foo.class);
 Foo foo = pico.getcomponent(Foo.class) // Foo instance will be affected by two additonal behaviors.
 </pre>
 </div>
-<h2>Thread Safety</h2>
 
-<p>When components are created by two threads concurrently, with
-    the intention of the instance being cached, it is possible in a small
-    percentage of cases for the first instance into the cache to be
-    replaced with a second instance. To prevent this, you may want to try
-    one of two behaviors to make the operation thread safe.</p>
+<h3>Specific Behaviors</h3>
 
-<h3>Synchronizing</h3>
+<h4>Caching</h4>
 
-<p>Synchronizing wraps object creation in Java's classic <span class="style1">synchronize</span> feature:</p>
+<p>Caching is where PicoContainer ensures that the same component instance is returned for second and subsequent getComponent() invocations.  See the <a href="caching.html">Caching</a> behavior page.  Other Dependency Injection Containers call this Singleton behavior.</p>
 
-<div class="source">
-<pre>pico = new DefaultPicoContainer(new Synchronizing().wrap(new Caching()));
-pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
-</div>
-<div class="source">
-<pre>pico = new DefaultPicoContainer();
-pico.as(SYNCHRONIZE, CACHE).addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
-</div>
-<div class="source">
-<pre>pico = new PicoBuilder().withSynchronizing().withCaching().build();
-pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
-</div>
-<div class="source">
-<pre>import static org.picocontainer.behaviors.Behaviors.synchronizing;
-import static org.picocontainer.behaviors.Behaviors.caching;
-...
-pico = new PicoBuilder().withBehaviors(synchronizing(), caching()).build();
-pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
-</div>
-<h3>Locking</h3>
+<h4>Implementation Hiding</h4>
 
-<p>Locking wraps object creation in JDK 1.5's ReentrantLock
-    facility.
-    It is suggested that this is a more efficient alternative to the <span class="style1">Synchronizing</span> behaviour
-    above:</p>
+<p>Hiding Implementations is where PicoContainer ensures that the component that implements a abstract type can only be used as that abstract type by components that depend on it.  Casting back to the implementation is vetoed.  See the <a href="hiding.html">Hiding</a> behavior page.</p>
 
-<div class="source">
-<pre>pico = new DefaultPicoContainer(new Locking().wrap(new Caching()));
-pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
-</div>
-<div class="source">
-<pre>pico = new DefaultPicoContainer();
-pico.as(LOCK, CACHE).addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
-</div>
-<div class="source">
-<pre>pico = new PicoBuilder().withLocking().withCaching().build();
-pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
-</div>
-<div class="source">
-<pre>import static org.picocontainer.behaviors.Behaviors.locking;
-import static org.picocontainer.behaviors.Behaviors.caching;
-...
-pico = new PicoBuilder().withBehaviors(synchronizing(), caching()).build();
-pico.addComponent(Apple.class);
-Apple a1 = pico.getComponent(Apple.class);
-Apple a2 = pico.getComponent(Apple.class);
-// both the same instance
-</pre>
-</div>
-<h2><a name="o" id="o"></a>Others</h2>
+<h4>Thread Safety</h4>
 
-<h3>Property Applying</h3>
+<p>Synchronizing and Locking are variations on where PicoContainer ensures that components can used in a thread-safe way.  See the <a href="thread-safety.html">Thread Safety</a> behavior page.</p>
 
-<p>This is where there are a number of setters for a component
-    that will be could be set after instantiation. A way of handing in some
-    configuration if you like.</p>
+<h4>Interception</h4>
 
-<div class="source">
-<pre>class Foo {
- String message;
- public void setMessage(String message) {
- this.message = message;
- }
- public String toString() {
- return message;
- }
-}
-...
-pico = new DefaultPicoContainer(new PropertyApplying());
-pico.addComponent(Foo.class);
-PropertyApplicator pa = (PropertyApplicator) pico.getComponentAdapter(Foo.class);
-pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
-System.out.println(pico.getComponent(Foo.class)); // prints hello
-</pre>
-</div>
-<div class="source">
-<pre>pico = new DefaultPicoContainer();
-pico.as(APPLY_PROPERTIES).addComponent(Foo.class);
-PropertyApplicator pa = (PropertyApplicator) pico.getComponentAdapter(Foo.class);
-pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
-System.out.println(pico.getComponent(Foo.class)); // prints hello
-</pre>
-</div>
-<div class="source">
-<pre>pico = new PicoBuilder().withProperties().build();
-pico.addComponent(Foo.class);
-PropertyApplicator pa = (PropertyApplicator) pico.getComponentAdapter(Foo.class);
-pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
-System.out.println(pico.getComponent(Foo.class)); // prints hello
-</pre>
-</div>
-<div class="source">
-<pre>import static org.picocontainer.behaviors.Behaviors.propertyApplying;
-...
-pico = new PicoBuilder().withBehaviors(propertyApplying()).build();
-pico.addComponent(Foo.class);
-PropertyApplicator pa = (PropertyApplicator) pico.getComponentAdapter(Foo.class);
-pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
-System.out.println(pico.getComponent(Foo.class)); // prints hello
-</pre>
-</div>
-Handling Behavior Chains
-<div class="source">
-<pre>import static org.picocontainer.behaviors.Behaviors.caching;
-import static org.picocontainer.behaviors.Behaviors.propertyApplying;
-...
-pico = new PicoBuilder().withBehaviors(caching(), propertyApplying()).build();
-pico.addComponent(Foo.class);
-Cached cached = (Cached) pico.getComponentAdapter(Foo.class);
-PropertyApplicator pa = (PropertyApplicator) getDelegate(PropertyApplicator.class);
-pa.setProperty(&quot;message&quot;, &quot;hello&quot;);
-System.out.println(pico.getComponent(Foo.class)); // prints hello
-</pre>
-</div>
-<h3>Automatic</h3>
-
-<p>This is where a component is going to be instantiated
-    regardless of whether:</p>
-<ul>
-    <li> it is looked up</li>
-    <li> any component that needs it is looked up</li>
-    <li>it is Startable</li>
-</ul>
-<p>It is most likely that you're doing this because the component
-    in question is self contained and doing something once only.
-    Alternatively, you're cutting a legacy codebase over from
-    nest-of-singletons to dependency injection in stages.</p>
-
-<div class="source">
-<pre>class Foo {
-
- public Foo() {
- System.out.println(&quot;Foo was instantiated&quot;);
- }
-}
-
-...
-pico = new DefaultPicoContainer(new Automatic());
-pico.addComponent(Foo.class);
-pico.addComponent(&quot;bar&quot;, String.class);
-pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
-</pre>
-</div>
-<div class="source">
-<pre>pico = new DefaultPicoContainer();
-pico.as(AUTOMATIC).addComponent(Foo.class);
-pico.addComponent(&quot;bar&quot;, String.class);
-pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
-</pre>
-</div>
-<div class="source">
-<pre>pico = new PicoBuilder().withAutomatic().build();
-pico.addComponent(Foo.class);
-pico.addComponent(&quot;bar&quot;, String.class);
-pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
-</pre>
-</div>
-<div class="source">
-<pre>import static org.picocontainer.behaviors.Behaviors.automatic;
-...
-pico = new PicoBuilder().withBehaviors(automatic()).build();
-pico.addComponent(Foo.class);
-pico.addComponent(&quot;bar&quot;, String.class);
-pico.getComponent(&quot;bar&quot;); // Foo instantiated too.
-</pre>
-</div>
-<h3>Handling Nested Chains of Behavior</h3>
-
-<p>&nbsp;</p>
-
-<h3>&nbsp;</h3>
+<p>AOP Style Interception is where PicoContainer can invoke functionality before or after component method execution.  See the <a href="interception.html">Interception</a> behavior page.</p>
 
 <h3>Where Next?</h3>
 <span class="callout">
