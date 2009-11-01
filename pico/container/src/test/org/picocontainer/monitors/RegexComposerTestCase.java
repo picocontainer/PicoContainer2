@@ -30,19 +30,16 @@ public class RegexComposerTestCase extends TestCase {
         pico.addComponent("plum", "Victoria");
 
         List apples = (List) pico.getComponent("apple[1-9]");
-        assertEquals(2, apples.size());
-        assertEquals("Braeburn", apples.get(0));
-        assertEquals("Granny Smith", apples.get(1));
+        assertEquals("[Braeburn, Granny Smith]", apples.toString());
     }
-
 
     @Test
     public void canReturningDifferentListsForDifferentComposers() {
         MutablePicoContainer pico = new DefaultPicoContainer(
-                new ComposingMonitor(new RegexComposer("apple[1-9]", "apples"), new RegexComposer("plum", "plums")));
+                new ComposingMonitor(new RegexComposer("apple[1-9]", "apples"), new RegexComposer("plum*", "plums")));
         pico.addComponent("apple1", "Braeburn")
                 .addComponent("apple2", "Granny Smith")
-                .addComponent("plum", "Victoria");
+                .addComponent("plumV", "Victoria");
         pico.as(USE_NAMES).addComponent(NeedsApples.class)
                 .as(USE_NAMES).addComponent(NeedsPlums.class);
 
@@ -52,7 +49,7 @@ public class RegexComposerTestCase extends TestCase {
     }
 
     @Test
-    public void nonMatchingCanFallThroughToAnotherConponentMonitor() throws NoSuchMethodException {
+    public void nonMatchingCanFallThroughToAnotherComponentMonitor() throws NoSuchMethodException {
 
         final List<String> apples = new ArrayList<String>();
         apples.add("Cox's");
