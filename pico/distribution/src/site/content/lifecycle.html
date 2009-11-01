@@ -131,9 +131,26 @@ Apple a = pico.getComponent(Apple.class);
     default. You can specify NullLifecycleStrategy instead if you are sure
     that no components honor any lifecycle concept..</p>
 
+<h3>Lazy Lifecycles</h3>
+
+<p>By default PicoContainer will start all startable (or appropriate) components when pico.start() is called.  Lazy lifecycle is where the component in question is not started when pico.start() is called, but when the first access to it happens.</p>  It is available for any concept of startable component, but can only happen if you override the the isLazy() method of those classes:
+
+<div class="source"><pre>
+pico = new DefaultPicoContainer(new StartableLifecycleStrategy() {
+	@Override
+	public boolean isLazy(Class&lt;?> type) {
+		return true; // or something more conditional
+	}
+});
+pico.addComponent(Apple.class);
+pico.start();   // start does not get called yet
+Apple a = pico.getComponent(Apple.class);    // start gets called now as part of getComponent(..)
+</pre>
+</div>
+
 <h3>Custom Lifecycles</h3>
 
-<p>Write a class that implements LifecycleStragegy, there are just
+<p>Write a class that implements LifecycleStrategy, there are just
     four methods to implement. See LifecycleStrategy.</p>
 
 <h3>Where Next?</h3>
