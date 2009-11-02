@@ -122,7 +122,7 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Comp
         return lifecycleStrategy.hasLifecycle(type);
     }
 
-    public boolean isLazy(ComponentAdapter adapter) {
+    public boolean isLazy(ComponentAdapter<?> adapter) {
         return lifecycleStrategy.isLazy(adapter);
     }
 }

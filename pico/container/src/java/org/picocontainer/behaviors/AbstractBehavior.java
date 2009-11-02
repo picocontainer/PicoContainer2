@@ -199,7 +199,7 @@ public abstract class AbstractBehavior<T> implements org.picocontainer.Behavior<
         return delegate instanceof LifecycleStrategy && ((LifecycleStrategy) delegate).hasLifecycle(type);
     }
 
-    public boolean isLazy(ComponentAdapter adapter) {
+    public boolean isLazy(ComponentAdapter<?> adapter) {
         return delegate instanceof LifecycleStrategy && ((LifecycleStrategy) delegate).isLazy(adapter);
     }
 

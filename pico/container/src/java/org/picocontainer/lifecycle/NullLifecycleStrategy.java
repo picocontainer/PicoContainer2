@@ -42,7 +42,7 @@ public class NullLifecycleStrategy implements LifecycleStrategy, Serializable {
         return false;
     }
 
-    public boolean isLazy(ComponentAdapter adapter) {
+    public boolean isLazy(ComponentAdapter<?> adapter) {
         return false;
     }
 }

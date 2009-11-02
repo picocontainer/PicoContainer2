@@ -61,5 +61,5 @@ public interface LifecycleStrategy {
      * @param adapter
      * @return true if lazy, false if not lazy
      */
-    boolean isLazy(ComponentAdapter adapter);
+    boolean isLazy(ComponentAdapter<?> adapter);
 }

@@ -145,7 +145,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         return lifecycleStrategy.hasLifecycle(type);
     }
 
-    public boolean isLazy(ComponentAdapter adapter) {
+    public boolean isLazy(ComponentAdapter<?> adapter) {
         return lifecycleStrategy.isLazy(adapter);
     }
 

@@ -52,7 +52,7 @@ public class CompositeLifecycleStrategy implements LifecycleStrategy {
         return false;
     }
 
-    public boolean isLazy(ComponentAdapter adapter) {
+    public boolean isLazy(ComponentAdapter<?> adapter) {
         for (StartableLifecycleStrategy lifecycleStrategy : alternateStrategies) {
             if (lifecycleStrategy.isLazy(adapter)) {
                 return true;

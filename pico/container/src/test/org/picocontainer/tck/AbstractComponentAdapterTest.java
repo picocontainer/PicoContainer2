@@ -624,7 +624,7 @@ public abstract class AbstractComponentAdapterTest  {
             return true;
         }
 
-        public boolean isLazy(ComponentAdapter adapter) {
+        public boolean isLazy(ComponentAdapter<?> adapter) {
             return false;
         }
 
