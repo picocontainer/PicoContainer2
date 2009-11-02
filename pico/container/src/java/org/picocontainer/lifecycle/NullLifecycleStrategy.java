@@ -11,6 +11,7 @@ package org.picocontainer.lifecycle;
 
 import java.io.Serializable;
 
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.LifecycleStrategy;
 
 /**
@@ -41,7 +42,7 @@ public class NullLifecycleStrategy implements LifecycleStrategy, Serializable {
         return false;
     }
 
-    public boolean isLazy(Class<?> type) {
+    public boolean isLazy(ComponentAdapter adapter) {
         return false;
     }
 }

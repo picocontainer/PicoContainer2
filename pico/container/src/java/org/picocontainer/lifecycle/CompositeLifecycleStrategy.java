@@ -7,6 +7,7 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.LifecycleStrategy;
 
 /**
@@ -51,9 +52,9 @@ public class CompositeLifecycleStrategy implements LifecycleStrategy {
         return false;
     }
 
-    public boolean isLazy(Class<?> type) {
+    public boolean isLazy(ComponentAdapter adapter) {
         for (StartableLifecycleStrategy lifecycleStrategy : alternateStrategies) {
-            if (lifecycleStrategy.isLazy(type)) {
+            if (lifecycleStrategy.isLazy(adapter)) {
                 return true;
             }
         }

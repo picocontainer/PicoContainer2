@@ -15,7 +15,7 @@ public class LazyLifecycleStrategyTestCase {
         final StringBuilder sb = new StringBuilder();
         MutablePicoContainer pico = new DefaultPicoContainer(new StartableLifecycleStrategy(new NullComponentMonitor()) {
             @Override
-            public boolean isLazy(Class<?> type) {
+            public boolean isLazy(ComponentAdapter adapter) {
                 return true;
             }
         }, new EmptyPicoContainer());        
@@ -37,7 +37,7 @@ public class LazyLifecycleStrategyTestCase {
         final StringBuilder sb = new StringBuilder();
         MutablePicoContainer pico = new DefaultPicoContainer(new StartableLifecycleStrategy(new NullComponentMonitor()) {
             @Override
-            public boolean isLazy(Class<?> type) {
+            public boolean isLazy(ComponentAdapter adapter) {
                 return true;
             }
         }, new EmptyPicoContainer());
@@ -56,8 +56,8 @@ public class LazyLifecycleStrategyTestCase {
         final StringBuilder sb = new StringBuilder();
         MutablePicoContainer pico = new DefaultPicoContainer(new StartableLifecycleStrategy(new NullComponentMonitor()) {
             @Override
-            public boolean isLazy(Class<?> type) {
-                return type == MyStartableComp.class;
+            public boolean isLazy(ComponentAdapter adapter) {
+                return adapter.getComponentImplementation() == MyStartableComp.class;
             }
         }, new EmptyPicoContainer());
         pico.addComponent(sb);

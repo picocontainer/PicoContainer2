@@ -9,6 +9,7 @@ package org.picocontainer.lifecycle;
 
 import java.io.Serializable;
 
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.LifecycleStrategy;
@@ -51,7 +52,7 @@ public abstract class AbstractMonitoringLifecycleStrategy implements LifecycleSt
         return componentMonitor;
     }
 
-    public boolean isLazy(Class<?> type) {
+    public boolean isLazy(ComponentAdapter adapter) {
         return false;
     }
 

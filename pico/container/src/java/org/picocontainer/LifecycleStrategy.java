@@ -58,8 +58,8 @@ public interface LifecycleStrategy {
      * or lazy (it will only start on first getComponent() ).
      * The default is the first of those two.
      *
-     * @param type the component type in question
+     * @param adapter
      * @return true if lazy, false if not lazy
      */
-    boolean isLazy(Class<?> type);
+    boolean isLazy(ComponentAdapter adapter);
 }

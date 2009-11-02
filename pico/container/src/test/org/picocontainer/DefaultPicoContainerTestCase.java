@@ -521,7 +521,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 			return true;
 		}
 
-        public boolean isLazy(Class<?> type) {
+        public boolean isLazy(ComponentAdapter adapter) {
             return false;
         }
     }

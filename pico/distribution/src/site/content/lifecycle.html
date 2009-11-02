@@ -138,13 +138,14 @@ Apple a = pico.getComponent(Apple.class);
 <div class="source"><pre>
 pico = new DefaultPicoContainer(new StartableLifecycleStrategy() {
 	@Override
-	public boolean isLazy(Class&lt;?> type) {
+	public boolean isLazy(ComponentAdapter&lt;?> adapter) {
 		return true; // or something more conditional
 	}
 });
 pico.addComponent(Apple.class);
 pico.start();   // start does not get called yet
 Apple a = pico.getComponent(Apple.class);    // start gets called now as part of getComponent(..)
+pico.stop(); // stop all components that are startable whether lazy or not
 </pre>
 </div>
 
