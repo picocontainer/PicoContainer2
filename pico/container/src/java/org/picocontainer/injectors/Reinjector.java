@@ -8,14 +8,14 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
-import org.picocontainer.InjectionFactory;
+import org.picocontainer.*;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Properties;
 
 /**
@@ -62,6 +62,37 @@ public class Reinjector {
 
     /**
      * Reinjecting into a method.
+     * @param key the component-key from the parent set of components to inject into
+     * @param reinjectionMethodEnum the enum for the reflection method to use for injection.
+     * @return the result of the reinjection-method invocation.
+     */
+    public Object reinject(Class<?> key, Enum reinjectionMethodEnum) {
+        return reinject(key, key, parent.getComponent(key), NO_PROPERTIES, new MethodInjection(toMethod(reinjectionMethodEnum)));
+    }
+
+    private Method toMethod(final Enum reinjectionMethodEnum) {
+        Object methodOrException = AccessController.doPrivileged(new PrivilegedAction<Object>() {
+            public Object run() {
+                try {
+                    return reinjectionMethodEnum.getClass().getMethod("toMethod").invoke(reinjectionMethodEnum);
+                } catch (IllegalAccessException e) {
+                    return new PicoCompositionException("Illegal access to " + reinjectionMethodEnum.name());
+                } catch (InvocationTargetException e) {
+                    return new PicoCompositionException("Invocation Target Exception " + reinjectionMethodEnum.name(), e.getCause());
+                } catch (NoSuchMethodException e) {
+                    return new PicoCompositionException("Expected generated method toMethod() on enum");
+                }
+            }
+        });
+        if (methodOrException instanceof Method) {
+            return (Method) methodOrException;
+        } else {
+            throw (PicoCompositionException) methodOrException;
+        }
+    }
+
+    /**
+     * Reinjecting into a method.
      * @param key the component-key from the parent set of components to inject into (key and impl are the same)
      * @param reinjectionFactory the InjectionFactory to use for reinjection.
      * @return the result of the reinjection-method invocation.
@@ -74,7 +105,7 @@ public class Reinjector {
     /**
      * Reinjecting into a method.
      * @param key the component-key from the parent set of components to inject into
-     * @param implementation the implementation of the component that is going to result.
+     * @param impl the implementation of the component that is going to result.
      * @param reinjectionFactory the InjectionFactory to use for reinjection.
      * @return
      */

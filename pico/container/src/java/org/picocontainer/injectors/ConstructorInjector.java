@@ -10,21 +10,12 @@
 
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.NameBinding;
+import org.picocontainer.*;
+import org.picocontainer.containers.ImmutablePicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
+import java.lang.reflect.*;
 import java.lang.annotation.Annotation;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -55,6 +46,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
     private transient ThreadLocalCyclicDependencyGuard<T> instantiationGuard;
     private boolean rememberChosenConstructor = true;
     private transient CtorAndAdapters<T> chosenConstructor;
+    private boolean enableEmjection = false;
 
     /**
      * Constructor injector that uses no monitor and no lifecycle adapter.  This is a more
@@ -199,6 +191,10 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         return new CtorAndAdapters<T>(greediestConstructor, greediestConstructorsParameters, greediestConstructorsParametersComponentAdapters);
     }
 
+    public void enableEmjection(boolean enableEmjection) {
+        this.enableEmjection = enableEmjection;
+    }
+
     private static final class ResolverKey {
         private final Type expectedType;
         private final String pName;
@@ -336,7 +332,15 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             };
         }
         instantiationGuard.setGuardedContainer(container);
-        return instantiationGuard.observe(getComponentImplementation());
+        T inst = instantiationGuard.observe(getComponentImplementation());
+        decorate(inst, container);
+        return inst;
+    }
+
+    private void decorate(T inst, PicoContainer container) {
+        if (enableEmjection) {
+            Emjection.setupEmjection(inst, container);
+        }
     }
 
     private List<Constructor<T>> getSortedMatchingConstructors() {

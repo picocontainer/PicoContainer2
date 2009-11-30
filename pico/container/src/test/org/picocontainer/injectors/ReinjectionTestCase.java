@@ -77,6 +77,21 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         public Object getString() {
             return string;
         }
+        public static enum M {
+            doIt("doIt", String.class);
+            private Method method;
+
+            M(String s, Class... paramTypes) {
+                try {
+                    method = NeedsShoe.class.getMethod(s, paramTypes);
+                } catch (NoSuchMethodException e) {
+                    throw new UnsupportedOperationException(e);
+                }
+            }
+            public Method toMethod() {
+                return method;
+            }
+        }
     }
 
     public static class Shoe {
@@ -228,8 +243,22 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         final ComponentMonitor cm = new NullComponentMonitor();
         Reinjector reinjector = new Reinjector(parent, cm);
 
-        int result = (Integer) reinjector.reinject(NeedsShoe.class, DOIT_METHOD);
+        //int result = (Integer) reinjector.reinject(NeedsShoe.class, DOIT_METHOD);
         assertEquals(6, (int) (Integer) reinjector.reinject(NeedsShoe.class, DOIT_METHOD));
+        assertEquals(6, (int) (Integer) reinjector.reinject(NeedsShoe.class, new MethodInjection(DOIT_METHOD)));
+
+    }
+
+    @Test public void testOverloadedReinjectMethodsAreIdentical2() {
+        final DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
+        parent.addComponent(INeedsShoe.class, NeedsShoe.class);
+        parent.addComponent(Shoe.class);
+        parent.addComponent("12");
+
+        final ComponentMonitor cm = new NullComponentMonitor();
+        Reinjector reinjector = new Reinjector(parent, cm);
+
+        assertEquals(6, (int) (Integer) reinjector.reinject(NeedsShoe.class, NeedsShoe.M.doIt));
         assertEquals(6, (int) (Integer) reinjector.reinject(NeedsShoe.class, new MethodInjection(DOIT_METHOD)));
 
     }
@@ -247,7 +276,6 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         };
         Reinjector reinjector = new Reinjector(parent, cm);
 
-        int result = (Integer) reinjector.reinject(NeedsShoe.class, DOIT_METHOD);
         assertEquals(4444, (int) (Integer) reinjector.reinject(NeedsShoe.class, DOIT_METHOD));
 
     }
@@ -265,7 +293,6 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         };
         Reinjector reinjector = new Reinjector(parent, cm);
 
-        int result = (Integer) reinjector.reinject(NeedsShoe.class, DOIT_METHOD);
         assertEquals(6, (int) (Integer) reinjector.reinject(NeedsShoe.class, DOIT_METHOD));
 
     }

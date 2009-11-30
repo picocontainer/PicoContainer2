@@ -38,6 +38,7 @@ public final class Characteristics {
     private static final String _USE_NAMES = "use-parameter-names";    
     private static final String _ENABLE_CIRCULAR = "enable-circular";
     private static final String _GUARD = "guard";
+    private static final String _EMJECTION = "emjection_enabled";
 
     /**
      * Since properties use strings, we supply String constants for Boolean conditions.
@@ -151,6 +152,8 @@ public final class Characteristics {
     public static final Properties AUTOMATIC = immutable(_AUTOMATIC, TRUE);
 
     public static final Properties USE_NAMES = immutable(_USE_NAMES, TRUE);
+
+    public static final Properties EMJECTION_ENABLED = immutable(_EMJECTION, TRUE);
 
     public static final Properties GUARD = immutable(_GUARD, "guard");
 
