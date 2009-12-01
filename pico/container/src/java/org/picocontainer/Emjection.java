@@ -2,6 +2,7 @@ package org.picocontainer;
 
 import org.picocontainer.containers.ImmutablePicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
+import org.picocontainer.injectors.ConstructorInjection;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -21,7 +22,7 @@ public class Emjection {
         if (emjection.pico == null) {
             throw new PicoCompositionException("blah");
         }
-        TransientPicoContainer tpc = new TransientPicoContainer(emjection.pico);
+        TransientPicoContainer tpc = new TransientPicoContainer(new ConstructorInjection(), emjection.pico);
         for (Object arg : args) {
             tpc.addComponent(arg);
         }
