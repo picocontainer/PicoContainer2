@@ -27,6 +27,7 @@ import java.util.Set;
 import com.thoughtworks.paranamer.Paranamer;
 import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.AdaptiveParanamer;
+import com.thoughtworks.paranamer.AnnotationParanamer;
 
 /**
  * Injection will happen iteratively after component instantiation
@@ -125,7 +126,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
     protected NameBinding makeParameterNameImpl(AccessibleObject member) {
         if (paranamer == null) {
-            paranamer = new CachingParanamer(new AdaptiveParanamer());
+            paranamer = new CachingParanamer(new AnnotationParanamer(new AdaptiveParanamer()));
         }
         return new ParameterNameBinding(paranamer,  member, 0);
     }
