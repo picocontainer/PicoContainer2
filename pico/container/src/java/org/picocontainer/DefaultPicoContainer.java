@@ -684,8 +684,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
                             intoThreadLocal = new IntoThreadLocal();
                         }
                     }
-                    intoThreadLocal.set(new InjectInto(componentAdapter.getComponentImplementation(), componentAdapter.getComponentKey()));
-                    instance = componentAdapter.getComponentInstance(this, ComponentAdapter.NOTHING.class);
+                    instance = componentAdapter.getComponentInstance(this, intoThreadLocal.get());
                 }
             } catch (AbstractInjector.CyclicDependencyException e) {
                 if (parent != null) {
