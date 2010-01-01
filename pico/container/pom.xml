@@ -18,12 +18,12 @@
             <artifactId>jsr250-api</artifactId>
             <scope>provided</scope>
         </dependency>
-        <!--dependency>
+        <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
             <optional>true</optional>
-        </dependency-->        
+        </dependency>
     </dependencies>
 
     <build>
@@ -61,6 +61,7 @@
                             <artifactSet>
                                 <excludes>
                                     <exclude>javax.annotation:jsr250-api</exclude>
+                                    <exclude>javax.inject:javax.inject</exclude>
                                 </excludes>
                             </artifactSet>
                             <filters>
