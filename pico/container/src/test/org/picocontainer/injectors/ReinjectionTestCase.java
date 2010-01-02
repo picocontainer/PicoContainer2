@@ -70,6 +70,11 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
             return Integer.parseInt(s) / 2;
         }
 
+        public int doInt(int s) {
+            this.string = "i="+ s;
+            return s/2;
+        }
+
         public Object getBar() {
             return bar;
         }
@@ -169,6 +174,35 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
         assertNotNull(needsShoe2.bar);
         assertNotNull(needsShoe2.string);
         assertEquals("12", needsShoe2.string);
+
+    }
+
+    @Test
+    public void confirmThatReinjectionCanLeverageParameterNamesForDisambiguationWithTypeConversion() throws NoSuchMethodException {
+        MethodInjection methodInjection = new MethodInjection(NeedsShoe.class.getMethod("doInt", int.class));
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
+
+        // parameter name leverage can't work on interfaces if using bytecode retrieval technique
+
+        parent.addComponent(NeedsShoe.class);
+        parent.addComponent(Shoe.class);
+        parent.addComponent("a", "1333");
+        parent.addComponent("s", "12");
+        parent.addComponent("tjklhjkjhkjh", "44");
+
+        NeedsShoe needsShoe = parent.getComponent(NeedsShoe.class);
+        assertNotNull(needsShoe.bar);
+        assertTrue(needsShoe.string == null);
+
+        Reinjection reinjection = new Reinjection(methodInjection, parent);
+        TransientPicoContainer tpc = new TransientPicoContainer(reinjection, parent);
+        tpc.as(Characteristics.USE_NAMES).addComponent(NeedsShoe.class);
+
+        NeedsShoe needsShoe2 = tpc.getComponent(NeedsShoe.class);
+        assertSame(needsShoe, needsShoe2);
+        assertNotNull(needsShoe2.bar);
+        assertNotNull(needsShoe2.string);
+        assertEquals("i=12", needsShoe2.string);
 
     }
 
