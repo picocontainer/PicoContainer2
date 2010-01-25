@@ -11,7 +11,7 @@ package org.picocontainer.injectors;
 /**
  * Providers are a type of Injector that can participate in Injection via a custom method.
  *
- * Implementors of this class must implement a single method called provide.  That method must return
+ * Implementers of this class must implement a single method called provide.  That method must return
  * the component type intended to be provided.  The method can accept parameters that PicoContainer
  * will satisfy.
  */

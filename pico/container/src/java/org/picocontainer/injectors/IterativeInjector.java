@@ -59,7 +59,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     }
 
     protected Constructor getConstructor()  {
-        Object retVal = AccessController.doPrivileged(new PrivilegedAction() {
+        Object retVal = AccessController.doPrivileged(new PrivilegedAction<Object>() {
             public Object run() {
                 try {
                     return getComponentImplementation().getConstructor((Class[])null);

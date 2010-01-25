@@ -122,7 +122,7 @@ public interface ComponentMonitor {
                                    RuntimeException cause);
 
     /**
-     * No Component has been found for the key in question. Implementors of this have a last chance opportunity to
+     * No Component has been found for the key in question. Implementers of this have a last chance opportunity to
      * specify something for the need.  This is only relevant to component dependencies, and not to
      * container.getComponent(<key>) in your user code.
      *

@@ -44,7 +44,6 @@ public abstract class AbstractBehavior<T> implements org.picocontainer.Behavior<
 
     protected final ComponentAdapter<T> delegate;
 
-
     public AbstractBehavior(ComponentAdapter<T> delegate) {
         this.delegate = delegate;
     }

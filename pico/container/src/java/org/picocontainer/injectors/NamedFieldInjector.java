@@ -79,8 +79,8 @@ public class NamedFieldInjector extends IterativeInjector {
     }
 
     private Field[] getFields() {
-        return (Field[]) AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
+        return AccessController.doPrivileged(new PrivilegedAction<Field[]>() {
+            public Field[] run() {
                 return getComponentImplementation().getDeclaredFields();
             }
         });

@@ -32,7 +32,6 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class AnnotatedFieldInjector extends IterativeInjector {
 
-
     private final Class<? extends Annotation> injectionAnnotation;
 
     public AnnotatedFieldInjector(Object key,
@@ -81,13 +80,12 @@ public class AnnotatedFieldInjector extends IterativeInjector {
     }
 
     private Field[] getFields(final Class clazz) {
-        return (Field[]) AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
+        return AccessController.doPrivileged(new PrivilegedAction<Field[]>() {
+            public Field[] run() {
                 return clazz.getDeclaredFields();
             }
         });
     }
-
 
     protected Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
             throws IllegalAccessException, InvocationTargetException {

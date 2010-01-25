@@ -61,8 +61,8 @@ public class CustomPermissionsURLClassLoader extends URLClassLoader {
         while (classLoader != null) {
             sb.append(classLoader.toString()).append("\n");
             final ClassLoader cl = classLoader;
-            classLoader = (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {
-                public Object run() {
+            classLoader = AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
+                public ClassLoader run() {
                     return cl.getParent();
                 }
             });

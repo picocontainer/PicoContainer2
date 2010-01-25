@@ -11,7 +11,7 @@ package org.picocontainer;
 import java.lang.reflect.Type;
 
 /**
- * Implementors are responsible for instantiating and injecting dependancies into
+ * Implementers are responsible for instantiating and injecting dependancies into
  * Constructors, Methods and Fields.
  */
 public interface Injector<T> extends ComponentAdapter<T> {

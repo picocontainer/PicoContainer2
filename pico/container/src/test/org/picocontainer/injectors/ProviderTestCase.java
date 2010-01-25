@@ -13,9 +13,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.PicoCompositionException;
+
+import org.picocontainer.*;
 import org.picocontainer.annotations.Nullable;
+import org.picocontainer.behaviors.ThreadCaching;
+import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
+import org.picocontainer.monitors.LifecycleComponentMonitor;
 
 public class ProviderTestCase {
     
@@ -253,6 +256,80 @@ public class ProviderTestCase {
                 throw new RuntimeException(e);  
             }
         }
+    }
+
+    @Test
+    public void providersCanHaveLifecyclesToo() {
+        ComponentMonitor componentMonitor = new LifecycleComponentMonitor();
+        LifecycleStrategy lifecycleStrategy = new
+                ReflectionLifecycleStrategy(componentMonitor);
+
+        MutablePicoContainer pico = new DefaultPicoContainer(new
+                ThreadCaching(), lifecycleStrategy, null);
+
+        StringBuilder sb = new StringBuilder();
+        pico.addComponent(Configuration.class);
+        pico.addAdapter(new ProviderAdapter(lifecycleStrategy, new ComponentProvider(sb)));
+        Object foo = pico.getComponent(Component.class);
+        pico.start();
+        pico.stop();
+        assertEquals("@<>", sb.toString());
+
+    }
+
+    public class ComponentProvider implements Provider {
+        private StringBuilder sb;
+
+        public ComponentProvider(StringBuilder sb) {
+            this.sb = sb;
+        }
+
+        public Component provide(Configuration config) {
+            return new ComponentImpl(sb, config.getHost(), config.getPort());
+        }
+    }
+
+    public static class Configuration {
+
+        public String getHost() {
+            return "hello";
+        }
+
+        public int getPort() {
+            return 99;
+        }
+
+        public void start() {
+        }
+
+        public void stop() {
+        }
+
+    }
+
+    public static interface Component {
+
+        public void start();
+
+        public void stop();
+
+    }
+
+    public static class ComponentImpl implements Component {
+
+        private StringBuilder sb;
+
+        public ComponentImpl(StringBuilder sb, String host, int port) {
+            this.sb = sb.append("@");
+        }
+
+        public void start() {
+            sb.append("<");
+        }
+        public void stop() {
+            sb.append(">");
+        }
+
     }
 
 
