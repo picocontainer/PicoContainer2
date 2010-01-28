@@ -6,11 +6,7 @@ import java.util.List;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.NameBinding;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
-import org.picocontainer.PicoVisitor;
+import org.picocontainer.*;
 
 /**
  * abstract base class for immutable delegation to pico
@@ -18,7 +14,7 @@ import org.picocontainer.PicoVisitor;
  * @author k.pribluda
  * 
  */
-public abstract class AbstractDelegatingPicoContainer implements PicoContainer, Serializable{
+public abstract class AbstractDelegatingPicoContainer implements PicoContainer, Converting, Serializable{
 
     private PicoContainer delegate;
 
@@ -103,5 +99,13 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
     
     public String toString() {
         return "D<" + delegate.toString();
+    }
+
+    public Converter getConverter() {
+        if (delegate instanceof Converting) {
+            return ((Converting) delegate).getConverter();
+        } else {
+            return null;
+        }
     }
 }

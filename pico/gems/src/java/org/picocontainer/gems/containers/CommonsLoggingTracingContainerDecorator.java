@@ -9,12 +9,8 @@
  *****************************************************************************/
 package org.picocontainer.gems.containers;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.NameBinding;
+import org.picocontainer.*;
+import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.lifecycle.LifecycleState;
 
 import java.util.Collection;
@@ -32,7 +28,7 @@ import org.apache.commons.logging.LogFactory;
  */
 @Deprecated
 @SuppressWarnings("serial")
-public class CommonsLoggingTracingContainerDecorator implements MutablePicoContainer, Serializable {
+public class CommonsLoggingTracingContainerDecorator implements MutablePicoContainer, Converting, Serializable {
 
 
 	/** Wrapped container. */
@@ -162,10 +158,8 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
      * {@inheritDoc}
      *
      * @param componentType
-     *
      * @return ComponentAdapter or null.
-     *
-     * @see org.picocontainer.PicoContainer#getComponentAdapter(java.lang.Class)
+     * @see org.picocontainer.PicoContainer#getComponentAdapter(java.lang.Class, NameBinding)
      */
 
     public <T> ComponentAdapter<T> getComponentAdapter(final Class<T> componentType, final NameBinding componentNameBinding) {
@@ -534,5 +528,10 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
         delegate.setLifecycleState(lifecycleState);
     }
 
-
+    public Converting.Converter getConverter() {
+        if (delegate instanceof Converting) {
+            return ((Converting) delegate).getConverter();
+        }
+        return new EmptyPicoContainer.NullConverter();
+    }
 }

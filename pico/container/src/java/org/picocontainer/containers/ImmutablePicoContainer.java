@@ -9,10 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.NameBinding;
+import org.picocontainer.*;
 
 import java.util.List;
 import java.util.Collection;
@@ -27,7 +24,7 @@ import java.lang.reflect.Type;
  * @author Konstantin Pribluda
  */
 @SuppressWarnings("serial")
-public final class ImmutablePicoContainer implements PicoContainer, Serializable {
+public final class ImmutablePicoContainer implements PicoContainer, Converting, Serializable {
 
     private final PicoContainer delegate;
 
@@ -108,5 +105,12 @@ public final class ImmutablePicoContainer implements PicoContainer, Serializable
 
     public String toString() {
         return "I<" + delegate.toString();
+    }
+
+    public Converting.Converter getConverter() {
+        if (delegate instanceof Converting) {
+            return ((Converting) delegate).getConverter();
+        }
+        return new EmptyPicoContainer.NullConverter();
     }
 }

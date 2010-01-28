@@ -9,11 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
-import org.picocontainer.PicoContainer;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.NameBinding;
-import org.picocontainer.PicoVisitor;
+import org.picocontainer.*;
 
 import java.lang.reflect.Type;
 import java.lang.annotation.Annotation;
@@ -27,9 +23,33 @@ import java.util.Collections;
  * in turn for getComponent(*) and getComponentAdapter(*) requests.  Methods returning
  * lists and getParent/accept will not function.
  */
-public class CompositePicoContainer implements PicoContainer, Serializable {
+public class CompositePicoContainer implements PicoContainer, Converting, Serializable {
 
     private final PicoContainer[] containers;
+    private CompositeConverter compositeConverter = new CompositeConverter();
+
+    public class CompositeConverter implements Converting.Converter {
+        public boolean canConvert(Type type) {
+            for (PicoContainer container : containers) {
+                if (container instanceof Converting && ((Converting) container).getConverter().canConvert(type)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public Object convert(String paramValue, Type type) {
+            for (PicoContainer container : containers) {
+                if (container instanceof Converting) {
+                    Converting.Converter converter = ((Converting) container).getConverter();
+                    if (converter.canConvert(type)) {
+                        return converter.convert(paramValue, type);
+                    }
+                }
+            }
+            return null;
+        }
+    }
 
     public CompositePicoContainer(PicoContainer... containers) {
         this.containers = containers;
@@ -124,5 +144,9 @@ public class CompositePicoContainer implements PicoContainer, Serializable {
     }
 
     public void accept(PicoVisitor visitor) {
+    }
+
+    public Converting.Converter getConverter() {
+        return compositeConverter;
     }
 }

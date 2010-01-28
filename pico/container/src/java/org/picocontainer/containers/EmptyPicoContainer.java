@@ -9,10 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.containers;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.NameBinding;
+import org.picocontainer.*;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -29,7 +26,7 @@ import java.lang.reflect.Type;
  * @author Konstantin Pribluda
  */
 @SuppressWarnings("serial")
-public class EmptyPicoContainer implements PicoContainer, Serializable {
+public class EmptyPicoContainer implements PicoContainer, Converting, Serializable {
 
     public Object getComponent(Object componentKeyOrType) {
         return null;
@@ -91,5 +88,19 @@ public class EmptyPicoContainer implements PicoContainer, Serializable {
 
     public String toString() {
         return "(empty)";
+    }
+
+    public Converting.Converter getConverter() {
+        return new NullConverter();
+    }
+
+    public static class NullConverter implements Converting.Converter {
+        public boolean canConvert(Type type) {
+            return false;
+        }
+
+        public Object convert(String paramValue, Type type) {
+            return null;
+        }
     }
 }

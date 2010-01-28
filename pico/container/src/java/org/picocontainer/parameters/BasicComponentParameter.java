@@ -9,25 +9,15 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
-import java.io.File;
 import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.NameBinding;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.*;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.InjectInto;
 
@@ -47,87 +37,10 @@ import org.picocontainer.injectors.InjectInto;
 @SuppressWarnings("serial")
 public class BasicComponentParameter extends AbstractParameter implements Parameter, Serializable {
 
-    private static interface Converter {
-        Object convert(String paramValue);
-    }
-
-    private static class NewInstanceConverter implements Converter {
-        private Constructor c;
-
-        private NewInstanceConverter(Class clazz) {
-            try {
-                c = clazz.getConstructor(String.class);
-            } catch (NoSuchMethodException e) {
-            }
-        }
-
-        public Object convert(String paramValue) {
-            try {
-                return c.newInstance(paramValue);
-            } catch (IllegalAccessException e) {
-            } catch (InvocationTargetException e) {
-            } catch (InstantiationException e) {
-            }
-            return null;
-        }
-    }
-
     /** <code>BASIC_DEFAULT</code> is an instance of BasicComponentParameter using the default constructor. */
     public static final BasicComponentParameter BASIC_DEFAULT = new BasicComponentParameter();
 
     private Object componentKey;
-
-
-    private static final Map<Class, Converter> stringConverters = new HashMap<Class, Converter>();
-    static {
-        stringConverters.put(Integer.class, new Converter(){
-            public Object convert(String paramValue) {
-                return Integer.valueOf(paramValue);
-            }
-        });
-        stringConverters.put(Double.class, new Converter() {
-            public Object convert(String paramValue) {
-                return Double.valueOf(paramValue);
-            }
-        });
-        stringConverters.put(Boolean.class, new Converter(){
-            public Object convert(String paramValue) {
-                return Boolean.valueOf(paramValue);
-            }
-        });
-        stringConverters.put(Long.class, new Converter() {
-            public Object convert(String paramValue) {
-                return Long.valueOf(paramValue);
-            }
-        });
-        stringConverters.put(Float.class, new Converter() {
-            public Object convert(String paramValue) {
-                return Float.valueOf(paramValue);
-            }
-        });
-        stringConverters.put(Character.class, new Converter() {
-            public Object convert(String paramValue) {
-                return paramValue.charAt(0);
-            }
-        });
-        stringConverters.put(Byte.class, new Converter() {
-            public Object convert(String paramValue) {
-                return Byte.valueOf(paramValue);
-            }
-        });
-        stringConverters.put(Short.class, new Converter() {
-            public Object convert(String paramValue) {
-                return Short.valueOf(paramValue);
-            }
-        });
-        stringConverters.put(File.class, new Converter() {
-            public Object convert(String paramValue) {
-                return new File(paramValue);
-            }
-        });
-
-    }
-
 
     /**
      * Expect a parameter matching a component of a specific key.
@@ -185,11 +98,11 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
                     return null;
                 }
                 if (componentAdapter instanceof DefaultPicoContainer.LateInstance) {
-                    return convert(((DefaultPicoContainer.LateInstance) componentAdapter).getComponentInstance(), expectedType);
+                    return convert(getConverter(container), ((DefaultPicoContainer.LateInstance) componentAdapter).getComponentInstance(), expectedType);
 //                } else if (injecteeAdapter != null && injecteeAdapter instanceof DefaultPicoContainer.KnowsContainerAdapter) {
 //                    return convert(((DefaultPicoContainer.KnowsContainerAdapter) injecteeAdapter).getComponentInstance(makeInjectInto(forAdapter)), expectedType);
                 } else {
-                    return convert(container.getComponent(componentAdapter.getComponentKey(), makeInjectInto(forAdapter)), expectedType);
+                    return convert(getConverter(container), container.getComponent(componentAdapter.getComponentKey(), makeInjectInto(forAdapter)), expectedType);
                 }
             }
 
@@ -199,16 +112,19 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         };
     }
 
+    private Converting.Converter getConverter(PicoContainer container) {
+        return container instanceof Converting ? ((Converting) container).getConverter() : null;
+    }
+
     private static InjectInto makeInjectInto(ComponentAdapter<?> forAdapter) {
         return new InjectInto(forAdapter.getComponentImplementation(), forAdapter.getComponentKey());
     }
 
-    private static Object convert(Object o, Type expectedType) {
-        if (o instanceof String && expectedType != String.class) {
-            Converter converter = stringConverters.get(expectedType);
-            o = converter.convert((String) o);
+    private static Object convert(Converting.Converter converter, Object obj, Type expectedType) {
+        if (obj instanceof String && expectedType != String.class) {
+            obj = converter.convert((String) obj, expectedType);
         }
-        return o;
+        return obj;
     }
 
     public void verify(PicoContainer container,
@@ -275,7 +191,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
 
             if (result == null && useNames) {
                 ComponentAdapter found = container.getComponentAdapter(expectedNameBinding.getName());
-                if ((found != null) && areCompatible(expectedType, found) && found != adapter) {
+                if ((found != null) && areCompatible(container, expectedType, found) && found != adapter) {
                     result = found;
                 }
             }
@@ -299,7 +215,8 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         }
 
         if (!type.isAssignableFrom(result.getComponentImplementation())) {
-            if (!(result.getComponentImplementation() == String.class && stringConverters.containsKey(type))) {
+//            if (!(result.getComponentImplementation() == String.class && stringConverters.containsKey(type))) {
+            if (!(result.getComponentImplementation() == String.class && getConverter(container).canConvert(type))) {
                 return null;
             }
         }
@@ -344,9 +261,11 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         found.remove(exclude);
     }
 
-    private <T> boolean areCompatible(Class<T> expectedType, ComponentAdapter found) {
+    private <T> boolean areCompatible(PicoContainer container, Class<T> expectedType, ComponentAdapter found) {
         Class foundImpl = found.getComponentImplementation();
         return expectedType.isAssignableFrom(foundImpl) ||
-               (foundImpl == String.class && stringConverters.containsKey(expectedType))  ;
+               //(foundImpl == String.class && stringConverters.containsKey(expectedType))  ;
+               (foundImpl == String.class && getConverter(container) != null
+                       && getConverter(container).canConvert(expectedType))  ;
     }
 }

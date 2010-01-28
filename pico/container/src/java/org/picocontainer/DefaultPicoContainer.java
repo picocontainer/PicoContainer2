@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.picocontainer.converters.BuiltInConverter;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
@@ -38,7 +39,6 @@ import org.picocontainer.containers.ImmutablePicoContainer;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.FactoryInjector;
-import org.picocontainer.injectors.InjectInto;
 import org.picocontainer.lifecycle.DefaultLifecycleState;
 import org.picocontainer.lifecycle.LifecycleState;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
@@ -76,7 +76,7 @@ import org.picocontainer.parameters.DefaultConstructorParameter;
  * @author Mauro Talevi
  */
 @SuppressWarnings("serial")
-public class DefaultPicoContainer implements MutablePicoContainer, ComponentMonitorStrategy, Serializable  {
+public class DefaultPicoContainer implements MutablePicoContainer, Converting, ComponentMonitorStrategy, Serializable  {
 
     private String name;
 
@@ -133,6 +133,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
 
 
     private transient IntoThreadLocal intoThreadLocal = new IntoThreadLocal();
+    private Converting.Converter converter;
 
 
     /**
@@ -1076,6 +1077,16 @@ public class DefaultPicoContainer implements MutablePicoContainer, ComponentMoni
         return String.format("%s:%d<%s", (name != null ? name : super.toString()), this.componentAdapters.size(), (parent != null ? parent.toString() : "|"));
     }
 
+    public synchronized Converting.Converter getConverter() {
+        if (converter == null) {
+            if (parent == null || (parent instanceof Converting && ((Converting) parent).getConverter() instanceof EmptyPicoContainer.NullConverter)) {
+                converter = new BuiltInConverter();
+            } else {
+                return ((Converting) parent).getConverter();
+            }
+        }
+        return converter;
+    }
 
     private class AsPropertiesPicoContainer extends AbstractDelegatingMutablePicoContainer {
 

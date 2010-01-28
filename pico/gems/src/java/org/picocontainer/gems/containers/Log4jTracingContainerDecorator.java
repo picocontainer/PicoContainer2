@@ -10,12 +10,8 @@
 
 package org.picocontainer.gems.containers;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.NameBinding;
+import org.picocontainer.*;
+import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.lifecycle.LifecycleState;
 
 import java.io.ObjectInputStream;
@@ -64,7 +60,7 @@ import org.apache.log4j.Logger;
  */
 @Deprecated
 @SuppressWarnings("serial")
-public class Log4jTracingContainerDecorator implements MutablePicoContainer, Serializable {
+public class Log4jTracingContainerDecorator implements MutablePicoContainer, Converting, Serializable {
 
 
 	/** Wrapped container. */
@@ -441,8 +437,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
      */
     public MutablePicoContainer addComponent(final Object componentKey,
                                              final Object componentImplementationOrInstance,
-                                             final Parameter... parameters)
-    {
+                                             final Parameter... parameters) {
 
         if (logger.isDebugEnabled()) {
             logger.debug("Registering component "
@@ -593,5 +588,12 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Ser
 
     public void setLifecycleState(LifecycleState lifecycleState) {
         delegate.setLifecycleState(lifecycleState);
+    }
+
+    public Converting.Converter getConverter() {
+        if (delegate instanceof Converting) {
+            return ((Converting) delegate).getConverter();
+        }
+        return new EmptyPicoContainer.NullConverter();
     }
 }

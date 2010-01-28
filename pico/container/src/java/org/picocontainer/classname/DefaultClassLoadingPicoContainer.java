@@ -7,21 +7,8 @@
  ******************************************************************************/
 package org.picocontainer.classname;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentFactory;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.ComponentMonitorStrategy;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoClassNotFoundException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoException;
+import org.picocontainer.*;
 import org.picocontainer.security.CustomPermissionsURLClassLoader;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.NameBinding;
-import org.picocontainer.PicoVisitor;
 import org.picocontainer.lifecycle.LifecycleState;
 import org.picocontainer.classname.ClassPathElement;
 import org.picocontainer.classname.ClassLoadingPicoContainer;
@@ -54,7 +41,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         ClassLoadingPicoContainer, ComponentMonitorStrategy {
 
     /**
-     * Conversion Map to allow for primitives to be boxed to Object types.
+     * Converting Map to allow for primitives to be boxed to Object types.
      */
     private static final transient Map<String, String> primitiveNameToBoxedName = new HashMap<String, String>();
 
@@ -525,6 +512,10 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
 
         public void setLifecycleState(LifecycleState lifecycleState) {
             DefaultClassLoadingPicoContainer.this.setLifecycleState(lifecycleState);
+        }
+
+        public Converting.Converter getConverter() {
+            return DefaultClassLoadingPicoContainer.this.getConverter();
         }
     }
 
