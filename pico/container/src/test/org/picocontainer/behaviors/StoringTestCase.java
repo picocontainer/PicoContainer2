@@ -19,6 +19,8 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 
 public class StoringTestCase {
 
@@ -38,9 +40,9 @@ public class StoringTestCase {
 
     @Test public void testThatForASingleThreadTheBehaviorIsTheSameAsPlainCaching() {
 
-        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching(), new NullLifecycleStrategy(), new EmptyPicoContainer());
         Storing storeCaching = new Storing();
-        DefaultPicoContainer child = new DefaultPicoContainer(storeCaching, parent);
+        DefaultPicoContainer child = new DefaultPicoContainer(storeCaching, new NullLifecycleStrategy(), parent);
 
         parent.addComponent(StringBuilder.class);
         child.addComponent(Foo.class);
@@ -62,7 +64,7 @@ public class StoringTestCase {
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         final Storing storing = new Storing();
-        final DefaultPicoContainer child = new DefaultPicoContainer(storing, parent);
+        final DefaultPicoContainer child = new DefaultPicoContainer(storing, new NullLifecycleStrategy(), parent);
 
         parent.addComponent(StringBuilder.class);
         child.addComponent(Foo.class);
@@ -104,9 +106,9 @@ public class StoringTestCase {
         final Foo[] foos = new Foo[4];
         final Bar[] bars = new Bar[4];
 
-        DefaultPicoContainer appScope = new DefaultPicoContainer(new Caching());
-        final DefaultPicoContainer sessionScope = new DefaultPicoContainer(new Storing(), appScope);
-        final DefaultPicoContainer requestScope = new DefaultPicoContainer(new Storing(), sessionScope);
+        DefaultPicoContainer appScope = new DefaultPicoContainer(new Caching(), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        final DefaultPicoContainer sessionScope = new DefaultPicoContainer(new Storing(), new NullLifecycleStrategy(), appScope);
+        final DefaultPicoContainer requestScope = new DefaultPicoContainer(new Storing(), new NullLifecycleStrategy(), sessionScope);
 
         appScope.addComponent(StringBuilder.class);
         sessionScope.addComponent(Foo.class);
@@ -144,9 +146,9 @@ public class StoringTestCase {
 
         final Foo[] foos = new Foo[4];
 
-        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching(), new NullLifecycleStrategy(), new EmptyPicoContainer());
         final Storing storeCaching = new Storing();
-        final DefaultPicoContainer child = new DefaultPicoContainer(storeCaching, parent);
+        final DefaultPicoContainer child = new DefaultPicoContainer(storeCaching, new NullLifecycleStrategy(), parent);
 
         parent.addComponent(StringBuilder.class);
         child.addComponent(Foo.class);
@@ -190,9 +192,9 @@ public class StoringTestCase {
     @Test public void testThatCacheMapCanBeResetOnASubsequentThreadSimulatingASessionConcept() {
 
 
-        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching(), new NullLifecycleStrategy(), new EmptyPicoContainer());
         final Storing storeCaching = new Storing();
-        final DefaultPicoContainer child = new DefaultPicoContainer(storeCaching, parent);
+        final DefaultPicoContainer child = new DefaultPicoContainer(storeCaching, new NullLifecycleStrategy(), parent);
 
         parent.addComponent(StringBuilder.class);
         child.addComponent(Foo.class);

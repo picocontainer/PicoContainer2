@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
@@ -39,19 +40,6 @@ public class ConstructorInjectionTestCase extends AbstractComponentFactoryTest {
 
     protected ComponentFactory createComponentFactory() {
         return new ConstructorInjection();
-    }
-
-    @Test public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
-        RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
-        ConstructorInjection componentFactory =
-            new ConstructorInjection();
-        ConstructorInjector cica =  (ConstructorInjector)
-        componentFactory.createComponentAdapter(new NullComponentMonitor(), strategy, new Properties(), NullLifecycle.class, NullLifecycle.class);
-        One one = new RecordingLifecycle.One(new StringBuffer());
-        cica.start(one);
-        cica.stop(one);        
-        cica.dispose(one);
-        assertEquals("<start<stop<dispose", strategy.recording());
     }
 
     public static class ClassA {
@@ -101,7 +89,7 @@ public class ConstructorInjectionTestCase extends AbstractComponentFactoryTest {
         ConstructorInjection componentFactory = new ConstructorInjection();
         
         ConstructorInjector cica =  (ConstructorInjector)
-        componentFactory.createComponentAdapter(new NullComponentMonitor(), null, new Properties(), ClassAsConstructor.class, ClassAsConstructor.class, new ConstantParameter(String.class));
+        componentFactory.createComponentAdapter(new NullComponentMonitor(), new NullLifecycleStrategy(), new Properties(), ClassAsConstructor.class, ClassAsConstructor.class, new ConstantParameter(String.class));
         
         ClassAsConstructor instance = (ClassAsConstructor) cica.getComponentInstance(picoContainer);
         assertNotNull(instance);

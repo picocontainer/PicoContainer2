@@ -30,7 +30,6 @@ public class TypedFieldInjectorTestCase {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new TypedFieldInjector(Helicopter.class, Helicopter.class, null,
                                                     new NullComponentMonitor(),
-                new NullLifecycleStrategy(),
                 Integer.class.getName() + " " + PogoStick.class.getName() + " " + Float.class.getName()));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);

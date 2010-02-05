@@ -113,7 +113,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
         ComponentFactory cf = createComponentFactory();
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
-        ComponentAdapter ca = cf.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new Properties(),
+        ComponentAdapter ca = cf.createComponentAdapter(cm, new NullLifecycleStrategy(), new Properties(),
                                                         Map.class, HashMap.class, Parameter.DEFAULT);
 
         String foo = xs.toXML(ca).replace("\"", "");
@@ -122,7 +122,6 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
                      "  <componentKey class=java-class>java.util.Map</componentKey>\n" +
                      "  <componentImplementation>java.util.HashMap</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
-                     "  <lifecycleStrategy class=RLS/>\n" +
                      "  <useNames>false</useNames>\n" +
                      "  <rememberChosenConstructor>true</rememberChosenConstructor>\n" +
                      "  <enableEmjection>false</enableEmjection>\n" +
@@ -137,7 +136,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
         ComponentAdapter ca = cf.createComponentAdapter(cm,
-                                                        new ReflectionLifecycleStrategy(cm),
+                                                        new NullLifecycleStrategy(),
                                                         new Properties(),
                                                         AnnotatedFieldInjectorTestCase.Helicopter.class,
                                                         AnnotatedFieldInjectorTestCase.Helicopter.class,
@@ -149,7 +148,6 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
                      "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</componentKey>\n" +
                      "  <componentImplementation>org.picocontainer.injectors.AnnotatedFieldInjectorTestCase$Helicopter</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
-                "  <lifecycleStrategy class=RLS/>\n" +
                 "  <useNames>false</useNames>\n" +
                 "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
                      "</Field-Injection>", foo);
@@ -163,7 +161,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
         ComponentAdapter ca = cf.createComponentAdapter(cm,
-                                                        new ReflectionLifecycleStrategy(cm),
+                                                        new NullLifecycleStrategy(),
                                                         new Properties(),
                                                         AnnotatedMethodInjectorTestCase.AnnotatedBurp.class,
                                                         AnnotatedMethodInjectorTestCase.AnnotatedBurp.class,
@@ -175,7 +173,6 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
                      "  <componentKey class=java-class>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentKey>\n" +
                      "  <componentImplementation>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
-                     "  <lifecycleStrategy class=RLS/>\n" +
                      "  <useNames>false</useNames>\n" +
                      "  <setterMethodPrefix></setterMethodPrefix>\n" +
                      "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +

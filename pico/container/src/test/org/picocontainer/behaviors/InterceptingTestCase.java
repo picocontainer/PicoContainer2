@@ -14,6 +14,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 
 public class InterceptingTestCase {
 
@@ -60,7 +62,7 @@ public class InterceptingTestCase {
 
     @Test public void testPreAndPostObservation() {
         final StringBuilder sb = new StringBuilder();
-        DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting(), new NullLifecycleStrategy(), new EmptyPicoContainer());
         pico.addComponent(StringBuilder.class, sb);
         pico.addComponent(Person.class, Englishman.class);
 
@@ -89,7 +91,7 @@ public class InterceptingTestCase {
 
     @Test public void testPreAndPostObservationWithParameter() {
         final StringBuilder sb = new StringBuilder();
-        DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting(), new NullLifecycleStrategy(), new EmptyPicoContainer());
         pico.addComponent(StringBuilder.class, sb);
         pico.addComponent(Person.class, Englishman.class);
 
@@ -118,7 +120,7 @@ public class InterceptingTestCase {
 
     @Test public void testPreCanPreventInvocationWithAlternateReturnValue() {
         final StringBuilder sb = new StringBuilder();
-        DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting(), new NullLifecycleStrategy(), new EmptyPicoContainer());
         pico.addComponent(Person.class, Englishman.class);
         pico.addComponent(StringBuilder.class, sb);
 
@@ -140,7 +142,7 @@ public class InterceptingTestCase {
 
     @Test public void testOverrideOfReturnValue() {
         final StringBuilder sb = new StringBuilder();
-        DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting(), new NullLifecycleStrategy(), new EmptyPicoContainer());
         pico.addComponent(Person.class, Englishman.class);
         pico.addComponent(StringBuilder.class, sb);
         Intercepted intercepted = pico.getComponentAdapter(Person.class).findAdapterOfType(Intercepted.class);
@@ -175,7 +177,7 @@ public class InterceptingTestCase {
 
     @Test public void testNothingHappensIfNoPreOrPost() {
         final StringBuilder sb = new StringBuilder();
-        DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting());
+        DefaultPicoContainer pico = new DefaultPicoContainer(new Intercepting(), new NullLifecycleStrategy(), new EmptyPicoContainer());
         pico.addComponent(Person.class, Englishman.class);
         pico.addComponent(StringBuilder.class, sb);
         Person foo = pico.getComponent(Person.class);

@@ -41,10 +41,9 @@ public class NamedFieldInjector extends IterativeInjector {
                                   Class<?> impl,
                                   Parameter[] parameters,
                                   ComponentMonitor componentMonitor,
-                                  LifecycleStrategy lifecycleStrategy, 
                                   String fieldNames) {
 
-        super(key, impl, parameters, componentMonitor, lifecycleStrategy, true);
+        super(key, impl, parameters, componentMonitor, true);
         this.fieldNames = Arrays.asList(fieldNames.trim().split(" "));
     }
 

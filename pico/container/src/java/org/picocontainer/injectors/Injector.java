@@ -10,7 +10,6 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 
 import java.lang.annotation.Annotation;
@@ -42,15 +41,14 @@ public class Injector {
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
-     * @param lifecycleStrategy       the component lifecycle strategy used by this addAdapter
      * @param useNames                use argument names when looking up dependencies
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public static ComponentAdapter constructor(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
-                                               LifecycleStrategy lifecycleStrategy, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
-        return new ConstructorInjector(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
+                                               boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
+        return new ConstructorInjector(componentKey, componentImplementation, parameters, monitor, useNames);
     }
 
     /**
@@ -60,7 +58,6 @@ public class Injector {
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
-     * @param lifecycleStrategy       the component lifecycle strategy used by this addAdapter
      * @param useNames                use argument names when looking up dependencies
      * @param rememberChosenCtor      remember the chosen constructor (to speed up second/subsequent calls)
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
@@ -68,9 +65,9 @@ public class Injector {
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public static ComponentAdapter constructor(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
-                                               LifecycleStrategy lifecycleStrategy, boolean useNames, boolean rememberChosenCtor) throws AbstractInjector.NotConcreteRegistrationException {
+                                              boolean useNames, boolean rememberChosenCtor) throws AbstractInjector.NotConcreteRegistrationException {
         return new ConstructorInjector(componentKey, componentImplementation, parameters, monitor,
-                lifecycleStrategy, useNames, rememberChosenCtor);
+                useNames, rememberChosenCtor);
     }
 
     /**
@@ -80,7 +77,6 @@ public class Injector {
      * @param impl
      * @param parameters
      * @param componentMonitor
-     * @param lifecycleStrategy
      * @param injectionAnnotation
      * @param useNames
      * @return annotated field injector instance.
@@ -89,9 +85,8 @@ public class Injector {
                                                   Class<?> impl,
                                                   Parameter[] parameters,
                                                   ComponentMonitor componentMonitor,
-                                                  LifecycleStrategy lifecycleStrategy,
                                                   Class<? extends Annotation> injectionAnnotation, boolean useNames) {
-        return componentMonitor.newInjector(new AnnotatedFieldInjector(key, impl, parameters, componentMonitor, lifecycleStrategy, injectionAnnotation, useNames));
+        return componentMonitor.newInjector(new AnnotatedFieldInjector(key, impl, parameters, componentMonitor, injectionAnnotation, useNames));
     }
 
     /**
@@ -101,7 +96,6 @@ public class Injector {
      * @param impl
      * @param parameters
      * @param monitor
-     * @param lifecycleStrategy
      * @param injectionAnnotation
      * @param useNames
      * @return method injector instance.
@@ -110,8 +104,8 @@ public class Injector {
                                                    Class<?> impl,
                                                    Parameter[] parameters,
                                                    ComponentMonitor monitor,
-                                                   LifecycleStrategy lifecycleStrategy, Class<? extends Annotation> injectionAnnotation, boolean useNames) {
-        return monitor.newInjector(new AnnotatedMethodInjector(key, impl, parameters, monitor, lifecycleStrategy, injectionAnnotation, useNames));
+                                                   Class<? extends Annotation> injectionAnnotation, boolean useNames) {
+        return monitor.newInjector(new AnnotatedMethodInjector(key, impl, parameters, monitor, injectionAnnotation, useNames));
 
     }
 
@@ -123,14 +117,13 @@ public class Injector {
      * @param componentImplementation
      * @param parameters
      * @param monitor
-     * @param lifecycleStrategy
      * @param useNames
      * @param injectors
      * @return composite injector instance.
      */
-    public static ComponentAdapter composite(Object componentKey, Class<?> componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy,
+    public static ComponentAdapter composite(Object componentKey, Class<?> componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
                                              boolean useNames, org.picocontainer.Injector... injectors) {
-        return monitor.newInjector(new CompositeInjector(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames, injectors));
+        return monitor.newInjector(new CompositeInjector(componentKey, componentImplementation, parameters, monitor, useNames, injectors));
     }
 
 
@@ -141,7 +134,6 @@ public class Injector {
      * @param componentImplementation
      * @param parameters
      * @param monitor
-     * @param lifecycleStrategy
      * @param methodName
      * @param useNames
      * @return method injector instance.
@@ -149,9 +141,8 @@ public class Injector {
      *
      */
     public static ComponentAdapter method(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
-                                          LifecycleStrategy lifecycleStrategy, String methodName, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
-        return monitor.newInjector(new MethodInjector(componentKey, componentImplementation, parameters, monitor,
-                lifecycleStrategy, methodName, useNames));
+                                          String methodName, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
+        return monitor.newInjector(new MethodInjector(componentKey, componentImplementation, parameters, monitor, methodName, useNames));
     }
 
     /**
@@ -161,7 +152,6 @@ public class Injector {
      * @param componentImplementation
      * @param parameters
      * @param componentMonitor
-     * @param lifecycleStrategy
      * @param setterPrefix
      * @param useNames
      * @return MultiInjector component adapter instance.
@@ -170,8 +160,8 @@ public class Injector {
     public static ComponentAdapter multi(Object componentKey,
                                          Class componentImplementation,
                                          Parameter[] parameters,
-                                         ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, String setterPrefix, boolean useNames) {
-        return componentMonitor.newInjector(new MultiInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterPrefix, useNames));
+                                         ComponentMonitor componentMonitor, String setterPrefix, boolean useNames) {
+        return componentMonitor.newInjector(new MultiInjector(componentKey, componentImplementation, parameters, componentMonitor, setterPrefix, useNames));
     }
 
     /**
@@ -181,7 +171,6 @@ public class Injector {
      * @param impl
      * @param parameters
      * @param componentMonitor
-     * @param lifecycleStrategy
      * @param fieldNames
      * @return named field component injector instance.
      */
@@ -189,9 +178,8 @@ public class Injector {
                                               Class<?> impl,
                                               Parameter[] parameters,
                                               ComponentMonitor componentMonitor,
-                                              LifecycleStrategy lifecycleStrategy,
                                               String fieldNames) {
-        return componentMonitor.newInjector(new NamedFieldInjector(key, impl, parameters, componentMonitor, lifecycleStrategy, fieldNames));
+        return componentMonitor.newInjector(new NamedFieldInjector(key, impl, parameters, componentMonitor, fieldNames));
     }
 
     /**
@@ -201,7 +189,6 @@ public class Injector {
      * @param componentImplementation
      * @param parameters
      * @param monitor
-     * @param lifecycleStrategy
      * @param setterMethodPrefix
      * @param useNames
      * @return setter injector instance.
@@ -212,9 +199,8 @@ public class Injector {
                                           final Class componentImplementation,
                                           Parameter[] parameters,
                                           ComponentMonitor monitor,
-                                          LifecycleStrategy lifecycleStrategy,
                                           String setterMethodPrefix, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
-        return monitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, setterMethodPrefix, useNames));
+        return monitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, monitor, setterMethodPrefix, useNames));
     }
 
     /**
@@ -224,7 +210,6 @@ public class Injector {
      * @param impl
      * @param parameters
      * @param componentMonitor
-     * @param lifecycleStrategy
      * @param classNames
      * @return typed field injector instance.
      */
@@ -232,8 +217,7 @@ public class Injector {
                                               Class<?> impl,
                                               Parameter[] parameters,
                                               ComponentMonitor componentMonitor,
-                                              LifecycleStrategy lifecycleStrategy,
                                               String classNames) {
-        return componentMonitor.newInjector(new TypedFieldInjector(key, impl, parameters, componentMonitor, lifecycleStrategy, classNames));
+        return componentMonitor.newInjector(new TypedFieldInjector(key, impl, parameters, componentMonitor, classNames));
     }
 }

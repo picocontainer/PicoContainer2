@@ -40,8 +40,8 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
                                 Class componentImplementation,
                                 Parameter[] parameters,
                                 ComponentMonitor monitor,
-                                LifecycleStrategy lifecycleStrategy, boolean useNames) {
-        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
+                                boolean useNames) {
+        super(componentKey, componentImplementation, parameters, monitor, useNames);
     }
 
     protected Paranamer getParanamer() {

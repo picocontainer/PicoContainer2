@@ -95,17 +95,6 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTest {
         }
     }
 
-    @Test public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
-        RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
-        SetterInjection componentFactory = new SetterInjection();
-        SetterInjector sica = (SetterInjector)componentFactory.createComponentAdapter(new NullComponentMonitor(), strategy, new Properties(), NullLifecycle.class, NullLifecycle.class);
-        One one = new RecordingLifecycle.One(new StringBuffer());
-        sica.start(one);
-        sica.stop(one);        
-        sica.dispose(one);
-        assertEquals("<start<stop<dispose", strategy.recording());
-    }
-
     public static class AnotherNamedBean implements Bean {
         private String name;
 

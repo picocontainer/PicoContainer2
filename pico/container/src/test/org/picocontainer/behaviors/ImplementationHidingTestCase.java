@@ -19,6 +19,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
@@ -31,7 +32,7 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
 
     @Test public void testAddComponentUsesImplementationHidingBehavior() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()));
+            new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()), new NullLifecycleStrategy(), new EmptyPicoContainer());
         pico.addComponent("foo", String.class);
         ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(HiddenImplementation.class, foo.getClass());
@@ -40,7 +41,7 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
 
     @Test public void testAddComponentUsesImplementationHidingBehaviorWithRedundantHideImplProperty() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()));
+            new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()), new NullLifecycleStrategy(), new EmptyPicoContainer());
         pico.change(Characteristics.HIDE_IMPL).addComponent("foo", String.class);
         ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(HiddenImplementation.class, foo.getClass());
@@ -49,7 +50,7 @@ public class ImplementationHidingTestCase extends AbstractComponentFactoryTest{
 
     @Test public void testAddComponentNoesNotUseImplementationHidingBehaviorWhenNoCachePropertyIsSpecified() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()));
+            new DefaultPicoContainer(new ImplementationHiding().wrap(new ConstructorInjection()), new NullLifecycleStrategy(), new EmptyPicoContainer());
         pico.change(Characteristics.NO_HIDE_IMPL).addComponent("foo", String.class);
         ComponentAdapter<?> foo = pico.getComponentAdapter("foo");
         assertEquals(ConstructorInjector.class, foo.getClass());

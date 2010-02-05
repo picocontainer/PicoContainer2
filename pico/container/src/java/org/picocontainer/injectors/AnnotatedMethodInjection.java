@@ -46,7 +46,7 @@ public class AnnotatedMethodInjection extends AbstractInjectionFactory {
     /**
      * Create a {@link SetterInjector}.
      * 
-     * @param componentMonitor
+     * @param monitor
      * @param lifecycleStrategy
      * @param componentProperties
      * @param componentKey The component's key
@@ -59,9 +59,9 @@ public class AnnotatedMethodInjection extends AbstractInjectionFactory {
      *             be solved or if the implementation is an interface or an
      *             abstract class.
      */
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties,
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties,
                                                    Object componentKey, Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
-        return componentMonitor.newInjector(new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionAnnotation, useNames));
+        return wrapLifeCycle(monitor.newInjector(new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, monitor, injectionAnnotation, useNames)), lifecycleStrategy);
     }
 }

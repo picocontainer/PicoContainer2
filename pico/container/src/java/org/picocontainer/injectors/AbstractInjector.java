@@ -42,14 +42,13 @@ import org.picocontainer.parameters.ComponentParameter;
  * @author Mauro Talevi
  */
 @SuppressWarnings("serial")
-public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements LifecycleStrategy, org.picocontainer.Injector<T> {
+public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements org.picocontainer.Injector<T> {
     /** The cycle guard for the verification. */
     protected transient ThreadLocalCyclicDependencyGuard verifyingGuard;
     /** The parameters to use for initialization. */
     protected transient Parameter[] parameters;
 
     /** The strategy used to control the lifecycle */
-    protected LifecycleStrategy lifecycleStrategy;
     private final boolean useNames;
 
     /**
@@ -58,12 +57,11 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      * @param componentImplementation the concrete implementation
      * @param parameters the parameters to use for the initialization
      * @param monitor the component monitor used by this ComponentAdapter
-     * @param lifecycleStrategy the lifecycle strategy used by this ComponentAdapter
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException if the implementation is not a concrete class
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     protected AbstractInjector(final Object componentKey, final Class<?> componentImplementation, final Parameter[] parameters,
-                                            final ComponentMonitor monitor, final LifecycleStrategy lifecycleStrategy, final boolean useNames) {
+                                            final ComponentMonitor monitor, final boolean useNames) {
         super(componentKey, componentImplementation, monitor);
         this.useNames = useNames;
         checkConcrete();
@@ -75,7 +73,6 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
             }
         }
         this.parameters = parameters;
-        this.lifecycleStrategy = lifecycleStrategy;
     }
 
     public boolean useNames() {
@@ -129,25 +126,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
             }
         }
     }
-    public void start(final Object component) {
-        lifecycleStrategy.start(component);
-    }
 
-    public void stop(final Object component) {
-        lifecycleStrategy.stop(component);
-    }
-
-    public void dispose(final Object component) {
-        lifecycleStrategy.dispose(component);
-    }
-
-    public boolean hasLifecycle(final Class<?> type) {
-        return lifecycleStrategy.hasLifecycle(type);
-    }
-
-    public boolean isLazy(ComponentAdapter<?> adapter) {
-        return lifecycleStrategy.isLazy(adapter);
-    }
 
     public String getDescriptor() {
         return "Asbtract Injector";

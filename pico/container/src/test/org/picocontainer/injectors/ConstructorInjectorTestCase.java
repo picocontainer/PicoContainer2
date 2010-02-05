@@ -60,7 +60,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
     }
 
     protected ComponentAdapter prepDEF_verifyWithoutDependencyWorks(MutablePicoContainer picoContainer) {
-        return new ConstructorInjector("foo", A.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+        return new ConstructorInjector("foo", A.class, null, new NullComponentMonitor(), false);
     }
 
     public static class A {
@@ -77,22 +77,22 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 
     protected ComponentAdapter prepDEF_verifyDoesNotInstantiate(MutablePicoContainer picoContainer) {
         picoContainer.addComponent(A.class);
-        return new ConstructorInjector(B.class, B.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+        return new ConstructorInjector(B.class, B.class, null, new NullComponentMonitor(), false);
     }
 
     protected ComponentAdapter prepDEF_visitable() {
-        return new ConstructorInjector("bar", B.class, new Parameter[] {ComponentParameter.DEFAULT} , new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+        return new ConstructorInjector("bar", B.class, new Parameter[] {ComponentParameter.DEFAULT} , new NullComponentMonitor(), false);
     }
 
     protected ComponentAdapter prepDEF_isAbleToTakeParameters(MutablePicoContainer picoContainer) {
         picoContainer.addComponent(SimpleTouchable.class);
         return new ConstructorInjector(
                 NamedDependsOnTouchable.class, NamedDependsOnTouchable.class,
-                new Parameter[] {ComponentParameter.DEFAULT, new ConstantParameter("Name")} , new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+                new Parameter[] {ComponentParameter.DEFAULT, new ConstantParameter("Name")} , new NullComponentMonitor(), false);
     }
 
     protected ComponentAdapter prepSER_isSerializable(MutablePicoContainer picoContainer) {
-        return new ConstructorInjector(SimpleTouchable.class, SimpleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+        return new ConstructorInjector(SimpleTouchable.class, SimpleTouchable.class, null, new NullComponentMonitor(), false);
     }
 
     protected ComponentAdapter prepSER_isXStreamSerializable(final MutablePicoContainer picoContainer) {
@@ -106,11 +106,11 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
     }
 
     protected ComponentAdapter prepVER_verificationFails(MutablePicoContainer picoContainer) {
-        return new ConstructorInjector(DependsOnTouchable.class, DependsOnTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+        return new ConstructorInjector(DependsOnTouchable.class, DependsOnTouchable.class, null, new NullComponentMonitor(), false);
     }
 
     protected ComponentAdapter prepINS_createsNewInstances(MutablePicoContainer picoContainer) {
-        return new ConstructorInjector(SimpleTouchable.class, SimpleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+        return new ConstructorInjector(SimpleTouchable.class, SimpleTouchable.class, null, new NullComponentMonitor(), false);
     }
 
     public static class Erroneous {
@@ -120,7 +120,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
     }
 
     protected ComponentAdapter prepINS_errorIsRethrown(MutablePicoContainer picoContainer) {
-        return new ConstructorInjector(Erroneous.class, Erroneous.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+        return new ConstructorInjector(Erroneous.class, Erroneous.class, null, new NullComponentMonitor(), false);
     }
 
     public static class RuntimeThrowing {
@@ -130,7 +130,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
     }
 
     protected ComponentAdapter prepINS_runtimeExceptionIsRethrown(MutablePicoContainer picoContainer) {
-        return new ConstructorInjector(RuntimeThrowing.class, RuntimeThrowing.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+        return new ConstructorInjector(RuntimeThrowing.class, RuntimeThrowing.class, null, new NullComponentMonitor(), false);
     }
 
     public static class NormalExceptionThrowing {
@@ -141,12 +141,12 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 
     protected ComponentAdapter prepINS_normalExceptionIsRethrownInsidePicoInitializationException(
             MutablePicoContainer picoContainer) {
-        return new ConstructorInjector(NormalExceptionThrowing.class, NormalExceptionThrowing.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+        return new ConstructorInjector(NormalExceptionThrowing.class, NormalExceptionThrowing.class, null, new NullComponentMonitor(), false);
     }
 
     protected ComponentAdapter prepRES_dependenciesAreResolved(MutablePicoContainer picoContainer) {
         picoContainer.addComponent(SimpleTouchable.class);
-        return new ConstructorInjector(DependsOnTouchable.class, DependsOnTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+        return new ConstructorInjector(DependsOnTouchable.class, DependsOnTouchable.class, null, new NullComponentMonitor(), false);
     }
 
     public static class C1 {
@@ -162,14 +162,14 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
     }
 
     protected ComponentAdapter prepRES_failingVerificationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
-        final ComponentAdapter componentAdapter = new ConstructorInjector(C1.class, C1.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+        final ComponentAdapter componentAdapter = new ConstructorInjector(C1.class, C1.class, null, new NullComponentMonitor(), false);
         picoContainer.addAdapter(componentAdapter);
         picoContainer.addComponent(C2.class, C2.class);
         return componentAdapter;
     }
 
     protected ComponentAdapter prepRES_failingInstantiationWithCyclicDependencyException(MutablePicoContainer picoContainer) {
-        final ComponentAdapter componentAdapter = new ConstructorInjector(C1.class, C1.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+        final ComponentAdapter componentAdapter = new ConstructorInjector(C1.class, C1.class, null, new NullComponentMonitor(), false);
         picoContainer.addAdapter(componentAdapter);
         picoContainer.addComponent(C2.class, C2.class);
         return componentAdapter;
@@ -318,7 +318,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
         }});
 
         ConstructorInjector cica = new ConstructorInjector(
-                Map.class, HashMap.class, new Parameter[0], monitor, new NullLifecycleStrategy(), false);
+                Map.class, HashMap.class, new Parameter[0], monitor, false);
         cica.getComponentInstance(null, ComponentAdapter.NOTHING.class);
     }
 
@@ -346,7 +346,7 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 
 
         ConstructorInjector cica = new ConstructorInjector(
-                ActionListener.class, BarfingActionListener.class, new Parameter[0], monitor, new NullLifecycleStrategy(), false);
+                ActionListener.class, BarfingActionListener.class, new Parameter[0], monitor, false);
         try {
             cica.getComponentInstance(null, ComponentAdapter.NOTHING.class);
             fail("Should barf");
@@ -362,18 +362,6 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 
         public void actionPerformed(ActionEvent e) {
         }
-    }
-
-    @Test public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
-        RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
-        ConstructorInjector cica = new ConstructorInjector(
-                NullLifecycle.class, NullLifecycle.class, new Parameter[0],
-                new AbstractComponentMonitor(), strategy, false);
-        Touchable touchable = new SimpleTouchable();
-        cica.start(touchable);
-        cica.stop(touchable);
-        cica.dispose(touchable);
-        assertEquals("<start<stop<dispose", strategy.recording());
     }
 
     public static class One {

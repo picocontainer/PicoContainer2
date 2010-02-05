@@ -24,9 +24,9 @@ public class CompositeInjector<T> extends AbstractInjector<T> {
 
     private final Injector<T>[] injectors;
 
-    public CompositeInjector(Object componentKey, Class<?> componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy,
+    public CompositeInjector(Object componentKey, Class<?> componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
                              boolean useNames, Injector... injectors) {
-        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
+        super(componentKey, componentImplementation, parameters, monitor, useNames);
         this.injectors = injectors;
     }
 

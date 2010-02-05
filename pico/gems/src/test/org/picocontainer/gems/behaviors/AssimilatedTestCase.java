@@ -48,7 +48,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
     @Test public void testInstanceIsBorgedAndCompatibleWithGenerics() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         final ComponentAdapter<CompatibleTouchable> componentAdapter = new Cached<CompatibleTouchable>(new ConstructorInjector(
-                CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
+                CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), false));
         mpc.addAdapter(new Assimilated<Touchable>(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = componentAdapter.getComponentInstance(mpc,null);
         final Touchable touchable = mpc.getComponent(Touchable.class);
@@ -64,7 +64,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
     @Test public void testComponentKeyIsPreserved() {
         final MutablePicoContainer mpc = new DefaultPicoContainer();
         final ComponentAdapter<CompatibleTouchable> componentAdapter = new Cached<CompatibleTouchable>(new ConstructorInjector(
-                "Touchy", CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
+                "Touchy", CompatibleTouchable.class, null, new NullComponentMonitor(), false));
         mpc.addAdapter(new Assimilated(Touchable.class, componentAdapter));
         final CompatibleTouchable compatibleTouchable = componentAdapter.getComponentInstance(mpc,null);
         final Touchable touchable = (Touchable)mpc.getComponent("Touchy");
@@ -140,7 +140,7 @@ public class AssimilatedTestCase extends AbstractComponentAdapterTest {
 
     private ComponentAdapter createComponentAdapterWithTouchable() {
         return new Assimilated(Touchable.class, new ConstructorInjector(
-                CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
+                CompatibleTouchable.class, CompatibleTouchable.class, null, new NullComponentMonitor(), false));
     }
 
     @Override

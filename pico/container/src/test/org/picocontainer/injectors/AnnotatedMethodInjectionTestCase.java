@@ -91,15 +91,4 @@ public class AnnotatedMethodInjectionTestCase extends AbstractComponentFactoryTe
         } catch (PicoCompositionException e) {
         }
     }
-
-    @Test public void testCustomLifecycleCanBeInjected() throws NoSuchMethodException {
-        RecordingLifecycleStrategy strategy = new RecordingLifecycleStrategy(new StringBuffer());
-        AnnotatedMethodInjection componentFactory = new AnnotatedMethodInjection();
-        AnnotatedMethodInjector aica = (AnnotatedMethodInjector)componentFactory.createComponentAdapter(new NullComponentMonitor(), strategy, null, NullLifecycle.class, NullLifecycle.class);
-        One one = new One(new StringBuffer());
-        aica.start(one);
-        aica.stop(one);
-        aica.dispose(one);
-        assertEquals("<start<stop<dispose", strategy.recording());
-    }
 }

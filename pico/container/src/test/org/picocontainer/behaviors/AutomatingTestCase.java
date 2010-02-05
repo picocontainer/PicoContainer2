@@ -16,6 +16,7 @@ import static org.picocontainer.behaviors.Behaviors.automatic;
 import static org.picocontainer.behaviors.Behaviors.caching;
 
 import org.junit.Test;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
@@ -46,13 +47,15 @@ public class AutomatingTestCase {
         assertNotNull(pico.getComponent(Bar.class));
         StringBuilder sb = pico.getComponent(StringBuilder.class);
         assertEquals(MESSAGE, sb.toString());
-        assertEquals("Cached+Lifecycle:Automated:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        ComponentAdapter<?> adapter = pico.getComponentAdapter(Foo.class);
+        String s = adapter.toString();
+        assertEquals("Cached+Lifecycle:Automated:LifecycleAdapter:ConstructorInjector-class org.picocontainer.behaviors.AutomatingTestCase$Foo", s);
     }
 
     @Test public void testAutomaticBehaviorViaAdapter() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new Caching().wrap(new Automating()));
         pico.addComponent(StringBuilder.class);
-        pico.addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
+        pico.addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), false));
         pico.addComponent(Bar.class);
         pico.start();
         assertNotNull(pico.getComponent(Bar.class));
@@ -75,7 +78,7 @@ public class AutomatingTestCase {
     @Test public void testNonAutomaticBehaviorAsContrastToTheAboveViaAdapter() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new Caching());
         pico.addComponent(StringBuilder.class);
-        pico.addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
+        pico.addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), false));
         pico.addComponent(Bar.class);
         pico.start();
         assertNotNull(pico.getComponent(Bar.class));
@@ -98,7 +101,7 @@ public class AutomatingTestCase {
     @Test public void testAutomaticBehaviorByBuilderViaAdapter() {
         MutablePicoContainer pico = new PicoBuilder().withCaching().withAutomatic().build();
         pico.addComponent(StringBuilder.class);
-        pico.addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
+        pico.addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), false));
         pico.addComponent(Bar.class);
         pico.start();
         assertNotNull(pico.getComponent(Bar.class));
@@ -122,7 +125,7 @@ public class AutomatingTestCase {
         @Test public void testAutomaticBehaviorByBuilderADifferentWayViaAdapter() {
         MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), automatic()).build();
         pico.addComponent(StringBuilder.class);
-        pico.addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
+        pico.addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), false));
         pico.addComponent(Bar.class);
         pico.start();
         assertNotNull(pico.getComponent(Bar.class));
@@ -146,7 +149,7 @@ public class AutomatingTestCase {
     @Test public void testAutomaticBehaviorWorksForAdaptiveBehaviorTooViaAdapter() {
         MutablePicoContainer pico = new PicoBuilder().withBehaviors(caching(), automatic()).build();
         pico.addComponent(StringBuilder.class);
-        pico.as(AUTOMATIC).addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false));
+        pico.as(AUTOMATIC).addAdapter(new ConstructorInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), false));
         pico.addComponent(Bar.class);
         pico.start();
         assertNotNull(pico.getComponent(Bar.class));

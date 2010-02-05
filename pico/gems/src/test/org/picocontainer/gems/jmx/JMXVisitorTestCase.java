@@ -37,6 +37,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.NameBinding;
 import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.gems.jmx.testmodel.Person;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -60,7 +61,7 @@ public class JMXVisitorTestCase  {
 
     @Before
     public void setUp() throws Exception {
-        picoContainer = new DefaultPicoContainer();        
+        picoContainer = new DefaultPicoContainer(new NullLifecycleStrategy(), new EmptyPicoContainer());        
     }
 
     private JMXVisitor createVisitor(final int providerCount) {
@@ -135,7 +136,7 @@ public class JMXVisitorTestCase  {
      */
     @Test public void testTraversal() {
         final JMXVisitor jmxVisitor = createVisitor(1);
-        final MutablePicoContainer child = new DefaultPicoContainer();
+        final MutablePicoContainer child = new DefaultPicoContainer(new NullLifecycleStrategy(), new EmptyPicoContainer());
         picoContainer.addChildContainer(child);
 
         final ComponentAdapter componentAdapter = child.addComponent(Person.class).getComponentAdapter(Person.class,

@@ -18,6 +18,7 @@ import java.util.Properties;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 
@@ -35,7 +36,7 @@ public class AnnotatedFieldInjectionTestCase {
         AnnotatedFieldInjection injectionFactory = new AnnotatedFieldInjection();
 
         ConsoleComponentMonitor cm = new ConsoleComponentMonitor();
-        ComponentAdapter ca = injectionFactory.createComponentAdapter(cm, new ReflectionLifecycleStrategy(cm), new Properties(), Map.class, HashMap.class, Parameter.DEFAULT);
+        ComponentAdapter ca = injectionFactory.createComponentAdapter(cm, new NullLifecycleStrategy(), new Properties(), Map.class, HashMap.class, Parameter.DEFAULT);
         
         XStream xs = new XStream();
         //xs.alias("CCM", ConsoleComponentMonitor.class);
@@ -65,7 +66,6 @@ public class AnnotatedFieldInjectionTestCase {
                      "  <componentKey class=\"java-class\">java.util.Map</componentKey>\n" +
                      "  <componentImplementation>java.util.HashMap</componentImplementation>\n" +
                      "  <componentMonitor class=\"org.picocontainer.monitors.ConsoleComponentMonitor\"/>\n" +
-                     "  <lifecycleStrategy class=\"org.picocontainer.lifecycle.ReflectionLifecycleStrategy\"/>\n" +
                      "  <useNames>false</useNames>\n" +
                      "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
                      "</org.picocontainer.injectors.AnnotatedFieldInjector>", foo);

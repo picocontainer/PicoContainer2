@@ -171,7 +171,7 @@ public abstract class AbstractTracingContainerDecoratorTest  {
 	}
 
 	@Test public void testGetComponentAdapter() {
-		final ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+		final ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), false);
 		mockery.checking(new Expectations(){{
 			one(picoContainer).getComponentAdapter(with(same(String.class)), with(aNull(NameBinding.class)));
 			will(returnValue(testAdapter));
@@ -202,7 +202,7 @@ public abstract class AbstractTracingContainerDecoratorTest  {
 	}
 
 	@Test public void testGetComponentAdapterOfType() {
-		final ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+		final ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), false);
 		mockery.checking(new Expectations(){{
 			one(picoContainer).getComponentAdapter(with(same(String.class)), with(aNull(NameBinding.class)));
 			will(returnValue(testAdapter));
@@ -340,7 +340,7 @@ public abstract class AbstractTracingContainerDecoratorTest  {
 	}
 
 	@Test public void testRegisterComponent() {
-		final ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+		final ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), false);
 		mockery.checking(new Expectations(){{
 			one(picoContainer).addAdapter(with(same(testAdapter)));
 			will(returnValue(picoContainer));
@@ -353,7 +353,7 @@ public abstract class AbstractTracingContainerDecoratorTest  {
 	}
 
 	@Test public void testRegisterComponentImplementationClass() {
-		final ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+		final ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), false);
 		mockery.checking(new Expectations(){{
 			one(picoContainer).addComponent(with(same(String.class)));
 			will(returnValue(picoContainer));
@@ -366,7 +366,7 @@ public abstract class AbstractTracingContainerDecoratorTest  {
 	}
 
 	@Test public void testRegisterComponentImplementationWithKeyAndClass() {
-		final ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+		final ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), false);
 		mockery.checking(new Expectations(){{
 			one(picoContainer).addComponent(with(same(String.class)), with(same(String.class)), with(equal(Parameter.ZERO)));
 			will(returnValue(picoContainer));
@@ -399,7 +399,7 @@ public abstract class AbstractTracingContainerDecoratorTest  {
 
 	@Test public void testRegisterComponentImplementationObjectClassParameterArray() {
 		final Parameter params[] = new Parameter []{new ConstantParameter("test")};
-		final ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, params, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+		final ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, params, new NullComponentMonitor(), false);
 		mockery.checking(new Expectations(){{
 			one(picoContainer).addComponent(with(same(String.class)), with(same(String.class)), with(same(params)));
 			will(returnValue(picoContainer));
@@ -448,7 +448,7 @@ public abstract class AbstractTracingContainerDecoratorTest  {
 	}
 
 	@Test public void testUnregisterComponent() {
-		final ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+		final ConstructorInjector testAdapter = new ConstructorInjector(String.class, String.class, null, new NullComponentMonitor(), false);
 		mockery.checking(new Expectations(){{
 			one(picoContainer).removeComponent(with(same(String.class)));
 			will(returnValue(testAdapter));			

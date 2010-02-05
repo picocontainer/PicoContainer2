@@ -34,7 +34,7 @@ public class CompositeInjection extends AbstractInjectionFactory {
         this.injectionFactories = injectionFactories;
     }
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
                                                           LifecycleStrategy lifecycleStrategy,
                                                           Properties componentProperties,
                                                           Object componentKey,
@@ -45,13 +45,12 @@ public class CompositeInjection extends AbstractInjectionFactory {
 
         for (int i = 0; i < injectionFactories.length; i++) {
             InjectionFactory injectionFactory = injectionFactories[i];
-            injectors[i] = (Injector) injectionFactory.createComponentAdapter(componentMonitor,
+            injectors[i] = (Injector) injectionFactory.createComponentAdapter(monitor,
                     lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters);
         }
 
         boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
-        return componentMonitor.newInjector(new CompositeInjector(componentKey, componentImplementation, parameters,
-                componentMonitor, lifecycleStrategy,
-                useNames, injectors));
+        return wrapLifeCycle(monitor.newInjector(new CompositeInjector(componentKey, componentImplementation, parameters,
+                monitor, useNames, injectors)), lifecycleStrategy);
     }
 }

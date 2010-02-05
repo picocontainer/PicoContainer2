@@ -18,6 +18,7 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.adapters.InstanceAdapter;
+import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
@@ -40,7 +41,7 @@ public class CachingTestCase extends AbstractComponentFactoryTest {
         pico.addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(Cached.class, foo.getClass());
-        assertEquals(ConstructorInjector.class, ((AbstractBehavior) foo).getDelegate().getClass());
+        assertEquals(ConstructorInjector.class, foo.getDelegate().getDelegate().getClass());
     }
 
     @Test public void testAddComponentUsesCachingBehaviorWithRedundantCacheProperty() {
@@ -49,12 +50,12 @@ public class CachingTestCase extends AbstractComponentFactoryTest {
         pico.change(Characteristics.CACHE).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(Cached.class, foo.getClass());
-        assertEquals(ConstructorInjector.class, ((AbstractBehavior) foo).getDelegate().getClass());
+        assertEquals(ConstructorInjector.class, foo.getDelegate().getDelegate().getClass());
     }
 
     @Test public void testAddComponentNoesNotUseCachingBehaviorWhenNoCachePropertyIsSpecified() {
         DefaultPicoContainer pico =
-            new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()));
+            new DefaultPicoContainer(new Caching().wrap(new ConstructorInjection()), new NullLifecycleStrategy(), new EmptyPicoContainer());
         pico.change(Characteristics.NO_CACHE).addComponent("foo", String.class);
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(ConstructorInjector.class, foo.getClass());
@@ -66,7 +67,7 @@ public class CachingTestCase extends AbstractComponentFactoryTest {
         pico.addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(Cached.class, foo.getClass());
-        assertEquals(InstanceAdapter.class, ((AbstractBehavior) foo).getDelegate().getClass());
+        assertEquals(InstanceAdapter.class, foo.getDelegate().getClass());
     }
 
     @Test public void testAddAdapterUsesCachingBehaviorWithRedundantCacheProperty() {
@@ -75,7 +76,7 @@ public class CachingTestCase extends AbstractComponentFactoryTest {
         pico.change(Characteristics.CACHE).addAdapter(new InstanceAdapter("foo", "bar", new NullLifecycleStrategy(), new NullComponentMonitor()));
         ComponentAdapter foo = pico.getComponentAdapter("foo");
         assertEquals(Cached.class, foo.getClass());
-        assertEquals(InstanceAdapter.class, ((AbstractBehavior) foo).getDelegate().getClass());
+        assertEquals(InstanceAdapter.class, foo.getDelegate().getClass());
     }
 
     @Test public void testAddAdapterNoesNotUseCachingBehaviorWhenNoCachePropertyIsSpecified() {

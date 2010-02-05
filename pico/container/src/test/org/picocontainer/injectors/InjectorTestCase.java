@@ -56,21 +56,4 @@ public class InjectorTestCase {
         assertSame(getClass(), adapter.getComponentImplementation());
         adapter.accept(parameterChecker);
     }
-
-    /**
-     *
-     */
-    @Test
-    public void testNotSoSimpleContstructor() {
-        AbstractComponentAdapterTest.RecordingLifecycleStrategy strategy = new AbstractComponentAdapterTest.RecordingLifecycleStrategy(new StringBuffer());
-        ConstructorInjector adapter = (ConstructorInjector) constructor(key, NullLifecycle.class, checkedArray, monitor, strategy, true);
-        assertSame(key, adapter.getComponentKey());
-        assertSame(NullLifecycle.class, adapter.getComponentImplementation());
-        adapter.accept(parameterChecker);
-        RecordingLifecycle.One one = new RecordingLifecycle.One(new StringBuffer());
-        adapter.start(one);
-        adapter.stop(one);
-        adapter.dispose(one);
-        assertEquals("<start<stop<dispose", strategy.recording());
-    }
 }

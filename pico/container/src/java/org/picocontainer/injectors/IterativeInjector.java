@@ -47,15 +47,14 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
-     * @param lifecycleStrategy       the component lifecycle strategy used by this addAdapter
      * @param useNames                use argument names when looking up dependencies
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public IterativeInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
-                             LifecycleStrategy lifecycleStrategy, boolean useNames) throws  NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
+                             boolean useNames) throws  NotConcreteRegistrationException {
+        super(componentKey, componentImplementation, parameters, monitor, useNames);
     }
 
     protected Constructor getConstructor()  {

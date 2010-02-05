@@ -53,11 +53,11 @@ public class TraversalCheckingVisitorTest {
 
         pico = new DefaultPicoContainer();
         SetterInjector componentAdapter = new SetterInjector(StringBuffer.class, StringBuffer.class,
-                                                             null, new NullComponentMonitor(), new NullLifecycleStrategy(),
+                                                             null, new NullComponentMonitor(),
                                                              "set", false);
         parentAdapter = pico.addAdapter(componentAdapter).getComponentAdapter(StringBuffer.class, (NameBinding) null);
         child = pico.makeChildContainer();
-        ConstructorInjector adapter = new ConstructorInjector(ArrayList.class, ArrayList.class, new Parameter[] {new ConstantParameter(3)}, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+        ConstructorInjector adapter = new ConstructorInjector(ArrayList.class, ArrayList.class, new Parameter[] {new ConstantParameter(3)}, new NullComponentMonitor(), false);
         childAdapter = child.addAdapter(adapter).getComponentAdapter(ArrayList.class, (NameBinding) null);
     }
 

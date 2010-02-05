@@ -30,7 +30,7 @@ public class Reinjection extends CompositeInjection {
                     Properties componentProperties, final Object componentKey, Class<T> componentImplementation,
                     Parameter... parameters) throws PicoCompositionException {
                 boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
-                return new ReinjectionInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, parent, useNames);
+                return new ReinjectionInjector(componentKey, componentImplementation, parameters, componentMonitor, parent, useNames);
             }
         }, reinjectionFactory);
     }
@@ -38,8 +38,8 @@ public class Reinjection extends CompositeInjection {
     private static class ReinjectionInjector<T> extends AbstractInjector {
         private final PicoContainer parent;
 
-        public ReinjectionInjector(Object componentKey, Class<T> componentImplementation, Parameter[] parameters, ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, PicoContainer parent, boolean useNames) {
-            super(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, useNames);
+        public ReinjectionInjector(Object componentKey, Class<T> componentImplementation, Parameter[] parameters, ComponentMonitor componentMonitor, PicoContainer parent, boolean useNames) {
+            super(componentKey, componentImplementation, parameters, componentMonitor, useNames);
             this.parent = parent;
         }
 

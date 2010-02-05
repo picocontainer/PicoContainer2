@@ -40,14 +40,14 @@ public class AnnotatedFieldInjection extends AbstractInjectionFactory {
         this(Inject.class);
     }
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties,
                                                    Object componentKey,
                                                    Class<T> componentImplementation,
                                                    Parameter... parameters) throws PicoCompositionException {
         boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
-        return componentMonitor.newInjector(new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy,
-                                          injectionAnnotation, useNames));
+        return wrapLifeCycle(monitor.newInjector(new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, monitor,
+                                          injectionAnnotation, useNames)), lifecycleStrategy);
     }
 }

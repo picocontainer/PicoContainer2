@@ -47,7 +47,6 @@ public class SetterInjector<T> extends IterativeInjector<T> {
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
-     * @param lifecycleStrategy       the component lifecycle strategy used by this addAdapter
      * @param setterMethodPrefix
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
@@ -57,9 +56,8 @@ public class SetterInjector<T> extends IterativeInjector<T> {
                           final Class componentImplementation,
                           Parameter[] parameters,
                           ComponentMonitor monitor,
-                          LifecycleStrategy lifecycleStrategy,
                           String setterMethodPrefix, boolean useNames) throws  NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
+        super(componentKey, componentImplementation, parameters, monitor, useNames);
         this.setterMethodPrefix = setterMethodPrefix;
     }
 

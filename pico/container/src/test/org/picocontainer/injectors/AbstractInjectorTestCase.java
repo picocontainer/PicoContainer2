@@ -38,9 +38,7 @@ public class AbstractInjectorTestCase {
 
     @Before
     public void setUp() throws NoSuchMethodException {
-        ai = new MyAbstractInjector(Map.class, HashMap.class, new Parameter[0],
-                                                     new NullComponentMonitor(),
-                                                     new NullLifecycleStrategy(), false);
+        ai = new MyAbstractInjector(Map.class, HashMap.class, new Parameter[0], new NullComponentMonitor(), false);
         ctor = HashMap.class.getConstructor();
     }
 
@@ -142,9 +140,8 @@ public class AbstractInjectorTestCase {
                                   Class componentImplementation,
                                   Parameter[] parameters,
                                   ComponentMonitor monitor,
-                                  LifecycleStrategy lifecycleStrategy,
                                   boolean useNames) {
-            super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
+            super(componentKey, componentImplementation, parameters, monitor, useNames);
         }
 
         @Override

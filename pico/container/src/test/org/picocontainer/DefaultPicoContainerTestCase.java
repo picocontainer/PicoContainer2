@@ -194,8 +194,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		picoContainer.as(Characteristics.NO_CACHE).addAdapter(
 				new ConstructorInjector(TransientComponent.class,
 						TransientComponent.class, null,
-						new NullComponentMonitor(),
-						new NullLifecycleStrategy(), false));
+						new NullComponentMonitor(), false));
 		TransientComponent c1 = picoContainer
 				.getComponent(TransientComponent.class);
 		TransientComponent c2 = picoContainer
@@ -850,7 +849,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
     private static class MyNullComponentMonitor extends NullComponentMonitor {
 		public Injector newInjector(Injector injector) {
             if (injector.getComponentKey() == List.class) {
-                return new AbstractInjector(List.class, ArrayList.class, Parameter.DEFAULT, MyNullComponentMonitor.this, null, false) {
+                return new AbstractInjector(List.class, ArrayList.class, Parameter.DEFAULT, MyNullComponentMonitor.this, false) {
                     public Object getComponentInstance(PicoContainer container) throws PicoCompositionException {
                         return getComponentInstance(container, null);
                     }

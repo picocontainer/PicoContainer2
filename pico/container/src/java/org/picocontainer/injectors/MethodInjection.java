@@ -55,9 +55,9 @@ public class MethodInjection extends AbstractInjectionFactory {
             this.injectionMethodName = injectionMethodName;
         }
 
-        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
+        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
             boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
-            return new MethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionMethodName, useNames);
+            return wrapLifeCycle(new MethodInjector(componentKey, componentImplementation, parameters, monitor, injectionMethodName, useNames), lifecycleStrategy);
         }
     }
 
@@ -68,10 +68,10 @@ public class MethodInjection extends AbstractInjectionFactory {
             this.injectionMethod = injectionMethod;
         }
 
-        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
+        public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
             boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
             if (injectionMethod.getDeclaringClass().isAssignableFrom(componentImplementation)) {
-                return componentMonitor.newInjector(new MethodInjector.ByReflectionMethod(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, injectionMethod, useNames));
+                return wrapLifeCycle(monitor.newInjector(new MethodInjector.ByReflectionMethod(componentKey, componentImplementation, parameters, monitor, injectionMethod, useNames)), lifecycleStrategy);
             } else {
                 throw new PicoCompositionException("method [" + injectionMethod + "] not on impl " + componentImplementation.getName());
             }

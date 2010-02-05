@@ -46,7 +46,6 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
-     * @param lifecycleStrategy       the component lifecycle strategy used by this addAdapter
      * @param methodName              the method name
      * @param useNames                use argument names when looking up dependencies
      * @throws AbstractInjector.NotConcreteRegistrationException
@@ -54,8 +53,8 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
     public MethodInjector(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
-                          LifecycleStrategy lifecycleStrategy, String methodName, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
-        super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, useNames);
+                          String methodName, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
+        super(componentKey, componentImplementation, parameters, monitor, useNames);
         this.methodName = methodName;
     }
 
@@ -200,8 +199,8 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
     public static class ByReflectionMethod extends MethodInjector {
         private final Method injectionMethod;
 
-        public ByReflectionMethod(Object componentKey, Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Method injectionMethod, boolean useNames) throws NotConcreteRegistrationException {
-            super(componentKey, componentImplementation, parameters, monitor, lifecycleStrategy, null, useNames);
+        public ByReflectionMethod(Object componentKey, Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, Method injectionMethod, boolean useNames) throws NotConcreteRegistrationException {
+            super(componentKey, componentImplementation, parameters, monitor, null, useNames);
             this.injectionMethod = injectionMethod;
         }
         

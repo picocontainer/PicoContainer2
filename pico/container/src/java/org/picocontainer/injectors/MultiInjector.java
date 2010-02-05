@@ -20,12 +20,12 @@ public class MultiInjector extends CompositeInjector {
     public MultiInjector(Object componentKey,
                          Class componentImplementation,
                          Parameter[] parameters,
-                         ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, String setterPrefix, boolean useNames) {
-        super(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, useNames,
-                componentMonitor.newInjector(new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, useNames)),
-                componentMonitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterPrefix, useNames)),
-                componentMonitor.newInjector(new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, Inject.class, useNames)),
-                componentMonitor.newInjector(new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, Inject.class, useNames)));
+                         ComponentMonitor componentMonitor, String setterPrefix, boolean useNames) {
+        super(componentKey, componentImplementation, parameters, componentMonitor, useNames,
+                componentMonitor.newInjector(new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, useNames)),
+                componentMonitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, setterPrefix, useNames)),
+                componentMonitor.newInjector(new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, Inject.class, useNames)),
+                componentMonitor.newInjector(new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor, Inject.class, useNames)));
 
     }
 

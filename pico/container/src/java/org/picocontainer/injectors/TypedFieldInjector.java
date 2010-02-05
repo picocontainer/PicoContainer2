@@ -44,10 +44,9 @@ public class TypedFieldInjector extends IterativeInjector {
                                   Class<?> impl,
                                   Parameter[] parameters,
                                   ComponentMonitor componentMonitor,
-                                  LifecycleStrategy lifecycleStrategy,
                                   String classNames) {
 
-        super(key, impl, parameters, componentMonitor, lifecycleStrategy, true);
+        super(key, impl, parameters, componentMonitor, true);
         this.classes = Arrays.asList(classNames.trim().split(" "));
     }
 

@@ -91,7 +91,7 @@ public class ComponentAdapterTestCase {
     @SuppressWarnings("serial")
 	private static class TestInstantiatingAdapter<T> extends AbstractInjector<T> {
         TestInstantiatingAdapter(Object componentKey, Class<T> componentImplementation, Parameter... parameters) {
-            super(componentKey, componentImplementation, parameters, new NullComponentMonitor(), new NullLifecycleStrategy(), false);
+            super(componentKey, componentImplementation, parameters, new NullComponentMonitor(), false);
         }
         @Override
         public void verify(PicoContainer container) throws PicoCompositionException {

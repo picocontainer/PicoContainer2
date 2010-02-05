@@ -12,12 +12,7 @@ package org.picocontainer.injectors;
 
 import java.util.Properties;
 
-import org.picocontainer.Characteristics;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
+import org.picocontainer.*;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 
 
@@ -43,7 +38,7 @@ public class SetterInjection extends AbstractInjectionFactory {
     /**
      * Create a {@link SetterInjector}.
      * 
-     * @param componentMonitor
+     * @param monitor
      * @param lifecycleStrategy
      * @param componentProperties
      * @param componentKey The component's key
@@ -56,9 +51,10 @@ public class SetterInjection extends AbstractInjectionFactory {
      * @throws org.picocontainer.PicoCompositionException if the implementation
      *             is an interface or an abstract class.
      */
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters)
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
-        return componentMonitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, lifecycleStrategy, setterMethodPrefix, useNames));
+        return wrapLifeCycle(monitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, monitor, setterMethodPrefix, useNames)), lifecycleStrategy);
     }
+
 }

@@ -33,7 +33,7 @@ public class NamedFieldInjection extends AbstractInjectionFactory {
 
     private static final String INJECTION_FIELD_NAMES = "injectionFieldNames";
 
-    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor componentMonitor,
+    public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor,
                                                    LifecycleStrategy lifecycleStrategy,
                                                    Properties componentProperties,
                                                    Object componentKey,
@@ -43,8 +43,8 @@ public class NamedFieldInjection extends AbstractInjectionFactory {
         if (fieldNames == null) {
             fieldNames = "";
         }
-        return componentMonitor.newInjector(new NamedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor,
-                lifecycleStrategy, fieldNames));
+        return wrapLifeCycle(monitor.newInjector(new NamedFieldInjector(componentKey, componentImplementation, parameters, monitor,
+                fieldNames)), lifecycleStrategy);
     }
 
     public static Properties injectionFieldNames(String... fieldNames) {
