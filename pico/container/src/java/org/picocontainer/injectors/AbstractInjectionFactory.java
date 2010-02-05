@@ -25,7 +25,7 @@ public abstract class AbstractInjectionFactory implements InjectionFactory, Seri
         }
     }
 
-    public static class LifecycleAdapter implements ComponentAdapter, LifecycleStrategy, ComponentMonitorStrategy, Serializable {
+    private static class LifecycleAdapter implements ComponentAdapter, LifecycleStrategy, ComponentMonitorStrategy, Serializable {
         private final Injector injector;
         private final LifecycleStrategy lifecycleStrategy;
 
