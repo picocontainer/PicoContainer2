@@ -40,7 +40,7 @@ public class StoringTestCase {
 
     @Test public void testThatForASingleThreadTheBehaviorIsTheSameAsPlainCaching() {
 
-        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching(), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         Storing storeCaching = new Storing();
         DefaultPicoContainer child = new DefaultPicoContainer(storeCaching, new NullLifecycleStrategy(), parent);
 
@@ -106,7 +106,7 @@ public class StoringTestCase {
         final Foo[] foos = new Foo[4];
         final Bar[] bars = new Bar[4];
 
-        DefaultPicoContainer appScope = new DefaultPicoContainer(new Caching(), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer appScope = new DefaultPicoContainer(new Caching());
         final DefaultPicoContainer sessionScope = new DefaultPicoContainer(new Storing(), new NullLifecycleStrategy(), appScope);
         final DefaultPicoContainer requestScope = new DefaultPicoContainer(new Storing(), new NullLifecycleStrategy(), sessionScope);
 
@@ -146,7 +146,7 @@ public class StoringTestCase {
 
         final Foo[] foos = new Foo[4];
 
-        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching(), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         final Storing storeCaching = new Storing();
         final DefaultPicoContainer child = new DefaultPicoContainer(storeCaching, new NullLifecycleStrategy(), parent);
 
@@ -192,7 +192,7 @@ public class StoringTestCase {
     @Test public void testThatCacheMapCanBeResetOnASubsequentThreadSimulatingASessionConcept() {
 
 
-        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching(), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         final Storing storeCaching = new Storing();
         final DefaultPicoContainer child = new DefaultPicoContainer(storeCaching, new NullLifecycleStrategy(), parent);
 

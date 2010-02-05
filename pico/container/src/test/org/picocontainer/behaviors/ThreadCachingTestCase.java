@@ -37,7 +37,7 @@ public class ThreadCachingTestCase {
 
     @Test public void testThatForASingleThreadTheBehaviorIsTheSameAsPlainCaching() {
 
-        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching(), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         DefaultPicoContainer child = new DefaultPicoContainer(new ThreadCaching(), new NullLifecycleStrategy(), parent);
 
         parent.addComponent(StringBuilder.class);
@@ -57,7 +57,7 @@ public class ThreadCachingTestCase {
 
         final Foo[] foos = new Foo[4];
 
-        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching(), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         final DefaultPicoContainer child = new DefaultPicoContainer(new ThreadCaching(), new NullLifecycleStrategy(), parent);
 
         parent.addComponent(StringBuilder.class);
@@ -95,7 +95,7 @@ public class ThreadCachingTestCase {
         final Foo[] foos = new Foo[4];
         final Bar[] bars = new Bar[4];
 
-        DefaultPicoContainer appScope = new DefaultPicoContainer(new Caching(), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        DefaultPicoContainer appScope = new DefaultPicoContainer(new Caching());
         final DefaultPicoContainer sessionScope = new DefaultPicoContainer(new ThreadCaching(), new NullLifecycleStrategy(), appScope);
         final DefaultPicoContainer requestScope = new DefaultPicoContainer(new ThreadCaching(), new NullLifecycleStrategy(), sessionScope);
 

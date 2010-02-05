@@ -1,11 +1,8 @@
 package org.picocontainer.injectors;
 
 import org.junit.Test;
-import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.Parameter;
-import org.picocontainer.monitors.AbstractComponentMonitor;
-import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.tck.AbstractComponentAdapterTest;
