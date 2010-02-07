@@ -12,6 +12,7 @@ import org.atinject.tck.auto.V8Engine;
 import org.atinject.tck.auto.accessories.Cupholder;
 import org.atinject.tck.auto.accessories.SpareTire;
 
+import javax.inject.Inject;
 import javax.inject.Provider;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -77,10 +78,10 @@ public class StoneageSimulationJsr330Tests {
         };
 
         final V8Engine v8Engine = new V8Engine();
-        injectMethod(v8Engine, Engine.class, "injectTwiceOverriddenWithOmissionInMiddle");
+        //injectMethod(v8Engine, Engine.class, "injectTwiceOverriddenWithOmissionInMiddle");
         injectMethod(v8Engine, Engine.class, "injectPackagePrivateMethodForOverride");
-        injectMethod(v8Engine, Engine.class, "injectPackagePrivateMethod");
-        injectMethod(v8Engine, GasEngine.class, "injectTwiceOverriddenWithOmissionInSubclass");
+        //injectMethod(v8Engine, Engine.class, "injectPackagePrivateMethod");
+        //injectMethod(v8Engine, GasEngine.class, "injectTwiceOverriddenWithOmissionInSubclass");
         injectMethod(v8Engine, V8Engine.class, "injectTwiceOverriddenWithOmissionInMiddle");
         injectMethod(v8Engine, V8Engine.class, "injectPackagePrivateMethod");
 
@@ -133,7 +134,9 @@ public class StoneageSimulationJsr330Tests {
         injectField(spareTire, SpareTire.class,"fieldInjection", new FuelTank());
         injectMethod(spareTire, SpareTire.class, "subtypeMethodInjection", FuelTank.class, new FuelTank());
         injectMethod(spareTire, SpareTire.class, "injectPrivateMethod");
+        injectMethod(spareTire, SpareTire.class, "injectProtectedMethod");
         injectMethod(spareTire, SpareTire.class, "injectPackagePrivateMethod");
+        injectMethod(spareTire, SpareTire.class, "injectPackagePrivateMethodForOverride");
         spareTire.injectPublicMethod();
     }
 
@@ -141,6 +144,10 @@ public class StoneageSimulationJsr330Tests {
         injectField(tire, Tire.class,"fieldInjection", new FuelTank());
         injectMethod(tire, Tire.class, "injectPrivateMethod");
         injectMethod(tire, Tire.class, "injectPackagePrivateMethod");
+        injectMethod(tire, Tire.class, "injectPrivateMethodForOverride");
+        injectMethod(tire, Tire.class, "injectPackagePrivateMethodForOverride");
+        injectMethod(tire, Tire.class, "injectProtectedMethodForOverride");
+        injectMethod(tire, Tire.class, "injectPublicMethodForOverride");
         injectMethod(tire, Tire.class, "supertypeMethodInjection", FuelTank.class, new FuelTank());
     }
 
