@@ -41,6 +41,15 @@ public class StoneageSimulationJsr330Tests {
 
         final SpareTire spareTire = new SpareTire(fuelTank, new FuelTank());
 
+        Method subtypeMethodInjection = SpareTire.class.getDeclaredMethod("subtypeMethodInjection", FuelTank.class);
+        subtypeMethodInjection.setAccessible(true);
+        subtypeMethodInjection.invoke(spareTire, new FuelTank());
+
+        Field fieldInjection = SpareTire.class.getDeclaredField("fieldInjection");
+        fieldInjection.setAccessible(true);
+        fieldInjection.set(spareTire, new FuelTank());
+
+
         Provider<Seat> driversSeatProvider = new Provider<Seat>() {
             public Seat get() {
                 return driversSeat;
