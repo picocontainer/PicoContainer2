@@ -119,7 +119,7 @@ public class StoneageSimulationJsr330Tests {
         injectInstanceMethodWithManyArgs.invoke(car, plainSeat[0], driversSeatA, plainTire,
                 spareTire, plainSeatProvider, driversSeatProvider, plainTireProvider, spareTireProvider);
 
-        return Tck.testsFor(car, true, true);
+        return Tck.testsFor(car, false, true);
     }
 
     private static void spareTireInjections(SpareTire spareTire) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException {
