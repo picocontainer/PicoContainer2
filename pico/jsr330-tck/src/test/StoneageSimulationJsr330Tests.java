@@ -18,6 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class StoneageSimulationJsr330Tests {
+    
     public static Test suite() throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, NoSuchFieldException {
         Constructor<?> seatCtor = Seat.class.getDeclaredConstructors()[0];
         final Constructor<?> driversSeatCtor = DriversSeat.class.getDeclaredConstructors()[0];
@@ -39,17 +40,11 @@ public class StoneageSimulationJsr330Tests {
         final FuelTank fuelTank = new FuelTank();
 
         final Tire plainTire = new Tire(fuelTank);
-        injectField(plainTire,Tire.class,"fieldInjection", new FuelTank());
+        tireInjections(plainTire);
 
         final SpareTire spareTire = new SpareTire(fuelTank, new FuelTank());
-
-        spareTire.injectPublicMethod();
-        injectMethod(spareTire, SpareTire.class, "subtypeMethodInjection", FuelTank.class, new FuelTank());
-        injectMethod(spareTire, SpareTire.class, "injectPrivateMethod");
-        injectMethod(spareTire, SpareTire.class, "injectPackagePrivateMethod");
-        injectMethod(spareTire, Tire.class, "supertypeMethodInjection", FuelTank.class, new FuelTank());
-        injectField(spareTire,SpareTire.class,"fieldInjection", new FuelTank());
-        injectField(spareTire,Tire.class,"fieldInjection", new FuelTank());
+        tireInjections(plainTire);
+        spareTireInjections(spareTire);
 
         Provider<Seat> driversSeatProvider = new Provider<Seat>() {
             public Seat get() {
@@ -69,7 +64,13 @@ public class StoneageSimulationJsr330Tests {
 
         Provider<Tire> spareTireProvider = new Provider<Tire>() {
             public Tire get() {
-                return new SpareTire(fuelTank, new FuelTank());
+                try {
+                    SpareTire aSpareTire = new SpareTire(fuelTank, new FuelTank());
+                    spareTireInjections(aSpareTire);
+                    return aSpareTire;
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         };
 
@@ -82,16 +83,9 @@ public class StoneageSimulationJsr330Tests {
             }
         };
 
-        Constructor<?> convertibelCtor = null;
-        Constructor<?>[] convertibelCtors = Convertible.class.getDeclaredConstructors();
-        for (int i = 0; i < convertibelCtors.length; i++) {
-            convertibelCtor = convertibelCtors[i];
-            if (convertibelCtor.getParameterTypes().length > 0) {
-                break;
-            }
-        }
+        Constructor<?> convertibelCtor = Convertible.class.getDeclaredConstructor(Seat.class, Seat.class, Tire.class, Tire.class,
+                Provider.class, Provider.class, Provider.class, Provider.class);
         convertibelCtor.setAccessible(true);
-
         Car car = (Car) convertibelCtor.newInstance(
                 plainSeat[0],
                 driversSeatA,
@@ -101,15 +95,6 @@ public class StoneageSimulationJsr330Tests {
                 driversSeatProvider,
                 plainTireProvider,
                 spareTireProvider);
-
-        injectMethod(car, Convertible.class, "injectMethodWithZeroArgs");
-        injectMethod(car, Convertible.class, "injectMethodWithNonVoidReturn");
-
-        Method injectInstanceMethodWithManyArgs = Convertible.class.getDeclaredMethod("injectInstanceMethodWithManyArgs",
-                Seat.class, Seat.class, Tire.class, Tire.class, Provider.class, Provider.class, Provider.class, Provider.class);
-        injectInstanceMethodWithManyArgs.setAccessible(true);
-        injectInstanceMethodWithManyArgs.invoke(car, plainSeat[0], driversSeatA, plainTire,
-                spareTire, plainSeatProvider, driversSeatProvider, plainTireProvider, spareTireProvider);
 
         injectField(car, Convertible.class, "driversSeatA", driversSeatA);
         injectField(car, Convertible.class, "driversSeatB", driversSeatB);
@@ -125,8 +110,29 @@ public class StoneageSimulationJsr330Tests {
         injectField(car, Convertible.class, "fieldPlainTireProvider", plainTireProvider);
         injectField(car, Convertible.class, "fieldSpareTireProvider", spareTireProvider);
 
+        injectMethod(car, Convertible.class, "injectMethodWithZeroArgs");
+        injectMethod(car, Convertible.class, "injectMethodWithNonVoidReturn");
+
+        Method injectInstanceMethodWithManyArgs = Convertible.class.getDeclaredMethod("injectInstanceMethodWithManyArgs",
+                Seat.class, Seat.class, Tire.class, Tire.class, Provider.class, Provider.class, Provider.class, Provider.class);
+        injectInstanceMethodWithManyArgs.setAccessible(true);
+        injectInstanceMethodWithManyArgs.invoke(car, plainSeat[0], driversSeatA, plainTire,
+                spareTire, plainSeatProvider, driversSeatProvider, plainTireProvider, spareTireProvider);
 
         return Tck.testsFor(car, true, true);
+    }
+
+    private static void spareTireInjections(SpareTire spareTire) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException {
+        injectField(spareTire, SpareTire.class,"fieldInjection", new FuelTank());
+        injectMethod(spareTire, SpareTire.class, "subtypeMethodInjection", FuelTank.class, new FuelTank());
+        injectMethod(spareTire, SpareTire.class, "injectPrivateMethod");
+        injectMethod(spareTire, SpareTire.class, "injectPackagePrivateMethod");
+        spareTire.injectPublicMethod();
+    }
+
+    private static void tireInjections(Tire tire) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        injectField(tire, Tire.class,"fieldInjection", new FuelTank());
+        injectMethod(tire, Tire.class, "supertypeMethodInjection", FuelTank.class, new FuelTank());
     }
 
     private static void injectField(Object inst, Class<?> type, String name, Object param) throws NoSuchFieldException, IllegalAccessException {
