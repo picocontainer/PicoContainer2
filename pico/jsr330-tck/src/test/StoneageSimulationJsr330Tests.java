@@ -5,14 +5,12 @@ import org.atinject.tck.auto.Convertible;
 import org.atinject.tck.auto.DriversSeat;
 import org.atinject.tck.auto.Engine;
 import org.atinject.tck.auto.FuelTank;
-import org.atinject.tck.auto.GasEngine;
 import org.atinject.tck.auto.Seat;
 import org.atinject.tck.auto.Tire;
 import org.atinject.tck.auto.V8Engine;
 import org.atinject.tck.auto.accessories.Cupholder;
 import org.atinject.tck.auto.accessories.SpareTire;
 
-import javax.inject.Inject;
 import javax.inject.Provider;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -22,6 +20,7 @@ import java.lang.reflect.Method;
 public class StoneageSimulationJsr330Tests {
     
     public static Test suite() throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, NoSuchFieldException {
+
         Constructor<?> seatCtor = Seat.class.getDeclaredConstructors()[0];
         final Constructor<?> driversSeatCtor = DriversSeat.class.getDeclaredConstructors()[0];
         seatCtor.setAccessible(true);
@@ -78,9 +77,12 @@ public class StoneageSimulationJsr330Tests {
         };
 
         final V8Engine v8Engine = new V8Engine();
+        // V8Engine has same method, therefore don't call it in the super class
         //injectMethod(v8Engine, Engine.class, "injectTwiceOverriddenWithOmissionInMiddle");
         injectMethod(v8Engine, Engine.class, "injectPackagePrivateMethodForOverride");
+        // V8Engine has same method, therefore don't call it in the super class
         //injectMethod(v8Engine, Engine.class, "injectPackagePrivateMethod");
+        // V8Engine has same method but declared w/o @Inject - not called at all.
         //injectMethod(v8Engine, GasEngine.class, "injectTwiceOverriddenWithOmissionInSubclass");
         injectMethod(v8Engine, V8Engine.class, "injectTwiceOverriddenWithOmissionInMiddle");
         injectMethod(v8Engine, V8Engine.class, "injectPackagePrivateMethod");
@@ -94,15 +96,8 @@ public class StoneageSimulationJsr330Tests {
         Constructor<?> convertibelCtor = Convertible.class.getDeclaredConstructor(Seat.class, Seat.class, Tire.class, Tire.class,
                 Provider.class, Provider.class, Provider.class, Provider.class);
         convertibelCtor.setAccessible(true);
-        Car car = (Car) convertibelCtor.newInstance(
-                plainSeat[0],
-                driversSeatA,
-                plainTire,
-                spareTire,
-                plainSeatProvider,
-                driversSeatProvider,
-                plainTireProvider,
-                spareTireProvider);
+        Car car = (Car) convertibelCtor.newInstance(plainSeat[0], driversSeatA, plainTire, spareTire,
+                plainSeatProvider, driversSeatProvider, plainTireProvider, spareTireProvider);
 
         injectField(car, Convertible.class, "driversSeatA", driversSeatA);
         injectField(car, Convertible.class, "driversSeatB", driversSeatB);
