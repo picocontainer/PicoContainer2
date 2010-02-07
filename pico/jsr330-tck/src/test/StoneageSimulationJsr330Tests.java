@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 public class StoneageSimulationJsr330Tests {
     public static Test suite() throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException, NoSuchFieldException {
         Constructor<?> seatCtor = Seat.class.getDeclaredConstructors()[0];
-        Constructor<?> driversSeatCtor = DriversSeat.class.getDeclaredConstructors()[0];
+        final Constructor<?> driversSeatCtor = DriversSeat.class.getDeclaredConstructors()[0];
         seatCtor.setAccessible(true);
 
         final Seat[] plainSeat = new Seat[1];
@@ -31,46 +31,62 @@ public class StoneageSimulationJsr330Tests {
             }
         };
 
-        Cupholder cupholder = new Cupholder(plainSeatProvider);
+        final Cupholder cupholder = new Cupholder(plainSeatProvider);
         plainSeat[0] = (Seat) seatCtor.newInstance(cupholder);
-        final DriversSeat driversSeat = (DriversSeat) driversSeatCtor.newInstance(cupholder);
+        final DriversSeat driversSeatA = (DriversSeat) driversSeatCtor.newInstance(cupholder);
+        final DriversSeat driversSeatB = (DriversSeat) driversSeatCtor.newInstance(cupholder);
 
-        FuelTank fuelTank = new FuelTank();
+        final FuelTank fuelTank = new FuelTank();
 
         final Tire plainTire = new Tire(fuelTank);
+        Field fieldInjection = Tire.class.getDeclaredField("fieldInjection");
+        fieldInjection.setAccessible(true);
+        fieldInjection.set(plainTire, new FuelTank());
 
         final SpareTire spareTire = new SpareTire(fuelTank, new FuelTank());
 
-        Method subtypeMethodInjection = SpareTire.class.getDeclaredMethod("subtypeMethodInjection", FuelTank.class);
-        subtypeMethodInjection.setAccessible(true);
-        subtypeMethodInjection.invoke(spareTire, new FuelTank());
+        spareTire.injectPublicMethod();
+        methodInjection(spareTire, SpareTire.class, "subtypeMethodInjection", FuelTank.class, new FuelTank());
+        methodInjection(spareTire, SpareTire.class, "injectPrivateMethod");
+        methodInjection(spareTire, SpareTire.class, "injectPackagePrivateMethod");
+        methodInjection(spareTire, Tire.class, "supertypeMethodInjection", FuelTank.class, new FuelTank());
 
-        Field fieldInjection = SpareTire.class.getDeclaredField("fieldInjection");
+        fieldInjection = SpareTire.class.getDeclaredField("fieldInjection");
+        fieldInjection.setAccessible(true);
+        fieldInjection.set(spareTire, new FuelTank());
+        fieldInjection = Tire.class.getDeclaredField("fieldInjection");
         fieldInjection.setAccessible(true);
         fieldInjection.set(spareTire, new FuelTank());
 
 
         Provider<Seat> driversSeatProvider = new Provider<Seat>() {
             public Seat get() {
-                return driversSeat;
+                try {
+                    return (DriversSeat) driversSeatCtor.newInstance(cupholder);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         };
 
         Provider<Tire> plainTireProvider = new Provider<Tire>() {
             public Tire get() {
-                return plainTire;
+                return new Tire(fuelTank);
             }
         };
 
         Provider<Tire> spareTireProvider = new Provider<Tire>() {
             public Tire get() {
-                return spareTire;
+                return new SpareTire(fuelTank, new FuelTank());
             }
         };
 
+        final V8Engine v8Engine = new V8Engine();
+        methodInjection(v8Engine, V8Engine.class, "injectTwiceOverriddenWithOmissionInMiddle");        
+
         Provider<Engine> engineProvider = new Provider<Engine>() {
             public Engine get() {
-                return new V8Engine();
+                return v8Engine;
             }
         };
 
@@ -84,25 +100,24 @@ public class StoneageSimulationJsr330Tests {
         }
         convertibelCtor.setAccessible(true);
 
-        System.out.println("l" + convertibelCtor.getParameterTypes().length);
         Car car = (Car) convertibelCtor.newInstance(
                 plainSeat[0],
-                driversSeat,
+                driversSeatA,
                 plainTire,
                 spareTire,
                 plainSeatProvider,
                 driversSeatProvider,
                 plainTireProvider,
-                engineProvider);
+                spareTireProvider);
 
 
         Field driversSeatAFld = Convertible.class.getDeclaredField("driversSeatA");
         driversSeatAFld.setAccessible(true);
-        driversSeatAFld.set(car, driversSeat);
+        driversSeatAFld.set(car, driversSeatA);
 
         Field driversSeatBFld = Convertible.class.getDeclaredField("driversSeatB");
         driversSeatBFld.setAccessible(true);
-        driversSeatBFld.set(car, driversSeat);
+        driversSeatBFld.set(car, driversSeatB);
 
         Field spareTireFld = Convertible.class.getDeclaredField("spareTire");
         spareTireFld.setAccessible(true);
@@ -122,7 +137,7 @@ public class StoneageSimulationJsr330Tests {
 
         Field fieldDriversSeatFld = Convertible.class.getDeclaredField("fieldDriversSeat");
         fieldDriversSeatFld.setAccessible(true);
-        fieldDriversSeatFld.set(car, driversSeat);
+        fieldDriversSeatFld.set(car, driversSeatA);
 
         Field fieldPlainTire = Convertible.class.getDeclaredField("fieldPlainTire");
         fieldPlainTire.setAccessible(true);
@@ -159,9 +174,23 @@ public class StoneageSimulationJsr330Tests {
         Method injectInstanceMethodWithManyArgs = Convertible.class.getDeclaredMethod("injectInstanceMethodWithManyArgs",
                 Seat.class, Seat.class, Tire.class, Tire.class, Provider.class, Provider.class, Provider.class, Provider.class);
         injectInstanceMethodWithManyArgs.setAccessible(true);
-        injectInstanceMethodWithManyArgs.invoke(car, plainSeat[0], driversSeat, plainTire,
+        injectInstanceMethodWithManyArgs.invoke(car, plainSeat[0], driversSeatA, plainTire,
                 spareTire, plainSeatProvider, driversSeatProvider, plainTireProvider, spareTireProvider);
 
         return Tck.testsFor(car, true, true);
+    }
+
+    private static void methodInjection(Object inst, Class<?> type, String name) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        methodInjection(inst, type, name, new Class[0], new Object[0]);
+    }
+
+    private static void methodInjection(Object inst, Class<?> type, String name, Class<?> pType, Object param) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        methodInjection(inst, type, name, new Class[] {pType}, new Object[]{param});
+    }
+
+    private static void methodInjection(Object inst, Class<?> type, String name, Class<?>[] pTypes, Object[] params) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        Method method = type.getDeclaredMethod(name, pTypes);
+        method.setAccessible(true);
+        method.invoke(inst, params);
     }
 }
