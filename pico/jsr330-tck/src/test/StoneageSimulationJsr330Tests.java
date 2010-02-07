@@ -5,6 +5,7 @@ import org.atinject.tck.auto.Convertible;
 import org.atinject.tck.auto.DriversSeat;
 import org.atinject.tck.auto.Engine;
 import org.atinject.tck.auto.FuelTank;
+import org.atinject.tck.auto.GasEngine;
 import org.atinject.tck.auto.Seat;
 import org.atinject.tck.auto.Tire;
 import org.atinject.tck.auto.V8Engine;
@@ -43,7 +44,7 @@ public class StoneageSimulationJsr330Tests {
         tireInjections(plainTire);
 
         final SpareTire spareTire = new SpareTire(fuelTank, new FuelTank());
-        tireInjections(plainTire);
+        tireInjections(spareTire);
         spareTireInjections(spareTire);
 
         Provider<Seat> driversSeatProvider = new Provider<Seat>() {
@@ -66,6 +67,7 @@ public class StoneageSimulationJsr330Tests {
             public Tire get() {
                 try {
                     SpareTire aSpareTire = new SpareTire(fuelTank, new FuelTank());
+                    tireInjections(aSpareTire);
                     spareTireInjections(aSpareTire);
                     return aSpareTire;
                 } catch (Exception e) {
@@ -75,7 +77,12 @@ public class StoneageSimulationJsr330Tests {
         };
 
         final V8Engine v8Engine = new V8Engine();
+        injectMethod(v8Engine, Engine.class, "injectTwiceOverriddenWithOmissionInMiddle");
+        injectMethod(v8Engine, Engine.class, "injectPackagePrivateMethodForOverride");
+        injectMethod(v8Engine, Engine.class, "injectPackagePrivateMethod");
+        injectMethod(v8Engine, GasEngine.class, "injectTwiceOverriddenWithOmissionInSubclass");
         injectMethod(v8Engine, V8Engine.class, "injectTwiceOverriddenWithOmissionInMiddle");
+        injectMethod(v8Engine, V8Engine.class, "injectPackagePrivateMethod");
 
         Provider<Engine> engineProvider = new Provider<Engine>() {
             public Engine get() {
@@ -132,6 +139,8 @@ public class StoneageSimulationJsr330Tests {
 
     private static void tireInjections(Tire tire) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         injectField(tire, Tire.class,"fieldInjection", new FuelTank());
+        injectMethod(tire, Tire.class, "injectPrivateMethod");
+        injectMethod(tire, Tire.class, "injectPackagePrivateMethod");
         injectMethod(tire, Tire.class, "supertypeMethodInjection", FuelTank.class, new FuelTank());
     }
 
