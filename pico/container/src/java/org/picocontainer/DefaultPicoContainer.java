@@ -877,7 +877,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     public MutablePicoContainer addChildContainer(final PicoContainer child) {
     	checkCircularChildDependencies(child);
     	if (children.add(child)) {
-            // @todo Should only be added if child container has also be started
+            // TODO Should only be added if child container has also be started
             if (lifecycleState.isStarted()) {
                 childrenStarted.add(new WeakReference<PicoContainer>(child));
             }

@@ -123,7 +123,7 @@ public class SimpleNamedBindingAnnotationTestCase {
 
         @Override
         public void verify(PicoContainer container) throws PicoCompositionException {
-            // @todo Auto-generated method stub
+            // TODO Auto-generated method stub
         }
 
         public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {

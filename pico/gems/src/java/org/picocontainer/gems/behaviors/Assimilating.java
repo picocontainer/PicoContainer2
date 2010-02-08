@@ -27,9 +27,9 @@ import java.util.Properties;
 /**
  * Factory for the Assimilated. This factory will create {@link Assimilated} instances for all
  * {@link ComponentAdapter} instances created by the delegate. This will assimilate every component for a specific type.
+ * (TODO Since assimilating is taking types that are not the result type, does this mean that we cannot use generics)
  * 
  * @author J&ouml;rg Schaible
- * @todo Since assimilating is taking types that are not the result type, does this mean that we cannot use generics
  * for this type?  I've been unable to actually get it working.
  */
 @SuppressWarnings("serial")

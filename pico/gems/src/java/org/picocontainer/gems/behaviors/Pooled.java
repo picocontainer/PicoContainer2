@@ -254,7 +254,7 @@ public final class Pooled<T> extends AbstractBehavior<T> {
      * 
      */
     protected Pooled() {
-        // @todo super class should support standard ctor
+        // TODO super class should support standard ctor
         super((ComponentAdapter)Null.object(ComponentAdapter.class));
     }
 
@@ -414,7 +414,7 @@ public final class Pooled<T> extends AbstractBehavior<T> {
             for (Object component : components) {
                 dispose(component);
             }
-            // @todo: Release pooled components and clear collection
+            // TODO: Release pooled components and clear collection
         }
     }
 

@@ -31,7 +31,7 @@ public class Issue0332TestCase {
     
 
     /**
-     * @todo Revisit this for Pico 3.
+     * TODO Revisit this for Pico 3.
      */
     @Ignore
     @Test

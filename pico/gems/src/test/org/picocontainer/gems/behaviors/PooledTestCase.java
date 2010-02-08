@@ -322,7 +322,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
                 picoContainer.start();
                 picoContainer.stop();
                 picoContainer.dispose();
-                // @todo Move test to AbstractAbstractCATC
+                // TODO Move test to AbstractAbstractCATC
                 assertEquals("<OneOne>!One", buffer.toString());
             }
         }
@@ -359,7 +359,7 @@ public final class PooledTestCase extends AbstractComponentAdapterTest{
                 picoContainer.start();
                 picoContainer.stop();
                 picoContainer.dispose();
-                // @todo Move test to AbstractAbstractCATC
+                // TODO Move test to AbstractAbstractCATC
                 assertEquals("<One<TwoTwo>One>!Two!One", buffer.toString());
             }
         }

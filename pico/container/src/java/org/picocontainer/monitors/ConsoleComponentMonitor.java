@@ -33,11 +33,11 @@ import org.picocontainer.Behavior;
 /**
  * A {@link ComponentMonitor} which writes to a {@link OutputStream}. 
  * This is typically used to write to a console.
- * 
+ * (TODO  After serialization, the output printstream is null)  
+ *
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y
  * @author Mauro Talevi
- * @todo  After serialization, the output printstream is null.  
  */
 @SuppressWarnings("serial")
 public class ConsoleComponentMonitor implements ComponentMonitor, Serializable {
