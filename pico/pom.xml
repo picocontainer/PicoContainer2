@@ -258,6 +258,7 @@
 						<stylesheet>maven</stylesheet>
 						<header><![CDATA[<img class="logo" src="http://www.picocontainer.org/images/pico-logo.png"></img>]]></header>
 						<linksource>true</linksource>
+						<excludePackageNames>com.thoughtworks.paranamer</excludePackageNames>
 					</configuration>
 				</plugin>
 				<plugin>
