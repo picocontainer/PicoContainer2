@@ -65,6 +65,13 @@
 				<version>1.0</version>
 				<optional>true</optional>
 			</dependency>
+            <!-- For Inject annotations -->
+            <dependency>
+              <groupId>javax.inject</groupId>
+              <artifactId>javax.inject</artifactId>
+              <version>1</version>
+              <optional>true</optional>
+            </dependency>      
 			<!-- For parameter name leverage -->
 			<dependency>
 				<groupId>com.thoughtworks.paranamer</groupId>
