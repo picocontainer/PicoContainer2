@@ -9,16 +9,7 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.picocontainer.behaviors.Behaviors.caching;
-import static org.picocontainer.behaviors.Behaviors.implementationHiding;
-import static org.picocontainer.behaviors.Behaviors.synchronizing;
-import static org.picocontainer.injectors.Injectors.SDI;
-
-import java.util.HashMap;
-import java.util.Properties;
-
+import com.thoughtworks.xstream.XStream;
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.behaviors.Caching;
@@ -31,16 +22,25 @@ import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.AnnotatedFieldInjection;
 import org.picocontainer.injectors.AnnotatedMethodInjection;
 import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.injectors.NamedMethodInjection;
 import org.picocontainer.injectors.SetterInjection;
+import org.picocontainer.lifecycle.JavaEE5LifecycleStrategy;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.picocontainer.lifecycle.JavaEE5LifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.HashMap;
+import java.util.Properties;
+
 import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.picocontainer.behaviors.Behaviors.caching;
+import static org.picocontainer.behaviors.Behaviors.implementationHiding;
+import static org.picocontainer.behaviors.Behaviors.synchronizing;
+import static org.picocontainer.injectors.Injectors.SDI;
 
 @SuppressWarnings("serial")
 public class PicoBuilderTestCase {
@@ -248,6 +248,13 @@ public class PicoBuilderTestCase {
     @Test public void testWithCtorDI() {
         MutablePicoContainer actual = new PicoBuilder().withConstructorInjection().build();
         MutablePicoContainer expected = new DefaultPicoContainer(new ConstructorInjection(),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
+    }
+
+    @Test public void testWithNamedMethodInjection() {
+        MutablePicoContainer actual = new PicoBuilder().withNamedMethodInjection().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(new NamedMethodInjection(),
                 new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }

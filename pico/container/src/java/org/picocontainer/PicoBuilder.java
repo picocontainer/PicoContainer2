@@ -9,30 +9,32 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import static org.picocontainer.behaviors.Behaviors.caching;
-import static org.picocontainer.behaviors.Behaviors.implementationHiding;
+import org.picocontainer.behaviors.Automating;
+import org.picocontainer.behaviors.Locking;
 import org.picocontainer.behaviors.PropertyApplying;
 import org.picocontainer.behaviors.Synchronizing;
-import org.picocontainer.behaviors.Locking;
-import org.picocontainer.behaviors.Automating;
-import org.picocontainer.injectors.MethodInjection;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.TransientPicoContainer;
-import static org.picocontainer.injectors.Injectors.CDI;
-import static org.picocontainer.injectors.Injectors.annotatedMethodDI;
-import static org.picocontainer.injectors.Injectors.annotatedFieldDI;
-import static org.picocontainer.injectors.Injectors.SDI;
-import static org.picocontainer.injectors.Injectors.adaptiveDI;
+import org.picocontainer.injectors.MethodInjection;
+import org.picocontainer.lifecycle.JavaEE5LifecycleStrategy;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.picocontainer.lifecycle.JavaEE5LifecycleStrategy;
 import org.picocontainer.monitors.ConsoleComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.util.ArrayList;
-import java.util.Stack;
 import java.util.List;
+import java.util.Stack;
+
+import static org.picocontainer.behaviors.Behaviors.caching;
+import static org.picocontainer.behaviors.Behaviors.implementationHiding;
+import static org.picocontainer.injectors.Injectors.CDI;
+import static org.picocontainer.injectors.Injectors.SDI;
+import static org.picocontainer.injectors.Injectors.adaptiveDI;
+import static org.picocontainer.injectors.Injectors.annotatedFieldDI;
+import static org.picocontainer.injectors.Injectors.annotatedMethodDI;
+import static org.picocontainer.injectors.Injectors.namedMethod;
 
 /**
  * Helps assembles the myriad items available to a picocontainer.
@@ -221,6 +223,11 @@ public class PicoBuilder {
 
     public PicoBuilder withConstructorInjection() {
         injectionType = CDI();
+        return this;
+    }
+
+    public PicoBuilder withNamedMethodInjection() {
+        injectionType = namedMethod();
         return this;
     }
 
