@@ -25,6 +25,7 @@
         <page>typed-field-injection.html</page>
         <page>named-field-injection.html</page>
         <page>method-injection.html</page>
+        <page>named-method-injection.html</page>
         <page>multi-injection.html</page>
         <page>composite-injection.html</page>
         <page>factory-injection.html</page>

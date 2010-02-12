@@ -14,7 +14,7 @@
     container after instantiation.</p>
 
 <div class="source">
-	<pre>public class Apple {
+	<pre>public class FruitBasket {
     private Orange orange;
     private Pear pear;
     private Banana banana;
@@ -26,9 +26,9 @@
 <div class="source"><pre>
 import static org.picocontainer.injectors.NamedFieldInjection.injectionFieldNames;
 pico = new DefaultPicoContainer(new NamedFieldInjection();
-pico.as(injectionFieldNames("orange", "pear", "banana")).addComponent(Apple.class);
+pico.as(injectionFieldNames("orange", "pear", "banana")).addComponent(FruitBasket.class);
 // etc
-Apple apple = pico.getComponent(Apple.class);</pre>
+FruitBasket fruitBasket = pico.getComponent(FruitBasket.class);</pre>
 </div>
 <p>
     Yes that's right, there's no constructor needed. It means that for a
@@ -36,7 +36,7 @@ Apple apple = pico.getComponent(Apple.class);</pre>
     populate the dependency fields.</p>
 
 <p>The component factory for this is a class<strong>
-    TypedFieldInjection</strong>. It only handles typed-field
+    NamedFieldInjection</strong>. It only handles named-field
     injection for components.</p>
 </body>
 </html>
