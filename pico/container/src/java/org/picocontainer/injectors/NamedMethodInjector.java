@@ -24,7 +24,7 @@ public class NamedMethodInjector<T> extends SetterInjector<T> {
                                    Class<?> impl,
                                    Parameter[] parameters,
                                    ComponentMonitor monitor) {
-        super(key, impl, parameters, monitor, "set", true);
+        this(key, impl, parameters, monitor, "set");
     }
 
     public NamedMethodInjector(Object key,
@@ -39,15 +39,10 @@ public class NamedMethodInjector<T> extends SetterInjector<T> {
     protected NameBinding makeParameterNameImpl(final AccessibleObject member) {
         return new NameBinding() {
             public String getName() {
-                return NamedMethodInjector.this.getName((Method) member);
+                String name = ((Method)member).getName().substring(prefix.length()); // string off 'set' or chosen prefix
+                return name.substring(0,1).toLowerCase() + name.substring(1);
             }
         };
-    }
-
-    @Override
-    protected String getName(Method method) {
-        String name = method.getName().substring(prefix.length()); // string off 'set' or chosen prefix
-        return name.substring(0,1).toLowerCase() + name.substring(1);
     }
 
     public String toString() {
