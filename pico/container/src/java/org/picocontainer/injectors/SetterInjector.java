@@ -64,11 +64,13 @@ public class SetterInjector<T> extends IterativeInjector<T> {
         return member != null && ((Method)member).getReturnType()!=void.class ? lastReturn : instance;
     }
 
+    @Override
     protected Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
         throws IllegalAccessException, InvocationTargetException {
         return ((Method)member).invoke(componentInstance, toInject);
     }
 
+    @Override
     protected boolean isInjectorMethod(Method method) {
         String methodName = method.getName();
         return methodName.length() >= getInjectorPrefix().length() + 1 && methodName.startsWith(getInjectorPrefix()) && Character.isUpperCase(methodName.charAt(getInjectorPrefix().length()));
@@ -78,6 +80,7 @@ public class SetterInjector<T> extends IterativeInjector<T> {
         return prefix;
     }
 
+    @Override
     public String getDescriptor() {
         return "SetterInjector-"; 
     }

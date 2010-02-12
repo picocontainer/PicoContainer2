@@ -9,6 +9,11 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
+import org.picocontainer.annotations.Bind;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
@@ -21,22 +26,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.NameBinding;
-import org.picocontainer.Parameter;
-import org.picocontainer.annotations.Bind;
-
 /**
  * Injection happens after instantiation, and fields are marked as
  * injection points via a field type.
  */
 @SuppressWarnings("serial")
 public class TypedFieldInjector extends IterativeInjector {
-
-    /**
-	 * Serialization UUID.
-	 */
 
     private final List<String> classes;
 
@@ -45,11 +40,11 @@ public class TypedFieldInjector extends IterativeInjector {
                                   Parameter[] parameters,
                                   ComponentMonitor componentMonitor,
                                   String classNames) {
-
         super(key, impl, parameters, componentMonitor, true);
         this.classes = Arrays.asList(classNames.trim().split(" "));
     }
 
+    @Override
     protected void initializeInjectionMembersAndTypeLists() {
         injectionMembers = new ArrayList<AccessibleObject>();
         List<Annotation> bindingIds = new ArrayList<Annotation>();
@@ -97,10 +92,12 @@ public class TypedFieldInjector extends IterativeInjector {
         return null;
     }
 
+    @Override
     public String getDescriptor() {
         return "TypedFieldInjector-";
     }
 
+    @Override
     protected NameBinding makeParameterNameImpl(final AccessibleObject member) {
         return new NameBinding() {
             public String getName() {

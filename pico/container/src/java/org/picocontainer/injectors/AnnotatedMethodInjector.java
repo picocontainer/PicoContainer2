@@ -9,14 +9,13 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.Parameter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Parameter;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 @SuppressWarnings("serial")
 public class AnnotatedMethodInjector extends SetterInjector {
@@ -27,22 +26,26 @@ public class AnnotatedMethodInjector extends SetterInjector {
                                    Class<?> impl,
                                    Parameter[] parameters,
                                    ComponentMonitor monitor,
-                                   Class<? extends Annotation> injectionAnnotation, boolean useNames) {
+                                   Class<? extends Annotation> injectionAnnotation,
+                                   boolean useNames) {
         super(key, impl, parameters, monitor, "", useNames);
         this.injectionAnnotation = injectionAnnotation;
     }
 
+    @Override
     protected Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
         throws IllegalAccessException, InvocationTargetException {
         return ((Method)member).invoke(componentInstance, toInject);
     }
 
+    @Override
     protected final boolean isInjectorMethod(Method method) {
         return method.getAnnotation(injectionAnnotation) != null;
     }
 
-    public String toString() {
-        return "MethodInjection-" + super.toString();
+    @Override
+    public String getDescriptor() {
+        return "MethodInjection";
     }
 
 }

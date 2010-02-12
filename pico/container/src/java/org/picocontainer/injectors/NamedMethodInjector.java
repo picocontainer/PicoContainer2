@@ -74,8 +74,9 @@ public class NamedMethodInjector<T> extends SetterInjector<T> {
         }
     }
 
-    public String toString() {
-        return "NamedMethodInjection-" + super.toString();
+    @Override
+    public String getDescriptor() {
+        return "NamedMethodInjection";
     }
 
 }

@@ -10,9 +10,8 @@
 package org.picocontainer.injectors;
 
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
 import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
 import org.picocontainer.annotations.Bind;
 
 import java.lang.annotation.Annotation;
@@ -44,6 +43,7 @@ public class AnnotatedFieldInjector extends IterativeInjector {
         this.injectionAnnotation = injectionAnnotation;
     }
 
+    @Override    
     protected void initializeInjectionMembersAndTypeLists() {
         injectionMembers = new ArrayList<AccessibleObject>();
         List<Annotation> bindingIds = new ArrayList<Annotation>();
@@ -94,10 +94,12 @@ public class AnnotatedFieldInjector extends IterativeInjector {
         return null;
     }
 
+    @Override
     public String getDescriptor() {
         return "AnnotatedFieldInjector-";
     }
 
+    @Override
     protected NameBinding makeParameterNameImpl(final AccessibleObject member) {
         return new NameBinding() {
             public String getName() {

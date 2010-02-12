@@ -9,6 +9,11 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
+import org.picocontainer.annotations.Bind;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
@@ -21,19 +26,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.NameBinding;
-import org.picocontainer.Parameter;
-import org.picocontainer.annotations.Bind;
-
 /**
  * Injection happens after instantiation, and fields are marked as 
  * injection points via a named field.
  */
 @SuppressWarnings("serial")
 public class NamedFieldInjector extends IterativeInjector {
-
 
     private final List<String> fieldNames;
 
@@ -47,6 +45,7 @@ public class NamedFieldInjector extends IterativeInjector {
         this.fieldNames = Arrays.asList(fieldNames.trim().split(" "));
     }
 
+    @Override
     protected void initializeInjectionMembersAndTypeLists() {
         injectionMembers = new ArrayList<AccessibleObject>();
         List<Annotation> bindingIds = new ArrayList<Annotation>();
@@ -94,10 +93,12 @@ public class NamedFieldInjector extends IterativeInjector {
         return null;
     }
 
+    @Override
     public String getDescriptor() {
         return "NamedFieldInjector-";
     }
 
+    @Override
     protected NameBinding makeParameterNameImpl(final AccessibleObject member) {
         return new NameBinding() {
             public String getName() {
