@@ -174,7 +174,7 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
                      "  <componentImplementation>org.picocontainer.injectors.AnnotatedMethodInjectorTestCase$AnnotatedBurp</componentImplementation>\n" +
                      "  <componentMonitor class=CCM/>\n" +
                      "  <useNames>false</useNames>\n" +
-                     "  <setterMethodPrefix></setterMethodPrefix>\n" +
+                     "  <prefix></prefix>\n" +
                      "  <injectionAnnotation>org.picocontainer.annotations.Inject</injectionAnnotation>\n" +
                      "</Method-Injection>", foo);
 

@@ -36,6 +36,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     protected transient List<AccessibleObject> injectionMembers;
     protected transient Type[] injectionTypes;
+    protected transient String[] names;
     protected transient Annotation[] bindings;
 
     private transient Paranamer paranamer;
@@ -112,7 +113,8 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
     private boolean matchParameter(PicoContainer container, List<Object> matchingParameterList, Parameter parameter) {
         for (int j = 0; j < injectionTypes.length; j++) {
-            if (matchingParameterList.get(j) == null
+            Object o = matchingParameterList.get(j);
+            if (o == null
                     && parameter.resolve(container, this, null, injectionTypes[j],
                                                makeParameterNameImpl(injectionMembers.get(j)),
                                                useNames(), bindings[j]).isResolved()) {
@@ -247,6 +249,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     protected void initializeInjectionMembersAndTypeLists() {
         injectionMembers = new ArrayList<AccessibleObject>();
         List<Annotation> bingingIds = new ArrayList<Annotation>();
+        final List<String> nameList = new ArrayList<String>();
         final List<Type> typeList = new ArrayList<Type>();
         final Method[] methods = getMethods();
         for (final Method method : methods) {
@@ -258,13 +261,19 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
                 boolean isInjector = isInjectorMethod(method);
                 if (isInjector) {
                     injectionMembers.add(method);
+                    nameList.add(getName(method));
                     typeList.add(box(parameterTypes[0]));
                     bingingIds.add(getBindings(method, 0));
                 }
             }
         }
         injectionTypes = typeList.toArray(new Type[0]);
+        names = nameList.toArray(new String[0]);
         bindings = bingingIds.toArray(new Annotation[0]);
+    }
+
+    protected String getName(Method method) {
+        return null;
     }
 
     private void fixGenericParameterTypes(Method method, Type[] parameterTypes) {

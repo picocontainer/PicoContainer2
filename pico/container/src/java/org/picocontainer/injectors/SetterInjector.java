@@ -11,7 +11,6 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
-import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.behaviors.PropertyApplicator;
 import org.picocontainer.behaviors.Cached;
 
@@ -38,7 +37,7 @@ import java.lang.reflect.InvocationTargetException;
 @SuppressWarnings("serial")
 public class SetterInjector<T> extends IterativeInjector<T> {
 
-    private final String setterMethodPrefix;
+    protected final String prefix;
 
     /**
      * Constructs a SetterInjector
@@ -47,7 +46,7 @@ public class SetterInjector<T> extends IterativeInjector<T> {
      * @param componentImplementation the concrete implementation
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
-     * @param setterMethodPrefix
+     * @param prefix                  the prefix to use (e.g. 'set')
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
@@ -56,9 +55,9 @@ public class SetterInjector<T> extends IterativeInjector<T> {
                           final Class componentImplementation,
                           Parameter[] parameters,
                           ComponentMonitor monitor,
-                          String setterMethodPrefix, boolean useNames) throws  NotConcreteRegistrationException {
+                          String prefix, boolean useNames) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor, useNames);
-        this.setterMethodPrefix = setterMethodPrefix;
+        this.prefix = prefix;
     }
 
     protected Object memberInvocationReturn(Object lastReturn, AccessibleObject member, Object instance) {
@@ -76,7 +75,7 @@ public class SetterInjector<T> extends IterativeInjector<T> {
     }
 
     protected String getInjectorPrefix() {
-        return setterMethodPrefix;
+        return prefix;
     }
 
     public String getDescriptor() {
