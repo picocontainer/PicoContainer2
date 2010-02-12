@@ -36,7 +36,6 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     protected transient List<AccessibleObject> injectionMembers;
     protected transient Type[] injectionTypes;
-    protected transient String[] names;
     protected transient Annotation[] bindings;
 
     private transient Paranamer paranamer;
@@ -268,7 +267,6 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             }
         }
         injectionTypes = typeList.toArray(new Type[0]);
-        names = nameList.toArray(new String[0]);
         bindings = bingingIds.toArray(new Annotation[0]);
     }
 
