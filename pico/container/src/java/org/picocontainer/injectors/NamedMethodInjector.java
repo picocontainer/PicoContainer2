@@ -36,12 +36,6 @@ public class NamedMethodInjector<T> extends SetterInjector<T> {
     }
 
     @Override
-    protected Object injectIntoMember(AccessibleObject member, Object componentInstance, Object toInject)
-        throws IllegalAccessException, InvocationTargetException {
-        return ((Method)member).invoke(componentInstance, toInject);
-    }
-
-    @Override
     protected NameBinding makeParameterNameImpl(final AccessibleObject member) {
         return new NameBinding() {
             public String getName() {
