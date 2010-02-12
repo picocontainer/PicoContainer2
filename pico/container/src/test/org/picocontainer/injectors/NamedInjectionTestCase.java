@@ -8,30 +8,19 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.tck.AbstractComponentFactoryTest;
 
+import static junit.framework.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
  * @author Paul Hammant
  */
-public class NamedInjectionTestCase extends AbstractComponentFactoryTest {
-
-	@Before
-    public void setUp() throws Exception {
-        picoContainer = new DefaultPicoContainer(createComponentFactory(), new NullLifecycleStrategy(), new EmptyPicoContainer());
-    }
-
-    protected ComponentFactory createComponentFactory() {
-        return new NamedMethodInjection();
-    }
+public class NamedInjectionTestCase {
 
     public static class Bean {
         private String something;
@@ -41,10 +30,20 @@ public class NamedInjectionTestCase extends AbstractComponentFactoryTest {
         }
     }
 
-    @Test public void testContainerMakesNamedMethodInjector() {
+    @Test
+    public void containerShouldMakeUsableNamedMethodInjector() {
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer(new NamedMethodInjection(), new NullLifecycleStrategy(), new EmptyPicoContainer());
         picoContainer.addComponent(Bean.class);
         picoContainer.addConfig("something", "hello there");
         assertTrue(picoContainer.getComponentAdapter(Bean.class) instanceof NamedMethodInjector);
         assertEquals("hello there", picoContainer.getComponent(Bean.class).something);
+    }
+
+    @Test
+    public void containerShouldMakeNamedMethodInjectorThatIsOptionalInUse() {
+        DefaultPicoContainer picoContainer = new DefaultPicoContainer(new NamedMethodInjection(true), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        picoContainer.addComponent(Bean.class);
+        assertTrue(picoContainer.getComponentAdapter(Bean.class) instanceof NamedMethodInjector);
+        assertNull(picoContainer.getComponent(Bean.class).something);
     }
 }

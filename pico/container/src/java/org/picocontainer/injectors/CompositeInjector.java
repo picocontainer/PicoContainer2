@@ -8,16 +8,14 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import java.lang.reflect.Type;
-
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Injector;
-import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
-import org.picocontainer.ComponentAdapter;
+
+import java.lang.reflect.Type;
 
 @SuppressWarnings("serial")
 public class CompositeInjector<T> extends AbstractInjector<T> {
@@ -39,10 +37,9 @@ public class CompositeInjector<T> extends AbstractInjector<T> {
     @Override
     public T getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
         T instance = null;
-        for (int i = 0; i < injectors.length; i++) {
-            Injector<T> injector = injectors[i];
+        for (Injector<T> injector : injectors) {
             if (instance == null) {
-                instance = injector.getComponentInstance(container, ComponentAdapter.NOTHING.class);
+                instance = injector.getComponentInstance(container, NOTHING.class);
             } else {
                 injector.decorateComponentInstance(container, into, instance);
             }
@@ -57,24 +54,24 @@ public class CompositeInjector<T> extends AbstractInjector<T> {
     @Override
     public Object decorateComponentInstance(PicoContainer container, Type into, T instance) {
         Object result = null;
-        for (int i = 0; i < injectors.length; i++) {
-            result = injectors[i].decorateComponentInstance(container, into, instance);
+        for (Injector<T> injector : injectors) {
+            result = injector.decorateComponentInstance(container, into, instance);
         }        
         return result;
     }
 
     @Override
     public void verify(PicoContainer container) throws PicoCompositionException {
-        for (int i = 0; i < injectors.length; i++) {
-            injectors[i].verify(container);
+        for (Injector<T> injector : injectors) {
+            injector.verify(container);
         }
     }
 
     @Override
     public final void accept(PicoVisitor visitor) {
         super.accept(visitor);
-        for (int i = 0; i < injectors.length; i++) {
-            injectors[i].accept(visitor);
+        for (Injector<T> injector : injectors) {
+            injector.accept(visitor);
         }
     }
 

@@ -10,17 +10,27 @@ import java.util.Properties;
 
 public class NamedMethodInjection extends AbstractInjectionFactory {
 
-        private final String prefix;
+    private final String prefix;
+    private final boolean optional;
 
     public NamedMethodInjection(String setterMethodPrefix) {
-        this.prefix = setterMethodPrefix;
+        this(setterMethodPrefix, true);
     }
 
     public NamedMethodInjection() {
         this("set");
     }
 
+    public NamedMethodInjection(boolean optional) {
+        this("set", optional);
+    }
+
+    public NamedMethodInjection(String setterMethodPrefix, boolean optional) {
+        this.prefix = setterMethodPrefix;
+        this.optional = optional;
+    }
+
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters) throws PicoCompositionException {
-        return wrapLifeCycle(monitor.newInjector(new NamedMethodInjector(componentKey, componentImplementation, parameters, monitor, prefix)), lifecycleStrategy);
+        return wrapLifeCycle(monitor.newInjector(new NamedMethodInjector(componentKey, componentImplementation, parameters, monitor, prefix, optional)), lifecycleStrategy);
     }
 }

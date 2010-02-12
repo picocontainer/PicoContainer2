@@ -105,15 +105,15 @@ public interface ComponentAdapter<T> {
      * Locates a component adapter of type <em>componentAdapterType</em> in the ComponentAdapter chain.  Will return null
      * if there is no adapter of the given type.
      * @param <U> the type of ComponentAdapter being located.
-     * @param componentAdapterType the class of the adapter type being located.  Never null.
+     * @param adapterType the class of the adapter type being located.  Never null.
      * @return the appropriate component adapter of type <em>U</em>.  May return null if the component adapter type is not
      * returned.
      */
     <U extends ComponentAdapter> U findAdapterOfType(Class<U> adapterType);
 
     /**
-     * Get a string key descriptor of the component adapter.  
-     * @return
+     * Get a string key descriptor of the component adapter for use in toString()
+     * @return the descriptor
      */
     String getDescriptor();
 
