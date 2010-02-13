@@ -34,6 +34,7 @@ import static org.picocontainer.injectors.Injectors.SDI;
 import static org.picocontainer.injectors.Injectors.adaptiveDI;
 import static org.picocontainer.injectors.Injectors.annotatedFieldDI;
 import static org.picocontainer.injectors.Injectors.annotatedMethodDI;
+import static org.picocontainer.injectors.Injectors.namedField;
 import static org.picocontainer.injectors.Injectors.namedMethod;
 
 /**
@@ -228,6 +229,11 @@ public class PicoBuilder {
 
     public PicoBuilder withNamedMethodInjection() {
         injectionType = namedMethod();
+        return this;
+    }
+
+    public PicoBuilder withNamedFieldInjection() {
+        injectionType = namedField();
         return this;
     }
 

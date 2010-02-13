@@ -29,6 +29,10 @@ public class Injectors {
         return new NamedMethodInjection();
     }
 
+    public static InjectionFactory namedField() {
+        return new NamedFieldInjection();
+    }
+
     public static InjectionFactory annotatedMethodDI() {
         return new AnnotatedMethodInjection();
     }
