@@ -15,6 +15,7 @@ import org.picocontainer.lifecycle.NullLifecycleStrategy;
 
 import static junit.framework.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -46,4 +47,38 @@ public class NamedMethodInjectionTestCase {
         assertTrue(picoContainer.getComponentAdapter(Bean.class) instanceof NamedMethodInjector);
         assertNull(picoContainer.getComponent(Bean.class).something);
     }
+
+    public static class MyConnectionPoolDataSource {
+        private String serverName;
+        private String databaseName;
+        private String user;
+
+        public void setServerName(String a0) { 
+            this.serverName = a0;
+        }
+        public void setDatabaseName(String a0) {
+            this.databaseName = a0;
+        }
+        public void setUser(String a0) {
+            this.user = a0;
+        }
+    }
+
+    @Test
+    public void vincentVanBeverensExample() {
+        MyConnectionPoolDataSource windmill = new DefaultPicoContainer(new NamedMethodInjection())
+                .addComponent(MyConnectionPoolDataSource.class)
+                .addConfig("user", "fred")
+                .addConfig("serverName", "example.com")
+                .addConfig("databaseName", "big://table")
+                .getComponent(MyConnectionPoolDataSource.class);
+        assertNotNull(windmill);
+        assertNotNull(windmill.serverName);
+        assertEquals("example.com", windmill.serverName);
+        assertNotNull(windmill.user);
+        assertEquals("fred", windmill.user);
+        assertNotNull(windmill.databaseName);
+        assertEquals("big://table", windmill.databaseName);
+    }
+
 }
