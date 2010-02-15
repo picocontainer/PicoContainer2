@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Paul Hammant
  */
-public class NamedInjectionTestCase {
+public class NamedMethodInjectionTestCase {
 
     public static class Bean {
         private String something;
