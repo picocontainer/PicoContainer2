@@ -13,8 +13,8 @@ public class NamedMethodInjection extends AbstractInjectionFactory {
     private final String prefix;
     private final boolean optional;
 
-    public NamedMethodInjection(String setterMethodPrefix) {
-        this(setterMethodPrefix, true);
+    public NamedMethodInjection(String prefix) {
+        this(prefix, true);
     }
 
     public NamedMethodInjection() {
@@ -25,8 +25,8 @@ public class NamedMethodInjection extends AbstractInjectionFactory {
         this("set", optional);
     }
 
-    public NamedMethodInjection(String setterMethodPrefix, boolean optional) {
-        this.prefix = setterMethodPrefix;
+    public NamedMethodInjection(String prefix, boolean optional) {
+        this.prefix = prefix;
         this.optional = optional;
     }
 

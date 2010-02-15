@@ -10,10 +10,15 @@
 
 package org.picocontainer.injectors;
 
-import java.util.Properties;
-
-import org.picocontainer.*;
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
+
+import java.util.Properties;
 
 
 /**
@@ -25,10 +30,10 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 @SuppressWarnings("serial")
 public class SetterInjection extends AbstractInjectionFactory {
 
-    private final String setterMethodPrefix;
+    private final String prefix;
 
-    public SetterInjection(String setterMethodPrefix) {
-        this.setterMethodPrefix = setterMethodPrefix;
+    public SetterInjection(String prefix) {
+        this.prefix = prefix;
     }
 
     public SetterInjection() {
@@ -54,7 +59,7 @@ public class SetterInjection extends AbstractInjectionFactory {
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
-        return wrapLifeCycle(monitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, monitor, setterMethodPrefix, useNames)), lifecycleStrategy);
+        return wrapLifeCycle(monitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, monitor, prefix, useNames)), lifecycleStrategy);
     }
 
 }

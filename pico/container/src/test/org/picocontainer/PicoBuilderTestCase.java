@@ -21,6 +21,7 @@ import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.AnnotatedFieldInjection;
 import org.picocontainer.injectors.AnnotatedMethodInjection;
+import org.picocontainer.injectors.CompositeInjection;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.NamedFieldInjection;
 import org.picocontainer.injectors.NamedMethodInjection;
@@ -223,9 +224,17 @@ public class PicoBuilderTestCase {
         }
     }
 
-    @Test public void testWithSetterDI() {
+    @Test public void testWithSetterInjection() {
         MutablePicoContainer actual = new PicoBuilder().withSetterInjection().build();
         MutablePicoContainer expected = new DefaultPicoContainer(new SetterInjection(),
+                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+        assertEquals(xs.toXML(expected), xs.toXML(actual));
+    }
+
+    @Test public void testWithConstructorAndSetterInjectionMakesHiddenCompositeInjection() {
+        MutablePicoContainer actual = new PicoBuilder().withConstructorInjection().withSetterInjection().build();
+        MutablePicoContainer expected = new DefaultPicoContainer(
+                new CompositeInjection(new ConstructorInjection(), new SetterInjection()),
                 new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }

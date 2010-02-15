@@ -189,7 +189,7 @@ public class Injector {
      * @param componentImplementation
      * @param parameters
      * @param monitor
-     * @param setterMethodPrefix
+     * @param prefix
      * @param useNames
      * @return setter injector instance.
      * @throws AbstractInjector.NotConcreteRegistrationException
@@ -199,8 +199,8 @@ public class Injector {
                                           final Class componentImplementation,
                                           Parameter[] parameters,
                                           ComponentMonitor monitor,
-                                          String setterMethodPrefix, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
-        return monitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, monitor, setterMethodPrefix, useNames));
+                                          String prefix, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
+        return monitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, monitor, prefix, useNames));
     }
 
     /**
