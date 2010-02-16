@@ -37,6 +37,7 @@ import static org.picocontainer.injectors.Injectors.annotatedFieldDI;
 import static org.picocontainer.injectors.Injectors.annotatedMethodDI;
 import static org.picocontainer.injectors.Injectors.namedField;
 import static org.picocontainer.injectors.Injectors.namedMethod;
+import static org.picocontainer.injectors.Injectors.typedFieldDI;
 
 /**
  * Helps assembles the myriad items available to a picocontainer.
@@ -226,6 +227,11 @@ public class PicoBuilder {
 
     public PicoBuilder withAnnotatedFieldInjection() {
         injectors.add(annotatedFieldDI());
+        return this;
+    }
+
+    public PicoBuilder withTypedFieldInjection() {
+        injectors.add(typedFieldDI());
         return this;
     }
 

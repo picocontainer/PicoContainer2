@@ -53,8 +53,6 @@ public class SetterInjection extends AbstractInjectionFactory {
      *            the number parameters must match the number of the setter.
      * @return Returns a new {@link SetterInjector}.
      * @throws PicoCompositionException if dependencies cannot be solved
-     * @throws org.picocontainer.PicoCompositionException if the implementation
-     *             is an interface or an abstract class.
      */
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {

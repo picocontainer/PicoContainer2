@@ -41,4 +41,8 @@ public class Injectors {
         return new AnnotatedFieldInjection();
     }
 
+    public static InjectionFactory typedFieldDI() {
+        return new TypedFieldInjection();
+    }
+
 }

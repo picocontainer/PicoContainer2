@@ -9,28 +9,29 @@
 
 package org.picocontainer.gems;
 
-import static org.junit.Assert.assertEquals;
-import static org.picocontainer.gems.PicoGemsBuilder.IMPL_HIDING;
-import static org.picocontainer.gems.PicoGemsBuilder.LOG4J;
-
+import com.thoughtworks.xstream.XStream;
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
 import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.injectors.AdaptingInjection;
-import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.gems.behaviors.AsmImplementationHiding;
 import org.picocontainer.gems.monitors.CommonsLoggingComponentMonitor;
 import org.picocontainer.gems.monitors.Log4JComponentMonitor;
-import org.picocontainer.gems.behaviors.AsmImplementationHiding;
+import org.picocontainer.injectors.AdaptingInjection;
+import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.monitors.NullComponentMonitor;
 
-import com.thoughtworks.xstream.XStream;
+import static org.junit.Assert.assertEquals;
+import static org.picocontainer.gems.PicoGemsBuilder.IMPL_HIDING;
+import static org.picocontainer.gems.PicoGemsBuilder.LOG4J;
 
 public class PicoGemsBuilderTestCase {
 
-    XStream xs;
+    private XStream xs;
+    private NullLifecycleStrategy lifecycleStrategy = new NullLifecycleStrategy();
+    private EmptyPicoContainer parent = new EmptyPicoContainer();
 
     @Before
     public void setUp() throws Exception {
@@ -41,28 +42,28 @@ public class PicoGemsBuilderTestCase {
     @Test public void testWithImplementationHiding() {
         MutablePicoContainer actual = new PicoBuilder().withBehaviors(IMPL_HIDING()).build();
         MutablePicoContainer expected = new DefaultPicoContainer(new AsmImplementationHiding().wrap(new AdaptingInjection()),
-                new NullLifecycleStrategy(), new EmptyPicoContainer(), new NullComponentMonitor());
+                lifecycleStrategy, parent, new NullComponentMonitor());
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithLog4JComponentMonitor() {
         MutablePicoContainer actual = new PicoBuilder().withMonitor(Log4JComponentMonitor.class).build();
         MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
-                new NullLifecycleStrategy(), new EmptyPicoContainer(), new Log4JComponentMonitor());
+                lifecycleStrategy, parent, new Log4JComponentMonitor());
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithLog4JComponentMonitorByInstance() {
         MutablePicoContainer actual = new PicoBuilder().withMonitor(LOG4J()).build();
         MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
-                new NullLifecycleStrategy(), new EmptyPicoContainer(), new Log4JComponentMonitor());
+                lifecycleStrategy, parent, new Log4JComponentMonitor());
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
     @Test public void testWithCommonsLoggingComponentMonitor() {
         MutablePicoContainer actual = new PicoBuilder().withMonitor(CommonsLoggingComponentMonitor.class).build();
         MutablePicoContainer expected = new DefaultPicoContainer(new AdaptingInjection(),
-                new NullLifecycleStrategy(), new EmptyPicoContainer(), new CommonsLoggingComponentMonitor());
+                lifecycleStrategy, parent, new CommonsLoggingComponentMonitor());
         assertEquals(xs.toXML(expected), xs.toXML(actual));
     }
 
