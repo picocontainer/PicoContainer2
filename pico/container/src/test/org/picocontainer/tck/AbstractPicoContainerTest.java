@@ -18,6 +18,10 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.picocontainer.parameters.ComponentParameter;
+
+import org.picocontainer.Converting;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -972,4 +976,29 @@ public abstract class AbstractPicoContainerTest {
         }
     }
 
+    
+    public static class ConverterSample {
+        public final int value;
+
+        public ConverterSample(Integer value) {
+            this.value = value;
+        }
+    }
+    
+    @Test
+    public void testIntegrationWithConverters() {        
+        MutablePicoContainer mpc = new DefaultPicoContainer();
+        if ( !(mpc instanceof Converting)) {
+            System.out.println("Skipping 'testIntegrationWithConverters' " +
+            		"because pico implementation is not Converting");
+            return;
+        }
+        
+        mpc.addComponent("converterParameter", "42")
+            .addComponent(ConverterSample.class, ConverterSample.class, 
+                    new ComponentParameter("converterParameter"));
+        ConverterSample result = mpc.getComponent(ConverterSample.class);
+        assertEquals(42, result.value);
+    }
+    
 }

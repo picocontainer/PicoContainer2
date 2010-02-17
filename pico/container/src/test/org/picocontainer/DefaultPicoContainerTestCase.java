@@ -869,6 +869,5 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
             return behavior;
         }
     }
-        
 
 }

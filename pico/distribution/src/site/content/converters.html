@@ -1,13 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
   <title>Converters</title>
 </head>
 <body>
-<h2>Overview<br>
-</h2>
+<h2>Overview</h2>
 <p><span style="font-weight: normal;">Converters
  take string instances in PicoContainer and convert the type that a
 particular component requires for injection.</span>&nbsp;
@@ -24,18 +22,45 @@ DefaultPicoContainer has built in converter<span
   <li>Short</li>
   <li>File</li>
 </ul>
+<h2>Integration Example</h2>
+<p>Here's a test case demonstrating a simple usage of converters</p>
+<div class="source">
+<pre>
+    public static class ConverterSample {
+        public final int value;
+
+        public ConverterSample(Integer value) {
+            this.value = value;
+        }
+    }
+    
+    @Test
+    public void testIntegrationWithConverters() {        
+        MutablePicoContainer mpc = new DefaultPicoContainer();
+        
+        mpc.addComponent(&quot;converterParameter&quot;, &quot;42&quot;)
+            .addComponent(ConverterSample.class, ConverterSample.class, 
+                    new ComponentParameter(&quot;converterParameter&quot;));
+					
+        ConverterSample result = mpc.getComponent(ConverterSample.class);
+        assertEquals(42, result.value);
+    }
+</pre>
+</div>
+
 <h2>Custom Converters</h2>
+<p>
 You can extend BuiltInConverter, or implement the Converter interface
 directly.&nbsp; BuiltInConverter has a method addConverter(..) which
-you may find convenient:<br>
-<br>
+you may find convenient:
+</p>
 <div class="source"><pre>BuiltInConverter bic = new
 BuiltInConverter();
 bic.addConverter(SomeCustomThing.class, new SomeCustomThingConverter());
-</pre></div>s
-<br>
-Alternatively, you can subclass BuildInConverter:<br>
-<br>
+</pre></div>
+<p>
+Alternatively, you can subclass BuildInConverter:
+</p>
 <div class="source"><pre>BuiltInConverter bic = new BuiltInConverter() {
     @Override
     protected void addBuiltInConverters() {
@@ -44,38 +69,37 @@ Alternatively, you can subclass BuildInConverter:<br>
     }
  };
 </pre></div>
-<br>
-or:<br>
-<br>
+<p>
+or:<br/>
+</p>
 <div class="source"><pre>BuiltInConverter bic = new BuiltInConverter() {
     public BuiltInConverter() {
         super.addConverter(SomeCustomThing.class, new SomeCustomThingConverter());
     }
 };
 </pre></div>
+<p>
 Converters themselves are easy to write.&nbsp; Here's the built in one
-for boolean:<br>
-<br>
-<div class="source"><pre>class BooleanConverter implements Converting.Converter {
-    public boolean canConvert(Type type) {
-        return Boolean.class == type;
-    }
-    public Object convert(String paramValue, Type type) {
+for boolean:</p>
+<div class="source"><pre>class BooleanConverter implements Converter<Boolean>{
+    public Boolean convert(String paramValue) {
         return Boolean.valueOf(paramValue);
     }
 }
 </pre></div>
-<br>
-Setup a container to use your converter:<br>
-<br>
-<div class="source"><pre>MutableContainer pico = new DefaultPicoContainer() {
+<p>
+Setup a container to use your converter:</p>
+<div class="source"><pre>
+	MutableContainer pico = new DefaultPicoContainer() {
     @Override
-    public Converting.Converter getConverter() {
-        return new YourCustomConverter();
+    public ConverterSet getConverter() {
+        return new BuildInConverter() {
+			public BuiltInConverter() {
+				super.addConverter(SomeCustomThing.class, new SomeCustomThingConverter());
+			}			
+		}
     }
 };
 </pre></div>
-<br>
-<br>
 </body>
 </html>
