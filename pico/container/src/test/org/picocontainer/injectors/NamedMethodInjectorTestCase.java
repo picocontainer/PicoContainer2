@@ -5,7 +5,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-import static com.sun.tools.internal.ws.wsdl.parser.Util.fail;
+import static junit.framework.Assert.fail;
 import static junit.framework.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
