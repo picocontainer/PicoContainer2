@@ -50,7 +50,7 @@
 		</snapshotRepository>
 	</distributionManagement>
 	<properties>
-		<pico.version>2.8</pico.version>
+		<pico.version>2.9</pico.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
