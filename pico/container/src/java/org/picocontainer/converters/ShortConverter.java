@@ -1,15 +1,16 @@
 package org.picocontainer.converters;
 
-import org.picocontainer.Converting;
 
-import java.lang.reflect.Type;
+/**
+ * Converts strings to 'short' data type objects.
+ * @author Paul Hammant, Michael Rimov
+ */
+class ShortConverter implements Converter<Short> {
 
-class ShortConverter implements Converting.Converter {
-    public boolean canConvert(Type type) {
-        return Short.class == type;
-    }
-
-    public Object convert(String paramValue, Type type) {
+    /**
+     * {@inheritDoc}
+     */
+    public Short convert(String paramValue) {
         return Short.valueOf(paramValue);
     }
 }

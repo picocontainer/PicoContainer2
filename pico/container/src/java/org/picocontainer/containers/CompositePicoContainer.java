@@ -26,9 +26,9 @@ import java.util.Collections;
 public class CompositePicoContainer implements PicoContainer, Converting, Serializable {
 
     private final PicoContainer[] containers;
-    private CompositeConverter compositeConverter = new CompositeConverter();
+    private ConverterSet compositeConverter = new CompositeConverterSet();
 
-    public class CompositeConverter implements Converting.Converter {
+    public class CompositeConverterSet implements ConverterSet {
         public boolean canConvert(Type type) {
             for (PicoContainer container : containers) {
                 if (container instanceof Converting && ((Converting) container).getConverter().canConvert(type)) {
@@ -41,7 +41,7 @@ public class CompositePicoContainer implements PicoContainer, Converting, Serial
         public Object convert(String paramValue, Type type) {
             for (PicoContainer container : containers) {
                 if (container instanceof Converting) {
-                    Converting.Converter converter = ((Converting) container).getConverter();
+                    ConverterSet converter = ((Converting) container).getConverter();
                     if (converter.canConvert(type)) {
                         return converter.convert(paramValue, type);
                     }
@@ -146,7 +146,7 @@ public class CompositePicoContainer implements PicoContainer, Converting, Serial
     public void accept(PicoVisitor visitor) {
     }
 
-    public Converting.Converter getConverter() {
+    public ConverterSet getConverter() {
         return compositeConverter;
     }
 }

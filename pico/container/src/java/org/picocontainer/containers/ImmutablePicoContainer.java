@@ -107,7 +107,7 @@ public final class ImmutablePicoContainer implements PicoContainer, Converting, 
         return "I<" + delegate.toString();
     }
 
-    public Converting.Converter getConverter() {
+    public ConverterSet getConverter() {
         if (delegate instanceof Converting) {
             return ((Converting) delegate).getConverter();
         }

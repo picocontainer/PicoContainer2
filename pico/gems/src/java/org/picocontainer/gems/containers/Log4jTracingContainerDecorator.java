@@ -590,7 +590,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Con
         delegate.setLifecycleState(lifecycleState);
     }
 
-    public Converting.Converter getConverter() {
+    public ConverterSet getConverter() {
         if (delegate instanceof Converting) {
             return ((Converting) delegate).getConverter();
         }

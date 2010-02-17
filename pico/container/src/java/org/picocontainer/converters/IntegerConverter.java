@@ -1,15 +1,14 @@
 package org.picocontainer.converters;
 
-import org.picocontainer.Converting;
 
-import java.lang.reflect.Type;
+/**
+ * Converts strings to integer types.
+ * @author Paul Hammant, Michael Rimov
+ */
+class IntegerConverter implements Converter<Integer> {
 
-class IntegerConverter implements Converting.Converter {
-    public boolean canConvert(Type type) {
-        return Integer.class == type;
-    }
-
-    public Object convert(String paramValue, Type type) {
+    /** {@inheritDoc} **/
+    public Integer convert(String paramValue) {
         return Integer.valueOf(paramValue);
     }
 }

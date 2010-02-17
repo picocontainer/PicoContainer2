@@ -1,15 +1,14 @@
 package org.picocontainer.converters;
 
-import org.picocontainer.Converting;
 
-import java.lang.reflect.Type;
+/**
+ * Converts strings to long-integer types.
+ * @author Paul Hammant, Michael Rimov
+ */
+class LongConverter implements Converter<Long> {
 
-class LongConverter implements Converting.Converter {
-    public boolean canConvert(Type type) {
-        return Long.class == type;
-    }
-
-    public Object convert(String paramValue, Type type) {
+    /** {@inheritDoc} **/
+    public Long convert(String paramValue) {
         return Long.valueOf(paramValue);
     }
 }

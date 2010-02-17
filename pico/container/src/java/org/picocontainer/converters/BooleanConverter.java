@@ -1,15 +1,15 @@
 package org.picocontainer.converters;
 
-import org.picocontainer.Converting;
 
-import java.lang.reflect.Type;
+/**
+ * Converts strings to boolean types.
+ * @author Paul Hammant, Michael Rimov
+ */
+class BooleanConverter implements Converter<Boolean> {
 
-class BooleanConverter implements Converting.Converter {
-    public boolean canConvert(Type type) {
-        return Boolean.class == type;
-    }
 
-    public Object convert(String paramValue, Type type) {
+    /** {@inheritDoc} **/
+    public Boolean convert(String paramValue) {
         return Boolean.valueOf(paramValue);
     }
 }

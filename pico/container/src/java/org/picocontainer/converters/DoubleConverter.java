@@ -1,15 +1,16 @@
 package org.picocontainer.converters;
 
-import org.picocontainer.Converting;
 
-import java.lang.reflect.Type;
+/**
+ * Converts strings to double-precision floating point values..
+ * @author Paul Hammant, Michael Rimov
+ */
+class DoubleConverter implements Converter<Double> {
 
-class DoubleConverter implements Converting.Converter {
-    public boolean canConvert(Type type) {
-        return Double.class == type;
-    }
-
-    public Object convert(String paramValue, Type type) {
+    /**
+     * {@inheritDoc}
+     */
+    public Double convert(String paramValue) {
         return Double.valueOf(paramValue);
     }
 }

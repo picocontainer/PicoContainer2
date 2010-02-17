@@ -495,15 +495,15 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         }
 
         public void start() {
-
+            //This implementation does nothing on lifecycle triggers.          
         }
 
         public void stop() {
-
+            //This implementation does nothing on lifecycle triggers.          
         }
 
         public void dispose() {
-
+            //This implementation does nothing on lifecycle triggers.          
         }
 
         public void setName(String name) {
@@ -514,7 +514,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             DefaultClassLoadingPicoContainer.this.setLifecycleState(lifecycleState);
         }
 
-        public Converting.Converter getConverter() {
+        public ConverterSet getConverter() {
             return DefaultClassLoadingPicoContainer.this.getConverter();
         }
     }

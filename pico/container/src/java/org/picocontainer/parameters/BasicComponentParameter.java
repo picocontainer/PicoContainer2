@@ -98,11 +98,11 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
                     return null;
                 }
                 if (componentAdapter instanceof DefaultPicoContainer.LateInstance) {
-                    return convert(getConverter(container), ((DefaultPicoContainer.LateInstance) componentAdapter).getComponentInstance(), expectedType);
+                    return convert(getConverters(container), ((DefaultPicoContainer.LateInstance) componentAdapter).getComponentInstance(), expectedType);
 //                } else if (injecteeAdapter != null && injecteeAdapter instanceof DefaultPicoContainer.KnowsContainerAdapter) {
 //                    return convert(((DefaultPicoContainer.KnowsContainerAdapter) injecteeAdapter).getComponentInstance(makeInjectInto(forAdapter)), expectedType);
                 } else {
-                    return convert(getConverter(container), container.getComponent(componentAdapter.getComponentKey(), makeInjectInto(forAdapter)), expectedType);
+                    return convert(getConverters(container), container.getComponent(componentAdapter.getComponentKey(), makeInjectInto(forAdapter)), expectedType);
                 }
             }
 
@@ -112,7 +112,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         };
     }
 
-    private Converting.Converter getConverter(PicoContainer container) {
+    private ConverterSet getConverters(PicoContainer container) {
         return container instanceof Converting ? ((Converting) container).getConverter() : null;
     }
 
@@ -120,9 +120,9 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         return new InjectInto(forAdapter.getComponentImplementation(), forAdapter.getComponentKey());
     }
 
-    private static Object convert(Converting.Converter converter, Object obj, Type expectedType) {
+    private static Object convert(ConverterSet converters, Object obj, Type expectedType) {
         if (obj instanceof String && expectedType != String.class) {
-            obj = converter.convert((String) obj, expectedType);
+            obj = converters.convert((String) obj, expectedType);
         }
         return obj;
     }
@@ -216,7 +216,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
 
         if (!type.isAssignableFrom(result.getComponentImplementation())) {
 //            if (!(result.getComponentImplementation() == String.class && stringConverters.containsKey(type))) {
-            if (!(result.getComponentImplementation() == String.class && getConverter(container).canConvert(type))) {
+            if (!(result.getComponentImplementation() == String.class && getConverters(container).canConvert(type))) {
                 return null;
             }
         }
@@ -265,7 +265,7 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         Class foundImpl = found.getComponentImplementation();
         return expectedType.isAssignableFrom(foundImpl) ||
                //(foundImpl == String.class && stringConverters.containsKey(expectedType))  ;
-               (foundImpl == String.class && getConverter(container) != null
-                       && getConverter(container).canConvert(expectedType))  ;
+               (foundImpl == String.class && getConverters(container) != null
+                       && getConverters(container).canConvert(expectedType))  ;
     }
 }

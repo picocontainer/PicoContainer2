@@ -133,7 +133,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
 
     private transient IntoThreadLocal intoThreadLocal = new IntoThreadLocal();
-    private Converting.Converter converter;
+    private ConverterSet converter;
 
 
     /**
@@ -1073,11 +1073,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         this.name = name;
     }
 
+    @Override
     public String toString() {
         return String.format("%s:%d<%s", (name != null ? name : super.toString()), this.componentAdapters.size(), (parent != null ? parent.toString() : "|"));
     }
 
-    public synchronized Converting.Converter getConverter() {
+    public synchronized ConverterSet getConverter() {
         if (converter == null) {
             if (parent == null || (parent instanceof Converting && ((Converting) parent).getConverter() instanceof EmptyPicoContainer.NullConverter)) {
                 converter = new BuiltInConverter();
@@ -1105,7 +1106,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         }
 
         @Override
-        public MutablePicoContainer as(Properties... properties) {
+        @SuppressWarnings("unused")
+        public MutablePicoContainer as( Properties... props) {
             throw new PicoCompositionException("Syntax 'as(FOO).as(BAR)' not allowed, do 'as(FOO, BAR)' instead");
         }
 

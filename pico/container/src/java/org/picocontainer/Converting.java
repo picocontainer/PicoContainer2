@@ -1,14 +1,17 @@
 package org.picocontainer;
 
-import java.lang.reflect.Type;
 
+/**
+ * Interface for containers that can handle string-to-object conversion in object parameters.
+ * @author Paul Hammant
+ */
 public interface Converting {
 
-    Converter getConverter();
-
-    public static interface Converter {
-        boolean canConvert(Type type);
-        Object convert(String paramValue, Type type);
-    }
+    /**
+     * Retrieve the set of converters for transforming string parameters
+     * into objects.
+     * @return converter set instance.
+     */
+    ConverterSet getConverter();
     
 }

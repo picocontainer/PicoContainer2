@@ -1,15 +1,14 @@
 package org.picocontainer.converters;
 
-import org.picocontainer.Converting;
 
-import java.lang.reflect.Type;
+/**
+ * Converts strings to characters.  It does so by only grabbing
+ * the first character in the string. 
+ * @author Paul Hammant, Michael Rimov
+ */
+class CharacterConverter implements Converter<Character> {
 
-class CharacterConverter implements Converting.Converter {
-    public boolean canConvert(Type type) {
-        return Character.class == type;
-    }
-
-    public Object convert(String paramValue, Type type) {
+    public Character convert(String paramValue) {
         return paramValue.charAt(0);
     }
 }

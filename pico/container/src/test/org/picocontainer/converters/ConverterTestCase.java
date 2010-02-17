@@ -1,15 +1,15 @@
 package org.picocontainer.converters;
 
+import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 import org.junit.Test;
-import org.picocontainer.Converting;
+import org.picocontainer.ConverterSet;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.containers.CompositePicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
-
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 public class ConverterTestCase {
     
@@ -23,23 +23,42 @@ public class ConverterTestCase {
     public void canOverrideConverter() {
         DefaultPicoContainer dpc = new DefaultPicoContainer() {
             @Override
-            public Converting.Converter getConverter() {
-                return new MyConverter();
+            public ConverterSet getConverter() {
+                return new BuiltInConverter() {
+                    @Override
+                    protected void addBuiltInConverters() {
+                        addConverter(Boolean.class, new MyConverter());
+
+                    }
+                };
             }
         };
-        assertTrue(dpc.getConverter() instanceof MyConverter);
+
+        //Verify use of MyConverter instead of usual BooleanConverter
+        int oldInvocationCount = MyConverter.invocationCount;
+        dpc.getConverter().convert("true", Boolean.class);
+        assertEquals(oldInvocationCount + 1, MyConverter.invocationCount);
     }
 
     @Test
     public void parentContainerSuppliesByDefault() {
         PicoContainer parent = new DefaultPicoContainer() {
             @Override
-            public Converting.Converter getConverter() {
-                return new MyConverter();
+            public ConverterSet getConverter() {
+                return new BuiltInConverter() {
+                    @Override
+                    protected void addBuiltInConverters() {
+                        addConverter(Boolean.class, new MyConverter());
+
+                    }
+                };
             }
         };
         DefaultPicoContainer dpc = new DefaultPicoContainer(parent);
-        assertTrue(dpc.getConverter() instanceof MyConverter);
+        //Verify use of MyConverter instead of usual
+        int oldInvocationCount = MyConverter.invocationCount;
+        dpc.getConverter().convert("true", Boolean.class);
+        assertEquals(oldInvocationCount + 1, MyConverter.invocationCount);
     }
 
     @Test
@@ -53,18 +72,30 @@ public class ConverterTestCase {
     public void compositesPossible() {
         PicoContainer one = new DefaultPicoContainer() {
             @Override
-            public Converting.Converter getConverter() {
-                return new BooleanConverter();
+            public ConverterSet getConverter() {
+                return new BuiltInConverter() {
+                    @Override
+                    protected void addBuiltInConverters() {
+                        addConverter(Boolean.class, new BooleanConverter());
+
+                    }
+                };
             }
         };
         PicoContainer two = new DefaultPicoContainer() {
             @Override
-            public Converting.Converter getConverter() {
-                return new ShortConverter();
+            public ConverterSet getConverter() {
+                return new BuiltInConverter() {
+                    @Override
+                    protected void addBuiltInConverters() {
+                        addConverter(Short.class, new ShortConverter());
+
+                    }
+                };
             }
         };
         CompositePicoContainer compositePC = new CompositePicoContainer(one, two);
-        Converting.Converter converter = compositePC.getConverter();
+        ConverterSet converter = compositePC.getConverter();
         assertFalse(converter.canConvert(Character.class));
         assertTrue(converter.canConvert(Short.class));
         assertTrue(converter.canConvert(Boolean.class));
@@ -76,6 +107,17 @@ public class ConverterTestCase {
 
 
     public static class MyConverter extends BooleanConverter {
+        public static int invocationCount = 0;
+
+        /**
+         * {@inheritDoc}
+         * @see org.picocontainer.converters.BooleanConverter#convert(java.lang.String)
+         */
+        @Override
+        public Boolean convert(String paramValue) {
+            invocationCount++;
+            return super.convert(paramValue);
+        }        
     }
 
 }

@@ -1,16 +1,15 @@
 package org.picocontainer.converters;
 
-import org.picocontainer.Converting;
-
 import java.io.File;
-import java.lang.reflect.Type;
 
-class FileConverter implements Converting.Converter {
-    public boolean canConvert(Type type) {
-        return File.class == type;
-    }
+/**
+ * Converts strings to files.
+ * @author Paul Hammant, Michael Rimov
+ */
+class FileConverter implements Converter<File> {
 
-    public Object convert(String paramValue, Type type) {
+    /** {@inheritDoc} **/
+    public File convert(String paramValue) {
         return new File(paramValue);
     }
 }

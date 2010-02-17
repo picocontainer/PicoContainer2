@@ -14,6 +14,7 @@ import org.picocontainer.*;
  * @author k.pribluda
  * 
  */
+@SuppressWarnings("serial")
 public abstract class AbstractDelegatingPicoContainer implements PicoContainer, Converting, Serializable{
 
     private PicoContainer delegate;
@@ -32,7 +33,8 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
 	}
 
 
-	public boolean equals(Object obj) {
+	@Override
+    public boolean equals(Object obj) {
 		// required to make it pass on both jdk 1.3 and jdk 1.4. Btw, what about
 		// overriding hashCode()? (AH)
 		return delegate.equals(obj) || this == obj;
@@ -97,11 +99,12 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
 		return delegate.getParent();
 	}
     
+    @Override
     public String toString() {
         return "D<" + delegate.toString();
     }
 
-    public Converter getConverter() {
+    public ConverterSet getConverter() {
         if (delegate instanceof Converting) {
             return ((Converting) delegate).getConverter();
         } else {

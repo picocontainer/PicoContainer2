@@ -19,8 +19,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 /**
- * empty pico container serving as recoil damper in situations where you
- * do not like to check whether container reference suplpied to you
+ * Empty pico container serving as recoil damper in situations where you
+ * do not like to check whether container reference supplied to you
  * is null or not
  *
  * @author Konstantin Pribluda
@@ -28,18 +28,22 @@ import java.lang.reflect.Type;
 @SuppressWarnings("serial")
 public class EmptyPicoContainer implements PicoContainer, Converting, Serializable {
 
+    @SuppressWarnings("unused") 
     public Object getComponent(Object componentKeyOrType) {
         return null;
     }
 
+    @SuppressWarnings("unused") 
     public Object getComponent(Object componentKeyOrType, Type into) {
         return null;
     }
 
+    @SuppressWarnings("unused") 
     public <T> T getComponent(Class<T> componentType) {
         return null;
     }
 
+    @SuppressWarnings("unused") 
     public <T> T getComponent(Class<T> componentType, Class<? extends Annotation> binding) {
         return null;
     }
@@ -52,14 +56,17 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
         return null;
     }
 
+    @SuppressWarnings("unused") 
     public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
         return null;
     }
 
+    @SuppressWarnings("unused") 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, NameBinding componentNameBinding) {
         return null;
     }
 
+    @SuppressWarnings("unused") 
     public <T> ComponentAdapter<T> getComponentAdapter(Class<T> componentType, Class<? extends Annotation> binding) {
         return null;
     }
@@ -68,10 +75,12 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
         return Collections.emptyList();
     }
 
+    @SuppressWarnings("unused") 
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType) {
         return Collections.emptyList();
     }
 
+    @SuppressWarnings("unused") 
     public <T> List<ComponentAdapter<T>> getComponentAdapters(Class<T> componentType, Class<? extends Annotation> binding) {
         return Collections.emptyList();
     }
@@ -79,23 +88,29 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
     /**
      * we do not have anything to do here. 
      */
+    @SuppressWarnings("unused") 
     public void accept(PicoVisitor visitor) {
+        //Does nothing.
     }
 
+    /** {@inheritDoc} **/
+    @SuppressWarnings("unused") 
     public <T> List<T> getComponents(Class<T> componentType) {
         return Collections.emptyList();
     }
 
+    @Override
     public String toString() {
         return "(empty)";
     }
 
-    public Converting.Converter getConverter() {
+    public ConverterSet getConverter() {
         return new NullConverter();
     }
 
-    public static class NullConverter implements Converting.Converter {
-        public boolean canConvert(Type type) {
+    @SuppressWarnings("unused")
+    public static class NullConverter implements ConverterSet {
+        public boolean canConvert( Type type) {
             return false;
         }
 

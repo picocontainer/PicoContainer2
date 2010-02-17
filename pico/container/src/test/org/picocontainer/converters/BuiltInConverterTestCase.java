@@ -65,13 +65,32 @@ public class BuiltInConverterTestCase {
 
     }
 
-    private static class JPanelConverter implements Converting.Converter {
-        public boolean canConvert(Type type) {
-            return false;
-        }
-
-        public Object convert(String paramValue, Type type) {
+    private static class JPanelConverter implements Converter<JPanel> {
+        public JPanel convert(String paramValue) {
             return new JPanel();
         }
+    }
+    
+    
+    @Test
+    public void testPrimitivesAreSupported() {
+        BuiltInConverter converters = new BuiltInConverter();
+        assertTrue(converters.canConvert(Boolean.TYPE));
+        assertTrue(converters.canConvert(Character.TYPE));
+        assertTrue(converters.canConvert(Integer.TYPE));
+        assertTrue(converters.canConvert(Long.TYPE));
+        assertTrue(converters.canConvert(Short.TYPE));
+        assertTrue(converters.canConvert(Float.TYPE));
+        assertTrue(converters.canConvert(Double.TYPE));
+        assertTrue(converters.canConvert(Byte.TYPE));
+        
+        assertEquals(12, converters.convert("12", Integer.TYPE));
+        assertEquals(12345678901L, converters.convert("12345678901",Long.TYPE));
+        assertEquals((byte)12, converters.convert("12", Byte.TYPE));
+        assertEquals(2.22, converters.convert("2.22", Double.TYPE));
+        assertEquals(1.11F, converters.convert("1.11", Float.TYPE));
+        assertEquals('a', converters.convert("a", Character.TYPE));
+        assertEquals((short)12, converters.convert("12", Short.TYPE));
+        assertEquals(true, converters.convert("TRUE", Boolean.TYPE));
     }
 }

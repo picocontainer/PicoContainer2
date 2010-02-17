@@ -528,7 +528,7 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
         delegate.setLifecycleState(lifecycleState);
     }
 
-    public Converting.Converter getConverter() {
+    public ConverterSet getConverter() {
         if (delegate instanceof Converting) {
             return ((Converting) delegate).getConverter();
         }
