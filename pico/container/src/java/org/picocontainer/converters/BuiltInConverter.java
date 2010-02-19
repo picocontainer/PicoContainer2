@@ -1,67 +1,49 @@
 package org.picocontainer.converters;
 
+import org.picocontainer.ConverterSet;
+
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-import org.picocontainer.ConverterSet;
 
 @SuppressWarnings("serial")
 public class BuiltInConverter implements ConverterSet, Serializable {
 
-    private final Map<Class, Converter> stringConverters = new HashMap<Class, Converter>();
+    private final Map<Class, Converter> converters = new HashMap<Class, Converter>();
 
     public BuiltInConverter() {
         addBuiltInConverters();
     }
 
     protected void addBuiltInConverters() {
-        IntegerConverter intConverter = new IntegerConverter();
-        addConverter(Integer.class, intConverter);
-        addConverter(Integer.TYPE, intConverter);
-        
-        DoubleConverter doubleConverter = new DoubleConverter();
-        addConverter(Double.class, doubleConverter);
-        addConverter(Double.TYPE, doubleConverter);
-        
-        BooleanConverter booleanConverter = new BooleanConverter();        
-        addConverter(Boolean.class, booleanConverter);
-        addConverter(Boolean.TYPE, booleanConverter);
-        
-        LongConverter longConverter = new LongConverter();
-        addConverter(Long.class, longConverter);
-        addConverter(Long.TYPE, longConverter);
-
-        FloatConverter floatConverter = new FloatConverter();        
-        addConverter(Float.class, floatConverter);
-        addConverter(Float.TYPE, floatConverter);
-
-        CharacterConverter charConverter = new CharacterConverter();
-        addConverter(Character.class, charConverter);
-        addConverter(Character.TYPE, charConverter);
-        
-        ByteConverter byteConverter = new ByteConverter();
-        addConverter(Byte.class, byteConverter);
-        addConverter(Byte.TYPE, byteConverter);
-        
-        ShortConverter shortConverter = new ShortConverter();
-        addConverter(Short.class, shortConverter);
-        addConverter(Short.TYPE, shortConverter);
-        
-        addConverter(File.class, new FileConverter());
+        addConverter(new IntegerConverter(), Integer.class, Integer.TYPE);
+        addConverter(new DoubleConverter(), Double.class, Double.TYPE);
+        addConverter(new BooleanConverter(), Boolean.class, Boolean.TYPE);
+        addConverter(new LongConverter(), Long.class, Long.TYPE);
+        addConverter(new FloatConverter(), Float.class, Float.TYPE);
+        addConverter(new CharacterConverter(), Character.class, Character.TYPE);
+        addConverter(new ByteConverter(), Byte.class, Byte.TYPE);
+        addConverter(new ShortConverter(), Short.class, Short.TYPE);
+        addConverter(new FileConverter(), File.class);
     }
 
-    protected void addConverter(Class<?> key, Converter converter) {
-        stringConverters.put(key, converter);
+    private void addConverter(Converter converter, Class<?> type, Class<?> type2) {
+        addConverter(converter, type);
+        addConverter(converter, type2);
+    }
+
+    protected void addConverter(Converter converter, Class<?> key) {
+        converters.put(key, converter);
     }
 
     public boolean canConvert(Type type) {
-        return stringConverters.containsKey(type);
+        return converters.containsKey(type);
     }
 
     public Object convert(String paramValue, Type type) {
-        Converter converter = stringConverters.get(type);
+        Converter converter = converters.get(type);
         if (converter== null) {
             return null;
         }

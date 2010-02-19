@@ -1,11 +1,9 @@
 package org.picocontainer.converters;
 
 import org.junit.Test;
-import org.picocontainer.Converting;
 
 import javax.swing.*;
 import java.io.File;
-import java.lang.reflect.Type;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -46,7 +44,7 @@ public class BuiltInConverterTestCase {
     @Test
     public void canAddAConverter() {
         BuiltInConverter bic = new BuiltInConverter();
-        bic.addConverter(JPanel.class, new JPanelConverter());
+        bic.addConverter(new JPanelConverter(), JPanel.class);
         assertTrue(bic.convert("anything", JPanel.class) instanceof JPanel);
 
     }
@@ -57,7 +55,7 @@ public class BuiltInConverterTestCase {
             @Override
             protected void addBuiltInConverters() {
                 super.addBuiltInConverters();
-                super.addConverter(JPanel.class, new JPanelConverter());
+                super.addConverter(new JPanelConverter(), JPanel.class);
             }
         };
         assertEquals(Boolean.TRUE, bic.convert("TRUE", Boolean.class));

@@ -27,7 +27,7 @@ public class ConverterTestCase {
                 return new BuiltInConverter() {
                     @Override
                     protected void addBuiltInConverters() {
-                        addConverter(Boolean.class, new MyConverter());
+                        addConverter(new MyConverter(), Boolean.class);
 
                     }
                 };
@@ -48,7 +48,7 @@ public class ConverterTestCase {
                 return new BuiltInConverter() {
                     @Override
                     protected void addBuiltInConverters() {
-                        addConverter(Boolean.class, new MyConverter());
+                        addConverter(new MyConverter(), Boolean.class);
 
                     }
                 };
@@ -76,7 +76,7 @@ public class ConverterTestCase {
                 return new BuiltInConverter() {
                     @Override
                     protected void addBuiltInConverters() {
-                        addConverter(Boolean.class, new BooleanConverter());
+                        addConverter(new BooleanConverter(), Boolean.class);
 
                     }
                 };
@@ -88,7 +88,7 @@ public class ConverterTestCase {
                 return new BuiltInConverter() {
                     @Override
                     protected void addBuiltInConverters() {
-                        addConverter(Short.class, new ShortConverter());
+                        addConverter(new ShortConverter(), Short.class);
 
                     }
                 };
