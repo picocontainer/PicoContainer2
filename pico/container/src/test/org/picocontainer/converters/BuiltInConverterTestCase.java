@@ -13,7 +13,7 @@ public class BuiltInConverterTestCase {
 
     @Test
     public void testBuiltInCanConvert() {
-        BuiltInConverter bic = new BuiltInConverter();
+        BuiltInConverters bic = new BuiltInConverters();
         assertTrue(bic.canConvert(Integer.class));
         assertTrue(bic.canConvert(Long.class));
         assertTrue(bic.canConvert(Byte.class));
@@ -28,7 +28,7 @@ public class BuiltInConverterTestCase {
 
     @Test
     public void testBuiltInConvert() {
-        BuiltInConverter bic = new BuiltInConverter();
+        BuiltInConverters bic = new BuiltInConverters();
         assertEquals(12, bic.convert("12", Integer.class));
         assertEquals(12345678901L, bic.convert("12345678901",Long.class));
         assertEquals((byte)12, bic.convert("12", Byte.class));
@@ -43,7 +43,7 @@ public class BuiltInConverterTestCase {
 
     @Test
     public void canAddAConverter() {
-        BuiltInConverter bic = new BuiltInConverter();
+        BuiltInConverters bic = new BuiltInConverters();
         bic.addConverter(new JPanelConverter(), JPanel.class);
         assertTrue(bic.convert("anything", JPanel.class) instanceof JPanel);
 
@@ -51,7 +51,7 @@ public class BuiltInConverterTestCase {
 
     @Test
     public void canSupplementConverters() {
-        BuiltInConverter bic = new BuiltInConverter() {
+        BuiltInConverters bic = new BuiltInConverters() {
             @Override
             protected void addBuiltInConverters() {
                 super.addBuiltInConverters();
@@ -72,7 +72,7 @@ public class BuiltInConverterTestCase {
     
     @Test
     public void testPrimitivesAreSupported() {
-        BuiltInConverter converters = new BuiltInConverter();
+        BuiltInConverters converters = new BuiltInConverters();
         assertTrue(converters.canConvert(Boolean.TYPE));
         assertTrue(converters.canConvert(Character.TYPE));
         assertTrue(converters.canConvert(Integer.TYPE));

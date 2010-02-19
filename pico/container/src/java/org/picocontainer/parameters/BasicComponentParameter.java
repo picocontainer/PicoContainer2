@@ -112,15 +112,15 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         };
     }
 
-    private ConverterSet getConverters(PicoContainer container) {
-        return container instanceof Converting ? ((Converting) container).getConverter() : null;
+    private Converters getConverters(PicoContainer container) {
+        return container instanceof Converting ? ((Converting) container).getConverters() : null;
     }
 
     private static InjectInto makeInjectInto(ComponentAdapter<?> forAdapter) {
         return new InjectInto(forAdapter.getComponentImplementation(), forAdapter.getComponentKey());
     }
 
-    private static Object convert(ConverterSet converters, Object obj, Type expectedType) {
+    private static Object convert(Converters converters, Object obj, Type expectedType) {
         if (obj instanceof String && expectedType != String.class) {
             obj = converters.convert((String) obj, expectedType);
         }

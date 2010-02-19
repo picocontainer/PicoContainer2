@@ -514,8 +514,8 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
             DefaultClassLoadingPicoContainer.this.setLifecycleState(lifecycleState);
         }
 
-        public ConverterSet getConverter() {
-            return DefaultClassLoadingPicoContainer.this.getConverter();
+        public Converters getConverter() {
+            return DefaultClassLoadingPicoContainer.this.getConverters();
         }
     }
 

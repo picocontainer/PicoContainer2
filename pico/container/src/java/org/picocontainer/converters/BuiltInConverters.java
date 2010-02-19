@@ -1,6 +1,6 @@
 package org.picocontainer.converters;
 
-import org.picocontainer.ConverterSet;
+import org.picocontainer.Converters;
 
 import java.io.File;
 import java.io.Serializable;
@@ -9,11 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("serial")
-public class BuiltInConverter implements ConverterSet, Serializable {
+public class BuiltInConverters implements Converters, Serializable {
 
     private final Map<Class, Converter> converters = new HashMap<Class, Converter>();
 
-    public BuiltInConverter() {
+    public BuiltInConverters() {
         addBuiltInConverters();
     }
 

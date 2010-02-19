@@ -13,7 +13,7 @@ import java.lang.reflect.Type;
  * A facade for a collection of converters that provides string-to-type conversions. 
  * @author Paul Hammant, Michael Rimov
  */
-public interface ConverterSet {
+public interface Converters {
     
     /**
      * Returns true if the set of converters can convert between strings and the target

@@ -1,12 +1,18 @@
 package org.picocontainer.containers;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Converters;
+import org.picocontainer.Converting;
+import org.picocontainer.NameBinding;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoException;
+import org.picocontainer.PicoVisitor;
+
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-
-import org.picocontainer.*;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * abstract base class for immutable delegation to pico
@@ -104,9 +110,9 @@ public abstract class AbstractDelegatingPicoContainer implements PicoContainer, 
         return "D<" + delegate.toString();
     }
 
-    public ConverterSet getConverter() {
+    public Converters getConverters() {
         if (delegate instanceof Converting) {
-            return ((Converting) delegate).getConverter();
+            return ((Converting) delegate).getConverters();
         } else {
             return null;
         }

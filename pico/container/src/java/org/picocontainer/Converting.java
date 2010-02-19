@@ -12,6 +12,6 @@ public interface Converting {
      * into objects.
      * @return converter set instance.
      */
-    ConverterSet getConverter();
-    
+    Converters getConverters();
+
 }

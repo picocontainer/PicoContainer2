@@ -104,12 +104,12 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
         return "(empty)";
     }
 
-    public ConverterSet getConverter() {
+    public Converters getConverters() {
         return new NullConverter();
     }
 
     @SuppressWarnings("unused")
-    public static class NullConverter implements ConverterSet {
+    public static class NullConverter implements Converters {
         public boolean canConvert( Type type) {
             return false;
         }

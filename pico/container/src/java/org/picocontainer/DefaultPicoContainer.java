@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.picocontainer.converters.BuiltInConverter;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
@@ -36,6 +35,7 @@ import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 import org.picocontainer.containers.AbstractDelegatingPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
+import org.picocontainer.converters.BuiltInConverters;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.FactoryInjector;
@@ -133,7 +133,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
 
     private transient IntoThreadLocal intoThreadLocal = new IntoThreadLocal();
-    private ConverterSet converter;
+    private Converters converters;
 
 
     /**
@@ -1078,15 +1078,15 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return String.format("%s:%d<%s", (name != null ? name : super.toString()), this.componentAdapters.size(), (parent != null ? parent.toString() : "|"));
     }
 
-    public synchronized ConverterSet getConverter() {
-        if (converter == null) {
-            if (parent == null || (parent instanceof Converting && ((Converting) parent).getConverter() instanceof EmptyPicoContainer.NullConverter)) {
-                converter = new BuiltInConverter();
+    public synchronized Converters getConverters() {
+        if (converters == null) {
+            if (parent == null || (parent instanceof Converting && ((Converting) parent).getConverters() instanceof EmptyPicoContainer.NullConverter)) {
+                converters = new BuiltInConverters();
             } else {
-                return ((Converting) parent).getConverter();
+                return ((Converting) parent).getConverters();
             }
         }
-        return converter;
+        return converters;
     }
 
     private class AsPropertiesPicoContainer extends AbstractDelegatingMutablePicoContainer {
