@@ -166,13 +166,9 @@ public class PicoBuilderTestCase {
 
     @Test public void testWithInjectionFactoryChain() {
         Object actual = new PicoBuilder(SDI()).withBehaviors(caching(), synchronizing(), implementationHiding()).build();
-
-        System.out.println("");
         Object expected = new DefaultPicoContainer(new Caching().wrap(new Synchronizing()
                 .wrap(new ImplementationHiding().wrap(new SetterInjection()))), lifecycle, parent, ncm);
-        String s = toXml(expected);
-        String s1 = toXml(actual);
-        assertEquals(s, s1);
+        assertEquals(toXml(expected), toXml(actual));
     }
 
     public static class CustomParentcontainer extends EmptyPicoContainer {}
