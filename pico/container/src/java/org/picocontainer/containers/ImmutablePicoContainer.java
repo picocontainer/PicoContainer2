@@ -10,6 +10,7 @@
 package org.picocontainer.containers;
 
 import org.picocontainer.*;
+import org.picocontainer.converters.ConvertsNothing;
 
 import java.util.List;
 import java.util.Collection;
@@ -111,6 +112,6 @@ public final class ImmutablePicoContainer implements PicoContainer, Converting, 
         if (delegate instanceof Converting) {
             return ((Converting) delegate).getConverters();
         }
-        return new EmptyPicoContainer.NullConverter();
+        return new ConvertsNothing();
     }
 }

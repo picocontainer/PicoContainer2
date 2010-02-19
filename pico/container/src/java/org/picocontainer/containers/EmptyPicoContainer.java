@@ -10,6 +10,7 @@
 package org.picocontainer.containers;
 
 import org.picocontainer.*;
+import org.picocontainer.converters.ConvertsNothing;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -105,17 +106,7 @@ public class EmptyPicoContainer implements PicoContainer, Converting, Serializab
     }
 
     public Converters getConverters() {
-        return new NullConverter();
+        return new ConvertsNothing();
     }
 
-    @SuppressWarnings("unused")
-    public static class NullConverter implements Converters {
-        public boolean canConvert( Type type) {
-            return false;
-        }
-
-        public Object convert(String paramValue, Type type) {
-            return null;
-        }
-    }
 }

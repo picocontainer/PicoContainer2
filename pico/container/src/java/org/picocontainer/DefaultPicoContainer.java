@@ -36,6 +36,7 @@ import org.picocontainer.containers.AbstractDelegatingPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.containers.ImmutablePicoContainer;
 import org.picocontainer.converters.BuiltInConverters;
+import org.picocontainer.converters.ConvertsNothing;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.FactoryInjector;
@@ -1080,7 +1081,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
     public synchronized Converters getConverters() {
         if (converters == null) {
-            if (parent == null || (parent instanceof Converting && ((Converting) parent).getConverters() instanceof EmptyPicoContainer.NullConverter)) {
+            if (parent == null || (parent instanceof Converting && ((Converting) parent).getConverters() instanceof ConvertsNothing)) {
                 converters = new BuiltInConverters();
             } else {
                 return ((Converting) parent).getConverters();
