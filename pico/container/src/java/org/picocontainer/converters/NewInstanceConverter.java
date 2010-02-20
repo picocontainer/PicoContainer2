@@ -1,5 +1,7 @@
 package org.picocontainer.converters;
 
+import org.picocontainer.converters.Converter;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 

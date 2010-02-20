@@ -9,23 +9,8 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.adapters.AbstractAdapter;
+import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
 import org.picocontainer.behaviors.AdaptingBehavior;
 import org.picocontainer.behaviors.Cached;
@@ -45,6 +30,21 @@ import org.picocontainer.lifecycle.LifecycleState;
 import org.picocontainer.lifecycle.StartableLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.DefaultConstructorParameter;
+
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * <p/>
@@ -1079,6 +1079,12 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return String.format("%s:%d<%s", (name != null ? name : super.toString()), this.componentAdapters.size(), (parent != null ? parent.toString() : "|"));
     }
 
+    /**
+     * If this container has a set of converters, then return it.
+     * If it does not, and the parent (or their parent ..) does, use that
+     * If they do not, return a NullObject implementation (ConversNothing)
+     * @return the converters
+     */    
     public synchronized Converters getConverters() {
         if (converters == null) {
             if (parent == null || (parent instanceof Converting && ((Converting) parent).getConverters() instanceof ConvertsNothing)) {

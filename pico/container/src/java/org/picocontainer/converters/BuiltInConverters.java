@@ -5,6 +5,7 @@ import org.picocontainer.Converters;
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ public class BuiltInConverters implements Converters, Serializable {
         addConverter(new ByteConverter(), Byte.class, Byte.TYPE);
         addConverter(new ShortConverter(), Short.class, Short.TYPE);
         addConverter(new FileConverter(), File.class);
+        addConverter(new UrlConverter(), URL.class);
     }
 
     private void addConverter(Converter converter, Class<?> type, Class<?> type2) {

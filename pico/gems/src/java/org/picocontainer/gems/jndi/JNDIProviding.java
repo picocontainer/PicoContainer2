@@ -23,7 +23,7 @@ import org.picocontainer.PicoVisitor;
 /**
  * TODO: decide where to get JNDI name as we do not have 
  * implementation here. ? Property
- * @author k.pribluda
+ * @author Konstantin Pribluda
  *
  */
 public class JNDIProviding implements ComponentFactory {

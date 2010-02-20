@@ -11,8 +11,8 @@ package org.picocontainer.containers;
 import org.picocontainer.PicoContainer;
 
 /**
- * container backed by system properties. 
- * @author k.pribluda
+ * A container backed by system properties (is a PropertiesPicoContainer)
+ * @author Konstantin Pribluda
  */
 @SuppressWarnings("serial")
 public class SystemPropertiesPicoContainer extends PropertiesPicoContainer {

@@ -19,7 +19,7 @@ import org.picocontainer.behaviors.Stored;
  * reference instead. Maybe Cached shall be refactored? as there is little new
  * functionality.
  * 
- * @author k.pribluda
+ * @author Konstantin Pribluda
  * 
  */
 @SuppressWarnings("serial")

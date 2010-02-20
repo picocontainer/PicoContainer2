@@ -1,8 +1,6 @@
 package org.picocontainer.converters;
 
-import org.picocontainer.Converting;
-
-import java.lang.reflect.Type;
+import org.picocontainer.converters.Converter;
 
 /**
  * Converts

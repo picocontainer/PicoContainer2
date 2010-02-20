@@ -8,7 +8,7 @@
 package org.picocontainer.converters;
 
 /**
- * Interface for all converters. This interface is actually hidden inside
+ * Interface for all type converters. This interface is actually hidden inside
  * the ConverterSet facade.
  * @author Paul Hammant, Michael Rimov
  */

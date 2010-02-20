@@ -12,7 +12,7 @@ import javax.inject.Named;
 
 /**
  * test that properties container works properly
- * @author k.pribluda
+ * @author Konstantin Pribluda
  */
 public class PropertiesPicoContainerTestCase {
 	/**

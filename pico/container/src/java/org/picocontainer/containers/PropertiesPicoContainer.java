@@ -18,7 +18,7 @@ import org.picocontainer.PicoContainer;
  * immutable pico container constructed from properties.
  * intendet to be used with config parameter
  * 
- * @author k.pribluda
+ * @author Konstantin Pribluda
  *
  */
 @SuppressWarnings("serial")

@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Subsets components in a container, the keys for which match a regular expression.
+ */
 public class RegexComposer implements ComposingMonitor.Composer {
 
     private final Pattern pattern;

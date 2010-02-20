@@ -15,9 +15,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * abstract base class for immutable delegation to pico
+ * Abstract base class for <i>immutable<i> delegation to a PicoContainer
  * 
- * @author k.pribluda
+ * @author Konstantin Pribluda
  * 
  */
 @SuppressWarnings("serial")

@@ -2,8 +2,10 @@ package org.picocontainer.converters;
 
 import org.junit.Test;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -23,11 +25,12 @@ public class BuiltInConverterTestCase {
         assertTrue(bic.canConvert(Character.class));
         assertTrue(bic.canConvert(Short.class));
         assertTrue(bic.canConvert(Boolean.class));
+        assertTrue(bic.canConvert(URL.class));
         assertFalse(bic.canConvert(JPanel.class));
     }
 
     @Test
-    public void testBuiltInConvert() {
+    public void testBuiltInConvert() throws MalformedURLException {
         BuiltInConverters bic = new BuiltInConverters();
         assertEquals(12, bic.convert("12", Integer.class));
         assertEquals(12345678901L, bic.convert("12345678901",Long.class));
@@ -38,6 +41,7 @@ public class BuiltInConverterTestCase {
         assertEquals('a', bic.convert("a", Character.class));
         assertEquals((short)12, bic.convert("12", Short.class));
         assertEquals(Boolean.TRUE, bic.convert("TRUE", Boolean.class));
+        assertEquals(new URL("http://example.com"), bic.convert("http://example.com", URL.class));
         assertEquals(null, bic.convert("anything", JPanel.class));
     }
 

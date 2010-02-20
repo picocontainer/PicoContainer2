@@ -9,19 +9,25 @@
  *****************************************************************************/
 package org.picocontainer.gems.containers;
 
-import org.picocontainer.*;
-import org.picocontainer.containers.EmptyPicoContainer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Converters;
+import org.picocontainer.Converting;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.converters.ConvertsNothing;
 import org.picocontainer.lifecycle.LifecycleState;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Properties;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.Collection;
+import java.util.List;
+import java.util.Properties;
 
 /** @author Michael Rimov 
  * @deprecated As of PicoContainer 2.3  ComponentMonitor now can do all jobs of tracing container.
@@ -528,10 +534,13 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
         delegate.setLifecycleState(lifecycleState);
     }
 
-    public ConverterSet getConverter() {
+    /**
+     * {@inheritDoc} 
+     */
+    public Converters getConverters() {
         if (delegate instanceof Converting) {
-            return ((Converting) delegate).getConverter();
+            return ((Converting) delegate).getConverters();
         }
-        return new EmptyPicoContainer.NullConverter();
+        return new ConvertsNothing();
     }
 }

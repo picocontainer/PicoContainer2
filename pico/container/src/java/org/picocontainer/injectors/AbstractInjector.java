@@ -43,11 +43,11 @@ import org.picocontainer.parameters.ComponentParameter;
  */
 @SuppressWarnings("serial")
 public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements org.picocontainer.Injector<T> {
+
     /** The cycle guard for the verification. */
     protected transient ThreadLocalCyclicDependencyGuard verifyingGuard;
     /** The parameters to use for initialization. */
     protected transient Parameter[] parameters;
-
     /** The strategy used to control the lifecycle */
     private final boolean useNames;
 

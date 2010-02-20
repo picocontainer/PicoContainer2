@@ -23,7 +23,7 @@ import org.junit.Test;
 
 /**
  * test capabilities of object reference storing stuff in JNDI
- * @author k.pribluda
+ * @author Konstantin Pribluda
  *
  */
 public class JNDIObjectReferenceTestCase {

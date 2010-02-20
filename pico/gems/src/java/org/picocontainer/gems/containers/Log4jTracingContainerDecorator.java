@@ -11,7 +11,7 @@
 package org.picocontainer.gems.containers;
 
 import org.picocontainer.*;
-import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.converters.ConvertsNothing;
 import org.picocontainer.lifecycle.LifecycleState;
 
 import java.io.ObjectInputStream;
@@ -590,10 +590,10 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Con
         delegate.setLifecycleState(lifecycleState);
     }
 
-    public ConverterSet getConverter() {
+    public Converters getConverters() {
         if (delegate instanceof Converting) {
-            return ((Converting) delegate).getConverter();
+            return ((Converting) delegate).getConverters();
         }
-        return new EmptyPicoContainer.NullConverter();
+        return new ConvertsNothing();
     }
 }

@@ -8,7 +8,7 @@ import org.picocontainer.DefaultPicoContainer;
 
 /**
  * test capabilities of system properties providing container. 
- * @author k.pribluda
+ * @author Konstantin Pribluda
  *
  */
 public class SystemPropertiesPicoContainerTestCase {

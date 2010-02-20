@@ -38,7 +38,6 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
     private Class<T> componentImplementation;
     private ComponentMonitor componentMonitor;
 
-
     /**
      * Constructs a new ComponentAdapter for the given key and implementation.
      * @param componentKey the search key for this implementation

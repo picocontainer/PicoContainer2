@@ -20,7 +20,7 @@ import org.picocontainer.visitors.TraversalCheckingVisitor;
 /**
  * traverse pico container and expose components to JNDI on 
  * sight of JNDIExposed
- * @author k.pribluda
+ * @author Konstantin Pribluda
  */
 public class JNDIContainerVisitor extends TraversalCheckingVisitor {
 

@@ -1,5 +1,7 @@
 package org.picocontainer.converters;
 
+import org.picocontainer.converters.Converter;
+
 
 /**
  * Converts strings to integer types.

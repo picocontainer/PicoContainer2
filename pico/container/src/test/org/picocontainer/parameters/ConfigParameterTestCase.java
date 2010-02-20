@@ -19,7 +19,7 @@ import org.picocontainer.adapters.NullCA;
 /**
  * test that config parameter does the right job
  * 
- * @author k.pribluda
+ * @author Konstantin Pribluda
  * 
  */
 public class ConfigParameterTestCase {

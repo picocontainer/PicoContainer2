@@ -23,7 +23,7 @@ import org.picocontainer.behaviors.AbstractBehaviorFactory;
 /**
  * produce JNDI exposing behaviour
  * 
- * @author k.pribluda
+ * @author Konstantin Pribluda
  * 
  * @param <T>
  */
