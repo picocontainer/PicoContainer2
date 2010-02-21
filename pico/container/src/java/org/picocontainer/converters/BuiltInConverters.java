@@ -19,21 +19,22 @@ public class BuiltInConverters implements Converters, Serializable {
     }
 
     protected void addBuiltInConverters() {
-        addConverter(new IntegerConverter(), Integer.class, Integer.TYPE);
-        addConverter(new DoubleConverter(), Double.class, Double.TYPE);
-        addConverter(new BooleanConverter(), Boolean.class, Boolean.TYPE);
-        addConverter(new LongConverter(), Long.class, Long.TYPE);
-        addConverter(new FloatConverter(), Float.class, Float.TYPE);
-        addConverter(new CharacterConverter(), Character.class, Character.TYPE);
-        addConverter(new ByteConverter(), Byte.class, Byte.TYPE);
-        addConverter(new ShortConverter(), Short.class, Short.TYPE);
+        addMultiTypeConverter(new IntegerConverter(), Integer.class, Integer.TYPE);
+        addMultiTypeConverter(new DoubleConverter(), Double.class, Double.TYPE);
+        addMultiTypeConverter(new BooleanConverter(), Boolean.class, Boolean.TYPE);
+        addMultiTypeConverter(new LongConverter(), Long.class, Long.TYPE);
+        addMultiTypeConverter(new FloatConverter(), Float.class, Float.TYPE);
+        addMultiTypeConverter(new CharacterConverter(), Character.class, Character.TYPE);
+        addMultiTypeConverter(new ByteConverter(), Byte.class, Byte.TYPE);
+        addMultiTypeConverter(new ShortConverter(), Short.class, Short.TYPE);
         addConverter(new FileConverter(), File.class);
         addConverter(new UrlConverter(), URL.class);
     }
 
-    private void addConverter(Converter<?> converter, Class<?> type, Class<?> type2) {
-        addConverter(converter, type);
-        addConverter(converter, type2);
+    private void addMultiTypeConverter(Converter<?> converter, Class<?>... types) {
+        for (Class<?> type : types) {
+            addConverter(converter, type);            
+        }
     }
 
     protected void addConverter(Converter<?> converter, Class<?> key) {
