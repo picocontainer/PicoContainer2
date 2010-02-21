@@ -54,34 +54,34 @@ You can extend BuiltInConverter, or implement the Converter interface
 directly.&nbsp; BuiltInConverter has a method addConverter(..) which
 you may find convenient:
 </p>
-<div class="source"><pre>BuiltInConverter bic = new
-BuiltInConverter();
-bic.addConverter(SomeCustomThing.class, new SomeCustomThingConverter());
+<div class="source"><pre>BuiltInConverters bic = new
+BuiltInConverters();
+bic.addConverter(new SomeCustomThingConverter(), SomeCustomThing.class);
 </pre></div>
 <p>
-Alternatively, you can subclass BuildInConverter:
+Alternatively, you can subclass BuildInConverters:
 </p>
-<div class="source"><pre>BuiltInConverter bic = new BuiltInConverter() {
+<div class="source"><pre>BuiltInConverters bic = new BuiltInConverters() {
     @Override
     protected void addBuiltInConverters() {
         super.addBuiltInConverters();
-        super.addConverter(SomeCustomThing.class, new SomeCustomThingConverter());
+        super.addConverter(new SomeCustomThingConverter(), SomeCustomThing.class);
     }
  };
 </pre></div>
 <p>
 or:<br/>
 </p>
-<div class="source"><pre>BuiltInConverter bic = new BuiltInConverter() {
-    public BuiltInConverter() {
-        super.addConverter(SomeCustomThing.class, new SomeCustomThingConverter());
+<div class="source"><pre>BuiltInConverters bic = new BuiltInConverters() {
+    public BuiltInConverters() {
+        super.addConverter(new SomeCustomThingConverter(), SomeCustomThing.class);
     }
 };
 </pre></div>
 <p>
 Converters themselves are easy to write.&nbsp; Here's the built in one
 for boolean:</p>
-<div class="source"><pre>class BooleanConverter implements Converter<Boolean>{
+<div class="source"><pre>class BooleanConverter implements Converter&gt;Boolean&lt;{
     public Boolean convert(String paramValue) {
         return Boolean.valueOf(paramValue);
     }
@@ -93,9 +93,9 @@ Setup a container to use your converter:</p>
 	MutableContainer pico = new DefaultPicoContainer() {
     @Override
     public ConverterSet getConverter() {
-        return new BuildInConverter() {
-			public BuiltInConverter() {
-				super.addConverter(SomeCustomThing.class, new SomeCustomThingConverter());
+        return new BuildInConverters() {
+			public BuiltInConverters() {
+				super.addConverter(new SomeCustomThingConverter(), SomeCustomThing.class);
 			}			
 		}
     }
