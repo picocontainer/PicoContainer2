@@ -12,7 +12,7 @@ import java.util.Map;
 @SuppressWarnings("serial")
 public class BuiltInConverters implements Converters, Serializable {
 
-    private final Map<Class, Converter> converters = new HashMap<Class, Converter>();
+    private final Map<Class<?>, Converter<?>> converters = new HashMap<Class<?>, Converter<?>>();
 
     public BuiltInConverters() {
         addBuiltInConverters();
@@ -31,12 +31,12 @@ public class BuiltInConverters implements Converters, Serializable {
         addConverter(new UrlConverter(), URL.class);
     }
 
-    private void addConverter(Converter converter, Class<?> type, Class<?> type2) {
+    private void addConverter(Converter<?> converter, Class<?> type, Class<?> type2) {
         addConverter(converter, type);
         addConverter(converter, type2);
     }
 
-    protected void addConverter(Converter converter, Class<?> key) {
+    protected void addConverter(Converter<?> converter, Class<?> key) {
         converters.put(key, converter);
     }
 
@@ -45,7 +45,7 @@ public class BuiltInConverters implements Converters, Serializable {
     }
 
     public Object convert(String paramValue, Type type) {
-        Converter converter = converters.get(type);
+        Converter<?> converter = converters.get(type);
         if (converter== null) {
             return null;
         }

@@ -4,12 +4,13 @@ import org.picocontainer.converters.Converter;
 
 
 /**
- * Converts strings to integer types.
- * @author Paul Hammant, Michael Rimov
+ * Converts values to 'int' data type objects
+ * 
+ * @author Paul Hammant
+ * @author Michael Rimov
  */
 class IntegerConverter implements Converter<Integer> {
 
-    /** {@inheritDoc} **/
     public Integer convert(String paramValue) {
         return Integer.valueOf(paramValue);
     }

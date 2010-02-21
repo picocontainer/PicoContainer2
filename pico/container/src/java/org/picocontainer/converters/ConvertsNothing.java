@@ -4,9 +4,11 @@ import org.picocontainer.Converters;
 
 import java.lang.reflect.Type;
 
-@SuppressWarnings("unused")
+/**
+ * Null-object implementation of Converters
+ */
 public class ConvertsNothing implements Converters {
-    public boolean canConvert( Type type) {
+    public boolean canConvert(Type type) {
         return false;
     }
 

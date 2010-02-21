@@ -8,9 +8,10 @@
 package org.picocontainer.converters;
 
 /**
- * Interface for all type converters. This interface is actually hidden inside
- * the ConverterSet facade.
- * @author Paul Hammant, Michael Rimov
+ * Interface for type converters. 
+ * 
+ * @author Paul Hammant
+ * @author Michael Rimov
  */
 public interface Converter<T> {
     
@@ -20,4 +21,5 @@ public interface Converter<T> {
      * @return the resulting object.
      */
     T convert(String parameterValue);
+
 }

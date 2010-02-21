@@ -4,12 +4,13 @@ import org.picocontainer.converters.Converter;
 
 
 /**
- * Converts strings to long-integer types.
- * @author Paul Hammant, Michael Rimov
+ * Converts values to 'long' data type objects
+ * 
+ * @author Paul Hammant
+ * @author Michael Rimov
  */
 class LongConverter implements Converter<Long> {
 
-    /** {@inheritDoc} **/
     public Long convert(String paramValue) {
         return Long.valueOf(paramValue);
     }

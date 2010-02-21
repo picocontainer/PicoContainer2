@@ -3,13 +3,15 @@ package org.picocontainer.converters;
 import org.picocontainer.converters.Converter;
 
 /**
- * Converts
- *
+ * Converts values to 'byte' data type objects
+ * 
+ * @author Paul Hammant
+ * @author Michael Rimov
  */
-class ByteConverter implements Converter {
+class ByteConverter implements Converter<Byte> {
     
-    /** {@inheritDoc} **/
-    public Object convert(String paramValue) {
+    public Byte convert(String paramValue) {
         return Byte.valueOf(paramValue);
     }
+
 }
