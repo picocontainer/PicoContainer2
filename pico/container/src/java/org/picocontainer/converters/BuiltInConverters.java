@@ -9,6 +9,12 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Provides some built-in converters used by {@link DefaultPicoContainer}. It
+ * supports by default primitive types (and boxed equivalents) and for
+ * {@link File} and {@link URL} types. Built-in converters can be changed by
+ * extending the class and overriding the method {@link #addBuiltInConverters()}.
+ */
 @SuppressWarnings("serial")
 public class BuiltInConverters implements Converters, Serializable {
 
@@ -33,7 +39,7 @@ public class BuiltInConverters implements Converters, Serializable {
 
     private void addMultiTypeConverter(Converter<?> converter, Class<?>... types) {
         for (Class<?> type : types) {
-            addConverter(converter, type);            
+            addConverter(converter, type);
         }
     }
 
@@ -47,7 +53,7 @@ public class BuiltInConverters implements Converters, Serializable {
 
     public Object convert(String paramValue, Type type) {
         Converter<?> converter = converters.get(type);
-        if (converter== null) {
+        if (converter == null) {
             return null;
         }
         return converter.convert(paramValue);
