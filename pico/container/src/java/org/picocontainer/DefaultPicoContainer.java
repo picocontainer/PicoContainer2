@@ -328,7 +328,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             return ca.getComponentKey();
         }
 
-        public Class getComponentImplementation() {
+        public Class<? extends T> getComponentImplementation() {
             return ca.getComponentImplementation();
         }
 

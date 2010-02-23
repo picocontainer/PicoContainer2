@@ -132,7 +132,7 @@ public final class Assimilated<T> extends AbstractBehavior<T> {
      * @see AbstractBehavior#getComponentImplementation()
      */
     @Override
-	public Class<T> getComponentImplementation() {
+	public Class<? extends T> getComponentImplementation() {
         return isCompatible ? super.getComponentImplementation() : type;
     }
 

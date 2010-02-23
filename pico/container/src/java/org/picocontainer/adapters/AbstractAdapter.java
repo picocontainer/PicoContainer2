@@ -82,7 +82,7 @@ public abstract class AbstractAdapter<T> implements ComponentAdapter<T>, Compone
      * {@inheritDoc}
      * @see org.picocontainer.ComponentAdapter#getComponentImplementation()
      */
-    public Class<T> getComponentImplementation() {
+    public Class<? extends T> getComponentImplementation() {
         return componentImplementation;
     }
 

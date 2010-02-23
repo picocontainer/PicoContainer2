@@ -1,8 +1,14 @@
 package org.picocontainer.injectors;
 
-import org.picocontainer.*;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ComponentMonitorStrategy;
+import org.picocontainer.InjectionFactory;
 import org.picocontainer.Injector;
-import org.picocontainer.lifecycle.AbstractMonitoringLifecycleStrategy;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 
 import java.io.Serializable;

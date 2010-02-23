@@ -47,7 +47,7 @@ public interface ComponentAdapter<T> {
      * @return the component's implementation class. Should normally be a concrete class (ie, a class that can be
      *         instantiated).
      */
-    Class<T> getComponentImplementation();
+    Class<? extends T> getComponentImplementation();
 
     /**
      * Retrieve the component instance. This method will usually create a new instance each time it is called, but that

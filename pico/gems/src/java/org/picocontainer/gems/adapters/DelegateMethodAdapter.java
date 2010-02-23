@@ -170,7 +170,7 @@ public class DelegateMethodAdapter<T> implements ComponentAdapter<T> {
 
 	/** {@inheritDoc} **/
 	@SuppressWarnings("unchecked")
-	public Class<T> getComponentImplementation() {
+	public Class<? extends T> getComponentImplementation() {
 		return this.factoryMethod.getReturnType();
 	}
 

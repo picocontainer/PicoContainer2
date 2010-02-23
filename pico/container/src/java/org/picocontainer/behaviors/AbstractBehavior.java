@@ -10,16 +10,16 @@
 
 package org.picocontainer.behaviors;
 
-import java.io.Serializable;
-import java.lang.reflect.Type;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoVisitor;
 import org.picocontainer.ComponentMonitorStrategy;
 import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
+
+import java.io.Serializable;
+import java.lang.reflect.Type;
 
 /**
  * <p>
@@ -52,7 +52,7 @@ public abstract class AbstractBehavior<T> implements org.picocontainer.Behavior<
         return delegate.getComponentKey();
     }
 
-    public Class<T> getComponentImplementation() {
+    public Class<? extends T> getComponentImplementation() {
         return delegate.getComponentImplementation();
     }
 

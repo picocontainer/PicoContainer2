@@ -10,24 +10,32 @@
 
 package org.picocontainer.injectors;
 
-import org.picocontainer.*;
-import org.picocontainer.containers.ImmutablePicoContainer;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Emjection;
+import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-import java.lang.reflect.*;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Injection will happen through a constructor for the component.
@@ -95,7 +103,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         this.rememberChosenConstructor = rememberChosenCtor;
     }
 
-    private CtorAndAdapters<T> getGreediestSatisfiableConstructor(PicoContainer guardedContainer, @SuppressWarnings("unused") Class<T> componentImplementation) {
+    private CtorAndAdapters<T> getGreediestSatisfiableConstructor(PicoContainer guardedContainer, @SuppressWarnings("unused") Class<? extends T> componentImplementation) {
         CtorAndAdapters<T> ctor = null;
         try {
             if (chosenConstructor == null) {

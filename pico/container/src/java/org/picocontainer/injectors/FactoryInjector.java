@@ -8,21 +8,21 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.Array;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.TypeVariable;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Injector;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoVisitor;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -122,7 +122,7 @@ public abstract class FactoryInjector<T> implements Injector<T> {
         return key;
     }
 
-    public Class<T> getComponentImplementation() {
+    public Class<? extends T> getComponentImplementation() {
         return key;
     }
 

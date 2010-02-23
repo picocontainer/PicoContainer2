@@ -70,8 +70,8 @@ public class JNDIProvided<T> implements ComponentAdapter<T> , Serializable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Class getComponentImplementation() {
-		return jndiReference.get().getClass();
+	public Class<? extends T> getComponentImplementation() {
+		return (Class<? extends T>) jndiReference.get().getClass();
 	}
 
     public T getComponentInstance(final PicoContainer container) throws PicoCompositionException {
