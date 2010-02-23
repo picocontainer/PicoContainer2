@@ -14,8 +14,7 @@ import java.util.Map;
 
 /**
  * NodeBuilderDecorators allows to dynamically extend node-based builder syntax,
- * such as
- * {@link org.picocontainer.script.groovy.GroovyNodeBuilder GroovyNodeBuilder}.
+ * such as <a href="http://picocontainer.org/script/javadoc/groovy/org/picocontainer/script/groovy/GroovyNodeBuilder.html">GroovyNodeBuilder</a>.
  * 
  * @author Paul Hammant
  * @author Aslak Helles&oslash;y

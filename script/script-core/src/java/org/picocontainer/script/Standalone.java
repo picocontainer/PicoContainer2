@@ -12,16 +12,12 @@ package org.picocontainer.script;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
-import org.picocontainer.script.ScriptedContainerBuilderFactory;
-import org.picocontainer.ObjectReference;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.references.SimpleReference;
 
 /**
  * Standalone offers a command line interface to PicoContainer.
@@ -165,6 +161,7 @@ public class Standalone {
         }
     }
 
+    @SuppressWarnings("synthetic-access")
     private static void setShutdownHook(final boolean quiet, final ScriptedContainerBuilderFactory scriptedContainerBuilderFactory, final PicoContainer container) {
         // add a shutdown hook that will tell the builder to kill it.
         Runnable shutdownHook = new Runnable() {

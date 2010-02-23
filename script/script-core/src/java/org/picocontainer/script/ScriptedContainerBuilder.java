@@ -63,6 +63,7 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
         }
     }
 
+    @Override
     protected final PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
         try {
             return createContainerFromScript(parentContainer, assemblyScope);
@@ -82,9 +83,11 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
         return classLoader;
     }
     
+    @SuppressWarnings("synthetic-access")
     protected final InputStream getScriptInputStream() throws IOException{
         if ( scriptReader != null ){
             return new InputStream() {
+                @Override
                 public int read() throws IOException {
                     return scriptReader.read();
                 }

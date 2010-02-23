@@ -59,6 +59,7 @@ public class UnsupportedScriptTypeException extends PicoException {
         return message.toString();
     }
 
+    @Override
     public String getMessage() {
         return buildExceptionMessage();
     }

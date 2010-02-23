@@ -12,14 +12,17 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoContainer;
 
 /**
- * Default builder creates an empty caching DefaultPicoContainer 
+ * Default builder creates an empty caching DefaultPicoContainer.
+ * <p>Note that assembly scope is ignored when creating the container.</p>
  */
 public class DefaultContainerBuilder extends AbstractContainerBuilder {
 
     public DefaultContainerBuilder() {
+        //default constructor
     }
 
     // TODO better solution to activate default caching
+    @Override
     protected PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
         return (new DefaultPicoContainer(parentContainer)).change(Characteristics.CACHE);
     }

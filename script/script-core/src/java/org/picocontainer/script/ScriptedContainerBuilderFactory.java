@@ -50,7 +50,6 @@ public class ScriptedContainerBuilderFactory {
      *            the name of the builder should be.
      * @param scriptedBuilderResolver ScriptedBuilderNameResolver the resolver of
      *            container builder class names from file names.
-     * @throws IOException upon File name resolution error
      * @throws UnsupportedScriptTypeException if the extension of the file does
      *             not match that of any known script.
      * @throws FileNotFoundException if composition file is not found

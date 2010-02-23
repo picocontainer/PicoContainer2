@@ -139,8 +139,8 @@ public final class ScriptedBuilder {
         return this;
     }
 
-    public ScriptedBuilder withClassLoader(ClassLoader classLoader) {
-        this.classLoader = classLoader;
+    public ScriptedBuilder withClassLoader(ClassLoader usingClassloader) {
+        this.classLoader = usingClassloader;
         return this;
     }
 

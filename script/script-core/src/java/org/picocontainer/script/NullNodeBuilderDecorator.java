@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Aslak Helles&oslash;y
  * @author Paul Hammant
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","unused"})
 public class NullNodeBuilderDecorator implements NodeBuilderDecorator {
     public ComponentFactory decorate(ComponentFactory componentFactory, Map attributes) {
         return componentFactory;
@@ -34,5 +34,6 @@ public class NullNodeBuilderDecorator implements NodeBuilderDecorator {
     }
 
     public void rememberComponentKey(Map attributes) {
+        //Does nothing.
     }
 }

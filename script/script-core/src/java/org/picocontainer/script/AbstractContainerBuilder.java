@@ -65,25 +65,21 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
     }
 
     public void killContainer(PicoContainer container) {
-        try {
-            if (startMode.isInvokeLifecycle()) {
-                if (container instanceof Startable) {
-                    ((Startable) container).stop();
-                }
+        if (startMode.isInvokeLifecycle()) {
+            if (container instanceof Startable) {
+                ((Startable) container).stop();
             }
+        }
 
-            if (container instanceof Disposable) {
-                ((Disposable) container).dispose();
+        if (container instanceof Disposable) {
+            ((Disposable) container).dispose();
+        }
+        PicoContainer parent = container.getParent();
+        if (parent != null && parent instanceof MutablePicoContainer) {
+            // see comment in buildContainer
+            synchronized (parent) {
+                ((MutablePicoContainer) parent).removeChildContainer(container);
             }
-            PicoContainer parent = container.getParent();
-            if (parent != null && parent instanceof MutablePicoContainer) {
-                // see comment in buildContainer
-                synchronized (parent) {
-                    ((MutablePicoContainer) parent).removeChildContainer(container);
-                }
-            }
-        } finally {
-            container = null;
         }
     }
 

@@ -28,7 +28,7 @@ public enum LifecycleMode {
 	
 	/**
 	 * Returns true if lifecycle methods should be called.
-	 * @return
+	 * @return true/false
 	 */
 	public boolean isInvokeLifecycle() {
 		return (this.equals(AUTO_LIFECYCLE));

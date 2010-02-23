@@ -24,7 +24,7 @@
 	<description><![CDATA[Please refer to the <a href="http://picocontainer.org/script">main website</a> for documentation.]]></description>
 	<issueManagement>
 		<system>JIRA</system>
-		<url>http://jira.codehaus.org/browse/NANO</url>
+		<url>http://jira.codehaus.org/browse/PICO</url>
 	</issueManagement>
 	<licenses>
 		<license>
@@ -50,7 +50,7 @@
 		</snapshotRepository>
 	</distributionManagement>
 	<properties>
-		<pico.version>2.9</pico.version>
+		<pico.version>2.10</pico.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>

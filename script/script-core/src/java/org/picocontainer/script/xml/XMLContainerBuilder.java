@@ -264,8 +264,9 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
     }
 
+    @SuppressWarnings("serial")
     public class ForCaf extends Properties {
-        private String key;
+
         public ForCaf(String key) {
             super.put("ForCAF", key);
         }
@@ -564,6 +565,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
     }
 
 
+    @SuppressWarnings({"serial","synthetic-access"})
     public static class CompFactoryWrappingComponentFactory extends AbstractInjectionFactory {
 
         ConstructorInjection constructorInjection = new ConstructorInjection();
@@ -575,24 +577,26 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             String otherKey = props.getProperty("ForCAF");
             if (otherKey != null && !otherKey.equals("")) {
                 props.remove("ForCAF");
-                return new MySingleMemberInjector(key, impl, parms, monitor, lifecycle, false, otherKey, (Injector) adapter);
+                return new MySingleMemberInjector(key, impl, parms, monitor, false, otherKey, (Injector) adapter);
             }
             return adapter;
         }
     }
 
+    @SuppressWarnings("serial")
     private static class MySingleMemberInjector extends SingleMemberInjector {
         private final String otherKey;
         private final Injector injector;
 
         private MySingleMemberInjector(Object key, Class impl, Parameter[] parms,
-                                       ComponentMonitor monitor, LifecycleStrategy lifecycle,
+                                       ComponentMonitor monitor, 
                                        boolean useNames, String otherKey, Injector injector) {
-            super(key, impl, parms, monitor, lifecycle, useNames);
+            super(key, impl, parms, monitor, useNames);
             this.otherKey = otherKey;
             this.injector = injector;
         }
 
+        @Override
         public Object getComponentInstance(PicoContainer container, Type into) throws PicoCompositionException {
             BehaviorFactory bf = (BehaviorFactory) injector.getComponentInstance(container, into);
             bf.wrap((ComponentFactory) container.getComponent(otherKey));
