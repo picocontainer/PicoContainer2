@@ -1,17 +1,17 @@
 package org.picocontainer.jetty;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-
 import org.junit.After;
 import org.junit.Test;
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.util.IO;
 import org.picocontainer.DefaultPicoContainer;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class DependencyInjectionServletWarFileTestCase {
 

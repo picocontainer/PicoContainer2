@@ -9,12 +9,11 @@
 
 package org.picocontainer.jetty;
 
+import org.mortbay.jetty.servlet.ServletHandler;
+import org.mortbay.jetty.webapp.Configuration;
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.jetty.webapp.WebXmlConfiguration;
-import org.mortbay.jetty.webapp.Configuration;
-import org.mortbay.jetty.servlet.ServletHandler;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.jetty.PicoServletHandler;
 
 public class PicoWebAppContext extends WebAppContext {
     private final PicoContainer parentContainer;
@@ -24,6 +23,8 @@ public class PicoWebAppContext extends WebAppContext {
         this.parentContainer = parentContainer;
     }
 
+    boolean doSuperIsRunning = true;
+
     protected void loadConfigurations() throws Exception {
         super.loadConfigurations();
         Configuration[]  configurations = getConfigurations();
@@ -32,9 +33,19 @@ public class PicoWebAppContext extends WebAppContext {
                 configurations[i] = new PicoWebXmlConfiguration(parentContainer);
             }
         }
+        doSuperIsRunning = false;
         setConfigurations(configurations);
+        doSuperIsRunning = true; 
     }
 
+    @Override
+    public boolean isRunning() {
+        if (doSuperIsRunning) {
+            return super.isRunning();
+        } else {
+            return false;
+        }
+    }
     /* ------------------------------------------------------------ */
     public ServletHandler getServletHandler() {
         return super.getServletHandler();
