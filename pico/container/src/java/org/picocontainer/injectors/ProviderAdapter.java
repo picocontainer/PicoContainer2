@@ -8,8 +8,12 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.*;
-import org.picocontainer.behaviors.Cached;
+import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 
 import java.lang.reflect.Method;
@@ -36,6 +40,7 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
         provideMethod = getProvideMethod(this.getClass());
         key = provideMethod.getReturnType();
         setUseNames(useNames());
+        this.lifecycleStrategy = new NullLifecycleStrategy();
     }
 
     public ProviderAdapter(LifecycleStrategy lifecycleStrategy, Object provider) {
@@ -58,9 +63,8 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
         setUseNames(useNames);
     }
 
-
-    private void setUseNames(boolean b) {
-        if (b) {
+    private void setUseNames(boolean useNames) {
+        if (useNames) {
             properties = Characteristics.USE_NAMES;
         } else {
             properties = Characteristics.NONE;
@@ -145,7 +149,6 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
     public void dispose(Object component) {
         lifecycleStrategy.dispose(component);
     }
-
 
     public boolean hasLifecycle(Class<?> type) {
         return lifecycleStrategy.hasLifecycle(type);

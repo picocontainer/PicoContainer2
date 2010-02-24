@@ -9,16 +9,21 @@
 package org.picocontainer.injectors;
 
 import org.junit.Test;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import org.picocontainer.*;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.annotations.Nullable;
+import org.picocontainer.behaviors.Caching;
 import org.picocontainer.behaviors.ThreadCaching;
 import org.picocontainer.lifecycle.ReflectionLifecycleStrategy;
 import org.picocontainer.monitors.LifecycleComponentMonitor;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class ProviderTestCase {
     
@@ -76,6 +81,17 @@ public class ProviderTestCase {
         assertNotNull(nc);
         assertNotNull(nc.choc);
         assertTrue(nc.choc.cocaoBeans == null);
+    }
+
+    @Test
+    public void testHasLifecycle() {
+        DefaultPicoContainer dpc = new DefaultPicoContainer(new Caching());
+        dpc.addAdapter(new NullableChocolatier());
+        dpc.addComponent(NeedsChocolate.class);
+        NeedsChocolate nc = dpc.getComponent(NeedsChocolate.class);
+        dpc.start();
+        dpc.stop();
+        dpc.dispose();
     }
 
     public static class CocaoBeans {
