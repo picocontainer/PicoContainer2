@@ -38,7 +38,7 @@ import org.picocontainer.behaviors.Stored;
  * behavior with a picocontainer)
  * </p>
  * <p>
- * (2) All instance registrations will be unregistered when stop is called. (For example,
+ * (2) All instance and adapter registrations will be unregistered when stop is called. (For example,
  * HttpServletRequest would be removed), and all component adapter instance values
  * are flushed.
  * </p>
@@ -54,6 +54,8 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 
 	private final List<ComponentAdapter<?>> instanceRegistrations = new ArrayList<ComponentAdapter<?>>();
 
+    private final List<ComponentAdapter<?>> adapterRegistrations = new ArrayList<ComponentAdapter<?>>();
+	
 	private final Map<ComponentAdapter<?>, Stored<?>> storedReferences = new HashMap<ComponentAdapter<?>, Stored<?>>();
 	
 	public ReusablePicoContainer() {
@@ -159,9 +161,13 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 		//Remove all instance registrations.
 		for (ComponentAdapter<?> eachAdapter : this.instanceRegistrations) {
 			this.removeComponent(eachAdapter.getComponentKey());
-		}
-		
+		}		
 		instanceRegistrations.clear();
+		
+		for (ComponentAdapter<?> eachAdapter : this.adapterRegistrations) {
+		    this.removeComponent(eachAdapter.getComponentKey());
+		}
+		adapterRegistrations.clear();
 		
 		//Flush all remaining objects.
 		for (Stored<?> eachStoredBehavior : this.storedReferences.values()) {
@@ -181,6 +187,19 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 		return this;
     }
 
+	/**
+	 * Use this instead of addAdapter in cases where you have custom adapters that the container
+	 * cannot figure out whether it should be flushed after each request or not. Anything
+	 * added through this method will be flushed after each stop() of the container.
+	 * @param componentAdapter
+	 * @return <em>this</em> to allow for method chaining.
+	 */
+	public MutablePicoContainer addFlushableAdapter(final ComponentAdapter<?> componentAdapter) {
+	    adapterRegistrations.add(componentAdapter);
+	    addAdapter(componentAdapter);
+	    return this;
+	}
+	
 	@Override
     public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter) {
 		super.addAdapter(componentAdapter);
@@ -199,8 +218,15 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 
 	@Override
     public <T> ComponentAdapter<T> removeComponent(final Object componentKey) {
-		ComponentAdapter<T> result =  super.removeComponent(componentKey);
-		if (result != null) {
+		ComponentAdapter< T > result= null;
+        try {
+            result = super.removeComponent(componentKey);
+        } catch (PicoCompositionException e) {
+            //Help with debugging any lifecycle errors.
+            throw new PicoCompositionException("There was an error removing component by key: '" + componentKey + "'",e);
+        }
+
+        if (result != null) {
 			removeLocalReferences(result);
 		}
 		
