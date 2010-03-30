@@ -69,6 +69,12 @@ public class PicoBuilder {
         injectors.add(injectionType);
     }
 
+    /**
+     * Constructs a PicoBuilder using the specified PicoContainer as an argument.  Note
+     * that this only creates child -&gt; parent references.  You must use  parentContainer.addChildContainer()
+     * to the instance built here if you require child  &lt;-&gt; parent references. 
+     * @param parentContainer
+     */
     public PicoBuilder(PicoContainer parentContainer) {
         if (parentContainer != null) {
             this.parentContainer = parentContainer;
@@ -81,6 +87,9 @@ public class PicoBuilder {
         this(new EmptyPicoContainer(), injectionType);
     }
 
+    /**
+     * Will be used to build a PicoContainer not bound to any parent container.
+     */
     public PicoBuilder() {
         this(new EmptyPicoContainer());
     }
@@ -91,26 +100,44 @@ public class PicoBuilder {
         return this;
     }
 
+    /**
+     * Constructed PicoContainer will use {@linkplain org.picocontainer.lifecycle.ReflectionLifecycleStrategy ReflectionLifecycle}.
+     * @return <em>this</em> to allow for method chaining.
+     */
     public PicoBuilder withReflectionLifecycle() {
         lifecycleStrategyClass = ReflectionLifecycleStrategy.class;
         lifecycleStrategy = null;
         return this;
     }
 
-    public PicoBuilder withLifecycle(Class<? extends LifecycleStrategy> lifecycleStrategyClass) {
-        this.lifecycleStrategyClass = lifecycleStrategyClass;
+    /**
+     * Allows you to specify your own lifecycle strategy class.
+     * @param specifiedLifecycleStrategyType lifecycle strategy type.
+     * @return <em>this</em> to allow for method chaining.
+     */
+    public PicoBuilder withLifecycle(Class<? extends LifecycleStrategy> specifiedLifecycleStrategyType) {
+        this.lifecycleStrategyClass = specifiedLifecycleStrategyType;
         lifecycleStrategy = null;
         return this;
     }
 
+    /**
+     * Constructed PicoContainer will use {@linkplain org.picocontainer.lifecycle.JavaEE5LifecycleStrategy JavaEE5LifecycleStrategy}.
+     * @return <em>this</em> to allow for method chaining.
+     */    
     public PicoBuilder withJavaEE5Lifecycle() {
         this.lifecycleStrategyClass = JavaEE5LifecycleStrategy.class;
         lifecycleStrategy = null;
         return this;
     }
 
-    public PicoBuilder withLifecycle(LifecycleStrategy lifecycleStrategy) {
-        this.lifecycleStrategy = lifecycleStrategy;
+    /**
+     * Allows you to fully specify your lifecycle strategy by passing in a built instance     
+     * @param specifiedLifecycleStrategy
+     * @return <em>this</em> to allow for method chaining.
+     */
+    public PicoBuilder withLifecycle(LifecycleStrategy specifiedLifecycleStrategy) {
+        this.lifecycleStrategy = specifiedLifecycleStrategy;
         lifecycleStrategyClass = null;
         return this;
     }
@@ -286,8 +313,14 @@ public class PicoBuilder {
         return this;
     }
 
-    public PicoBuilder withMonitor(ComponentMonitor componentMonitor) {
-        this.componentMonitor = componentMonitor;
+    /**
+     * Allows you to specify your very own component monitor to be used by the created
+     * picocontainer
+     * @param specifiedComponentMonitor
+     * @return <em>this</em> to allow for method chaining.
+     */
+    public PicoBuilder withMonitor(ComponentMonitor specifiedComponentMonitor) {
+        this.componentMonitor = specifiedComponentMonitor;
         componentMonitorClass = null;
         return this;
     }
