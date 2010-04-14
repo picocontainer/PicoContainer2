@@ -586,7 +586,7 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Con
         delegate.setName(name);
     }
 
-    public void setLifecycleState(LifecycleState lifecycleState) {
+    public void setLifecycleState(LifecycleState lifecycleState) {        
         delegate.setLifecycleState(lifecycleState);
     }
 
@@ -595,5 +595,14 @@ public class Log4jTracingContainerDecorator implements MutablePicoContainer, Con
             return ((Converting) delegate).getConverters();
         }
         return new ConvertsNothing();
+    }
+    
+    
+    public String getName() {
+        return delegate.getName();
+    }
+    
+    public LifecycleState getLifecycleState() {
+        return delegate.getLifecycleState();
     }
 }

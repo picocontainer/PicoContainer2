@@ -529,6 +529,14 @@ public class CommonsLoggingTracingContainerDecorator implements MutablePicoConta
     public void setName(String name) {
         delegate.setName(name);
     }
+    
+    public String getName() {
+        return delegate.getName();
+    }
+    
+    public LifecycleState getLifecycleState() {
+        return delegate.getLifecycleState();
+    }
 
     public void setLifecycleState(LifecycleState lifecycleState) {
         delegate.setLifecycleState(lifecycleState);

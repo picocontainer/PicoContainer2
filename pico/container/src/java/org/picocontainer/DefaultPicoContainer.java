@@ -835,7 +835,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         lifecycleState.disposed();
     }
 
-    public void setLifecycleState(LifecycleState lifecycleState) {
+    public synchronized void setLifecycleState(LifecycleState lifecycleState) {
         this.lifecycleState = lifecycleState;
     }
 
@@ -973,7 +973,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     }
 
     /**
-     * {@inheritDoc}
      * Loops over all component adapters and invokes
      * start(PicoContainer) method on the ones which are LifecycleManagers
      */
@@ -1016,7 +1015,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     }
 
     /**
-     * {@inheritDoc}
      * Loops over started component adapters (in inverse order) and invokes
      * stop(PicoContainer) method on the ones which are LifecycleManagers
      */
@@ -1033,7 +1031,6 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     }
 
     /**
-     * {@inheritDoc}
      * Loops over all component adapters (in inverse order) and invokes
      * dispose(PicoContainer) method on the ones which are LifecycleManagers
      */
@@ -1070,7 +1067,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 		return componentAdapters;
 	}
 
-    public void setName(String name) {
+    public synchronized void setName(String name) {
         this.name = name;
     }
 
@@ -1096,6 +1093,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         return converters;
     }
 
+    @SuppressWarnings("synthetic-access")
     private class AsPropertiesPicoContainer extends AbstractDelegatingMutablePicoContainer {
 
 		private final Properties properties;
@@ -1142,11 +1140,47 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 		public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter) throws PicoCompositionException {
             return DefaultPicoContainer.this.addAdapter(componentAdapter, properties);
         }
+
+        /**
+         * {@inheritDoc}
+         * @see org.picocontainer.MutablePicoContainer#getLifecycleState()
+         */
+        @Override
+        public LifecycleState getLifecycleState() {
+            return DefaultPicoContainer.this.getLifecycleState();
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see org.picocontainer.MutablePicoContainer#getName()
+         */
+        @Override
+        public String getName() {
+            return DefaultPicoContainer.this.getName();
+        }
     }
 
     private static class IntoThreadLocal extends ThreadLocal<Type> implements Serializable {
+        @Override
         protected Type initialValue() {
             return ComponentAdapter.NOTHING.class;
         }
     }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.MutablePicoContainer#getLifecycleState()
+     */
+    public synchronized LifecycleState getLifecycleState() {
+        return lifecycleState;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see org.picocontainer.MutablePicoContainer#getName()
+     */
+    public synchronized String getName() {
+        return this.name;
+    }
+
 }

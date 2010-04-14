@@ -7,6 +7,8 @@
  ******************************************************************************/
 package org.picocontainer.classname;
 
+import org.picocontainer.ComponentAdapter;
+
 import org.picocontainer.*;
 import org.picocontainer.security.CustomPermissionsURLClassLoader;
 import org.picocontainer.lifecycle.LifecycleState;
@@ -513,10 +515,27 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         public void setLifecycleState(LifecycleState lifecycleState) {
             DefaultClassLoadingPicoContainer.this.setLifecycleState(lifecycleState);
         }
-
+        
         public Converters getConverter() {
             return DefaultClassLoadingPicoContainer.this.getConverters();
         }
+
+        /**
+         * {@inheritDoc}
+         * @see org.picocontainer.MutablePicoContainer#getLifecycleState()
+         */
+        public LifecycleState getLifecycleState() {
+            return DefaultClassLoadingPicoContainer.this.getLifecycleState();
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see org.picocontainer.MutablePicoContainer#getName(java.lang.String)
+         */
+        public String getName() {
+            return DefaultClassLoadingPicoContainer.this.getName();
+        }
+
     }
 
 }
