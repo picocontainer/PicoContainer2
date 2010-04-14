@@ -9,6 +9,10 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import org.picocontainer.behaviors.Cached;
+
+import java.util.Map;
+
 import com.thoughtworks.xstream.XStream;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +43,7 @@ import java.util.Properties;
 
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 import static org.picocontainer.behaviors.Behaviors.caching;
 import static org.picocontainer.behaviors.Behaviors.implementationHiding;
@@ -327,6 +332,21 @@ public class PicoBuilderTestCase {
         Object actual = new PicoBuilder().implementedBy(TestPicoContainer.class).build();
         Object expected = new TestPicoContainer(ai, ncm, lifecycle, parent);
         assertEquals(toXml(expected), toXml(actual));
+    }
+    
+    @Test
+    public void testMultipleUsesAreSupported() {
+        PicoBuilder picoBuilder = new PicoBuilder().withCaching().withLifecycle();
+        MutablePicoContainer pico = picoBuilder.build();
+        
+        pico.addComponent(Map.class, HashMap.class);
+        assertNotNull(pico.getComponentAdapter(Map.class).findAdapterOfType(Cached.class));
+        
+        pico = picoBuilder.build();
+        pico.addComponent(Map.class, HashMap.class);
+        assertNotNull(pico.getComponentAdapter(Map.class).findAdapterOfType(Cached.class));
+        
+        
     }
 
 
