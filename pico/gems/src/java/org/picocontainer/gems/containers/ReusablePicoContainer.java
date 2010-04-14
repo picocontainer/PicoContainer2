@@ -48,16 +48,28 @@ import org.picocontainer.behaviors.Stored;
  * common storage location would be ThreadLocal storage.  HttpSession might be another valid
  * storage location.</p>
  * @author Michael Rimov
+ * @todo Convert to composition.
  */
 @SuppressWarnings("serial")
 public class ReusablePicoContainer extends DefaultPicoContainer {
 
+    /**
+     * A list of all addComponent(key, instance) calls that were made.  These will be removed from the container
+     * each time the container is stopped.
+     */
 	private final List<ComponentAdapter<?>> instanceRegistrations = new ArrayList<ComponentAdapter<?>>();
 
+	/**
+	 * A list of all addFlushableAdapter() calls that were made.  These instances will be removed from
+	 * the container each time it is stopped.
+	 */
     private final List<ComponentAdapter<?>> adapterRegistrations = new ArrayList<ComponentAdapter<?>>();
 	
 	private final Map<ComponentAdapter<?>, Stored<?>> storedReferences = new HashMap<ComponentAdapter<?>, Stored<?>>();
-	
+
+	/**
+	 * Default constructor.
+	 */
 	public ReusablePicoContainer() {
 		super();
 	}
@@ -155,10 +167,17 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
     }
 
 	@Override
-	public synchronized void stop() {
+	public synchronized void stop() {	    
 		super.stop();
-		
-		//Remove all instance registrations.
+		flushInstances();
+	}
+
+    /**
+     * Automatically called by {@link #stop() stop()}, this method clears all instantiated
+     * instances and readies the picocontainer for reuse. 
+     */
+    public void flushInstances() {
+        //Remove all instance registrations.
 		for (ComponentAdapter<?> eachAdapter : this.instanceRegistrations) {
 			this.removeComponent(eachAdapter.getComponentKey());
 		}		
@@ -173,7 +192,7 @@ public class ReusablePicoContainer extends DefaultPicoContainer {
 		for (Stored<?> eachStoredBehavior : this.storedReferences.values()) {
 			eachStoredBehavior.flush();			
 		}
-	}
+    }
 
 	@Override
     public MutablePicoContainer addAdapter(final ComponentAdapter<?> componentAdapter, final Properties properties) {
