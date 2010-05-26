@@ -7,48 +7,33 @@
  ******************************************************************************/
 package org.picocontainer.script.xml;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.Permission;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.lang.reflect.Type;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import org.picocontainer.BehaviorFactory;
 import org.picocontainer.Characteristics;
+import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
+import org.picocontainer.ComponentMonitor;
 import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.Injector;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoClassNotFoundException;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Injector;
-import org.picocontainer.BehaviorFactory;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.AbstractInjectionFactory;
-import org.picocontainer.injectors.SingleMemberInjector;
-import org.picocontainer.classname.ClassPathElement;
-import org.picocontainer.classname.ClassLoadingPicoContainer;
-import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.behaviors.Caching;
-//import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.classname.ClassLoadingPicoContainer;
+import org.picocontainer.classname.ClassName;
+import org.picocontainer.classname.ClassPathElement;
+import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
+import org.picocontainer.gems.jndi.JNDIObjectReference;
+import org.picocontainer.gems.jndi.JNDIProvided;
+import org.picocontainer.injectors.AbstractInjectionFactory;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.injectors.SingleMemberInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.classname.ClassName;
 import org.picocontainer.script.LifecycleMode;
 import org.picocontainer.script.ScriptedBuilder;
 import org.picocontainer.script.ScriptedContainerBuilder;
@@ -58,8 +43,51 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import static org.picocontainer.script.xml.AttributeUtils.*;
-import static org.picocontainer.script.xml.XMLConstants.*;
+
+import javax.naming.NamingException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.Permission;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import static org.picocontainer.script.xml.AttributeUtils.EMPTY;
+import static org.picocontainer.script.xml.AttributeUtils.isSet;
+import static org.picocontainer.script.xml.AttributeUtils.notSet;
+import static org.picocontainer.script.xml.XMLConstants.CLASS;
+import static org.picocontainer.script.xml.XMLConstants.CLASSLOADER;
+import static org.picocontainer.script.xml.XMLConstants.CLASSNAME;
+import static org.picocontainer.script.xml.XMLConstants.CLASSPATH;
+import static org.picocontainer.script.xml.XMLConstants.CLASS_NAME_KEY;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_ADAPTER;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_ADAPTER_FACTORY;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_FROM_JNDI;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_IMPLEMENTATION;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_INSTANCE;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_INSTANCE_FACTORY;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_KEY_TYPE;
+import static org.picocontainer.script.xml.XMLConstants.COMPONENT_VALUE_TYPE;
+import static org.picocontainer.script.xml.XMLConstants.CONTAINER;
+import static org.picocontainer.script.xml.XMLConstants.JNDI_NAME;
+import static org.picocontainer.script.xml.XMLConstants.CONTEXT;
+import static org.picocontainer.script.xml.XMLConstants.EMPTY_COLLECTION;
+import static org.picocontainer.script.xml.XMLConstants.FACTORY;
+import static org.picocontainer.script.xml.XMLConstants.FILE;
+import static org.picocontainer.script.xml.XMLConstants.KEY;
+import static org.picocontainer.script.xml.XMLConstants.PARAMETER;
+import static org.picocontainer.script.xml.XMLConstants.PARAMETER_ZERO;
+import static org.picocontainer.script.xml.XMLConstants.URL;
+import static org.picocontainer.script.xml.XMLConstants.VALUE;
 
 /**
  * This class builds up a hierarchy of PicoContainers from an XML configuration file.
@@ -73,10 +101,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
 
     private final static String DEFAULT_COMPONENT_INSTANCE_FACTORY = BeanComponentInstanceFactory.class.getName();
 
-
-
     private Element rootElement;
-    
     
     /**
      * The XMLComponentInstanceFactory globally defined for the container.
@@ -183,10 +208,12 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             throw new ScriptedPicoContainerMarkupException(e);
         } catch (SAXException e) {
             throw new ScriptedPicoContainerMarkupException(e);
+        } catch (NamingException e) {
+            throw new ScriptedPicoContainerMarkupException(e);
         }
     }
 
-    private void addComponentsAndChildContainers(ClassLoadingPicoContainer parentContainer, Element containerElement, ClassLoadingPicoContainer knownComponentAdapterFactories) throws ClassNotFoundException, IOException, SAXException {
+    private void addComponentsAndChildContainers(ClassLoadingPicoContainer parentContainer, Element containerElement, ClassLoadingPicoContainer knownComponentAdapterFactories) throws ClassNotFoundException, IOException, SAXException, NamingException {
 
         ClassLoadingPicoContainer metaContainer = new DefaultClassLoadingPicoContainer(getClassLoader(),
                 new CompFactoryWrappingComponentFactory(), knownComponentAdapterFactories);
@@ -214,6 +241,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
                     addComponent(parentContainer, childElement, new Properties[0]);
                 } else if (COMPONENT_INSTANCE.equals(name)) {
                     registerComponentInstance(parentContainer, childElement);
+                } else if (COMPONENT_FROM_JNDI.equals(name)) {
+                    registerComponentFromJndi(parentContainer, childElement);
                 } else if (COMPONENT_ADAPTER.equals(name)) {
                     addComponentAdapter(parentContainer, childElement, metaContainer);
                 } else if (COMPONENT_ADAPTER_FACTORY.equals(name)) {
@@ -272,7 +301,7 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         }
     }
 
-    private void addClassLoader(ClassLoadingPicoContainer parentContainer, Element childElement, ClassLoadingPicoContainer metaContainer) throws IOException, SAXException, ClassNotFoundException {
+    private void addClassLoader(ClassLoadingPicoContainer parentContainer, Element childElement, ClassLoadingPicoContainer metaContainer) throws IOException, SAXException, ClassNotFoundException, NamingException {
         String parentClass = childElement.getAttribute("parentclassloader");
         ClassLoader parentClassLoader = parentContainer.getComponentClassLoader();
         if (parentClass != null && !EMPTY.equals(parentClass)) {
@@ -468,6 +497,17 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
             parameter = new ConstantParameter(instance);
         }
         return parameter;
+    }
+
+
+    private void registerComponentFromJndi(ClassLoadingPicoContainer container, Element element) throws ClassNotFoundException, PicoCompositionException, MalformedURLException, NamingException {
+        String key = element.getAttribute(KEY);
+        String classKey = element.getAttribute(CLASS);
+        String jndiName = element.getAttribute(JNDI_NAME);
+        if (notSet(key)) {
+            // TODO
+        }
+        container.addAdapter(new JNDIProvided(key, new JNDIObjectReference(jndiName), getClassLoader().loadClass(classKey)));
     }
 
 

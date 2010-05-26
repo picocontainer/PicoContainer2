@@ -10,55 +10,22 @@
 
 package org.picocontainer.script.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Collection;
-
-import javax.swing.JButton;
-
-import org.junit.Ignore;
+import com.thoughtworks.xstream.XStream;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoException;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.behaviors.Locked;
 import org.picocontainer.behaviors.Cached;
-import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.behaviors.Locked;
 import org.picocontainer.injectors.AdaptingInjection;
 import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.lifecycle.StartableLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.monitors.WriterComponentMonitor;
 import org.picocontainer.script.AbstractScriptedContainerBuilderTestCase;
 import org.picocontainer.script.ScriptedPicoContainerMarkupException;
@@ -71,14 +38,31 @@ import org.picocontainer.script.testmodel.MapSupport;
 import org.picocontainer.script.testmodel.OrderEntityImpl;
 import org.picocontainer.script.testmodel.WebServerConfig;
 import org.picocontainer.script.testmodel.WebServerConfigComp;
-import org.picocontainer.script.xml.XMLComponentInstanceFactory;
-import org.picocontainer.script.xml.XMLContainerBuilder;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import com.thoughtworks.xstream.XStream;
+import javax.swing.JButton;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Paul Hammant
@@ -679,6 +663,20 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
         Object wsc2 = pico.getComponent(WebServerConfig.class);
 
         assertSame(wsc1, wsc2);
+    }
+
+    @Test public void testJndiCanBeLeveragedForComponents() {
+        Reader script = new StringReader("" +
+                "<container caching='true'>" +
+                "  <component-from-jndi class='org.picocontainer.script.testmodel.DefaultWebServerConfig' jndi-name='foo/bar'/>" +
+                "</container>");
+
+        PicoContainer pico = buildContainer(script);
+        try {
+            pico.getComponent(WebServerConfig.class);
+        } catch (PicoCompositionException e) {
+            assertTrue(e.getMessage().indexOf("unable to resolve jndi name") > -1);
+        }
     }
 
     @Test public void testCustomInjectionFactory() throws IOException {
