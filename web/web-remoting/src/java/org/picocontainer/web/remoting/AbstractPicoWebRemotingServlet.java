@@ -8,12 +8,10 @@
 package org.picocontainer.web.remoting;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.Member;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +22,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.web.PicoServletContainerFilter;
-import org.picocontainer.web.Cache;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -64,7 +61,7 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
     private PicoWebRemoting pwr;
     private String mimeType = "text/plain";
     private PicoWebRemotingMonitor monitor;
-
+    
     public static class ServletFilter extends PicoServletContainerFilter {
 
         @Override
@@ -83,85 +80,14 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
         }
     }
 
-    public static class Struts1ServletFilter
-            extends org.picocontainer.web.struts.PicoActionFactory.ServletFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
-            super.setAppContainer(container);
-            currentAppContainer.set(container);
-        }
-
-        protected void setRequestContainer(MutablePicoContainer container) {
-            super.setRequestContainer(container);
-            currentRequestContainer.set(container);
-        }
-
-        protected void setSessionContainer(MutablePicoContainer container) {
-            super.setSessionContainer(container);
-            currentSessionContainer.set(container);
-        }
-    }
-
-    public static class Struts2ServletFilter
-            extends org.picocontainer.web.struts2.PicoObjectFactory.ServletFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
-            super.setAppContainer(container);
-            currentAppContainer.set(container);
-        }
-
-        protected void setRequestContainer(MutablePicoContainer container) {
-            super.setRequestContainer(container);
-            currentRequestContainer.set(container);
-        }
-
-        protected void setSessionContainer(MutablePicoContainer container) {
-            super.setSessionContainer(container);
-            currentSessionContainer.set(container);
-        }
-    }
-
-    public static class WebWork1ServletFilter
-            extends org.picocontainer.web.webwork.PicoActionFactory.ServletFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
-            super.setAppContainer(container);
-            currentAppContainer.set(container);
-        }
-
-        protected void setRequestContainer(MutablePicoContainer container) {
-            super.setRequestContainer(container);
-            currentRequestContainer.set(container);
-        }
-
-        protected void setSessionContainer(MutablePicoContainer container) {
-            super.setSessionContainer(container);
-            currentSessionContainer.set(container);
-        }
-    }
-
-    public static class WebWork2ServletFilter
-            extends org.picocontainer.web.webwork2.PicoObjectFactory.ServletFilter {
-        protected void setAppContainer(MutablePicoContainer container) {
-            super.setAppContainer(container);
-            currentAppContainer.set(container);
-        }
-
-        protected void setRequestContainer(MutablePicoContainer container) {
-            super.setRequestContainer(container);
-            currentRequestContainer.set(container);
-        }
-
-        protected void setSessionContainer(MutablePicoContainer container) {
-            super.setSessionContainer(container);
-            currentSessionContainer.set(container);
-        }
-    }
-
     private boolean initialized;
 
     protected abstract XStream createXStream();
-
+    
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+
         if (!initialized) {
             publishAdapters();
             initialized = true;
@@ -175,19 +101,22 @@ public abstract class AbstractPicoWebRemotingServlet extends HttpServlet {
 
         final String httpMethod = request.getMethod();
 
+        //final Cache cache = currentAppContainer.get().getComponent(Cache.class);
+
         String result = pwr.processRequest(pathInfo, currentRequestContainer.get(), httpMethod, new NullComponentMonitor() {
                             @Override
                             public Object invoking(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, Object[] args) {
                                 return ComponentMonitor.KEEP;
                             }
 
+                            @Override
                             public void invoked(PicoContainer container, ComponentAdapter<?> componentAdapter, Member member, Object instance, long duration, Object[] args, Object retVal) {
+                                // Empty
                             }
                         });
 
-        PrintWriter writer = response.getWriter();
         if (result != null) {
-            writer.print(result);
+            response.getWriter().print(result);
         } else {
             response.sendError(400, "Nothing is mapped to this URL, try removing the last term for directory list.");
         }
