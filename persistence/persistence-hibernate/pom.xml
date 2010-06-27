@@ -7,7 +7,6 @@
         <version>2.2-SNAPSHOT</version>
     </parent>
     <artifactId>picocontainer-persistence-hibernate</artifactId>
-  <version>2.1</version>
     <name>PicoContainer Persistence Hibernate</name>
     <packaging>jar</packaging>
     <dependencies>
