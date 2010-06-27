@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.picocontainer.persistence</groupId>
         <artifactId>picocontainer-persistence</artifactId>
-        <version>2.2-SNAPSHOT</version>
+        <version>2.2</version>
     </parent>
     <artifactId>picocontainer-persistence-hibernate</artifactId>
     <name>PicoContainer Persistence Hibernate</name>
