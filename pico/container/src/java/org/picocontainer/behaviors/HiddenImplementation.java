@@ -19,7 +19,6 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.behaviors.AbstractBehavior;
 
 /**
  * This component adapter makes it possible to hide the implementation
@@ -64,12 +63,17 @@ public class HiddenImplementation<T> extends AbstractBehavior<T> {
         return "Hidden";
     }
 
-    
     @SuppressWarnings("unchecked")
-	protected T createProxy(Class[] interfaces, final PicoContainer container, final ClassLoader classLoader) {
+    protected T createProxy(Class[] interfaces, final PicoContainer container, final ClassLoader classLoader) {
+        final PicoContainer container1 = container;
         return (T) Proxy.newProxyInstance(classLoader, interfaces, new InvocationHandler() {
+            private final PicoContainer container = container1;
+            private Object instance;
             public synchronized Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-                return invokeMethod(getDelegate().getComponentInstance(container, NOTHING.class), method, args, container);
+                if (instance == null) {
+                    instance = getDelegate().getComponentInstance(container, NOTHING.class);
+                }
+                return invokeMethod(instance, method, args, container);
             }
         });
     }
