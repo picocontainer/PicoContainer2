@@ -8,8 +8,6 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import java.util.Properties;
-
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
@@ -19,6 +17,8 @@ import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
+
+import java.util.Properties;
 
 /**
  * A Composite of other types on InjectionFactories - pass them into the varargs constructor.
@@ -45,8 +45,9 @@ public class CompositeInjection extends AbstractInjectionFactory {
 
         for (int i = 0; i < injectionFactories.length; i++) {
             InjectionFactory injectionFactory = injectionFactories[i];
-            injectors[i] = (Injector) injectionFactory.createComponentAdapter(monitor,
+            ComponentAdapter<T> adapter = injectionFactory.createComponentAdapter(monitor,
                     lifecycleStrategy, componentProperties, componentKey, componentImplementation, parameters);
+            injectors[i] = (Injector) adapter;
         }
 
         boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
