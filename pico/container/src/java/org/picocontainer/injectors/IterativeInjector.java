@@ -1,13 +1,17 @@
 package org.picocontainer.injectors;
 
+import com.thoughtworks.paranamer.AdaptiveParanamer;
+import com.thoughtworks.paranamer.AnnotationParanamer;
+import com.thoughtworks.paranamer.CachingParanamer;
+import com.thoughtworks.paranamer.Paranamer;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.Parameter;
 import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Bind;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -15,7 +19,6 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
-import java.lang.annotation.Annotation;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -24,15 +27,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.thoughtworks.paranamer.Paranamer;
-import com.thoughtworks.paranamer.CachingParanamer;
-import com.thoughtworks.paranamer.AdaptiveParanamer;
-import com.thoughtworks.paranamer.AnnotationParanamer;
-
 /**
  * Injection will happen iteratively after component instantiation
  */
 public abstract class IterativeInjector<T> extends AbstractInjector<T> {
+
+    private static final Object[] NONE = new Object[0];
+
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     protected transient List<AccessibleObject> injectionMembers;
     protected transient Type[] injectionTypes;
@@ -206,7 +207,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
                                       IterativeInjector.this,
                                       constructorToUse,
                                       componentInstance,
-                                      null,
+                                      NONE,
                                       System.currentTimeMillis() - startTime);
         return componentInstance;
     }
