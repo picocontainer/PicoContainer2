@@ -7,11 +7,14 @@
  ******************************************************************************/
 package org.picocontainer.web;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
-import java.lang.reflect.Type;
+import org.picocontainer.Characteristics;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.adapters.AbstractAdapter;
+import org.picocontainer.lifecycle.DefaultLifecycleState;
+import org.picocontainer.web.debug.PrintSessionSizeDetailsForDebugging;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -21,18 +24,11 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletResponse;
-
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Characteristics;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.lifecycle.DefaultLifecycleState;
-import org.picocontainer.adapters.AbstractAdapter;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.Serializable;
+import java.lang.reflect.Type;
 
 @SuppressWarnings("serial")
 public abstract class PicoServletContainerFilter implements Filter, Serializable {
@@ -134,7 +130,7 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
 
         if (!isStateless) {
             if (printSessionSize) {
-                printSessionSizeDetailsForDebugging(ssh);
+                PrintSessionSizeDetailsForDebugging.printItIfDebug(debug, ssh);
             }
             sess.setAttribute(SessionStoreHolder.class.getName(), ssh);
         }
@@ -152,19 +148,6 @@ public abstract class PicoServletContainerFilter implements Filter, Serializable
             currentResponse.set(null);
         }
 
-    }
-
-    private void printSessionSizeDetailsForDebugging(SessionStoreHolder ssh) throws IOException {
-        if ( debug ){
-	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	        ObjectOutputStream oos = new ObjectOutputStream(baos);
-	        oos.writeObject(ssh);
-	        oos.close();
-	        baos.close();
-	        String xml = new XStream(new PureJavaReflectionProvider()).toXML(ssh);
-	        int bytes = baos.toByteArray().length;        
-	        System.out.println("** Session written (" + bytes + " bytes), xml representation= " + xml);
-        }
     }
 
     protected void containersSetupForRequest(MutablePicoContainer appcontainer, MutablePicoContainer sessionContainer,
