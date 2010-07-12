@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.picocontainer.web</groupId>
     <artifactId>picocontainer-web</artifactId>
-    <version>2.5.1</version>
+    <version>2.6-SNAPSHOT</version>
   </parent>
   <artifactId>picocontainer-web-webwork</artifactId>
   <name>PicoContainer Web WebWork</name>
