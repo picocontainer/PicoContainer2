@@ -133,7 +133,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 	protected final List<ComponentAdapter<?>> orderedComponentAdapters = new ArrayList<ComponentAdapter<?>>();
 
 
-    private transient IntoThreadLocal intoThreadLocal = new IntoThreadLocal();
+    private transient IntoThreadLocal intoThreadLocal;
     private Converters converters;
 
 
@@ -627,7 +627,11 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             }
         }
         intoThreadLocal.set(into);
-        return getComponent(componentKeyOrType, (Class<? extends Annotation>) null);
+        try {
+            return getComponent(componentKeyOrType, (Class<? extends Annotation>) null);
+        } finally {
+            intoThreadLocal.set(null);
+        }
     }
 
     public Object getComponent(final Object componentKeyOrType, final Class<? extends Annotation> annotation) {
@@ -682,14 +686,9 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
             Object instance;
             try {
                 if (componentAdapter instanceof FactoryInjector) {
-                    instance = ((FactoryInjector) componentAdapter).getComponentInstance(this, intoThreadLocal.get());
+                    instance = ((FactoryInjector) componentAdapter).getComponentInstance(this, getInto());
                 } else {
-                    synchronized (this) {
-                        if (intoThreadLocal == null) {
-                            intoThreadLocal = new IntoThreadLocal();
-                        }
-                    }
-                    instance = componentAdapter.getComponentInstance(this, intoThreadLocal.get());
+                    instance = componentAdapter.getComponentInstance(this, getInto());
                 }
             } catch (AbstractInjector.CyclicDependencyException e) {
                 if (parent != null) {
@@ -708,6 +707,13 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
         }
 
         return null;
+    }
+
+    private Type getInto() {
+        if (intoThreadLocal == null) {
+            return null;
+        }
+        return intoThreadLocal.get();
     }
 
 

@@ -9,6 +9,16 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.ObjectReference;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.adapters.AbstractAdapter;
+import org.picocontainer.parameters.ComponentParameter;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
@@ -18,17 +28,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
-import org.picocontainer.ObjectReference;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoVisitor;
-import org.picocontainer.adapters.AbstractAdapter;
-import org.picocontainer.parameters.ComponentParameter;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to
@@ -242,11 +241,6 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 
         protected PicoContainer guardedContainer;
 
-        @Override
-		protected Boolean initialValue() {
-            return Boolean.FALSE;
-        }
-
         /**
          * Derive from this class and implement this function with the functionality
          * to observe for a dependency cycle.
@@ -276,7 +270,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
                 e.push(stackFrame);
                 throw e;
             } finally {
-                set(Boolean.FALSE);
+                set(null);
             }
             return result;
         }
