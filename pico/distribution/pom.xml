@@ -13,17 +13,17 @@
     <dependency>
       <groupId>${pom.groupId}</groupId>
       <artifactId>picocontainer</artifactId>
-      <version>${pom.parent.version}}</version>
+      <version>${pom.parent.version}</version>
     </dependency>
     <dependency>
       <groupId>${pom.groupId}</groupId>
       <artifactId>picocontainer-gems</artifactId>
-      <version>${pom.parent.version}}</version>
+      <version>${pom.parent.version}</version>
     </dependency>
     <dependency>
       <groupId>${pom.groupId}</groupId>
       <artifactId>picocontainer-tck</artifactId>
-      <version>${pom.parent.version}}</version>
+      <version>${pom.parent.version}</version>
     </dependency>
   </dependencies>
   <build>
