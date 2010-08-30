@@ -9,21 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.AbstractButton;
-
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -37,17 +22,27 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.InjectionFactory;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.AbstractComponentMonitor;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ComponentParameter;
 import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractComponentAdapterTest;
 import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.NullLifecycle;
 import org.picocontainer.testmodel.SimpleTouchable;
 import org.picocontainer.testmodel.Touchable;
+
+import javax.swing.AbstractButton;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 
 
 @SuppressWarnings("serial")
@@ -385,19 +380,20 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
      */
     @Test public void testSpeedOfRememberedConstructor()  {
         long with, without;
-        injectionFactory = new ForgetfulConstructorInjection();
-        timeIt(); // discard
-        timeIt(); // discard
-        timeIt(); // discard
-        without = timeIt();
+        ConstructorInjection injectionFactory = new ForgetfulConstructorInjection();
+        timeIt(injectionFactory, 10); // discard
+        timeIt(injectionFactory, 10); // discard
+        timeIt(injectionFactory, 10); // discard
+        without = timeIt(injectionFactory, 20000);
         injectionFactory = new ConstructorInjection();
-        with = timeIt();
-        assertTrue("'with' should be less than 'without' but they were in fact: " + with + ", and " + without, with < without);
+        timeIt(injectionFactory, 10); // discard
+        timeIt(injectionFactory, 10); // discard
+        timeIt(injectionFactory, 10); // discard
+        with = timeIt(injectionFactory, 20000);
+        assertTrue("'with' should be less than 'without' but they were in fact with: " + with + ", and without:" + without, with < without);
     }
 
-    InjectionFactory injectionFactory;
-    private long timeIt() {
-        int iterations = 20000;
+    private long timeIt(ConstructorInjection injectionFactory, final int iterations) {
         DefaultPicoContainer dpc = new DefaultPicoContainer(injectionFactory);
         Two two = new Two();
         dpc.addComponent(two);
