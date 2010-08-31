@@ -1,15 +1,5 @@
 package org.picocontainer.adapters;
 
-import static org.junit.Assert.assertEquals;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
-import java.util.Properties;
-
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -21,8 +11,19 @@ import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.AbstractBehaviorFactory;
-import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.AbstractInjectionFactory;
+import org.picocontainer.injectors.AbstractInjector;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.util.Properties;
+
+import static java.lang.reflect.Modifier.isStatic;
+import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -132,15 +133,17 @@ public class SimpleNamedBindingAnnotationTestCase {
                 inst = getComponentImplementation().newInstance();
                 Field[] declaredFields = getComponentImplementation().getDeclaredFields();
                 for (final Field field : declaredFields) {
-                    Named bindAnnotation = field.getAnnotation(Named.class);
-                    Object value;
-                    if (bindAnnotation != null) {
-                        value = container.getComponent(bindKey(field.getType(), bindAnnotation.value()));
-                    } else {
-                        value = container.getComponent(field.getType());
+                    if (!isStatic(field.getModifiers())) {
+                        Named bindAnnotation = field.getAnnotation(Named.class);
+                        Object value;
+                        if (bindAnnotation != null) {
+                            value = container.getComponent(bindKey(field.getType(), bindAnnotation.value()));
+                        } else {
+                            value = container.getComponent(field.getType());
+                        }
+                        field.setAccessible(true);
+                        field.set(inst, value);                        
                     }
-                    field.setAccessible(true);
-                    field.set(inst, value);
                 }
 
             } catch (InstantiationException e) {
