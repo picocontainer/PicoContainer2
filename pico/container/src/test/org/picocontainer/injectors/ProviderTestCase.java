@@ -67,8 +67,9 @@ public class ProviderTestCase {
         try {
             dpc.getComponent(NeedsChocolate.class);
         } catch (PicoCompositionException e) {
-            assertTrue(e.getMessage().contains("Parameter 0 "));
-            assertTrue(e.getMessage().contains("cannot be null"));
+            String message = e.getMessage();
+            assertTrue(message.contains("Parameter 0 "));
+            assertTrue(message.contains("cannot be null"));
         }
     }
 
@@ -347,6 +348,43 @@ public class ProviderTestCase {
         }
 
     }
+
+
+    /**
+     * Reference Johann Burkard's
+     * http://jira.codehaus.org/browse/PICO-375
+     */
+    @Test
+    public void providerTest() {
+        DefaultPicoContainer container = new DefaultPicoContainer();
+        ProviderAdapter adapter = new ProviderAdapter(new BlorbProvider());
+        container.addAdapter(adapter);
+        assertNotNull(container.getComponent(Blorb.class));
+    }
+    // Differs from Johann's by the "implements Provider" only.
+    public static class BlorbProvider implements Provider {
+        public Blorb provide() {
+            return new Blorb();
+        }
+    }
+    public static class Blorb {}
+
+//    @Test
+//    public void providerAdapterMustBeHandedAnImplementationOfProvider() {
+//        DefaultPicoContainer container = new DefaultPicoContainer();
+//        try {
+//            ProviderAdapter adapter = new ProviderAdapter(new Blorb2Provider());
+//        } catch (Exception e) {
+//
+//        }
+//    }
+//    public static class Blorb2Provider {
+//        public Blorb2 provide() {
+//            return new Blorb2();
+//        }
+//    }
+//    public static class Blorb2 {}
+
 
 
 }

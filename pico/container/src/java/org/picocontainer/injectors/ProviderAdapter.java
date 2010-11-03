@@ -29,7 +29,7 @@ import java.util.Properties;
  */
 public class ProviderAdapter implements org.picocontainer.Injector, Provider, LifecycleStrategy {
 
-    private final Object provider;
+    private final Provider provider;
     private final Method provideMethod;
     private final Class key;
     private Properties properties;
@@ -43,19 +43,19 @@ public class ProviderAdapter implements org.picocontainer.Injector, Provider, Li
         this.lifecycleStrategy = new NullLifecycleStrategy();
     }
 
-    public ProviderAdapter(LifecycleStrategy lifecycleStrategy, Object provider) {
+    public ProviderAdapter(LifecycleStrategy lifecycleStrategy, Provider provider) {
         this(lifecycleStrategy, provider, false);
     }
 
-    public ProviderAdapter(Object provider) {
+    public ProviderAdapter(Provider provider) {
         this(new NullLifecycleStrategy(), provider, false);
     }
 
-    public ProviderAdapter(Object provider, boolean useNames) {
+    public ProviderAdapter(Provider provider, boolean useNames) {
         this(new NullLifecycleStrategy(), provider, useNames);
     }
 
-    public ProviderAdapter(LifecycleStrategy lifecycleStrategy, Object provider, boolean useNames) {
+    public ProviderAdapter(LifecycleStrategy lifecycleStrategy, Provider provider, boolean useNames) {
         this.lifecycleStrategy = lifecycleStrategy;
         this.provider = provider;
         provideMethod = getProvideMethod(provider.getClass());
