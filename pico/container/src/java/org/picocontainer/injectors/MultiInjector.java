@@ -10,7 +10,6 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.Parameter;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.annotations.Inject;
 
 /** @author Paul Hammant */
@@ -23,7 +22,7 @@ public class MultiInjector extends CompositeInjector {
                          ComponentMonitor componentMonitor, String setterPrefix, boolean useNames) {
         super(componentKey, componentImplementation, parameters, componentMonitor, useNames,
                 componentMonitor.newInjector(new ConstructorInjector(componentKey, componentImplementation, parameters, componentMonitor, useNames)),
-                componentMonitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, setterPrefix, useNames)),
+                componentMonitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, componentMonitor, setterPrefix, "", useNames)),
                 componentMonitor.newInjector(new AnnotatedMethodInjector(componentKey, componentImplementation, parameters, componentMonitor, Inject.class, useNames)),
                 componentMonitor.newInjector(new AnnotatedFieldInjector(componentKey, componentImplementation, parameters, componentMonitor, Inject.class, useNames)));
 

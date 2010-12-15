@@ -38,6 +38,7 @@ import java.lang.reflect.InvocationTargetException;
 public class SetterInjector<T> extends IterativeInjector<T> {
 
     protected final String prefix;
+    private final String notThisOneThough;
 
     /**
      * Constructs a SetterInjector
@@ -47,6 +48,7 @@ public class SetterInjector<T> extends IterativeInjector<T> {
      * @param parameters              the parameters to use for the initialization
      * @param monitor                 the component monitor used by this addAdapter
      * @param prefix                  the prefix to use (e.g. 'set')
+     * @param notThisOneThough        a setter name that's not for injecting through
      * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
@@ -55,9 +57,10 @@ public class SetterInjector<T> extends IterativeInjector<T> {
                           final Class componentImplementation,
                           Parameter[] parameters,
                           ComponentMonitor monitor,
-                          String prefix, boolean useNames) throws  NotConcreteRegistrationException {
+                          String prefix, String notThisOneThough, boolean useNames) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor, useNames);
         this.prefix = prefix;
+        this.notThisOneThough = notThisOneThough != null ? notThisOneThough : "";
     }
 
     protected Object memberInvocationReturn(Object lastReturn, AccessibleObject member, Object instance) {
@@ -73,7 +76,10 @@ public class SetterInjector<T> extends IterativeInjector<T> {
     @Override
     protected boolean isInjectorMethod(Method method) {
         String methodName = method.getName();
-        return methodName.length() >= getInjectorPrefix().length() + 1 && methodName.startsWith(getInjectorPrefix()) && Character.isUpperCase(methodName.charAt(getInjectorPrefix().length()));
+        return methodName.length() >= getInjectorPrefix().length() + 1 // long enough
+                && methodName.startsWith(getInjectorPrefix())
+                && !methodName.equals(notThisOneThough)
+                && Character.isUpperCase(methodName.charAt(getInjectorPrefix().length()));        
     }
 
     protected String getInjectorPrefix() {

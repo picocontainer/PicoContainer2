@@ -9,22 +9,20 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoBuilder;
+import org.picocontainer.annotations.Inject;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.junit.Test;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.PicoBuilder;
-import org.picocontainer.Startable;
-import org.picocontainer.annotations.Inject;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class AnnotatedFieldInjectorTestCase {
 
@@ -73,7 +71,7 @@ public class AnnotatedFieldInjectorTestCase {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new SetterInjector(Helicopter.class, Helicopter.class, null,
                 new NullComponentMonitor(),
-                "set", false));
+                "set", "", false));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
         assertNotNull(chopper);

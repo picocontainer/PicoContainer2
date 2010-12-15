@@ -53,7 +53,7 @@ public class NamedMethodInjector<T> extends SetterInjector<T> {
                                ComponentMonitor monitor,
                                String prefix,
                                boolean optional) {
-        super(key, impl, parameters, monitor, prefix, true);
+        super(key, impl, parameters, monitor, prefix, "", true);
         this.optional = optional;
     }
 

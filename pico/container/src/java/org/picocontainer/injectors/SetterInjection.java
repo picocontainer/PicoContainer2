@@ -31,6 +31,7 @@ import java.util.Properties;
 public class SetterInjection extends AbstractInjectionFactory {
 
     private final String prefix;
+    private String notThisOneThough;
 
     public SetterInjection(String prefix) {
         this.prefix = prefix;
@@ -38,6 +39,16 @@ public class SetterInjection extends AbstractInjectionFactory {
 
     public SetterInjection() {
         this("set");
+    }
+
+    /**
+     * Specify a prefix and an exclusion
+     * @param prefix the prefix like 'set'
+     * @param notThisOneThough to exclude, like 'setMetaClass' for Groovy
+     */
+    public SetterInjection(String prefix, String notThisOneThough) {
+        this(prefix);
+        this.notThisOneThough = notThisOneThough;
     }
 
     /**
@@ -57,7 +68,7 @@ public class SetterInjection extends AbstractInjectionFactory {
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
-        return wrapLifeCycle(monitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, monitor, prefix, useNames)), lifecycleStrategy);
+        return wrapLifeCycle(monitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, monitor, prefix, notThisOneThough != null ? notThisOneThough : "" , useNames)), lifecycleStrategy);
     }
 
 }

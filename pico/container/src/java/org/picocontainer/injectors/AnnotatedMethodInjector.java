@@ -28,7 +28,7 @@ public class AnnotatedMethodInjector extends SetterInjector {
                                    ComponentMonitor monitor,
                                    Class<? extends Annotation> injectionAnnotation,
                                    boolean useNames) {
-        super(key, impl, parameters, monitor, "", useNames);
+        super(key, impl, parameters, monitor, "", "", useNames);
         this.injectionAnnotation = injectionAnnotation;
     }
 

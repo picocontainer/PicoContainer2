@@ -7,14 +7,6 @@
  *****************************************************************************/
 package org.picocontainer.visitors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,9 +23,16 @@ import org.picocontainer.behaviors.ImplementationHiding;
 import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.ConstructorInjector;
 import org.picocontainer.injectors.SetterInjector;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.parameters.ConstantParameter;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Michael Rimov
@@ -54,7 +53,7 @@ public class TraversalCheckingVisitorTest {
         pico = new DefaultPicoContainer();
         SetterInjector componentAdapter = new SetterInjector(StringBuffer.class, StringBuffer.class,
                                                              null, new NullComponentMonitor(),
-                                                             "set", false);
+                                                             "set", "", false);
         parentAdapter = pico.addAdapter(componentAdapter).getComponentAdapter(StringBuffer.class, (NameBinding) null);
         child = pico.makeChildContainer();
         ConstructorInjector adapter = new ConstructorInjector(ArrayList.class, ArrayList.class, new Parameter[] {new ConstantParameter(3)}, new NullComponentMonitor(), false);

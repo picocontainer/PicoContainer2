@@ -9,20 +9,19 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.Parameter;
+import org.picocontainer.annotations.Inject;
+import org.picocontainer.monitors.NullComponentMonitor;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.junit.Test;
-import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.MutablePicoContainer;
-import org.picocontainer.Parameter;
-import org.picocontainer.annotations.Inject;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
+import static org.junit.Assert.assertNotNull;
 
 public class AnnotatedMethodInjectorTestCase  {
 
@@ -52,7 +51,7 @@ public class AnnotatedMethodInjectorTestCase  {
 
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new SetterInjector(SetterBurp.class, SetterBurp.class, Parameter.DEFAULT, new NullComponentMonitor(),
-                                           "set", false));
+                                           "set", "", false));
         pico.addComponent(Wind.class, new Wind());
         SetterBurp burp = pico.getComponent(SetterBurp.class);
         assertNotNull(burp);

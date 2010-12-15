@@ -9,23 +9,17 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
-
-import java.util.Properties;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.PicoCompositionException;
-import org.picocontainer.monitors.NullComponentMonitor;
 import org.picocontainer.tck.AbstractComponentFactoryTest;
-import org.picocontainer.tck.AbstractComponentAdapterTest.RecordingLifecycleStrategy;
-import org.picocontainer.testmodel.NullLifecycle;
-import org.picocontainer.testmodel.RecordingLifecycle;
-import org.picocontainer.testmodel.RecordingLifecycle.One;
+
+import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 /**
  * @author J&ouml;rg Schaible
@@ -113,6 +107,28 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTest {
         picoContainer.addComponent("Tom");
         AnotherNamedBean bean = picoContainer.getComponent(AnotherNamedBean.class);
         assertEquals("Tom", bean.getName());
+    }
+
+    public static class AnotherNamedBean2 extends AnotherNamedBean {
+        private String name2;
+
+        public String getName2() {
+            return name2;
+        }
+
+        public void initName2(String name) {
+            this.name2 = name;
+        }
+    }
+
+
+    @Test public void testNotMatcherWorks() {
+        picoContainer = new DefaultPicoContainer(new SetterInjection("init", "initName2"));
+        picoContainer.addComponent(Bean.class, AnotherNamedBean2.class);
+        picoContainer.addComponent("Tom");
+        AnotherNamedBean2 bean = picoContainer.getComponent(AnotherNamedBean2.class);
+        assertEquals("Tom", bean.getName());
+        assertNull(bean.getName2());
     }
 
 

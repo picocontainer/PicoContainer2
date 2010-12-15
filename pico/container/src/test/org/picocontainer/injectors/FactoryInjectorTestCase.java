@@ -9,17 +9,18 @@
 package org.picocontainer.injectors;
 
 import org.junit.Test;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.DefaultPicoContainer;
-import org.picocontainer.PicoContainer;
+import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Inject;
 
 import java.lang.reflect.Type;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 
 public class FactoryInjectorTestCase {
 
@@ -259,4 +260,45 @@ public class FactoryInjectorTestCase {
         assertEquals("Swede for " + Turnip.class.getName() + " turnip1", turnip1.getSwede().toString());
         assertEquals("Swede for " + Turnip.class.getName() + " turnip2", turnip2.getSwede().toString());        
     }
+
+    @Test
+    public void brendansNullTypeCase() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.addComponent(BrendansComponent.class);
+        pico.addAdapter(new BrendansLoggerInjector());
+
+        BrendansComponent bc = pico.getComponent(BrendansComponent.class);
+        assertEquals("org.picocontainer.injectors.InjectInto", bc.logger.canonicalName);
+    }
+
+    public static class BrendansLogger {
+        private String canonicalName;
+
+        public BrendansLogger(String canonicalName) {
+            this.canonicalName = canonicalName;
+        }
+
+        public static BrendansLogger getLogger(String canonicalName) {
+            return new BrendansLogger(canonicalName);
+        }
+    }
+
+    public static class BrendansComponent {
+        BrendansLogger logger;
+
+        public BrendansComponent(BrendansLogger logger) {
+            this.logger = logger;
+        }
+    }
+
+    public static class BrendansLoggerInjector extends FactoryInjector<BrendansLogger> {
+
+        @Override
+        public BrendansLogger getComponentInstance(PicoContainer arg0, final Type arg1)
+                throws PicoCompositionException {
+            return BrendansLogger.getLogger(arg1.getClass().getCanonicalName());
+        }
+
+    }
+
 }

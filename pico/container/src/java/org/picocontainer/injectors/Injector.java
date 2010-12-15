@@ -200,7 +200,7 @@ public class Injector {
                                           Parameter[] parameters,
                                           ComponentMonitor monitor,
                                           String prefix, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
-        return monitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, monitor, prefix, useNames));
+        return monitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, monitor, prefix, "", useNames));
     }
 
     /**
