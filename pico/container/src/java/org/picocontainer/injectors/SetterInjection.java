@@ -32,6 +32,7 @@ public class SetterInjection extends AbstractInjectionFactory {
 
     private final String prefix;
     private String notThisOneThough;
+    private boolean optional;
 
     public SetterInjection(String prefix) {
         this.prefix = prefix;
@@ -68,7 +69,11 @@ public class SetterInjection extends AbstractInjectionFactory {
     public <T> ComponentAdapter<T> createComponentAdapter(ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy, Properties componentProperties, Object componentKey, Class<T> componentImplementation, Parameter... parameters)
             throws PicoCompositionException {
         boolean useNames = AbstractBehaviorFactory.arePropertiesPresent(componentProperties, Characteristics.USE_NAMES, true);
-        return wrapLifeCycle(monitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, monitor, prefix, notThisOneThough != null ? notThisOneThough : "" , useNames)), lifecycleStrategy);
+        return wrapLifeCycle(monitor.newInjector(new SetterInjector(componentKey, componentImplementation, parameters, monitor, prefix, notThisOneThough != null ? notThisOneThough : "", optional, useNames)), lifecycleStrategy);
     }
 
+    public SetterInjection withInjectionOptional() {
+        optional = true;
+        return this;
+    }
 }

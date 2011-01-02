@@ -131,5 +131,35 @@ public class SetterInjectionTestCase extends AbstractComponentFactoryTest {
         assertNull(bean.getName2());
     }
 
+    public static class RecursivelyNamedBean implements Bean {
+        private String name;
+        private NamedBean namedBean;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setNamedBean(NamedBean namedBean) {
+            this.namedBean = namedBean;
+        }
+
+        public NamedBean getNamedBean() {
+            return namedBean;
+        }
+    }
+
+    @Test public void testOptionalWorks() {
+        picoContainer = new DefaultPicoContainer(new SetterInjection().withInjectionOptional());
+        picoContainer.addComponent(RecursivelyNamedBean.class, RecursivelyNamedBean.class);
+        picoContainer.addComponent("Tom");
+        RecursivelyNamedBean bean = picoContainer.getComponent(RecursivelyNamedBean.class);
+        assertEquals("Tom", bean.getName());
+        assertNull(bean.getNamedBean());
+    }
+
 
 }

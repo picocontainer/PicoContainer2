@@ -71,7 +71,7 @@ public class AnnotatedFieldInjectorTestCase {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new SetterInjector(Helicopter.class, Helicopter.class, null,
                 new NullComponentMonitor(),
-                "set", "", false));
+                "set", "", false, false));
         pico.addComponent(PogoStick.class, new PogoStick());
         Helicopter chopper = pico.getComponent(Helicopter.class);
         assertNotNull(chopper);

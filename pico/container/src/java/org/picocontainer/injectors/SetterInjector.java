@@ -11,12 +11,15 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.PropertyApplicator;
 import org.picocontainer.behaviors.Cached;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
+import java.util.Set;
 
 /**
  * Instantiates components using empty constructors and
@@ -38,10 +41,12 @@ import java.lang.reflect.InvocationTargetException;
 public class SetterInjector<T> extends IterativeInjector<T> {
 
     protected final String prefix;
+    private final boolean optional;
     private final String notThisOneThough;
 
     /**
      * Constructs a SetterInjector
+     *
      *
      * @param componentKey            the search key for this implementation
      * @param componentImplementation the concrete implementation
@@ -49,7 +54,8 @@ public class SetterInjector<T> extends IterativeInjector<T> {
      * @param monitor                 the component monitor used by this addAdapter
      * @param prefix                  the prefix to use (e.g. 'set')
      * @param notThisOneThough        a setter name that's not for injecting through
-     * @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
+     * @param optional                not all setters need to be injected
+     * @param useNames @throws org.picocontainer.injectors.AbstractInjector.NotConcreteRegistrationException
      *                              if the implementation is not a concrete class.
      * @throws NullPointerException if one of the parameters is <code>null</code>
      */
@@ -57,9 +63,11 @@ public class SetterInjector<T> extends IterativeInjector<T> {
                           final Class componentImplementation,
                           Parameter[] parameters,
                           ComponentMonitor monitor,
-                          String prefix, String notThisOneThough, boolean useNames) throws  NotConcreteRegistrationException {
+                          String prefix, String notThisOneThough,
+                          boolean optional, boolean useNames) throws  NotConcreteRegistrationException {
         super(componentKey, componentImplementation, parameters, monitor, useNames);
         this.prefix = prefix;
+        this.optional = optional;
         this.notThisOneThough = notThisOneThough != null ? notThisOneThough : "";
     }
 
@@ -91,5 +99,11 @@ public class SetterInjector<T> extends IterativeInjector<T> {
         return "SetterInjector-"; 
     }
 
+    @Override
+    protected void unsatisfiedDependencies(PicoContainer container, Set<Type> unsatisfiableDependencyTypes) {
+        if (!optional) {
+            super.unsatisfiedDependencies(container, unsatisfiableDependencyTypes);
+        }
+    }
 
 }

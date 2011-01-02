@@ -22,8 +22,6 @@ import java.util.Set;
 @SuppressWarnings("serial")
 public class NamedMethodInjector<T> extends SetterInjector<T> {
 
-    private final boolean optional;
-
     public NamedMethodInjector(Object key,
                                    Class<?> impl,
                                    Parameter[] parameters,
@@ -53,8 +51,7 @@ public class NamedMethodInjector<T> extends SetterInjector<T> {
                                ComponentMonitor monitor,
                                String prefix,
                                boolean optional) {
-        super(key, impl, parameters, monitor, prefix, "", true);
-        this.optional = optional;
+        super(key, impl, parameters, monitor, prefix, "", optional, true);
     }
 
     @Override
@@ -65,13 +62,6 @@ public class NamedMethodInjector<T> extends SetterInjector<T> {
                 return name.substring(0,1).toLowerCase() + name.substring(1);  // change "SomeThing" to "someThing" 
             }
         };
-    }
-
-    @Override
-    protected void unsatisfiedDependencies(PicoContainer container, Set<Type> unsatisfiableDependencyTypes) {
-        if (!optional) {
-            super.unsatisfiedDependencies(container, unsatisfiableDependencyTypes);
-        }
     }
 
     @Override
