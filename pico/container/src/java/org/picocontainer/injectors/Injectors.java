@@ -11,6 +11,8 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.InjectionFactory;
 
+import java.lang.annotation.Annotation;
+
 public class Injectors {
 
     public static InjectionFactory adaptiveDI() {
@@ -33,8 +35,16 @@ public class Injectors {
         return new NamedFieldInjection();
     }
 
+    public static InjectionFactory annotatedMethodDI(Class<? extends Annotation> injectionAnnotation) {
+        return new AnnotatedMethodInjection(injectionAnnotation, false);
+    }
+
     public static InjectionFactory annotatedMethodDI() {
         return new AnnotatedMethodInjection();
+    }
+
+    public static InjectionFactory annotatedFieldDI(Class<? extends Annotation> injectionAnnotation) {
+        return new AnnotatedFieldInjection(injectionAnnotation);
     }
 
     public static InjectionFactory annotatedFieldDI() {
