@@ -7,12 +7,12 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
+import org.picocontainer.ComponentMonitor;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.picocontainer.ComponentMonitor;
 
 /**
  * Reflection lifecycle strategy. Starts, stops, disposes of component if appropriate methods are
@@ -158,7 +158,12 @@ public class ReflectionLifecycleStrategy extends AbstractMonitoringLifecycleStra
                 methods = new Method[methodNames.length];
                 for (int i = 0; i < methods.length; i++) {
                     try {
-                        methods[i] = type.getMethod(methodNames[i]);
+                        final String methodName = methodNames[i];
+                    	 	if (methodName == null) {
+                    	 	// skipping, we're not interested in this lifecycle method.
+                    	 		continue;
+                    	 }
+                    	 methods[i] = type.getMethod(methodName);
                     } catch (NoSuchMethodException e) {
                         continue;
                     }
