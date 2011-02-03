@@ -19,32 +19,32 @@ import org.picocontainer.LifecycleStrategy;
  */
 public class CompositeLifecycleStrategy implements LifecycleStrategy {
 
-    private final StartableLifecycleStrategy[] alternateStrategies;
+    private final LifecycleStrategy[] alternateStrategies;
 
-    public CompositeLifecycleStrategy(StartableLifecycleStrategy... alternateStrategies) {
+    public CompositeLifecycleStrategy(LifecycleStrategy... alternateStrategies) {
         this.alternateStrategies = alternateStrategies;
     }
 
     public void start(Object component) {
-        for (StartableLifecycleStrategy lifecycleStrategy : alternateStrategies) {
+        for (LifecycleStrategy lifecycleStrategy : alternateStrategies) {
             lifecycleStrategy.start(component);
         }
     }
 
     public void stop(Object component) {
-        for (StartableLifecycleStrategy lifecycleStrategy : alternateStrategies) {
+        for (LifecycleStrategy lifecycleStrategy : alternateStrategies) {
             lifecycleStrategy.stop(component);
         }
     }
 
     public void dispose(Object component) {
-        for (StartableLifecycleStrategy lifecycleStrategy : alternateStrategies) {
+        for (LifecycleStrategy lifecycleStrategy : alternateStrategies) {
             lifecycleStrategy.dispose(component);
         }
     }
 
     public boolean hasLifecycle(Class<?> type) {
-        for (StartableLifecycleStrategy lifecycleStrategy : alternateStrategies) {
+        for (LifecycleStrategy lifecycleStrategy : alternateStrategies) {
             if (lifecycleStrategy.hasLifecycle(type)) {
                 return true;
             }
@@ -53,7 +53,7 @@ public class CompositeLifecycleStrategy implements LifecycleStrategy {
     }
 
     public boolean isLazy(ComponentAdapter<?> adapter) {
-        for (StartableLifecycleStrategy lifecycleStrategy : alternateStrategies) {
+        for (LifecycleStrategy lifecycleStrategy : alternateStrategies) {
             if (lifecycleStrategy.isLazy(adapter)) {
                 return true;
             }
