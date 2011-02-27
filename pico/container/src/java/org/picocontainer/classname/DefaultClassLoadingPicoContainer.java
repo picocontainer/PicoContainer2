@@ -12,17 +12,18 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.*;
 import org.picocontainer.security.CustomPermissionsURLClassLoader;
 import org.picocontainer.lifecycle.LifecycleState;
-import org.picocontainer.classname.ClassPathElement;
-import org.picocontainer.classname.ClassLoadingPicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 
+import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.security.AccessController;
+import java.security.CodeSource;
 import java.security.PrivilegedAction;
 import java.security.Permissions;
+import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 /**
  * Default implementation of ClassLoadingPicoContainer.
@@ -170,7 +172,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
     public final Object getComponent(Object componentKeyOrType) throws PicoException {
 
         if (componentKeyOrType instanceof ClassName) {
-            componentKeyOrType = loadClass(componentKeyOrType.toString());
+            componentKeyOrType = loadClass((ClassName) componentKeyOrType);
         }
 
         Object instance = getDelegate().getComponent(componentKeyOrType);
@@ -263,7 +265,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
 
     public MutablePicoContainer addComponent(Object implOrInstance) {
         if (implOrInstance instanceof ClassName) {
-            super.addComponent(loadClass(implOrInstance.toString()));
+            super.addComponent(loadClass((ClassName) implOrInstance));
         } else {
             super.addComponent(implOrInstance);
         }
@@ -279,7 +281,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
 
     private Object classNameToClassIfApplicable(Object key) {
         if (key instanceof ClassName) {
-            key = loadClass(key.toString());
+            key = loadClass((ClassName) key);
         }
         return key;
     }
@@ -316,10 +318,10 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         return this;
     }
 
-    private Class<?> loadClass(final String className) {
+    private Class<?> loadClass(final ClassName className) {
         ClassLoader classLoader = getComponentClassLoader();
         // this is deliberately not a doPrivileged operation.
-        String cn = getClassName(className);
+        String cn = getClassName(className.toString());
         try {
             return classLoader.loadClass(cn);
         } catch (ClassNotFoundException e) {
@@ -352,7 +354,7 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
     public ComponentAdapter<?> getComponentAdapter(Object componentKey) {
         Object componentKey2 = componentKey;
         if (componentKey instanceof ClassName) {
-            componentKey2 = loadClass(componentKey.toString());
+            componentKey2 = loadClass((ClassName) componentKey);
         }
         return super.getComponentAdapter(componentKey2);
     }
@@ -530,11 +532,64 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
 
         /**
          * {@inheritDoc}
-         * @see org.picocontainer.MutablePicoContainer#getName(java.lang.String)
+         * @see org.picocontainer.MutablePicoContainer#getName()
          */
         public String getName() {
             return DefaultClassLoadingPicoContainer.this.getName();
         }
+
+    }
+
+    public int visit(ClassName thisClassesPackage, String regex, boolean recursive, ClassNameVisitor classNameVisitor) {
+        Class clazz = loadClass(thisClassesPackage);
+        String pkgName = clazz.getPackage().getName().replace(".", File.separator);
+        CodeSource codeSource = clazz.getProtectionDomain().getCodeSource();
+        if(codeSource == null) {
+            throw new CannotListClassesInAJarException();
+        }
+        String fileName = codeSource.getLocation().getFile() + File.separator + pkgName;
+        File file = new File(fileName);
+        if (file.isFile()) {
+            file = file.getParentFile();
+        }
+        return visit(file, pkgName, regex, recursive, classNameVisitor);
+    }
+
+
+    public int visit(File pkgDir, String pkgName, String regex, boolean recursive, ClassNameVisitor classNameVisitor) {
+        Pattern pattern = Pattern.compile(regex);
+        return visit(pkgDir, pkgName, pattern, recursive, classNameVisitor);
+    }
+
+    public int visit(File pkgDir, String pkgName, Pattern pattern, boolean recursive, ClassNameVisitor classNameVisitor) {
+        int found = 0;
+        File files[] = pkgDir.listFiles();
+        if(files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    if (recursive) {
+                        found = found + visit(file, pkgName, pattern, recursive, classNameVisitor);
+                    }
+                } else {
+                    String name = file.getName();
+                    boolean matches = pattern.matcher(name).matches();
+                    if (matches) {
+                        String fullPath = file.getAbsolutePath();
+                        String fqn = fullPath.substring(fullPath.indexOf(pkgName));
+                        classNameVisitor.classFound(loadClass(new ClassName(fqn.substring(0, fqn.indexOf(".class")).replace(File.separator, "."))));
+                        found++;
+                    }
+                }
+            }
+        }
+        return found;
+    }
+
+    public interface ClassNameVisitor {
+         void classFound(Class clazz);
+    }
+
+    public static class CannotListClassesInAJarException extends PicoException {
 
     }
 
