@@ -32,18 +32,6 @@
 		<developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</developerConnection>
 		<url>http://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</url>
 	</scm>
-	<distributionManagement>
-		<repository>
-			<id>codehaus.org</id>
-			<name>Codehaus PicoContainer Repository</name>
-			<url>dav:https://dav.codehaus.org/repository/picocontainer/</url>
-		</repository>
-		<snapshotRepository>
-			<id>codehaus.org</id>
-			<name>Codehaus PicoContainer Snapshot Repository</name>
-			<url>dav:https://dav.codehaus.org/snapshots.repository/picocontainer/</url>
-		</snapshotRepository>
-	</distributionManagement>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
