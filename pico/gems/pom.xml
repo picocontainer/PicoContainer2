@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.picocontainer</groupId>
     <artifactId>picocontainer-parent</artifactId>
-    <version>2.13.1</version>
+    <version>2.14-SNAPSHOT</version>
   </parent>
   <artifactId>picocontainer-gems</artifactId>
   <name>PicoContainer Gems</name>
