@@ -16,6 +16,7 @@ import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.AbstractDelegatingMutablePicoContainer;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.net.URL;
@@ -23,15 +24,17 @@ import java.security.AccessController;
 import java.security.CodeSource;
 import java.security.PrivilegedAction;
 import java.security.Permissions;
-import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * Default implementation of ClassLoadingPicoContainer.
@@ -540,28 +543,52 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
 
     }
 
-    public int visit(ClassName thisClassesPackage, String regex, boolean recursive, ClassNameVisitor classNameVisitor) {
+    public int visit(ClassName thisClassesPackage, String regex, boolean recursive, ClassVisitor classNameVisitor) {
         Class clazz = loadClass(thisClassesPackage);
         String pkgName = clazz.getPackage().getName().replace(".", File.separator);
         CodeSource codeSource = clazz.getProtectionDomain().getCodeSource();
         if(codeSource == null) {
-            throw new CannotListClassesInAJarException();
+            throw new PicoCompositionException("no codesource for " + thisClassesPackage);
         }
-        String fileName = codeSource.getLocation().getFile() + File.separator + pkgName;
+        String codeSourceRoot = codeSource.getLocation().getFile();
+        String fileName = codeSourceRoot + File.separator + pkgName;
         File file = new File(fileName);
-        if (file.isFile()) {
-            file = file.getParentFile();
+        Pattern compiledPattern = Pattern.compile(regex);
+        if (file.exists()) {
+            if (file.isFile()) {
+                file = file.getParentFile();
+            }
+            return visit(file, pkgName, compiledPattern, recursive, classNameVisitor);
+        } else {
+            return visit(pkgName, codeSourceRoot, compiledPattern, recursive, classNameVisitor);
         }
-        return visit(file, pkgName, regex, recursive, classNameVisitor);
     }
 
-
-    public int visit(File pkgDir, String pkgName, String regex, boolean recursive, ClassNameVisitor classNameVisitor) {
-        Pattern pattern = Pattern.compile(regex);
-        return visit(pkgDir, pkgName, pattern, recursive, classNameVisitor);
+    public int visit(String pkgName, String codeSourceRoot, Pattern compiledPattern, boolean recursive, ClassVisitor classNameVisitor) {
+        int found = 0;
+        try {
+            ZipFile zip = new ZipFile(new File(codeSourceRoot));
+            for (Enumeration e = zip.entries(); e.hasMoreElements();) {
+                ZipEntry entry = (ZipEntry) e.nextElement();
+                String entryName = entry.getName();
+                if (entryName.startsWith(pkgName) && entryName.endsWith(".class")) {
+                    String name =  entryName.substring(pkgName.length()+1);
+                    if (name.endsWith("XStream.class")) {
+                        System.out.println();
+                    }
+                    int length = name.split("/").length;
+                    if (length == 1 || recursive) {
+                        found = visit(pkgName, compiledPattern, classNameVisitor, found, entryName.replace("/","."), null);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return found;
     }
 
-    public int visit(File pkgDir, String pkgName, Pattern pattern, boolean recursive, ClassNameVisitor classNameVisitor) {
+    public int visit(File pkgDir, String pkgName, Pattern pattern, boolean recursive, ClassVisitor classNameVisitor) {
         int found = 0;
         File files[] = pkgDir.listFiles();
         if(files != null) {
@@ -571,26 +598,30 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
                         found = found + visit(file, pkgName, pattern, recursive, classNameVisitor);
                     }
                 } else {
-                    String name = file.getName();
-                    boolean matches = pattern.matcher(name).matches();
-                    if (matches) {
-                        String fullPath = file.getAbsolutePath();
-                        String fqn = fullPath.substring(fullPath.indexOf(pkgName));
-                        classNameVisitor.classFound(loadClass(new ClassName(fqn.substring(0, fqn.indexOf(".class")).replace(File.separator, "."))));
-                        found++;
-                    }
+                    found = visit(pkgName, pattern, classNameVisitor, found, file.getName(), file.getAbsolutePath());
                 }
             }
         }
         return found;
     }
 
-    public interface ClassNameVisitor {
-         void classFound(Class clazz);
+    private int visit(String pkgName, Pattern pattern, ClassVisitor classNameVisitor, int foundSoFar, String fileName, String absolutePath) {
+        boolean matches = pattern.matcher(fileName).matches();
+        if (matches) {
+            if (absolutePath != null) {
+                String fqn = absolutePath.substring(absolutePath.indexOf(pkgName));
+                fileName = fqn.substring(0, fqn.indexOf(".class")).replace(File.separator, ".");
+            } else {
+                fileName = fileName.substring(0, fileName.indexOf(".class"));
+            }
+            classNameVisitor.classFound(loadClass(new ClassName(fileName)));
+            foundSoFar++;
+        }
+        return foundSoFar;
     }
 
-    public static class CannotListClassesInAJarException extends PicoException {
-
+    public interface ClassVisitor {
+         void classFound(Class clazz);
     }
 
 }
