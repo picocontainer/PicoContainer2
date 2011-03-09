@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.picocontainer</groupId>
         <artifactId>picocontainer-parent</artifactId>
-        <version>2.14-SNAPSHOT</version>
+        <version>2.13.2</version>
     </parent>
     <artifactId>picocontainer</artifactId>
     <name>PicoContainer Core</name>
