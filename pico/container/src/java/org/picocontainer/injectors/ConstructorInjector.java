@@ -137,49 +137,55 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         int lastSatisfiableConstructorSize = -1;
         Type unsatisfiedDependencyType = null;
         for (final Constructor<T> sortedMatchingConstructor : sortedMatchingConstructors) {
-            boolean failedDependency = false;
-            Type[] parameterTypes = sortedMatchingConstructor.getGenericParameterTypes();
-            fixGenericParameterTypes(sortedMatchingConstructor, parameterTypes);
-            Annotation[] bindings = getBindings(sortedMatchingConstructor.getParameterAnnotations());
-            final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
-            final ComponentAdapter<?>[] currentAdapters = new ComponentAdapter<?>[currentParameters.length];
-            // remember: all constructors with less arguments than the given parameters are filtered out already
-            for (int j = 0; j < currentParameters.length; j++) {
-                // check whether this constructor is satisfiable
-                Type expectedType = box(parameterTypes[j]);
-                NameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), sortedMatchingConstructor, j);
-                ResolverKey resolverKey = new ResolverKey(expectedType, useNames() ? expectedNameBinding.getName() : null, useNames(), bindings[j], currentParameters[j]);
-                Parameter.Resolver resolver = resolvers.get(resolverKey);
-                if (resolver == null) {
-                    resolver = currentParameters[j].resolve(container, this, null, expectedType, expectedNameBinding, useNames(), bindings[j]);
-                    resolvers.put(resolverKey, resolver);
+            try {
+                boolean failedDependency = false;
+                Type[] parameterTypes = sortedMatchingConstructor.getGenericParameterTypes();
+                fixGenericParameterTypes(sortedMatchingConstructor, parameterTypes);
+                Annotation[] bindings = getBindings(sortedMatchingConstructor.getParameterAnnotations());
+                final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+                final ComponentAdapter<?>[] currentAdapters = new ComponentAdapter<?>[currentParameters.length];
+                // remember: all constructors with less arguments than the given parameters are filtered out already
+                for (int j = 0; j < currentParameters.length; j++) {
+                    // check whether this constructor is satisfiable
+                    Type expectedType = box(parameterTypes[j]);
+                    NameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), sortedMatchingConstructor, j);
+                    ResolverKey resolverKey = new ResolverKey(expectedType, useNames() ? expectedNameBinding.getName() : null, useNames(), bindings[j], currentParameters[j]);
+                    Parameter.Resolver resolver = resolvers.get(resolverKey);
+                    if (resolver == null) {
+                        resolver = currentParameters[j].resolve(container, this, null, expectedType, expectedNameBinding, useNames(), bindings[j]);
+                        resolvers.put(resolverKey, resolver);
+                    }
+                    if (resolver.isResolved()) {
+                        currentAdapters[j] = resolver.getComponentAdapter();
+                        continue;
+                    }
+                    unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
+                    unsatisfiedDependencyType = box(parameterTypes[j]);
+                    failedDependency = true;
+                    break;
                 }
-                if (resolver.isResolved()) {
-                    currentAdapters[j] = resolver.getComponentAdapter();
-                    continue;
-                }
-                unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
-                unsatisfiedDependencyType = box(parameterTypes[j]);
-                failedDependency = true;
-                break;
-            }
 
-            if (greediestConstructor != null && parameterTypes.length != lastSatisfiableConstructorSize) {
-                if (conflicts.isEmpty()) {
-                    // we found our match [aka. greedy and satisfied]
-                    return new CtorAndAdapters<T>(greediestConstructor, greediestConstructorsParameters, greediestConstructorsParametersComponentAdapters);
-                } 
-                // fits although not greedy
-                conflicts.add(sortedMatchingConstructor);
-            } else if (!failedDependency && lastSatisfiableConstructorSize == parameterTypes.length) {
-                // satisfied and same size as previous one?
-                conflicts.add(sortedMatchingConstructor);
-                conflicts.add(greediestConstructor);
-            } else if (!failedDependency) {
-                greediestConstructor = sortedMatchingConstructor;
-                greediestConstructorsParameters = currentParameters;
-                greediestConstructorsParametersComponentAdapters = currentAdapters;
-                lastSatisfiableConstructorSize = parameterTypes.length;
+                if (greediestConstructor != null && parameterTypes.length != lastSatisfiableConstructorSize) {
+                    if (conflicts.isEmpty()) {
+                        // we found our match [aka. greedy and satisfied]
+                        return new CtorAndAdapters<T>(greediestConstructor, greediestConstructorsParameters, greediestConstructorsParametersComponentAdapters);
+                    }
+                    // fits although not greedy
+                    conflicts.add(sortedMatchingConstructor);
+                } else if (!failedDependency && lastSatisfiableConstructorSize == parameterTypes.length) {
+                    // satisfied and same size as previous one?
+                    conflicts.add(sortedMatchingConstructor);
+                    conflicts.add(greediestConstructor);
+                } else if (!failedDependency) {
+                    greediestConstructor = sortedMatchingConstructor;
+                    greediestConstructorsParameters = currentParameters;
+                    greediestConstructorsParametersComponentAdapters = currentAdapters;
+                    lastSatisfiableConstructorSize = parameterTypes.length;
+                }
+            } catch (AmbiguousComponentResolutionException e) {
+                // embellish with the constructor being injected into.
+                e.setMember(sortedMatchingConstructor);
+                throw e;
             }
         }
         if (!conflicts.isEmpty()) {

@@ -123,6 +123,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
                 }
             } catch (AmbiguousComponentResolutionException e) {
                 e.setComponent(getComponentImplementation());
+                e.setMember(injectionMembers.get(j));
                 throw e;
             }
         }

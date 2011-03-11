@@ -203,6 +203,7 @@ public abstract class AbstractPicoContainerTest {
         } catch (AbstractInjector.AmbiguousComponentResolutionException e) {
             assertTrue(e.getMessage().indexOf("java.lang.String") != -1);
             assertTrue(e.getMessage().indexOf("<no-component>") != -1);
+            assertTrue(e.getMessage().indexOf("<unknown>") != -1);
         }
     }
 
@@ -870,6 +871,7 @@ public abstract class AbstractPicoContainerTest {
             assertTrue(componentImplementations.contains(SimpleTouchable.class));
 
             assertTrue(e.getMessage().indexOf(DerivedTouchable.class.getName()) != -1);
+            assertTrue(e.getMessage().indexOf("public org.picocontainer.testmodel.DependsOnTouchable(org.picocontainer.testmodel.Touchable)") != -1);
         }
     }
 

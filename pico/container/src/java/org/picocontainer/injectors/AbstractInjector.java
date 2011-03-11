@@ -19,6 +19,7 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.adapters.AbstractAdapter;
 import org.picocontainer.parameters.ComponentParameter;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
@@ -325,6 +326,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 		private Class<?> component;
         private final Class<?> ambiguousDependency;
         private final Object[] ambiguousComponentKeys;
+        private AccessibleObject accessibleObject;
 
 
         /**
@@ -349,7 +351,9 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
             msg.append(component != null ? component : "<no-component>");
             msg.append(" needs a '");
             msg.append(ambiguousDependency.getName());
-            msg.append("' injected, but there are too many choices to inject. These:");
+            msg.append("' injected via '");
+            msg.append(accessibleObject != null ? accessibleObject : "<unknown>");
+            msg.append("', but there are too many choices to inject. These:");
             msg.append(Arrays.asList(getAmbiguousComponentKeys()));
             msg.append(", refer http://picocontainer.org/ambiguous-injectable-help.html");
             return msg.toString();
@@ -364,6 +368,10 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 
         public void setComponent(final Class<?> component) {
             this.component = component;
+        }
+
+        public void setMember(AccessibleObject accessibleObject) {
+            this.accessibleObject = accessibleObject;
         }
     }
 
