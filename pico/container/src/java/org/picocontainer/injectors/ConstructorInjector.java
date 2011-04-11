@@ -55,6 +55,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
     private boolean rememberChosenConstructor = true;
     private transient CtorAndAdapters<T> chosenConstructor;
     private boolean enableEmjection = false;
+    private boolean allowNonPublicClasses = false;
 
     /**
      * Constructor injector that uses no monitor and no lifecycle adapter.  This is a more
@@ -205,6 +206,12 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
 
     public void enableEmjection(boolean enableEmjection) {
         this.enableEmjection = enableEmjection;
+    }
+
+
+    public ConstructorInjector<T> withNonPublicConstructors() {
+        allowNonPublicClasses = true;
+        return this;
     }
 
     private static final class ResolverKey {
@@ -360,7 +367,12 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         Constructor<T>[] allConstructors = getConstructors();
         // filter out all constructors that will definately not match
         for (Constructor<T> constructor : allConstructors) {
-            if ((parameters == null || constructor.getParameterTypes().length == parameters.length) && (constructor.getModifiers() & Modifier.PUBLIC) != 0) {
+            int modifiers = constructor.getModifiers();
+            if ((parameters == null || constructor.getParameterTypes().length == parameters.length)
+                    && (allowNonPublicClasses || (modifiers & Modifier.PUBLIC) != 0)) {
+                if ((modifiers & Modifier.PUBLIC) == 0) {
+                    constructor.setAccessible(true);
+                }
                 matchingConstructors.add(constructor);
             }
         }
