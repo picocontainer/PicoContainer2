@@ -19,6 +19,7 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -27,6 +28,12 @@ public class ThreadCachingTestCase {
     public static class Foo {
         public Foo(StringBuilder sb) {
             sb.append("<Foo");
+        }
+    }
+
+    public static class Baz {
+        public void setStringBuilder(StringBuilder sb) {
+            sb.append("<Baz");
         }
     }
 
@@ -54,6 +61,24 @@ public class ThreadCachingTestCase {
         assertEquals(foo,foo2);
         assertEquals("<Foo", sb.toString());
         assertEquals("ThreadCached:ConstructorInjector-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
+    }
+
+    @Test public void testThatForASingleThreadTheBehaviorIsTheSameAsPlainCachingWithSetterInjection() {
+
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
+        DefaultPicoContainer child = new DefaultPicoContainer(new ThreadCaching().wrap(new SetterInjection()), new NullLifecycleStrategy(), parent);
+
+        parent.addComponent(StringBuilder.class);
+        child.addComponent(Baz.class);
+
+        StringBuilder sb = parent.getComponent(StringBuilder.class);
+        Baz baz = child.getComponent(Baz.class);
+        Baz baz2 = child.getComponent(Baz.class);
+        assertNotNull(baz);
+        assertNotNull(baz2);
+        assertEquals(baz,baz2);
+        assertEquals("<Baz", sb.toString());
+        assertEquals("ThreadCached:SetterInjector-class org.picocontainer.behaviors.ThreadCachingTestCase$Baz", child.getComponentAdapter(Baz.class).toString());
     }
 
     @Test public void testThatTwoThreadsHaveSeparatedCacheValues() {
@@ -93,16 +118,53 @@ public class ThreadCachingTestCase {
         assertEquals("ThreadCached:ConstructorInjector-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
+    @Test public void testThatTwoThreadsHaveSeparatedCacheValuesWithSetterInjection() {
+
+        final Baz[] bazs = new Baz[4];
+
+        DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
+        final DefaultPicoContainer child = new DefaultPicoContainer(new ThreadCaching().wrap(new SetterInjection()), new NullLifecycleStrategy(), parent);
+
+        parent.addComponent(StringBuilder.class);
+        child.addComponent(Baz.class);
+
+        StringBuilder sb = parent.getComponent(StringBuilder.class);
+        bazs[0] = child.getComponent(Baz.class);
+
+        Thread thread = new Thread() {
+            public void run() {
+                bazs[1] = child.getComponent(Baz.class);
+                bazs[3] = child.getComponent(Baz.class);
+            }
+        };
+        thread.start();
+        bazs[2] = child.getComponent(Baz.class);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+        }
+
+        assertNotNull(bazs[0]);
+        assertNotNull(bazs[1]);
+        assertNotNull(bazs[2]);
+        assertNotNull(bazs[3]);
+        assertSame(bazs[0],bazs[2]);
+        assertEquals(bazs[1],bazs[3]);
+        assertFalse(bazs[0] == bazs[1]);
+        assertEquals("<Baz<Baz", sb.toString());
+        assertEquals("ThreadCached:SetterInjector-class org.picocontainer.behaviors.ThreadCachingTestCase$Baz", child.getComponentAdapter(Baz.class).toString());
+    }
+
     @Test public void testThatTwoThreadsHaveSeparatedCacheValuesWithInstanceRegistrationAndClassLoadingPicoContainer() {
 
         final Foo[] foos = new Foo[4];
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
         parent.change(Characteristics.USE_NAMES);
+        parent.addComponent(StringBuilder.class);
+
         final DefaultClassLoadingPicoContainer child = new DefaultClassLoadingPicoContainer(new ThreadCaching(), new NullLifecycleStrategy(), parent, this.getClass().getClassLoader(), new NullComponentMonitor());
         child.change(Characteristics.USE_NAMES);
-
-        parent.addComponent(StringBuilder.class);
         child.addComponent(Foo.class);
         child.addComponent("hello");
 
