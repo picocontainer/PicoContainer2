@@ -19,6 +19,8 @@ import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.classname.DefaultClassLoadingPicoContainer;
 import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.injectors.CompositeInjection;
+import org.picocontainer.injectors.ConstructorInjection;
 import org.picocontainer.injectors.SetterInjection;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
@@ -32,8 +34,23 @@ public class ThreadCachingTestCase {
     }
 
     public static class Baz {
+
+        private static final Object lock = new Object();
+
+        private static int CTR;
+
+        private int inst;
+
+        public Baz(StringBuilder sb) {
+            synchronized (lock) {
+                inst = CTR++;
+                sb.append("!").append(inst).append(" ");
+            }
+        }
         public void setStringBuilder(StringBuilder sb) {
-            sb.append("<Baz");
+            synchronized (lock) {
+                sb.append("<").append(inst).append(" ");
+            }
         }
     }
 
@@ -118,12 +135,14 @@ public class ThreadCachingTestCase {
         assertEquals("ThreadCached:ConstructorInjector-class org.picocontainer.behaviors.ThreadCachingTestCase$Foo", child.getComponentAdapter(Foo.class).toString());
     }
 
-    @Test public void testThatTwoThreadsHaveSeparatedCacheValuesWithSetterInjection() {
+    @Test public void testThatTwoThreadsHaveSeparatedCacheValuesWithCompositeInjection() {
 
         final Baz[] bazs = new Baz[4];
 
         DefaultPicoContainer parent = new DefaultPicoContainer(new Caching());
-        final DefaultPicoContainer child = new DefaultPicoContainer(new ThreadCaching().wrap(new SetterInjection()), new NullLifecycleStrategy(), parent);
+        final DefaultPicoContainer child = new DefaultPicoContainer(new ThreadCaching().wrap(
+                new CompositeInjection(new ConstructorInjection(), new SetterInjection())),
+                new NullLifecycleStrategy(), parent);
 
         parent.addComponent(StringBuilder.class);
         child.addComponent(Baz.class);
@@ -151,8 +170,8 @@ public class ThreadCachingTestCase {
         assertSame(bazs[0],bazs[2]);
         assertEquals(bazs[1],bazs[3]);
         assertFalse(bazs[0] == bazs[1]);
-        assertEquals("<Baz<Baz", sb.toString());
-        assertEquals("ThreadCached:SetterInjector-class org.picocontainer.behaviors.ThreadCachingTestCase$Baz", child.getComponentAdapter(Baz.class).toString());
+        assertEquals("!0 <0 !1 <1", sb.toString().trim());
+        assertEquals("ThreadCached:CompositeInjector(ConstructorInjector+SetterInjector)-class org.picocontainer.behaviors.ThreadCachingTestCase$Baz", child.getComponentAdapter(Baz.class).toString());
     }
 
     @Test public void testThatTwoThreadsHaveSeparatedCacheValuesWithInstanceRegistrationAndClassLoadingPicoContainer() {
