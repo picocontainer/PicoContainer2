@@ -16,7 +16,6 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import org.picocontainer.ComponentMonitor;
-import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.Parameter;
 import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
@@ -80,7 +79,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 @Override
                 @SuppressWarnings("synthetic-access")
-                public Object run() {
+                public Object run(Object instance) {
                     Method method = getInjectorMethod();
                     T inst = null;
                     ComponentMonitor componentMonitor = currentMonitor();
@@ -106,7 +105,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
             };
         }
         instantiationGuard.setGuardedContainer(container);
-        return (T) instantiationGuard.observe(getComponentImplementation());
+        return (T) instantiationGuard.observe(getComponentImplementation(), null);
     }
 
     protected Object[] getMemberArguments(PicoContainer container, final Method method) {
@@ -119,18 +118,18 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard() {
                 @Override
                 @SuppressWarnings("synthetic-access")
-                public Object run() {
+                public Object run(Object inst) {
                     Method method = getInjectorMethod();
-                    if (method.getDeclaringClass().isAssignableFrom(instance.getClass())) {
+                    if (method.getDeclaringClass().isAssignableFrom(inst.getClass())) {
                         Object[] methodParameters = getMemberArguments(guardedContainer, method);
-                        return invokeMethod(method, methodParameters, instance, container);
+                        return invokeMethod(method, methodParameters, (T) inst, container);
                     }
                     return null;
                 }
             };
         }
         instantiationGuard.setGuardedContainer(container);
-        Object o = instantiationGuard.observe(getComponentImplementation());
+        Object o = instantiationGuard.observe(getComponentImplementation(), instance);
         return o;
     }
 
@@ -162,7 +161,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         if (verifyingGuard == null) {
             verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
                 @Override
-                public Object run() {
+                public Object run(Object instance) {
                     final Method method = getInjectorMethod();
                     final Class[] parameterTypes = method.getParameterTypes();
                     final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
@@ -176,7 +175,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
             };
         }
         verifyingGuard.setGuardedContainer(container);
-        verifyingGuard.observe(getComponentImplementation());
+        verifyingGuard.observe(getComponentImplementation(), null);
     }
 
     @Override

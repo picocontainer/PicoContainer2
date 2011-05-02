@@ -317,7 +317,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             instantiationGuard = new ThreadLocalCyclicDependencyGuard<T>() {
                 @Override
                 @SuppressWarnings("synthetic-access")
-                public T run() {
+                public T run(Object instance) {
                     CtorAndAdapters<T> ctorAndAdapters = getGreediestSatisfiableConstructor(guardedContainer, getComponentImplementation());
                     ComponentMonitor componentMonitor = currentMonitor();
                     Constructor<T> ctor = ctorAndAdapters.getConstructor();
@@ -351,7 +351,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             };
         }
         instantiationGuard.setGuardedContainer(container);
-        T inst = instantiationGuard.observe(getComponentImplementation());
+        T inst = instantiationGuard.observe(getComponentImplementation(), null);
         decorate(inst, container);
         return inst;
     }
@@ -400,7 +400,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         if (verifyingGuard == null) {
             verifyingGuard = new ThreadLocalCyclicDependencyGuard() {
                 @Override
-                public Object run() {
+                public Object run(Object instance) {
                     final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer).getConstructor();
                     final Class[] parameterTypes = constructor.getParameterTypes();
                     final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
@@ -414,7 +414,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             };
         }
         verifyingGuard.setGuardedContainer(container);
-        verifyingGuard.observe(getComponentImplementation());
+        verifyingGuard.observe(getComponentImplementation(), null);
     }
 
     @Override

@@ -248,25 +248,28 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
          *
          * @return a value, if the functionality result in an expression,
          *      otherwise just return <code>null</code>
+         * @param instance
          */
-        public abstract T run();
+        public abstract T run(Object instance);
 
         /**
          * Call the observing function. The provided guard will hold the {@link Boolean} value.
          * If the guard is already <code>Boolean.TRUE</code> a {@link CyclicDependencyException}
          * will be  thrown.
          *
+         *
          * @param stackFrame the current stack frame
+         * @param instance
          * @return the result of the <code>run</code> method
          */
-        public final T observe(final Class<?> stackFrame) {
+        public final T observe(final Class<?> stackFrame, final Object instance) {
             if (Boolean.TRUE.equals(get())) {
                 throw new CyclicDependencyException(stackFrame);
             }
             T result = null;
             try {
                 set(Boolean.TRUE);
-                result = run();
+                result = run(instance);
             } catch (final CyclicDependencyException e) {
                 e.push(stackFrame);
                 throw e;
