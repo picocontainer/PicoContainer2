@@ -7,15 +7,14 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.annotation.Annotation;
-
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.PicoLifecycleException;
 
-import javax.annotation.PreDestroy;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Java EE 5 has some annotations PreDestroy and PostConstruct that map to start() and dispose() in our world
@@ -49,8 +48,18 @@ public final class JavaEE5LifecycleStrategy extends AbstractMonitoringLifecycleS
         doLifecycleMethod(component, PreDestroy.class);
     }
 
+
+
     private void doLifecycleMethod(final Object component, Class<? extends Annotation> annotation) {
-        Method[] methods = component.getClass().getDeclaredMethods();
+        doLifecycleMethod(component, annotation, component.getClass());
+    }
+
+    private void doLifecycleMethod(Object component, Class<? extends Annotation> annotation, Class<? extends Object> clazz) {
+        Class<?> parent = clazz.getSuperclass();
+        if (parent != Object.class) {
+            doLifecycleMethod(component, annotation, parent);
+        }
+        Method[] methods = clazz.getDeclaredMethods();
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
             if (method.isAnnotationPresent(annotation)) {

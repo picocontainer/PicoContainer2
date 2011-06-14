@@ -7,11 +7,6 @@
  *****************************************************************************/
 package org.picocontainer.lifecycle;
 
-import static org.junit.Assert.assertEquals;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -20,6 +15,11 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.monitors.NullComponentMonitor;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -31,7 +31,7 @@ public class JavaEE5LifecycleStrategyTestCase {
 
     public static class ProPostAnnotationJava5Startable {
 
-        StringBuilder sb;
+        protected final StringBuilder sb;
 
         public ProPostAnnotationJava5Startable(StringBuilder sb) {
             this.sb = sb;
@@ -49,6 +49,23 @@ public class JavaEE5LifecycleStrategyTestCase {
 
     }
 
+    public static class ProPostAnnotationJava5Startable2 extends ProPostAnnotationJava5Startable {
+
+        public ProPostAnnotationJava5Startable2(StringBuilder sb) {
+            super(sb);
+        }
+
+        @PostConstruct
+        public void subPot() {
+            sb.append("subPost()");
+        }
+
+        @PreDestroy
+        public void subPre() {
+            sb.append("subPre()");
+        }
+
+    }
 
     private LifecycleStrategy strategy;
 
@@ -75,6 +92,14 @@ public class JavaEE5LifecycleStrategyTestCase {
         pico.start();
         pico.dispose();
         assertEquals("post()pre()", pico.getComponent(StringBuilder.class).toString());
+    }
+
+    @Test public void testDisposeOfSubClass(){
+        pico.removeComponent(ProPostAnnotationJava5Startable.class);
+        pico.addComponent(ProPostAnnotationJava5Startable2.class);
+        pico.start();
+        pico.dispose();
+        assertEquals("post()subPost()pre()subPre()", pico.getComponent(StringBuilder.class).toString());
     }
 
     @Test public void testSerializable(){
