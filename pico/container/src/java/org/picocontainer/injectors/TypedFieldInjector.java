@@ -12,6 +12,8 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Bind;
 
 import java.lang.annotation.Annotation;
@@ -31,7 +33,7 @@ import java.util.List;
  * injection points via a field type.
  */
 @SuppressWarnings("serial")
-public class TypedFieldInjector extends IterativeInjector {
+public class TypedFieldInjector<T> extends IterativeInjector<T> {
 
     private final List<String> classes;
 

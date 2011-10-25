@@ -12,6 +12,7 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Bind;
 
 import java.lang.annotation.Annotation;
@@ -23,13 +24,14 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Injection happens after instantiation, and through fields marked as injection points via an Annotation.
  * The default annotation of org.picocontainer.annotations.@Inject can be overridden.
  */
 @SuppressWarnings("serial")
-public class AnnotatedFieldInjector extends IterativeInjector {
+public class AnnotatedFieldInjector<T> extends IterativeInjector<T> {
 
     private final Class<? extends Annotation> injectionAnnotation;
 

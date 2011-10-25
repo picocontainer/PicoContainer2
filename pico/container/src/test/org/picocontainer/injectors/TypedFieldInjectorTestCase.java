@@ -22,11 +22,13 @@ public class TypedFieldInjectorTestCase {
         private PogoStick pogo;
     }
 
-
     public static class PogoStick {
     }
 
-    @Test public void testFieldInjectionByType() {
+    //public static class Hulahoop {
+    //}
+
+    @Test public void testFieldInjectionByTypeWhereMatch() {
         MutablePicoContainer pico = new DefaultPicoContainer();
         pico.addAdapter(new TypedFieldInjector(Helicopter.class, Helicopter.class, null,
                                                     new NullComponentMonitor(),
@@ -37,5 +39,15 @@ public class TypedFieldInjectorTestCase {
         assertNotNull(chopper.pogo);
     }
 
+//    @Test public void testFieldInjectionByTypeWhereNoMatch() {
+//        MutablePicoContainer pico = new DefaultPicoContainer();
+//        pico.addAdapter(new TypedFieldInjector(Helicopter.class, Helicopter.class, null,
+//                                                    new NullComponentMonitor(),
+//                Integer.class.getName() + " " + PogoStick.class.getName() + " " + Float.class.getName()));
+//        pico.addComponent(Hulahoop.class, new Hulahoop());
+//        Helicopter chopper = pico.getComponent(Helicopter.class);
+//        assertNotNull(chopper);
+//        assertNotNull(chopper.pogo);
+//    }
 
 }
