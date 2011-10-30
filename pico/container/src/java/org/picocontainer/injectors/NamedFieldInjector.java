@@ -12,6 +12,7 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Bind;
 
 import java.lang.annotation.Annotation;
@@ -25,13 +26,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Injection happens after instantiation, and fields are marked as 
  * injection points via a named field.
  */
 @SuppressWarnings("serial")
-public class NamedFieldInjector extends IterativeInjector {
+public class NamedFieldInjector<T> extends AbstractFieldInjector<T> {
 
     private final List<String> fieldNames;
 

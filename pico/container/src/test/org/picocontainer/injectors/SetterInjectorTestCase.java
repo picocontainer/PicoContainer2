@@ -266,15 +266,18 @@ public class SetterInjectorTestCase
         SetterInjector bAdapter = new SetterInjector("b", B.class, Parameter.DEFAULT, new NullComponentMonitor(),
                                                      "set", "", false, false);
 
-        MutablePicoContainer pico = new DefaultPicoContainer();
+        DefaultPicoContainer pico = new DefaultPicoContainer();
+        pico.setName("parent");
         pico.addAdapter(bAdapter);
         pico.addAdapter(aAdapter);
 
         try {
             aAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
-            assertTrue(e.getUnsatisfiableDependencies().contains(List.class));
-            assertTrue(e.getUnsatisfiableDependencies().contains(String.class));
+            String message = e.getMessage().replace("org.picocontainer.injectors.SetterInjectorTestCase$", "");
+            message = message.replace("interface java.util.List, class java.lang.String", "class java.lang.String, interface java.util.List");
+            assertEquals("A has unsatisfied dependencies [class java.lang.String, interface java.util.List] for members [public void A.setString(java.lang.String), public void A.setList(java.util.List)] from parent:2<|",
+                    message);
         }
     }
 

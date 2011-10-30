@@ -89,17 +89,19 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
 
         final List<Object> matchingParameterList = new ArrayList<Object>(Collections.nCopies(injectionMembers.size(), null));
 
-        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes);
+        final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(injectionTypes.length);
         final Set<Integer> nonMatchingParameterPositions = matchParameters(container, matchingParameterList, currentParameters);
 
         final Set<Type> unsatisfiableDependencyTypes = new HashSet<Type>();
+        final List<AccessibleObject> unsatisfiableDependencyMembers = new ArrayList<AccessibleObject>();
         for (int i = 0; i < matchingParameterList.size(); i++) {
             if (matchingParameterList.get(i) == null) {
                 unsatisfiableDependencyTypes.add(injectionTypes[i]);
+                unsatisfiableDependencyMembers.add(injectionMembers.get(i));
             }
         }
         if (unsatisfiableDependencyTypes.size() > 0) {
-            unsatisfiedDependencies(container, unsatisfiableDependencyTypes);
+            unsatisfiedDependencies(container, unsatisfiableDependencyTypes, unsatisfiableDependencyMembers);
         } else if (nonMatchingParameterPositions.size() > 0) {
             throw new PicoCompositionException("Following parameters do not match any of the injectionMembers for " + getComponentImplementation() + ": " + nonMatchingParameterPositions.toString());
         }
@@ -142,9 +144,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
         return new ParameterNameBinding(paranamer,  member, 0);
     }
 
-    protected void unsatisfiedDependencies(PicoContainer container, Set<Type> unsatisfiableDependencyTypes) {
-        throw new UnsatisfiableDependenciesException(this, null, unsatisfiableDependencyTypes, container);
-    }
+    protected abstract void unsatisfiedDependencies(PicoContainer container, Set<Type> unsatisfiableDependencyTypes, List<AccessibleObject> unsatisfiableDependencyMembers);
 
     public T getComponentInstance(final PicoContainer container, Type into) throws PicoCompositionException {
         final Constructor constructor = getConstructor();
@@ -343,6 +343,5 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
             }
         });
     }
-
 
 }

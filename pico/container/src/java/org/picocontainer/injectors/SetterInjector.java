@@ -16,9 +16,10 @@ import org.picocontainer.behaviors.PropertyApplicator;
 import org.picocontainer.behaviors.Cached;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -100,9 +101,10 @@ public class SetterInjector<T> extends IterativeInjector<T> {
     }
 
     @Override
-    protected void unsatisfiedDependencies(PicoContainer container, Set<Type> unsatisfiableDependencyTypes) {
+    protected void unsatisfiedDependencies(PicoContainer container, Set<Type> unsatisfiableDependencyTypes, List<AccessibleObject> unsatisfiableDependencyMembers) {
         if (!optional) {
-            super.unsatisfiedDependencies(container, unsatisfiableDependencyTypes);
+            throw new UnsatisfiableDependenciesException(this.getComponentImplementation().getName() + " has unsatisfied dependencies " + unsatisfiableDependencyTypes
+                    + " for members " + unsatisfiableDependencyMembers + " from " + container);
         }
     }
 

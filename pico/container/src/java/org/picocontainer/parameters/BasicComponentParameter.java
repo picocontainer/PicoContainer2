@@ -136,7 +136,8 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
         if (componentAdapter == null) {
             final Set<Type> set = new HashSet<Type>();
             set.add(expectedType);
-            throw new AbstractInjector.UnsatisfiableDependenciesException(forAdapter, null, set, container);
+            throw new AbstractInjector.UnsatisfiableDependenciesException(
+                    forAdapter.getComponentImplementation().getName() + " has unsatisfied dependencies: " + set + " from " + container);
         }
         componentAdapter.verify(container);
     }

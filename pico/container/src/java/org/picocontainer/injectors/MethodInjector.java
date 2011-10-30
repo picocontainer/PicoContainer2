@@ -164,7 +164,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
                 public Object run(Object instance) {
                     final Method method = getInjectorMethod();
                     final Class[] parameterTypes = method.getParameterTypes();
-                    final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+                    final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
                     for (int i = 0; i < currentParameters.length; i++) {
                         currentParameters[i].verify(container, MethodInjector.this, parameterTypes[i],
                             new ParameterNameBinding(getParanamer(), method, i), useNames(),

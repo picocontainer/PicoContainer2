@@ -21,6 +21,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -159,5 +161,21 @@ public class AnnotatedFieldInjectorTestCase {
         assertNotNull(c2);
         assertNotNull(c2.d2);
     }
+
+    @Test public void testFieldInjectionByTypeWhereNoMatch() {
+        MutablePicoContainer container = new PicoBuilder().withAnnotatedFieldInjection().build();
+        container.setName("parent");
+        container.addComponent(C2.class);
+        try {
+            container.getComponent(C2.class);
+            fail("should have barfed");
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
+            String expected = "C2 has unsatisfied dependency for fields [D2.d2] from parent:1<|";
+            String actual = e.getMessage();
+            actual = actual.replace(AnnotatedFieldInjectorTestCase.class.getName() + "$", "");
+            assertEquals(expected, actual);
+        }
+    }
+
 
 }

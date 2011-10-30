@@ -49,4 +49,10 @@ public class PropertiesPicoContainer extends AbstractDelegatingPicoContainer {
         ((DefaultPicoContainer)getDelegate()).setName(s);
     }
 
+    @Override
+    public String toString() {
+        return "[Properties]:" + super.getDelegate().toString();
+    }
+
+
 }

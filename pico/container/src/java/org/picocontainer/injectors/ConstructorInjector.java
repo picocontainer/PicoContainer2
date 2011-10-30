@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -127,7 +128,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
     @SuppressWarnings("synthetic-access")
     protected CtorAndAdapters<T> getGreediestSatisfiableConstructor(PicoContainer container) throws PicoCompositionException {
         final Set<Constructor> conflicts = new HashSet<Constructor>();
-        final Set<List<Type>> unsatisfiableDependencyTypes = new HashSet<List<Type>>();
+        final Set<Type> unsatisfiableDependencyTypes = new HashSet<Type>();
         final Map<ResolverKey, Parameter.Resolver> resolvers = new HashMap<ResolverKey, Parameter.Resolver>();
         if (sortedMatchingConstructors == null) {
             sortedMatchingConstructors = getSortedMatchingConstructors();
@@ -136,14 +137,15 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         Parameter[] greediestConstructorsParameters = null;
         ComponentAdapter[] greediestConstructorsParametersComponentAdapters = null;
         int lastSatisfiableConstructorSize = -1;
-        Type unsatisfiedDependencyType = null;
+        Type unsatisfiedDependency = null;
+        Constructor unsatisfiedConstructor = null;
         for (final Constructor<T> sortedMatchingConstructor : sortedMatchingConstructors) {
             try {
                 boolean failedDependency = false;
                 Type[] parameterTypes = sortedMatchingConstructor.getGenericParameterTypes();
                 fixGenericParameterTypes(sortedMatchingConstructor, parameterTypes);
                 Annotation[] bindings = getBindings(sortedMatchingConstructor.getParameterAnnotations());
-                final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+                final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
                 final ComponentAdapter<?>[] currentAdapters = new ComponentAdapter<?>[currentParameters.length];
                 // remember: all constructors with less arguments than the given parameters are filtered out already
                 for (int j = 0; j < currentParameters.length; j++) {
@@ -160,10 +162,10 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                         currentAdapters[j] = resolver.getComponentAdapter();
                         continue;
                     }
-                    unsatisfiableDependencyTypes.add(Arrays.asList(parameterTypes));
-                    unsatisfiedDependencyType = box(parameterTypes[j]);
+                    unsatisfiableDependencyTypes.add(expectedType);
+                    unsatisfiedDependency = box(parameterTypes[j]);
+                    unsatisfiedConstructor = sortedMatchingConstructor;
                     failedDependency = true;
-                    break;
                 }
 
                 if (greediestConstructor != null && parameterTypes.length != lastSatisfiableConstructorSize) {
@@ -192,7 +194,9 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
         if (!conflicts.isEmpty()) {
             throw new PicoCompositionException(conflicts.size() + " satisfiable constructors is too many for '"+getComponentImplementation()+"'. Constructor List:" + conflicts.toString().replace(getComponentImplementation().getName(),"<init>").replace("public <i","<i"));
         } else if (greediestConstructor == null && !unsatisfiableDependencyTypes.isEmpty()) {
-            throw new UnsatisfiableDependenciesException(this, unsatisfiedDependencyType, unsatisfiableDependencyTypes, container);
+            throw new UnsatisfiableDependenciesException(this.getComponentImplementation().getName()
+                    + " has unsatisfied dependency '" + unsatisfiedDependency
+                    + "' for constructor '" + unsatisfiedConstructor + "'" + " from " + container);
         } else if (greediestConstructor == null) {
             // be nice to the user, show all constructors that were filtered out
             final Set<Constructor> nonMatching = new HashSet<Constructor>();
@@ -202,6 +206,18 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
             throw new PicoCompositionException("Either the specified parameters do not match any of the following constructors: " + nonMatching.toString() + "; OR the constructors were not accessible for '" + getComponentImplementation().getName() + "'");
         }
         return new CtorAndAdapters<T>(greediestConstructor, greediestConstructorsParameters, greediestConstructorsParametersComponentAdapters);
+    }
+
+    private String toList(Set<Type> unsatisfiableDependencyTypes) {
+        StringBuilder sb = new StringBuilder();
+        Iterator<Type> it = unsatisfiableDependencyTypes.iterator();
+        while (it.hasNext()) {
+            Type next = it.next();
+            sb.append(next.toString().replace("class ", ""));
+            sb.append(", ");
+        }
+        String s = sb.toString();
+        return s.substring(0, s.lastIndexOf(", "));
     }
 
     public void enableEmjection(boolean enableEmjection) {
@@ -403,7 +419,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                 public Object run(Object instance) {
                     final Constructor constructor = getGreediestSatisfiableConstructor(guardedContainer).getConstructor();
                     final Class[] parameterTypes = constructor.getParameterTypes();
-                    final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes);
+                    final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
                     for (int i = 0; i < currentParameters.length; i++) {
                         currentParameters[i].verify(container, ConstructorInjector.this, box(parameterTypes[i]),
                             new ParameterNameBinding(getParanamer(),  constructor, i),

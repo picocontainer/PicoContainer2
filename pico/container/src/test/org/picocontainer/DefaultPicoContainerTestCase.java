@@ -93,7 +93,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 					+ AbstractInjector.UnsatisfiableDependenciesException.class
 							.getName() + " expected");
 		} catch (final AbstractInjector.UnsatisfiableDependenciesException e) {
-			assertEquals(ComponentB.class, e.getUnsatisfiedDependencyType());
+            assertEquals("A has unsatisfied dependency 'class C' for constructor 'public A(B,C)' from parent:1<|", e.getMessage().replace("org.picocontainer.tck.AbstractPicoContainerTest$Component",""));
 		}
 
     }
@@ -248,7 +248,7 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         child.setName("child");
         parent.addComponent("st", SimpleTouchable.class);
         child.addComponent("dot", DependsOnTouchable.class);
-        assertEquals("child:1<I<parent:1<|", child.toString());
+        assertEquals("child:1<[Immutable]:parent:1<|", child.toString());
     }
 
     @SuppressWarnings("serial")
@@ -868,6 +868,10 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
         public Behavior newBehavior(Behavior behavior) {
             return behavior;
         }
+    }
+
+    @Test public void testUnsatisfiableDependenciesExceptionGivesVerboseEnoughErrorMessage() {
+        super.testUnsatisfiableDependenciesExceptionGivesVerboseEnoughErrorMessage();
     }
 
 }

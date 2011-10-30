@@ -12,28 +12,25 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.annotations.Bind;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Injection happens after instantiation, and fields are marked as
  * injection points via a field type.
  */
 @SuppressWarnings("serial")
-public class TypedFieldInjector<T> extends IterativeInjector<T> {
+public class TypedFieldInjector<T> extends AbstractFieldInjector<T> {
 
     private final List<String> classes;
 

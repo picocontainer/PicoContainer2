@@ -9,9 +9,11 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
+import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
+import junit.framework.Assert;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
@@ -29,6 +31,9 @@ public class NamedFieldInjectorTestCase {
         private String wing2;
     }
 
+    public static class Monoplane {
+        private String wing1;
+    }
 
     public static class PogoStick {
     }
@@ -58,5 +63,20 @@ public class NamedFieldInjectorTestCase {
     }
 
 
+    @Test public void testFieldInjectionByTypeWhereNoMatch() {
+        MutablePicoContainer pico = new DefaultPicoContainer();
+        pico.setName("parent");
+        pico.addAdapter(new NamedFieldInjector(Monoplane.class, Monoplane.class, null,
+                new NullComponentMonitor(), " aa wing1 cc wing2 dd "));
+        try {
+            pico.getComponent(Monoplane.class);
+            fail("should have barfed");
+        } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
+            String expected = "Monoplane has unsatisfied dependency for fields [String.wing1] from parent:1<|";
+            String actual = e.getMessage().replace("java.lang.","");
+            actual = actual.replace(NamedFieldInjectorTestCase.class.getName() + "$", "");
+            Assert.assertEquals(expected, actual);
+        }
+    }
 
 }

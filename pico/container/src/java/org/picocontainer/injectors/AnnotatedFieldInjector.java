@@ -31,7 +31,7 @@ import java.util.Set;
  * The default annotation of org.picocontainer.annotations.@Inject can be overridden.
  */
 @SuppressWarnings("serial")
-public class AnnotatedFieldInjector<T> extends IterativeInjector<T> {
+public class AnnotatedFieldInjector<T> extends AbstractFieldInjector<T> {
 
     private final Class<? extends Annotation> injectionAnnotation;
 

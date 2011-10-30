@@ -90,12 +90,12 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
     /**
      * Create default parameters for the given types.
      *
-     * @param parameterTypes the parameter types
+     * @param length parameter list length
      * @return the array with the default parameters.
      */
-    protected Parameter[] createDefaultParameters(final Type[] parameterTypes) {
-        Parameter[] componentParameters = new Parameter[parameterTypes.length];
-        for (int i = 0; i < parameterTypes.length; i++) {
+    protected Parameter[] createDefaultParameters(int length) {
+        Parameter[] componentParameters = new Parameter[length];
+        for (int i = 0; i < length; i++) {
             componentParameters[i] = ComponentParameter.DEFAULT;
         }
         return componentParameters;
@@ -333,7 +333,7 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
 
 
         /**
-         * Construct a new exception with the ambigous class type and the ambiguous component keys.
+         * Construct a new exception with the ambiguous class type and the ambiguous component keys.
          *
          * @param ambiguousDependency the unresolved dependency type
          * @param componentKeys the ambiguous keys.
@@ -386,42 +386,8 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
      */
     public static class UnsatisfiableDependenciesException extends PicoCompositionException {
 
-		
-		private final ComponentAdapter<?> instantiatingComponentAdapter;
-        private final Set unsatisfiableDependencies;
-        private final Type unsatisfiedDependencyType;
-        
-        /**
-         * The original container requesting the instantiation of the component.
-         */
-        private final PicoContainer leafContainer;
-
-        public UnsatisfiableDependenciesException(final ComponentAdapter<?> instantiatingComponentAdapter,
-                                                  final Type unsatisfiedDependencyType, final Set unsatisfiableDependencies,
-                                                  final PicoContainer leafContainer) {
-            super(instantiatingComponentAdapter.getComponentImplementation().getName() + " has unsatisfied dependency: " + unsatisfiedDependencyType
-                    +" among unsatisfiable dependencies: "+unsatisfiableDependencies + " where " + leafContainer
-                    + " was the leaf container being asked for dependencies.");
-            this.instantiatingComponentAdapter = instantiatingComponentAdapter;
-            this.unsatisfiableDependencies = unsatisfiableDependencies;
-            this.unsatisfiedDependencyType = unsatisfiedDependencyType;
-            this.leafContainer = leafContainer;
-        }
-
-        public ComponentAdapter<?> getUnsatisfiableComponentAdapter() {
-            return instantiatingComponentAdapter;
-        }
-
-        public Set getUnsatisfiableDependencies() {
-            return unsatisfiableDependencies;
-        }
-
-        public Type getUnsatisfiedDependencyType() {
-            return unsatisfiedDependencyType;
-        }
-
-        public PicoContainer getLeafContainer() {
-            return leafContainer;
+        public UnsatisfiableDependenciesException(String message) {
+            super(message);
         }
 
     }
