@@ -40,7 +40,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     protected transient Annotation[] bindings;
 
     private transient Paranamer paranamer;
-    private transient boolean initialized;
+    private transient volatile boolean initialized;
 
     /**
      * Constructs a IterativeInjector
