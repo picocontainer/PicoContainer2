@@ -9,18 +9,12 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
-import org.picocontainer.ComponentAdapter;
-import org.picocontainer.Parameter;
-import org.picocontainer.NameBinding;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoVisitor;
-
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
-import java.lang.reflect.ParameterizedType;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,6 +27,13 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
 
 
 /**
@@ -75,7 +76,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      * @param emptyCollection <code>true</code> if an empty array also is a valid dependency
      *                        resolution.
      */
-    public CollectionComponentParameter(boolean emptyCollection) {
+    public CollectionComponentParameter(final boolean emptyCollection) {
         this(Void.TYPE, emptyCollection);
     }
 
@@ -87,7 +88,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      * @param emptyCollection    <code>true</code> if an empty collection resolves the
      *                           dependency.
      */
-    public CollectionComponentParameter(Class componentValueType, boolean emptyCollection) {
+    public CollectionComponentParameter(final Class componentValueType, final boolean emptyCollection) {
         this(Object.class, componentValueType, emptyCollection);
     }
 
@@ -100,7 +101,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      * @param emptyCollection    <code>true</code> if an empty collection resolves the
      *                           dependency.
      */
-    public CollectionComponentParameter(Class componentKeyType, Class componentValueType, boolean emptyCollection) {
+    public CollectionComponentParameter(final Class componentKeyType, final Class componentValueType, final boolean emptyCollection) {
         this.emptyCollection = emptyCollection;
         this.componentKeyType = componentKeyType;
         this.componentValueType = componentValueType;
@@ -121,8 +122,8 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      *         is allowed
      */
     public Resolver resolve(final PicoContainer container, final ComponentAdapter<?> forAdapter,
-                            ComponentAdapter<?> injecteeAdapter, final Type expectedType, final NameBinding expectedNameBinding,
-                            final boolean useNames, Annotation binding) {
+                            final ComponentAdapter<?> injecteeAdapter, final Type expectedType, final NameBinding expectedNameBinding,
+                            final boolean useNames, final Annotation binding) {
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
             final Map<Object, ComponentAdapter<?>> componentAdapters = getMatchingComponentAdapters(container, forAdapter,
@@ -139,7 +140,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
                     } else if (Map.class.isAssignableFrom(collectionType)) {
                         result = getMapInstance(container, collectionType, componentAdapters);
                     } else if (Collection.class.isAssignableFrom(collectionType)) {
-                        result = getCollectionInstance(container, (Class<? extends Collection>) collectionType,
+                        result = getCollectionInstance(container, collectionType,
                                 componentAdapters, expectedNameBinding, useNames);
                     } else {
                         throw new PicoCompositionException(expectedType + " is not a collective type");
@@ -155,13 +156,31 @@ public class CollectionComponentParameter extends AbstractParameter implements P
         return new Parameter.NotResolved();
     }
 
-    private Class getCollectionType(Type expectedType) {
+    private Class getCollectionType(final Type expectedType) {
         if (expectedType instanceof Class) {
             return getCollectionType((Class) expectedType);
         } else if (expectedType instanceof ParameterizedType) {
             ParameterizedType type = (ParameterizedType) expectedType;
 
             return getCollectionType(type.getRawType());
+        }
+        else if (expectedType instanceof GenericArrayType) {
+          GenericArrayType type = (GenericArrayType) expectedType;
+          Class baseType = getGenericArrayBaseType(type.getGenericComponentType());
+          return Array.newInstance(baseType, 0).getClass();
+        }
+
+        throw new IllegalArgumentException("Unable to get collection type from " + expectedType);
+    }
+
+    private Class getGenericArrayBaseType(final Type expectedType) {
+        if (expectedType instanceof Class) {
+            Class type = (Class) expectedType;
+            return type;
+        }
+        else if (expectedType instanceof ParameterizedType) {
+            ParameterizedType type = (ParameterizedType) expectedType;
+            return getGenericArrayBaseType(type.getRawType());
         }
 
         throw new IllegalArgumentException("Unable to get collection type from " + expectedType);
@@ -181,10 +200,10 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      * @param binding
      * @throws PicoCompositionException {@inheritDoc}
      */
-    public void verify(PicoContainer container,
-                       ComponentAdapter<?> adapter,
-                       Type expectedType,
-                       NameBinding expectedNameBinding, boolean useNames, Annotation binding) {
+    public void verify(final PicoContainer container,
+                       final ComponentAdapter<?> adapter,
+                       final Type expectedType,
+                       final NameBinding expectedNameBinding, final boolean useNames, final Annotation binding) {
         final Class collectionType = getCollectionType(expectedType);
         if (collectionType != null) {
             final Class valueType = getValueType(expectedType);
@@ -237,9 +256,9 @@ public class CollectionComponentParameter extends AbstractParameter implements P
      * @return a {@link Map} with the ComponentAdapter instances and their component keys as map key.
      */
     @SuppressWarnings({"unchecked"})
-    protected Map<Object, ComponentAdapter<?>> 
-                getMatchingComponentAdapters(PicoContainer container, ComponentAdapter adapter,
-                                             Class keyType, Class valueType) {
+    protected Map<Object, ComponentAdapter<?>>
+                getMatchingComponentAdapters(final PicoContainer container, final ComponentAdapter adapter,
+                                             final Class keyType, final Class valueType) {
         final Map<Object, ComponentAdapter<?>> adapterMap = new LinkedHashMap<Object, ComponentAdapter<?>>();
         final PicoContainer parent = container.getParent();
         if (parent != null) {
@@ -272,16 +291,20 @@ public class CollectionComponentParameter extends AbstractParameter implements P
         return null;
     }
 
-    private Class getValueType(Type collectionType) {
+    private Class getValueType(final Type collectionType) {
         if (collectionType instanceof Class) {
             return getValueType((Class) collectionType);
         } else if (collectionType instanceof ParameterizedType) {
             return getValueType((ParameterizedType) collectionType);        }
+        else if (collectionType instanceof GenericArrayType) {
+          GenericArrayType genericArrayType = (GenericArrayType) collectionType;
+          return getGenericArrayBaseType(genericArrayType.getGenericComponentType());
+        }
         throw new IllegalArgumentException("Unable to determine collection type from " + collectionType);
     }
 
     private Class getValueType(final Class collectionType) {
-        Class valueType = componentValueType; 
+        Class valueType = componentValueType;
         if (collectionType.isArray()) {
             valueType = collectionType.getComponentType();
         }
@@ -317,7 +340,7 @@ public class CollectionComponentParameter extends AbstractParameter implements P
     @SuppressWarnings({"unchecked"})
     private Collection getCollectionInstance(final PicoContainer container,
                                              final Class<? extends Collection> expectedType,
-                                             final Map<Object, ComponentAdapter<?>> adapterList, NameBinding expectedNameBinding, boolean useNames) {
+                                             final Map<Object, ComponentAdapter<?>> adapterList, final NameBinding expectedNameBinding, final boolean useNames) {
         Class<? extends Collection> collectionType = expectedType;
         if (collectionType.isInterface()) {
             // The order of tests are significant. The least generic types last.
@@ -338,8 +361,9 @@ public class CollectionComponentParameter extends AbstractParameter implements P
         try {
             Collection result = collectionType.newInstance();
             for (ComponentAdapter componentAdapter : adapterList.values()) {
-                if (!useNames || componentAdapter.getComponentKey() == expectedNameBinding)
-                result.add(container.getComponent(componentAdapter.getComponentKey()));
+                if (!useNames || componentAdapter.getComponentKey() == expectedNameBinding) {
+                  result.add(container.getComponent(componentAdapter.getComponentKey()));
+                }
             }
             return result;
         } catch (InstantiationException e) {
