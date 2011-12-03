@@ -545,7 +545,11 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
 
     public int visit(ClassName thisClassesPackage, String regex, boolean recursive, ClassVisitor classNameVisitor) {
         Class clazz = loadClass(thisClassesPackage);
-        String pkgName = clazz.getPackage().getName().replace(".", File.separator);
+        /* File Seperator of '\\' can cause bogus results in Windows -- So we keep it to forward slash since Windows
+         * can handle it.  
+         * -MR
+         */
+        String pkgName = clazz.getPackage().getName().replace(".", "/");  
         CodeSource codeSource = clazz.getProtectionDomain().getCodeSource();
         if(codeSource == null) {
             throw new PicoCompositionException("no codesource for " + thisClassesPackage);
@@ -598,7 +602,8 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
                         found = found + visit(file, pkgName, pattern, recursive, classNameVisitor);
                     }
                 } else {
-                    found = visit(pkgName, pattern, classNameVisitor, found, file.getName(), file.getAbsolutePath());
+                    found = visit(pkgName, pattern, classNameVisitor, found, file.getName(), 
+                        file.getAbsolutePath().replace(File.separatorChar, '/') );
                 }
             }
         }
@@ -609,8 +614,8 @@ public class DefaultClassLoadingPicoContainer extends AbstractDelegatingMutableP
         boolean matches = pattern.matcher(fileName).matches();
         if (matches) {
             if (absolutePath != null) {
-                String fqn = absolutePath.substring(absolutePath.indexOf(pkgName));
-                fileName = fqn.substring(0, fqn.indexOf(".class")).replace(File.separator, ".");
+                String fqn = absolutePath.substring(absolutePath.indexOf(pkgName));                
+                fileName = fqn.substring(0, fqn.indexOf(".class")).replace('/', '.');;
             } else {
                 fileName = fileName.substring(0, fileName.indexOf(".class"));
             }

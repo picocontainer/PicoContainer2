@@ -186,8 +186,12 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
     @Test(expected = PicoCompositionException.class)
     public void visitingFailsIfJDKClass() {
         DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
-        pico.visit(new ClassName("java.util.ArrayList"), ".*Container\\.class", false, new DefaultClassLoadingPicoContainer.ClassVisitor() {
+        pico.visit(new ClassName("java.util.ArrayList"), 
+            ".*Container\\.class",
+            false, 
+            new DefaultClassLoadingPicoContainer.ClassVisitor() {
             public void classFound(Class clazz) {
+                //Does nothing, we're expecting the class to get thrown.
             }
         });
     }
