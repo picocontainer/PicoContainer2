@@ -35,11 +35,11 @@
   <servlet>
     <servlet-name>PWR</servlet-name>
     <servlet-class>org.picocontainer.web.remoting.JsonPicoWebRemotingServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
     <init-param>
       <param-name>scopes_to_publish</param-name>
       <param-value>request</param-value>
     </init-param>
+    <load-on-startup>1</load-on-startup>
   </servlet>
 
   <servlet-mapping>
