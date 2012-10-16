@@ -9,17 +9,19 @@
 
 package org.picocontainer.injectors;
 
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.annotations.Nullable;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import org.picocontainer.ComponentMonitor;
-import org.picocontainer.Parameter;
-import org.picocontainer.PicoCompositionException;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.annotations.Nullable;
+import java.util.Set;
 
 /**
  * Injection will happen through a single method for the component.
@@ -34,7 +36,7 @@ import org.picocontainer.annotations.Nullable;
  * @author Mauro Talevi
  */
 @SuppressWarnings("serial")
-public class MethodInjector<T> extends SingleMemberInjector<T> {
+public abstract class MethodInjector<T> extends SingleMemberInjector<T> {
     private transient ThreadLocalCyclicDependencyGuard instantiationGuard;
     private final String methodName;
 
@@ -57,21 +59,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         this.methodName = methodName;
     }
 
-    protected Method getInjectorMethod() {
-        Method[] methods = new Method[0];
-        try {
-            methods = super.getComponentImplementation().getMethods();
-        } catch (AmbiguousComponentResolutionException e) {
-            e.setComponent(getComponentImplementation());
-            throw e;
-        }
-        for (Method method : methods) {
-            if (method.getName().equals(methodName)) {
-                return method;
-            }
-        }
-        return null;
-    }
+    protected abstract Method getInjectorMethod();
 
     @Override
     public T getComponentInstance(final PicoContainer container, @SuppressWarnings("unused") Type into) throws PicoCompositionException {
@@ -83,7 +71,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
                     Method method = getInjectorMethod();
                     T inst = null;
                     ComponentMonitor componentMonitor = currentMonitor();
-                    try {
+                    try { // TODO .. instantiating() ???
                         componentMonitor.instantiating(container, MethodInjector.this, null);
                         long startTime = System.currentTimeMillis();
                         Object[] methodParameters = null;
@@ -120,7 +108,7 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
                 @SuppressWarnings("synthetic-access")
                 public Object run(Object inst) {
                     Method method = getInjectorMethod();
-                    if (method.getDeclaringClass().isAssignableFrom(inst.getClass())) {
+                    if (method != null && method.getDeclaringClass().isAssignableFrom(inst.getClass())) {
                         Object[] methodParameters = getMemberArguments(guardedContainer, method);
                         return invokeMethod(method, methodParameters, (T) inst, container);
                     }
@@ -179,11 +167,6 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
     }
 
     @Override
-    public String getDescriptor() {
-        return "MethodInjector-";
-    }
-
-    @Override
     protected boolean isNullParamAllowed(AccessibleObject member, int i) {
         Annotation[] annotations = ((Method) member).getParameterAnnotations()[i];
         for (Annotation annotation : annotations) {
@@ -210,7 +193,40 @@ public class MethodInjector<T> extends SingleMemberInjector<T> {
         
         @Override
         public String getDescriptor() {
-            return "ReflectionMethodInjector[" + injectionMethod + "]-";
+            return "MethodInjector.ByReflectionMethod[" + injectionMethod + "]-";
+        }
+
+    }
+
+    public static class ByMethodName extends MethodInjector {
+        private Set<String> injectionMethodNames;
+
+        public ByMethodName(Object componentKey, Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor, Set<String> injectionMethodNames, boolean useNames) throws NotConcreteRegistrationException {
+            super(componentKey, componentImplementation, parameters, monitor, null, useNames);
+            ByMethodName.this.injectionMethodNames = injectionMethodNames;
+        }
+
+        @Override
+        protected Method getInjectorMethod() {
+            Method[] methods;
+            try {
+                methods = super.getComponentImplementation().getMethods();
+            } catch (AmbiguousComponentResolutionException e) {
+                e.setComponent(getComponentImplementation());
+                throw e;
+            }
+            for (Method method : methods) {
+                if (injectionMethodNames.contains(method.getName())) {
+                    return method;
+                }
+            }
+            return null;
+        }
+
+
+        @Override
+        public String getDescriptor() {
+            return "MethodInjector.ByMethodName" + injectionMethodNames + "-";
         }
 
     }

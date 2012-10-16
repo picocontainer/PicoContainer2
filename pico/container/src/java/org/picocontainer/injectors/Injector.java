@@ -13,6 +13,8 @@ import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.HashSet;
 
 /**
  * convenience class providing static methods to conveniently create injectors
@@ -142,7 +144,7 @@ public class Injector {
      */
     public static ComponentAdapter method(final Object componentKey, final Class componentImplementation, Parameter[] parameters, ComponentMonitor monitor,
                                           String methodName, boolean useNames) throws AbstractInjector.NotConcreteRegistrationException {
-        return monitor.newInjector(new MethodInjector(componentKey, componentImplementation, parameters, monitor, methodName, useNames));
+        return monitor.newInjector(new MethodInjector.ByMethodName(componentKey, componentImplementation, parameters, monitor, new HashSet<String>(Arrays.asList(methodName)), useNames));
     }
 
     /**

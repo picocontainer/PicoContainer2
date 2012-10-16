@@ -9,23 +9,26 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.lang.reflect.Method;
-
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoBuilder;
-import static org.picocontainer.Characteristics.USE_NAMES;
 import org.picocontainer.annotations.Nullable;
 import org.picocontainer.containers.EmptyPicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashSet;
+
+import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.Characteristics.USE_NAMES;
 
 public class MethodInjectionTestCase {
 
@@ -55,7 +58,7 @@ public class MethodInjectionTestCase {
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.num);
-        assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("MethodInjector.ByMethodName[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testMethodInjectionViaMethodDef() {
@@ -67,7 +70,7 @@ public class MethodInjectionTestCase {
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.num);
-        assertEquals("ReflectionMethodInjector["+mthd+"]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("MethodInjector.ByReflectionMethod["+mthd+"]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testMethodInjectionViaMethodDefViaInterface() {
@@ -79,7 +82,49 @@ public class MethodInjectionTestCase {
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.num);
-        assertEquals("ReflectionMethodInjector["+mthd+"]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("MethodInjector.ByReflectionMethod["+mthd+"]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+    }
+
+    @Test public void testMethodInjectionViaMethodName() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection("inject"), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        pico.addComponent(123);
+        pico.addComponent(Foo.class);
+        pico.addComponent(new Bar());
+        Foo foo = pico.getComponent(Foo.class);
+        assertNotNull(foo.bar);
+        assertNotNull(foo.num);
+        assertEquals("MethodInjector.ByMethodName[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+    }
+
+    @Test public void testMethodInjectionSilentlyFailsSafeIfWrongMethodName() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection("sdjfhkjsdhf"), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        pico.addComponent(123);
+        pico.addComponent(Foo.class);
+        pico.addComponent(new Bar());
+        Foo foo = pico.getComponent(Foo.class);
+        assertNull(foo.bar);
+        assertNull(foo.num);
+    }
+
+    @Test public void testMethodInjectionWorksIfMethodNameOneOfAList() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection("sdjfhkjsdhf", "inject"), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        pico.addComponent(123);
+        pico.addComponent(Foo.class);
+        pico.addComponent(new Bar());
+        Foo foo = pico.getComponent(Foo.class);
+        assertNotNull(foo.bar);
+        assertNotNull(foo.num);
+        assertEquals("MethodInjector.ByMethodName[sdjfhkjsdhf, inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+    }
+
+    @Test public void testCompositeMethodInjectionSilentlyFailsSafeIfWrongMethodName() {
+        DefaultPicoContainer pico = new DefaultPicoContainer(new CompositeInjection(new ConstructorInjection(), new MethodInjection("sdjfhkjsdhf")), new NullLifecycleStrategy(), new EmptyPicoContainer());
+        pico.addComponent(123);
+        pico.addComponent(Foo.class);
+        pico.addComponent(new Bar());
+        Foo foo = pico.getComponent(Foo.class);
+        assertNull(foo.bar);
+        assertNull(foo.num);
     }
 
 
@@ -91,18 +136,18 @@ public class MethodInjectionTestCase {
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.num);
-        assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("MethodInjector.ByMethodName[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testMethodInjectionViaAdapter() {
         DefaultPicoContainer pico = new DefaultPicoContainer(new MethodInjection());
         pico.addComponent(123);
-        pico.addAdapter(new MethodInjector(Foo.class, Foo.class, null, new NullComponentMonitor(), "inject", false));
+        pico.addAdapter(new MethodInjector.ByMethodName(Foo.class, Foo.class, null, new NullComponentMonitor(), new HashSet<String>(Arrays.asList("inject")), false));
         pico.addComponent(Bar.class);
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.num);
-        assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("MethodInjector.ByMethodName[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     @Test public void testMethodInjectionByBuilder() {
@@ -113,7 +158,7 @@ public class MethodInjectionTestCase {
         Foo foo = pico.getComponent(Foo.class);
         assertNotNull(foo.bar);
         assertNotNull(foo.num);
-        assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("MethodInjector.ByMethodName[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
     public static class Foo2 implements IFoo {
@@ -133,7 +178,7 @@ public class MethodInjectionTestCase {
         Foo2 foo = pico.getComponent(Foo2.class);
         assertNotNull(foo.bar);
         assertTrue(foo.num == null);
-        assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo2", pico.getComponentAdapter(Foo2.class).toString());
+        assertEquals("MethodInjector.ByMethodName[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo2", pico.getComponentAdapter(Foo2.class).toString());
     }
 
     @Test public void testMethodInjectionWithDisallowedNullableParam() {
@@ -159,7 +204,7 @@ public class MethodInjectionTestCase {
         assertNotNull(foo.bar);
         assertNotNull(foo.num);
         assertEquals(123, (int)foo.num);
-        assertEquals("MethodInjector-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
+        assertEquals("MethodInjector.ByMethodName[inject]-class org.picocontainer.injectors.MethodInjectionTestCase$Foo", pico.getComponentAdapter(Foo.class).toString());
     }
 
 }
