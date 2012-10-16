@@ -118,7 +118,7 @@
 				<artifactId>prefuse</artifactId>
 				<version>beta-20071021</version>
 				<optional>true</optional>
-			</dependency>
+			</dependency> 
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
