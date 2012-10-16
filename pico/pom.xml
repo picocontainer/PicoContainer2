@@ -21,6 +21,9 @@
 		<name>Codehaus</name>
 		<url>http://codehaus.org/</url>
 	</organization>
+	<prerequisites>
+		<maven>2.0.6</maven>
+	</prerequisites>	
 	<inceptionYear>2003</inceptionYear>
 	<description>A small Java embeddable Dependency Injection container</description>
 	<issueManagement>
