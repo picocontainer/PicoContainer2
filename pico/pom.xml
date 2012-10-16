@@ -113,7 +113,7 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-			<dependency>
+			<dependency> 
 				<groupId>org.prefuse</groupId>
 				<artifactId>prefuse</artifactId>
 				<version>beta-20071021</version>
