@@ -373,7 +373,9 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         }
 
         public void setMember(AccessibleObject accessibleObject) {
-            this.accessibleObject = accessibleObject;
+            if (this.accessibleObject == null) {
+                this.accessibleObject = accessibleObject;
+            }
         }
     }
 

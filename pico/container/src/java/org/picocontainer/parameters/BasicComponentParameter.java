@@ -22,6 +22,7 @@ import org.picocontainer.PicoVisitor;
 import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.InjectInto;
+import org.picocontainer.injectors.Provider;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -270,7 +271,8 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
     }
 
     public static ComponentAdapter<?> findInjectorOrInstanceAdapter(ComponentAdapter<?> f) {
-        while (f instanceof Behavior || (f instanceof LifecycleStrategy && !(f instanceof InstanceAdapter))) {
+        while (f instanceof Behavior
+                || (f instanceof LifecycleStrategy && !(f instanceof InstanceAdapter) && !(f instanceof Provider))) {
             f = f.getDelegate();
         }
         return f;
