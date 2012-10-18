@@ -9,20 +9,25 @@
  *****************************************************************************/
 package org.picocontainer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.picocontainer.Characteristics.CDI;
-import static org.picocontainer.Characteristics.SDI;
+import org.junit.Test;
+import org.picocontainer.behaviors.Caching;
+import org.picocontainer.containers.EmptyPicoContainer;
+import org.picocontainer.injectors.AbstractInjector;
+import org.picocontainer.injectors.ConstructorInjection;
+import org.picocontainer.injectors.ConstructorInjector;
+import org.picocontainer.monitors.NullComponentMonitor;
+import org.picocontainer.monitors.WriterComponentMonitor;
+import org.picocontainer.parameters.ConstantParameter;
+import org.picocontainer.tck.AbstractPicoContainerTest;
+import org.picocontainer.testmodel.DecoratedTouchable;
+import org.picocontainer.testmodel.DependsOnTouchable;
+import org.picocontainer.testmodel.SimpleTouchable;
+import org.picocontainer.testmodel.Touchable;
 
 import java.io.Serializable;
 import java.io.StringWriter;
-import java.lang.StringBuilder;
-import java.lang.reflect.Member;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Member;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,21 +38,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.junit.Test;
-import org.picocontainer.behaviors.Caching;
-import org.picocontainer.containers.EmptyPicoContainer;
-import org.picocontainer.injectors.AbstractInjector;
-import org.picocontainer.injectors.ConstructorInjection;
-import org.picocontainer.injectors.ConstructorInjector;
-import org.picocontainer.lifecycle.NullLifecycleStrategy;
-import org.picocontainer.monitors.NullComponentMonitor;
-import org.picocontainer.monitors.WriterComponentMonitor;
-import org.picocontainer.parameters.ConstantParameter;
-import org.picocontainer.tck.AbstractPicoContainerTest;
-import org.picocontainer.testmodel.DecoratedTouchable;
-import org.picocontainer.testmodel.DependsOnTouchable;
-import org.picocontainer.testmodel.SimpleTouchable;
-import org.picocontainer.testmodel.Touchable;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.picocontainer.Characteristics.CDI;
+import static org.picocontainer.Characteristics.SDI;
 
 /**
  * @author Aslak Helles&oslashp;y
@@ -219,9 +217,9 @@ public final class DefaultPicoContainerTestCase extends AbstractPicoContainerTes
 		} catch (AbstractInjector.AmbiguousComponentResolutionException expected) {
 			String doc = DependsOnCollection.class.getName();
 			assertEquals(
-					"class "
+					"ConstructorInjector-class "
 							+ doc
-							+ " needs a 'java.util.Collection' injected via 'public org.picocontainer.DefaultPicoContainerTestCase$DependsOnCollection(java.util.Collection)', but there are too many choices to inject. These:[class java.util.ArrayList, class java.util.LinkedList], refer http://picocontainer.org/ambiguous-injectable-help.html",
+							+ " needs a 'java.util.Collection' injected via 'public org.picocontainer.DefaultPicoContainerTestCase$DependsOnCollection(java.util.Collection)', but there are too many choices to inject. These:[Instance-of java.util.ArrayList, Instance-of java.util.LinkedList], refer http://picocontainer.org/ambiguous-injectable-help.html",
 					expected.getMessage());
 		}
 	}

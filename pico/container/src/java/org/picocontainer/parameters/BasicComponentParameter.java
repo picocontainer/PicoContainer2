@@ -9,17 +9,29 @@
  *****************************************************************************/
 package org.picocontainer.parameters;
 
-import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.annotation.Annotation;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.picocontainer.*;
+import org.picocontainer.Behavior;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.Converters;
+import org.picocontainer.Converting;
+import org.picocontainer.DefaultPicoContainer;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.NameBinding;
+import org.picocontainer.Parameter;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.PicoVisitor;
+import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.InjectInto;
+
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A BasicComponentParameter should be used to pass in a particular component as argument to a
@@ -243,12 +255,25 @@ public class BasicComponentParameter extends AbstractParameter implements Parame
     }
 
     private <T> AbstractInjector.AmbiguousComponentResolutionException tooManyMatchingAdaptersFound(Class<T> expectedType, List<ComponentAdapter<T>> found) {
-        Class[] foundClasses = new Class[found.size()];
-        for (int i = 0; i < foundClasses.length; i++) {
-            foundClasses[i] = found.get(i).getComponentImplementation();
+        String[] foundStrings = makeFoundAmbiguousStrings(found);
+        return new AbstractInjector.AmbiguousComponentResolutionException(expectedType, foundStrings);
+    }
+
+    public static <T> String[] makeFoundAmbiguousStrings(Collection<ComponentAdapter<T>> found) {
+        String[] foundStrings = new String[found.size()];
+        int ix = 0;
+        for (ComponentAdapter<?> f : found) {
+            f = findInjectorOrInstanceAdapter(f);
+            foundStrings[ix++] = f.toString();
         }
-        AbstractInjector.AmbiguousComponentResolutionException exception = new AbstractInjector.AmbiguousComponentResolutionException(expectedType, foundClasses);
-        return exception;
+        return foundStrings;
+    }
+
+    public static ComponentAdapter<?> findInjectorOrInstanceAdapter(ComponentAdapter<?> f) {
+        while (f instanceof Behavior || (f instanceof LifecycleStrategy && !(f instanceof InstanceAdapter))) {
+            f = f.getDelegate();
+        }
+        return f;
     }
 
     private <T> void removeExcludedAdapterIfApplicable(Object excludeKey, List<ComponentAdapter<T>> found) {

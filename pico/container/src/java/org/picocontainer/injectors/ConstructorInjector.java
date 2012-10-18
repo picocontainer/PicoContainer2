@@ -106,20 +106,15 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
 
     private CtorAndAdapters<T> getGreediestSatisfiableConstructor(PicoContainer guardedContainer, @SuppressWarnings("unused") Class<? extends T> componentImplementation) {
         CtorAndAdapters<T> ctor = null;
-        try {
+        if (chosenConstructor == null) {
+            ctor = getGreediestSatisfiableConstructor(guardedContainer);
+        }
+        if (rememberChosenConstructor) {
             if (chosenConstructor == null) {
-                ctor = getGreediestSatisfiableConstructor(guardedContainer);
+                chosenConstructor = ctor;
+            } else {
+                ctor = chosenConstructor;
             }
-            if (rememberChosenConstructor) {
-                if (chosenConstructor == null) {
-                    chosenConstructor = ctor;
-                } else {
-                    ctor = chosenConstructor;
-                }
-            }
-        } catch (AmbiguousComponentResolutionException e) {
-            e.setComponent(getComponentImplementation());
-            throw e;
         }
         return ctor;
     }

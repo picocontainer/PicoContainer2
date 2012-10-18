@@ -46,6 +46,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import static org.picocontainer.parameters.BasicComponentParameter.findInjectorOrInstanceAdapter;
+import static org.picocontainer.parameters.BasicComponentParameter.makeFoundAmbiguousStrings;
+
 /**
  * <p/>
  * The Standard {@link PicoContainer}/{@link MutablePicoContainer} implementation.
@@ -394,12 +397,8 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
                     }
                 }
             }
-            Class<?>[] foundClasses = new Class[found.size()];
-            for (int i = 0; i < foundClasses.length; i++) {
-                foundClasses[i] = found.get(i).getComponentImplementation();
-            }
-
-            throw new AbstractInjector.AmbiguousComponentResolutionException(componentType, foundClasses);
+            String[] foundStrings = makeFoundAmbiguousStrings(found);
+            throw new AbstractInjector.AmbiguousComponentResolutionException(componentType, foundStrings);
         }
     }
 
@@ -636,17 +635,24 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
     }
 
     public Object getComponent(final Object componentKeyOrType, final Class<? extends Annotation> annotation) {
-        ComponentAdapter<?> componentAdapter;
+        ComponentAdapter<?> componentAdapter = null;
         Object component;
-        if (annotation != null) {
-            componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, annotation);
-            component = componentAdapter == null ? null : getInstance(componentAdapter, null);
-        } else if (componentKeyOrType instanceof Class) {
-            componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, (NameBinding) null);
-            component = componentAdapter == null ? null : getInstance(componentAdapter, (Class<?>)componentKeyOrType);
-        } else {
-            componentAdapter = getComponentAdapter(componentKeyOrType);
-            component = componentAdapter == null ? null : getInstance(componentAdapter, null);
+        try {
+            if (annotation != null) {
+                componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, annotation);
+                component = componentAdapter == null ? null : getInstance(componentAdapter, null);
+            } else if (componentKeyOrType instanceof Class) {
+                componentAdapter = getComponentAdapter((Class<?>)componentKeyOrType, (NameBinding) null);
+                component = componentAdapter == null ? null : getInstance(componentAdapter, (Class<?>)componentKeyOrType);
+            } else {
+                componentAdapter = getComponentAdapter(componentKeyOrType);
+                component = componentAdapter == null ? null : getInstance(componentAdapter, null);
+            }
+        } catch (AbstractInjector.AmbiguousComponentResolutionException e) {
+            if (componentAdapter != null) {
+                e.setComponent(findInjectorOrInstanceAdapter(componentAdapter).toString());
+            }
+            throw e;
         }
         return decorateComponent(component, componentAdapter);
     }

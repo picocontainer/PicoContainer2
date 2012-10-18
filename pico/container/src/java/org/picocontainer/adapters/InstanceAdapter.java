@@ -9,8 +9,13 @@
  *****************************************************************************/
 package org.picocontainer.adapters;
 
-import org.picocontainer.*;
-import org.picocontainer.adapters.AbstractAdapter;
+import org.picocontainer.Behavior;
+import org.picocontainer.ComponentAdapter;
+import org.picocontainer.ComponentLifecycle;
+import org.picocontainer.ComponentMonitor;
+import org.picocontainer.LifecycleStrategy;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
@@ -80,6 +85,15 @@ public final class InstanceAdapter<T> extends AbstractAdapter<T> implements Comp
 
     public String getDescriptor() {
         return "Instance-";
+    }
+
+    @Override
+    public String toString() {
+        Object componentKey = getComponentKey();
+        if (componentKey instanceof Class) {
+            componentKey = "of " + ((Class) componentKey).getName();
+        }
+        return getDescriptor() + componentKey;
     }
 
     public void start(PicoContainer container) {

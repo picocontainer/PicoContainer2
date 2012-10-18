@@ -9,17 +9,7 @@
  *****************************************************************************/
 package org.picocontainer.behaviors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
+import com.thoughtworks.xstream.XStream;
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -30,7 +20,16 @@ import org.picocontainer.injectors.SetterInjector;
 import org.picocontainer.lifecycle.NullLifecycleStrategy;
 import org.picocontainer.monitors.NullComponentMonitor;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("serial")
 public class AdaptingBehaviorTestCase {
@@ -198,7 +197,7 @@ public class AdaptingBehaviorTestCase {
 
         assertTrue(foo.indexOf("<" + Cached.class.getName() + ">", 0)  > -1);  // xml does start with CB
         assertFalse(foo.indexOf("<" + Cached.class.getName() + ">", 1)  > -1); // but only contains it once.
-        assertEquals("Cached:Hidden:Synchronized:Instance-interface java.util.Map",ca.toString());
+        assertEquals("Cached:Hidden:Synchronized:Instance-of java.util.Map",ca.toString());
 
     }
 

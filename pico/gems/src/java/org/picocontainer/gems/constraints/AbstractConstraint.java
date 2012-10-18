@@ -8,17 +8,21 @@
 
 package org.picocontainer.gems.constraints;
 
+import org.picocontainer.Behavior;
 import org.picocontainer.ComponentAdapter;
+import org.picocontainer.LifecycleStrategy;
 import org.picocontainer.NameBinding;
-import org.picocontainer.PicoContainer;
-import org.picocontainer.PicoCompositionException;
 import org.picocontainer.Parameter;
+import org.picocontainer.PicoCompositionException;
+import org.picocontainer.PicoContainer;
+import org.picocontainer.adapters.InstanceAdapter;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.parameters.CollectionComponentParameter;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
-import java.lang.annotation.Annotation;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -71,10 +75,24 @@ public abstract class AbstractConstraint extends CollectionComponentParameter im
         final Map<Object, ComponentAdapter<?>> map =
             super.getMatchingComponentAdapters(container, adapter, keyType, valueType);
         if (map.size() > 1) {
-            throw new AbstractInjector.AmbiguousComponentResolutionException(valueType, map.keySet().toArray(new Object[map.size()]));
+            String[] foundStrings = makeFoundAmbiguousStrings(map.values());
+            throw new AbstractInjector.AmbiguousComponentResolutionException(valueType, foundStrings);
         }
         return map;
     }
+
+    public static String[] makeFoundAmbiguousStrings(Collection<ComponentAdapter<?>> found) {
+        String[] foundStrings = new String[found.size()];
+        int ix = 0;
+        for (ComponentAdapter<?> f : found) {
+            while (f instanceof Behavior || (f instanceof LifecycleStrategy && !(f instanceof InstanceAdapter))) {
+                f = f.getDelegate();
+            }
+            foundStrings[ix++] = f.toString();
+        }
+        return foundStrings;
+    }
+
 
     private Type getArrayType(final Class expectedType) {
         return Array.newInstance(expectedType, 0).getClass();

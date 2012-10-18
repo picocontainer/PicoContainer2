@@ -324,9 +324,9 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
     public static final class AmbiguousComponentResolutionException extends PicoCompositionException {
 
 
-		private Class<?> component;
+		private String component;
         private final Class<?> ambiguousDependency;
-        private final Object[] ambiguousComponentKeys;
+        private final String[] ambiguousComponentKeys;
         private AccessibleObject accessibleObject;
 
 
@@ -336,11 +336,10 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
          * @param ambiguousDependency the unresolved dependency type
          * @param componentKeys the ambiguous keys.
          */
-        public AmbiguousComponentResolutionException(final Class<?> ambiguousDependency, final Object[] componentKeys) {
+        public AmbiguousComponentResolutionException(final Class<?> ambiguousDependency, final String[] componentKeys) {
             super("");
             this.ambiguousDependency = ambiguousDependency;
-            this.ambiguousComponentKeys = new Class[componentKeys.length];
-            System.arraycopy(componentKeys, 0, ambiguousComponentKeys, 0, componentKeys.length);
+            this.ambiguousComponentKeys = componentKeys;
         }
 
         /**
@@ -363,12 +362,14 @@ public abstract class AbstractInjector<T> extends AbstractAdapter<T> implements 
         /**
          * @return Returns the ambiguous component keys as array.
          */
-        public Object[] getAmbiguousComponentKeys() {
+        public String[] getAmbiguousComponentKeys() {
             return ambiguousComponentKeys;
         }
 
-        public void setComponent(final Class<?> component) {
-            this.component = component;
+        public void setComponent(final String component) {
+            if (this.component == null) {
+                this.component = component;
+            }
         }
 
         public void setMember(AccessibleObject accessibleObject) {

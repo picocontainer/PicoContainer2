@@ -12,12 +12,9 @@ package org.picocontainer.injectors;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
-import org.picocontainer.PicoContainer;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.Set;
 
 @SuppressWarnings("serial")
 public class NamedMethodInjector<T> extends SetterInjector<T> {
@@ -66,7 +63,7 @@ public class NamedMethodInjector<T> extends SetterInjector<T> {
 
     @Override
     public String getDescriptor() {
-        return "NamedMethodInjection";
+        return "NamedMethodInjection:";
     }
 
 }
