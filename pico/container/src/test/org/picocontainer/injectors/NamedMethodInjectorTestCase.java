@@ -1,5 +1,6 @@
 package org.picocontainer.injectors;
 
+import junit.framework.Assert;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.Parameter;
@@ -47,7 +48,10 @@ public class NamedMethodInjectorTestCase {
                     .getComponent(Windmill.class);
             fail("should have barfed");
         } catch (AbstractInjector.AmbiguousComponentResolutionException e) {
-            // expected
+            Assert.assertEquals(Windmill.class + " needs a 'java.lang.String' injected via 'public void org.picocontainer.injectors.NamedMethodInjectorTestCase$Windmill.setWind(java.lang.String)', " +
+                    "but there are too many choices to inject. " +
+                    "These:[class java.lang.String, class java.lang.String], " +
+                    "refer http://picocontainer.org/ambiguous-injectable-help.html", e.getMessage());
         }
     }
 

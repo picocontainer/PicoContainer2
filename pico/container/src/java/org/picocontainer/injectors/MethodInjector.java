@@ -208,14 +208,7 @@ public abstract class MethodInjector<T> extends SingleMemberInjector<T> {
 
         @Override
         protected Method getInjectorMethod() {
-            Method[] methods;
-            try {
-                methods = super.getComponentImplementation().getMethods();
-            } catch (AmbiguousComponentResolutionException e) {
-                e.setComponent(getComponentImplementation());
-                throw e;
-            }
-            for (Method method : methods) {
+            for (Method method : super.getComponentImplementation().getMethods()) {
                 if (injectionMethodNames.contains(method.getName())) {
                     return method;
                 }

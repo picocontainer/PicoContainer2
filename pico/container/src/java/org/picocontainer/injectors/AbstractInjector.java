@@ -9,7 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.ObjectReference;
 import org.picocontainer.Parameter;
@@ -28,7 +27,6 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * This ComponentAdapter will instantiate a new object for each call to
