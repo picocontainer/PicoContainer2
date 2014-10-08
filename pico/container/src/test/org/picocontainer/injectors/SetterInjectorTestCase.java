@@ -9,15 +9,6 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.picocontainer.parameters.ComponentParameter.DEFAULT;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.api.Invocation;
@@ -39,6 +30,16 @@ import org.picocontainer.parameters.ConstantParameter;
 import org.picocontainer.tck.AbstractComponentAdapterTest;
 import org.picocontainer.testmodel.PersonBean;
 import org.picocontainer.testmodel.PurseBean;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.text.StringContains.containsString;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.picocontainer.parameters.ComponentParameter.DEFAULT;
 
 
 @SuppressWarnings("serial")
@@ -275,9 +276,9 @@ public class SetterInjectorTestCase
             aAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             String message = e.getMessage().replace("org.picocontainer.injectors.SetterInjectorTestCase$", "");
-            message = message.replace("interface java.util.List, class java.lang.String", "class java.lang.String, interface java.util.List");
-            assertEquals("A has unsatisfied dependencies [class java.lang.String, interface java.util.List] for members [public void A.setString(java.lang.String), public void A.setList(java.util.List)] from parent:2<|",
-                    message);
+            assertThat(message, containsString("A has unsatisfied dependencies [class java.lang.String, interface java.util.List] for members ["));
+            assertThat(message, containsString("public void A.setList(java.util.List)"));
+            assertThat(message, containsString("public void A.setString(java.lang.String)"));
         }
     }
 

@@ -41,6 +41,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -130,7 +131,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 	private final Map<Object, ComponentAdapter<?>> componentKeyToAdapterCache = new HashMap<Object, ComponentAdapter<?> >();
 
 
-	private final List<ComponentAdapter<?>> componentAdapters = new ArrayList<ComponentAdapter<?>>();
+	private final Set<ComponentAdapter<?>> componentAdapters = new LinkedHashSet<ComponentAdapter<?>>();
 
 
 	protected final List<ComponentAdapter<?>> orderedComponentAdapters = new ArrayList<ComponentAdapter<?>>();
@@ -269,7 +270,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 
     /** {@inheritDoc} **/
     public Collection<ComponentAdapter<?>> getComponentAdapters() {
-        return Collections.unmodifiableList(getModifiableComponentAdapterList());
+        return Collections.unmodifiableSet(getModifiableComponentAdapterList());
     }
 
 
@@ -1083,7 +1084,7 @@ public class DefaultPicoContainer implements MutablePicoContainer, Converting, C
 	/**
 	 * @return the componentAdapters
 	 */
-	protected List<ComponentAdapter<?>> getModifiableComponentAdapterList() {
+	protected Set<ComponentAdapter<?>> getModifiableComponentAdapterList() {
 		return componentAdapters;
 	}
 
