@@ -303,7 +303,7 @@
 						<goals>deploy</goals>
 						<tagBase>https://svn.codehaus.org/picocontainer/java/2.x/tags/</tagBase>
 						<username>${svn.username}</username>
-						<password>${svn.password}</password>
+						<password>${svn.password}</password> 
 					</configuration>
 				</plugin>
 				<plugin>
