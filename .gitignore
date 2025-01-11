@@ -1,3 +1,4 @@
 target/
 pico/container/dependency-reduced-pom.xml
 .idea
+.aider*
