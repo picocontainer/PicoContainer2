@@ -9,7 +9,6 @@
   <url>http://www.picocontainer.org/web</url>
   <modules>
     <module>web-core</module>
-    <module>web-axis</module>
     <module>web-jsf</module>
     <module>web-struts</module>
     <module>web-struts2</module>
