@@ -109,7 +109,7 @@
           <version>2.5.1</version>
           <configuration>
             <source>1.5</source>
-            <target>1.5</target>
+            <target>8</target>
             <encoding>UTF-8</encoding>
             <optimize>false</optimize>
             <debug>true</debug>
