@@ -19,6 +19,8 @@ import org.picocontainer.logging.store.stores.JdkLoggerStore;
 import org.picocontainer.logging.store.stores.Log4JLoggerStore;
 import org.xml.sax.SAXException;
 
+import static org.junit.Assert.fail;
+
 /**
  * @author Mauro Talevi
  * @author Peter Donald
@@ -32,10 +34,15 @@ public class LoggerStoreTest extends AbstractTest {
     private static final String JDK_FILENAME = "jdk";
     private static final String LOGGING_PROPERTIES = "org/picocontainer/logging/store/logging.properties";
 
-    @Test(expected = LoggerNotFoundException.class)
+    @Test
     public void testNullRootLogger() {
         final LoggerStore store = new MalformedLoggerStore();
-        store.getLogger();
+        try {
+            store.getLogger();
+            fail("should have failed");
+        } catch (LoggerNotFoundException e) {
+
+        }
     }
 
     // ConsoleLoggerStore tests
