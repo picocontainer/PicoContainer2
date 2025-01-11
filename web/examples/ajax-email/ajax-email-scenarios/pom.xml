@@ -33,7 +33,7 @@
           <includes>
             <include>org/picocontainer/web/sample/ajaxemail/scenarios/**/*.java</include>
           </includes>
-          <source>7</source>
+          <source>8</source>
           <target>8</target>
           <encoding>UTF-8</encoding>
         </configuration>

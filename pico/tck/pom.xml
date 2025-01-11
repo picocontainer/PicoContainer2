@@ -48,7 +48,7 @@
             <include>org/picocontainer/tck/**/*.java</include>
             <include>org/picocontainer/testmodel/**/*.java</include>
           </includes>
-          <source>7</source>
+          <source>8</source>
           <target>8</target>
           <encoding>UTF-8</encoding>
         </configuration>

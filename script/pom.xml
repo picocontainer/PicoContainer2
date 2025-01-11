@@ -115,7 +115,7 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.5.1</version>
 					<configuration>
-						<source>7</source>
+						<source>8</source>
 						<target>8</target>
 						<encoding>UTF-8</encoding>
 						<optimize>false</optimize>
