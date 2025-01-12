@@ -37,7 +37,7 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
             throw new NullPointerException("script");
         }
         try {
-            File tempFile = File.createTempFile("script", naturalFileSuffix());
+            File tempFile = File.createTempFile("picocontainer", naturalFileSuffix());
             tempFile.deleteOnExit();
             FileWriter writer = new FileWriter(tempFile);
             char[] buffer = new char[1024];
@@ -45,8 +45,9 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
             while ((numCharsRead = script.read(buffer)) != -1) {
                 writer.write(buffer, 0, numCharsRead);
             }
-            writer.close();
             this.scriptURL = tempFile.toURI().toURL();
+            System.out.println("SCRIPT FILE=" + this.scriptURL);
+            writer.close();
         } catch (IOException e) {
             throw new RuntimeException("Failed to create temporary script file", e);
         }
