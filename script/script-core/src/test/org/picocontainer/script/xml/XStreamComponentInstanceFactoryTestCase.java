@@ -20,6 +20,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import com.thoughtworks.xstream.security.NoTypePermission;
 import com.thoughtworks.xstream.security.NullPermission;
 import com.thoughtworks.xstream.security.PrimitiveTypePermission;
+import com.thoughtworks.xstream.security.TypeHierarchyPermission;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -43,6 +44,7 @@ public class XStreamComponentInstanceFactoryTestCase {
         xs.addPermission(NoTypePermission.NONE); //forbid everything
         xs.addPermission(NullPermission.NULL);   // allow "null"
         xs.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+        xs.addPermission(new TypeHierarchyPermission(org.picocontainer.script.xml.TestBean.class)); // allow primitive types
         runDeserializationTest(new XStreamComponentInstanceFactory(xs));
     }
 
