@@ -48,7 +48,7 @@
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <version>1.8.0-rc-4</version>
+      <version>1.8.9</version>
       <scope>integration-test</scope>
     </dependency>
     <dependency>
