@@ -8,11 +8,7 @@
  *****************************************************************************/
 package org.picocontainer.script;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.net.URL;
 
 import org.picocontainer.PicoContainer;

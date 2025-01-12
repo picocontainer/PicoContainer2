@@ -49,7 +49,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
     }
     
     public GroovyContainerBuilder(final Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
-    	super(script,classLoader, lifecycleMode);
+    	super(script, classLoader, lifecycleMode);
     	createGroovyClass();
     }
 
