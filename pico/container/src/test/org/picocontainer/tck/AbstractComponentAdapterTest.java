@@ -32,6 +32,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
 
@@ -241,6 +244,9 @@ public abstract class AbstractComponentAdapterTest  {
             final Object instance = componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instance);
             final XStream xstream = new XStream(new PureJavaReflectionProvider(), new XppDriver());
+            xstream.addPermission(NoTypePermission.NONE); //forbid everything
+            xstream.addPermission(NullPermission.NULL);   // allow "null"
+            xstream.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
             final String xml = xstream.toXML(componentAdapter);
             final ComponentAdapter serializedComponentAdapter = (ComponentAdapter)xstream.fromXML(xml);
             assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());
