@@ -1,6 +1,7 @@
 package org.picocontainer.script.bsh;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 
@@ -32,7 +33,7 @@ public class BeanShellContainerBuilder extends ScriptedContainerBuilder {
 
     @Override
     protected String naturalFileSuffix() {
-        return ".sh";
+        return ".bsh";
     }
 
     public BeanShellContainerBuilder(URL script, ClassLoader classLoader) {
@@ -53,7 +54,7 @@ public class BeanShellContainerBuilder extends ScriptedContainerBuilder {
             i.set("parent", parentContainer);
             i.set("assemblyScope", assemblyScope);
             i.setClassLoader(this.getClassLoader());
-            i.eval(getScriptReader(), i.getNameSpace(), "picocontainer.bsh");
+            i.eval(new InputStreamReader(getScriptURL().openStream()), i.getNameSpace(), "picocontainer.bsh");
             return (PicoContainer) i.get("pico");
         } catch (EvalError e) {
             throw new ScriptedPicoContainerMarkupException(e);

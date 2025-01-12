@@ -10,6 +10,7 @@
 package org.picocontainer.script.rhino;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 
@@ -74,7 +75,7 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
             Scriptable scope = new ImporterTopLevel(cx);
             scope.put("parent", scope, parentContainer);
             scope.put("assemblyScope", scope, assemblyScope);
-            cx.evaluateReader(scope, getScriptReader(), "picocontainer.js", 1, null);
+            cx.evaluateReader(scope, new InputStreamReader(super.getScriptURL().openStream()), "picocontainer.js", 1, null);
             Object pico = scope.get("pico", scope);
 
             if (pico == null) {

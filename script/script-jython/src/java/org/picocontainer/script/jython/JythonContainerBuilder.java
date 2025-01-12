@@ -60,7 +60,7 @@ public class JythonContainerBuilder extends ScriptedContainerBuilder {
             PythonInterpreter interpreter = new PythonInterpreter();
             interpreter.set("parent", parentContainer);
             interpreter.set("assemblyScope", assemblyScope);
-            interpreter.execfile(getScriptInputStream(), "picocontainer.py");
+            interpreter.execfile(super.getScriptURL().openStream(), "picocontainer.py");
             return (PicoContainer) interpreter.get("pico", PicoContainer.class);
         } catch (IOException e) {
             throw new ScriptedPicoContainerMarkupException(e);

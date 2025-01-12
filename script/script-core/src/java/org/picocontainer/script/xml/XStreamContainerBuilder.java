@@ -122,7 +122,7 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
         super(script, classLoader, lifecycleMode);
         xsdriver = driver;
         try {
-            InputSource inputSource = new InputSource(getScriptReader());
+            InputSource inputSource = new InputSource(super.getScriptURL().openStream());
             rootElement = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource)
                     .getDocumentElement();
         } catch (SAXException e) {

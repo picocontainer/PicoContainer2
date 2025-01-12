@@ -22,7 +22,6 @@ import org.picocontainer.PicoContainer;
  */
 public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder {
     
-    private final Reader scriptReader;
     private final URL scriptURL;
     private final ClassLoader classLoader;
     
@@ -34,12 +33,11 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
 
     public ScriptedContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
         super(lifecycleMode);
-    	this.scriptReader = script;
         if (script == null) {
             throw new NullPointerException("script");
         }
         try {
-            File tempFile = File.createTempFile("script", ".groovy");
+            File tempFile = File.createTempFile("script", naturalFileSuffix());
             tempFile.deleteOnExit();
             FileWriter writer = new FileWriter(tempFile);
             char[] buffer = new char[1024];
@@ -64,7 +62,6 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
 
     public ScriptedContainerBuilder(URL script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
         super(lifecycleMode);
-    	this.scriptReader = null;        
         this.scriptURL = script;
         if (script == null) {
             throw new NullPointerException("script");
@@ -77,47 +74,36 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
 
     @Override
     protected final PicoContainer createContainer(PicoContainer parentContainer, Object assemblyScope) {
-        try {
-            return createContainerFromScript(parentContainer, assemblyScope);
-        } finally {
-            try {
-                Reader reader = getScriptReader();
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                // do nothing. we've given it our best try, now get on with it
-            }
-        }
+        return createContainerFromScript(parentContainer, assemblyScope);
     }
 
     protected final ClassLoader getClassLoader() {
         return classLoader;
     }
     
-    @SuppressWarnings("synthetic-access")
-    protected final InputStream getScriptInputStream() throws IOException{
-        if ( scriptReader != null ){
-            return new InputStream() {
-                @Override
-                public int read() throws IOException {
-                    return scriptReader.read();
-                }
-            };
-        }
-        return scriptURL.openStream();
-    }
+//    @SuppressWarnings("synthetic-access")
+//    protected final InputStream getScriptInputStream() throws IOException{
+//        if ( scriptReader != null ){
+//            return new InputStream() {
+//                @Override
+//                public int read() throws IOException {
+//                    return scriptReader.read();
+//                }
+//            };
+//        }
+//        return scriptURL.openStream();
+//    }
 
     protected final URL getScriptURL() throws IOException{
         return scriptURL;
     }
 
-    protected final Reader getScriptReader() throws IOException{
-        if ( scriptReader != null ){
-            return scriptReader;
-        }
-        return new InputStreamReader(scriptURL.openStream());
-    }
+//    protected final Reader getScriptReader() throws IOException{
+//        if ( scriptReader != null ){
+//            return scriptReader;
+//        }
+//        return new InputStreamReader(scriptURL.openStream());
+//    }
     
     protected abstract PicoContainer createContainerFromScript(PicoContainer parentContainer, Object assemblyScope);
 
