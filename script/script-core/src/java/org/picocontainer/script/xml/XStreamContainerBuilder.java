@@ -100,8 +100,8 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
             LifecycleMode lifecycleMode) {
         super(script, classLoader, lifecycleMode);
         xsdriver = driver;
-        InputSource inputSource = new InputSource(script);
         try {
+            InputSource inputSource = new InputSource(super.getScriptURL().openStream());
             rootElement = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource)
                     .getDocumentElement();
         } catch (SAXException e) {
