@@ -106,7 +106,7 @@ public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
 		try {
 			IRubyObject result = JavaEmbedUtils.newRuntimeAdapter().eval(ruby, script);
 			Object o = JavaEmbedUtils.rubyToJava(ruby, result, PicoContainer.class);
-			System.out.println("pico2 == " + o);
+			System.out.println("pico3 == " + o);
 			return (PicoContainer) o;
 		} catch (RaiseException re) {
 			if (re.getCause() instanceof ScriptedPicoContainerMarkupException) {
