@@ -49,7 +49,7 @@ public class XStreamComponentInstanceFactoryTestCase {
     }
 
     @Test public void testDeserializationInPureJavaMode() throws ParserConfigurationException, IOException, SAXException {
-        runDeserializationTest(new PureJavaXStreamComponentInstanceFactory());
+        runDeserializationTest(new PureJavaXStreamComponentInstanceFactory(org.picocontainer.script.xml.TestBean.class));
     }
 
     public void runDeserializationTest(XMLComponentInstanceFactory factory) throws ParserConfigurationException, IOException, SAXException {

@@ -9,6 +9,10 @@ package org.picocontainer.script.xml;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
+import com.thoughtworks.xstream.security.TypeHierarchyPermission;
 
 /**
  * Implementation of XMLComponentInstanceFactory that uses XStream to unmarshal
@@ -25,8 +29,16 @@ public class PureJavaXStreamComponentInstanceFactory extends XStreamComponentIns
      * Creates a PureJavaXStreamComponentInstanceFactory using an instance of
      * XStream in PureJava mode.
      */
-    public PureJavaXStreamComponentInstanceFactory() {
-        super(new XStream(new PureJavaReflectionProvider()));
+    public PureJavaXStreamComponentInstanceFactory(Class clazz) {
+        super(makeXStream(clazz));
+    }
+    static XStream makeXStream(Class clazz) {
+        XStream xs = new XStream(new PureJavaReflectionProvider());
+        xs.addPermission(NoTypePermission.NONE); //forbid everything
+        xs.addPermission(NullPermission.NULL);   // allow "null"
+        xs.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+        xs.addPermission(new TypeHierarchyPermission(clazz)); //
+        return xs;
     }
 
 }
