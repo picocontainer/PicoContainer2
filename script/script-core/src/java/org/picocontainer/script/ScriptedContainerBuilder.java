@@ -8,7 +8,8 @@
  *****************************************************************************/
 package org.picocontainer.script;
 
-import java.io.IOException;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -39,8 +40,20 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
         if (script == null) {
             throw new NullPointerException("script");
         }
-        // TODO make temp .groovy file here and then a URL from it
-        this.scriptURL = null;
+        try {
+            File tempFile = File.createTempFile("script", ".groovy");
+            tempFile.deleteOnExit();
+            FileWriter writer = new FileWriter(tempFile);
+            char[] buffer = new char[1024];
+            int numCharsRead;
+            while ((numCharsRead = script.read(buffer)) != -1) {
+                writer.write(buffer, 0, numCharsRead);
+            }
+            writer.close();
+            this.scriptURL = tempFile.toURI().toURL();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create temporary script file", e);
+        }
         this.classLoader = classLoader;
         if ( classLoader == null) {
             throw new NullPointerException("classLoader");
