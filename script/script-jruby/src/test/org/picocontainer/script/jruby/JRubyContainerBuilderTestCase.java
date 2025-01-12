@@ -95,6 +95,7 @@ public class JRubyContainerBuilderTestCase extends AbstractScriptedContainerBuil
 
         MutablePicoContainer pico = (MutablePicoContainer) buildContainer(script, null, ASSEMBLY_SCOPE);
         // LifecyleContainerBuilder starts the container
+        System.out.println("pico == " + pico);
         pico.dispose();
 
         assertEquals("Should match the expression", "<AA>!A", X.componentRecorder);
