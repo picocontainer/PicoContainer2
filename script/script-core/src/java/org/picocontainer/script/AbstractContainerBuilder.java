@@ -35,6 +35,8 @@ public abstract class AbstractContainerBuilder implements ContainerBuilder {
             boolean addChildToParent) {
         PicoContainer container = createContainer(parentContainer, assemblyScope);
 
+        System.out.println("pico2 == " + container);
+
         if (parentContainer != null && parentContainer instanceof MutablePicoContainer) {
             MutablePicoContainer mutableParentContainer = (MutablePicoContainer) parentContainer;
 

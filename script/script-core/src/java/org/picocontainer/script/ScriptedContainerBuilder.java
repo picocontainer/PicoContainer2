@@ -46,7 +46,6 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
                 writer.write(buffer, 0, numCharsRead);
             }
             this.scriptURL = tempFile.toURI().toURL();
-            System.out.println("SCRIPT FILE=" + this.scriptURL);
             writer.close();
         } catch (IOException e) {
             throw new RuntimeException("Failed to create temporary script file", e);
