@@ -103,7 +103,7 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
         try {
             GroovyClassLoader loader = new GroovyClassLoader(getClassLoader());
             InputStream scriptIs = getScriptInputStream();
-            GroovyCodeSource groovyCodeSource = new GroovyCodeSource(scriptIs,"picocontainer.groovy","groovyGeneratedForPicoContainer");
+            GroovyCodeSource groovyCodeSource = new GroovyCodeSource(scriptIs, "picocontainer.groovy","groovyGeneratedForPicoContainer");
             scriptClass = loader.parseClass(groovyCodeSource);
         } catch (CompilationFailedException e) {
             throw new GroovyCompilationException("Compilation Failed '" + e.getMessage() + "'", e);
