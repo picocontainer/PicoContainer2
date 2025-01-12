@@ -38,7 +38,7 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
         }
         try {
             File tempFile = File.createTempFile("picocontainer", naturalFileSuffix());
-            tempFile.deleteOnExit();
+            //tempFile.deleteOnExit();
             FileWriter writer = new FileWriter(tempFile);
             char[] buffer = new char[1024];
             int numCharsRead;
