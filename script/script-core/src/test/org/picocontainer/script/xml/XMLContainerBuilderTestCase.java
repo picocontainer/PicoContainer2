@@ -628,9 +628,9 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
 
     @Test public void testComponentAdapterWithNoClassThrowsPicoContainerMarkupException() {
         Reader script = new StringReader("" +
-                "<container>" +
-                "  <component-adapter key='beanKey'/> " +
-                "</container>");
+                "<container>\n" +
+                "  <component-adapter key='beanKey'/>\n" +
+                "</container>\n");
         try {
             buildContainer(script);
             fail();
