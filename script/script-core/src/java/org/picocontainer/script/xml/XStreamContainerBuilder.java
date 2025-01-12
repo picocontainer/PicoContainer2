@@ -87,6 +87,11 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
         this(script, classLoader, new DomDriver());
     }
 
+    @Override
+    protected String naturalFileSuffix() {
+        return ".xml";
+    }
+
     public XStreamContainerBuilder(Reader script, ClassLoader classLoader, HierarchicalStreamDriver driver) {
         this(script, classLoader, driver, LifecycleMode.AUTO_LIFECYCLE);
     }

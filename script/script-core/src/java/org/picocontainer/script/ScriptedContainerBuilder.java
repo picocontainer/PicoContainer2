@@ -30,6 +30,8 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
     	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
     }
 
+    abstract protected String naturalFileSuffix();
+
     public ScriptedContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
         super(lifecycleMode);
     	this.scriptReader = script;

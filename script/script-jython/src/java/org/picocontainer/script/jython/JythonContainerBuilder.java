@@ -42,6 +42,11 @@ public class JythonContainerBuilder extends ScriptedContainerBuilder {
     	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
     }
 
+    @Override
+    protected String naturalFileSuffix() {
+        return ".py";
+    }
+
     public JythonContainerBuilder(URL script, ClassLoader classLoader) {
         this(script, classLoader, LifecycleMode.AUTO_LIFECYCLE);
     }

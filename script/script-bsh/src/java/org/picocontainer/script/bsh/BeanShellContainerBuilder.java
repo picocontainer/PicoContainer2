@@ -30,6 +30,11 @@ public class BeanShellContainerBuilder extends ScriptedContainerBuilder {
         this(script, classLoader, LifecycleMode.AUTO_LIFECYCLE);
     }
 
+    @Override
+    protected String naturalFileSuffix() {
+        return ".sh";
+    }
+
     public BeanShellContainerBuilder(URL script, ClassLoader classLoader) {
     	this(script, classLoader, LifecycleMode.AUTO_LIFECYCLE);
     }

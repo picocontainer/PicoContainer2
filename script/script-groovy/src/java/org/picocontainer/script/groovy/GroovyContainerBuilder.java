@@ -47,7 +47,12 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
     public GroovyContainerBuilder(final Reader script, ClassLoader classLoader) {
         this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
     }
-    
+
+    @Override
+    protected String naturalFileSuffix() {
+        return ".groovy";
+    }
+
     public GroovyContainerBuilder(final Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
     	super(script, classLoader, lifecycleMode);
     	createGroovyClass();

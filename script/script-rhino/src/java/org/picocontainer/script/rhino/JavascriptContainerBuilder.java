@@ -43,7 +43,12 @@ public class JavascriptContainerBuilder extends ScriptedContainerBuilder {
     public JavascriptContainerBuilder(Reader script, ClassLoader classLoader) {
     	this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
     }
-	
+
+    @Override
+    protected String naturalFileSuffix() {
+        return ".js";
+    }
+
     public JavascriptContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycleMode) {
         super(script, classLoader, lifecycleMode);
     }

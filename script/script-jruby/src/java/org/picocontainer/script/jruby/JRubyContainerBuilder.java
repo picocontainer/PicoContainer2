@@ -46,8 +46,13 @@ public final class JRubyContainerBuilder extends ScriptedContainerBuilder {
 	public JRubyContainerBuilder(Reader script, ClassLoader classLoader) {
 		this(script,classLoader, LifecycleMode.AUTO_LIFECYCLE);
 	}
-	
-	
+
+	@Override
+	protected String naturalFileSuffix() {
+		return ".rb";
+	}
+
+
 	public JRubyContainerBuilder(Reader script, ClassLoader classLoader, LifecycleMode lifecycle) {
 		super(script, classLoader, lifecycle);
 		this.script = toString(script);
