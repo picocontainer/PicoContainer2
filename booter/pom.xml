@@ -46,10 +46,11 @@
       <scope>integration-test</scope>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.groovy</groupId>
+      <groupId>org.apache.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <version>2.4.21</version>
+      <version>4.0.24</version>
       <scope>integration-test</scope>
+      <type>pom</type>
     </dependency>
     <dependency>
       <groupId>qdox</groupId>
@@ -155,8 +156,9 @@
                   <artifactId>picocontainer-script-groovy</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.codehaus.groovy</groupId>
+                  <groupId>org.apache.groovy</groupId>
                   <artifactId>groovy-all</artifactId>
+                  <type>pom</type>
                 </artifactItem>
               </artifactItems>
               <outputDirectory>${project.build.directory}/booter/lib/hidden</outputDirectory>
