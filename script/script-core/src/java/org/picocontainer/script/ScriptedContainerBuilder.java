@@ -39,6 +39,7 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
         if (script == null) {
             throw new NullPointerException("script");
         }
+        // TODO make temp .groovy file here and then a URL from it
         this.scriptURL = null;
         this.classLoader = classLoader;
         if ( classLoader == null) {
