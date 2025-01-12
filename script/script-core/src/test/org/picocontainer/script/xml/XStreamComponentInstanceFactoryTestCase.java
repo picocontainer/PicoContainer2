@@ -17,6 +17,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -36,7 +39,11 @@ public class XStreamComponentInstanceFactoryTestCase {
     }
 
     @Test public void testDeserializationInEncancedMode() throws ParserConfigurationException, IOException, SAXException {
-        runDeserializationTest(new XStreamComponentInstanceFactory(new XStream(new Sun14ReflectionProvider())));
+        XStream xs = new XStream(new Sun14ReflectionProvider());
+        xs.addPermission(NoTypePermission.NONE); //forbid everything
+        xs.addPermission(NullPermission.NULL);   // allow "null"
+        xs.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+        runDeserializationTest(new XStreamComponentInstanceFactory(xs));
     }
 
     @Test public void testDeserializationInPureJavaMode() throws ParserConfigurationException, IOException, SAXException {
