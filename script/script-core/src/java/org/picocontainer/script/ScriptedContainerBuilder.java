@@ -96,6 +96,10 @@ public abstract class ScriptedContainerBuilder extends AbstractContainerBuilder 
         return scriptURL.openStream();
     }
 
+    protected final URL getScriptURL() throws IOException{
+        return scriptURL;
+    }
+
     protected final Reader getScriptReader() throws IOException{
         if ( scriptReader != null ){
             return scriptReader;
