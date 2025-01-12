@@ -3,7 +3,7 @@
 	<groupId>org.picocontainer.script</groupId>
 	<artifactId>picocontainer-script</artifactId>
 	<name>PicoContainer Script</name>
-	<version>2.3-SNAPSHOT</version>
+	<version>2.15.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<url>http://www.picocontainer.org/script</url>
 	<modules>
@@ -50,7 +50,7 @@
 		</snapshotRepository>
 	</distributionManagement>
 	<properties>
-		<pico.version>2.11</pico.version>
+		<pico.version>2.15.1-SNAPSHOT</pico.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
