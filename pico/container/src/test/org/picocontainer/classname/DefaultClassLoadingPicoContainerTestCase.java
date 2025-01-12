@@ -221,6 +221,9 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
                 sb.append(clazz.getName()).append("\n");
             }
         });
+        System.out.println("=====");
+        System.out.println(sb.toString());
+        System.out.println("=====");
         assertEquals("com.thoughtworks.xstream.io.xml.xppdom.XppDom\n" +
                 "com.thoughtworks.xstream.io.xml.xppdom.Xpp3Dom\n" +
                 "com.thoughtworks.xstream.core.util.PrioritizedList$PrioritizedItem\n" +
