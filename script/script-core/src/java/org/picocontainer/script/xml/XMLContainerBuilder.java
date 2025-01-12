@@ -122,8 +122,8 @@ public class XMLContainerBuilder extends ScriptedContainerBuilder {
         super(script, classLoader, lifecycleMode);
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            parse(documentBuilder, new InputSource(script));
-        } catch (ParserConfigurationException e) {
+            parse(documentBuilder, new InputSource(super.getScriptURL().openStream()));
+        } catch (ParserConfigurationException | IOException e) {
             throw new ScriptedPicoContainerMarkupException(e);
         }
     }
