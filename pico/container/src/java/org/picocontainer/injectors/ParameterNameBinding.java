@@ -10,10 +10,9 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.NameBinding;
 
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Member;
+import javax.inject.Named;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.*;
 
 
 public class ParameterNameBinding implements NameBinding {
@@ -31,12 +30,47 @@ public class ParameterNameBinding implements NameBinding {
         if (name != null) {
             return name;
         }
-        if (member instanceof Constructor) {
-            name = ((Constructor) member).getParameters()[index].getName();
-        } else {
-            name = ((Method) member).getParameters()[index].getName();
+        name = lookupParameterName(member, index);
+        if (name.isBlank()) {
+            if (member instanceof Constructor) {
+                name = ((Constructor) member).getParameters()[index].getName();
+            } else {
+                name = ((Method) member).getParameters()[index].getName();
+            }
         }
         return name;
     }
+
+    public String lookupParameterName(AccessibleObject methodOrCtor, int ix) {
+        Executable executable = (Executable) methodOrCtor;
+
+        Annotation[][] anns = executable.getParameterAnnotations();
+
+        for (int j = 0; j < anns[ix].length; j++) {
+            Annotation ann = anns[ix][j];
+            if (isNamed(ann)) {
+                return getNamedValue(ann);
+            }
+        }
+
+        return "";
+    }
+
+    private String getNamedValue(Annotation ann) {
+        if ("javax.inject.Named".equals(ann.annotationType().getName())) {
+            return ((Named) ann).value();
+        } else {
+            return null;
+        }
+    }
+
+    private boolean isNamed(Annotation ann) {
+        if ("javax.inject.Named".equals(ann.annotationType().getName())) {
+            return ann instanceof Named;
+        } else {
+            return false;
+        }
+    }
+
 }
 
