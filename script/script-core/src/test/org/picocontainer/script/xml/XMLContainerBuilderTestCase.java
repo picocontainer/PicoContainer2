@@ -11,6 +11,8 @@
 package org.picocontainer.script.xml;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.security.AnyTypePermission;
+import com.thoughtworks.xstream.security.NoTypePermission;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
@@ -765,7 +767,10 @@ public final class XMLContainerBuilderTestCase extends AbstractScriptedContainer
                 "</container>");
         PicoContainer pico = buildContainer(script);
 
-        String xml = new XStream().toXML(pico).replace('\"','\'');
+        XStream xStream = new XStream();
+        xStream.addPermission(NoTypePermission.NONE);       // Clear out any default permissions
+        xStream.addPermission(AnyTypePermission.ANY);       // Allow *everything*, as historically
+        String xml = xStream.toXML(pico).replace('\"','\'');
 
         assertEquals("<org.picocontainer.classname.DefaultClassLoadingPicoContainer>\n" +
                 "  <namedChildContainers/>\n" +
