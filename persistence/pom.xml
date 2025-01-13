@@ -91,12 +91,13 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.13.0</version>
           <configuration>
-            <source>8</source>
-            <target>8</target>
+            <source>11</source>
+            <target>11</target>
             <encoding>UTF-8</encoding>
             <optimize>false</optimize>
             <debug>true</debug>
             <showDeprecation>true</showDeprecation>
+            <compilerArgument>-parameters</compilerArgument>
           </configuration>
         </plugin>
         <plugin>

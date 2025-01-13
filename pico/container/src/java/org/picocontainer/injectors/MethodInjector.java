@@ -155,7 +155,7 @@ public abstract class MethodInjector<T> extends SingleMemberInjector<T> {
                     final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
                     for (int i = 0; i < currentParameters.length; i++) {
                         currentParameters[i].verify(container, MethodInjector.this, parameterTypes[i],
-                            new ParameterNameBinding(getParanamer(), method, i), useNames(),
+                            new ParameterNameBinding(method, i), useNames(),
                                                     getBindings(method.getParameterAnnotations())[i]);
                     }
                     return null;

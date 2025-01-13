@@ -1,9 +1,5 @@
 package org.picocontainer.injectors;
 
-import com.thoughtworks.paranamer.AdaptiveParanamer;
-import com.thoughtworks.paranamer.AnnotationParanamer;
-import com.thoughtworks.paranamer.CachingParanamer;
-import com.thoughtworks.paranamer.Paranamer;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.NameBinding;
 import org.picocontainer.Parameter;
@@ -39,7 +35,6 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     protected transient Type[] injectionTypes;
     protected transient Annotation[] bindings;
 
-    private transient Paranamer paranamer;
     private transient volatile boolean initialized;
 
     /**
@@ -137,10 +132,7 @@ public abstract class IterativeInjector<T> extends AbstractInjector<T> {
     }
 
     protected NameBinding makeParameterNameImpl(AccessibleObject member) {
-        if (paranamer == null) {
-            paranamer = new CachingParanamer(new AnnotationParanamer(new AdaptiveParanamer()));
-        }
-        return new ParameterNameBinding(paranamer,  member, 0);
+        return new ParameterNameBinding(member, 0);
     }
 
     protected abstract void unsatisfiedDependencies(PicoContainer container, Set<Type> unsatisfiableDependencyTypes, List<AccessibleObject> unsatisfiableDependencyMembers);

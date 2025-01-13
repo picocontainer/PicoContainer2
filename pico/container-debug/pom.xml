@@ -10,11 +10,6 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>com.thoughtworks.paranamer</groupId>
-            <artifactId>paranamer</artifactId>
-            <version>2.5.1-debug</version>
-        </dependency>
-        <dependency>
             <groupId>asm</groupId>
             <artifactId>asm</artifactId>
         </dependency>
@@ -49,24 +44,6 @@
 			</testResource>
 		</testResources>
         <plugins>
-            <plugin>
-                <groupId>com.thoughtworks.paranamer</groupId>
-                <artifactId>paranamer-maven-plugin</artifactId>
-                <version>2.8</version>
-                <configuration>
-                    <sourceDirectory>src/test</sourceDirectory>
-                    <outputDirectory>target/test-classes</outputDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>test</phase>
-                        <id>generate</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 

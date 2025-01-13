@@ -94,9 +94,9 @@
         <pluginManagement>
           <plugins>
             <plugin>
-              <groupId>org.mortbay.jetty</groupId>
+              <groupId>org.eclipse.jetty</groupId>
               <artifactId>maven-jetty-plugin</artifactId>
-              <version>6.1.14</version>
+              <version>12.0.16</version>
               <dependencies>
                 <dependency>
                   <groupId>org.apache.geronimo.specs</groupId>
@@ -110,7 +110,7 @@
                 </webAppConfig>
                 <connectors>
                   <connector
-                    implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                    implementation="org.eclipse.jetty.nio.SelectChannelConnector">
                     <port>8080</port>
                     <maxIdleTime>3600000</maxIdleTime>
                   </connector>

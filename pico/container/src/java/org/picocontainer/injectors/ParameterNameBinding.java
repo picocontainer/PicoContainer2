@@ -15,19 +15,15 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Member;
 
-import com.thoughtworks.paranamer.CachingParanamer;
-import com.thoughtworks.paranamer.Paranamer;
 
 public class ParameterNameBinding implements NameBinding {
     private final AccessibleObject member;
     private final int index;
-    private final Paranamer paranamer;
 
     private String name;
 
-    public ParameterNameBinding(Paranamer paranamer, AccessibleObject member, int index) {
+    public ParameterNameBinding(AccessibleObject member, int index) {
         this.member = member;
-        this.paranamer = paranamer;
         this.index = index;
     }
 
@@ -35,8 +31,11 @@ public class ParameterNameBinding implements NameBinding {
         if (name != null) {
             return name;
         }
-        String[] strings = paranamer.lookupParameterNames(member, false);
-        name = strings.length == 0 ? "" : strings[index];
+        if (member instanceof Constructor) {
+            name = ((Constructor) member).getParameters()[index].getName();
+        } else {
+            name = ((Method) member).getParameters()[index].getName();
+        }
         return name;
     }
 }

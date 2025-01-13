@@ -9,6 +9,7 @@ package org.picocontainer.web.remoting;
 
 import java.io.*;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -16,8 +17,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.thoughtworks.paranamer.AdaptiveParanamer;
-import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
@@ -33,7 +32,6 @@ import com.thoughtworks.xstream.io.WriterWrapper;
 @SuppressWarnings("serial")
 public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  {
 
-    private CachingParanamer paranamer = new CachingParanamer(new AdaptiveParanamer());
 
     @Override
 	protected XStream createXStream() {
@@ -101,14 +99,11 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
 
                 public void method(String methodName, Method method) throws IOException {
                     outputStream.print("\n\n  def " + methodName);
-                    String[] paramNames = new String[0];
-                    Class<?>[] pTypes = method.getParameterTypes();
-                    if (pTypes.length >0) {
-                        paramNames = paranamer.lookupParameterNames(method);
-                    }
-                    for (int i = 0; i < paramNames.length; i++) {
-                        String name = paramNames[i];
-                        if (!isExcludedFromClassDefPublication(pTypes[i], name)) {
+                    Parameter[] params = method.getParameters();
+                    for (int i = 0; i < params.length; i++) {
+                        String name = params[i].getName();
+                        Class<?> pType = params[i].getType();
+                        if (!isExcludedFromClassDefPublication(pType, name)) {
                             outputStream.print((i > 0 ? ", " : " ") + name);
                         }
                     }
@@ -118,9 +113,10 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
                     	rubyFunctionName += "?";
                     }
                     outputStream.print("    @"+rubyFunctionName+"(self.class, '" + methodName + "'");
-                    for (int i = 0; i < paramNames.length; i++) {
-                        String name = paramNames[i];
-                        if (!isExcludedFromClassDefPublication(pTypes[i], name)) {
+                    for (int i = 0; i < params.length; i++) {
+                        String name = params[i].getName();
+                        Class<?> pType = params[i].getType();
+                        if (!isExcludedFromClassDefPublication(pType, name)) {
                             outputStream.print(", :" + name + " => " + name);
                         }
                     }
@@ -151,7 +147,7 @@ public class RubyPicoWebRemotingServlet extends AbstractPicoWebRemotingServlet  
 
     /**
      * Some parameter types are excluded from being published in Ruby classdef fragments
-     * @param pType the type that is possibly excluded
+     * @param type the type that is possibly excluded
      * @param name the name of the param that is possibly excluded
      * @return is or is not excluded
      */

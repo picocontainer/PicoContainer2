@@ -10,10 +10,6 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>com.thoughtworks.paranamer</groupId>
-            <artifactId>paranamer</artifactId>
-        </dependency>
-        <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>jsr250-api</artifactId>
             <optional>true</optional>
@@ -26,24 +22,6 @@
     </dependencies>
     <build>
         <plugins>
-            <plugin>
-                <groupId>com.thoughtworks.paranamer</groupId>
-                <artifactId>paranamer-maven-plugin</artifactId>
-                <version>2.5.1</version>
-                <configuration>
-                    <sourceDirectory>src/test</sourceDirectory>
-                    <outputDirectory>target/test-classes</outputDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>test</phase>
-                        <id>generate</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -62,20 +40,7 @@
                                     <exclude>javax.inject:javax.inject</exclude>
                                 </excludes>
                             </artifactSet>
-                            <filters>
-                                <filter>
-                                    <artifact>com.thoughtworks.paranamer:paranamer</artifact>
-                                    <excludes>
-                                        <exclude>com/thoughtworks/paranamer/Javadoc*</exclude>
-                                        <exclude>com/thoughtworks/paranamer/Null*</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
                             <relocations>
-                                <relocation>
-                                    <pattern>com.thoughtworks.paranamer</pattern>
-                                    <shadedPattern>org.picocontainer.paranamer</shadedPattern>
-                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>

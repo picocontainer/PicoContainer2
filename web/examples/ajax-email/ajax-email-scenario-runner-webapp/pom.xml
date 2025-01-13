@@ -88,7 +88,7 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.mortbay.jetty</groupId>
+        <groupId>org.eclipse.jetty</groupId>
         <artifactId>maven-jetty-plugin</artifactId>
         <configuration>
           <webApp>${project.build.directory}/${webapp.name}.war</webApp>
@@ -96,7 +96,7 @@
             <contextPath>/${webapp.name}</contextPath>
           </webAppConfig>
           <connectors>
-            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+            <connector implementation="org.eclipse.jetty.nio.SelectChannelConnector">
               <port>8081</port>
               <maxIdleTime>3600000</maxIdleTime>
             </connector>

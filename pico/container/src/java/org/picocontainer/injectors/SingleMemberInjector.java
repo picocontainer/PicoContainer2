@@ -8,10 +8,7 @@
  *****************************************************************************/
 package org.picocontainer.injectors;
 
-import com.thoughtworks.paranamer.AdaptiveParanamer;
-import com.thoughtworks.paranamer.AnnotationParanamer;
-import com.thoughtworks.paranamer.CachingParanamer;
-import com.thoughtworks.paranamer.Paranamer;
+
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentMonitor;
 import org.picocontainer.Parameter;
@@ -34,8 +31,6 @@ import static org.picocontainer.injectors.PrimitiveMemberChecker.isPrimitiveArgu
 @SuppressWarnings("serial")
 public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
 
-    private transient Paranamer paranamer;
-
     public SingleMemberInjector(Object componentKey,
                                 Class componentImplementation,
                                 Parameter[] parameters,
@@ -44,12 +39,6 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
         super(componentKey, componentImplementation, parameters, monitor, useNames);
     }
 
-    protected Paranamer getParanamer() {
-        if (paranamer == null) {
-            paranamer = new CachingParanamer(new AnnotationParanamer(new AdaptiveParanamer()));
-        }
-        return paranamer;
-    }
 
     @SuppressWarnings("unchecked")
     protected Object[] getMemberArguments(PicoContainer container, final AccessibleObject member, final Type[] parameterTypes, final Annotation[] bindings) {
@@ -72,7 +61,7 @@ public abstract class SingleMemberInjector<T> extends AbstractInjector<T> {
 
     protected Object getParameter(PicoContainer container, AccessibleObject member, int i, Type parameterType, Annotation binding,
                                   Parameter currentParameter, ComponentAdapter<?> injecteeAdapter) {
-        ParameterNameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), member, i);
+        ParameterNameBinding expectedNameBinding = new ParameterNameBinding(member, i);
         Object result = null;
         try {
             result = currentParameter.resolve(container, this, injecteeAdapter, parameterType, expectedNameBinding, useNames(), binding).resolveInstance();

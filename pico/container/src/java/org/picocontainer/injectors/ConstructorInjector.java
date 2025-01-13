@@ -145,7 +145,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                 for (int j = 0; j < currentParameters.length; j++) {
                     // check whether this constructor is satisfiable
                     Type expectedType = box(parameterTypes[j]);
-                    NameBinding expectedNameBinding = new ParameterNameBinding(getParanamer(), sortedMatchingConstructor, j);
+                    NameBinding expectedNameBinding = new ParameterNameBinding(sortedMatchingConstructor, j);
                     ResolverKey resolverKey = new ResolverKey(expectedType, useNames() ? expectedNameBinding.getName() : null, useNames(), bindings[j], currentParameters[j]);
                     Parameter.Resolver resolver = resolvers.get(resolverKey);
                     if (resolver == null) {
@@ -416,7 +416,7 @@ public class ConstructorInjector<T> extends SingleMemberInjector<T> {
                     final Parameter[] currentParameters = parameters != null ? parameters : createDefaultParameters(parameterTypes.length);
                     for (int i = 0; i < currentParameters.length; i++) {
                         currentParameters[i].verify(container, ConstructorInjector.this, box(parameterTypes[i]),
-                            new ParameterNameBinding(getParanamer(),  constructor, i),
+                            new ParameterNameBinding(constructor, i),
                                 useNames(), getBindings(constructor.getParameterAnnotations())[i]);
                     }
                     return null;

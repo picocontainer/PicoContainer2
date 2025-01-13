@@ -32,7 +32,7 @@
         <artifactId>selenium-maven-plugin</artifactId>
       </plugin>
       <plugin>
-        <groupId>org.mortbay.jetty</groupId>
+        <groupId>org.eclipse.jetty</groupId>
         <artifactId>maven-jetty-plugin</artifactId>
       </plugin>
     </plugins>
