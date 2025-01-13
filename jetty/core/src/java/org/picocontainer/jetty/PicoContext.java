@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Arrays;
 
-import javax.servlet.Filter;
-import javax.servlet.Servlet;
+import jakarta.servlet.Filter;
+import jakarta.servlet.Servlet;
 
 import org.mortbay.jetty.handler.ErrorHandler;
 import org.mortbay.jetty.servlet.Context;
