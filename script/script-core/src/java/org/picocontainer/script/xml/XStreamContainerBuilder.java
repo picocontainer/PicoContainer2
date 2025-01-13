@@ -19,6 +19,8 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.thoughtworks.xstream.security.AnyTypePermission;
+import com.thoughtworks.xstream.security.NoTypePermission;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.ComponentFactory;
 import org.picocontainer.DefaultPicoContainer;
@@ -334,7 +336,10 @@ public class XStreamContainerBuilder extends ScriptedContainerBuilder  {
         for (int i = 0; i < children.getLength(); i++) {
             child = children.item(i);
             if (child.getNodeType() == Document.ELEMENT_NODE) {
-                return (new XStream(xsdriver)).unmarshal(new DomReader((Element) child));
+                XStream xStream = new XStream(xsdriver);
+                xStream.addPermission(NoTypePermission.NONE);       // Clear out any default permissions
+                xStream.addPermission(AnyTypePermission.ANY);
+                return xStream.unmarshal(new DomReader((Element) child));
             }
         }
         return null;
