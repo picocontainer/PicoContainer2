@@ -13,7 +13,7 @@
 		<module>script-bsh</module>
 		<module>script-groovy</module>
 <!--		<module>script-jruby</module>-->
-		<module>script-jython</module>
+<!--		<module>script-jython</module>   can't find core class in classpath-->
 		<module>script-rhino</module>
 	</modules>
 	<organization>
