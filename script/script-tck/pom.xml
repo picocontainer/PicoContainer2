@@ -31,8 +31,8 @@
             <include>org/picocontainer/script/TestHelper.java</include>
             <include>org/picocontainer/script/AbstractScriptedContainerBuilderTestCase.java</include>
           </includes>
-          <source>11</source>
-          <target>11</target>
+          <source>21</source>
+          <target>21</target>
           <encoding>UTF-8</encoding>
           <compilerArgument>-parameters</compilerArgument>
         </configuration>
