@@ -30,13 +30,12 @@ public class XStreamComponentInstanceFactory implements XMLComponentInstanceFact
     /**
      * Creates an XStreamComponentInstanceFactory with the default instance of
      * XStream
-     * @param type
      */
-    public XStreamComponentInstanceFactory(Class<?> type) {
-        this(makeXstream(type));
+    public XStreamComponentInstanceFactory() {
+        this(makeXstream());
     }
 
-    private static XStream makeXstream(Class<?> type) {
+    private static XStream makeXstream() {
         XStream xs = new XStream(new DomDriver());
         xs.addPermission(NoTypePermission.NONE); //forbid everything
         xs.addPermission(NullPermission.NULL);   // allow "null"
