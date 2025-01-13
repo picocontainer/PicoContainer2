@@ -267,6 +267,11 @@ public abstract class AbstractComponentAdapterTest  {
             final Object instance = componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instance);
             final XStream xstream = new XStream(new XppDriver());
+
+            xstream.addPermission(NoTypePermission.NONE); //forbid everything
+            xstream.addPermission(NullPermission.NULL);   // allow "null"
+            xstream.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+            xstream.addPermission(AnyTypePermission.ANY);
             final String xml = xstream.toXML(componentAdapter);
             final ComponentAdapter serializedComponentAdapter = (ComponentAdapter)xstream.fromXML(xml);
             assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());
