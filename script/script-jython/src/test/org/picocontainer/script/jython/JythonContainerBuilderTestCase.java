@@ -35,7 +35,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
                 "from org.picocontainer.classname import *\n" +
                 "from org.picocontainer.script import *\n" +
                 "from org.picocontainer.script.testmodel import *\n" +
-                "pico = DefaultClassLoadingPicoContainer()\n" +
+                "pico = org.picocontainer.classname.DefaultClassLoadingPicoContainer()\n" +
                 "pico.addComponent(WebServerImpl)\n" +
                 "pico.addComponent(DefaultWebServerConfig)\n");
         PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
@@ -48,7 +48,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
                 "from org.picocontainer.script import *\n" +
                 "from org.picocontainer.script.testmodel import *\n" +
                 "from org.picocontainer import Parameter\n"+
-                "pico = DefaultClassLoadingPicoContainer()\n" +
+                "pico = org.picocontainer.classname.DefaultClassLoadingPicoContainer()\n" +
                 "pico.addComponent(DefaultWebServerConfig)\n" +
                 "child = pico.makeChildContainer()\n" +
                 "child.addComponent(WebServerImpl)\n" +
@@ -63,7 +63,7 @@ public class JythonContainerBuilderTestCase extends AbstractScriptedContainerBui
                 "from org.picocontainer.script.testmodel import *\n" +
                 "from org.picocontainer.classname import *\n" +
                 "from org.picocontainer.script import *\n" +      
-                "pico = DefaultClassLoadingPicoContainer()\n" +
+                "pico = org.picocontainer.classname.DefaultClassLoadingPicoContainer()\n" +
                 "pico.addComponent(WebServerImpl)\n");
         PicoContainer pico = buildContainer(new JythonContainerBuilder(script, getClass().getClassLoader()), null, "SOME_SCOPE");
         pico.getComponent(WebServer.class);
