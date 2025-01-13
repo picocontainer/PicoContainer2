@@ -7,6 +7,10 @@
  ******************************************************************************/
 package org.picocontainer.script.xml;
 
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
+import com.thoughtworks.xstream.security.TypeHierarchyPermission;
 import org.picocontainer.PicoContainer;
 import org.w3c.dom.Element;
 
@@ -29,9 +33,19 @@ public class XStreamComponentInstanceFactory implements XMLComponentInstanceFact
     /**
      * Creates an XStreamComponentInstanceFactory with the default instance of
      * XStream
+     * @param type
      */
-    public XStreamComponentInstanceFactory() {
-        this(new XStream(new DomDriver()));
+    public XStreamComponentInstanceFactory(Class<?> type) {
+        this(makeXstream(type));
+    }
+
+    private static XStream makeXstream(Class<?> type) {
+        XStream xs = new XStream(new DomDriver());
+        xs.addPermission(NoTypePermission.NONE); //forbid everything
+        xs.addPermission(NullPermission.NULL);   // allow "null"
+        xs.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+        xs.addPermission(new TypeHierarchyPermission(type)); // allow primitive types
+        return xs;
     }
 
     /**
