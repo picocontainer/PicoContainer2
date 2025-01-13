@@ -44,7 +44,20 @@
 			</testResource>
 		</testResources>
         <plugins>
-        </plugins>
-    </build>
+        <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.5.2</version>
+            <configuration>
+                <argLine>
+                    --add-opens java.base/java.util=ALL-UNNAMED
+                    --add-opens java.base/java.io=ALL-UNNAMED
+                </argLine>
+                <consoleOutputReporter>
+                    <disable>true</disable>
+                </consoleOutputReporter>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
 
 </project>
