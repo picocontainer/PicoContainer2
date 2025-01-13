@@ -36,7 +36,7 @@ import com.thoughtworks.xstream.converters.reflection.Sun14ReflectionProvider;
 public class XStreamComponentInstanceFactoryTestCase {
 
     @Test public void testDeserializationWithDefaultMode() throws ParserConfigurationException, IOException, SAXException {
-        runDeserializationTest(new XStreamComponentInstanceFactory(org.picocontainer.script.xml.TestBean.class));
+        runDeserializationTest(new XStreamComponentInstanceFactory());
     }
 
     @Test public void testDeserializationInEncancedMode() throws ParserConfigurationException, IOException, SAXException {
