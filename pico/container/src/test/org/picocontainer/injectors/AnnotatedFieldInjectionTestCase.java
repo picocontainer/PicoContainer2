@@ -15,6 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import com.thoughtworks.xstream.security.AnyTypePermission;
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 import org.junit.Test;
 import org.picocontainer.ComponentAdapter;
 import org.picocontainer.Parameter;
@@ -39,6 +43,10 @@ public class AnnotatedFieldInjectionTestCase {
         ComponentAdapter ca = injectionFactory.createComponentAdapter(cm, new NullLifecycleStrategy(), new Properties(), Map.class, HashMap.class, Parameter.DEFAULT);
         
         XStream xs = new XStream();
+        xs.addPermission(NoTypePermission.NONE); //forbid everything
+        xs.addPermission(NullPermission.NULL);   // allow "null"
+        xs.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+        xs.addPermission(AnyTypePermission.ANY);
         //xs.alias("CCM", ConsoleComponentMonitor.class);
         xs.registerConverter(new Converter() {
             public boolean canConvert(Class aClass) {

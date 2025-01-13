@@ -32,6 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.thoughtworks.xstream.security.AnyTypePermission;
 import com.thoughtworks.xstream.security.NoTypePermission;
 import com.thoughtworks.xstream.security.NullPermission;
 import com.thoughtworks.xstream.security.PrimitiveTypePermission;
@@ -247,6 +248,8 @@ public abstract class AbstractComponentAdapterTest  {
             xstream.addPermission(NoTypePermission.NONE); //forbid everything
             xstream.addPermission(NullPermission.NULL);   // allow "null"
             xstream.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+            xstream.addPermission(AnyTypePermission.ANY);
+
             final String xml = xstream.toXML(componentAdapter);
             final ComponentAdapter serializedComponentAdapter = (ComponentAdapter)xstream.fromXML(xml);
             assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());

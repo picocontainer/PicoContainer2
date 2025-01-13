@@ -10,6 +10,10 @@
 package org.picocontainer.gems;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.security.AnyTypePermission;
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -36,6 +40,10 @@ public class PicoGemsBuilderTestCase {
     @Before
     public void setUp() throws Exception {
         xs = new XStream();
+        xs.addPermission(NoTypePermission.NONE); //forbid everything
+        xs.addPermission(NullPermission.NULL);   // allow "null"
+        xs.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+        xs.addPermission(AnyTypePermission.ANY);
         xs.setMode(XStream.XPATH_ABSOLUTE_REFERENCES);
     }
 

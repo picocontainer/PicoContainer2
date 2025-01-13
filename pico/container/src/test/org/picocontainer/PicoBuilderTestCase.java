@@ -9,6 +9,10 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import com.thoughtworks.xstream.security.AnyTypePermission;
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 import org.picocontainer.behaviors.Cached;
 
 import java.util.Map;
@@ -62,6 +66,10 @@ public class PicoBuilderTestCase {
     @Before
     public void setUp() throws Exception {
         xs = new XStream();
+        xs.addPermission(NoTypePermission.NONE); //forbid everything
+        xs.addPermission(NullPermission.NULL);   // allow "null"
+        xs.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+        xs.addPermission(AnyTypePermission.ANY);
         xs.setMode(XStream.XPATH_ABSOLUTE_REFERENCES);
     }
 

@@ -10,6 +10,10 @@
 package org.picocontainer.behaviors;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.security.AnyTypePermission;
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 import org.junit.Test;
 import org.picocontainer.Characteristics;
 import org.picocontainer.ComponentAdapter;
@@ -137,6 +141,10 @@ public class AdaptingBehaviorTestCase {
         assertTrue(!(map instanceof HashMap));
 
         XStream xs = new XStream();
+        xs.addPermission(NoTypePermission.NONE); //forbid everything
+        xs.addPermission(NullPermission.NULL);   // allow "null"
+        xs.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+        xs.addPermission(AnyTypePermission.ANY);
         String foo = xs.toXML(ca);
 
         int ih = foo.indexOf(HiddenImplementation.class.getName());
@@ -170,6 +178,10 @@ public class AdaptingBehaviorTestCase {
         assertTrue(!(map instanceof HashMap));
 
         XStream xs = new XStream();
+        xs.addPermission(NoTypePermission.NONE); //forbid everything
+        xs.addPermission(NullPermission.NULL);   // allow "null"
+        xs.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+        xs.addPermission(AnyTypePermission.ANY);
         String foo = xs.toXML(ca);
 
         assertTrue(foo.indexOf("<" + Cached.class.getName() + ">", 0)  > -1);  // xml does start with CB
@@ -193,6 +205,10 @@ public class AdaptingBehaviorTestCase {
         assertTrue(!(map instanceof HashMap));
 
         XStream xs = new XStream();
+        xs.addPermission(NoTypePermission.NONE); //forbid everything
+        xs.addPermission(NullPermission.NULL);   // allow "null"
+        xs.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+        xs.addPermission(AnyTypePermission.ANY);
         String foo = xs.toXML(ca);
 
         assertTrue(foo.indexOf("<" + Cached.class.getName() + ">", 0)  > -1);  // xml does start with CB

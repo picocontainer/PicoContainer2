@@ -3,6 +3,11 @@ package org.picocontainer.gems.injectors;
 import com.thoughtworks.xstream.XStream;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
+
+import com.thoughtworks.xstream.security.AnyTypePermission;
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
@@ -28,7 +33,12 @@ public class Log4JInjectorTestCase {
         assertNotNull(foo);
         assertNotNull(foo.logger);
 
-        assertTrue(new XStream().toXML(foo.logger).contains("<name>"+Foo.class.getName()+"</name>"));
+        XStream xStream = new XStream();
+        xStream.addPermission(NoTypePermission.NONE); //forbid everything
+        xStream.addPermission(NullPermission.NULL);   // allow "null"
+        xStream.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+        xStream.addPermission(AnyTypePermission.ANY);
+        assertTrue(xStream.toXML(foo.logger).contains("<name>"+Foo.class.getName()+"</name>"));
 
     }
 

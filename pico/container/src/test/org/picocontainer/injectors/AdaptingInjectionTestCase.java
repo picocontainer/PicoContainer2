@@ -16,6 +16,10 @@ import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.security.AnyTypePermission;
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 import org.junit.Before;
 import org.junit.Test;
 import org.picocontainer.Characteristics;
@@ -48,6 +52,10 @@ public class AdaptingInjectionTestCase extends AbstractComponentFactoryTest {
     public void setUp() throws Exception {
         super.setUp();
         xs = new XStream();
+        xs.addPermission(NoTypePermission.NONE); //forbid everything
+        xs.addPermission(NullPermission.NULL);   // allow "null"
+        xs.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+        xs.addPermission(AnyTypePermission.ANY);
         xs.alias("RLS", ReflectionLifecycleStrategy.class);
         xs.alias("CCM", ConsoleComponentMonitor.class);
         xs.alias("Method-Injection", AnnotatedMethodInjector.class);

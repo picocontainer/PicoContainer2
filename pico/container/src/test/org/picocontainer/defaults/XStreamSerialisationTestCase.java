@@ -11,6 +11,10 @@ package org.picocontainer.defaults;
 
 import static org.junit.Assert.assertEquals;
 
+import com.thoughtworks.xstream.security.AnyTypePermission;
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 import org.junit.Test;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
@@ -27,6 +31,12 @@ import com.thoughtworks.xstream.io.xml.XppDriver;
  */
 public final class XStreamSerialisationTestCase {
     private final XStream xStream = new XStream(new XppDriver());
+    {
+        xStream.addPermission(NoTypePermission.NONE); //forbid everything
+        xStream.addPermission(NullPermission.NULL);   // allow "null"
+        xStream.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+        xStream.addPermission(AnyTypePermission.ANY);
+    }
 
     @Test public void testShouldBeAbleToSerialiseEmptyPico() {
         if (JVM.is14()) {
