@@ -7,10 +7,7 @@
  ******************************************************************************/
 package org.picocontainer.script.xml;
 
-import com.thoughtworks.xstream.security.NoTypePermission;
-import com.thoughtworks.xstream.security.NullPermission;
-import com.thoughtworks.xstream.security.PrimitiveTypePermission;
-import com.thoughtworks.xstream.security.TypeHierarchyPermission;
+import com.thoughtworks.xstream.security.*;
 import org.picocontainer.PicoContainer;
 import org.w3c.dom.Element;
 
@@ -44,7 +41,7 @@ public class XStreamComponentInstanceFactory implements XMLComponentInstanceFact
         xs.addPermission(NoTypePermission.NONE); //forbid everything
         xs.addPermission(NullPermission.NULL);   // allow "null"
         xs.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
-        xs.addPermission(new TypeHierarchyPermission(type)); // allow primitive types
+        xs.addPermission(AnyTypePermission.ANY);
         return xs;
     }
 
