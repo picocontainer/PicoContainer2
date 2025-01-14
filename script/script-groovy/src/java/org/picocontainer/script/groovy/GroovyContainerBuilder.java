@@ -18,9 +18,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
+import org.picocontainer.PicoCompositionException;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.containers.EmptyPicoContainer;
@@ -125,7 +128,20 @@ public class GroovyContainerBuilder extends ScriptedContainerBuilder {
     private PicoContainer runGroovyScript(Binding binding){
         Script script = createGroovyScript(binding);
 
-        Object result = script.run();
+        Object result = AccessController.doPrivileged(new PrivilegedAction<Object>() {
+            public Object run() {
+                try {
+                    return script.run();
+                } catch (SecurityException e) {
+                    return new PicoCompositionException(e);
+                }
+            }
+        });
+
+        if (result instanceof PicoCompositionException){
+            throw (PicoCompositionException) result;
+        }
+
         Object picoVariable;
         try {
             picoVariable = binding.getVariable("pico");
