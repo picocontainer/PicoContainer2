@@ -276,7 +276,7 @@ public class SetterInjectorTestCase
             aAdapter.getComponentInstance(pico, ComponentAdapter.NOTHING.class);
         } catch (AbstractInjector.UnsatisfiableDependenciesException e) {
             String message = e.getMessage().replace("org.picocontainer.injectors.SetterInjectorTestCase$", "");
-            assertThat(message, containsString("A has unsatisfied dependencies [class java.lang.String, interface java.util.List] for members ["));
+            assertThat(message, containsString("A has unsatisfied dependencies [interface java.util.List, class java.lang.String] for members ["));
             assertThat(message, containsString("public void A.setList(java.util.List)"));
             assertThat(message, containsString("public void A.setString(java.lang.String)"));
         }

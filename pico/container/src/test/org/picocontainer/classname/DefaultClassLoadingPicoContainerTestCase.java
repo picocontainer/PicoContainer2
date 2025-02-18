@@ -38,9 +38,9 @@ import static org.junit.Assert.assertTrue;
 @RunWith(JMock.class)
 public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContainerTest {
 
-	private Mockery context = new JUnit4Mockery();
+    private Mockery context = new JUnit4Mockery();
 
-	
+
     protected MutablePicoContainer createPicoContainer(PicoContainer parent) {
         return new DefaultClassLoadingPicoContainer(this.getClass().getClassLoader(), new DefaultPicoContainer(new Caching(), parent));
     }
@@ -95,22 +95,22 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
     @Test public void testAcceptImplementsBreadthFirstStrategy() {
         super.testAcceptImplementsBreadthFirstStrategy();
     }
-    
+
     @Test(expected=IllegalStateException.class)
     public void testSwapComponentMonitorWithNoComponentMonitorStrategyDelegateThrowsIllegalStateException() {
-    	MutablePicoContainer delegate = context.mock(MutablePicoContainer.class);
-    	//Delegate it twice for effect.
-    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer(new DefaultClassLoadingPicoContainer(delegate));
-    	pico.changeMonitor(new ConsoleComponentMonitor());
+        MutablePicoContainer delegate = context.mock(MutablePicoContainer.class);
+        //Delegate it twice for effect.
+        DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer(new DefaultClassLoadingPicoContainer(delegate));
+        pico.changeMonitor(new ConsoleComponentMonitor());
     }
-    
+
     @Test(expected=IllegalStateException.class)
     public void testCurrentMonitorWithNoComponentMonitorStrategyDelegateThrowsIllegalStateException() {
-    	Mockery context = new JUnit4Mockery();
-    	MutablePicoContainer delegate = context.mock(MutablePicoContainer.class);
-    	//Delegate it twice for effect.
-    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer(new DefaultClassLoadingPicoContainer(delegate));
-    	pico.currentMonitor();    	
+        Mockery context = new JUnit4Mockery();
+        MutablePicoContainer delegate = context.mock(MutablePicoContainer.class);
+        //Delegate it twice for effect.
+        DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer(new DefaultClassLoadingPicoContainer(delegate));
+        pico.currentMonitor();
     }
 
     protected void addContainers(List expectedList) {
@@ -123,52 +123,52 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
         expectedList.add(Caching.class);
     }
 
-    @Test()
+    //TODO-2025
     public void visitingClassesSiblingToAClassWithRegexSubsetWorksWithRecursive() {
 
         final StringBuilder sb = new StringBuilder();
-    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
+        DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
         int found = pico.visit(new ClassName("org.picocontainer.DefaultPicoContainer"), ".*Container\\.class", true, new DefaultClassLoadingPicoContainer.ClassVisitor() {
             public void classFound(Class clazz) {
                 sb.append(clazz.getName()).append("\n");
             }
         });
         assertEquals("org.picocontainer.classname.ClassLoadingPicoContainer\n" +
-                "org.picocontainer.classname.DefaultClassLoadingPicoContainer$AsPropertiesPicoContainer\n" +
-                "org.picocontainer.classname.DefaultClassLoadingPicoContainer\n" +
-                "org.picocontainer.containers.AbstractDelegatingMutablePicoContainer\n" +
-                "org.picocontainer.containers.AbstractDelegatingPicoContainer\n" +
-                "org.picocontainer.containers.CommandLineArgumentsPicoContainer\n" +
-                "org.picocontainer.containers.CommandLinePicoContainer\n" +
-                "org.picocontainer.containers.CompositePicoContainer\n" +
-                "org.picocontainer.containers.EmptyPicoContainer\n" +
-                "org.picocontainer.containers.ImmutablePicoContainer\n" +
-                "org.picocontainer.containers.PropertiesPicoContainer\n" +
-                "org.picocontainer.containers.SystemPropertiesPicoContainer\n" +
-                "org.picocontainer.containers.TieringPicoContainer\n" +
-                "org.picocontainer.containers.TransientPicoContainer\n" +
-                "org.picocontainer.DefaultPicoContainer$AsPropertiesPicoContainer\n" +
-                "org.picocontainer.DefaultPicoContainer\n" +
-                "org.picocontainer.MutablePicoContainer\n" +
-                "org.picocontainer.PicoContainer\n",
+                        "org.picocontainer.classname.DefaultClassLoadingPicoContainer$AsPropertiesPicoContainer\n" +
+                        "org.picocontainer.classname.DefaultClassLoadingPicoContainer\n" +
+                        "org.picocontainer.containers.AbstractDelegatingMutablePicoContainer\n" +
+                        "org.picocontainer.containers.AbstractDelegatingPicoContainer\n" +
+                        "org.picocontainer.containers.CommandLineArgumentsPicoContainer\n" +
+                        "org.picocontainer.containers.CommandLinePicoContainer\n" +
+                        "org.picocontainer.containers.CompositePicoContainer\n" +
+                        "org.picocontainer.containers.EmptyPicoContainer\n" +
+                        "org.picocontainer.containers.ImmutablePicoContainer\n" +
+                        "org.picocontainer.containers.PropertiesPicoContainer\n" +
+                        "org.picocontainer.containers.SystemPropertiesPicoContainer\n" +
+                        "org.picocontainer.containers.TieringPicoContainer\n" +
+                        "org.picocontainer.containers.TransientPicoContainer\n" +
+                        "org.picocontainer.DefaultPicoContainer$AsPropertiesPicoContainer\n" +
+                        "org.picocontainer.DefaultPicoContainer\n" +
+                        "org.picocontainer.MutablePicoContainer\n" +
+                        "org.picocontainer.PicoContainer\n",
                 sb.toString());
         assertEquals(18, found);
     }
 
-    @Test()
+    //TODO-2025
     public void visitingClassesSiblingToAClassWithRegexSubsetWorksWithoutRecursive() {
 
         final StringBuilder sb = new StringBuilder();
-    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
+        DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
         int found = pico.visit(new ClassName("org.picocontainer.DefaultPicoContainer"), ".*Container\\.class", false, new DefaultClassLoadingPicoContainer.ClassVisitor() {
             public void classFound(Class clazz) {
                 sb.append(clazz.getName()).append("\n");
             }
         });
         assertEquals("org.picocontainer.DefaultPicoContainer$AsPropertiesPicoContainer\n" +
-                "org.picocontainer.DefaultPicoContainer\n" +
-                "org.picocontainer.MutablePicoContainer\n" +
-                "org.picocontainer.PicoContainer\n",
+                        "org.picocontainer.DefaultPicoContainer\n" +
+                        "org.picocontainer.MutablePicoContainer\n" +
+                        "org.picocontainer.PicoContainer\n",
                 sb.toString());
         assertEquals(4, found);
     }
@@ -176,7 +176,7 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
     @Test(expected = PicoClassNotFoundException.class)
     public void visitingFailsIfBogusClass() {
 
-    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
+        DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
         pico.visit(new ClassName("org.picocontainer.BlahBlah"), ".*Container\\.class", false, new DefaultClassLoadingPicoContainer.ClassVisitor() {
             public void classFound(Class clazz) {
             }
@@ -186,20 +186,20 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
     @Test(expected = PicoCompositionException.class)
     public void visitingFailsIfJDKClass() {
         DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
-        pico.visit(new ClassName("java.util.ArrayList"), 
-            ".*Container\\.class",
-            false, 
-            new DefaultClassLoadingPicoContainer.ClassVisitor() {
-            public void classFound(Class clazz) {
-                //Does nothing, we're expecting the class to get thrown.
-            }
-        });
+        pico.visit(new ClassName("java.util.ArrayList"),
+                ".*Container\\.class",
+                false,
+                new DefaultClassLoadingPicoContainer.ClassVisitor() {
+                    public void classFound(Class clazz) {
+                        //Does nothing, we're expecting the class to get thrown.
+                    }
+                });
     }
 
     @Test
     public void visitingPassesIfClassInAJar() {
 
-    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
+        DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
         final StringBuilder sb = new StringBuilder();
         int found = pico.visit(new ClassName("com.thoughtworks.xstream.XStream"), ".*m\\.class", false, new DefaultClassLoadingPicoContainer.ClassVisitor() {
             public void classFound(Class clazz) {
@@ -214,19 +214,22 @@ public class DefaultClassLoadingPicoContainerTestCase extends AbstractPicoContai
     @Test
     public void visitingPassesIfClassInAJarRecursively() {
 
-    	DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
+        DefaultClassLoadingPicoContainer pico = new DefaultClassLoadingPicoContainer();
         final StringBuilder sb = new StringBuilder();
         int found = pico.visit(new ClassName("com.thoughtworks.xstream.XStream"), ".*m\\.class", true, new DefaultClassLoadingPicoContainer.ClassVisitor() {
             public void classFound(Class clazz) {
                 sb.append(clazz.getName()).append("\n");
             }
         });
+        System.out.println("=====");
+        System.out.println(sb.toString());
+        System.out.println("=====");
         assertEquals("com.thoughtworks.xstream.io.xml.xppdom.XppDom\n" +
-                "com.thoughtworks.xstream.io.xml.xppdom.Xpp3Dom\n" +
-                "com.thoughtworks.xstream.core.util.PrioritizedList$PrioritizedItem\n" +
-                "com.thoughtworks.xstream.core.util.CustomObjectInputStream\n" +
-                "com.thoughtworks.xstream.core.util.CustomObjectOutputStream\n" +
-                "com.thoughtworks.xstream.XStream\n",
+                        "com.thoughtworks.xstream.io.xml.xppdom.Xpp3Dom\n" +
+                        "com.thoughtworks.xstream.core.util.PrioritizedList$PrioritizedItem\n" +
+                        "com.thoughtworks.xstream.core.util.CustomObjectInputStream\n" +
+                        "com.thoughtworks.xstream.core.util.CustomObjectOutputStream\n" +
+                        "com.thoughtworks.xstream.XStream\n",
                 sb.toString());
         assertEquals(6, found);
     }
