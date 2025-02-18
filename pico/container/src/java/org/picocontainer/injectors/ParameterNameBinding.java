@@ -10,10 +10,7 @@ package org.picocontainer.injectors;
 
 import org.picocontainer.NameBinding;
 
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Member;
+import java.lang.reflect.*;
 
 import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
@@ -35,7 +32,7 @@ public class ParameterNameBinding implements NameBinding {
         if (name != null) {
             return name;
         }
-        String[] strings = paranamer.lookupParameterNames(member, false);
+        String[] strings = paranamer.lookupParameterNames((Executable) member, false);
         name = strings.length == 0 ? "" : strings[index];
         return name;
     }
