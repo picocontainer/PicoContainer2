@@ -7,8 +7,37 @@ ttp://maven.apache.org/maven-v4_0_0.xsd">
    <name>PicoContainer Root</name>
    <version>2.5.1-SNAPSHOT</version>
    <packaging>pom</packaging>
-   <url>http://www.picocontainer.org</url>
+   <url>http://www.picocontainer.com</url>
+
    <modules>
 	<module>pico</module>
    </modules>
+   <inceptionYear>2003</inceptionYear>
+   <description>A small Java embeddable Dependency Injection container</description>
+   <scm>
+      <connection>scm:git:git://github.com/picocontainer/PicoContainer2.git</connection>
+      <developerConnection>scm:git:git@github.com:picocontainer/PicoContainer2.git</developerConnection>
+      <url>https://github.com/picocontainer/PicoContainer2</url>
+      <tag>HEAD</tag>
+   </scm>
+
+   <licenses>
+      <license>
+         <name>BSD</name>
+         <url>LICENSE.txt</url>
+      </license>
+   </licenses>
+
+   <developers>
+      <developer>
+         <id>devs</id>
+         <name>Developers</name>
+         <email>dev@picocontainer.codehaus.org</email>
+         <roles>
+            <role>developer</role>
+         </roles>
+         <timezone>-6</timezone>
+      </developer>
+   </developers>
+
 </project>

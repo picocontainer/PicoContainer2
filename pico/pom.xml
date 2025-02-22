@@ -1,34 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-    <parent>
-      <groupId>org.codehaus</groupId>
-      <artifactId>codehaus-parent</artifactId>
-      <version>3</version>
-    </parent>
 	<groupId>org.picocontainer</groupId>
 	<artifactId>picocontainer-parent</artifactId>
 	<name>PicoContainer Parent</name>
 	<version>2.15.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<url>http://www.picocontainer.org</url>
 	<modules>
 		<module>container</module>
 <!--		<module>container-debug</module>-->
 		<module>tck</module>
 		<module>gems</module>
 	</modules>
-	<inceptionYear>2003</inceptionYear>
-	<description>A small Java embeddable Dependency Injection container</description>
-	<issueManagement>
-		<system>JIRA</system>
-		<url>http://jira.codehaus.org/browse/PICO</url>
-	</issueManagement>
-	<scm>
-		<connection>scm:git:git://github.com/picocontainer/PicoContainer2.git</connection>
-		<developerConnection>scm:git:git@github.com:picocontainer/PicoContainer2.git</developerConnection>
-		<url>https://github.com/picocontainer/PicoContainer2</url>
-		<tag>HEAD</tag>
-	</scm>
 
 	<dependencyManagement>
 		<dependencies>
@@ -440,24 +422,5 @@
 			</reporting>
 		</profile>
 	</profiles>
-
-    <licenses>
-        <license>
-            <name>BSD</name>
-            <url>LICENSE.txt</url>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <id>devs</id>
-            <name>Developers</name>
-            <email>dev@picocontainer.codehaus.org</email>
-            <roles>
-                <role>developer</role>
-            </roles>
-            <timezone>-6</timezone>
-        </developer>
-    </developers>
 
 </project>
