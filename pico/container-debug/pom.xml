@@ -19,7 +19,7 @@
             <version>2.5.1-debug</version>
         </dependency>
         <dependency>
-            <groupId>asm</groupId>
+            <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
         </dependency>
         <dependency>

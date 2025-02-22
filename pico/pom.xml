@@ -17,13 +17,6 @@
 		<module>tck</module>
 		<module>gems</module>
 	</modules>
-	<organization>
-		<name>Codehaus</name>
-		<url>http://codehaus.org/</url>
-	</organization>
-	<prerequisites>
-		<maven>2.2.1</maven>
-	</prerequisites>	
 	<inceptionYear>2003</inceptionYear>
 	<description>A small Java embeddable Dependency Injection container</description>
 	<issueManagement>
@@ -66,14 +59,14 @@
 			<dependency>
 				<groupId>com.thoughtworks.paranamer</groupId>
 				<artifactId>paranamer</artifactId>
-				<version>2.8.1-SNAPSHOT</version>
+				<version>2.8.1</version>
 				<optional>true</optional>
 			</dependency>
 			<!-- For proxy -->
 			<dependency>
-				<groupId>asm</groupId>
+				<groupId>org.ow2.asm</groupId>
 				<artifactId>asm</artifactId>
-				<version>3.3.1</version>
+				<version>9.7.1</version>
 				<optional>true</optional>
 			</dependency>
 			<dependency>
@@ -200,12 +193,12 @@
 				<plugin>
 					<groupId>com.thoughtworks.paranamer</groupId>
 					<artifactId>paranamer-maven-plugin</artifactId>
-					<version>2.8.1-SNAPSHOT</version>
+					<version>2.8.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.5.1</version>
+					<version>3.13.0</version>
 					<configuration>
 						<source>11</source>
 						<target>11</target>
@@ -218,12 +211,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.3.1</version>
+					<version>3.3.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
-					<version>2.1.2</version>
+					<version>3.3.1</version>
 					<executions>
 						<execution>
 							<id>attach-sources</id>
@@ -237,7 +230,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.7</version>
+					<version>3.3.2</version>
 					<executions>
 						<execution>
 							<id>attach-javadocs</id>
@@ -247,23 +240,11 @@
 							</goals>
 						</execution>
 					</executions>
-					<configuration>
-						<links>
-							<link>http://download.oracle.com/javase/1.5.0/docs/api/</link>
-							<link>http://atinject.googlecode.com/svn/tags/1/javadoc/</link>
-							<link>http://proxytoys.codehaus.org/apidocs/</link>
-							<link>http://jakarta.apache.org/commons/logging/commons-logging-1.1.1/docs/apidocs/</link>
-							<link>http://paranamer.codehaus.org/javadoc/</link>
-						</links>
-						<stylesheet>maven</stylesheet>
-						<header><![CDATA[<img class="logo" src="http://www.picocontainer.org/images/pico-logo.png"></img>]]></header>
-						<linksource>true</linksource>
-					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.5</version>
+					<version>3.5.2</version>
 					<configuration>
 						<junitArtifactName>junit:junit-dep</junitArtifactName>
 						<forkMode>once</forkMode>
@@ -296,7 +277,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>2.5.1</version>
+					<version>3.1.1</version>
 					<configuration>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
 						<preparationGoals>clean install</preparationGoals>
@@ -309,32 +290,32 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.4.1</version>
+					<version>3.7.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-install-plugin</artifactId>
-					<version>2.3.1</version>
+					<version>3.1.3</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.4.3</version>
+					<version>3.3.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.1</version>
+					<version>3.8.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>2.0.1</version>
+					<version>3.12.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.xsite</groupId>
 					<artifactId>xsite-maven-plugin</artifactId>
-					<version>1.0</version>
+					<version>1.4</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -372,22 +353,6 @@
 					</plugin>
 				</plugins>
 			</build>
-		</profile>
-		<profile>
-			<!--Use Codehaus Repositories-->
-			<id>codehaus</id>
-			<repositories>
-				<repository>
-					<id>Codehaus</id>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>false</enabled>
-					</snapshots>
-					<url>http://repository.codehaus.org/</url>
-				</repository>
-			</repositories>
 		</profile>
 		<profile>
 			<!-- Distribution profile -->

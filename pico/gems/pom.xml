@@ -16,7 +16,7 @@
     </dependency>
     <!-- For proxy -->
     <dependency>
-      <groupId>asm</groupId>
+      <groupId>org.ow2.asm</groupId>
       <artifactId>asm</artifactId>
       <optional>true</optional>
     </dependency>
