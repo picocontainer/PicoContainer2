@@ -32,6 +32,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.thoughtworks.xstream.security.AnyTypePermission;
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
 
@@ -59,7 +63,7 @@ import com.thoughtworks.xstream.io.xml.XppDriver;
 
 /**
  * Test suite for a ComponentAdapter implementation.
- * 
+ *
  * @author J&ouml;rg Schaible
  */
 @SuppressWarnings("serial")
@@ -86,7 +90,7 @@ public abstract class AbstractComponentAdapterTest  {
 
     /**
      * Prepare the test <em>verifyWithoutDependencyWorks</em>.
-     * 
+     *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test for a component without dependencies. Registration in the pico is
      *         not necessary.
@@ -102,7 +106,7 @@ public abstract class AbstractComponentAdapterTest  {
 
     /**
      * Prepare the test <em>verifyDoesNotInstantiate</em>.
-     * 
+     *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test for a component that may throw on instantiation. Registration in
      *         the pico is not necessary.
@@ -122,7 +126,7 @@ public abstract class AbstractComponentAdapterTest  {
 
     /**
      * Prepare the test <em>visitable</em>.
-     * 
+     *
      * @return a ComponentAdapter of the type to test. If the ComponentAdapter supports {@link Parameter}, you have to
      *         select a component, that have some.
      */
@@ -149,7 +153,7 @@ public abstract class AbstractComponentAdapterTest  {
     /**
      * Prepare the test <em>isAbleToTakeParameters</em>. Overload this function, if the ComponentAdapter to test
      * supports {@link Parameter}.
-     * 
+     *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test. Select a component, that has some parameters. Registration in the
      *         pico is not necessary.
@@ -192,7 +196,7 @@ public abstract class AbstractComponentAdapterTest  {
     /**
      * Prepare the test <em>isSerializable</em>. Overload this function, if the ComponentAdapter supports
      * serialization.
-     * 
+     *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test. Registration in the pico is not necessary.
      */
@@ -225,7 +229,7 @@ public abstract class AbstractComponentAdapterTest  {
     /**
      * Prepare the test <em>isXStreamSerializable</em>. Overload this function, if the ComponentAdapter supports
      * serialization.
-     * 
+     *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test. Registration in the pico is not necessary.
      */
@@ -241,6 +245,11 @@ public abstract class AbstractComponentAdapterTest  {
             final Object instance = componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instance);
             final XStream xstream = new XStream(new PureJavaReflectionProvider(), new XppDriver());
+            xstream.addPermission(NoTypePermission.NONE); //forbid everything
+            xstream.addPermission(NullPermission.NULL);   // allow "null"
+            xstream.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+            xstream.addPermission(AnyTypePermission.ANY);
+
             final String xml = xstream.toXML(componentAdapter);
             final ComponentAdapter serializedComponentAdapter = (ComponentAdapter)xstream.fromXML(xml);
             assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());
@@ -258,6 +267,11 @@ public abstract class AbstractComponentAdapterTest  {
             final Object instance = componentAdapter.getComponentInstance(picoContainer, ComponentAdapter.NOTHING.class);
             assertNotNull(instance);
             final XStream xstream = new XStream(new XppDriver());
+
+            xstream.addPermission(NoTypePermission.NONE); //forbid everything
+            xstream.addPermission(NullPermission.NULL);   // allow "null"
+            xstream.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+            xstream.addPermission(AnyTypePermission.ANY);
             final String xml = xstream.toXML(componentAdapter);
             final ComponentAdapter serializedComponentAdapter = (ComponentAdapter)xstream.fromXML(xml);
             assertEquals(componentAdapter.getComponentKey(), serializedComponentAdapter.getComponentKey());
@@ -274,7 +288,7 @@ public abstract class AbstractComponentAdapterTest  {
     /**
      * Prepare the test <em>verificationFailsWithUnsatisfiedDependency</em>. Overload this function, if the
      * ComponentAdapter's verification can fail e.g. due to an unresolved dependency.
-     * 
+     *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test, that fails for the verification, e.g. because of a compoennt with
      *         missing dependencies. Registration in the pico is not necessary.
@@ -313,7 +327,7 @@ public abstract class AbstractComponentAdapterTest  {
     /**
      * Prepare the test <em>createsNewInstances</em>. Overload this function, if the ComponentAdapter is
      * instantiating. It should create a new instance with every call.
-     * 
+     *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test. Registration in the pico is not necessary.
      */
@@ -335,7 +349,7 @@ public abstract class AbstractComponentAdapterTest  {
 
     /**
      * Prepare the test <em>errorIsRethrown</em>. Overload this function, if the ComponentAdapter is instantiating.
-     * 
+     *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test with a component that fails with an {@link Error} at
      *         instantiation. Registration in the pico is not necessary.
@@ -361,7 +375,7 @@ public abstract class AbstractComponentAdapterTest  {
     /**
      * Prepare the test <em>runtimeExceptionIsRethrown</em>. Overload this function, if the ComponentAdapter is
      * instantiating.
-     * 
+     *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test with a component that fails with a {@link RuntimeException} at
      *         instantiation. Registration in the pico is not necessary.
@@ -387,7 +401,7 @@ public abstract class AbstractComponentAdapterTest  {
     /**
      * Prepare the test <em>normalExceptionIsRethrownInsidePicoInvocationTargetInitializationException</em>. Overload
      * this function, if the ComponentAdapter is instantiating.
-     * 
+     *
      * @param picoContainer container, may probably not be used.
      * @return a ComponentAdapter of the type to test with a component that fails with a
      *         {@link PicoCompositionException} at instantiation. Registration in the pico is not
@@ -420,7 +434,7 @@ public abstract class AbstractComponentAdapterTest  {
     /**
      * Prepare the test <em>dependenciesAreResolved</em>. Overload this function, if the ComponentAdapter is resolves
      * dependencies.
-     * 
+     *
      * @param picoContainer container, used to register dependencies.
      * @return a ComponentAdapter of the type to test with a component that has dependencies. Registration in the pico
      *         is not necessary.
@@ -448,7 +462,7 @@ public abstract class AbstractComponentAdapterTest  {
     /**
      * Prepare the test <em>failingVerificationWithCyclicDependencyException</em>. Overload this function, if the
      * ComponentAdapter is resolves dependencies.
-     * 
+     *
      * @param picoContainer container, used to register dependencies.
      * @return a ComponentAdapter of the type to test with a component that has cyclic dependencies. You have to
      *         register the component itself in the pico.
@@ -482,7 +496,7 @@ public abstract class AbstractComponentAdapterTest  {
     /**
      * Prepare the test <em>failingInstantiationWithCyclicDependencyException</em>. Overload this function, if the
      * ComponentAdapter is resolves dependencies.
-     * 
+     *
      * @param picoContainer container, used to register dependencies.
      * @return a ComponentAdapter of the type to test with a component that has cyclic dependencies. You have to
      *         register the component itself in the pico.
@@ -554,7 +568,7 @@ public abstract class AbstractComponentAdapterTest  {
         public String getDescriptor() {
             return null;
         }
-        
+
     }
 
     static public class CollectingBehavior extends AbstractBehavior {
@@ -603,23 +617,23 @@ public abstract class AbstractComponentAdapterTest  {
 
     public static final class RecordingLifecycleStrategy implements LifecycleStrategy {
         private final StringBuffer recorder;
-        
+
         public RecordingLifecycleStrategy(StringBuffer recorder) {
             this.recorder = recorder;
         }
-    
+
         public void start(Object component) {
             recorder.append("<start");
         }
-    
+
         public void stop(Object component) {
             recorder.append("<stop");
         }
-    
+
         public void dispose(Object component) {
             recorder.append("<dispose");
         }
-        
+
         public boolean hasLifecycle(Class type) {
             return true;
         }
@@ -647,11 +661,11 @@ public abstract class AbstractComponentAdapterTest  {
                 parameters[i] = new ConstantParameter(wrapperDependencies[i - 1]);
             }
             final MutablePicoContainer instantiatingPicoContainer = new DefaultPicoContainer(
-                new ConstructorInjection());
+                    new ConstructorInjection());
             instantiatingPicoContainer.addComponent(
-                "decorator", decoratingComponentAdapterClass, parameters);
+                    "decorator", decoratingComponentAdapterClass, parameters);
             mutablePicoContainer.addAdapter((ComponentAdapter)instantiatingPicoContainer
-                .getComponent("decorator"));
+                    .getComponent("decorator"));
         }
         return mutablePicoContainer;
     }
@@ -664,8 +678,8 @@ public abstract class AbstractComponentAdapterTest  {
             final Class[] parameterTypes = constructor.getParameterTypes();
             for (final Class parameterType : parameterTypes) {
                 if (Parameter.class.isAssignableFrom(parameterType)
-                    || (parameterType.isArray() && Parameter.class.isAssignableFrom(parameterType
-                    .getComponentType()))) {
+                        || (parameterType.isArray() && Parameter.class.isAssignableFrom(parameterType
+                        .getComponentType()))) {
                     hasParameters = true;
                     break;
                 }
