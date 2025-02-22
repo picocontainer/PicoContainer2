@@ -24,10 +24,12 @@
 		<url>http://jira.codehaus.org/browse/PICO</url>
 	</issueManagement>
 	<scm>
-		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/tags/picocontainer-2.15</connection>
-		<developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/tags/picocontainer-2.15</developerConnection>
-		<url>http://svn.codehaus.org/picocontainer/java/2.x/tags/picocontainer-2.15</url>
+		<connection>scm:git:git://github.com/picocontainer/PicoContainer2.git</connection>
+		<developerConnection>scm:git:git@github.com:picocontainer/PicoContainer2.git</developerConnection>
+		<url>https://github.com/picocontainer/PicoContainer2</url>
+		<tag>HEAD</tag>
 	</scm>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
