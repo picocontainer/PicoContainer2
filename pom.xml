@@ -28,6 +28,16 @@ ttp://maven.apache.org/maven-v4_0_0.xsd">
       </license>
    </licenses>
 
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <version>3.1.1</version>
+         </plugin>
+      </plugins>
+   </build>
+
    <developers>
       <developer>
          <id>devs</id>
