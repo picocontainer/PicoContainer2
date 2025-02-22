@@ -41,7 +41,7 @@
               <artifactId>javax.inject</artifactId>
               <version>1</version>
               <optional>true</optional>
-            </dependency>      
+            </dependency>
 			<!-- For parameter name leverage -->
 			<dependency>
 				<groupId>com.thoughtworks.paranamer</groupId>
@@ -93,12 +93,12 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-			<dependency> 
+			<dependency>
 				<groupId>org.prefuse</groupId>
 				<artifactId>prefuse</artifactId>
 				<version>beta-20071021</version>
 				<optional>true</optional>
-			</dependency> 
+			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
@@ -112,12 +112,6 @@
 				<optional>true</optional>
 			</dependency>
 			<!-- For test -->
-			<dependency>
-				<groupId>org.jmock</groupId>
-				<artifactId>jmock-junit4</artifactId>
-				<version>2.5.1</version>
-				<scope>test</scope>
-			</dependency>
 			<dependency>
 				<groupId>com.thoughtworks.xstream</groupId>
 				<artifactId>xstream</artifactId>
@@ -143,6 +137,7 @@
 		<dependency>
 			<groupId>org.jmock</groupId>
 			<artifactId>jmock-junit4</artifactId>
+			<version>2.5.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
