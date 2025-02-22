@@ -213,34 +213,54 @@
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>3.3.0</version>
 				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>3.3.1</version>
-					<executions>
-						<execution>
-							<id>attach-sources</id>
-							<phase>package</phase>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.3.2</version>
-					<executions>
-						<execution>
-							<id>attach-javadocs</id>
-							<phase>package</phase>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.3.1</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.3.2</version>
+                    <executions>
+                        <execution>
+                            <id>attach-javadoc</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                            <configuration>
+                                <failOnError>false</failOnError>
+                                <additionalparam>-Xdoclint:none</additionalparam>
+                                <links>
+                                    <link>https://docs.oracle.com/en/java/javase/11/docs/api</link>
+                                </links>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>3.2.7</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
@@ -355,13 +375,6 @@
 			</build>
 		</profile>
 		<profile>
-			<!-- Distribution profile -->
-			<id>distribution</id>
-			<modules>
-				<module>distribution</module>
-			</modules>
-		</profile>
-		<profile>
 			<!-- No-test profile:  equivalent to -Dmaven.test.skip=true -->
 			<id>nt</id>
 			<build>
@@ -396,21 +409,6 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
 					</plugin>
-					<!--plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-site-plugin</artifactId>
-						<configuration>
-							<includeProjectDocumentation>false</includeProjectDocumentation>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>install</phase>
-								<goals>
-									<goal>site</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin-->
 				</plugins>
 			</build>
 			<reporting>
