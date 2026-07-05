@@ -236,6 +236,8 @@
 					<configuration>
 						<junitArtifactName>junit:junit-dep</junitArtifactName>
 						<forkMode>once</forkMode>
+						<!-- XStream (test-scope) reflectively accesses JDK internals; open them for JDK 16+ -->
+						<argLine>--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED</argLine>
 						<printSummary>true</printSummary>
 						<useFile>true</useFile>
 						<systemProperties>
