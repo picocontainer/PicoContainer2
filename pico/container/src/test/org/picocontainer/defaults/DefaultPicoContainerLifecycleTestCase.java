@@ -58,8 +58,8 @@ import org.picocontainer.testmodel.RecordingLifecycle.Two;
 @RunWith(JMock.class)
 public class DefaultPicoContainerLifecycleTestCase {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+    private Mockery mockery = mockeryWithCountingNamingScheme();
+
     @Test public void testOrderOfInstantiationShouldBeDependencyOrder() throws Exception {
 
         DefaultPicoContainer pico = new DefaultPicoContainer();
@@ -252,7 +252,7 @@ public class DefaultPicoContainerLifecycleTestCase {
 
 
     public static class NotStartable {
-         public void start(){
+        public void start(){
             Assert.fail("start() should not get invoked on NonStartable");
         }
     }
@@ -306,7 +306,7 @@ public class DefaultPicoContainerLifecycleTestCase {
     }
 
     @Test public void testCanSpecifyLifeCycleStrategyForInstanceRegistrationWhenSpecifyingComponentFactory()
-        throws Exception {
+            throws Exception {
         LifecycleStrategy strategy = new LifecycleStrategy() {
             public void start(Object component) {
                 ((StringBuffer)component).append("start>");
@@ -342,7 +342,7 @@ public class DefaultPicoContainerLifecycleTestCase {
     }
 
     @Test public void testLifeCycleStrategyForInstanceRegistrationPassedToChildContainers()
-        throws Exception
+            throws Exception
     {
         LifecycleStrategy strategy = new LifecycleStrategy() {
             public void start(Object component) {
@@ -382,13 +382,13 @@ public class DefaultPicoContainerLifecycleTestCase {
 
     @Test public void testLifecycleDoesNotRecoverWithNullComponentMonitor() {
 
-    	final Startable s1 = mockery.mock(Startable.class, "s1");
+        final Startable s1 = mockery.mock(Startable.class, "s1");
         Startable s2 = mockery.mock(Startable.class, "s2");
         mockery.checking(new Expectations(){{
             one(s1).start();
             will(throwException(new RuntimeException("I do not want to start myself")));
         }});
- 
+
         DefaultPicoContainer dpc = new DefaultPicoContainer();
         dpc.addComponent("foo", s1);
         dpc.addComponent("bar", s2);
@@ -403,10 +403,10 @@ public class DefaultPicoContainerLifecycleTestCase {
 
     @Test public void testLifecycleCanRecoverWithCustomComponentMonitor() throws NoSuchMethodException {
 
-    	final Startable s1 = mockery.mock(Startable.class, "s1");
+        final Startable s1 = mockery.mock(Startable.class, "s1");
         final Startable s2 = mockery.mock(Startable.class, "s2");
         final ComponentMonitor cm = mockery.mock(ComponentMonitor.class);
-    	mockery.checking(new Expectations(){{
+        mockery.checking(new Expectations(){{
             one(s1).start();
             will(throwException(new RuntimeException("I do not want to start myself")));
             one(s1).stop();
@@ -422,13 +422,13 @@ public class DefaultPicoContainerLifecycleTestCase {
             one(cm).invoked(with(aNull(PicoContainer.class)),
                     with(aNull(ComponentAdapter.class)),
                     with(equal(Startable.class.getMethod("stop", (Class[])null))),
-                    with(same(s1)), with(any(Long.class)), with(any(Object[].class)), with(same(null)));
+                    with(same(s1)), with(any(Long.class)), with(any(Object[].class)), with(aNull(Object.class)));
             // s2 expectations
             one(cm).invoking(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("start", (Class[])null))), with(same(s2)), with(any(Object[].class)));
-            one(cm).invoked(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("start", (Class[])null))), with(same(s2)), with(any(Long.class)), with(any(Object[].class)), with(same(null)));
+            one(cm).invoked(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("start", (Class[])null))), with(same(s2)), with(any(Long.class)), with(any(Object[].class)), with(aNull(Object.class)));
             one(cm).invoking(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("stop", (Class[])null))), with(same(s2)), with(any(Object[].class)));
-            one(cm).invoked(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("stop", (Class[])null))), with(same(s2)), with(any(Long.class)), with(any(Object[].class)), with(same(null)));
-    	}});
+            one(cm).invoked(with(aNull(PicoContainer.class)), with(aNull(ComponentAdapter.class)), with(equal(Startable.class.getMethod("stop", (Class[])null))), with(same(s2)), with(any(Long.class)), with(any(Object[].class)), with(aNull(Object.class)));
+        }});
 
         DefaultPicoContainer dpc = new DefaultPicoContainer(cm);
         dpc.addComponent("foo", s1);
@@ -438,7 +438,7 @@ public class DefaultPicoContainerLifecycleTestCase {
     }
 
     @Test public void testLifecycleFailuresCanBePickedUpAfterTheEvent() {
-    	final Startable s1 = mockery.mock(Startable.class, "s1");
+        final Startable s1 = mockery.mock(Startable.class, "s1");
         final Startable s2 = mockery.mock(Startable.class, "s2");
         final Startable s3 = mockery.mock(Startable.class, "s3");
         mockery.checking(new Expectations(){{
@@ -451,7 +451,7 @@ public class DefaultPicoContainerLifecycleTestCase {
             will(throwException(new RuntimeException("I also do not want to start myself")));
             one(s3).stop();
         }});
-        
+
         LifecycleComponentMonitor lifecycleComponentMonitor = new LifecycleComponentMonitor(new NullComponentMonitor());
 
         DefaultPicoContainer dpc = new DefaultPicoContainer(lifecycleComponentMonitor);
@@ -474,16 +474,16 @@ public class DefaultPicoContainerLifecycleTestCase {
 
     @Test public void testStartedComponentsCanBeStoppedIfSomeComponentsFailToStart() {
 
-    	final Startable s1 = mockery.mock(Startable.class, "s1");
+        final Startable s1 = mockery.mock(Startable.class, "s1");
         final Startable s2 = mockery.mock(Startable.class, "s2");
         mockery.checking(new Expectations(){{
             one(s1).start();
             one(s1).stop();
             one(s2).start();
             will(throwException(new RuntimeException("I do not want to start myself")));
-         // s2 does not expect stop().
+            // s2 does not expect stop().
         }});
-        
+
         DefaultPicoContainer dpc = new DefaultPicoContainer();
         dpc.addComponent("foo", s1);
         dpc.addComponent("bar", s2);
@@ -499,16 +499,16 @@ public class DefaultPicoContainerLifecycleTestCase {
 
     @Test public void testStartedComponentsCanBeStoppedIfSomeComponentsFailToStartEvenInAPicoHierarchy() {
 
-    	final Startable s1 = mockery.mock(Startable.class, "s1");
+        final Startable s1 = mockery.mock(Startable.class, "s1");
         final Startable s2 = mockery.mock(Startable.class, "s2");
         mockery.checking(new Expectations(){{
             one(s1).start();
             one(s1).stop();
             one(s2).start();
             will(throwException(new RuntimeException("I do not want to start myself")));
-         // s2 does not expect stop().
+            // s2 does not expect stop().
         }});
-        
+
         DefaultPicoContainer dpc = new DefaultPicoContainer();
         dpc.addComponent("foo", s1);
         dpc.addComponent("bar", s2);
@@ -536,7 +536,7 @@ public class DefaultPicoContainerLifecycleTestCase {
             one(s1).start();
             one(s1).stop();
         }});
-        
+
         child.addComponent(s1);
 
         child.start();

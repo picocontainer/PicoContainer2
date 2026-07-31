@@ -48,8 +48,8 @@ import static org.picocontainer.tck.MockFactory.mockeryWithCountingNamingScheme;
 @SuppressWarnings("serial")
 public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
 
-	private Mockery mockery = mockeryWithCountingNamingScheme();
-	
+    private Mockery mockery = mockeryWithCountingNamingScheme();
+
     protected Class getComponentAdapterType() {
         return ConstructorInjector.class;
     }
@@ -271,45 +271,45 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
     }
 
     @Test public void testMonitoringHappensBeforeAndAfterInstantiation() throws NoSuchMethodException {
-    	final ComponentMonitor monitor = mockery.mock(ComponentMonitor.class);
+        final ComponentMonitor monitor = mockery.mock(ComponentMonitor.class);
         final Constructor emptyHashMapCtor = HashMap.class.getConstructor();
         final Matcher<Long> durationIsGreaterThanOrEqualToZero = new BaseMatcher<Long>() {
-        	public boolean matches(Object item) {
+            public boolean matches(Object item) {
                 Long duration = (Long)item;
                 return 0 <= duration;
-			}
+            }
 
-			public void describeTo(Description description) {
-                description.appendText("The endTime wasn't after the startTime");				
-			}
+            public void describeTo(Description description) {
+                description.appendText("The endTime wasn't after the startTime");
+            }
         };
-        
+
         final Matcher<Object> isAHashMapThatWozCreated = new BaseMatcher<Object>() {
-        	public boolean matches(Object item) {
+            public boolean matches(Object item) {
                 return item instanceof HashMap;
             }
 
-			public void describeTo(Description description) {
-                description.appendText("Should have been a hashmap");				
-			}
+            public void describeTo(Description description) {
+                description.appendText("Should have been a hashmap");
+            }
         };
 
         final Matcher<Object[]> injectedIsEmptyArray = new BaseMatcher<Object[]>() {
-        	public boolean matches(Object item) {
+            public boolean matches(Object item) {
                 Object[] injected = (Object[])item;
                 return 0 == injected.length;
             }
-        	public void describeTo(Description description) {
+            public void describeTo(Description description) {
                 description.appendText("Should have had nothing injected into it");
             }
         };
 
         mockery.checking(new Expectations(){{
-        	one(monitor).instantiating(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjector.class)), with(equal(emptyHashMapCtor)));
-        	will(returnValue(emptyHashMapCtor));
-        	one(monitor).instantiated(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjector.class)), with(equal(emptyHashMapCtor)), 
-        			with(isAHashMapThatWozCreated), with(injectedIsEmptyArray), 
-        			with(durationIsGreaterThanOrEqualToZero));
+            one(monitor).instantiating(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjector.class)), with(equal(emptyHashMapCtor)));
+            will(returnValue(emptyHashMapCtor));
+            one(monitor).instantiated(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjector.class)), with(equal(emptyHashMapCtor)),
+                    with(isAHashMapThatWozCreated), with(injectedIsEmptyArray),
+                    with(durationIsGreaterThanOrEqualToZero));
         }});
 
         ConstructorInjector cica = new ConstructorInjector(
@@ -318,25 +318,25 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
     }
 
     @Test public void testMonitoringHappensBeforeAndOnFailOfImpossibleComponentsInstantiation() throws NoSuchMethodException {
-    	final ComponentMonitor monitor = mockery.mock(ComponentMonitor.class);
+        final ComponentMonitor monitor = mockery.mock(ComponentMonitor.class);
         final Constructor barfingActionListenerCtor = BarfingActionListener.class.getConstructor();
 
         final Matcher<Exception> isITE = new BaseMatcher<Exception>() {
-        	public boolean matches(Object item) {
-        		 Exception ex = (Exception)item;
-                 return ex instanceof InvocationTargetException;
+            public boolean matches(Object item) {
+                Exception ex = (Exception)item;
+                return ex instanceof InvocationTargetException;
             }
 
-			public void describeTo(Description description) {
-                description.appendText("Should have been unable to instantiate");				
-			}
+            public void describeTo(Description description) {
+                description.appendText("Should have been unable to instantiate");
+            }
         };
 
         mockery.checking(new Expectations(){{
-        	one(monitor).instantiating(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjector.class)), with(equal(barfingActionListenerCtor)));
-        	will(returnValue(barfingActionListenerCtor));
-        	one(monitor).instantiationFailed(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjector.class)), with(equal(barfingActionListenerCtor)),
-        			with(isITE));
+            one(monitor).instantiating(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjector.class)), with(equal(barfingActionListenerCtor)));
+            will(returnValue(barfingActionListenerCtor));
+            one(monitor).instantiationFailed(with(any(PicoContainer.class)), (ComponentAdapter)with(a(ConstructorInjector.class)), with(equal(barfingActionListenerCtor)),
+                    with(isITE));
         }});
 
 
@@ -400,8 +400,8 @@ public class ConstructorInjectorTestCase extends AbstractComponentAdapterTest {
         dpc.addComponent(One.class);
         long start = System.currentTimeMillis();
         for (int x = 0; x < iterations; x++) {
-                dpc.getComponent(One.class);
-            }
+            dpc.getComponent(One.class);
+        }
         long end = System.currentTimeMillis();
         assertEquals(iterations, two.howMany());
         return end-start;

@@ -9,6 +9,10 @@
  *****************************************************************************/
 package org.picocontainer;
 
+import com.thoughtworks.xstream.security.AnyTypePermission;
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 import org.picocontainer.behaviors.Cached;
 
 import java.util.Map;
@@ -62,6 +66,10 @@ public class PicoBuilderTestCase {
     @Before
     public void setUp() throws Exception {
         xs = new XStream();
+        xs.addPermission(NoTypePermission.NONE); //forbid everything
+        xs.addPermission(NullPermission.NULL);   // allow "null"
+        xs.addPermission(PrimitiveTypePermission.PRIMITIVES); // allow primitive types
+        xs.addPermission(AnyTypePermission.ANY);
         xs.setMode(XStream.XPATH_ABSOLUTE_REFERENCES);
     }
 
@@ -196,7 +204,7 @@ public class PicoBuilderTestCase {
 
         MutablePicoContainer parentExpected = new PicoBuilder().build();
         MutablePicoContainer expected = new DefaultPicoContainer(ai, lifecycle, parentExpected, ncm);
-        parentExpected.addChildContainer(expected); 
+        parentExpected.addChildContainer(expected);
 
         assertEquals(toXml(expected), toXml(actual));
         boolean b = parent.removeChildContainer(actual);
@@ -333,20 +341,20 @@ public class PicoBuilderTestCase {
         Object expected = new TestPicoContainer(ai, ncm, lifecycle, parent);
         assertEquals(toXml(expected), toXml(actual));
     }
-    
+
     @Test
     public void testMultipleUsesAreSupported() {
         PicoBuilder picoBuilder = new PicoBuilder().withCaching().withLifecycle();
         MutablePicoContainer pico = picoBuilder.build();
-        
+
         pico.addComponent(Map.class, HashMap.class);
         assertNotNull(pico.getComponentAdapter(Map.class).findAdapterOfType(Cached.class));
-        
+
         pico = picoBuilder.build();
         pico.addComponent(Map.class, HashMap.class);
         assertNotNull(pico.getComponentAdapter(Map.class).findAdapterOfType(Cached.class));
-        
-        
+
+
     }
 
 

@@ -1,51 +1,33 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-    <parent>
-      <groupId>org.codehaus</groupId>
-      <artifactId>codehaus-parent</artifactId>
-      <version>3</version>
-    </parent>
-	<groupId>org.picocontainer</groupId>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.picocontainer</groupId>
+		<artifactId>picocontainer-root</artifactId>
+		<version>2.15.3-SNAPSHOT</version>
+	</parent>
 	<artifactId>picocontainer-parent</artifactId>
 	<name>PicoContainer Parent</name>
-	<version>2.15.1-SNAPSHOT</version>
+	<version>2.15.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<url>http://www.picocontainer.org</url>
 	<modules>
 		<module>container</module>
-		<module>container-debug</module>
+<!--		<module>container-debug</module>-->
 		<module>tck</module>
 		<module>gems</module>
 	</modules>
-	<organization>
-		<name>Codehaus</name>
-		<url>http://codehaus.org/</url>
-	</organization>
-	<prerequisites>
-		<maven>2.2.1</maven>
-	</prerequisites>	
-	<inceptionYear>2003</inceptionYear>
-	<description>A small Java embeddable Dependency Injection container</description>
-	<issueManagement>
-		<system>JIRA</system>
-		<url>http://jira.codehaus.org/browse/PICO</url>
-	</issueManagement>
-	<scm>
-		<connection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</connection>
-		<developerConnection>scm:svn:https://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</developerConnection>
-		<url>http://svn.codehaus.org/picocontainer/java/2.x/trunk/pico</url>
-	</scm>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>picocontainer</artifactId>
-				<version>${pom.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>picocontainer-tck</artifactId>
-				<version>${pom.version}</version>
+				<version>${project.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<!-- For JavaEE5 annotations -->
@@ -61,19 +43,19 @@
               <artifactId>javax.inject</artifactId>
               <version>1</version>
               <optional>true</optional>
-            </dependency>      
+            </dependency>
 			<!-- For parameter name leverage -->
 			<dependency>
 				<groupId>com.thoughtworks.paranamer</groupId>
 				<artifactId>paranamer</artifactId>
-				<version>2.8</version>
+				<version>2.8.2</version>
 				<optional>true</optional>
 			</dependency>
 			<!-- For proxy -->
 			<dependency>
-				<groupId>asm</groupId>
+				<groupId>org.ow2.asm</groupId>
 				<artifactId>asm</artifactId>
-				<version>3.3.1</version>
+				<version>9.7.1</version>
 				<optional>true</optional>
 			</dependency>
 			<dependency>
@@ -113,12 +95,12 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-			<dependency> 
+			<dependency>
 				<groupId>org.prefuse</groupId>
 				<artifactId>prefuse</artifactId>
 				<version>beta-20071021</version>
 				<optional>true</optional>
-			</dependency> 
+			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
@@ -133,15 +115,9 @@
 			</dependency>
 			<!-- For test -->
 			<dependency>
-				<groupId>org.jmock</groupId>
-				<artifactId>jmock-junit4</artifactId>
-				<version>2.5.1</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
 				<groupId>com.thoughtworks.xstream</groupId>
 				<artifactId>xstream</artifactId>
-				<version>1.4.6</version>
+				<version>1.4.21</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -150,21 +126,10 @@
 				<version>1.1.3.4.O</version>
 				<scope>test</scope>
 			</dependency>
-			<dependency>
-				<groupId>cglib</groupId>
-				<artifactId>cglib-nodep</artifactId>
-				<version>2.2.2</version>
-				<scope>test</scope>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
 		<!-- test scoped -->
-		<dependency>
-			<groupId>org.jmock</groupId>
-			<artifactId>jmock-junit4</artifactId>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
@@ -198,17 +163,27 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>com.thoughtworks.paranamer</groupId>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>3.1.1</version>
+					<configuration>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+						<preparationGoals>clean install</preparationGoals>
+						<goals>deploy</goals>
+					</configuration>
+				</plugin>
+
+				<plugin><groupId>com.thoughtworks.paranamer</groupId>
 					<artifactId>paranamer-maven-plugin</artifactId>
-					<version>2.8</version>
+					<version>2.8.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.5.1</version>
+					<version>3.13.0</version>
 					<configuration>
-						<source>1.5</source>
-						<target>1.5</target>
+						<source>8</source>
+						<target>8</target>
 						<encoding>UTF-8</encoding>
 						<optimize>false</optimize>
 						<debug>true</debug>
@@ -218,55 +193,51 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.3.1</version>
+					<version>3.3.0</version>
 				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>2.1.2</version>
-					<executions>
-						<execution>
-							<id>attach-sources</id>
-							<phase>package</phase>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.7</version>
-					<executions>
-						<execution>
-							<id>attach-javadocs</id>
-							<phase>package</phase>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<links>
-							<link>http://download.oracle.com/javase/1.5.0/docs/api/</link>
-							<link>http://atinject.googlecode.com/svn/tags/1/javadoc/</link>
-							<link>http://proxytoys.codehaus.org/apidocs/</link>
-							<link>http://jakarta.apache.org/commons/logging/commons-logging-1.1.1/docs/apidocs/</link>
-							<link>http://paranamer.codehaus.org/javadoc/</link>
-						</links>
-						<stylesheet>maven</stylesheet>
-						<header><![CDATA[<img class="logo" src="http://www.picocontainer.org/images/pico-logo.png"></img>]]></header>
-						<linksource>true</linksource>
-					</configuration>
-				</plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.3.1</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.3.2</version>
+                    <executions>
+                        <execution>
+                            <id>attach-javadoc</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                            <configuration>
+                                <failOnError>false</failOnError>
+                                <additionalparam>-Xdoclint:none</additionalparam>
+                                <links>
+                                    <link>https://docs.oracle.com/en/java/javase/11/docs/api</link>
+                                </links>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.5</version>
+					<version>3.5.2</version>
 					<configuration>
 						<junitArtifactName>junit:junit-dep</junitArtifactName>
 						<forkMode>once</forkMode>
+						<!-- XStream (test-scope) reflectively accesses JDK internals; open them for JDK 16+ -->
+						<argLine>--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED</argLine>
 						<printSummary>true</printSummary>
 						<useFile>true</useFile>
 						<systemProperties>
@@ -296,45 +267,37 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>2.5.1</version>
-					<configuration>
-						<autoVersionSubmodules>true</autoVersionSubmodules>
-						<preparationGoals>clean install</preparationGoals>
-						<goals>deploy</goals>
-						<tagBase>https://svn.codehaus.org/picocontainer/java/2.x/tags/</tagBase>
-						<username>${svn.username}</username>
-						<password>${svn.password}</password> 
-					</configuration>
+					<version>3.1.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.4.1</version>
+					<version>3.7.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-install-plugin</artifactId>
-					<version>2.3.1</version>
+					<version>3.1.3</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.4.3</version>
+					<version>3.3.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.1</version>
+					<version>3.8.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>2.0.1</version>
+					<version>3.12.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.xsite</groupId>
 					<artifactId>xsite-maven-plugin</artifactId>
-					<version>1.0</version>
+					<version>1.4</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -370,31 +333,22 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
 					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>3.2.7</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
 				</plugins>
 			</build>
-		</profile>
-		<profile>
-			<!--Use Codehaus Repositories-->
-			<id>codehaus</id>
-			<repositories>
-				<repository>
-					<id>Codehaus</id>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>false</enabled>
-					</snapshots>
-					<url>http://repository.codehaus.org/</url>
-				</repository>
-			</repositories>
-		</profile>
-		<profile>
-			<!-- Distribution profile -->
-			<id>distribution</id>
-			<modules>
-				<module>distribution</module>
-			</modules>
 		</profile>
 		<profile>
 			<!-- No-test profile:  equivalent to -Dmaven.test.skip=true -->
@@ -431,21 +385,6 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
 					</plugin>
-					<!--plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-site-plugin</artifactId>
-						<configuration>
-							<includeProjectDocumentation>false</includeProjectDocumentation>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>install</phase>
-								<goals>
-									<goal>site</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin-->
 				</plugins>
 			</build>
 			<reporting>
@@ -475,24 +414,5 @@
 			</reporting>
 		</profile>
 	</profiles>
-
-    <licenses>
-        <license>
-            <name>BSD</name>
-            <url>LICENSE.txt</url>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <id>devs</id>
-            <name>Developers</name>
-            <email>dev@picocontainer.codehaus.org</email>
-            <roles>
-                <role>developer</role>
-            </roles>
-            <timezone>-6</timezone>
-        </developer>
-    </developers>
 
 </project>

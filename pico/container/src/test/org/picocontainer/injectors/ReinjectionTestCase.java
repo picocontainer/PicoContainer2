@@ -119,7 +119,7 @@ public class ReinjectionTestCase extends AbstractComponentFactoryTest {
     @Test public void testCachedComponentCanBeMethodNameReinjectedByATransientChildContainer() {
         cachedComponentCanBeReinjectedByATransientChildContainer(new MethodInjection("doIt"));
     }
-    
+
     @Test public void testCachedComponentCanBeAnnotatedMethodReinjectedByATransientChildContainer() {
         cachedComponentCanBeReinjectedByATransientChildContainer(new AnnotatedMethodInjection(Hurrah.class, false));
     }
