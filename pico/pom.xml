@@ -170,6 +170,8 @@
 						<autoVersionSubmodules>true</autoVersionSubmodules>
 						<preparationGoals>clean install</preparationGoals>
 						<goals>deploy</goals>
+						<!-- 'attach' adds sources, javadoc and GPG signatures; Central rejects bundles without them -->
+						<releaseProfiles>attach</releaseProfiles>
 					</configuration>
 				</plugin>
 
@@ -211,7 +213,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.3.2</version>
+                    <version>3.11.2</version>
                     <executions>
                         <execution>
                             <id>attach-javadoc</id>
@@ -221,7 +223,7 @@
                             </goals>
                             <configuration>
                                 <failOnError>false</failOnError>
-                                <additionalparam>-Xdoclint:none</additionalparam>
+                                <doclint>none</doclint>
                                 <links>
                                     <link>https://docs.oracle.com/en/java/javase/11/docs/api</link>
                                 </links>
@@ -263,11 +265,6 @@
 							</goals>
 						</execution>
 					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>3.1.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -344,6 +341,14 @@
 								<goals>
 									<goal>sign</goal>
 								</goals>
+								<configuration>
+									<!-- Take the passphrase from gpg-agent rather than a tty, so
+										 releases work in CI and other non-interactive shells. -->
+									<gpgArguments>
+										<arg>--pinentry-mode</arg>
+										<arg>loopback</arg>
+									</gpgArguments>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>

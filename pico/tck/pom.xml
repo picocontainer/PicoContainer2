@@ -10,7 +10,7 @@
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
-      <groupId>${pom.groupId}</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>picocontainer</artifactId>
     </dependency>
     <dependency>
@@ -63,6 +63,16 @@
               <Automatic-Module-Name>org.picocontainer.tck</Automatic-Module-Name>
             </manifestEntries>
           </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <!-- sourceDirectory is the whole container test tree; document only what this
+               module actually compiles, matching the compiler plugin's includes above. -->
+          <sourcepath>../container/src/test</sourcepath>
+          <subpackages>org.picocontainer.tck:org.picocontainer.testmodel</subpackages>
         </configuration>
       </plugin>
     </plugins>
