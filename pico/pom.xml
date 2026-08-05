@@ -66,34 +66,24 @@
 			</dependency>
 			<!-- For monitors -->
 			<dependency>
+				<!-- Pinned to 1.1.1: commons-logging 1.3.x prefers Slf4jLogFactory when slf4j
+					 is present, and its Log impl is not Serializable, which breaks the
+					 Serializable contract of CommonsLoggingComponentMonitor. No CVEs are
+					 filed against 1.1.1. -->
 				<groupId>commons-logging</groupId>
 				<artifactId>commons-logging</artifactId>
 				<version>1.1.1</version>
 				<optional>true</optional>
 			</dependency>
+			<!-- reload4j is a maintained drop-in fork of log4j 1.2.17; log4j 1.x is EOL
+				 and carries unpatchable CVEs. API is identical, so the Log4J* classes in
+				 gems are unaffected. Still optional: users supplying their own log4j 1.x
+				 on the classpath continue to work unchanged. -->
 			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>1.2.17</version>
+				<groupId>ch.qos.reload4j</groupId>
+				<artifactId>reload4j</artifactId>
+				<version>1.2.26</version>
 				<optional>true</optional>
-				<exclusions>
-					<exclusion>
-						<groupId>com.sun.jmx</groupId>
-						<artifactId>jmxri</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>javax.jms</groupId>
-						<artifactId>jms</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>com.sun.jdmk</groupId>
-						<artifactId>jmxtools</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>javax.mail</groupId>
-						<artifactId>mail</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.prefuse</groupId>
@@ -104,13 +94,15 @@
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>1.7.2</version>
+				<version>1.7.36</version>
 				<optional>true</optional>
 			</dependency>
+			<!-- slf4j-log4j12 was relocated to slf4j-reload4j in 1.7.36; use the real
+				 artifact directly to avoid a relocation warning on every build. -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.7.2</version>
+				<artifactId>slf4j-reload4j</artifactId>
+				<version>1.7.36</version>
 				<optional>true</optional>
 			</dependency>
 			<!-- For test -->
@@ -239,7 +231,7 @@
 						<junitArtifactName>junit:junit-dep</junitArtifactName>
 						<forkMode>once</forkMode>
 						<!-- XStream (test-scope) reflectively accesses JDK internals; open them for JDK 16+ -->
-						<argLine>--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED</argLine>
+						<argLine>--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.util.concurrent=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED</argLine>
 						<printSummary>true</printSummary>
 						<useFile>true</useFile>
 						<systemProperties>
